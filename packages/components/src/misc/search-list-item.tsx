@@ -5,7 +5,7 @@ import { CapitalizeAndFormatString } from "@app/utils/string";
 import { type EnvironmentSupport, ProjectType, ProjectVisibility, TagType } from "@app/utils/types";
 import { imageUrl } from "@app/utils/url";
 import { Building2Icon, CalendarIcon, DownloadIcon, HeartIcon, RefreshCcwIcon } from "lucide-react";
-import { type ReactNode, useMemo } from "react";
+import type { ReactNode } from "react";
 import { TagIcon } from "~/icons/tag-icons";
 import { MicrodataItemProps, MicrodataItemType, itemType } from "~/microdata";
 import { ImgWrapper } from "~/ui/avatar";
@@ -80,35 +80,6 @@ function BaseView(props: SearchListItemProps) {
     const ProjectDownloads = t.count.downloads(props.downloads);
     const ProjectFollowers = t.count.followers(props.followers);
 
-    const SearchItemHeader = useMemo(() => {
-        if (!props.author) {
-            return ProjectLink({
-                projectName: props.projectName,
-                projectPageUrl,
-                galleryViewType,
-            });
-        }
-
-        return t.search.searchItemAuthor(
-            <ProjectLink
-                key={`${props.projectSlug}`}
-                projectName={props.projectName}
-                projectPageUrl={projectPageUrl}
-                galleryViewType={galleryViewType}
-            />,
-            <AuthorLink
-                key={`${props.projectSlug}-${props.author}`}
-                author={props.author}
-                authorDisplayName={props.author}
-                OrgPagePath={props.OrgPagePath}
-                UserProfilePath={props.UserProfilePath}
-                isOrgOwned={props.isOrgOwned === true}
-                galleryViewType={galleryViewType}
-                Organization_translation={t.project.organization}
-            />,
-        );
-    }, [galleryViewType]);
-
     return (
         <article
             // biome-ignore lint/a11y/useSemanticElements: <explanation>
@@ -174,7 +145,28 @@ function BaseView(props: SearchListItemProps) {
                 className={cn("h-fit whitespace-break-spaces text-wrap leading-none", galleryViewType && "me-card-surround leading-tight")}
                 style={{ gridArea: "title" }}
             >
-                {SearchItemHeader}
+                {!props.author ? (
+                    <ProjectLink projectName={props.projectName} projectPageUrl={projectPageUrl} galleryViewType={galleryViewType} />
+                ) : (
+                    t.search.searchItemAuthor(
+                        <ProjectLink
+                            key={`${props.projectSlug}`}
+                            projectName={props.projectName}
+                            projectPageUrl={projectPageUrl}
+                            galleryViewType={galleryViewType}
+                        />,
+                        <AuthorLink
+                            key={`${props.projectSlug}-${props.author}`}
+                            author={props.author}
+                            authorDisplayName={props.author}
+                            OrgPagePath={props.OrgPagePath}
+                            UserProfilePath={props.UserProfilePath}
+                            isOrgOwned={props.isOrgOwned === true}
+                            galleryViewType={galleryViewType}
+                            Organization_translation={t.project.organization}
+                        />,
+                    )
+                )}
 
                 {props.visibility === ProjectVisibility.ARCHIVED && (
                     <>
