@@ -513,13 +513,13 @@ function ThreadMessage(props: ThreadMessageProps) {
                         {profileUrl ? (
                             <Link
                                 to={profileUrl}
-                                className={cn("w-fit text-sm font-bold leading-none", specialNameColor)}
+                                className={cn("w-fit text-base font-bold leading-none", specialNameColor)}
                                 title={senderTitle}
                             >
                                 {authorUsername}
                             </Link>
                         ) : (
-                            <span className={cn("w-fit text-sm font-bold leading-none", specialNameColor)}>{authorUsername}</span>
+                            <span className={cn("w-fit text-base font-bold leading-none", specialNameColor)}>{authorUsername}</span>
                         )}
 
                         {msg.type === MessageType.TEXT && msg.body.isPrivate === true && (
