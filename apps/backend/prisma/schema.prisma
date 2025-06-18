@@ -129,7 +129,7 @@ model TeamMember {
 
 model Project {
     id             String   @id @db.VarChar(32)
-    threadId       String   @unique @db.VarChar(32)
+    threadId       String?  @db.VarChar(32)
     teamId         String   @unique @db.VarChar(32)
     organisationId String?  @db.VarChar(32)
     name           String   @db.VarChar(32)
