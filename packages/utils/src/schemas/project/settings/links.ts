@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import { z } from "zod";
 import { formLink } from "../index";
 
 export const updateExternalLinksFormSchema = z.object({

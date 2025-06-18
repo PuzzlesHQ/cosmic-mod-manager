@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import { z } from "zod";
 import {
     MAX_ADDITIONAL_VERSION_FILE_SIZE,
     MAX_OPTIONAL_FILES,
@@ -73,7 +73,7 @@ export const VersionDependencies = z
     .object({
         projectId: z.string(),
         versionId: z.string().or(z.null()),
-        dependencyType: z.enum(DependencyType),
+        dependencyType: z.nativeEnum(DependencyType),
     })
     .array()
     .max(256)
@@ -82,7 +82,7 @@ export const VersionDependencies = z
 export const newVersionFormSchema = z.object({
     title: z.string().min(MIN_VERSION_TITLE_LENGTH).max(MAX_VERSION_TITLE_LENGTH),
     changelog: z.string().max(MAX_VERSION_CHANGELOG_LENGTH).optional(),
-    releaseChannel: z.enum(VersionReleaseChannel).default(VersionReleaseChannel.RELEASE),
+    releaseChannel: z.nativeEnum(VersionReleaseChannel).default(VersionReleaseChannel.RELEASE),
     featured: z.boolean(),
     versionNumber: VersionNumber,
     loaders: ProjectLoaders,
@@ -103,7 +103,7 @@ export const newVersionFormSchema = z.object({
 export const updateVersionFormSchema = z.object({
     title: z.string().min(MIN_VERSION_TITLE_LENGTH).max(MAX_VERSION_TITLE_LENGTH),
     changelog: z.string().max(MAX_VERSION_CHANGELOG_LENGTH).optional(),
-    releaseChannel: z.enum(VersionReleaseChannel).default(VersionReleaseChannel.RELEASE),
+    releaseChannel: z.nativeEnum(VersionReleaseChannel).default(VersionReleaseChannel.RELEASE),
     featured: z.boolean(),
     versionNumber: VersionNumber,
     loaders: ProjectLoaders,

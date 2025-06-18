@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import { z } from "zod";
 import { MAX_THREAD_MESSAGE_LENGTH, STRING_ID_LENGTH } from "~/constants";
 
 export const createThreadMessage_Schema = z.object({

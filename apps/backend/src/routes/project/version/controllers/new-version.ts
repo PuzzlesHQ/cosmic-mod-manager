@@ -7,7 +7,7 @@ import { isVersionPrimaryFileValid } from "@app/utils/schemas/validation";
 import { ProjectPermission, type ProjectType, ProjectVisibility, VersionReleaseChannel } from "@app/utils/types";
 import type { Dependency, VersionFile } from "@prisma/client";
 import type { Context } from "hono";
-import type { z } from "zod/v4";
+import type { z } from "zod";
 import { GetManyProjects_ListItem, GetProject_ListItem, UpdateProject } from "~/db/project_item";
 import { CreateVersion, GetVersions } from "~/db/version_item";
 import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-attempt";

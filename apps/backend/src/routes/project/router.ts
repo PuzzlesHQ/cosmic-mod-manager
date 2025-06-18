@@ -8,7 +8,7 @@ import { updateProjectLicenseFormSchema } from "@app/utils/schemas/project/setti
 import { updateExternalLinksFormSchema } from "@app/utils/schemas/project/settings/links";
 import { parseInput } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
-import type { z } from "zod/v4";
+import type { z } from "zod";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
 import { getReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";

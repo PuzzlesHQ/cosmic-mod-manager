@@ -4,7 +4,7 @@ import { hasRootAccess } from "@app/utils/src/constants/roles";
 import { OrganisationPermission, ProjectPermission } from "@app/utils/types";
 import { NotificationType } from "@app/utils/types/api/notification";
 import type { Context } from "hono";
-import type { z } from "zod/v4";
+import type { z } from "zod";
 import { GetOrganization_BySlugOrId } from "~/db/organization_item";
 import { GetManyProjects_ListItem, GetProject_ListItem } from "~/db/project_item";
 import { CreateTeamMember, DeleteTeamMember, Delete_ManyTeamMembers, UpdateTeamMember } from "~/db/team-member_item";

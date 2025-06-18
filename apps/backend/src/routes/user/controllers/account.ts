@@ -11,7 +11,7 @@ import type {
 } from "@app/utils/schemas/settings";
 import { ConfirmationType } from "@app/utils/types";
 import type { Context } from "hono";
-import type { z } from "zod/v4";
+import type { z } from "zod";
 import { GetUser_Unique, UpdateUser } from "~/db/user_item";
 import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { generateRandomToken, hashPassword, hashString, matchPassword } from "~/routes/auth/helpers";

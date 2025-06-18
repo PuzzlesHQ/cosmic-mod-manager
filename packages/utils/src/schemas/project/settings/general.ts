@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import { z } from "zod";
 import { MAX_PROJECT_NAME_LENGTH, MAX_PROJECT_SUMMARY_LENGTH, MIN_PROJECT_NAME_LENGTH } from "~/constants";
 import { iconFieldSchema } from "~/schemas";
 import { EnvironmentSupport, ProjectVisibility } from "~/types";
@@ -9,8 +9,8 @@ export const generalProjectSettingsFormSchema = z.object({
     name: z.string().min(MIN_PROJECT_NAME_LENGTH).max(MAX_PROJECT_NAME_LENGTH),
     slug: ProjectSlugField,
     type: ProjectTypeField,
-    visibility: z.enum(ProjectVisibility),
-    clientSide: z.enum(EnvironmentSupport),
-    serverSide: z.enum(EnvironmentSupport),
+    visibility: z.nativeEnum(ProjectVisibility),
+    clientSide: z.nativeEnum(EnvironmentSupport),
+    serverSide: z.nativeEnum(EnvironmentSupport),
     summary: z.string().min(1).max(MAX_PROJECT_SUMMARY_LENGTH),
 });

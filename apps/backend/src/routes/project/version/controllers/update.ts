@@ -3,7 +3,7 @@ import type { VersionDependencies, updateVersionFormSchema } from "@app/utils/sc
 import { ProjectPermission, type ProjectType, VersionReleaseChannel } from "@app/utils/types";
 import type { File as DBFile } from "@prisma/client";
 import type { Context } from "hono";
-import type { z } from "zod/v4";
+import type { z } from "zod";
 import { GetManyFiles_ByID } from "~/db/file_item";
 import { GetProject_Details, GetProject_ListItem, UpdateProject } from "~/db/project_item";
 import { DeleteVersion, GetVersions, UpdateVersion } from "~/db/version_item";

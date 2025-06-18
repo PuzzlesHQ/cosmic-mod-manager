@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import { z } from "zod";
 import { MAX_GALLERY_DESCRIPTION_LENGTH, MAX_GALLERY_TITLE_LENGTH, MAX_PROJECT_GALLERY_IMAGE_SIZE } from "~/constants";
 import { getFileType } from "~/convertors";
 import { isImageFile } from "~/schemas/validation";
