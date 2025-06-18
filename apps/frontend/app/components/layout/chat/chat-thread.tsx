@@ -356,7 +356,7 @@ function ThreadMessage(props: ThreadMessageProps) {
                 msgText = <p>{t.chatThread.projectSubmittedForReview}</p>;
             } else {
                 msgText = (
-                    <p className="flex items-center justify-start gap-[0.8ch]">
+                    <p className="flex items-center justify-start gap-space">
                         {t.chatThread.changedProjectStatus(
                             <ProjectStatusBadge status={msg.body.prev_status} t={t} />,
                             <ProjectStatusBadge status={msg.body.new_status} t={t} />,
@@ -472,7 +472,7 @@ function ThreadMessage(props: ThreadMessageProps) {
                 // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
                 <div
                     style={{ gridArea: "reply" }}
-                    className="flex items-center justify-start gap-[1ch] text-xs text-extra-muted-foreground hover:text-muted-foreground cursor-pointer pb-2 group/replied-msg-preview"
+                    className="flex items-center justify-start gap-space text-xs text-extra-muted-foreground hover:text-muted-foreground cursor-pointer pb-2 group/replied-msg-preview"
                     onClick={() => {
                         const msgId = props.inResponseTo?.msg?.id;
                         if (!msgId) return;

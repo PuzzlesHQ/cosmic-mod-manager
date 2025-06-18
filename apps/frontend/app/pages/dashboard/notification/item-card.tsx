@@ -106,7 +106,7 @@ export function TeamInviteNotification({
                     <Link to={pageUrl} className="me-1.5" aria-label={title}>
                         <ImgWrapper src={icon || ""} alt={title} fallback={fallbackIcon} className="w-11 h-11" />
                     </Link>
-                    <div className="flex items-center justify-start gap-x-[0.5ch] flex-wrap text-muted-foreground">
+                    <div className="flex items-center justify-start gap-x-space flex-wrap text-muted-foreground">
                         {t.dashboard.invitedToJoin(
                             <Link
                                 aria-label={invitedBy.userName || (notification.body?.invitedBy as string)}

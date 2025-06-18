@@ -72,6 +72,7 @@ export default {
                 "3xl": "2.5rem",
             },
             gap: {
+                space: "0.6ch",
                 "panel-cards": "0.75rem",
                 "form-elements": "1rem",
             },

@@ -57,7 +57,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
 
     return (
         <>
-            <Card className="w-full flex flex-col items-start justify-start p-card-surround gap-[1.1rem]">
+            <Card className="w-full flex flex-col items-start justify-start p-card-surround gap-4">
                 <Breadcrumb>
                     <BreadcrumbList className="flex items-center">
                         <BreadcrumbItem>
