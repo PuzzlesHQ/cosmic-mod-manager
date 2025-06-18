@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v4";
 import { RESERVED_PROJECT_SLUGS } from "~/config/reserved";
 import { MAX_PROJECT_NAME_LENGTH, MAX_PROJECT_SUMMARY_LENGTH, MIN_PROJECT_NAME_LENGTH } from "~/constants";
 import { validateProjectTypesCompatibility } from "~/project";
@@ -57,7 +57,7 @@ export const newProjectFormSchema = z.object({
     name: z.string().min(MIN_PROJECT_NAME_LENGTH).max(MAX_PROJECT_NAME_LENGTH),
     slug: ProjectSlugField,
     type: ProjectTypeField,
-    visibility: z.nativeEnum(ProjectVisibility),
+    visibility: z.enum(ProjectVisibility),
     summary: z.string().min(1).max(MAX_PROJECT_SUMMARY_LENGTH),
     orgId: z.string().max(32).optional(),
 });

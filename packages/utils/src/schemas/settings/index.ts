@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v4";
 import { RESERVED_USERNAMES } from "~/config/reserved";
 import {
     MAX_DISPLAY_NAME_LENGTH,

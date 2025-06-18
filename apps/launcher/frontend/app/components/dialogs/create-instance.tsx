@@ -23,7 +23,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDownIcon, PlusIcon, Trash2Icon, UploadIcon } from "lucide-react";
 import { type ReactNode, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import type z from "zod";
+import type z from "zod/v4";
 import useRootData from "~/hooks/root-data";
 import { CreateInstanceFormSchema } from "~/schemas/create-instance";
 import { Loaders } from "~/types";

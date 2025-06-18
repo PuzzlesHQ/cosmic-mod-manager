@@ -1,4 +1,4 @@
-import type z from "zod";
+import type z from "zod/v4";
 
 export async function parseInput<T extends z.Schema, K>(schema: T, data: unknown, params?: K) {
     try {

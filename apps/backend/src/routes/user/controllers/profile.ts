@@ -4,7 +4,7 @@ import { ICON_WIDTH } from "@app/utils/src/constants";
 import { formatUserName } from "@app/utils/string";
 import { FileType, type GlobalUserRole } from "@app/utils/types";
 import type { UserProfileData } from "@app/utils/types/api/user";
-import type { z } from "zod";
+import type { z } from "zod/v4";
 import { CreateFile, DeleteFile_ByID } from "~/db/file_item";
 import { GetUser_ByIdOrUsername, GetUser_Unique, Get_UserProjects, UpdateUser } from "~/db/user_item";
 import { getManyProjects } from "~/routes/project/controllers";

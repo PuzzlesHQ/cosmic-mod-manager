@@ -2,7 +2,7 @@ import { getCurrMember } from "@app/utils/project";
 import type { createOrganisationFormSchema } from "@app/utils/schemas/organisation";
 import type { OrganisationPermission, ProjectPermission } from "@app/utils/types";
 import type { Organisation } from "@app/utils/types/api";
-import type { z } from "zod";
+import type { z } from "zod/v4";
 import { CreateOrganization, GetManyOrganizations_ById, GetOrganization_BySlugOrId } from "~/db/organization_item";
 import { GetUser_ByIdOrUsername, Get_UserOrganizations } from "~/db/user_item";
 import type { ContextUserData } from "~/types";

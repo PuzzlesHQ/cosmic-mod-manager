@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v4";
 import { MAX_LICENSE_NAME_LENGTH } from "~/constants";
 import { formLink } from "../index";
 

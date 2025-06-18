@@ -1,7 +1,7 @@
 import type { LoginFormSchema } from "@app/utils/schemas/auth";
 import { AuthProvider } from "@app/utils/types";
 import type { Context } from "hono";
-import type { z } from "zod";
+import type { z } from "zod/v4";
 import { GetUser_Unique } from "~/db/user_item";
 import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { matchPassword } from "~/routes/auth/helpers";

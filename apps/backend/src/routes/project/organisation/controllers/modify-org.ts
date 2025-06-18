@@ -5,7 +5,7 @@ import { ICON_WIDTH } from "@app/utils/src/constants";
 import { hasRootAccess } from "@app/utils/src/constants/roles";
 import { FileType, OrganisationPermission } from "@app/utils/types";
 import type { Context } from "hono";
-import type { z } from "zod";
+import type { z } from "zod/v4";
 import { CreateFile, DeleteFile_ByID } from "~/db/file_item";
 import { DeleteOrganization, Delete_OrganizationCache_All, GetOrganization_BySlugOrId, UpdateOrganization } from "~/db/organization_item";
 import { GetManyProjects_ListItem, GetProject_ListItem, UpdateManyProjects, UpdateProject } from "~/db/project_item";
