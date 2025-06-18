@@ -40,11 +40,19 @@ interface Props {
     placeholder?: string;
     textAreaClassName?: string;
     t?: LocaleObj;
+    showInfoRow?: boolean;
 }
 
 const textSeparatorChar = "{|}";
 
-export default function MarkdownEditor({ editorValue, setEditorValue, placeholder, textAreaClassName, t = editorLocaleObj }: Props) {
+export default function MarkdownEditor({
+    editorValue,
+    setEditorValue,
+    placeholder,
+    textAreaClassName,
+    t = editorLocaleObj,
+    showInfoRow,
+}: Props) {
     const [previewOpen, setPreviewOn] = useState(false);
     const editorTextarea = useRef<HTMLTextAreaElement>(null);
     const [lastSelectionRange, setLastSelectionRange] = useState<number[] | null>();
@@ -362,7 +370,7 @@ export default function MarkdownEditor({ editorValue, setEditorValue, placeholde
                             name="markdown-textarea"
                             placeholder={placeholder}
                             className={cn(
-                                "h-[32rem] min-h-[16rem] w-full resize-y rounded-lg font-mono text-base focus-within:!bg-background-shallow/10",
+                                "h-[32rem] min-h-[16rem] w-full resize-y rounded-lg font-mono text-base focus-within:!bg-shallow-background/10",
                                 "text-muted-foreground dark:text-muted-foreground focus-within:text-black dark:focus-within:text-white",
                                 wordWrap === true ? "overflow-x-auto whitespace-nowrap" : "break-words",
                                 textAreaClassName,
@@ -404,23 +412,25 @@ export default function MarkdownEditor({ editorValue, setEditorValue, placeholde
                             spellCheck={false}
                         />
 
-                        <div className="w-full flex items-center justify-between flex-wrap gap-x-6 gap-y-2 text-muted-foreground text-sm">
-                            <div className="flex items-center justify-start gap-2">
-                                <InfoIcon aria-hidden className="w-btn-icon h-btn-icon" />
-                                <p>
+                        {showInfoRow !== false && (
+                            <div className="w-full flex items-center justify-between flex-wrap gap-x-6 gap-y-2 text-muted-foreground text-sm">
+                                <div className="flex items-center justify-start gap-2">
+                                    <InfoIcon aria-hidden className="w-btn-icon h-btn-icon" />
                                     <MarkdownRenderBox text={`${t.supportsMarkdown("/md-editor")}`} />
-                                </p>
-                            </div>
-                            <KeyboardShortcutsDialog open={keyboardShortcutsModalOpen} setOpen={setKeyboardShortcutsModalOpen} t={t}>
-                                <div className="hidden lg:flex items-center justify-center gap-2 cursor-pointer font-mono">
-                                    <span>{t.keyboardShortcuts}</span>
-                                    <div className="flex items-center justify-center gap-1 font-mono">
-                                        <span className="flex items-center justify-center bg-shallow-background rounded px-1">ctrl</span>
-                                        <span className="flex items-center justify-center bg-shallow-background rounded px-1">/</span>
-                                    </div>
                                 </div>
-                            </KeyboardShortcutsDialog>
-                        </div>
+                                <KeyboardShortcutsDialog open={keyboardShortcutsModalOpen} setOpen={setKeyboardShortcutsModalOpen} t={t}>
+                                    <div className="hidden lg:flex items-center justify-center gap-2 cursor-pointer font-mono">
+                                        <span>{t.keyboardShortcuts}</span>
+                                        <div className="flex items-center justify-center gap-1 font-mono">
+                                            <span className="flex items-center justify-center bg-shallow-background rounded px-1">
+                                                ctrl
+                                            </span>
+                                            <span className="flex items-center justify-center bg-shallow-background rounded px-1">/</span>
+                                        </div>
+                                    </div>
+                                </KeyboardShortcutsDialog>
+                            </div>
+                        )}
                     </div>
 
                     {previewOpen && (

@@ -13,7 +13,7 @@ import {
 import { getALlLoaderFilters, getValidProjectCategories } from "@app/utils/project";
 import GAME_VERSIONS, { isExperimentalGameVersion } from "@app/utils/src/constants/game-versions";
 import { CapitalizeAndFormatString } from "@app/utils/string";
-import { ProjectType, TagHeaderType } from "@app/utils/types";
+import { ProjectType, TagType } from "@app/utils/types";
 import { ChevronDownIcon, ChevronUpIcon, FilterXIcon } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
@@ -98,22 +98,22 @@ function FilterSidebar({ type, showFilters, searchParams }: Props) {
     const environmentFilterOptions = ["client", "server"].filter((env) => matchesSearch([env, environmentFilterLabel], query));
 
     // Category filters
-    const categoryFilterOptions = getValidProjectCategories(type, TagHeaderType.CATEGORY)
+    const categoryFilterOptions = getValidProjectCategories(type, TagType.CATEGORY)
         .map((c) => c.name)
         .filter((category) => matchesSearch([category, categoryFilterLabel], query));
 
     // Feature filters
-    const featureFilterOptions = getValidProjectCategories(type, TagHeaderType.FEATURE)
+    const featureFilterOptions = getValidProjectCategories(type, TagType.FEATURE)
         .map((f) => f.name)
         .filter((feature) => matchesSearch([feature, featureFilterLabel], query));
 
     // Resolution filters
-    const resolutionFilterOptions = getValidProjectCategories(type, TagHeaderType.RESOLUTION)
+    const resolutionFilterOptions = getValidProjectCategories(type, TagType.RESOLUTION)
         .map((r) => r.name)
         .filter((resolution) => matchesSearch([resolution, resolutionFilterLabel], query));
 
     // Performance impact filters
-    const performanceFilterOptions = getValidProjectCategories(type, TagHeaderType.PERFORMANCE_IMPACT)
+    const performanceFilterOptions = getValidProjectCategories(type, TagType.PERFORMANCE_IMPACT)
         .map((p) => p.name)
         .filter((performance) => matchesSearch([performance, performanceFilterLabel], query));
 

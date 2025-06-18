@@ -1,5 +1,6 @@
 import type { Collection, Organisation, ProjectListItem } from "@app/utils/types/api";
 import type { UserProfileData } from "@app/utils/types/api/user";
+import { UserXIcon } from "lucide-react";
 import type { MetaDescriptor } from "react-router";
 import { type ShouldRevalidateFunctionArgs, useLoaderData } from "react-router";
 import NotFoundPage from "~/pages/not-found";
@@ -21,8 +22,9 @@ export default function () {
 
     if (data.userSlug === "deleted_user") {
         return (
-            <div className="w-full flex py-12 items-center justify-center">
-                <p className="text-md text-muted-foreground">The user account was deleted.</p>
+            <div className="full_page flex flex-col py-12 items-center justify-center text-extra-muted-foreground">
+                <UserXIcon className="w-20 h-20" />
+                <h2 className="text-2xl font-semibold">The user account was deleted.</h2>
             </div>
         );
     }

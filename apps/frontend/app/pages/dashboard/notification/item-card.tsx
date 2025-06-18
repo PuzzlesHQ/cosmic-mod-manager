@@ -1,22 +1,29 @@
-import { fallbackUserIcon } from "@app/components/icons";
+import { fallbackProjectIcon, fallbackUserIcon } from "@app/components/icons";
 import { Button } from "@app/components/ui/button";
 import { toast } from "@app/components/ui/sonner";
 import { LoadingSpinner } from "@app/components/ui/spinner";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@app/components/ui/tooltip";
-import type { Notification } from "@app/utils/types/api";
+import type { ProjectListItem } from "@app/utils/types/api";
+import type {
+    OrganizationInviteNotification,
+    ProjectInviteNotification,
+    StatusChangeNotification,
+} from "@app/utils/types/api/notification";
+import { imageUrl } from "@app/utils/url";
 import { CalendarIcon, CheckCheckIcon, CheckIcon, Trash2Icon, XIcon } from "lucide-react";
 import { useState } from "react";
 import { ImgWrapper } from "~/components/ui/avatar";
 import { FormattedDate, TimePassedSince } from "~/components/ui/date";
 import Link, { useNavigate } from "~/components/ui/link";
+import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { useTranslation } from "~/locales/provider";
 import { acceptTeamInvite, leaveTeam } from "~/pages/project/settings/members/utils";
-import { UserProfilePath } from "~/utils/urls";
+import { ProjectPagePath, UserProfilePath } from "~/utils/urls";
 
 interface Props {
-    notification: Notification;
-    markNotificationAsRead: (refresh?: boolean) => Promise<void>;
-    deleteNotification: () => Promise<void>;
+    notification: ProjectInviteNotification | OrganizationInviteNotification;
+    markNotificationAsRead: (notificationId: string, refresh?: boolean) => Promise<void>;
+    deleteNotification: (notificationId: string) => Promise<void>;
     markingAsRead: boolean;
     deletingNotification: boolean;
     concise?: boolean;
@@ -60,7 +67,7 @@ export function TeamInviteNotification({
         try {
             const teamId = notification.body?.teamId as string;
             const result = await acceptTeamInvite(teamId);
-            markNotificationAsRead(false);
+            markNotificationAsRead(notification.id, false);
 
             if (!result?.success) {
                 return toast.error(result?.message || "Failed to accept team invite");
@@ -80,7 +87,7 @@ export function TeamInviteNotification({
         try {
             const teamId = notification.body?.teamId as string;
             const result = await leaveTeam(teamId);
-            markNotificationAsRead();
+            markNotificationAsRead(notification.id);
 
             if (!result?.success) {
                 return toast.error(result?.message || "Error");
@@ -99,25 +106,26 @@ export function TeamInviteNotification({
                     <Link to={pageUrl} className="me-1.5" aria-label={title}>
                         <ImgWrapper src={icon || ""} alt={title} fallback={fallbackIcon} className="w-11 h-11" />
                     </Link>
-                    <div className="flex items-center justify-start gap-x-1 flex-wrap">
-                        <Link
-                            aria-label={invitedBy.userName || (notification.body?.invitedBy as string)}
-                            to={UserProfilePath(invitedBy.userName)}
-                            className="flex items-center justify-center gap-1 font-semibold hover:underline"
-                        >
-                            <ImgWrapper
-                                src={invitedBy?.avatar || ""}
-                                alt={invitedBy.userName || (notification.body?.invitedBy as string)}
-                                fallback={fallbackUserIcon}
-                                className="w-6 h-6 rounded-full"
-                            />
+                    <div className="flex items-center justify-start gap-x-[0.5ch] flex-wrap text-muted-foreground">
+                        {t.dashboard.invitedToJoin(
+                            <Link
+                                aria-label={invitedBy.userName || (notification.body?.invitedBy as string)}
+                                to={UserProfilePath(invitedBy.userName)}
+                                className="flex items-center justify-center gap-1 font-semibold hover:underline text-foreground"
+                            >
+                                <ImgWrapper
+                                    src={invitedBy?.avatar || ""}
+                                    alt={invitedBy.userName || (notification.body?.invitedBy as string)}
+                                    fallback={fallbackUserIcon}
+                                    className="w-6 h-6 rounded-full"
+                                />
 
-                            {invitedBy.userName || notification.body?.invitedBy}
-                        </Link>
-                        <span className="text-muted-foreground">has invited you to join</span>
-                        <Link to={pageUrl} className="font-semibold hover:underline">
-                            {title}
-                        </Link>
+                                {invitedBy.userName || notification.body?.invitedBy}
+                            </Link>,
+                            <Link to={pageUrl} className="font-semibold hover:underline text-foreground">
+                                {title}
+                            </Link>,
+                        )}
                     </div>
                 </div>
 
@@ -165,36 +173,18 @@ export function TeamInviteNotification({
                             </>
                         )}
                         {showMarkAsReadButton && !notification.read && (
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Button
-                                        size="icon"
-                                        variant="ghost-inverted"
-                                        className="text-extra-muted-foreground"
-                                        disabled={deletingNotification || markingAsRead}
-                                        onClick={() => markNotificationAsRead()}
-                                    >
-                                        <CheckCheckIcon aria-hidden className="w-btn-icon h-btn-icon" />
-                                    </Button>
-                                </TooltipTrigger>
-                                <TooltipContent>{t.dashboard.markRead}</TooltipContent>
-                            </Tooltip>
+                            <MarkReadNotif
+                                disabled={markingAsRead || deletingNotification}
+                                deleteNotif_text={t.dashboard.markRead}
+                                markNotificationAsRead={() => markNotificationAsRead(notification.id)}
+                            />
                         )}
                         {showDeleteButton && (
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Button
-                                        size="icon"
-                                        variant="ghost-inverted"
-                                        className="text-danger-foreground"
-                                        disabled={deletingNotification}
-                                        onClick={deleteNotification}
-                                    >
-                                        <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
-                                    </Button>
-                                </TooltipTrigger>
-                                <TooltipContent>{t.dashboard.deleteNotif}</TooltipContent>
-                            </Tooltip>
+                            <DeleteNotif
+                                disabled={markingAsRead || deletingNotification}
+                                deleteNotif_text={t.dashboard.deleteNotif}
+                                deleteNotification={() => deleteNotification(notification.id)}
+                            />
                         )}
                     </div>
                 </TooltipProvider>
@@ -217,21 +207,147 @@ export function TeamInviteNotification({
                 </div>
             )}
 
-            <div className="w-fit flex items-baseline-with-fallback justify-center gap-1.5 text-extra-muted-foreground">
-                <CalendarIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />
+            <NotifReceivedDate received_text={t.dashboard.received} dateCreated={notification.dateCreated} />
+        </li>
+    );
+}
+
+interface StatusChangeNotif_ItemProps
+    extends Pick<
+        Props,
+        | "markNotificationAsRead"
+        | "deleteNotification"
+        | "markingAsRead"
+        | "deletingNotification"
+        | "concise"
+        | "showMarkAsReadButton"
+        | "showDeleteButton"
+    > {
+    notification: StatusChangeNotification;
+    project: ProjectListItem | undefined;
+}
+
+export function StatusChangeNotif_Item({ notification, project, ...props }: StatusChangeNotif_ItemProps) {
+    const { t } = useTranslation();
+
+    const projectName = project?.name || notification.body.projectId;
+    const projectPageUrl = ProjectPagePath(project?.type?.[0] || "mod", project?.slug || notification.body.projectId);
+
+    return (
+        <li className="w-full flex flex-col gap-2 bg-background/75 rounded p-card-surround" aria-label="Team Invite">
+            <div className="w-full flex flow-row items-center justify-between">
+                <div className="grow flex flex-wrap items-center justify-start gap-1">
+                    <Link to={projectPageUrl} className="me-1.5" aria-label={projectName}>
+                        <ImgWrapper src={imageUrl(project?.icon)} alt={projectName} fallback={fallbackProjectIcon} className="w-11 h-11" />
+                    </Link>
+                    <div className="flex items-center justify-start gap-x-1 flex-wrap text-muted-foreground">
+                        {t.dashboard.projectStatusUpdated(
+                            <Link to={projectPageUrl} className="font-semibold hover:underline text-foreground">
+                                {projectName}
+                            </Link>,
+
+                            <ProjectStatusBadge status={notification.body.prev_status} t={t} />,
+                            <ProjectStatusBadge status={notification.body.new_status} t={t} />,
+                        )}
+                    </div>
+                </div>
+
                 <TooltipProvider>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <span>
-                                {t.dashboard.received} <TimePassedSince date={notification.dateCreated} />
-                            </span>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                            <FormattedDate date={notification.dateCreated} />
-                        </TooltipContent>
-                    </Tooltip>
+                    <div className="flex items-center justify-center gap-2">
+                        {props.showMarkAsReadButton && !notification.read && (
+                            <MarkReadNotif
+                                disabled={props.markingAsRead || props.deletingNotification}
+                                deleteNotif_text={t.dashboard.markRead}
+                                markNotificationAsRead={() => props.markNotificationAsRead(notification.id)}
+                            />
+                        )}
+                        {props.showDeleteButton && (
+                            <DeleteNotif
+                                disabled={props.markingAsRead || props.deletingNotification}
+                                deleteNotif_text={t.dashboard.deleteNotif}
+                                deleteNotification={() => props.deleteNotification(notification.id)}
+                            />
+                        )}
+                    </div>
                 </TooltipProvider>
             </div>
+
+            <NotifReceivedDate received_text={t.dashboard.received} dateCreated={notification.dateCreated} />
         </li>
+    );
+}
+
+interface NotifReceivedDateProps {
+    received_text: string;
+    dateCreated: string | Date;
+}
+
+function NotifReceivedDate(props: NotifReceivedDateProps) {
+    return (
+        <div className="w-fit flex items-baseline-with-fallback justify-center gap-1.5 text-extra-muted-foreground">
+            <CalendarIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />
+            <TooltipProvider>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <span>
+                            {props.received_text} <TimePassedSince date={props.dateCreated} />
+                        </span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <FormattedDate date={props.dateCreated} />
+                    </TooltipContent>
+                </Tooltip>
+            </TooltipProvider>
+        </div>
+    );
+}
+
+interface MarkReadProps {
+    disabled: boolean;
+    markNotificationAsRead: () => Promise<void>;
+    deleteNotif_text: string;
+}
+
+function MarkReadNotif(props: MarkReadProps) {
+    return (
+        <Tooltip>
+            <TooltipTrigger asChild>
+                <Button
+                    size="icon"
+                    variant="ghost-inverted"
+                    className="text-extra-muted-foreground"
+                    disabled={props.disabled}
+                    onClick={props.markNotificationAsRead}
+                >
+                    <CheckCheckIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                </Button>
+            </TooltipTrigger>
+            <TooltipContent>{props.deleteNotif_text}</TooltipContent>
+        </Tooltip>
+    );
+}
+
+interface DeleteNotifProps {
+    disabled: boolean;
+    deleteNotification: () => Promise<void>;
+    deleteNotif_text: string;
+}
+
+function DeleteNotif(props: DeleteNotifProps) {
+    return (
+        <Tooltip>
+            <TooltipTrigger asChild>
+                <Button
+                    size="icon"
+                    variant="ghost-inverted"
+                    className="text-danger-foreground"
+                    disabled={props.disabled}
+                    onClick={props.deleteNotification}
+                >
+                    <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                </Button>
+            </TooltipTrigger>
+            <TooltipContent>{props.deleteNotif_text}</TooltipContent>
+        </Tooltip>
     );
 }

@@ -13,21 +13,12 @@ export function FormattedDate(props: FormatDateProps) {
 
     return (
         <ClientOnly
-            fallback={
-                <DefaultFormattedDate
-                    date={props.date}
-                    locale={formatLocaleCode(locale)}
-                    utc={true}
-                    showTime={props.showTime}
-                    shortMonthNames={props.shortMonthNames}
-                />
-            }
+            fallback={<DefaultFormattedDate utc={true} locale={formatLocaleCode(locale)} {...props} />}
             Element={() => {
                 return FormatDate_ToLocaleString(props.date, {
-                    includeTime: props.showTime,
-                    shortMonthNames: props.shortMonthNames,
                     utc: false,
                     locale: formatLocaleCode(locale),
+                    ...props,
                 });
             }}
         />

@@ -2,7 +2,7 @@ import { projectTypes } from "@app/utils/config/project";
 import { getAllLoaderCategories, getValidProjectCategories } from "@app/utils/project";
 import GAME_VERSIONS from "@app/utils/src/constants/game-versions";
 import SPDX_LICENSE_LIST, { FEATURED_LICENSE_OPTIONS } from "@app/utils/src/constants/license-list";
-import type { ProjectType, TagHeaderType } from "@app/utils/types";
+import type { ProjectType, TagType } from "@app/utils/types";
 import { type Context, Hono } from "hono";
 import { applyCacheHeaders } from "~/middleware/cache";
 import { searchReqRateLimiter } from "~/middleware/rate-limit/get-req";
@@ -25,11 +25,7 @@ const tagsRouter = new Hono()
     .get("/licenses/:id", licenses_get)
     .get("/project-types", projectTypes_get);
 
-function getCategories({
-    projectType,
-    headerType,
-    namesOnly,
-}: { projectType?: ProjectType; headerType?: TagHeaderType; namesOnly?: boolean }) {
+function getCategories({ projectType, headerType, namesOnly }: { projectType?: ProjectType; headerType?: TagType; namesOnly?: boolean }) {
     const list = getValidProjectCategories(projectType ? [projectType] : [], headerType);
 
     if (namesOnly) {

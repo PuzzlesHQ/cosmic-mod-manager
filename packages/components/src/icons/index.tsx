@@ -1,5 +1,5 @@
 import { ProjectPublishingStatus } from "@app/utils/types";
-import { Building2Icon, EyeOffIcon, FileCheckIcon, FileQuestionIcon, FileText, LoaderIcon, UserIcon, XIcon } from "lucide-react";
+import { Building2Icon, EyeOffIcon, FileCheckIcon, FileText, LoaderIcon, UserIcon, XIcon } from "lucide-react";
 import type React from "react";
 import { cn } from "~/utils";
 import type { IconSvgProps } from "../types";
@@ -266,11 +266,19 @@ export const fallbackOrgIcon = <Building2Icon aria-hidden className="w-[65%] h-[
 export const fallbackUserIcon = <UserIcon aria-hidden className="w-[65%] h-[65%] text-extra-muted-foreground" />;
 
 export const PROJECT_STATUS_ICONS = {
-    [ProjectPublishingStatus.DRAFT]: <FileText className="h-full w-full" />,
-    [ProjectPublishingStatus.PROCESSING]: <LoaderIcon aria-hidden className="h-full w-full" />,
-    [ProjectPublishingStatus.APPROVED]: <FileCheckIcon aria-hidden className="h-full w-full" />,
-    [ProjectPublishingStatus.WITHHELD]: <EyeOffIcon aria-hidden className="h-full w-full" />,
-    [ProjectPublishingStatus.UNKNOWN]: <FileQuestionIcon aria-hidden className="h-full w-full" />,
+    [ProjectPublishingStatus.DRAFT]: (className?: string) => <FileText className={cn("inline h-[1.15em] w-[1.15em]", className)} />,
+    [ProjectPublishingStatus.PROCESSING]: (className?: string) => (
+        <LoaderIcon aria-hidden className={cn("inline h-[1.15em] w-[1.15em]", className)} />
+    ),
+    [ProjectPublishingStatus.APPROVED]: (className?: string) => (
+        <FileCheckIcon aria-hidden className={cn("inline h-[1.15em] w-[1.15em]", className)} />
+    ),
+    [ProjectPublishingStatus.WITHHELD]: (className?: string) => (
+        <EyeOffIcon aria-hidden className={cn("inline h-[1.15em] w-[1.15em]", className)} />
+    ),
+    [ProjectPublishingStatus.REJECTED]: (className?: string) => (
+        <XIcon aria-hidden className={cn("inline h-[1.15em] w-[1.15em]", className)} />
+    ),
 };
 
 export function ProjectStatusDesc(status?: string) {
@@ -281,6 +289,8 @@ export function ProjectStatusDesc(status?: string) {
             return "Your project is currently under review and awaiting approval.";
         case ProjectPublishingStatus.APPROVED:
             return "Congratulations! Your project has been approved and can be accessed by others.";
+        case ProjectPublishingStatus.REJECTED:
+            return "Your project was rejected by the mods.";
         case ProjectPublishingStatus.WITHHELD:
             return "Your project has been withheld and is not publicly visible. Please check for required updates.";
     }
@@ -289,9 +299,5 @@ export function ProjectStatusDesc(status?: string) {
 }
 
 export const ProjectStatusIcon = ({ status, className }: { status: ProjectPublishingStatus; className?: string }) => {
-    // @ts-ignore
-    const icon = PROJECT_STATUS_ICONS[status] || PROJECT_STATUS_ICONS.unknown;
-
-    if (!icon) return null;
-    return <span className={cn("flex items-center justify-center w-btn-icon h-btn-icon text-current", className)}>{icon}</span>;
+    return PROJECT_STATUS_ICONS[status](className);
 };

@@ -29,3 +29,23 @@
         grid-template-areas: "logo links-1 links-2 links-3 buttons buttons";
     }
 }
+
+/* Chat Thread UI */
+
+.autoresizing-textarea::after {
+    content: attr(data-editor-value) " ";
+    white-space: pre-wrap;
+    visibility: hidden;
+    overflow: hidden;
+}
+
+.autoresizing-textarea > textarea,
+.autoresizing-textarea::after {
+    grid-area: 1 / 1 / -1 / -1;
+    @apply font-mono min-h-10 max-h-[16rem] py-2 px-3 text-base;
+}
+
+.msg-highlight {
+    transition: background-color 500ms ease;
+    @apply !bg-blue-500/15 dark:!bg-blue-300/10;
+}

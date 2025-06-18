@@ -1,5 +1,4 @@
 import type { Locale } from "~/locales/types";
-import { SearchItem_Header, VersionAuthor_Header } from "../shared-enums";
 // import { AboutUs } from "./about";
 // import { CopyrightPolicy } from "./legal/copyright";
 // import { PrivacyPolicy } from "./legal/privacy";
@@ -229,29 +228,7 @@ export default {
         clearFilters: "Limpiar todos los filtros",
 
         tags: tags,
-
-        /**
-         * Project item header format \
-         * The array items will be arranged in the order they are returned \
-         * so in the current case, the string format will be `{Project_Name} by {Author}` \
-         * \
-         * **Custom format example** \
-         * For the returned value to be formatted like `{Author}'s {Project_Name}`
-         * The returned array will look something like this
-         * ```ts
-         * return [
-         *     [SearchItem_Header.AUTHOR_NAME, `${author}'s`],
-         *     [SearchItem_Header.PROJECT_NAME, project],
-         * ]
-         * ```
-         */
-        itemHeader: (project: string, author: string) => {
-            return [
-                [SearchItem_Header.PROJECT_NAME, project],
-                [SearchItem_Header.STR, " por "],
-                [SearchItem_Header.AUTHOR_NAME, author],
-            ];
-        },
+        searchItemAuthor: (project, author) => [project, " por ", author],
     },
 
     project: {
@@ -418,19 +395,7 @@ export default {
         copySha512: "Copiar hash SHA-512",
         copyFileUrl: "Copiar URL del archivo",
 
-        /**
-         * We need to tell what a string is becuase there needs to be links attached to the author and version \
-         * Because the order doesn't dictate which string is which, we can return this in whatever order we like
-         */
-        authoredBy: (version: string, author: string, publish_date: string) => {
-            return [
-                [VersionAuthor_Header.VERSION, version],
-                [VersionAuthor_Header.STR, " por "],
-                [VersionAuthor_Header.AUTHOR, author],
-                [VersionAuthor_Header.STR, " el "],
-                [VersionAuthor_Header.PUBLISH_DATE, publish_date],
-            ];
-        },
+        publishedBy: (version, author, publish_date) => [version, " por ", author, " el ", publish_date],
     },
 
     projectSettings: {
@@ -462,7 +427,6 @@ export default {
         doesntHaveSpdxId: "La licencia no tiene un identificador SPDX",
         tagsDesc: (projectType: string) =>
             `Es importante etiquetar correctamente para ayudar a las personas a encontrar tu ${projectType}. Asegúrate de seleccionar todas las etiquetas que correspondan.`,
-        tagsDesc2: (projectType: string) => `Selecciona todas las categorías que reflejen los temas o la función de tu ${projectType}.`,
         featuredCategories: "Categorías destacadas",
         featuredCategoriesDesc: (count: number) => `Puedes destacar hasta ${count} de tus etiquetas más relevantes.`,
         selectAtLeastOneCategory: "Selecciona al menos una categoría para destacar.",

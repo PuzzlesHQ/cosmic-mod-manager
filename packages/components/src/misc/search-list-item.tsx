@@ -2,7 +2,7 @@ import { categories } from "@app/utils/constants/categories";
 import { getLoadersFromNames } from "@app/utils/convertors";
 import { getProjectCategoriesDataFromNames } from "@app/utils/project";
 import { CapitalizeAndFormatString } from "@app/utils/string";
-import { type EnvironmentSupport, ProjectType, ProjectVisibility, TagHeaderType } from "@app/utils/types";
+import { type EnvironmentSupport, ProjectType, ProjectVisibility, TagType } from "@app/utils/types";
 import { imageUrl } from "@app/utils/url";
 import { Building2Icon, CalendarIcon, DownloadIcon, HeartIcon, RefreshCcwIcon } from "lucide-react";
 import { type ReactNode, useMemo } from "react";
@@ -89,44 +89,25 @@ function BaseView(props: SearchListItemProps) {
             });
         }
 
-        const items = [];
-        const header = t.search.itemHeader(props.projectName, props.author);
-
-        for (const item of header) {
-            if (item[0] === SearchItem_Header.PROJECT_NAME) {
-                items.push(
-                    <ProjectLink
-                        key={`${props.projectSlug}`}
-                        projectName={item[1]}
-                        projectPageUrl={projectPageUrl}
-                        galleryViewType={galleryViewType}
-                    />,
-                );
-            } else if (item[0] === SearchItem_Header.STR) {
-                // If its a string, just push it
-                items.push(
-                    <p key={item[1]} className="inline">
-                        {item[1]}
-                    </p>,
-                );
-            } else if (item[0] === SearchItem_Header.AUTHOR_NAME) {
-                items.push(
-                    <AuthorLink
-                        key={`${props.projectSlug}-${props.author}`}
-                        author={props.author}
-                        authorDisplayName={item[1]}
-                        OrgPagePath={props.OrgPagePath}
-                        UserProfilePath={props.UserProfilePath}
-                        isOrgOwned={props.isOrgOwned === true}
-                        galleryViewType={galleryViewType}
-                        Organization_translation={t.project.organization}
-                    />,
-                );
-            }
-        }
-
-        return items;
-    }, [galleryViewType, t.search.itemHeader]);
+        return t.search.searchItemAuthor(
+            <ProjectLink
+                key={`${props.projectSlug}`}
+                projectName={props.projectName}
+                projectPageUrl={projectPageUrl}
+                galleryViewType={galleryViewType}
+            />,
+            <AuthorLink
+                key={`${props.projectSlug}-${props.author}`}
+                author={props.author}
+                authorDisplayName={props.author}
+                OrgPagePath={props.OrgPagePath}
+                UserProfilePath={props.UserProfilePath}
+                isOrgOwned={props.isOrgOwned === true}
+                galleryViewType={galleryViewType}
+                Organization_translation={t.project.organization}
+            />,
+        );
+    }, [galleryViewType]);
 
     return (
         <article
@@ -234,7 +215,7 @@ function BaseView(props: SearchListItemProps) {
                             className="flex gap-1 items-center justify-center"
                             key={category.name}
                             aria-label={category.name}
-                            title={`${t.search[category.header]} / ${tagName}`}
+                            title={`${t.search[category.type]} / ${tagName}`}
                         >
                             <TagIcon name={category.name} />
                             <span itemProp={MicrodataItemProps.name}>{tagName}</span>
@@ -377,23 +358,17 @@ function AuthorLink(props: AuthorLinkProps) {
     );
 }
 
-export enum SearchItem_Header {
-    PROJECT_NAME = "0",
-    AUTHOR_NAME = "1",
-    STR = "2",
-}
-
 function getDefaultStrings() {
     const tags: Record<string, string> = {};
     for (const c of categories) {
         tags[c.name] = c.name;
     }
 
-    const headerStrings: Record<TagHeaderType, string> = {
-        [TagHeaderType.CATEGORY]: CapitalizeAndFormatString(TagHeaderType.CATEGORY),
-        [TagHeaderType.FEATURE]: CapitalizeAndFormatString(TagHeaderType.FEATURE),
-        [TagHeaderType.RESOLUTION]: CapitalizeAndFormatString(TagHeaderType.RESOLUTION),
-        [TagHeaderType.PERFORMANCE_IMPACT]: CapitalizeAndFormatString(TagHeaderType.PERFORMANCE_IMPACT),
+    const headerStrings: Record<TagType, string> = {
+        [TagType.CATEGORY]: CapitalizeAndFormatString(TagType.CATEGORY),
+        [TagType.FEATURE]: CapitalizeAndFormatString(TagType.FEATURE),
+        [TagType.RESOLUTION]: CapitalizeAndFormatString(TagType.RESOLUTION),
+        [TagType.PERFORMANCE_IMPACT]: CapitalizeAndFormatString(TagType.PERFORMANCE_IMPACT),
     };
 
     return {
@@ -413,16 +388,7 @@ function getDefaultStrings() {
         search: Object.assign(
             {
                 tags: tags,
-                /**
-                 * More info [here](https://github.com/PuzzlesHQ/cosmic-mod-manager/tree/main/apps/frontend/app/locales/en/translation.ts#L216)
-                 */
-                itemHeader: (project: string, author: string) => {
-                    return [
-                        [SearchItem_Header.PROJECT_NAME, project],
-                        [SearchItem_Header.STR, " by "],
-                        [SearchItem_Header.AUTHOR_NAME, author],
-                    ];
-                },
+                searchItemAuthor: (project: React.ReactNode, author: React.ReactNode) => [project, " by ", author],
                 loaders: "",
             },
             headerStrings,

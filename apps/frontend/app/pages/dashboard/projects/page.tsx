@@ -1,15 +1,14 @@
-import { ProjectStatusDesc, ProjectStatusIcon, fallbackProjectIcon } from "@app/components/icons";
+import { fallbackProjectIcon } from "@app/components/icons";
 import { Card, CardContent, CardHeader, CardTitle } from "@app/components/ui/card";
 import CopyBtn from "@app/components/ui/copy-btn";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@app/components/ui/table";
 import { FormatProjectTypes } from "@app/utils/project";
-import { CapitalizeAndFormatString } from "@app/utils/string";
-import type { ProjectPublishingStatus } from "@app/utils/types";
 import type { ProjectListItem } from "@app/utils/types/api";
 import { imageUrl } from "@app/utils/url";
 import { SettingsIcon } from "lucide-react";
 import { ImgWrapper } from "~/components/ui/avatar";
 import Link, { useNavigate } from "~/components/ui/link";
+import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { useTranslation } from "~/locales/provider";
 import { ProjectPagePath } from "~/utils/urls";
 import CreateNewProjectDialog from "./new-project";
@@ -110,9 +109,9 @@ export function ProjectsListTable({ projects }: { projects: ProjectListItem[] })
                                         >
                                             {project.name}
                                         </Link>
-                                        <span className="leading-none font-medium cursor-help" title={ProjectStatusDesc(project.status)}>
-                                            {CapitalizeAndFormatString(project.status)}
-                                        </span>
+
+                                        <ProjectStatusBadge status={project.status} t={t} />
+
                                         <span className="leading-none">{FormatProjectTypes(project.type)}</span>
                                         <CopyBtn
                                             id={`${project.slug}-${project.id}`}
@@ -154,13 +153,7 @@ export function ProjectsListTable({ projects }: { projects: ProjectListItem[] })
 
                                 {/* STATUS */}
                                 <TableCell className="hidden md:table-cell">
-                                    <span
-                                        className="flex items-center gap-1 leading-none font-medium cursor-help"
-                                        title={ProjectStatusDesc(project.status)}
-                                    >
-                                        <ProjectStatusIcon status={project.status || ("" as ProjectPublishingStatus)} />
-                                        {CapitalizeAndFormatString(project.status)}
-                                    </span>
+                                    <ProjectStatusBadge status={project.status} t={t} />
                                 </TableCell>
 
                                 {/* SETTINGS PAGE LINK */}

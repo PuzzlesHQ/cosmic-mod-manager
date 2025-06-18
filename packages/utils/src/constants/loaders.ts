@@ -11,7 +11,7 @@ export type Loader = {
     };
 };
 
-export const loaders: Loader[] = [
+export const loaders_list = [
     {
         name: "quilt",
         supportedProjectTypes: [ProjectType.MOD, ProjectType.MODPACK, ProjectType.WORLD],
@@ -62,4 +62,6 @@ export const loaders: Loader[] = [
             },
         },
     },
-];
+] as const satisfies Loader[];
+
+export const loaders = loaders_list as Loader[];

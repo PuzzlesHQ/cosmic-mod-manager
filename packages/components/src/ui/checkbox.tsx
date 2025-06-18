@@ -49,7 +49,7 @@ function LabelledCheckbox({
     return (
         <Label
             className={cn(
-                "flex text-base font-normal py-1 gap-x-2.5 leading-tight items-center justify-start transition cursor-not-allowed text-muted-foreground opacity-75",
+                "flex text-sm font-normal py-1 gap-x-2.5 leading-none items-center justify-start transition cursor-not-allowed text-muted-foreground opacity-75",
                 !disabled && "hover:brightness-[85%] cursor-pointer opacity-100",
                 className,
             )}

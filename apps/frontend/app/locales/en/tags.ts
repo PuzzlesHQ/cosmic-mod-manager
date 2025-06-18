@@ -1,6 +1,6 @@
-import type { Categories, Keys_ToNotTranslate } from "@app/utils/constants/categories";
+import type { CategoriesT, Keys_ToNotTranslate } from "@app/utils/constants/categories";
 
-interface TagsTranslation extends Omit<Categories, Keys_ToNotTranslate> {
+interface TagsTranslation extends Omit<CategoriesT, Keys_ToNotTranslate> {
     [key: string]: string;
 }
 

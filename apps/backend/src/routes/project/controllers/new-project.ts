@@ -3,6 +3,7 @@ import { doesOrgMemberHaveAccess } from "@app/utils/project";
 import type { z } from "@app/utils/schemas";
 import type { newProjectFormSchema } from "@app/utils/schemas/project";
 import { OrganisationPermission, ProjectPublishingStatus } from "@app/utils/types";
+import { ThreadType } from "@app/utils/types/api/thread";
 import { GetOrganization_BySlugOrId } from "~/db/organization_item";
 import { CreateProject, GetProject_ListItem } from "~/db/project_item";
 import { CreateTeamMember } from "~/db/team-member_item";
@@ -47,8 +48,7 @@ export async function createNewProject(userSession: ContextUserData, formData: z
                 userId: userSession.id,
                 role: "Owner",
                 isOwner: true,
-                // Owner does not need to have explicit permissions
-                permissions: [],
+                permissions: [], // Owner does not need to have explicit permissions
                 organisationPermissions: [],
                 accepted: true,
                 dateAccepted: new Date(),
@@ -56,11 +56,22 @@ export async function createNewProject(userSession: ContextUserData, formData: z
         });
     }
 
-    const EnvSupport = GetProjectEnvironment(formData.type);
+    const projectId = generateDbId();
 
-    const newProject = await CreateProject({
+    const thread = await prisma.thread.create({
         data: {
             id: generateDbId(),
+            type: ThreadType.PROJECT,
+            relatedEntity: projectId,
+            members: [],
+        },
+    });
+
+    const EnvSupport = GetProjectEnvironment(formData.type);
+    const newProject = await CreateProject({
+        data: {
+            id: projectId,
+            threadId: thread.id,
             teamId: newTeam.id,
             organisationId: orgId || null,
             name: formData.name,

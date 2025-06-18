@@ -39,6 +39,7 @@ export function isVersionPrimaryFileValid(projectType: ProjectType[], fileType: 
 
 export function isImageFile(fileType: FileType | null, allowGif = true) {
     if (!fileType) return false;
+
     const validImageTypes = [FileType.JPEG, FileType.PNG, FileType.WEBP];
     if (allowGif) validImageTypes.push(FileType.GIF);
 

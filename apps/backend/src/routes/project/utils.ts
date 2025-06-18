@@ -1,8 +1,8 @@
-import { gameVersionsList } from "@app/utils/src/constants/game-versions";
 import { type Loader, loaders } from "@app/utils/constants/loaders";
-import { isModerator } from "@app/utils/src/constants/roles";
 import { getFileType } from "@app/utils/convertors";
 import { type PartialTeamMember, combineProjectMembers, sortVersionsWithReference } from "@app/utils/project";
+import { gameVersionsList } from "@app/utils/src/constants/game-versions";
+import { isModerator } from "@app/utils/src/constants/roles";
 import { type GlobalUserRole, ProjectPublishingStatus, ProjectVisibility } from "@app/utils/types";
 import type { File as DBFile, VersionFile } from "@prisma/client";
 import { rsort } from "semver";
@@ -13,6 +13,10 @@ import { createFilePathSafeString } from "~/services/storage/utils";
 import type { FILE_STORAGE_SERVICE } from "~/types";
 import { createHashFromFile } from "~/utils/file";
 import { generateRandomId } from "~/utils/str";
+
+export function isProjectPrivate(visibility: string) {
+    return visibility === ProjectVisibility.PRIVATE;
+}
 
 export function isProjectListed(visibility: string) {
     return [ProjectVisibility.LISTED, ProjectVisibility.ARCHIVED].includes(visibility as ProjectVisibility);

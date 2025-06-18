@@ -38,7 +38,7 @@ export default function RemoveGalleryImage({ children, id, projectData }: Props)
             title={t.project.sureToDeleteImg}
             description={t.project.deleteImgDesc}
             confirmText={t.form.delete}
-            confirmBtnVariant="destructive"
+            variant="destructive"
             onConfirm={deleteImage}
         >
             {children}

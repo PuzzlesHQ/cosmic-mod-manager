@@ -1,5 +1,4 @@
 import type { Locale } from "~/locales/types";
-import { SearchItem_Header } from "../shared-enums";
 import tags from "./tags";
 // import { AboutUs } from "./about";
 // import { CopyrightPolicy } from "./legal/copyright";
@@ -235,17 +234,7 @@ export default {
         clearFilters: "Очистить фильтры",
 
         tags: tags,
-
-        /**
-         * More info [here](https://github.com/PuzzlesHQ/cosmic-mod-manager/tree/main/apps/frontend/app/locales/en/translation.ts#L216)
-         */
-        itemHeader: (project: string, author: string) => {
-            return [
-                [SearchItem_Header.PROJECT_NAME, project],
-                [SearchItem_Header.STR, " от "],
-                [SearchItem_Header.AUTHOR_NAME, author],
-            ];
-        },
+        searchItemAuthor: (project, author) => [project, " от ", author],
     },
 
     project: {
@@ -443,7 +432,6 @@ export default {
         doesntHaveSpdxId: "Лицензия не имеет SPDX идентификатор",
         // ? Use the projectType string instead of "Mod"
         tagsDesc: (_projectType) => "Правильно выбранные теги помогут людям найти ваш мод. Убедитесь, что выбрали все подходящие теги.",
-        tagsDesc2: (projectType) => `Выберите все категории, под которые подходит ваш ${projectType}.`,
         featuredCategories: "Избранные категории",
         featuredCategoriesDesc: (count) => `Вы можете избрать до ${count} самых релевантных тегов.`,
         selectAtLeastOneCategory: "Выберите как минимум одну категорию, чтобы сделать ее избранной.",

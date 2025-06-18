@@ -41,7 +41,7 @@ export function ContentCardTemplate({
     sectionTag,
 }: {
     children: React.ReactNode;
-    title?: string;
+    title?: React.ReactNode;
     className?: string;
     cardClassname?: string;
     headerClassName?: string;

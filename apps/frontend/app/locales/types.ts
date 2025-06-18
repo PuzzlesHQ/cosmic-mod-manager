@@ -14,7 +14,7 @@ export interface LocaleMetaData {
     };
 }
 
-type TranslationReturnType = string | number;
+type TranslationReturnType = string | number | React.ReactNode;
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 type TranslationFunction = (...args: any[]) => TranslationReturnType | TranslationReturnType[] | TranslationReturnType[][];
 

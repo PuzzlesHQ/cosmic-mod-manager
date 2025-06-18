@@ -108,9 +108,3 @@
         transform: translateX(-100%);
     }
 }
-
-.description__showcase-item {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-}

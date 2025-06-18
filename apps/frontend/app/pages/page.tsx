@@ -210,9 +210,7 @@ function ShowcaseItem({ className, item, ...props }: { className?: string; item:
                 <span className="max-w-52 text-lg font-bold overflow-hidden whitespace-nowrap text-ellipsis leading-tight">
                     {item.name}
                 </span>
-                <span className="description__showcase-item max-w-52 text-[0.87rem] text-muted-foreground overflow-hidden leading-tight text-pretty">
-                    {item.summary}
-                </span>
+                <span className="max-w-52 text-[0.87rem] line-clamp-2 text-muted-foreground leading-tight text-pretty">{item.summary}</span>
             </div>
         </Link>
     );

@@ -9,7 +9,7 @@ import Link, { ButtonLink } from "~/components/ui/link";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import { UserProfilePath } from "~/utils/urls";
-import { NotificationItem, type NotificationsData } from "./notification/page";
+import { type NotificationsData, NotificationsList } from "./notification/page";
 
 interface Props extends NotificationsData {
     userProjects: ProjectListItem[];
@@ -60,19 +60,14 @@ export default function OverviewPage({ userProjects, notifications, relatedProje
                         ) : null}
                     </CardHeader>
                     <CardContent>
-                        <ul className="w-full flex flex-col items-start justify-center gap-2">
-                            {unreadNotifications?.map((notification) => (
-                                <NotificationItem
-                                    key={notification.id}
-                                    notification={notification}
-                                    relatedProject={relatedProjects.find((p) => p.id === `${notification.body?.projectId}`)}
-                                    relatedUser={relatedUsers.find((u) => u.id === `${notification.body?.invitedBy}`)}
-                                    relatedOrg={relatedOrgs.find((o) => o.id === `${notification.body?.orgId}`)}
-                                    concise={true}
-                                    showMarkAsReadButton={false}
-                                />
-                            ))}
-                        </ul>
+                        <NotificationsList
+                            notifications={unreadNotifications}
+                            relatedProjects={relatedProjects}
+                            relatedUsers={relatedUsers}
+                            relatedOrgs={relatedOrgs}
+                            concise={true}
+                            showMarkAsReadButton={false}
+                        />
 
                         {!unreadNotifications?.length && (
                             <div aria-label={t.dashboard.noUnreadNotifs}>

@@ -4,17 +4,15 @@ import { buttonVariants } from "@app/components/ui/button";
 import { Card } from "@app/components/ui/card";
 import { TooltipProvider, TooltipTemplate } from "@app/components/ui/tooltip";
 import { cn } from "@app/components/utils";
-import { FormatDate_ToLocaleString } from "@app/utils/date";
 import { VersionReleaseChannel } from "@app/utils/types";
 import { DownloadIcon, FlaskConicalIcon } from "lucide-react";
 import { useContext } from "react";
 import { useSearchParams } from "react-router";
 import MarkdownRenderBox from "~/components/md-renderer";
+import { FormattedDate } from "~/components/ui/date";
 import Link from "~/components/ui/link";
 import { useProjectData } from "~/hooks/project";
-import { formatLocaleCode } from "~/locales";
 import { useTranslation } from "~/locales/provider";
-import { VersionAuthor_Header } from "~/locales/shared-enums";
 import { UserProfilePath, VersionPagePath } from "~/utils/urls";
 import VersionFilters from "./version-filters";
 
@@ -57,16 +55,6 @@ export default function VersionChangelogs() {
                         nextVersion?.changelog === version.changelog &&
                         version.releaseChannel === nextVersion.releaseChannel;
 
-                    const header = t.version.authoredBy(
-                        version.title,
-                        version.author.userName,
-                        FormatDate_ToLocaleString(version.datePublished, {
-                            includeTime: false,
-                            shortMonthNames: true,
-                            locale: formatLocaleCode(locale),
-                        }),
-                    );
-
                     return (
                         <div key={version.id} className="w-full ps-7 mb-4 relative dark:text-muted-foreground">
                             <div className="w-full flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
@@ -83,39 +71,22 @@ export default function VersionChangelogs() {
                                         </TooltipProvider>
                                     ) : null}
 
-                                    {header.map((item, index) => {
-                                        const key = `${version.id}-${index}-${item[0]}`;
-                                        if (item[0] === VersionAuthor_Header.VERSION) {
-                                            return (
-                                                <h2 className="leading-tight" key={key}>
-                                                    <Link
-                                                        to={VersionPagePath(ctx.projectType, ctx.projectData.slug, version.slug)}
-                                                        className="text-[1.25rem] font-bold flex items-baseline gap-2"
-                                                    >
-                                                        {item[1]}
-                                                    </Link>
-                                                </h2>
-                                            );
-                                        }
+                                    {t.version.publishedBy(
+                                        <h2 className="leading-tight">
+                                            <Link
+                                                to={VersionPagePath(ctx.projectType, ctx.projectData.slug, version.slug)}
+                                                className="text-[1.25rem] font-bold flex items-baseline gap-2"
+                                            >
+                                                {version.title}
+                                            </Link>
+                                        </h2>,
 
-                                        if (item[0] === VersionAuthor_Header.AUTHOR) {
-                                            return (
-                                                <Link
-                                                    key={key}
-                                                    to={UserProfilePath(version.author.userName)}
-                                                    className="link_blue hover:underline"
-                                                >
-                                                    {version.author.userName}
-                                                </Link>
-                                            );
-                                        }
+                                        <Link to={UserProfilePath(version.author.userName)} className="link_blue hover:underline">
+                                            {version.author.userName}
+                                        </Link>,
 
-                                        if (item[0] === VersionAuthor_Header.PUBLISH_DATE) {
-                                            return <span key={key}> {item[1]} </span>;
-                                        }
-
-                                        return <span key={key}>{item[1]}</span>;
-                                    })}
+                                        <FormattedDate date={version.datePublished} showTime={false} shortMonthNames={true} />,
+                                    )}
                                 </div>
 
                                 {version.primaryFile?.url ? (

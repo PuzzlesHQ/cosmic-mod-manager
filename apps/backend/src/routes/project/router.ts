@@ -6,9 +6,9 @@ import { addNewGalleryImageFormSchema, updateGalleryImageFormSchema } from "@app
 import { generalProjectSettingsFormSchema } from "@app/utils/schemas/project/settings/general";
 import { updateProjectLicenseFormSchema } from "@app/utils/schemas/project/settings/license";
 import { updateExternalLinksFormSchema } from "@app/utils/schemas/project/settings/links";
-import { parseValueToSchema } from "@app/utils/schemas/utils";
+import { parseInput } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
-import type { z } from "zod";
+import type { z } from "zod/v4";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
 import { getReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
@@ -163,7 +163,7 @@ async function project_post(ctx: Context) {
         const userSession = getUserFromCtx(ctx);
         if (!userSession) return invalidReqestResponse(ctx);
 
-        const { data, error } = await parseValueToSchema(newProjectFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+        const { data, error } = await parseInput(newProjectFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const res = await createNewProject(userSession, data);
@@ -193,7 +193,7 @@ async function project_patch(ctx: Context) {
             summary: formData.get("summary"),
         } satisfies z.infer<typeof generalProjectSettingsFormSchema>;
 
-        const { data, error } = await parseValueToSchema(generalProjectSettingsFormSchema, obj);
+        const { data, error } = await parseInput(generalProjectSettingsFormSchema, obj);
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const res = await updateProject(slug, userSession, data);
@@ -241,7 +241,7 @@ async function projectIcon_patch(ctx: Context) {
 
         if (!userSession || !slug || !icon || !(icon instanceof File)) return invalidReqestResponse(ctx, "Invalid data");
 
-        const { data, error } = await parseValueToSchema(iconFieldSchema, icon);
+        const { data, error } = await parseInput(iconFieldSchema, icon);
         if (error || !data) {
             return invalidReqestResponse(ctx, error as string);
         }
@@ -276,7 +276,7 @@ async function description_patch(ctx: Context) {
         const userSession = getUserFromCtx(ctx);
         if (!userSession) return invalidReqestResponse(ctx);
 
-        const { data, error } = await parseValueToSchema(updateDescriptionFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+        const { data, error } = await parseInput(updateDescriptionFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const res = await updateProjectDescription(slug, userSession, data);
@@ -293,7 +293,7 @@ async function tags_patch(ctx: Context) {
         const userSession = getUserFromCtx(ctx);
         if (!slug || !userSession?.id) return invalidReqestResponse(ctx);
 
-        const { data, error } = await parseValueToSchema(updateProjectTagsFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+        const { data, error } = await parseInput(updateProjectTagsFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const res = await updateProjectTags(slug, userSession, data);
@@ -310,7 +310,7 @@ async function externalLinks_patch(ctx: Context) {
         const userSession = getUserFromCtx(ctx);
         if (!slug || !userSession?.id) return invalidReqestResponse(ctx);
 
-        const { data, error } = await parseValueToSchema(updateExternalLinksFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+        const { data, error } = await parseInput(updateExternalLinksFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const res = await updateProjectExternalLinks(userSession, slug, data);
@@ -327,7 +327,7 @@ async function license_patch(ctx: Context) {
         const userSession = getUserFromCtx(ctx);
         if (!slug || !userSession?.id) return invalidReqestResponse(ctx);
 
-        const { data, error } = await parseValueToSchema(updateProjectLicenseFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+        const { data, error } = await parseInput(updateProjectLicenseFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const res = await updateProjectLicense(userSession, slug, data);
@@ -355,7 +355,7 @@ async function gallery_post(ctx: Context) {
             featured: formData.get("featured") === "true",
         };
 
-        const { data, error } = await parseValueToSchema(addNewGalleryImageFormSchema, obj);
+        const { data, error } = await parseInput(addNewGalleryImageFormSchema, obj);
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const res = await addNewGalleryImage(slug, userSession, data);
@@ -372,7 +372,7 @@ async function galleryItem_patch(ctx: Context) {
         const userSession = getUserFromCtx(ctx);
         if (!slug || !galleryId || !userSession) return invalidReqestResponse(ctx);
 
-        const { data, error } = await parseValueToSchema(updateGalleryImageFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+        const { data, error } = await parseInput(updateGalleryImageFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const res = await updateGalleryImage(slug, userSession, galleryId, data);

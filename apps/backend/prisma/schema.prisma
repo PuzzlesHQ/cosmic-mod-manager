@@ -1,6 +1,7 @@
 generator client {
     provider        = "prisma-client-js"
     previewFeatures = ["postgresqlExtensions"]
+    output          = "client"
 }
 
 datasource db {
@@ -128,6 +129,7 @@ model TeamMember {
 
 model Project {
     id             String   @id @db.VarChar(32)
+    threadId       String   @unique @db.VarChar(32)
     teamId         String   @unique @db.VarChar(32)
     organisationId String?  @db.VarChar(32)
     name           String   @db.VarChar(32)
@@ -275,4 +277,28 @@ model ProjectDailyStats {
     downloads Int    @default(0)
     follows   Int    @default(0)
     unfollows Int    @default(0)
+}
+
+// Chat Thread
+
+model Thread {
+    id String @id @db.VarChar(32)
+
+    type          String @db.VarChar(32) // The type of related entity
+    relatedEntity String @unique @db.VarChar(32) // The id of the related entity, like the Project, Report etc.
+
+    members  String[] // Additional members (All the members of the related entity are considered the member of the thread too)
+    messages ThreadMessage[] @relation(name: "ThreadMessages")
+}
+
+model ThreadMessage {
+    id           String   @id @db.VarChar(32)
+    threadId     String   @db.VarChar(32)
+    authorId     String   @db.VarChar(32)
+    created      DateTime @default(now())
+    authorHidden Boolean  @default(false) // Moderators' identity is hidden from regular users
+    type         String   @db.VarChar(32) // The type of message it is, like regular text, project status change etc.
+    body         Json?
+
+    thread Thread @relation(name: "ThreadMessages", references: [id], fields: [threadId])
 }

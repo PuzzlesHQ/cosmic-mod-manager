@@ -44,6 +44,7 @@ export async function getProjectData(slug: string, userSession: ContextUserData 
 
     const FormattedData: ProjectDetailsData = {
         id: project.id,
+        threadId: project.threadId,
         teamId: project.team.id,
         orgId: null,
         name: project.name,

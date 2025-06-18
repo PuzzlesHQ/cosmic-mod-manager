@@ -1,10 +1,12 @@
-import { ICON_WIDTH } from "@app/utils/src/constants";
 import { GetProjectEnvironment } from "@app/utils/config/project";
 import { getFileType } from "@app/utils/convertors";
-import { doesMemberHaveAccess, getCurrMember } from "@app/utils/project";
+import { doesMemberHaveAccess, getCurrMember, getValidProjectCategories } from "@app/utils/project";
 import type { generalProjectSettingsFormSchema } from "@app/utils/schemas/project/settings/general";
+import { ICON_WIDTH } from "@app/utils/src/constants";
 import { FileType, ProjectPermission } from "@app/utils/types";
-import type { z } from "zod";
+import { ThreadType } from "@app/utils/types/api/thread";
+import type { z } from "zod/v4";
+import { GetManyCollections, UpdateCollection } from "~/db/collection_item";
 import { CreateFile, DeleteFile_ByID, DeleteManyFiles_ByID } from "~/db/file_item";
 import {
     DeleteProject,
@@ -17,6 +19,7 @@ import { DeleteTeam } from "~/db/team_item";
 import { Delete_UserProjectsCache, GetManyUsers, UpdateUser } from "~/db/user_item";
 import { DeleteManyVersions_ByIds, GetVersions } from "~/db/version_item";
 import { UpdateProjects_SearchIndex } from "~/routes/search/search-db";
+import prisma from "~/services/prisma";
 import { deleteDirectory, deleteProjectFile, deleteProjectVersionDirectory, saveProjectFile } from "~/services/storage";
 import { projectsDir } from "~/services/storage/utils";
 import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
@@ -24,17 +27,16 @@ import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData, unauthori
 import { getAverageColor, resizeImageToWebp } from "~/utils/images";
 import { generateDbId } from "~/utils/str";
 import { isProjectIndexable } from "../../utils";
-import { GetManyCollections, UpdateCollection } from "~/db/collection_item";
 
 export async function updateProject(
     slug: string,
     userSession: ContextUserData,
     formData: z.infer<typeof generalProjectSettingsFormSchema>,
 ) {
-    const Project = await GetProject_ListItem(slug, slug);
-    if (!Project?.id) return { data: { success: false }, status: HTTP_STATUS.NOT_FOUND };
+    const project = await GetProject_ListItem(slug, slug);
+    if (!project?.id) return { data: { success: false }, status: HTTP_STATUS.NOT_FOUND };
 
-    const currMember = getCurrMember(userSession.id, Project.team?.members || [], Project.organisation?.team.members || []);
+    const currMember = getCurrMember(userSession.id, project.team?.members || [], project.organisation?.team.members || []);
     const canEditProject = doesMemberHaveAccess(
         ProjectPermission.EDIT_DETAILS,
         currMember?.permissions as ProjectPermission[],
@@ -44,7 +46,7 @@ export async function updateProject(
     if (!canEditProject) return unauthorizedReqResponseData("You don't have the permission to update project details");
 
     // If the project slug has been updated
-    if (formData.slug !== Project.slug) {
+    if (formData.slug !== project.slug) {
         // Check if the slug is available
         const existingProjectWithSameSlug = await GetProject_ListItem(formData.slug, formData.slug);
         if (existingProjectWithSameSlug?.id) return invalidReqestResponseData(`The slug "${formData.slug}" is already taken`);
@@ -52,20 +54,24 @@ export async function updateProject(
 
     // Check if the icon was updated
     // If the formdata icon is empty and the project has an icon, delete the icon
-    if (!formData.icon && Project.iconFileId) {
-        await deleteProjectIcon(userSession, Project.slug);
+    if (!formData.icon && project.iconFileId) {
+        await deleteProjectIcon(userSession, project.slug);
     }
 
     // If the formdata icon is a file, update the project icon
     if (formData.icon instanceof File) {
-        await updateProjectIcon(userSession, Project.slug, formData.icon);
+        await updateProjectIcon(userSession, project.slug, formData.icon);
     }
 
     const EnvSupport = GetProjectEnvironment(formData.type, formData.clientSide, formData.serverSide);
 
+    const validTags = getValidProjectCategories(formData.type).map((t) => t.name);
+    const updatedTags = project.categories.filter((c) => validTags.includes(c));
+    const updatedFeaturedTags = project.featuredCategories.filter((c) => updatedTags.includes(c));
+
     const UpdatedProject = await UpdateProject({
         where: {
-            id: Project.id,
+            id: project.id,
         },
         data: {
             name: formData.name,
@@ -75,15 +81,17 @@ export async function updateProject(
             clientSide: EnvSupport.clientSide,
             serverSide: EnvSupport.serverSide,
             summary: formData.summary,
+            categories: updatedTags,
+            featuredCategories: updatedFeaturedTags,
         },
     });
 
     // Update the project in the search index
     await UpdateOrRemoveProject_FromSearchIndex(
-        Project.id,
+        project.id,
         {
-            visibility: Project.visibility,
-            status: Project.status,
+            visibility: project.visibility,
+            status: project.status,
         },
         {
             visibility: UpdatedProject.visibility,
@@ -147,6 +155,13 @@ export async function deleteProject(userSession: ContextUserData, slug: string) 
         // Delete the project from all collections
         deleteProjectFromUserCollections(project.id),
     ]);
+
+    await prisma.thread.delete({
+        where: {
+            relatedEntity: project.threadId,
+            type: ThreadType.PROJECT,
+        },
+    });
 
     // Delete the project associated team
     await DeleteTeam({

@@ -2,7 +2,7 @@ import { type VariantProps, cva } from "class-variance-authority";
 import type * as React from "react";
 import { cn } from "~/utils";
 
-const badgeVariants = cva(
+export const badgeVariants = cva(
     "inline-flex items-center rounded border border-shallow-background ps-2 pe-1 py-0.5 text-xs font-semibold transition-colors focus:keyboard_focus_ring",
     {
         variants: {
@@ -22,11 +22,9 @@ const badgeVariants = cva(
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof badgeVariants> {}
 
-function Badge({ className, variant, ...props }: BadgeProps) {
+export function Badge({ className, variant, ...props }: BadgeProps) {
     return <div className={cn(badgeVariants({ variant }), className)} {...props} />;
 }
-
-export { Badge, badgeVariants };
 
 const notificationBadgeVariants = cva(
     "font-mono text-xs leading-[0.6] font-semibold rounded-full p-1 grid grid-cols-1 place-items-center absolute",
@@ -50,8 +48,6 @@ const notificationBadgeVariants = cva(
 
 export interface NotificationBadgeProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof notificationBadgeVariants> {}
 
-function NotificationBadge({ className, variant, align, ...props }: NotificationBadgeProps) {
+export function NotificationBadge({ className, variant, align, ...props }: NotificationBadgeProps) {
     return <div className={cn(notificationBadgeVariants({ variant, align }), className)} {...props} />;
 }
-
-export { NotificationBadge, notificationBadgeVariants };

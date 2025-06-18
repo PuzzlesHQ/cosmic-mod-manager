@@ -1,9 +1,9 @@
-import { GALLERY_IMG_THUMBNAIL_WIDTH, MAX_PROJECT_GALLERY_IMAGES_COUNT } from "@app/utils/src/constants";
 import { getFileType } from "@app/utils/convertors";
 import { doesMemberHaveAccess, getCurrMember } from "@app/utils/project";
 import type { addNewGalleryImageFormSchema, updateGalleryImageFormSchema } from "@app/utils/schemas/project/settings/gallery";
+import { GALLERY_IMG_THUMBNAIL_WIDTH, MAX_PROJECT_GALLERY_IMAGES_COUNT } from "@app/utils/src/constants";
 import { FileType, ProjectPermission } from "@app/utils/types";
-import type { z } from "zod";
+import type { z } from "zod/v4";
 import { CreateManyFiles, DeleteFile_ByID } from "~/db/file_item";
 import { CreateGalleryItem, DeleteGalleryItem, UpdateGalleryItem } from "~/db/gallery_item";
 import { GetProject_Details } from "~/db/project_item";

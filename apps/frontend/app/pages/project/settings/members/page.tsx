@@ -2,12 +2,13 @@ import RefreshPage from "@app/components/misc/refresh-page";
 import { Button } from "@app/components/ui/button";
 import { Card, CardTitle } from "@app/components/ui/card";
 import { toast } from "@app/components/ui/sonner";
-import { hasRootAccess } from "@app/utils/src/constants/roles";
 import { doesMemberHaveAccess } from "@app/utils/project";
+import { hasRootAccess } from "@app/utils/src/constants/roles";
 import { type LoggedInUserData, ProjectPermission } from "@app/utils/types";
 import type { Organisation, TeamMember } from "@app/utils/types/api";
 import { UserXIcon } from "lucide-react";
 import { type Location, useLocation } from "react-router";
+import ConfirmDialog from "~/components/confirm-dialog";
 import { useNavigate } from "~/components/ui/link";
 import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
@@ -16,7 +17,6 @@ import { OrgTeamMember, ProjectTeamMember } from "./edit-member";
 import InviteMemberForm from "./invite-member";
 import { RemoveProjectFromOrg, TransferProjectManagementCard } from "./transfer-management";
 import { leaveTeam } from "./utils";
-import ConfirmDialog from "~/components/confirm-dialog";
 
 interface Props {
     userOrgs: Organisation[];
@@ -134,7 +134,7 @@ export function LeaveTeam({ currUsersMembership, teamId, refreshData, isOrgTeam 
                 confirmText={leaveTeamMsg}
                 onConfirm={handleLeaveProject}
                 confirmIcon={<UserXIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" strokeWidth={2.5} />}
-                confirmBtnVariant="destructive"
+                variant="destructive"
             >
                 <Button variant="secondary-destructive" disabled={disabled}>
                     <UserXIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" strokeWidth={2.5} />

@@ -1,9 +1,9 @@
 import { iconFieldSchema } from "@app/utils/schemas";
 import { createOrganisationFormSchema } from "@app/utils/schemas/organisation";
 import { orgSettingsFormSchema } from "@app/utils/schemas/organisation/settings/general";
-import { parseValueToSchema } from "@app/utils/schemas/utils";
+import { parseInput } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
-import type { z } from "zod";
+import type { z } from "zod/v4";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
 import { strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
@@ -62,7 +62,7 @@ async function organisation_post(ctx: Context) {
         }
 
         const body = ctx.get(REQ_BODY_NAMESPACE);
-        const { data, error } = await parseValueToSchema(createOrganisationFormSchema, body);
+        const { data, error } = await parseInput(createOrganisationFormSchema, body);
         if (!data || error) return invalidReqestResponse(ctx, error);
 
         const res = await createOrganisation(userSession, data);
@@ -121,7 +121,7 @@ async function organisation_patch(ctx: Context) {
             description: formData.get("description"),
         } satisfies z.infer<typeof orgSettingsFormSchema>;
 
-        const { data, error } = await parseValueToSchema(orgSettingsFormSchema, obj);
+        const { data, error } = await parseInput(orgSettingsFormSchema, obj);
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const res = await updateOrg(ctx, userSession, orgId, data);
@@ -159,7 +159,7 @@ async function organisationIcon_patch(ctx: Context) {
 
         if (!userSession || !orgSlug || !icon || !(icon instanceof File)) return invalidReqestResponse(ctx, "Invalid data");
 
-        const { data, error } = await parseValueToSchema(iconFieldSchema, icon);
+        const { data, error } = await parseInput(iconFieldSchema, icon);
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const res = await updateOrgIcon(ctx, userSession, orgSlug, data);

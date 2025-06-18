@@ -7,6 +7,7 @@ import { appendPathInUrl } from "~/utils/urls";
 interface LinkItem {
     label: string;
     href: string;
+    isShown?: boolean;
 }
 
 interface Props {
@@ -21,6 +22,8 @@ export default function SecondaryNav({ urlBase, className, links, onClick }: Pro
         <nav className={cn("flex items-center justify-start", className)} id="project-page-nav">
             <ul className="w-full flex gap-1 flex-wrap">
                 {links.map((link) => {
+                    if (link.isShown === false) return null;
+
                     return (
                         <li key={`${urlBase}-${link.href}`} className="flex items-center justify-center">
                             <ButtonLink

@@ -62,6 +62,8 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
                         id: `__${type}__changelog`,
                     });
                     route("versions", path("project/versions.tsx"), { id: `__${type}__versions` });
+                    route("moderation", path("project/moderation.tsx"), { id: `__${type}__moderation` });
+
                     route("version", path("project/versions.tsx"), {
                         id: `__${type}__versions_alternate`,
                     });

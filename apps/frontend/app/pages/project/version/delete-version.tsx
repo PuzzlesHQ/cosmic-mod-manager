@@ -37,7 +37,7 @@ export default function DeleteVersionDialog({ projectData, projectSlug, versionS
             title={t.version.sureToDelete}
             description={t.version.deleteDesc}
             confirmText={t.version.deleteVersion}
-            confirmBtnVariant="destructive"
+            variant="destructive"
             onConfirm={deleteVersion}
         >
             <Button variant="secondary-destructive">

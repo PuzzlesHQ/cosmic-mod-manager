@@ -19,15 +19,13 @@ interface UpdateProjectStatusProps {
     trigger: {
         icon?: React.ReactNode;
         text: string;
-        variant?: ButtonVariants_T["variant"];
         className?: string;
-    };
+    } & ButtonVariants_T;
 
     dialogConfirmBtn?: {
         icon?: React.ReactNode;
         text?: string;
-        variant?: "default" | "destructive";
-    };
+    } & ButtonVariants_T;
 }
 
 export default function UpdateProjectStatusDialog(props: UpdateProjectStatusProps) {
@@ -50,7 +48,7 @@ export default function UpdateProjectStatusDialog(props: UpdateProjectStatusProp
 
         toast.success(data?.message);
         // TODO: Fix this
-        navigate("/moderation/review");
+        // navigate("/moderation/review");
     }
 
     return (
@@ -63,12 +61,13 @@ export default function UpdateProjectStatusDialog(props: UpdateProjectStatusProp
             }
             confirmText={props.dialogConfirmBtn?.text || props.trigger.text}
             confirmIcon={props.dialogConfirmBtn?.icon || props.trigger.icon || <ProjectStatusIcon status={props.newStatus} />}
-            confirmBtnVariant={props.dialogConfirmBtn?.variant}
+            variant={props.dialogConfirmBtn?.variant}
+            size={props.dialogConfirmBtn?.size}
             onConfirm={() => {
                 return updateStatus(props.newStatus);
             }}
         >
-            <Button variant={props.trigger.variant} size="sm" className={props.trigger.className}>
+            <Button variant={props.trigger.variant} size={props.trigger.size || "sm"} className={props.trigger.className}>
                 {props.trigger.icon || <ProjectStatusIcon status={props.newStatus} />}
                 {props.trigger.text}
             </Button>

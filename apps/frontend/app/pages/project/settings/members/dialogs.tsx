@@ -31,7 +31,7 @@ export function RemoveMemberDialog({ member, refreshData, children }: RemoveMemb
         <ConfirmDialog
             title={t.projectSettings.removeMember}
             description={t.projectSettings.sureToRemoveMember(member.userName)}
-            confirmBtnVariant="destructive"
+            variant="destructive"
             confirmText={t.projectSettings.removeMember}
             confirmIcon={<UserXIcon aria-hidden className="w-btn-icon h-btn-icon" />}
             onConfirm={removeTeamMember}
@@ -70,7 +70,7 @@ export function TransferOwnershipDialog({ member, teamId, refreshData, children 
             title={t.projectSettings.transferOwnership}
             description={t.projectSettings.sureToTransferOwnership(member.userName)}
             confirmText={t.projectSettings.transferOwnership}
-            confirmBtnVariant="destructive"
+            variant="destructive"
             onConfirm={transferOwnership}
             confirmIcon={<ArrowRightLeftIcon aria-hidden className="w-btn-icon h-btn-icon" />}
         >

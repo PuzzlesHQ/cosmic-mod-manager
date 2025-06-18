@@ -26,7 +26,7 @@ export default function DeleteAccountDialog() {
             title={t.auth.deleteAccount}
             description={t.settings.sureToDeleteAccount}
             confirmText={t.form.delete}
-            confirmBtnVariant="destructive"
+            variant="destructive"
             onConfirm={deleteAccount}
         >
             <Button variant="destructive">

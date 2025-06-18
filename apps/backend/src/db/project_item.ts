@@ -13,6 +13,7 @@ import { GetManyTeams_ById, GetTeam } from "./team_item";
 function PROJECT_DETAILS_SELECT_FIELDS() {
     return {
         id: true,
+        threadId: true,
         teamId: true,
         organisationId: true,
 
@@ -70,6 +71,7 @@ function PROJECT_DETAILS_SELECT_FIELDS() {
 function PROJECT_LIST_ITEM_SELECT_FIELDS() {
     return {
         id: true,
+        threadId: true,
         teamId: true,
         iconFileId: true,
         organisationId: true,

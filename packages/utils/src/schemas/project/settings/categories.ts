@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v4";
 import { MAX_FEATURED_PROJECT_TAGS } from "~/constants";
 import { categories } from "~/constants/categories";
 

@@ -67,27 +67,35 @@ interface FormatDateOptions {
     locale?: string;
     shortMonthNames?: boolean;
     utc?: boolean;
+
     includeTime?: boolean;
     includeYear?: boolean;
+    includeMonth?: boolean;
+    includeDay?: boolean;
 }
 
 export function FormatDate_ToLocaleString(_date: string | Date, _options: FormatDateOptions = {}) {
     const date = DateFromStr(_date);
     if (!date) return "";
 
-    const options: Intl.DateTimeFormatOptions = {
-        month: "long",
-        day: "numeric",
-    };
-
-    if (_options.includeYear !== false) options.year = "numeric";
-    if (_options.shortMonthNames === true) options.month = "short";
-    if (_options.utc === true) options.timeZone = "UTC";
+    const options: Intl.DateTimeFormatOptions = {};
 
     if (_options.includeTime !== false) {
+        options.hourCycle = "h24";
         options.hour = "numeric";
         options.minute = "numeric";
     }
+
+    if (_options.includeDay !== false) options.day = "numeric";
+
+    if (_options.includeMonth !== false) {
+        if (_options.shortMonthNames === true) {
+            options.month = "short";
+        } else options.month = "long";
+    }
+    if (_options.includeYear !== false) options.year = "numeric";
+
+    if (_options.utc === true) options.timeZone = "UTC";
 
     return date.toLocaleString(_options.locale, options);
 }

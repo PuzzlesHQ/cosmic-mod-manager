@@ -87,7 +87,6 @@ export enum ProjectPublishingStatus {
     APPROVED = "approved",
     WITHHELD = "withheld",
     REJECTED = "rejected",
-    UNKNOWN = "unknown",
 }
 
 export enum VersionReleaseChannel {
@@ -166,10 +165,10 @@ export enum EnvironmentSupport {
     UNSUPPORTED = "unsupported",
 }
 
-export enum TagHeaderType {
-    RESOLUTION = "resolution",
-    FEATURE = "feature",
+export enum TagType {
     CATEGORY = "category",
+    FEATURE = "feature",
+    RESOLUTION = "resolution",
     PERFORMANCE_IMPACT = "performance_impact",
 }
 
@@ -180,15 +179,6 @@ export enum SearchResultSortMethod {
     FOLLOW_COUNT = "follow_count",
     RECENTLY_UPDATED = "recently_updated",
     RECENTLY_PUBLISHED = "recently_published",
-}
-
-export enum NotificationType {
-    PROJECT_UPDATE = "project_update",
-    TEAM_INVITE = "team_invite", // Project team invite
-    ORGANIZATION_INVITE = "organization_invite", // Organisation team invite
-    STATUS_CHANGE = "status_change",
-    MODERATOR_MESSAGE = "moderator_message",
-    UNKNOWN = "unknown",
 }
 
 export enum CollectionVisibility {

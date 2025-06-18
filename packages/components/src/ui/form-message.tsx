@@ -36,3 +36,17 @@ export function FormSuccessMessage({ text, className, labelClassName, children }
         </div>
     );
 }
+
+export function FormWarningMessage({ text, className, labelClassName, children }: Props) {
+    return (
+        <div
+            className={cn(
+                "w-full flex items-center gap-2 justify-start px-4 py-2 text-warning-foreground rounded bg-warning-background/15",
+                className,
+            )}
+        >
+            <TriangleAlertIcon aria-hidden className="w-btn-icon h-btn-icon shrink-0" />
+            {children ? children : <p className={cn("leading-snug", labelClassName)}>{text}</p>}
+        </div>
+    );
+}

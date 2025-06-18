@@ -4,7 +4,7 @@ import type { updateProjectLicenseFormSchema } from "@app/utils/schemas/project/
 import type { updateExternalLinksFormSchema } from "@app/utils/schemas/project/settings/links";
 import SPDX_LICENSE_LIST, { type SPDX_LICENSE } from "@app/utils/src/constants/license-list";
 import { ProjectPermission } from "@app/utils/types";
-import type { z } from "zod";
+import type { z } from "zod/v4";
 import { GetProject_ListItem, UpdateProject } from "~/db/project_item";
 import type { ContextUserData } from "~/types";
 import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData } from "~/utils/http";

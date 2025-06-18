@@ -1,5 +1,5 @@
 import { createCollectionFormSchema, updateCollectionFormSchema } from "@app/utils/schemas/collections";
-import { parseValueToSchema } from "@app/utils/schemas/utils";
+import { parseInput } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
 import { getReqRateLimiter } from "~/middleware/rate-limit/get-req";
@@ -54,7 +54,7 @@ async function collection_post(ctx: Context) {
         const user = getUserFromCtx(ctx);
         if (!user?.id) return invalidReqestResponse(ctx);
 
-        const { data, error } = await parseValueToSchema(createCollectionFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+        const { data, error } = await parseInput(createCollectionFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (!data || error) return invalidReqestResponse(ctx, error);
 
         const res = await CreateNewCollection(data, user);
@@ -95,7 +95,7 @@ async function collection_byID_patch(ctx: Context) {
             visibility: formData.get("visibility"),
             icon: formData.get("icon"),
         };
-        const { data, error } = await parseValueToSchema(updateCollectionFormSchema, obj);
+        const { data, error } = await parseInput(updateCollectionFormSchema, obj);
         if (!data || error) return invalidReqestResponse(ctx, error);
 
         const res = await editUserCollectionDetails(data, collectionId, user);

@@ -26,6 +26,7 @@ import env from "~/utils/env";
 import { HTTP_STATUS, serverErrorResponse } from "~/utils/http";
 import AnalyticsRouter from "./routes/analytics/router";
 import collectionsRouter from "./routes/collections/router";
+import threadRouter from "./routes/thread/router";
 
 const corsAllowedOrigins = env.CORS_ALLOWED_URLS.split(" ");
 
@@ -75,6 +76,8 @@ const app = new Hono()
     .route("/api/organization", orgRouter) // Uses the userSession's userId instead of getting it from the URL
     .route("/api/user/:userId/organization", orgRouter)
     .route("/api/organizations", bulkOrgsRouter)
+
+    .route("/api/thread", threadRouter)
 
     .route("/api/collections", collectionsRouter)
     .route("/api/analytics", AnalyticsRouter)

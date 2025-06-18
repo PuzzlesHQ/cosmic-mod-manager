@@ -4,9 +4,9 @@ import {
     sendAccoutPasswordChangeLinkFormSchema,
     setNewPasswordFormSchema,
 } from "@app/utils/schemas/settings";
-import { parseValueToSchema } from "@app/utils/schemas/utils";
+import { parseInput } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
-import type { z } from "zod";
+import type { z } from "zod/v4";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
 import { sendEmailRateLimiter } from "~/middleware/rate-limit/email";
 import { getReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
@@ -130,7 +130,7 @@ async function user_patch(ctx: Context) {
             bio: formData.get("bio"),
         } satisfies z.infer<typeof profileUpdateFormSchema>;
 
-        const { data, error } = await parseValueToSchema(profileUpdateFormSchema, obj);
+        const { data, error } = await parseInput(profileUpdateFormSchema, obj);
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const res = await updateUserProfile(userSession, data);
@@ -194,7 +194,7 @@ async function addPasswordConfirmation_post(ctx: Context) {
         const userSession = getUserFromCtx(ctx);
         if (!userSession) return unauthorizedReqResponse(ctx);
 
-        const { data, error } = await parseValueToSchema(setNewPasswordFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+        const { data, error } = await parseInput(setNewPasswordFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const res = await addNewPassword_ConfirmationEmail(userSession, data);
@@ -222,7 +222,7 @@ async function addPasswordConfirmation_put(ctx: Context) {
 // Remove user password
 async function userPassword_delete(ctx: Context) {
     try {
-        const { data, error } = await parseValueToSchema(removeAccountPasswordFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+        const { data, error } = await parseInput(removeAccountPasswordFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const userSession = getUserFromCtx(ctx);
@@ -239,7 +239,7 @@ async function userPassword_delete(ctx: Context) {
 // Send change password confirmation email
 async function changePasswordConfirmationEmail_post(ctx: Context) {
     try {
-        const { data, error } = await parseValueToSchema(sendAccoutPasswordChangeLinkFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+        const { data, error } = await parseInput(sendAccoutPasswordChangeLinkFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const res = await sendAccountPasswordChangeLink(ctx, data);
@@ -254,7 +254,7 @@ async function changePasswordConfirmationEmail_post(ctx: Context) {
 async function userPassword_patch(ctx: Context) {
     try {
         const userSession = getUserFromCtx(ctx);
-        const { data, error } = await parseValueToSchema(setNewPasswordFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+        const { data, error } = await parseInput(setNewPasswordFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const code = ctx.get(REQ_BODY_NAMESPACE)?.code;

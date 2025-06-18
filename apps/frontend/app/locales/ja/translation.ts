@@ -1,5 +1,4 @@
 import type { Locale } from "~/locales/types";
-import { SearchItem_Header } from "../shared-enums";
 // import { AboutUs } from "./about";
 // import { CopyrightPolicy } from "./legal/copyright";
 // import { PrivacyPolicy } from "./legal/privacy";
@@ -225,13 +224,7 @@ export default {
         clearFilters: "すべてのフィルターをクリア",
 
         tags: tags,
-        itemHeader: (project: string, author: string) => {
-            return [
-                [SearchItem_Header.PROJECT_NAME, project],
-                [SearchItem_Header.STR, "作成者："],
-                [SearchItem_Header.AUTHOR_NAME, author],
-            ];
-        },
+        searchItemAuthor: (project, author) => [project, " 作成者： ", author],
     },
 
     project: {
@@ -424,7 +417,6 @@ export default {
         doesntHaveSpdxId: "ライセンスにSPDX Identiferがありません",
         tagsDesc: (projectType: string) =>
             `正確なタグ付けは、他のユーザーがあなたの${projectType}を見つけやすくために重要です。該当するタグをすべて選択してください。`,
-        tagsDesc2: (projectType: string) => `${projectType}のテーマや機能に一致するカテゴリーをすべて選択してください。`,
         featuredCategories: "優先表示カテゴリー",
         featuredCategoriesDesc: (count: number) => `最も関連性の高いタグを最大${count}個まで優先表示できます。`,
         selectAtLeastOneCategory: "カテゴリーを優先表示するには、少なくとも1つのカテゴリーを選択してください。",

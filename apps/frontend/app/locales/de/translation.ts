@@ -1,6 +1,5 @@
 import { Capitalize } from "@app/utils/string";
 import type { Locale } from "~/locales/types";
-import { SearchItem_Header, VersionAuthor_Header } from "../shared-enums";
 // import { AboutUs } from "./about";
 // import { CopyrightPolicy } from "./legal/copyright";
 // import { PrivacyPolicy } from "./legal/privacy";
@@ -263,17 +262,7 @@ export default {
         clearFilters: "Alle Filter entfernen",
 
         tags: tags,
-
-        /**
-         * More info [here](https://github.com/PuzzlesHQ/cosmic-mod-manager/tree/main/apps/frontend/app/locales/en/translation.ts#L216)
-         */
-        itemHeader: (project: string, author: string) => {
-            return [
-                [SearchItem_Header.PROJECT_NAME, project],
-                [SearchItem_Header.STR, " von "],
-                [SearchItem_Header.AUTHOR_NAME, author],
-            ];
-        },
+        searchItemAuthor: (project, author) => [project, " von ", author],
     },
 
     project: {
@@ -447,15 +436,7 @@ export default {
         copySha512: "SHA-512 Hash kopieren",
         copyFileUrl: "Datei-URL kopieren",
 
-        authoredBy: (version: string, author: string, publish_date: string) => {
-            return [
-                [VersionAuthor_Header.VERSION, version],
-                [VersionAuthor_Header.STR, " von "],
-                [VersionAuthor_Header.AUTHOR, author],
-                [VersionAuthor_Header.STR, " am "],
-                [VersionAuthor_Header.PUBLISH_DATE, publish_date],
-            ];
-        },
+        publishedBy: (version, author, publish_date) => [version, " von ", author, " am ", publish_date],
     },
 
     projectSettings: {
@@ -487,8 +468,6 @@ export default {
         doesntHaveSpdxId: "Die Lizenz hat keinen SPDX-Identifikator",
         tagsDesc: (projectType) =>
             `Das korrekte Wählen von Tags ist wichtig, um Leuten zu helfen, ${secondPersonPossesivePronouns[genderOf[projectType] || ("a" as Gender)]} ${projectType} zu finden. Stelle sicher, alle Tags zu wählen, die zutreffen.`,
-        tagsDesc2: (projectType: string) =>
-            `Wähle alle Kategorien aus, welche Themen oder Funktionen ${secondPersonPossesivePronouns[genderOf[projectType] || ("a" as Gender)]} ${projectType} wiederspiegeln.`,
         featuredCategories: "Hervorgehobene Kategorien",
         featuredCategoriesDesc: (count: number) => `Du kannst bis zu ${count} deiner relevantesten Tags hervorheben.`,
         selectAtLeastOneCategory: "Wähle mindestens eine Kategorie, um eine Kategorie hervorzuheben.",

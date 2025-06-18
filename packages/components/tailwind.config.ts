@@ -52,6 +52,7 @@ export default {
                 "chart-1": "hsla(var(--chart-1))",
             },
             fontSize: {
+                "super-tiny": "var(--font-super-tiny)",
                 tiny: "var(--font-tiny)",
                 sm: "var(--font-sm)",
                 base: "var(--font-base)",

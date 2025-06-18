@@ -1,4 +1,4 @@
-import { Button } from "@app/components/ui/button";
+import { Button, type ButtonVariants_T } from "@app/components/ui/button";
 import {
     Dialog,
     DialogBody,
@@ -10,13 +10,13 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@app/components/ui/dialog";
-import { CancelButton } from "~/components/ui/button";
+import { LoadingSpinner } from "@app/components/ui/spinner";
 import { Trash2Icon } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
-import { LoadingSpinner } from "@app/components/ui/spinner";
+import { CancelButton } from "~/components/ui/button";
 
-interface ConfirmDialogProps {
+interface ConfirmDialogProps extends ButtonVariants_T {
     title: string;
     shortDesc?: string;
     description: React.ReactNode;
@@ -25,16 +25,16 @@ interface ConfirmDialogProps {
     children: React.ReactNode;
     confirmIcon?: React.ReactNode;
     confirmText: string;
-    confirmBtnVariant?: "default" | "destructive";
 }
 
 export default function ConfirmDialog(props: ConfirmDialogProps) {
     const [isLoading, setIsLoading] = useState(false);
+    const [open, setOpen] = useState(false);
 
     const primaryBtnIcon = props.confirmIcon ? props.confirmIcon : <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />;
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>{props.children}</DialogTrigger>
 
             <DialogContent>
@@ -58,9 +58,11 @@ export default function ConfirmDialog(props: ConfirmDialogProps) {
                                     await props.onConfirm();
                                 } finally {
                                     setIsLoading(false);
+                                    setOpen(false);
                                 }
                             }}
-                            variant={props.confirmBtnVariant || "default"}
+                            size={props.size}
+                            variant={props.variant || "default"}
                             disabled={isLoading}
                         >
                             {isLoading ? <LoadingSpinner size="xs" /> : primaryBtnIcon}

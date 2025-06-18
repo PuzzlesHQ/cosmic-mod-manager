@@ -74,7 +74,7 @@ export function AddToCollection_Popup({ projectId }: { projectId: string }) {
 
                                 <Link
                                     to={`/collection/${collection.id}`}
-                                    className="text-extra-muted-foreground hover:text-muted-foreground opacity-0 group-hover/collection-wrapper:opacity-100 transition-none group-hover/collection-wrapper:transition-all"
+                                    className="text-extra-muted-foreground hover:text-muted-foreground opacity-0 transition-none group-hover/collection-wrapper:transition-all group-hover/collection-wrapper:opacity-100 group-focus-within/collection-wrapper:opacity-100"
                                     target="_blank"
                                 >
                                     <SquareArrowOutUpRightIcon className="w-btn-icon h-btn-icon" />

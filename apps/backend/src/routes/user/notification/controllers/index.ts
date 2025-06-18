@@ -1,3 +1,4 @@
+import { isModerator } from "@app/utils/constants/roles";
 import type { Context } from "hono";
 import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-attempt";
 import prisma from "~/services/prisma";
@@ -129,6 +130,7 @@ export async function deleteNotifications(ctx: Context, userSession: ContextUser
 
 // Helpers
 export function hasNotificationAccess(session: ContextUserData, notificationUser: string) {
-    return session.id === notificationUser || session.userName.toLowerCase() === notificationUser.toLowerCase();
-    // || session.role === GlobalUserRole.ADMIN;
+    return (
+        session.id === notificationUser || session.userName.toLowerCase() === notificationUser.toLowerCase() || isModerator(session.role)
+    );
 }

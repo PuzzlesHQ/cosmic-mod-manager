@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@app/components/ui/car
 import { toast } from "@app/components/ui/sonner";
 import { TooltipProvider, TooltipTemplate } from "@app/components/ui/tooltip";
 import { cn } from "@app/components/utils";
-import { RejectedStatuses, ShowEnvSupportSettingsForType } from "@app/utils/config/project";
+import { RejectedStatuses, ShowEnvSupportSettingsForType, isRejected } from "@app/utils/config/project";
 import { disableInteractions, enableInteractions } from "@app/utils/dom";
 import { Capitalize, isCurrLinkActive } from "@app/utils/string";
 import { EnvironmentSupport, ProjectPublishingStatus } from "@app/utils/types";
@@ -27,23 +27,11 @@ export function PublishingChecklist() {
     const pubChecklist = t.project.publishingChecklist;
     const [dropdownOpen, setDropdownOpen] = useState(true);
 
-    if (project.status === ProjectPublishingStatus.PROCESSING || project.status === ProjectPublishingStatus.APPROVED) return null;
+    if (project.status !== ProjectPublishingStatus.DRAFT && !isRejected(project.status)) return null;
     if (!ctx.currUsersMembership) return null;
 
-    async function submitForReview() {
-        disableInteractions();
-
-        const res = await clientFetch(`/api/project/${project.id}/submit-for-review`, { method: "POST" });
-        const data = await res.json();
-
-        if (!res.ok || data?.success === false) {
-            toast.error(data?.message);
-            enableInteractions();
-            return;
-        }
-
-        toast.success(data?.message);
-        RefreshPage(navigate, currLoc);
+    async function handleSubmitClick() {
+        await submitForReview(project.id, () => RefreshPage(navigate, currLoc));
     }
 
     let hideEnvSettingsCard = true;
@@ -173,32 +161,32 @@ export function PublishingChecklist() {
             },
         },
         {
-            condition: project.status === ProjectPublishingStatus.DRAFT || RejectedStatuses.includes(project.status), // TODO: REMOVE REJECTED STATUSES LATER WHEN MODERATOR MESSAGES ARE DONE
+            condition: project.status === ProjectPublishingStatus.DRAFT,
             id: "submit-for-review",
             title: pubChecklist.submitForReview,
             description: pubChecklist.submitForReviewDesc,
             status: "review",
             link: null,
             action: {
-                onClick: submitForReview,
+                onClick: handleSubmitClick,
                 title: pubChecklist.submitForReview,
             },
         },
-        // {
-        //     hide: project.status === ProjectPublishingStatus.DRAFT,
-        //     condition: RejectedStatuses.includes(project.status),
-        //     id: "resubmit-for-review",
-        //     title: pubChecklist.resubmitForReview,
-        //     description:
-        //         project.status === ProjectPublishingStatus.REJECTED
-        //             ? pubChecklist.resubmit_ApprovalRejected
-        //             : pubChecklist.resubmit_ProjectWithheld,
-        //     status: "review",
-        //     link: {
-        //         path: "moderation",
-        //         title: pubChecklist.visit.moderationPage,
-        //     },
-        // },
+        {
+            hide: project.status === ProjectPublishingStatus.DRAFT,
+            condition: RejectedStatuses.includes(project.status),
+            id: "resubmit-for-review",
+            title: pubChecklist.resubmitForReview,
+            description:
+                project.status === ProjectPublishingStatus.REJECTED
+                    ? pubChecklist.resubmit_ApprovalRejected
+                    : pubChecklist.resubmit_ProjectWithheld,
+            status: "review",
+            link: {
+                path: "moderation",
+                title: pubChecklist.visit.moderationPage,
+            },
+        },
     ];
 
     let readyToSubmit = true;
@@ -280,7 +268,8 @@ export function PublishingChecklist() {
                                             <Button
                                                 disabled={!readyToSubmit}
                                                 onClick={step.action.onClick}
-                                                className="w-fit bg-[#e08325] hover:bg-[#e08325] dark:bg-[#ffa347] hover:brightness-95 transition-all"
+                                                className="w-fit"
+                                                variant="moderation-submit"
                                                 size="sm"
                                             >
                                                 <SendIcon aria-hidden className="w-iconh-btn-icon h-btn-icon" /> {step.action.title}
@@ -295,6 +284,22 @@ export function PublishingChecklist() {
             )}
         </Card>
     );
+}
+
+export async function submitForReview(projectId: string, refresh_page: () => void) {
+    disableInteractions();
+
+    const res = await clientFetch(`/api/project/${projectId}/submit-for-review`, { method: "POST" });
+    const data = await res.json();
+
+    if (!res.ok || data?.success === false) {
+        toast.error(data?.message);
+        enableInteractions();
+        return;
+    }
+
+    toast.success(data?.message);
+    refresh_page();
 }
 
 interface ChecklistCardProps {

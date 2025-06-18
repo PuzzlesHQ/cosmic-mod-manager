@@ -1,3 +1,5 @@
+import type { CategoriesT } from "@app/utils/constants/categories";
+import type { loaders_list } from "@app/utils/constants/loaders";
 import {
     ArchiveIcon,
     AwardIcon,
@@ -6,17 +8,20 @@ import {
     BriefcaseIcon,
     BrushIcon,
     BugIcon,
+    BuildingIcon,
     CameraIcon,
     CarrotIcon,
+    CastleIcon,
     CloudSunRainIcon,
+    CloudyIcon,
     CompassIcon,
     CpuIcon,
     DollarSignIcon,
+    DoorClosedLockedIcon,
     EarthIcon,
     FeatherIcon,
     FilmIcon,
     FlipHorizontal2Icon,
-    GhostIcon,
     GlobeIcon,
     HardDriveIcon,
     HeadphonesIcon,
@@ -39,6 +44,7 @@ import {
     SignalHighIcon,
     SignalLowIcon,
     SignalMediumIcon,
+    SkullIcon,
     SlidersIcon,
     SquarePenIcon,
     SquarePlusIcon,
@@ -47,11 +53,13 @@ import {
     TreeDeciduousIcon,
     TruckIcon,
     TypeIcon,
+    UserSearchIcon,
     UsersIcon,
     WandSparklesIcon,
     WrenchIcon,
     ZapIcon,
 } from "lucide-react";
+import type { JSX } from "react";
 import type { IconSvgProps } from "../types";
 import { CubeIcon, DefaultSvgSize } from "./index";
 
@@ -245,7 +253,7 @@ export const PumpkinIcon: React.FC<IconSvgProps> = ({ size, width, height, ...pr
         <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
-            stroke-width="2"
+            strokeWidth="2"
             stroke="currentColor"
             fill="none"
             strokeLinecap="round"
@@ -366,8 +374,8 @@ export const MazeIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props
             fill="currentColor"
             {...props}
         >
-            <g stroke-width="0" />
-            <g stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="1.32" />
+            <g strokeWidth="0" />
+            <g strokeLinecap="round" strokeLinejoin="round" stroke="#CCCCCC" strokeWidth="1.32" />
             <g>
                 <g>
                     <path d="M69.166,230c-8.284,0-15,6.716-15,15s6.716,15,15,15h95.836c8.284,0,15-6.716,15-15v-65H230v65c0,8.284,6.716,15,15,15 s15-6.716,15-15V71.547c0-8.284-6.716-15-15-15s-15,6.716-15,15V150H30V30h75.082c8.284,0,15-6.716,15-15s-6.716-15-15-15H15 C6.716,0,0,6.716,0,15v300c0,8.284,6.716,15,15,15h150c8.284,0,15-6.716,15-15s-6.716-15-15-15H30V180h120.002v50H69.166z" />
@@ -406,7 +414,9 @@ export const IslandIcon: React.FC<IconSvgProps> = ({ size, width, height, ...pro
 
 const defaultIconClass = "inline w-4 leading-none aspect-square";
 
-const tagIcons = {
+type IconNames = keyof CategoriesT | (typeof loaders_list)[number]["name"] | "client" | "server";
+
+const tagIcons: { [K in IconNames]?: JSX.Element } = {
     // Loaders
     quilt: <QuiltIcon className={defaultIconClass} aria-hidden />,
     puzzle_loader: <PuzzleIcon className={defaultIconClass} aria-hidden />,
@@ -423,6 +433,7 @@ const tagIcons = {
     cartoon: <BrushIcon className={defaultIconClass} aria-hidden />,
     challenging: <BarChartIcon className={defaultIconClass} aria-hidden />,
     christmas: <ChristmasTreeIcon className={defaultIconClass} aria-hidden />,
+    city: <BuildingIcon className={defaultIconClass} aria-hidden />,
     "colored-lighting": <PaletteIcon className={defaultIconClass} aria-hidden />,
     combat: <SwordsIcon className={defaultIconClass} aria-hidden />,
     "core-shaders": <CpuIcon className={defaultIconClass} aria-hidden />,
@@ -432,13 +443,15 @@ const tagIcons = {
     entities: <MobIcon className={defaultIconClass} aria-hidden />,
     environment: <SunIcon className={defaultIconClass} aria-hidden />,
     equipment: <PickaxeIcon className={defaultIconClass} aria-hidden />,
+    escape: <DoorClosedLockedIcon className={defaultIconClass} aria-hidden />,
     fantasy: <WandSparklesIcon className={defaultIconClass} aria-hidden />,
     foliage: <TreeDeciduousIcon className={defaultIconClass} aria-hidden />,
     fonts: <TypeIcon className={defaultIconClass} aria-hidden />,
     food: <CarrotIcon className={defaultIconClass} aria-hidden />,
     "game-mechanics": <SlidersIcon className={defaultIconClass} aria-hidden />,
     gui: <PanelsTopLeftIcon className={defaultIconClass} aria-hidden />,
-    horror: <GhostIcon className={defaultIconClass} aria-hidden />,
+    "hide-and-seek": <UserSearchIcon className={defaultIconClass} aria-hidden />,
+    horror: <SkullIcon className={defaultIconClass} aria-hidden />,
     halloween: <PumpkinIcon className={defaultIconClass} />,
     high: <SignalHighIcon className={defaultIconClass} aria-hidden />,
     island: <IslandIcon className={defaultIconClass} />,
@@ -451,6 +464,7 @@ const tagIcons = {
     magic: <WandSparklesIcon className={defaultIconClass} aria-hidden />,
     maze: <MazeIcon className={defaultIconClass} />,
     management: <ServerIcon className={defaultIconClass} aria-hidden />,
+    medieval: <CastleIcon className={defaultIconClass} aria-hidden />,
     medium: <SignalMediumIcon className={defaultIconClass} aria-hidden />,
     minigame: <AwardIcon className={defaultIconClass} aria-hidden />,
     mobs: <MobIcon className={defaultIconClass} aria-hidden />,
@@ -463,6 +477,7 @@ const tagIcons = {
     pbr: <LightbulbIcon className={defaultIconClass} aria-hidden />,
     "pixel-art": <PixelArtIcon className={defaultIconClass} />,
     potato: <PotatoIcon className={defaultIconClass} aria-hidden />,
+    puzzle: <PuzzleIcon className={defaultIconClass} aria-hidden />,
     quests: <NetworkIcon className={defaultIconClass} aria-hidden />,
     realistic: <CameraIcon className={defaultIconClass} aria-hidden />,
     reflections: <FlipHorizontal2Icon className={defaultIconClass} aria-hidden />,
@@ -472,6 +487,7 @@ const tagIcons = {
     shadows: <MountainIcon className={defaultIconClass} aria-hidden />,
     simplistic: <HexagonIcon className={defaultIconClass} aria-hidden />,
     social: <MessageCircleIcon className={defaultIconClass} aria-hidden />,
+    skyblock: <CloudyIcon className={defaultIconClass} aria-hidden />,
     storage: <ArchiveIcon className={defaultIconClass} aria-hidden />,
     technology: <CpuIcon className={defaultIconClass} aria-hidden />,
     themed: <PenToolIcon className={defaultIconClass} aria-hidden />,

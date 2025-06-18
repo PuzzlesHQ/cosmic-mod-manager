@@ -6,6 +6,7 @@
     color-scheme: dark;
 
     /* FONT SIZES */
+    --font-super-tiny: 0.67rem;
     --font-tiny: 0.75rem;
     --font-sm: 0.87rem;
     --font-base: 1rem;

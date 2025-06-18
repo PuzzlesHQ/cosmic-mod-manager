@@ -1,4 +1,4 @@
-import { EnvironmentSupport, type ProjectType, SearchResultSortMethod } from "@app/utils/types";
+import { EnvironmentSupport, ProjectPublishingStatus, type ProjectType, SearchResultSortMethod } from "@app/utils/types";
 import type { ProjectListItem } from "@app/utils/types/api";
 import meilisearch from "~/services/meilisearch";
 import { HTTP_STATUS, invalidReqestResponseData } from "~/utils/http";
@@ -95,6 +95,7 @@ export async function searchProjects(props: Props) {
             name: project.name,
             summary: project.summary,
             type: project.type,
+            status: ProjectPublishingStatus.APPROVED, // Because only approved projects are indexed for search :)
             icon: project.iconUrl,
             downloads: project.downloads,
             followers: project.followers,

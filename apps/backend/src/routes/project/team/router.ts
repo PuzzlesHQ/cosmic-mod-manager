@@ -1,5 +1,5 @@
 import { overrideOrgMemberFormSchema, updateTeamMemberFormSchema } from "@app/utils/schemas/project/settings/members";
-import { parseValueToSchema } from "@app/utils/schemas/utils";
+import { parseInput } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
@@ -99,7 +99,7 @@ async function teamMembers_post(ctx: Context) {
         const userSession = getUserFromCtx(ctx);
         if (!userSession || !teamId) return invalidReqestResponse(ctx);
 
-        const { data, error } = await parseValueToSchema(overrideOrgMemberFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+        const { data, error } = await parseInput(overrideOrgMemberFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const res = await overrideOrgMember(ctx, userSession, teamId, data);
@@ -116,7 +116,7 @@ async function teamMember_patch(ctx: Context) {
         const userSession = getUserFromCtx(ctx);
         if (!memberId || !userSession || !teamId) return invalidReqestResponse(ctx);
 
-        const { data, error } = await parseValueToSchema(updateTeamMemberFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+        const { data, error } = await parseInput(updateTeamMemberFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const res = await editProjectMember(ctx, userSession, memberId, teamId, data);

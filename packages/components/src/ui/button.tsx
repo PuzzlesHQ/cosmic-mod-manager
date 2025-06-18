@@ -35,6 +35,9 @@ const buttonVariants = cva(
                 "ghost-inverted": "text-muted-foreground hover:bg-card-background dark:hover:bg-shallow-background/75",
                 "ghost-destructive": "text-danger-foreground hover:bg-shallow-background dark:hover:bg-shallow-background/75",
 
+                "moderation-submit":
+                    "font-medium text-card-background dark:text-background bg-[#e08325] hover:bg-[#ffa347] dark:bg-[#ffa347] dark:hover:bg-[#e08325]",
+
                 link: "text-foreground underline-offset-4 hover:underline",
             },
             size: {

@@ -7,15 +7,17 @@ import { Form, FormField } from "@app/components/ui/form";
 import { FormErrorMessage } from "@app/components/ui/form-message";
 import { toast } from "@app/components/ui/sonner";
 import { LoadingSpinner } from "@app/components/ui/spinner";
-import { MAX_FEATURED_PROJECT_TAGS } from "@app/utils/src/constants";
+import { type CategoryT, tagTypes } from "@app/utils/constants/categories";
 import { getValidProjectCategories } from "@app/utils/project";
 import type { z } from "@app/utils/schemas";
 import { updateProjectTagsFormSchema } from "@app/utils/schemas/project/settings/categories";
 import { handleFormError } from "@app/utils/schemas/utils";
+import { MAX_FEATURED_PROJECT_TAGS } from "@app/utils/src/constants";
 import { CapitalizeAndFormatString } from "@app/utils/string";
+import type { TagType } from "@app/utils/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SaveIcon, StarIcon } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 import { useNavigate } from "~/components/ui/link";
@@ -65,14 +67,26 @@ export default function TagsSettingsPage() {
     }
 
     if (!projectData) return null;
-    const allAvailableCategories = getValidProjectCategories(projectData.type);
+
+    const availableTags = useMemo(() => {
+        const _tags: [TagType, CategoryT[]][] = [];
+        for (const type of tagTypes) {
+            const items = getValidProjectCategories(projectData.type, type);
+            if (!items.length) continue;
+
+            _tags.push([type, items]);
+        }
+
+        return _tags;
+    }, [projectData.type.toString()]);
+
     const isSubmitBtnDisabled =
         JSON.stringify(form.getValues().categories.sort()) === JSON.stringify(projectData.categories.sort()) &&
         JSON.stringify(form.getValues().featuredCategories.sort()) === JSON.stringify(projectData.featuredCategories.sort());
 
     const projectType = t.navbar[projectData.type[0]];
 
-    if (allAvailableCategories.length === 0) {
+    if (!availableTags[0]?.[1]?.length) {
         return <FormErrorMessage text="No categories available for the selected project type!" />;
     }
 
@@ -90,52 +104,55 @@ export default function TagsSettingsPage() {
                         <span className="text-muted-foreground">{t.projectSettings.tagsDesc(projectType.toLowerCase())}</span>
                     </div>
 
-                    <div className="w-full flex flex-col items-start justify-start">
-                        <span className="text-lg font-bold">{t.search.category}</span>
-                        <span className="text-muted-foreground">{t.projectSettings.tagsDesc2(projectType.toLowerCase())}</span>
-                        <FormField
-                            control={form.control}
-                            name="categories"
-                            render={({ field }) => (
-                                <div className="autofit-grid w-full grid mt-2">
-                                    {allAvailableCategories.map((category) => {
-                                        // @ts-ignore
-                                        const categoryName = t.search.tags[category.name] || category.name;
+                    {availableTags.map(([type, tags]) => {
+                        return (
+                            <div key={type} className="w-full flex flex-col items-start justify-start">
+                                <span className="text-lg font-bold">{t.search[type]}</span>
+                                <FormField
+                                    control={form.control}
+                                    name="categories"
+                                    render={({ field }) => (
+                                        <div className="autofit-grid w-full grid">
+                                            {tags.map((tag) => {
+                                                // @ts-ignore
+                                                const tagName = t.search.tags[tag.name] || tag.name;
 
-                                        return (
-                                            <LabelledCheckbox
-                                                title={`${t.search[category.header]} / ${CapitalizeAndFormatString(categoryName)}`}
-                                                key={categoryName}
-                                                name={categoryName}
-                                                checked={field.value.includes(category.name)}
-                                                onCheckedChange={(e) => {
-                                                    if (e === true) {
-                                                        field.onChange([...field.value, category.name]);
-                                                    } else {
-                                                        field.onChange(field.value.filter((tag) => tag !== category.name));
+                                                return (
+                                                    <LabelledCheckbox
+                                                        title={`${t.search[tag.type]} / ${CapitalizeAndFormatString(tagName)}`}
+                                                        key={tagName}
+                                                        name={tagName}
+                                                        checked={field.value.includes(tag.name)}
+                                                        onCheckedChange={(e) => {
+                                                            if (e === true) {
+                                                                field.onChange([...field.value, tag.name]);
+                                                            } else {
+                                                                field.onChange(field.value.filter((val) => val !== tag.name));
 
-                                                        // Also remove the category from featured tags if it was featured
-                                                        const selectedFeaturedTagsList = form.getValues().featuredCategories;
-                                                        if (selectedFeaturedTagsList.includes(category.name)) {
-                                                            form.setValue(
-                                                                "featuredCategories",
-                                                                selectedFeaturedTagsList.filter((tag) => tag !== category.name),
-                                                            );
-                                                        }
-                                                    }
-                                                }}
-                                            >
-                                                <span className="flex items-center justify-start gap-1">
-                                                    <TagIcon name={category.name} />
-                                                    {CapitalizeAndFormatString(categoryName)}
-                                                </span>
-                                            </LabelledCheckbox>
-                                        );
-                                    })}
-                                </div>
-                            )}
-                        />
-                    </div>
+                                                                // Also remove the category from featured tags if it was featured
+                                                                const selectedFeaturedTagsList = form.getValues().featuredCategories;
+                                                                if (selectedFeaturedTagsList.includes(tag.name)) {
+                                                                    form.setValue(
+                                                                        "featuredCategories",
+                                                                        selectedFeaturedTagsList.filter((val) => val !== tag.name),
+                                                                    );
+                                                                }
+                                                            }
+                                                        }}
+                                                    >
+                                                        <span className="flex items-center justify-start gap-1">
+                                                            <TagIcon name={tag.name} />
+                                                            {CapitalizeAndFormatString(tagName)}
+                                                        </span>
+                                                    </LabelledCheckbox>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
+                                />
+                            </div>
+                        );
+                    })}
 
                     <div className="w-full flex flex-col items-start justify-start">
                         <span className="flex items-center justify-center gap-2 text-lg font-bold">

@@ -139,7 +139,7 @@ export default function CollectionPageLayout(props: Props) {
                                     title={t.collection.deleteCollection}
                                     description={t.collection.sureToDeleteCollection}
                                     confirmText={t.form.delete}
-                                    confirmBtnVariant="destructive"
+                                    variant="destructive"
                                     onConfirm={DeleteCollection}
                                 >
                                     <Button variant="ghost-destructive" size="sm" className="w-full">

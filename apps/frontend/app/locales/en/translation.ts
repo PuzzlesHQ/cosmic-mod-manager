@@ -1,6 +1,6 @@
 import type { FixedStringArray } from "@app/utils/types/helpers";
+import type React from "react";
 import type { Translation } from "~/locales/types";
-import { SearchItem_Header, VersionAuthor_Header } from "../shared-enums";
 import { AboutUs } from "./about";
 import { CopyrightPolicy } from "./legal/copyright";
 import { PrivacyPolicy } from "./legal/privacy";
@@ -183,6 +183,15 @@ export default {
         received: "Received",
         history: "History",
         notifHistory: "Notification history",
+        invitedToJoin: (user: React.ReactNode, team: React.ReactNode) => [user, " has invited you to join ", team],
+        projectStatusUpdated: (project: React.ReactNode, oldStatus: React.ReactNode, newStatus: React.ReactNode) => [
+            project,
+            " has been updated from ",
+            oldStatus,
+            " to ",
+            newStatus,
+        ],
+
         createProjectInfo: "You don't have any projects. Click the button above to create one.",
         type: "Type",
         status: "Status",
@@ -242,29 +251,7 @@ export default {
         clearFilters: "Clear all filters",
 
         tags: tags,
-
-        /**
-         * Project item header format \
-         * The array items will be arranged in the order they are returned \
-         * so in the current case, the string format will be `{Project_Name} by {Author}` \
-         * \
-         * **Custom format example** \
-         * For the returned value to be formatted like `{Author}'s {Project_Name}`
-         * The returned array will look something like this
-         * ```ts
-         * return [
-         *     [SearchItem_Header.AUTHOR_NAME, `${author}'s`],
-         *     [SearchItem_Header.PROJECT_NAME, project],
-         * ]
-         * ```
-         */
-        itemHeader: (project: string, author: string) => {
-            return [
-                [SearchItem_Header.PROJECT_NAME, project],
-                [SearchItem_Header.STR, " by "],
-                [SearchItem_Header.AUTHOR_NAME, author],
-            ];
-        },
+        searchItemAuthor: (project: React.ReactNode, author: React.ReactNode) => [project, " by ", author],
     },
 
     project: {
@@ -434,19 +421,13 @@ export default {
         copySha512: "Copy SHA-512 hash",
         copyFileUrl: "Copy file URL",
 
-        /**
-         * We need to tell what a string is becuase there needs to be links attached to the author and version \
-         * Because the order doesn't dictate which string is which, we can return this in whatever order we like
-         */
-        authoredBy: (version: string, author: string, publish_date: string) => {
-            return [
-                [VersionAuthor_Header.VERSION, version],
-                [VersionAuthor_Header.STR, " by "],
-                [VersionAuthor_Header.AUTHOR, author],
-                [VersionAuthor_Header.STR, " on "],
-                [VersionAuthor_Header.PUBLISH_DATE, publish_date],
-            ];
-        },
+        publishedBy: (version: React.ReactNode, author: React.ReactNode, publish_date: React.ReactNode) => [
+            version,
+            " by ",
+            author,
+            " on ",
+            publish_date,
+        ],
     },
 
     projectSettings: {
@@ -478,7 +459,6 @@ export default {
         doesntHaveSpdxId: "License does not have a SPDX identifier",
         tagsDesc: (projectType: string) =>
             `Accurate tagging is important to help people find your ${projectType}. Make sure to select all tags that apply.`,
-        tagsDesc2: (projectType: string) => `Select all categories that reflect the themes or function of your ${projectType}.`,
         featuredCategories: "Featured categories",
         featuredCategoriesDesc: (count: number) => `You can feature up to ${count} of your most relevant tags.`,
         selectAtLeastOneCategory: "Select at least one category in order to feature a category.",
@@ -654,6 +634,50 @@ export default {
         approve: "Approve",
         reject: "Reject",
         withhold: "Withhold",
+        projectStatus: "Project status",
+
+        status: {
+            draft: "Draft",
+            processing: "Processing",
+            approved: "Approved",
+            withheld: "Withheld",
+            rejected: "Rejected",
+            unknown: "Unknown",
+        },
+
+        pageDesc:
+            "This is a private conversation thread with the moderators. They may message you with issues concerning this project. This thread is only checked when you submit your project for review.",
+        approved_msg: "Your project has been approved by the moderators.",
+        underReview_msg: (discord_invite: string) => `Your project is currently under review. 
+            If it takes more than 48 hours feel free to contact us on our [Discord server](${discord_invite}).`,
+        rejected_msg: (contentRules_url: string) => `Your project does not currently meet our
+            [content rules](${contentRules_url}) and the moderators have requested you make changes before it can be approved. 
+            Read the messages from the moderators below and address their comments before resubmitting.`,
+        repeatedSubmission_warning: "Repeated submissions without addressing the moderators' comments may result in an account suspension.",
+        messages: "Messages",
+        resubmitDesc: {
+            _1: (project: string) => `You're submitting ${project} to be reviewed again by the moderators.`,
+            _2: "Make sure you have addressed the comments from the moderation team.",
+            warning: "Repeated submissions without addressing the moderators' comments may result in an account suspension.",
+        },
+    },
+
+    chatThread: {
+        messagePlaceholder: "Message...",
+        noMessages: "No messages yet!",
+        replyingTo: (user: React.ReactNode) => ["Replying to ", user],
+        addPrivateNote: "Add private note",
+        messageDeleted: "This message was deleted",
+        projectSubmittedForReview: "submitted the project for review.",
+        changedProjectStatus: (oldStatus: React.ReactNode, newStatus: React.ReactNode) => [
+            "changed the project's status from ",
+            oldStatus,
+            " to ",
+            newStatus,
+        ],
+        reply: "Reply",
+        deleteMsg: "Delete message",
+        sureToDeleteMsg: "Are you sure you want to delete this message?",
     },
 
     form: {

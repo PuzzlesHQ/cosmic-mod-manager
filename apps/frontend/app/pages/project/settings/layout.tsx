@@ -1,4 +1,4 @@
-import { ProjectStatusDesc, ProjectStatusIcon, fallbackProjectIcon } from "@app/components/icons";
+import { fallbackProjectIcon } from "@app/components/icons";
 import { ContentCardTemplate, Panel, PanelAside, PanelContent } from "@app/components/misc/panel";
 import {
     Breadcrumb,
@@ -9,7 +9,6 @@ import {
     BreadcrumbSeparator,
 } from "@app/components/ui/breadcrumb";
 import { Prefetch } from "@app/components/ui/link";
-import { CapitalizeAndFormatString } from "@app/utils/string";
 import { imageUrl } from "@app/utils/url";
 import {
     BarChart2Icon,
@@ -26,6 +25,7 @@ import {
 import { Outlet } from "react-router";
 import { ImgWrapper } from "~/components/ui/avatar";
 import { ButtonLink } from "~/components/ui/link";
+import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { useProjectData } from "~/hooks/project";
 import { useTranslation } from "~/locales/provider";
 import { FormatUrl_WithHintLocale, OrgPagePath, ProjectPagePath, appendPathInUrl } from "~/utils/urls";
@@ -77,13 +77,7 @@ export default function ProjectSettingsLayout() {
 
                         <div className="flex flex-col items-start justify-start">
                             <span className="text-lg font-semibold">{projectData.name}</span>
-                            <span
-                                className="flex items-center justify-center gap-1 font-semibold text-muted-foreground cursor-help"
-                                title={ProjectStatusDesc(projectData.status)}
-                            >
-                                <ProjectStatusIcon status={projectData.status} />
-                                {CapitalizeAndFormatString(projectData.status)}
-                            </span>
+                            <ProjectStatusBadge status={projectData.status} t={t} />
                         </div>
                     </div>
 

@@ -23,6 +23,17 @@ export const ProjectPermissionsList = Object.values(ProjectPermission);
 export const OrgPermissionsList = Object.values(OrganisationPermission);
 
 export const RejectedStatuses = [ProjectPublishingStatus.REJECTED, ProjectPublishingStatus.WITHHELD];
+export function isRejected(projectStatus: string) {
+    return RejectedStatuses.includes(projectStatus.toLowerCase() as ProjectPublishingStatus);
+}
+
+export function isUnderReview(projectStatus: string) {
+    return projectStatus.toLowerCase() === ProjectPublishingStatus.PROCESSING;
+}
+
+export function isApproved(projectStatus: string) {
+    return projectStatus.toLowerCase() === ProjectPublishingStatus.APPROVED;
+}
 
 export const ShowEnvSupportSettingsForType = [ProjectType.MOD, ProjectType.MODPACK, ProjectType.DATAMOD];
 

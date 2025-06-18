@@ -9,7 +9,7 @@ import type {
     ProjectVisibility,
     UserSessionStates,
     VersionReleaseChannel,
-} from "../index";
+} from "~/types/index";
 
 export interface SessionListData {
     id: string;
@@ -53,6 +53,7 @@ export interface GalleryItem {
 export interface ProjectDetailsData {
     id: string;
     teamId: string;
+    threadId: string;
     orgId: string | null;
     name: string;
     slug: string;
@@ -152,7 +153,7 @@ export interface ProjectListItem {
     followers: number;
     dateUpdated: Date;
     datePublished: Date;
-    status?: ProjectPublishingStatus;
+    status: ProjectPublishingStatus;
     visibility: ProjectVisibility;
     clientSide: EnvironmentSupport;
     serverSide: EnvironmentSupport;
@@ -165,17 +166,6 @@ export interface ProjectListItem {
 
     author?: string; // The author's username
     isOrgOwned?: boolean;
-}
-
-export interface Notification {
-    id: string;
-    userId: string;
-    dateCreated: Date;
-    read: boolean;
-    type: string;
-    body: {
-        [key: string]: string | number | boolean;
-    };
 }
 
 export interface Organisation {

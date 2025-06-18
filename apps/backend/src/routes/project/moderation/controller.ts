@@ -1,11 +1,17 @@
+import { isModerator } from "@app/utils/constants/roles";
+import { getProjectOwner } from "@app/utils/project";
 import { ProjectPublishingStatus, type ProjectVisibility } from "@app/utils/types";
 import type { ModerationProjectItem } from "@app/utils/types/api/moderation";
+import { NotificationType } from "@app/utils/types/api/notification";
+import { type MessageBody, MessageType } from "@app/utils/types/api/thread";
 import type { Prisma } from "@prisma/client";
-import { GetManyProjects_ListItem, GetProject_ListItem, UpdateOrRemoveProject_FromSearchIndex, UpdateProject } from "~/db/project_item";
+import { GetManyProjects_ListItem, GetProject_Details, UpdateOrRemoveProject_FromSearchIndex, UpdateProject } from "~/db/project_item";
 import { Log, Log_SubType } from "~/middleware/logger";
+import { createNotification } from "~/routes/user/notification/controllers/helpers";
 import prisma from "~/services/prisma";
 import type { ContextUserData } from "~/types";
-import { HTTP_STATUS, notFoundResponseData } from "~/utils/http";
+import { HTTP_STATUS, notFoundResponseData, serverErrorResponseData } from "~/utils/http";
+import { generateDbId } from "~/utils/str";
 import { orgIconUrl, projectIconUrl, userIconUrl } from "~/utils/urls";
 
 export async function getModerationProjects() {
@@ -72,10 +78,14 @@ export async function getModerationProjects() {
 }
 
 export async function updateModerationProject(id: string, status: string, userSession: ContextUserData) {
-    const Project = await GetProject_ListItem(undefined, id);
-    if (!Project) return notFoundResponseData("Project not found");
+    const project = await GetProject_Details(undefined, id);
+    if (!project) return notFoundResponseData("Project not found");
 
-    if (status === Project?.status) {
+    // let projectOwner
+    const projectOwner = getProjectOwner(project.team.members, project.organisation?.team.members || []);
+    if (!projectOwner?.id) return serverErrorResponseData("Couldn't find project owner, idk why :)");
+
+    if (status === project?.status) {
         return {
             data: {
                 success: false,
@@ -86,9 +96,17 @@ export async function updateModerationProject(id: string, status: string, userSe
     }
 
     let updatedStatus = ProjectPublishingStatus.DRAFT;
-    if (status === ProjectPublishingStatus.APPROVED) updatedStatus = ProjectPublishingStatus.APPROVED;
-    if (status === ProjectPublishingStatus.REJECTED) updatedStatus = ProjectPublishingStatus.REJECTED;
-    if (status === ProjectPublishingStatus.WITHHELD) updatedStatus = ProjectPublishingStatus.WITHHELD;
+    switch (status.toLowerCase()) {
+        case ProjectPublishingStatus.APPROVED:
+            updatedStatus = ProjectPublishingStatus.APPROVED;
+            break;
+        case ProjectPublishingStatus.REJECTED:
+            updatedStatus = ProjectPublishingStatus.REJECTED;
+            break;
+        case ProjectPublishingStatus.WITHHELD:
+            updatedStatus = ProjectPublishingStatus.WITHHELD;
+            break;
+    }
 
     const updateData: Prisma.ProjectUpdateInput = {};
     if (updatedStatus === ProjectPublishingStatus.APPROVED) {
@@ -108,10 +126,10 @@ export async function updateModerationProject(id: string, status: string, userSe
 
     // Update the search index
     await UpdateOrRemoveProject_FromSearchIndex(
-        Project.id,
+        project.id,
         {
-            visibility: Project.visibility,
-            status: Project.status,
+            visibility: project.visibility,
+            status: project.status,
         },
         {
             visibility: UpdatedProject.visibility,
@@ -120,10 +138,42 @@ export async function updateModerationProject(id: string, status: string, userSe
     );
 
     Log(
-        `Status of project ${id} updated to ${updatedStatus} from ${Project.status} by ${userSession.id}`,
+        `Status of project ${id} updated to ${updatedStatus} from ${project.status} by ${userSession.id}`,
         undefined,
         Log_SubType.MODERATION,
     );
+
+    // create a message in the project thread
+    const msg_data: MessageBody = {
+        type: MessageType.STATUS_CHANGE,
+        body: {
+            new_status: updatedStatus,
+            prev_status: project.status as ProjectPublishingStatus,
+        },
+    };
+
+    await prisma.threadMessage.create({
+        data: {
+            id: generateDbId(),
+            threadId: project.threadId,
+            authorId: userSession.id,
+            type: msg_data.type,
+            body: msg_data.body,
+            authorHidden: isModerator(userSession.role),
+        },
+    });
+
+    // Send a notification to the project owner
+    await createNotification({
+        id: generateDbId(),
+        userId: projectOwner.userId,
+        type: NotificationType.STATUS_CHANGE,
+        body: {
+            new_status: updatedStatus,
+            prev_status: project.status as ProjectPublishingStatus,
+            projectId: project.id,
+        },
+    });
 
     return {
         data: {

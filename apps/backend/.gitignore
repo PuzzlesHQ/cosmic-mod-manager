@@ -9,3 +9,5 @@ script.ts
 dump.rdb
 dumps
 data.ms
+
+prisma/client/*

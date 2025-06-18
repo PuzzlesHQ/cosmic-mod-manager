@@ -1,16 +1,17 @@
-import { hasRootAccess } from "@app/utils/src/constants/roles";
 import { doesMemberHaveAccess, doesOrgMemberHaveAccess, getCurrMember } from "@app/utils/project";
 import type { overrideOrgMemberFormSchema, updateTeamMemberFormSchema } from "@app/utils/schemas/project/settings/members";
+import { hasRootAccess } from "@app/utils/src/constants/roles";
 import { OrganisationPermission, ProjectPermission } from "@app/utils/types";
+import { NotificationType } from "@app/utils/types/api/notification";
 import type { Context } from "hono";
-import type { z } from "zod";
+import type { z } from "zod/v4";
 import { GetOrganization_BySlugOrId } from "~/db/organization_item";
 import { GetManyProjects_ListItem, GetProject_ListItem } from "~/db/project_item";
 import { CreateTeamMember, DeleteTeamMember, Delete_ManyTeamMembers, UpdateTeamMember } from "~/db/team-member_item";
 import { GetTeam } from "~/db/team_item";
 import { GetUser_ByIdOrUsername } from "~/db/user_item";
 import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-attempt";
-import { createOrgTeamInviteNotification, createProjectTeamInviteNotification } from "~/routes/user/notification/controllers/helpers";
+import { createNotification } from "~/routes/user/notification/controllers/helpers";
 import type { ContextUserData } from "~/types";
 import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
@@ -94,20 +95,28 @@ export async function inviteMember(ctx: Context, userSession: ContextUserData, u
     if (defaultAccepted) return { data: { success: true }, status: HTTP_STATUS.OK };
 
     if (TeamOrg?.id) {
-        await createOrgTeamInviteNotification({
+        await createNotification({
+            id: generateDbId(),
             userId: targetUser.id,
-            teamId: Team.id,
-            orgId: TeamOrg.id,
-            invitedBy: userSession.id,
-            role: newMember.role,
+            type: NotificationType.ORGANIZATION_INVITE,
+            body: {
+                teamId: Team.id,
+                orgId: TeamOrg.id,
+                invitedBy: userSession.id,
+                role: newMember.role,
+            },
         });
     } else if (TeamProject) {
-        await createProjectTeamInviteNotification({
+        await createNotification({
+            id: generateDbId(),
             userId: targetUser.id,
-            teamId: Team.id,
-            projectId: TeamProject.id,
-            invitedBy: userSession.id,
-            role: newMember.role,
+            type: NotificationType.TEAM_INVITE,
+            body: {
+                teamId: Team.id,
+                projectId: TeamProject.id,
+                invitedBy: userSession.id,
+                role: newMember.role,
+            },
         });
     }
 

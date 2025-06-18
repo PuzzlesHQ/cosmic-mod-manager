@@ -73,3 +73,6 @@ export const MAX_COLLECTION_NAME_LENGTH = 32;
 export const MAX_COLLECTION_DESCRIPTION_LENGTH = 256;
 
 export const FOLLOWS_COLLECTIONS_ID = "follows";
+
+// Thread
+export const MAX_THREAD_MESSAGE_LENGTH = 2048;

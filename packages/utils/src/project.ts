@@ -1,8 +1,8 @@
+import { type CategoryT, categories } from "~/constants/categories";
+import { type Loader, loaders } from "~/constants/loaders";
 import { getRolePerms } from "~/constants/roles";
 import { CapitalizeAndFormatString } from "~/string";
-import { type CategoryType, categories } from "~/constants/categories";
-import { type Loader, loaders } from "~/constants/loaders";
-import { GlobalUserRole, type OrganisationPermission, type ProjectPermission, ProjectType, type TagHeaderType } from "~/types";
+import { GlobalUserRole, type OrganisationPermission, type ProjectPermission, ProjectType, type TagType } from "~/types";
 
 export function doesMemberHaveAccess(
     requiredPermission: ProjectPermission,
@@ -34,13 +34,20 @@ export function getCurrMember<T extends PartialTeamMember>(userId: string | null
     return combinedMembers.get(userId);
 }
 
-export function getValidProjectCategories(projectTypes: string[], categoryType?: TagHeaderType) {
+export function getProjectOwner<T extends PartialTeamMember>(teamMembers: T[], orgMembers: T[]) {
+    const combinedMembers = combineProjectMembers(teamMembers, orgMembers);
+    for (const member of combinedMembers.values()) {
+        if (member.isOwner === true) return member;
+    }
+}
+
+export function getValidProjectCategories(projectTypes: string[], categoryType?: TagType) {
     const alreadyAddedCategories = new Set<string>();
-    const validCategories: CategoryType[] = [];
+    const validCategories: CategoryT[] = [];
 
     // Loop over all categories and check if the project type is in the category's project types
     for (const category of categories) {
-        if (categoryType && categoryType !== category.header) continue;
+        if (categoryType && categoryType !== category.type) continue;
 
         if (projectTypes.length > 0) {
             for (const type of category.projectTypes) {

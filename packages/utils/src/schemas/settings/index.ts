@@ -1,4 +1,5 @@
-import { z } from "zod";
+import { z } from "zod/v4";
+import { RESERVED_USERNAMES } from "~/config/reserved";
 import {
     MAX_DISPLAY_NAME_LENGTH,
     MAX_EMAIL_LENGTH,
@@ -10,7 +11,6 @@ import {
 } from "~/constants";
 import { createURLSafeSlug } from "~/string";
 import { iconFieldSchema } from "..";
-import { RESERVED_USERNAMES } from "~/config/reserved";
 
 const userNameSchema = z
     .string()

@@ -1,11 +1,4 @@
-import {
-    DiscordIcon,
-    ProjectStatusDesc,
-    ProjectStatusIcon,
-    fallbackOrgIcon,
-    fallbackProjectIcon,
-    fallbackUserIcon,
-} from "@app/components/icons";
+import { DiscordIcon, fallbackOrgIcon, fallbackProjectIcon, fallbackUserIcon } from "@app/components/icons";
 import tagIcons from "@app/components/icons/tag-icons";
 import { MicrodataItemProps, MicrodataItemType, itemType } from "@app/components/microdata";
 import { DownloadAnimationContext } from "@app/components/misc/download-animation";
@@ -20,7 +13,7 @@ import { ReleaseChannelBadge } from "@app/components/ui/release-channel-pill";
 import { Separator } from "@app/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@app/components/ui/tooltip";
 import { cn } from "@app/components/utils";
-import { RejectedStatuses } from "@app/utils/config/project";
+import { RejectedStatuses, isRejected, isUnderReview } from "@app/utils/config/project";
 import { getLoadersFromNames } from "@app/utils/convertors";
 import { parseFileSize } from "@app/utils/number";
 import SPDX_LICENSE_LIST from "@app/utils/src/constants/license-list";
@@ -54,6 +47,7 @@ import { ImgWrapper } from "~/components/ui/avatar";
 import { FormattedCount } from "~/components/ui/count";
 import { FormattedDate, TimePassedSince } from "~/components/ui/date";
 import Link, { ButtonLink, VariantButtonLink, useNavigate } from "~/components/ui/link";
+import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import useTheme from "~/hooks/theme";
@@ -74,6 +68,7 @@ export default function ProjectPageLayout() {
     const { theme } = useTheme();
     const { show: showDownloadAnimation } = useContext(DownloadAnimationContext);
 
+    const session = useSession();
     const ctx = useProjectData();
     const projectData = ctx.projectData;
 
@@ -408,14 +403,24 @@ export default function ProjectPageLayout() {
                         {
                             label: t.project.gallery,
                             href: "/gallery",
+                            isShown: projectData.gallery.length > 0 || !!ctx.currUsersMembership,
                         },
                         {
                             label: t.project.changelog,
                             href: "/changelog",
+                            isShown: Boolean(ctx.allProjectVersions.length),
                         },
                         {
                             label: t.project.versions,
                             href: "/versions",
+                            isShown: !!ctx.allProjectVersions?.length || !!ctx.currUsersMembership,
+                        },
+                        {
+                            label: t.moderation.moderation,
+                            href: "/moderation",
+                            isShown:
+                                (!!ctx.currUsersMembership && (isRejected(projectData.status) || isUnderReview(projectData.status))) ||
+                                isModerator(session?.role),
                         },
                     ]}
                 />
@@ -461,13 +466,7 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
                     [ProjectPublishingStatus.REJECTED, ProjectPublishingStatus.PROCESSING, ProjectPublishingStatus.WITHHELD].includes(
                         projectData.status,
                     ) ? (
-                        <span
-                            title={ProjectStatusDesc(projectData.status)}
-                            className="flex items-center justify-center gap-x-1.5 text-muted-foreground font-semibold bg-card-background text-sm cursor-help px-2 py-[0.13rem] rounded-full"
-                        >
-                            <ProjectStatusIcon status={projectData.status} />
-                            {CapitalizeAndFormatString(projectData.status)}
-                        </span>
+                        <ProjectStatusBadge status={projectData.status} t={t} />
                     ) : null
                 }
                 actionBtns={
@@ -539,7 +538,7 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
                                     newStatus={ProjectPublishingStatus.WITHHELD}
                                     trigger={{
                                         text: t.moderation.withhold,
-                                        variant: "ghost",
+                                        variant: "ghost-destructive",
                                         className: "w-full justify-start",
                                     }}
                                     dialogConfirmBtn={{ variant: "destructive" }}
@@ -555,7 +554,12 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
                         <FormattedCount count={projectData.downloads} />
                     </span>
                 </div>
-                <div className="flex items-center gap-3 border-0 border-e border-card-background dark:border-shallow-background pe-4">
+                <div
+                    className={cn(
+                        "flex items-center gap-3 border-0 dark:border-shallow-background pe-4",
+                        !!projectData.featuredCategories?.length && "border-e border-card-background",
+                    )}
+                >
                     <HeartIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
                     <span className="font-semibold">
                         <FormattedCount count={projectData.followers} />

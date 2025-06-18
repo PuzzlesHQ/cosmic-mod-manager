@@ -1,12 +1,13 @@
-import { ICON_WIDTH } from "@app/utils/src/constants";
 import { getFileType } from "@app/utils/convertors";
 import type { profileUpdateFormSchema } from "@app/utils/schemas/settings";
+import { ICON_WIDTH } from "@app/utils/src/constants";
 import { formatUserName } from "@app/utils/string";
 import { FileType, type GlobalUserRole } from "@app/utils/types";
 import type { UserProfileData } from "@app/utils/types/api/user";
-import type { z } from "zod";
+import type { z } from "zod/v4";
 import { CreateFile, DeleteFile_ByID } from "~/db/file_item";
 import { GetUser_ByIdOrUsername, GetUser_Unique, Get_UserProjects, UpdateUser } from "~/db/user_item";
+import { getManyProjects } from "~/routes/project/controllers";
 import { UpdateProjects_SearchIndex } from "~/routes/search/search-db";
 import { deleteUserFile, saveUserFile } from "~/services/storage";
 import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
@@ -14,7 +15,6 @@ import { HTTP_STATUS, notFoundResponseData } from "~/utils/http";
 import { resizeImageToWebp } from "~/utils/images";
 import { generateDbId } from "~/utils/str";
 import { userIconUrl } from "~/utils/urls";
-import { getManyProjects } from "~/routes/project/controllers";
 
 export async function getUserProfileData(slug: string) {
     const user = await GetUser_ByIdOrUsername(slug, slug);
