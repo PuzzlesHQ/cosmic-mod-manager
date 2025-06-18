@@ -6,7 +6,7 @@ interface FormatDateProps {
     utc?: boolean;
     locale?: string;
 
-    showTime?: boolean;
+    includeTime?: boolean;
     includeYear?: boolean;
     includeMonth?: boolean;
     includeDay?: boolean;
@@ -17,7 +17,7 @@ export function FormattedDate(props: FormatDateProps) {
         shortMonthNames: props.shortMonthNames,
         utc: props.utc,
         locale: props.locale,
-        includeTime: props.showTime,
+        includeTime: props.includeTime,
         includeYear: props.includeYear,
         includeMonth: props.includeMonth,
         includeDay: props.includeDay,

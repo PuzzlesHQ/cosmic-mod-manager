@@ -85,7 +85,7 @@ export default function VersionChangelogs() {
                                             {version.author.userName}
                                         </Link>,
 
-                                        <FormattedDate date={version.datePublished} showTime={false} shortMonthNames={true} />,
+                                        <FormattedDate date={version.datePublished} includeTime={false} shortMonthNames={true} />,
                                     )}
                                 </div>
 

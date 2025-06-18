@@ -97,11 +97,11 @@ export default function DownloadsAnalyticsChart(props: DownloadsAnalyticsProps) 
 
                     <span className="text-sm font-semibold text-extra-muted-foreground leading-none">
                         <FormattedDate
-                            showTime={false}
+                            includeTime={false}
                             shortMonthNames
                             date={getStartDate(timeline, range[0], DateFromStr(formattedAnalyticsData[0]?.date))}
                         />{" "}
-                        – <FormattedDate showTime={false} shortMonthNames date={range[1]} />
+                        – <FormattedDate includeTime={false} shortMonthNames date={range[1]} />
                     </span>
                 </div>
 
