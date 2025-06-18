@@ -129,7 +129,7 @@ model TeamMember {
 
 model Project {
     id             String   @id @db.VarChar(32)
-    threadId       String?  @db.VarChar(32)
+    threadId       String   @db.VarChar(32)
     teamId         String   @unique @db.VarChar(32)
     organisationId String?  @db.VarChar(32)
     name           String   @db.VarChar(32)
@@ -300,5 +300,5 @@ model ThreadMessage {
     type         String   @db.VarChar(32) // The type of message it is, like regular text, project status change etc.
     body         Json?
 
-    thread Thread @relation(name: "ThreadMessages", references: [id], fields: [threadId])
+    thread Thread @relation(name: "ThreadMessages", references: [id], fields: [threadId], onDelete: Cascade)
 }

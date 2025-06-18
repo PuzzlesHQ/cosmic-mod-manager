@@ -163,6 +163,14 @@ export async function deleteProject(userSession: ContextUserData, slug: string) 
         },
     });
 
+    try {
+        await prisma.projectDailyStats.delete({
+            where: {
+                projectId: project.id,
+            },
+        });
+    } catch {}
+
     // Delete the project associated team
     await DeleteTeam({
         where: {
