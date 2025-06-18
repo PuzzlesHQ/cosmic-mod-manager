@@ -263,7 +263,7 @@ export function ChatThread(props: ChatThreadProps) {
                                     trigger={{
                                         text: t.moderation.reject,
                                         size: "default",
-                                        variant: "ghost-destructive",
+                                        variant: "secondary-destructive",
                                         className: "justify-start",
                                     }}
                                     dialogConfirmBtn={{ variant: "destructive" }}
