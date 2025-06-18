@@ -190,6 +190,7 @@ export default {
             oldStatus,
             " to ",
             newStatus,
+            " by the moderators. ",
         ],
 
         createProjectInfo: "You don't have any projects. Click the button above to create one.",
