@@ -115,7 +115,7 @@ export function ChatThread(props: ChatThreadProps) {
 
     return (
         <TooltipProvider>
-            <div className="grid bg-background/50 dark:bg-background rounded-lg">
+            <div className="w-full grid bg-background/50 dark:bg-background rounded-lg">
                 <div className="grid py-card-surround">
                     {thread.messages.map((msg, i) => {
                         const createdAt = DateFromStr(msg.createdAt);
