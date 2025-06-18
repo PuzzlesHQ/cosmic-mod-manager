@@ -239,7 +239,7 @@ export function ChatThread(props: ChatThreadProps) {
                             </ConfirmDialog>
                         )}
 
-                        {isModerator(session.role) && (isRejected(ctx.projectData.status) || isUnderReview(ctx.projectData.status)) && (
+                        {isModerator(session.role) && isUnderReview(ctx.projectData.status) && (
                             <>
                                 <UpdateProjectStatusDialog
                                     projectId={ctx.projectData.id}
