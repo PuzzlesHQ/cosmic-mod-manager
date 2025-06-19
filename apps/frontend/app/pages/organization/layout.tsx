@@ -22,7 +22,7 @@ import { formatLocaleCode } from "~/locales";
 import { useTranslation } from "~/locales/provider";
 import { OrgPagePath } from "~/utils/urls";
 import TeamInvitationBanner from "../project/join-project-banner";
-import { ProjectMember } from "../project/layout";
+import { TeamMember_Card } from "../project/layout";
 import SecondaryNav from "../project/secondary-nav";
 
 export default function OrgPageLayout() {
@@ -102,7 +102,7 @@ function PageSidebar({ members }: { members: TeamMember[] }) {
                         if (!member.accepted) return null;
 
                         return (
-                            <ProjectMember
+                            <TeamMember_Card
                                 vtId={member.userId}
                                 key={member.id}
                                 userName={member.userName}

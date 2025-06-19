@@ -35,7 +35,7 @@ import type { ProjectContextData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import { ProjectPagePath, VersionPagePath, appendPathInUrl } from "~/utils/urls";
-import { ProjectMember } from "../layout";
+import { TeamMember_Card } from "../layout";
 
 const DeleteVersionDialog = lazy(() => import("./delete-version"));
 
@@ -276,7 +276,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                             {
                                 label: t.version.publisher,
                                 content: (
-                                    <ProjectMember
+                                    <TeamMember_Card
                                         userName={versionData.author.userName}
                                         avatarImageUrl={imageUrl(versionData.author.avatar)}
                                         fallbackIcon={fallbackUserIcon}

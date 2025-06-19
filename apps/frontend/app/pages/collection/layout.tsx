@@ -22,7 +22,7 @@ import { useNavigate } from "~/components/ui/link";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import { CollectionPagePath, UserProfilePath } from "~/utils/urls";
-import { ProjectMember } from "../project/layout";
+import { TeamMember_Card } from "../project/layout";
 import SecondaryNav from "../project/secondary-nav";
 import EditCollection from "./edit-collection";
 import useCollections from "./provider";
@@ -219,7 +219,7 @@ function PageSidebar(props: { owner: CollectionOwner }) {
     return (
         <div className="w-full lg:w-sidebar flex flex-col gap-panel-cards page-sidebar">
             <ContentCardTemplate title={t.collection.curatedBy} titleClassName="text-lg">
-                <ProjectMember
+                <TeamMember_Card
                     vtId={props.owner.id}
                     isOwner={false}
                     userName={props.owner.userName}

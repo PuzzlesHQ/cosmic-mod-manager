@@ -302,7 +302,7 @@ export default function ProjectPageLayout() {
                     <h2 className="text-lg font-bold pb-1">{t.project.creators}</h2>
                     {projectData.organisation?.id ? (
                         <>
-                            <ProjectMember
+                            <TeamMember_Card
                                 vtId={projectData.organisation.id}
                                 url={OrgPagePath(projectData.organisation.slug)}
                                 userName={projectData.organisation.name}
@@ -321,7 +321,7 @@ export default function ProjectPageLayout() {
                         if (member.accepted !== true) return null;
 
                         return (
-                            <ProjectMember
+                            <TeamMember_Card
                                 vtId={member.userId}
                                 key={member.userId}
                                 userName={member.userName}
@@ -599,7 +599,7 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
     );
 }
 
-interface ProjectMemberProps {
+interface TeamMember_CardProps {
     vtId?: string;
     userName: string;
     isOwner: boolean;
@@ -611,7 +611,7 @@ interface ProjectMemberProps {
     fallbackIcon?: React.ReactNode;
 }
 
-export function ProjectMember({
+export function TeamMember_Card({
     vtId,
     userName,
     isOwner,
@@ -621,7 +621,7 @@ export function ProjectMember({
     url,
     avatarClassName,
     fallbackIcon,
-}: ProjectMemberProps) {
+}: TeamMember_CardProps) {
     const isOrg = roleName.toLowerCase() === "organization" && url !== undefined;
 
     return (
