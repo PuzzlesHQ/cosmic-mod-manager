@@ -76,7 +76,7 @@ export default function ProjectSettingsLayout() {
                         />
 
                         <div className="flex flex-col items-start justify-start">
-                            <span className="text-lg font-semibold">{projectData.name}</span>
+                            <span className="text-lg font-semibold leading-tight">{projectData.name}</span>
                             <ProjectStatusBadge status={projectData.status} t={t} />
                         </div>
                     </div>

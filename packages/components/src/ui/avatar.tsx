@@ -1,5 +1,6 @@
 import type React from "react";
 import { cn } from "~/utils";
+import { viewTransitionStyleObj } from "~/view-transitions";
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
     src: string | React.ReactNode;
@@ -26,7 +27,7 @@ export function ImgWrapper({ vtId, src, alt, className, loading, fallback, viewT
         );
     }
 
-    const style = vtId && viewTransitions === true ? { viewTransitionName: removeNumbers(vtId) } : {};
+    const style = viewTransitionStyleObj(vtId, viewTransitions);
 
     return (
         <img
@@ -41,8 +42,4 @@ export function ImgWrapper({ vtId, src, alt, className, loading, fallback, viewT
             style={style}
         />
     );
-}
-
-function removeNumbers(str: string) {
-    return str.replace(/\d+/g, "");
 }

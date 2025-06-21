@@ -1,17 +1,17 @@
-import DefaultSearchListItem from "@app/components/misc/search-list-item";
+import DefaultProjectCardItem from "@app/components/misc/search-list-item";
 import { FormatCount } from "@app/utils/number";
 import type React from "react";
 import { useRootData } from "~/hooks/root-data";
 import { formatLocaleCode } from "~/locales";
 import { useTranslation } from "~/locales/provider";
+import ProjectSupportedEnv from "~/pages/project/supported-env";
 import { OrgPagePath, ProjectPagePath, UserProfilePath } from "~/utils/urls";
 import { FormattedDate, TimePassedSince } from "./ui/date";
-import ProjectSupportedEnv from "~/pages/project/supported-env";
 
 export { ViewType } from "@app/components/misc/search-list-item";
 
 type Props = Omit<
-    React.ComponentProps<typeof DefaultSearchListItem>,
+    React.ComponentProps<typeof DefaultProjectCardItem>,
     | "t"
     | "supportedEnv"
     | "ProjectPagePath"
@@ -23,12 +23,12 @@ type Props = Omit<
     | "DateFormatter"
 >;
 
-export default function SearchListItem(props: Props) {
+export default function ProjectCardItem(props: Props) {
     const viewTransitions = useRootData()?.userConfig.viewTransitions !== false;
     const { t, locale } = useTranslation();
 
     return (
-        <DefaultSearchListItem
+        <DefaultProjectCardItem
             {...props}
             t={t}
             supportedEnv={

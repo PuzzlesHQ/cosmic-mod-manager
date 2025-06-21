@@ -3,7 +3,7 @@ import { cn } from "@app/components/utils";
 import { pageOffsetParamNamespace } from "@app/utils/config/search";
 import { type ProjectType, SearchResultSortMethod } from "@app/utils/types";
 import type { ProjectListItem } from "@app/utils/types/api";
-import SearchListItem, { ViewType } from "~/components/search-list-item";
+import ProjectCardItem, { ViewType } from "~/components/search-list-item";
 import { useTranslation } from "~/locales/provider";
 import { useSearchContext } from "./provider";
 
@@ -36,7 +36,8 @@ export function SearchResults(props: { viewType: ViewType }) {
                 aria-label="Search Results"
             >
                 {searchResult?.hits?.map((project: ProjectListItem) => (
-                    <SearchListItem
+                    <ProjectCardItem
+                        pageId="search-page"
                         projectType={project.type[0] as ProjectType}
                         pageProjectType={projectType}
                         key={project.id}

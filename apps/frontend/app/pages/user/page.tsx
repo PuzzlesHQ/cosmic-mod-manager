@@ -5,7 +5,7 @@ import { imageUrl } from "@app/utils/url";
 import { EarthIcon, LockIcon } from "lucide-react";
 import { useParams } from "react-router";
 import { CollectionListItemCard } from "~/components/item-card";
-import SearchListItem from "~/components/search-list-item";
+import ProjectCardItem from "~/components/search-list-item";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import { CollectionPagePath } from "~/utils/urls";
@@ -77,7 +77,8 @@ export default function UserProjectsList(props: Props) {
     }
 
     return filteredProjects.map((project) => (
-        <SearchListItem
+        <ProjectCardItem
+            pageId="user-projects"
             projectType={project.type[0] as ProjectType}
             pageProjectType={(formattedProjectType as ProjectType) || "project"}
             key={project.id}

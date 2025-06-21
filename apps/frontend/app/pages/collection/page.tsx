@@ -2,7 +2,7 @@ import { Checkbox } from "@app/components/ui/checkbox";
 import { cn } from "@app/components/utils";
 import type { ProjectType } from "@app/utils/types";
 import { useOutletContext, useParams } from "react-router";
-import SearchListItem from "~/components/search-list-item";
+import ProjectCardItem from "~/components/search-list-item";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import type { CollectionOutletData } from "./layout";
@@ -35,7 +35,8 @@ export default function CollectionProjectsList() {
         >
             {filteredProjects.map((project) => {
                 const projectItem = (
-                    <SearchListItem
+                    <ProjectCardItem
+                        pageId="collection-projects"
                         projectType={project.type[0] as ProjectType}
                         pageProjectType={(formattedProjectType as ProjectType) || "project"}
                         key={project.id}

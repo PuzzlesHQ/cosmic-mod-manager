@@ -13,6 +13,7 @@ import Chip from "~/ui/chip";
 import Link from "~/ui/link";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/ui/tooltip";
 import { cn } from "~/utils";
+import { viewTransitionStyleObj } from "~/view-transitions";
 import { fallbackProjectIcon } from "../icons";
 
 export enum ViewType {
@@ -57,11 +58,14 @@ interface SearchListItemProps {
     TimeSince_Fn: (date: string | Date) => string;
     NumberFormatter: (num: number) => string;
     DateFormatter: (date: string | Date) => ReactNode;
+
+    // Search page type for view transitions
+    pageId: string;
 }
 
 const HideEnvSupportFor = [ProjectType.RESOURCE_PACK, ProjectType.SHADER, ProjectType.PLUGIN, ProjectType.WORLD];
 
-export default function SearchListItem(props: SearchListItemProps) {
+export default function ProjectCardItem(props: SearchListItemProps) {
     return <BaseView {...props} viewType={props.viewType || ViewType.LIST} />;
 }
 
@@ -80,6 +84,8 @@ function BaseView(props: SearchListItemProps) {
     const ProjectDownloads = t.count.downloads(props.downloads);
     const ProjectFollowers = t.count.followers(props.followers);
 
+    const vtStyle = viewTransitionStyleObj(`${props.pageId}-search-item-${props.vtId}`, props.viewTransitions);
+
     return (
         <article
             // biome-ignore lint/a11y/useSemanticElements: <explanation>
@@ -94,6 +100,7 @@ function BaseView(props: SearchListItemProps) {
                 props.viewType,
             )}
             aria-label={props.projectName}
+            style={vtStyle}
         >
             {galleryViewType && (
                 <Link

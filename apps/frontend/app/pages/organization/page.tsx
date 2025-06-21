@@ -1,6 +1,6 @@
 import type { ProjectType } from "@app/utils/types";
 import { useParams } from "react-router";
-import SearchListItem from "~/components/search-list-item";
+import ProjectCardItem from "~/components/search-list-item";
 import { useOrgData } from "~/hooks/org";
 
 function OrganizationPage() {
@@ -21,7 +21,8 @@ function OrganizationPage() {
         >
             {filteredProjects.map((project) => {
                 return (
-                    <SearchListItem
+                    <ProjectCardItem
+                        pageId="organization-projects"
                         projectType={project.type[0] as ProjectType}
                         pageProjectType={(formattedProjectType as ProjectType) || "project"}
                         key={project.id}
