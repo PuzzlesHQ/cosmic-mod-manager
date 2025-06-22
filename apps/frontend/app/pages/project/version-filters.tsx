@@ -74,6 +74,8 @@ export default function VersionFilters(props: VersionFiltersProps) {
     );
     const hasDevVersions = props.allProjectVersions.some((ver) => ver.releaseChannel === VersionReleaseChannel.DEV);
 
+    const DownArrowIcon = <ChevronDownIcon aria-hidden className="w-btn-icon-md h-btn-icon-md text-extra-muted-foreground indicator" />;
+
     const filterComponent = (
         <>
             {formattedOptions.anyFilterVisible || hasDevVersions ? (
@@ -94,7 +96,7 @@ export default function VersionFilters(props: VersionFiltersProps) {
                                 <Button variant="secondary-inverted">
                                     <FilterIcon aria-hidden className="w-btn-icon h-btn-icon" />
                                     Loaders
-                                    <ChevronDownIcon aria-hidden className="w-btn-icon-md h-btn-icon-md text-extra-muted-foreground" />
+                                    {DownArrowIcon}
                                 </Button>
                             }
                             noResultsElement={t.common.noResults}
@@ -115,7 +117,7 @@ export default function VersionFilters(props: VersionFiltersProps) {
                                 <Button variant="secondary-inverted">
                                     <FilterIcon aria-hidden className="w-btn-icon h-btn-icon" />
                                     {t.search.gameVersions}
-                                    <ChevronDownIcon aria-hidden className="w-btn-icon-md h-btn-icon-md text-extra-muted-foreground" />
+                                    {DownArrowIcon}
                                 </Button>
                             }
                             fixedFooter={
@@ -153,7 +155,7 @@ export default function VersionFilters(props: VersionFiltersProps) {
                                 <Button variant="secondary-inverted">
                                     <FilterIcon aria-hidden className="w-btn-icon h-btn-icon" />
                                     {t.search.channels}
-                                    <ChevronDownIcon aria-hidden className="w-btn-icon-md h-btn-icon-md text-extra-muted-foreground" />
+                                    {DownArrowIcon}
                                 </Button>
                             }
                             noResultsElement={t.common.noResults}

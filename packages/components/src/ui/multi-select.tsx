@@ -106,7 +106,7 @@ export const MultiSelect = ({
 
     return (
         <Popover open={isPopoverOpen} onOpenChange={setLocalOpen} modal={modalPopover}>
-            <PopoverTrigger asChild>
+            <PopoverTrigger asChild className={cn("[&_.indicator]:transition-transform", isPopoverOpen && "[&_.indicator]:rotate-180")}>
                 {customTrigger ? (
                     customTrigger
                 ) : (

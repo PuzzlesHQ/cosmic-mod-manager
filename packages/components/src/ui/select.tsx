@@ -21,14 +21,18 @@ function SelectTrigger({
     return (
         <SelectPrimitive.Trigger
             ref={ref}
-            className={cn(noDefaultStyles !== true && "input_box_styles gap-2 w-full justify-between [&>span]:line-clamp-1", className)}
+            className={cn(
+                noDefaultStyles !== true && "input_box_styles gap-2 w-full justify-between [&>span]:line-clamp-1",
+                "[&_.indicator]:data-[state=open]:rotate-180",
+                className,
+            )}
             {...props}
             dir="default"
         >
             {children}
 
             <SelectPrimitive.Icon asChild>
-                <ChevronDown className="w-btn-icon h-btn-icon text-muted-foreground" />
+                <ChevronDown className="w-btn-icon h-btn-icon text-muted-foreground indicator transition-transform" />
             </SelectPrimitive.Icon>
         </SelectPrimitive.Trigger>
     );
