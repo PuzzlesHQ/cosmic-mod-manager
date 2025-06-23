@@ -39,9 +39,12 @@ export default function DownloadsAnalyticsChart(props: DownloadsAnalyticsProps) 
 
     let total = 0;
     let atLeastOneDataPoint = false;
+    let maxDownloads = 0;
     const formattedAnalyticsData = Object.entries(analyticsData.data || {}).map((entry) => {
         atLeastOneDataPoint = true;
         total += entry[1];
+
+        if (maxDownloads < entry[1]) maxDownloads = entry[1];
 
         return {
             date: entry[0],
@@ -167,6 +170,7 @@ export default function DownloadsAnalyticsChart(props: DownloadsAnalyticsProps) 
                             stroke="currentColor"
                             dataKey="downloads"
                             width={48}
+                            ticks={getYAxisTicks(maxDownloads)}
                             allowDecimals={false}
                         />
                         <ChartTooltip
@@ -227,4 +231,24 @@ export default function DownloadsAnalyticsChart(props: DownloadsAnalyticsProps) 
             </div>
         </div>
     );
+}
+
+function getYAxisTicks(maxVal: number, tickCount = 4): number[] {
+    let step = maxVal;
+    if (maxVal >= 50) {
+        const _rounded = tickCount * 5;
+        const _mod = maxVal % _rounded;
+        const _max = _mod === 0 ? maxVal + _rounded : maxVal - _mod + _rounded;
+
+        step = _max / tickCount;
+    } else {
+        step = maxVal % tickCount === 0 ? maxVal / tickCount + 1 : Math.ceil(maxVal / tickCount);
+    }
+
+    const ticks = [0];
+    for (let i = 1; i <= tickCount; i++) {
+        ticks.push(step * i);
+    }
+
+    return ticks;
 }
