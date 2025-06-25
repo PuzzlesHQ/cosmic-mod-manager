@@ -102,8 +102,9 @@ export default function ChangePasswordCard({ code }: { code: string }) {
                                     <FormLabel htmlFor="new-password-input">{t.auth.newPass}</FormLabel>
                                     <Input
                                         type="password"
-                                        placeholder={t.auth.newPass_label}
+                                        autoComplete="new-password"
                                         id="new-password-input"
+                                        placeholder={t.auth.newPass_label}
                                         {...field}
                                     />
                                     <FormMessage />
@@ -119,6 +120,7 @@ export default function ChangePasswordCard({ code }: { code: string }) {
                                     <FormLabel htmlFor="confirm-new-password-input">{t.auth.confirmPass}</FormLabel>
                                     <Input
                                         type="password"
+                                        autoComplete="new-password"
                                         placeholder={t.auth.confirmPass_label}
                                         id="confirm-new-password-input"
                                         {...field}

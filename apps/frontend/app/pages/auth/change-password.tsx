@@ -64,7 +64,13 @@ export default function ChangePasswordPage() {
                                     <FormItem>
                                         <FormLabel htmlFor="email-input">{t.auth.email}</FormLabel>
 
-                                        <Input id="email-input" type="email" {...field} placeholder={t.auth.enterEmail} />
+                                        <Input
+                                            id="email-input"
+                                            type="email"
+                                            autoComplete="email"
+                                            {...field}
+                                            placeholder={t.auth.enterEmail}
+                                        />
                                         <FormMessage />
                                     </FormItem>
                                 )}

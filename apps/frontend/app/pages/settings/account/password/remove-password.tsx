@@ -96,6 +96,7 @@ export default function RemovePasswordForm() {
                                         <FormLabel htmlFor="password-input">{t.auth.password}</FormLabel>
                                         <Input
                                             {...field}
+                                            autoComplete="current-password"
                                             type="password"
                                             id="password-input"
                                             placeholder={t.settings.enterCurrentPass}

@@ -99,6 +99,7 @@ function AddPasswordForm({ email }: { email: string }) {
                                         <FormLabel htmlFor="new-password">{t.auth.newPass}</FormLabel>
                                         <Input
                                             {...field}
+                                            autoComplete="new-password"
                                             type="password"
                                             id="new-password"
                                             placeholder={t.auth.newPass_label}
@@ -116,6 +117,7 @@ function AddPasswordForm({ email }: { email: string }) {
                                         <FormLabel htmlFor="confirm-new-password">{t.auth.confirmPass}</FormLabel>
                                         <Input
                                             {...field}
+                                            autoComplete="new-password"
                                             type="password"
                                             id="confirm-new-password"
                                             placeholder={t.auth.confirmPass_label}

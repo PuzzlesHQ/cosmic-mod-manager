@@ -115,7 +115,7 @@ export function ProfileSettingsPage({ session }: Props) {
                                         {t.form.username}
                                         <CharacterCounter currVal={field.value} max={MAX_USERNAME_LENGTH} />
                                     </FormLabel>
-                                    <Input {...field} className="md:w-[32ch]" id="username-input" autoComplete="off" />
+                                    <Input {...field} className="md:w-[32ch]" id="username-input" autoComplete="username" />
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -134,7 +134,7 @@ export function ProfileSettingsPage({ session }: Props) {
                                         {...field}
                                         className="md:w-[32ch]"
                                         id="displayname-input"
-                                        autoComplete="off"
+                                        autoComplete="name"
                                         placeholder={form.getValues().userName}
                                     />
                                     <FormMessage />

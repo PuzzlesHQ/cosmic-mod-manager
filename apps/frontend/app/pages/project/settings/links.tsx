@@ -78,6 +78,8 @@ export default function ExternalLinksSettingsPage() {
 
                                 <Input
                                     {...field}
+                                    type="url"
+                                    autoComplete="on"
                                     id="issue-tracker-url-input"
                                     value={field.value || ""}
                                     placeholder="Enter a valid URL"
@@ -104,6 +106,8 @@ export default function ExternalLinksSettingsPage() {
 
                                 <Input
                                     {...field}
+                                    type="url"
+                                    autoComplete="on"
                                     id="source-code-url-input"
                                     value={field.value || ""}
                                     placeholder="Enter a valid URL"
@@ -130,6 +134,8 @@ export default function ExternalLinksSettingsPage() {
 
                                 <Input
                                     {...field}
+                                    type="url"
+                                    autoComplete="on"
                                     id="wiki-page-url-input"
                                     value={field.value || ""}
                                     placeholder="Enter a valid URL"
@@ -156,6 +162,8 @@ export default function ExternalLinksSettingsPage() {
 
                                 <Input
                                     {...field}
+                                    type="url"
+                                    autoComplete="on"
                                     id="discord-invite-url-input"
                                     value={field.value || ""}
                                     placeholder="Enter a valid URL"
