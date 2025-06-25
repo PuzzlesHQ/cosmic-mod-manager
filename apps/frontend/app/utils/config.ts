@@ -22,10 +22,8 @@ const Config = {
 
 if (isDev === true) {
     Config.FRONTEND_URL = "http://localhost:3000";
-    // Config.BACKEND_URL_LOCAL = "http://localhost:5500";
-    // Config.BACKEND_URL_PUBLIC = "http://localhost:5500";
-    Config.BACKEND_URL_LOCAL = "https://api.crmm.tech";
-    Config.BACKEND_URL_PUBLIC = "https://api.crmm.tech";
+    Config.BACKEND_URL_LOCAL = "http://localhost:5500";
+    Config.BACKEND_URL_PUBLIC = "http://localhost:5500";
     Config.proxy = false;
 }
 
