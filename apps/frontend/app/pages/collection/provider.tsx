@@ -114,10 +114,13 @@ export function CollectionsProvider(props: { children: React.ReactNode }) {
     }
 
     useEffect(() => {
-        if (!session?.id) return;
-
-        FetchCollections();
-        FetchFollowingProjects();
+        if (session?.id) {
+            FetchCollections();
+            FetchFollowingProjects();
+        } else {
+            setFollowingProjects([]);
+            setCollections_state([]);
+        }
     }, [session?.id]);
 
     return (
