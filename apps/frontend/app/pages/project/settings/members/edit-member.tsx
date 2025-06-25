@@ -92,7 +92,10 @@ export function ProjectTeamMember({
         session?.role,
     );
     const canTransferOwnership =
-        hasRootAccess(currUsersMembership?.isOwner, session?.role) && member.isOwner === false && member.accepted && !doesProjectHaveOrg;
+        hasRootAccess(currUsersMembership?.isOwner, session?.role) &&
+        member.isOwner === false &&
+        member.accepted &&
+        !doesProjectHaveOrg;
 
     useEffect(() => {
         form.reset({
@@ -451,7 +454,9 @@ export function OrgTeamMember({ session, project, orgMember, fetchProjectData, c
                                     {t.projectSettings.overrideValues}
                                     <FormMessage />
                                 </FormLabel>
-                                <span className="text-muted-foreground/90 leading-tight">{t.projectSettings.overrideValuesDesc}</span>
+                                <span className="text-muted-foreground/90 leading-tight">
+                                    {t.projectSettings.overrideValuesDesc}
+                                </span>
                             </div>
                             <Switch
                                 id={`override-perms-input_${effectiveMembership.id}`}
@@ -472,7 +477,9 @@ export function OrgTeamMember({ session, project, orgMember, fetchProjectData, c
                                             {t.projectSettings.role}
                                             <FormMessage />
                                         </FormLabel>
-                                        <span className="text-muted-foreground/90 leading-tight">{t.projectSettings.roleDesc}</span>
+                                        <span className="text-muted-foreground/90 leading-tight">
+                                            {t.projectSettings.roleDesc}
+                                        </span>
                                     </div>
                                     <Input
                                         {...field}

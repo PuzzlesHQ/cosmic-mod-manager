@@ -74,7 +74,9 @@ export default function VersionFilters(props: VersionFiltersProps) {
     );
     const hasDevVersions = props.allProjectVersions.some((ver) => ver.releaseChannel === VersionReleaseChannel.DEV);
 
-    const DownArrowIcon = <ChevronDownIcon aria-hidden className="w-btn-icon-md h-btn-icon-md text-extra-muted-foreground indicator" />;
+    const DownArrowIcon = (
+        <ChevronDownIcon aria-hidden className="w-btn-icon-md h-btn-icon-md text-extra-muted-foreground indicator" />
+    );
 
     const filterComponent = (
         <>
@@ -299,7 +301,11 @@ export function filterVersionItems(allProjectVersions: ProjectVersionData[], fil
     return filteredItems;
 }
 
-function formatFilterOptions(allProjectVersions: ProjectVersionData[], showDevVersions: boolean, showExperimentalGameVersions: boolean) {
+function formatFilterOptions(
+    allProjectVersions: ProjectVersionData[],
+    showDevVersions: boolean,
+    showExperimentalGameVersions: boolean,
+) {
     // Filters list
     // Loaders
     const loaderFilters: string[] = [];

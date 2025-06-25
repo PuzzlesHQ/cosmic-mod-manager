@@ -11,7 +11,12 @@ import { useTranslation } from "~/locales/provider";
 import { FormatUrl_WithHintLocale } from "~/utils/urls";
 import { type NotificationsData, NotificationsList } from "./page";
 
-export default function NotificationsHistoryPage({ notifications, relatedProjects, relatedOrgs, relatedUsers }: NotificationsData) {
+export default function NotificationsHistoryPage({
+    notifications,
+    relatedProjects,
+    relatedOrgs,
+    relatedUsers,
+}: NotificationsData) {
     const { t } = useTranslation();
 
     return (

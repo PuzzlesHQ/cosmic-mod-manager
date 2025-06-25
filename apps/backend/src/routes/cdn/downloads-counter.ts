@@ -102,15 +102,20 @@ export async function processDownloads() {
                 const historyItem = downloadsHistory[j];
                 const userDownloads =
                     userDownloadsHistory.get(userDownloadsHistoryMapKey(queueItem.userId || "", queueItem.projectId)) || 0;
-                const ipDownloads = ipDownloadsHistory.get(ipDownloadsHistoryMapKey(queueItem.ipAddress, queueItem.projectId)) || 0;
+                const ipDownloads =
+                    ipDownloadsHistory.get(ipDownloadsHistoryMapKey(queueItem.ipAddress, queueItem.projectId)) || 0;
 
-                userDownloadsHistory.set(userDownloadsHistoryMapKey(historyItem.userId || "", historyItem.projectId), userDownloads + 1);
+                userDownloadsHistory.set(
+                    userDownloadsHistoryMapKey(historyItem.userId || "", historyItem.projectId),
+                    userDownloads + 1,
+                );
                 ipDownloadsHistory.set(ipDownloadsHistoryMapKey(historyItem.ipAddress, historyItem.projectId), ipDownloads + 1);
 
                 if (
                     historyItem.id !== queueItem.id &&
                     historyItem.projectId === queueItem.projectId &&
-                    (historyItem.ipAddress === queueItem.ipAddress || (!!historyItem.userId && historyItem.userId === queueItem.userId)) &&
+                    (historyItem.ipAddress === queueItem.ipAddress ||
+                        (!!historyItem.userId && historyItem.userId === queueItem.userId)) &&
                     (historyItem.versionId === queueItem.versionId ||
                         userDownloads >= MAX_DOWNLOADS_PER_USER_PER_HISTORY_WINDOW ||
                         ipDownloads >= MAX_DOWNLOADS_PER_USER_PER_HISTORY_WINDOW)

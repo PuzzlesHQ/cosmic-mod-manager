@@ -37,7 +37,10 @@ interface CreateNewCollection_Dialog_Props {
     redirectToCollectionPage?: boolean;
 }
 
-export default function CreateNewCollection_Dialog({ children, redirectToCollectionPage = true }: CreateNewCollection_Dialog_Props) {
+export default function CreateNewCollection_Dialog({
+    children,
+    redirectToCollectionPage = true,
+}: CreateNewCollection_Dialog_Props) {
     const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
@@ -131,7 +134,12 @@ export default function CreateNewCollection_Dialog({ children, redirectToCollect
                                             {t.form.description}
                                             <CharacterCounter currVal={field.value} max={MAX_COLLECTION_DESCRIPTION_LENGTH} />
                                         </FormLabel>
-                                        <Textarea id="collection-description-input" {...field} className="resize-none" placeholder="..." />
+                                        <Textarea
+                                            id="collection-description-input"
+                                            {...field}
+                                            className="resize-none"
+                                            placeholder="..."
+                                        />
                                         <FormMessage />
                                     </FormItem>
                                 )}

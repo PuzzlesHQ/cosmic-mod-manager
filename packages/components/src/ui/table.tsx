@@ -11,17 +11,29 @@ function Table({ ref, className, ...props }: React.HTMLAttributes<HTMLTableEleme
 }
 Table.displayName = "Table";
 
-function TableHeader({ ref, className, ...props }: React.HTMLAttributes<HTMLTableSectionElement> & RefProp<HTMLTableSectionElement>) {
+function TableHeader({
+    ref,
+    className,
+    ...props
+}: React.HTMLAttributes<HTMLTableSectionElement> & RefProp<HTMLTableSectionElement>) {
     return <thead ref={ref} className={cn("", className)} {...props} />;
 }
 TableHeader.displayName = "TableHeader";
 
-function TableBody({ ref, className, ...props }: React.HTMLAttributes<HTMLTableSectionElement> & RefProp<HTMLTableSectionElement>) {
+function TableBody({
+    ref,
+    className,
+    ...props
+}: React.HTMLAttributes<HTMLTableSectionElement> & RefProp<HTMLTableSectionElement>) {
     return <tbody ref={ref} className={cn("[&_tr:last-child]:border-0", className)} {...props} />;
 }
 TableBody.displayName = "TableBody";
 
-function TableFooter({ ref, className, ...props }: React.HTMLAttributes<HTMLTableSectionElement> & RefProp<HTMLTableSectionElement>) {
+function TableFooter({
+    ref,
+    className,
+    ...props
+}: React.HTMLAttributes<HTMLTableSectionElement> & RefProp<HTMLTableSectionElement>) {
     return (
         <tfoot
             ref={ref}
@@ -61,14 +73,21 @@ function TableCell({ ref, className, ...props }: React.TdHTMLAttributes<HTMLTabl
     return (
         <td
             ref={ref}
-            className={cn("px-2 py-5 pe-4 align-middle [&:has([role=checkbox])]:pe-0 [&>[role=checkbox]]:translate-y-[2px]", className)}
+            className={cn(
+                "px-2 py-5 pe-4 align-middle [&:has([role=checkbox])]:pe-0 [&>[role=checkbox]]:translate-y-[2px]",
+                className,
+            )}
             {...props}
         />
     );
 }
 TableCell.displayName = "TableCell";
 
-function TableCaption({ ref, className, ...props }: React.HTMLAttributes<HTMLTableCaptionElement> & RefProp<HTMLTableCaptionElement>) {
+function TableCaption({
+    ref,
+    className,
+    ...props
+}: React.HTMLAttributes<HTMLTableCaptionElement> & RefProp<HTMLTableCaptionElement>) {
     return <caption ref={ref} className={cn("mt-4 text-sm text-muted-foreground", className)} {...props} />;
 }
 TableCaption.displayName = "TableCaption";

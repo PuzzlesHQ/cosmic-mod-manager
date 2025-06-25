@@ -316,7 +316,8 @@ export default {
         platform: "Platform:",
         selectPlatform: "Platform wählen",
         onlyAvailableFor: (project: string, platform: string) => `${project} ist nur für ${platform} verfügbar`,
-        noVersionsAvailableFor: (gameVersion: string, loader: string) => `Keine Versionen für ${gameVersion} auf ${loader} verfügbar`,
+        noVersionsAvailableFor: (gameVersion: string, loader: string) =>
+            `Keine Versionen für ${gameVersion} auf ${loader} verfügbar`,
         declinedInvitation: "Abgelehnte Einladung",
         teamInvitationTitle: (teamType: string) =>
             `Einladung, ${definiteArticleDative[genderOf[teamType] || ("a" as Gender)]} ${teamType} beizutreten`, // teamType = organization | project
@@ -359,7 +360,8 @@ export default {
             selectTags: "Tags wählen",
             selectTagsDesc: "Wähle alle Tags, die auf dein Projekt zutreffen.",
             addExtLinks: "Externe Links hinzufügen",
-            addExtLinksDesc: "Füge jegliche relevante Links hinzu, wie zum Quellcode, zum Bugtracker, oder einer Discord-Einladung.",
+            addExtLinksDesc:
+                "Füge jegliche relevante Links hinzu, wie zum Quellcode, zum Bugtracker, oder einer Discord-Einladung.",
             selectLicense: "Lizenz wählen",
             selectLicenseDesc: (projectType: string) =>
                 `Wähle die Lizenz, unter der ${secondPersonPossesivePronouns[genderOf[projectType] || ("a" as Gender)]} ${projectType} verbreitet wird.`,
@@ -428,7 +430,8 @@ export default {
         selectFiles: "Dateien wählen",
         primaryFileRequired: "Eine primäre Datei wird benötigt",
         metadata: "Metadaten",
-        devReleasesNote: "Notiz:- Ältere Development-Versionen werden automatisch gelöscht, sobald eine neue veröffentlicht wird.",
+        devReleasesNote:
+            "Notiz:- Ältere Development-Versionen werden automatisch gelöscht, sobald eine neue veröffentlicht wird.",
         publicationDate: "Veröffentlichungsdatum",
         publisher: "Veröffentlicher",
         versionID: "Versions ID",
@@ -513,8 +516,10 @@ export default {
         sureToLeaveTeam: "Willst du dieses Team wirklich verlassen?",
         cantManageInvites: "Du hast keine Berechtigungen, Einladungen zu verwalten",
         inviteMember: "Mitglied einladen",
-        inviteProjectMemberDesc: "Gib den Nutzernamen der Person ein, die du gerne als Mitglied zu diesem Projekt einladen würdest.",
-        inviteOrgMemberDesc: "Gib den Nutzernamen der Person ein, die du gerne als Mitglied zu dieser Organisation einladen würdest.",
+        inviteProjectMemberDesc:
+            "Gib den Nutzernamen der Person ein, die du gerne als Mitglied zu diesem Projekt einladen würdest.",
+        inviteOrgMemberDesc:
+            "Gib den Nutzernamen der Person ein, die du gerne als Mitglied zu dieser Organisation einladen würdest.",
         invite: "Einladung",
         memberUpdated: "Mitglied erfolgreich aktualisiert",
         pending: "Ausstehend",
@@ -556,7 +561,8 @@ export default {
         orgDoesntHaveProjects: "Diese Organisation hat noch keine Projekte.",
         manageProjects: "Projekte verwalten",
         orgSettings: "Organizationseinstellungen",
-        transferProjectsTip: "Du kannst über Projekteinstellungen > Mitglieder existierende Projekte zu dieser Organisation übertragen",
+        transferProjectsTip:
+            "Du kannst über Projekteinstellungen > Mitglieder existierende Projekte zu dieser Organisation übertragen",
         noProjects_CreateOne: "Diese Organisation hat noch keine Projekte. Klicke auf den Knopf oben, um eines zu erstellen.",
         orgInfo: "Organisation",
         deleteOrg: "Organisation löschen",

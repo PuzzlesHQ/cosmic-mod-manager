@@ -12,7 +12,12 @@ import { getHintLocale } from "./utils/urls";
 
 const ABORT_DELAY = 5000;
 
-export default function handleRequest(request: Request, responseStatusCode: number, responseHeaders: Headers, routerContext: EntryContext) {
+export default function handleRequest(
+    request: Request,
+    responseStatusCode: number,
+    responseHeaders: Headers,
+    routerContext: EntryContext,
+) {
     return new Promise((resolve, reject) => {
         let shellRendered = false;
         const userAgent = request.headers.get("user-agent");

@@ -150,7 +150,9 @@ export async function UpdateOrganization<T extends Prisma.OrganisationUpdateArgs
     return data;
 }
 
-export function CreateOrganization<T extends Prisma.OrganisationCreateArgs>(args: Prisma.SelectSubset<T, Prisma.OrganisationCreateArgs>) {
+export function CreateOrganization<T extends Prisma.OrganisationCreateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.OrganisationCreateArgs>,
+) {
     return prisma.organisation.create(args);
 }
 

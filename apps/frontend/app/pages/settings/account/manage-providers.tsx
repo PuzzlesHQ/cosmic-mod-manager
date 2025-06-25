@@ -1,7 +1,15 @@
 import RefreshPage from "@app/components/misc/refresh-page";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@app/components/ui/accordion";
 import { Button } from "@app/components/ui/button";
-import { Dialog, DialogBody, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@app/components/ui/dialog";
+import {
+    Dialog,
+    DialogBody,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@app/components/ui/dialog";
 import { toast } from "@app/components/ui/sonner";
 import { LoadingSpinner } from "@app/components/ui/spinner";
 import { VisuallyHidden } from "@app/components/ui/visually-hidden";

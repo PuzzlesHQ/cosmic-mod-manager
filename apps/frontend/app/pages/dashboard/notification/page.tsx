@@ -36,9 +36,12 @@ export default function NotificationsPage({ notifications, relatedProjects, rela
         setMarkingAsRead(true);
         try {
             const unreadNotificationIds = unreadNotifications.map((n) => n.id);
-            const result = await clientFetch(`/api/notifications?ids=${encodeURIComponent(JSON.stringify(unreadNotificationIds))}`, {
-                method: "PATCH",
-            });
+            const result = await clientFetch(
+                `/api/notifications?ids=${encodeURIComponent(JSON.stringify(unreadNotificationIds))}`,
+                {
+                    method: "PATCH",
+                },
+            );
 
             if (!result.ok) {
                 return toast.error("Failed to mark notifications as read");

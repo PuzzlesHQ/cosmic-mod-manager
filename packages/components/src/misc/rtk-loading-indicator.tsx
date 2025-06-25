@@ -103,7 +103,9 @@ function LoadingBar({
         continuousStart(startingValue?: number, refreshRate = 1000) {
             if (pressedStaticStart.active) return;
             if (usingProps) {
-                console.warn("react-top-loading-bar: You can't use both controlling by props and ref methods to control the bar!");
+                console.warn(
+                    "react-top-loading-bar: You can't use both controlling by props and ref methods to control the bar!",
+                );
                 return;
             }
 
@@ -120,7 +122,9 @@ function LoadingBar({
         staticStart(startingValue?: number) {
             if (pressedContinuous.current.active) return;
             if (usingProps) {
-                console.warn("react-top-loading-bar: You can't use both controlling by props and ref methods to control the bar!");
+                console.warn(
+                    "react-top-loading-bar: You can't use both controlling by props and ref methods to control the bar!",
+                );
                 return;
             }
 
@@ -135,7 +139,9 @@ function LoadingBar({
         },
         complete() {
             if (usingProps) {
-                console.warn("react-top-loading-bar: You can't use both controlling by props and ref methods to control the bar!");
+                console.warn(
+                    "react-top-loading-bar: You can't use both controlling by props and ref methods to control the bar!",
+                );
                 return;
             }
             localProgressSet(100);

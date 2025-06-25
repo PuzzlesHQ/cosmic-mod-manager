@@ -106,7 +106,10 @@ export const MultiSelect = ({
 
     return (
         <Popover open={isPopoverOpen} onOpenChange={setLocalOpen} modal={modalPopover}>
-            <PopoverTrigger asChild className={cn("[&_.indicator]:transition-transform", isPopoverOpen && "[&_.indicator]:rotate-180")}>
+            <PopoverTrigger
+                asChild
+                className={cn("[&_.indicator]:transition-transform", isPopoverOpen && "[&_.indicator]:rotate-180")}
+            >
                 {customTrigger ? (
                     customTrigger
                 ) : (
@@ -196,7 +199,10 @@ export const MultiSelect = ({
 
                                         {option.icon && (
                                             <option.icon
-                                                className={cn("me-2 h-4 w-4 text-muted-foreground", isSelected && "text-foreground")}
+                                                className={cn(
+                                                    "me-2 h-4 w-4 text-muted-foreground",
+                                                    isSelected && "text-foreground",
+                                                )}
                                             />
                                         )}
                                         <span className={cn(isSelected && "text-foreground-bright")}>{option.label}</span>

@@ -109,7 +109,11 @@ export default function HomePage({ projects }: Props) {
 
                     <div className="flex gap-4 md:gap-8 flex-wrap items-center justify-center mt-6">
                         <VariantButtonLink size="lg" variant="default" url="/mods" className="px-6">
-                            <CompassIcon aria-hidden className="w-btn-icon-lg h-btn-icon-lg" aria-label={t.homePage.exploreMods} />
+                            <CompassIcon
+                                aria-hidden
+                                className="w-btn-icon-lg h-btn-icon-lg"
+                                aria-label={t.homePage.exploreMods}
+                            />
                             {t.homePage.exploreMods}
                         </VariantButtonLink>
 
@@ -205,12 +209,20 @@ function ShowcaseItem({ className, item, ...props }: { className?: string; item:
             )}
             {...props}
         >
-            <ImgWrapper src={imageUrl(item.icon)} alt={item.name} fallback={fallbackProjectIcon} className="w-11 h-11" loading="lazy" />
+            <ImgWrapper
+                src={imageUrl(item.icon)}
+                alt={item.name}
+                fallback={fallbackProjectIcon}
+                className="w-11 h-11"
+                loading="lazy"
+            />
             <div className="flex flex-col gap-1">
                 <span className="max-w-52 text-lg font-bold overflow-hidden whitespace-nowrap text-ellipsis leading-tight">
                     {item.name}
                 </span>
-                <span className="max-w-52 text-[0.87rem] line-clamp-2 text-muted-foreground leading-tight text-pretty">{item.summary}</span>
+                <span className="max-w-52 text-[0.87rem] line-clamp-2 text-muted-foreground leading-tight text-pretty">
+                    {item.summary}
+                </span>
             </div>
         </Link>
     );

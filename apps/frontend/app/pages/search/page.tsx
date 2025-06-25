@@ -2,7 +2,15 @@ import { ViewType } from "@app/components/misc/search-list-item";
 import { Button } from "@app/components/ui/button";
 import { Card } from "@app/components/ui/card";
 import { Input } from "@app/components/ui/input";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@app/components/ui/select";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@app/components/ui/select";
 import { TooltipProvider, TooltipTemplate } from "@app/components/ui/tooltip";
 import { cn } from "@app/components/utils";
 import { projectTypes } from "@app/utils/config/project";

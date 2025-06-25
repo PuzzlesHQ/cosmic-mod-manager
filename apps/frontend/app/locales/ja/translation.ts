@@ -93,7 +93,8 @@ export default {
         confirmPass: "新しいパスワードの確認",
         confirmPass_label: "確認のためもう一度入力",
         deleteAccount: "アカウントの削除",
-        deleteAccountDesc: "アカウントを削除すると、データベースからすべてのデータが削除されます。アカウント削除後は、後戻りはできません。",
+        deleteAccountDesc:
+            "アカウントを削除すると、データベースからすべてのデータが削除されます。アカウント削除後は、後戻りはできません。",
         enterEmail: "メールアドレスを入力",
     },
 
@@ -249,7 +250,8 @@ export default {
         uploadNewImg: "ギャラリーに新しい画像をアップロード",
         uploadImg: "ギャラリーに画像をアップロード",
         galleryOrderingDesc: "番号の大きい画像が最初に表示されます。",
-        featuredGalleryImgDesc: "代表ギャラリー画像は検索結果とプロジェクトカードに表示されます。代表ギャラリー画像は1つのみ設定できます。",
+        featuredGalleryImgDesc:
+            "代表ギャラリー画像は検索結果とプロジェクトカードに表示されます。代表ギャラリー画像は1つのみ設定できます。",
         addGalleryImg: "ギャラリー画像を追加",
         featureImg: "代表画像に設定",
         unfeatureImg: "代表画像の設定を解除",
@@ -277,7 +279,8 @@ export default {
         platform: "プラットフォーム：",
         selectPlatform: "プラットフォームを選択",
         onlyAvailableFor: (project: string, platform: string) => `${project}は${platform}のみで利用可能です`,
-        noVersionsAvailableFor: (gameVersion: string, loader: string) => `${gameVersion}のためのバージョンは${loader}にありません`,
+        noVersionsAvailableFor: (gameVersion: string, loader: string) =>
+            `${gameVersion}のためのバージョンは${loader}にありません`,
         declinedInvitation: "招待を辞退しました",
         teamInvitationTitle: (teamType: string) => `${teamType}に参加する招待`, // teamType = organization | project
         teamInviteDesc: (teamType: string, role: string) => `あなたは${teamType}の'${role}'として招待されています。`,
@@ -307,7 +310,8 @@ export default {
             addDescription: "概要を追加",
             addDescriptionDesc: "プロジェクトの目的と機能を明確に説明する概要が必要です。",
             addIcon: "アイコンを追加",
-            addIconDesc: "プロジェクトに一目であなたのプロジェクトであることがわかるように、見栄えの良いアイコンをつけてください。",
+            addIconDesc:
+                "プロジェクトに一目であなたのプロジェクトであることがわかるように、見栄えの良いアイコンをつけてください。",
             featureGalleryImg: "代表ギャラリー画像を設定",
             featureGalleryImgDesc: "代表ギャラリー画像は、多くのユーザーの第一印象となるかもしれません。",
             selectTags: "タグを選択",
@@ -317,10 +321,12 @@ export default {
             selectLicense: "ライセンスを選択",
             selectLicenseDesc: (projectType: string) => `${projectType}が配布されているライセンスを選択してください。`,
             selectEnv: "対応環境を選択",
-            selectEnvDesc: (projectType: string) => `${projectType}がクライアント側／サーバー側のどちらで機能するかを選択してください。`,
+            selectEnvDesc: (projectType: string) =>
+                `${projectType}がクライアント側／サーバー側のどちらで機能するかを選択してください。`,
             requiredStepsDesc: "＊印は必須項目です",
             submitForReview: "審査に提出",
-            submitForReviewDesc: "プロジェクトはプロジェクトのメンバーだけが閲覧できます。公開するにはモデレーターの審査が必要です。",
+            submitForReviewDesc:
+                "プロジェクトはプロジェクトのメンバーだけが閲覧できます。公開するにはモデレーターの審査が必要です。",
             resubmitForReview: "審査に再提出",
             resubmit_ApprovalRejected:
                 "プロジェクトがモデレーターに却下されました。ほとんどの場合、モデレーターのメッセージに対応した後、審査に再提出できます。",

@@ -190,7 +190,12 @@ export default function EditCollection(props: EditCollectionProps) {
                                             {t.form.description}
                                             <CharacterCounter currVal={field.value} max={MAX_COLLECTION_DESCRIPTION_LENGTH} />
                                         </FormLabel>
-                                        <Textarea id="collection-description-input" {...field} className="resize-none" placeholder="..." />
+                                        <Textarea
+                                            id="collection-description-input"
+                                            {...field}
+                                            className="resize-none"
+                                            placeholder="..."
+                                        />
                                         <FormMessage />
                                     </FormItem>
                                 )}

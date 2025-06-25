@@ -40,7 +40,10 @@ export async function loader(props: Route.LoaderArgs): Promise<OrgLoaderData> {
         serverFetch(props.request, `/api/organization/${orgSlug}`),
         serverFetch(props.request, `/api/organization/${orgSlug}/projects`),
     ]);
-    const [orgData, orgProjects] = await Promise.all([resJson<Organisation>(orgDataRes), resJson<ProjectListItem[]>(orgProjectsRes)]);
+    const [orgData, orgProjects] = await Promise.all([
+        resJson<Organisation>(orgDataRes),
+        resJson<ProjectListItem[]>(orgProjectsRes),
+    ]);
 
     return {
         orgSlug,

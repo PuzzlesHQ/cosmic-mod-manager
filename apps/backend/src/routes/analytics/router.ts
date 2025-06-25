@@ -37,10 +37,14 @@ async function downloadsAnalytics_get(ctx: Context) {
 
         if (!projectIds_query) return invalidReqestResponse(ctx, "projectIds query param is required");
         if (!timeline_query && (!startDate_query || !endDate_query))
-            return invalidReqestResponse(ctx, "Either startDate and endDate (YYYY-MM-DD) or timeline query param must be provided");
+            return invalidReqestResponse(
+                ctx,
+                "Either startDate and endDate (YYYY-MM-DD) or timeline query param must be provided",
+            );
 
         const projectIds = await parseJson(projectIds_query);
-        if (!projectIds || !Array.isArray(projectIds)) return invalidReqestResponse(ctx, "projectIds query param is not valid JSON");
+        if (!projectIds || !Array.isArray(projectIds))
+            return invalidReqestResponse(ctx, "projectIds query param is not valid JSON");
 
         const startDate = DateFromStr(startDate_query);
         const endDate = DateFromStr(endDate_query);
@@ -77,7 +81,10 @@ async function allProjectsDownloadsAnalytics_get(ctx: Context) {
         const timeline_query = ctx.req.query("timeline");
 
         if (!timeline_query && (!startDate_query || !endDate_query))
-            return invalidReqestResponse(ctx, "Either startDate and endDate (YYYY-MM-DD) or timeline query param must be provided");
+            return invalidReqestResponse(
+                ctx,
+                "Either startDate and endDate (YYYY-MM-DD) or timeline query param must be provided",
+            );
 
         const startDate = DateFromStr(startDate_query);
         const endDate = DateFromStr(endDate_query);

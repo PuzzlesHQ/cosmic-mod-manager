@@ -7,7 +7,12 @@ import { FileType, OrganisationPermission } from "@app/utils/types";
 import type { Context } from "hono";
 import type { z } from "zod/v4";
 import { CreateFile, DeleteFile_ByID } from "~/db/file_item";
-import { DeleteOrganization, Delete_OrganizationCache_All, GetOrganization_BySlugOrId, UpdateOrganization } from "~/db/organization_item";
+import {
+    DeleteOrganization,
+    Delete_OrganizationCache_All,
+    GetOrganization_BySlugOrId,
+    UpdateOrganization,
+} from "~/db/organization_item";
 import { GetManyProjects_ListItem, GetProject_ListItem, UpdateManyProjects, UpdateProject } from "~/db/project_item";
 import { CreateTeamMember, Create_ManyTeamMembers, Delete_ManyTeamMembers } from "~/db/team-member_item";
 import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-attempt";
@@ -24,7 +29,12 @@ import {
 import { resizeImageToWebp } from "~/utils/images";
 import { generateDbId } from "~/utils/str";
 
-export async function updateOrg(ctx: Context, userSession: ContextUserData, slug: string, formData: z.infer<typeof orgSettingsFormSchema>) {
+export async function updateOrg(
+    ctx: Context,
+    userSession: ContextUserData,
+    slug: string,
+    formData: z.infer<typeof orgSettingsFormSchema>,
+) {
     const org = await GetOrganization_BySlugOrId(slug.toLowerCase(), slug);
     if (!org) return notFoundResponseData();
 

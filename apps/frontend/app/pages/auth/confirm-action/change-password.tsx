@@ -100,7 +100,12 @@ export default function ChangePasswordCard({ code }: { code: string }) {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel htmlFor="new-password-input">{t.auth.newPass}</FormLabel>
-                                    <Input type="password" placeholder={t.auth.newPass_label} id="new-password-input" {...field} />
+                                    <Input
+                                        type="password"
+                                        placeholder={t.auth.newPass_label}
+                                        id="new-password-input"
+                                        {...field}
+                                    />
                                     <FormMessage />
                                 </FormItem>
                             )}

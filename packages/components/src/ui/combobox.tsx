@@ -76,7 +76,11 @@ function ComboBox(props: ComboBoxProps) {
             <PopoverContent className="p-0 sm:min-w-[28rem] border-none">
                 <Command className="border border-shallow-background">
                     {props.inputBox === false ? null : (
-                        <CommandInput value={searchVal} onValueChange={setSearchVal} placeholder={props.inputLabel || "Search..."} />
+                        <CommandInput
+                            value={searchVal}
+                            onValueChange={setSearchVal}
+                            placeholder={props.inputLabel || "Search..."}
+                        />
                     )}
                     <TooltipProvider delayDuration={200}>
                         <CommandList>

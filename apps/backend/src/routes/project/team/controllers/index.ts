@@ -28,7 +28,9 @@ export async function inviteMember(ctx: Context, userSession: ContextUserData, u
     if (!TeamProject && !TeamOrg) return notFoundResponseData();
 
     // Organization associated with the team's project
-    const TeamProjects_Org = TeamProject?.organisationId ? await GetOrganization_BySlugOrId(undefined, TeamProject.organisationId) : null;
+    const TeamProjects_Org = TeamProject?.organisationId
+        ? await GetOrganization_BySlugOrId(undefined, TeamProject.organisationId)
+        : null;
 
     let canManageInvites = false;
     // Handle organiszation team invite

@@ -9,7 +9,11 @@ import { GetProject_ListItem, UpdateProject } from "~/db/project_item";
 import type { ContextUserData } from "~/types";
 import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData } from "~/utils/http";
 
-export async function updateProjectTags(slug: string, userSession: ContextUserData, formData: z.infer<typeof updateProjectTagsFormSchema>) {
+export async function updateProjectTags(
+    slug: string,
+    userSession: ContextUserData,
+    formData: z.infer<typeof updateProjectTagsFormSchema>,
+) {
     const project = await GetProject_ListItem(slug, slug);
     if (!project?.id) return notFoundResponseData();
 

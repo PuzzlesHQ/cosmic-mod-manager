@@ -22,7 +22,11 @@ function CardTitle({ ref, className, ...props }: React.HTMLAttributes<HTMLHeadin
 }
 CardTitle.displayName = "CardTitle";
 
-function CardDescription({ ref, className, ...props }: React.HTMLAttributes<HTMLParagraphElement> & RefProp<HTMLParagraphElement>) {
+function CardDescription({
+    ref,
+    className,
+    ...props
+}: React.HTMLAttributes<HTMLParagraphElement> & RefProp<HTMLParagraphElement>) {
     return <p ref={ref} className={cn("text-base text-muted-foreground", className)} {...props} />;
 }
 CardDescription.displayName = "CardDescription";

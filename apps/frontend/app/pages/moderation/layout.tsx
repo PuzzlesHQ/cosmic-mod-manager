@@ -49,7 +49,12 @@ export default function ModerationPagesLayout() {
             <PanelAside aside>
                 <PanelAsideNavCard label={mod.moderation}>
                     {links.map((link) => (
-                        <ButtonLink url={FormatUrl_WithHintLocale(link.href)} key={link.href} className="relative" preventScrollReset>
+                        <ButtonLink
+                            url={FormatUrl_WithHintLocale(link.href)}
+                            key={link.href}
+                            className="relative"
+                            preventScrollReset
+                        >
                             {link.icon}
                             <span className="text-wrap leading-tight">{link.name}</span>
                         </ButtonLink>

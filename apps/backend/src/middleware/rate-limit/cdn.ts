@@ -24,7 +24,11 @@ export async function cdnAssetRateLimiter(ctx: Context, next: Next) {
 }
 
 const cdnLargeFileLimit = rateLimits.global.DDOS_PROTECTION;
-const cdnLargeFileLimiterBucket = new TokenBucket(cdnLargeFileLimit.namespace, cdnLargeFileLimit.max, cdnLargeFileLimit.timeWindow_seconds);
+const cdnLargeFileLimiterBucket = new TokenBucket(
+    cdnLargeFileLimit.namespace,
+    cdnLargeFileLimit.max,
+    cdnLargeFileLimit.timeWindow_seconds,
+);
 
 export async function cdnLargeFileRateLimiter(ctx: Context, next: Next) {
     const ipAddr = getUserIpAddress(ctx);

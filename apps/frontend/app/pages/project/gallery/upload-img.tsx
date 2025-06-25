@@ -164,16 +164,23 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
                                                     />
                                                     {field.value ? (
                                                         <div className="flex items-center flex-wrap justify-start gap-x-2">
-                                                            <span className="font-semibold break-words break-all">{field.value.name}</span>
+                                                            <span className="font-semibold break-words break-all">
+                                                                {field.value.name}
+                                                            </span>
                                                         </div>
                                                     ) : (
-                                                        <span className="text-muted-foreground italic">{t.form.noFileChosen}</span>
+                                                        <span className="text-muted-foreground italic">
+                                                            {t.form.noFileChosen}
+                                                        </span>
                                                     )}
                                                 </div>
 
                                                 <InteractiveLabel
                                                     htmlFor="gallery-image-input"
-                                                    className={cn(buttonVariants({ variant: "secondary-dark" }), "cursor-pointer")}
+                                                    className={cn(
+                                                        buttonVariants({ variant: "secondary-dark" }),
+                                                        "cursor-pointer",
+                                                    )}
                                                 >
                                                     {field.value ? t.version.replaceFile : t.version.chooseFile}
                                                 </InteractiveLabel>
@@ -271,7 +278,11 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
                                             id="gallery-item-featured"
                                         >
                                             {field.value === true ? (
-                                                <StarIcon aria-hidden fill="currentColor" className="w-btn-icon-md h-btn-icon-md" />
+                                                <StarIcon
+                                                    aria-hidden
+                                                    fill="currentColor"
+                                                    className="w-btn-icon-md h-btn-icon-md"
+                                                />
                                             ) : (
                                                 <StarIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
                                             )}

@@ -130,11 +130,14 @@ export default function TagsSettingsPage() {
                                                                 field.onChange(field.value.filter((val) => val !== tag.name));
 
                                                                 // Also remove the category from featured tags if it was featured
-                                                                const selectedFeaturedTagsList = form.getValues().featuredCategories;
+                                                                const selectedFeaturedTagsList =
+                                                                    form.getValues().featuredCategories;
                                                                 if (selectedFeaturedTagsList.includes(tag.name)) {
                                                                     form.setValue(
                                                                         "featuredCategories",
-                                                                        selectedFeaturedTagsList.filter((val) => val !== tag.name),
+                                                                        selectedFeaturedTagsList.filter(
+                                                                            (val) => val !== tag.name,
+                                                                        ),
                                                                     );
                                                                 }
                                                             }
@@ -159,7 +162,9 @@ export default function TagsSettingsPage() {
                             <StarIcon aria-hidden className="w-btn-icon h-btn-icon text-muted-foreground" />
                             {t.projectSettings.featuredCategories}
                         </span>
-                        <span className="text-muted-foreground">{t.projectSettings.featuredCategoriesDesc(MAX_FEATURED_PROJECT_TAGS)}</span>
+                        <span className="text-muted-foreground">
+                            {t.projectSettings.featuredCategoriesDesc(MAX_FEATURED_PROJECT_TAGS)}
+                        </span>
                         <FormField
                             control={form.control}
                             name="featuredCategories"
@@ -175,7 +180,9 @@ export default function TagsSettingsPage() {
                                                 name={tagName}
                                                 className="w-fit"
                                                 checked={field.value.includes(tag)}
-                                                disabled={field.value.length >= MAX_FEATURED_PROJECT_TAGS && !field.value.includes(tag)}
+                                                disabled={
+                                                    field.value.length >= MAX_FEATURED_PROJECT_TAGS && !field.value.includes(tag)
+                                                }
                                                 onCheckedChange={(e) => {
                                                     if (e === true) {
                                                         if (field.value.length >= MAX_FEATURED_PROJECT_TAGS) return;
@@ -212,7 +219,11 @@ export default function TagsSettingsPage() {
                                 }, toast.error);
                             }}
                         >
-                            {isLoading ? <LoadingSpinner size="xs" /> : <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />}
+                            {isLoading ? (
+                                <LoadingSpinner size="xs" />
+                            ) : (
+                                <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                            )}
                             {t.form.saveChanges}
                         </Button>
                     </div>

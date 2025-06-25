@@ -85,7 +85,11 @@ export async function createNewVersion(
     const versionWithSameSlug = projectVersions.find((version) => version.slug === formData.versionNumber.toLowerCase());
     const versionId = generateDbId();
     let newUrlSlug = formData.versionNumber.toLowerCase();
-    if (RESERVED_VERSION_SLUGS.includes(newUrlSlug) || versionWithSameSlug || formData.releaseChannel === VersionReleaseChannel.DEV) {
+    if (
+        RESERVED_VERSION_SLUGS.includes(newUrlSlug) ||
+        versionWithSameSlug ||
+        formData.releaseChannel === VersionReleaseChannel.DEV
+    ) {
         newUrlSlug = versionId;
     }
 

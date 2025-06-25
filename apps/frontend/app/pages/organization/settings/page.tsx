@@ -187,7 +187,11 @@ export default function GeneralOrgSettings() {
                                 type="submit"
                                 disabled={JSON.stringify(initialValues) === JSON.stringify(form.getValues()) || isLoading}
                             >
-                                {isLoading ? <LoadingSpinner size="xs" /> : <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />}
+                                {isLoading ? (
+                                    <LoadingSpinner size="xs" />
+                                ) : (
+                                    <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                )}
                                 {t.form.saveChanges}
                             </Button>
                         </div>
@@ -280,7 +284,11 @@ function DeleteOrgDialog({ name, slug }: { name: string; slug: string }) {
                                 <CancelButton />
                             </DialogClose>
                             <Button disabled={!submittable || isLoading} variant="destructive" onClick={deleteOrg}>
-                                {isLoading ? <LoadingSpinner size="xs" /> : <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />}
+                                {isLoading ? (
+                                    <LoadingSpinner size="xs" />
+                                ) : (
+                                    <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                                )}
                                 {t.organization.deleteOrg}
                             </Button>
                         </DialogFooter>

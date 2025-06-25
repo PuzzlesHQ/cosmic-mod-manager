@@ -135,7 +135,11 @@ export async function getUserAvatar(
     return imgFile_Id;
 }
 
-export async function getAllVisibleProjects(userSession: ContextUserData | undefined, userSlug: string, listedProjectsOnly: boolean) {
+export async function getAllVisibleProjects(
+    userSession: ContextUserData | undefined,
+    userSlug: string,
+    listedProjectsOnly: boolean,
+) {
     const user = await GetUser_ByIdOrUsername(userSlug, userSlug);
     if (!user) return { data: { success: false, message: "user not found" }, status: HTTP_STATUS.NOT_FOUND };
 

@@ -101,4 +101,14 @@ function CommandShortcut({ className, ...props }: React.HTMLAttributes<HTMLSpanE
 }
 CommandShortcut.displayName = "CommandShortcut";
 
-export { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut };
+export {
+    Command,
+    CommandDialog,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+    CommandSeparator,
+    CommandShortcut,
+};

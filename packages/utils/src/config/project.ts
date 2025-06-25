@@ -1,4 +1,11 @@
-import { AuthProvider, EnvironmentSupport, OrganisationPermission, ProjectPermission, ProjectPublishingStatus, ProjectType } from "~/types";
+import {
+    AuthProvider,
+    EnvironmentSupport,
+    OrganisationPermission,
+    ProjectPermission,
+    ProjectPublishingStatus,
+    ProjectType,
+} from "~/types";
 
 export const authProvidersList: AuthProvider[] = [
     AuthProvider.GITHUB,

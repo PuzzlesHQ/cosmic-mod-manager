@@ -42,8 +42,18 @@ export default function OrgMemberSettings() {
 
             <SectionCard className="w-full flex flex-col p-card-surround gap-4">
                 <CardTitle>{t.projectSettings.manageMembers}</CardTitle>
-                <InviteMemberForm teamId={orgData.teamId} canInviteMembers={canInviteMembers} dataRefetch={refreshOrgData} isOrg />
-                <LeaveTeam teamId={orgData.teamId} currUsersMembership={currUsersMembership} refreshData={RedirectToOrgPage} isOrgTeam />
+                <InviteMemberForm
+                    teamId={orgData.teamId}
+                    canInviteMembers={canInviteMembers}
+                    dataRefetch={refreshOrgData}
+                    isOrg
+                />
+                <LeaveTeam
+                    teamId={orgData.teamId}
+                    currUsersMembership={currUsersMembership}
+                    refreshData={RedirectToOrgPage}
+                    isOrgTeam
+                />
             </SectionCard>
 
             {orgData.members.map((member) => {

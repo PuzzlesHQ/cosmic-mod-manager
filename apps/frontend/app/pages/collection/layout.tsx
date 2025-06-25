@@ -104,7 +104,11 @@ export default function CollectionPageLayout(props: Props) {
                 }
                 actionBtns={
                     markedProjects.length > 0 ? (
-                        <Button variant="secondary-destructive-inverted" onClick={RemoveCollectionProjects} disabled={removingProjects}>
+                        <Button
+                            variant="secondary-destructive-inverted"
+                            onClick={RemoveCollectionProjects}
+                            disabled={removingProjects}
+                        >
                             {removingProjects ? <LoadingSpinner size="xs" /> : <Trash2Icon className="w-btn-icon h-btn-icon" />}
                             {t.form.remove}
                         </Button>
@@ -171,7 +175,9 @@ export default function CollectionPageLayout(props: Props) {
 
                 <div className="flex items-center gap-2">
                     <CalendarIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
-                    <span className="font-semibold">{t.settings.created(TimePassedSince({ date: props.collection.dateCreated }))}</span>
+                    <span className="font-semibold">
+                        {t.settings.created(TimePassedSince({ date: props.collection.dateCreated }))}
+                    </span>
                 </div>
             </PageHeader>
 

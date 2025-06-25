@@ -60,7 +60,12 @@ export default function UpdateProjectStatusDialog(props: UpdateProjectStatusProp
             title={t.project.updateProjectStatus}
             description={
                 <MarkdownRenderBox
-                    text={t.project.sureToUpdateStatus(props.projectName, t.navbar[props.projectType], props.prevStatus, props.newStatus)}
+                    text={t.project.sureToUpdateStatus(
+                        props.projectName,
+                        t.navbar[props.projectType],
+                        props.prevStatus,
+                        props.newStatus,
+                    )}
                 />
             }
             confirmText={props.dialogConfirmBtn?.text || props.trigger.text}

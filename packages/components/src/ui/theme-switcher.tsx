@@ -65,7 +65,12 @@ export default function ThemeSwitch({
             )}
             onClick={transitionTheme}
         >
-            <div className={cn("h-nav-item aspect-square relative flex items-center justify-center rounded-full", iconWrapperClassName)}>
+            <div
+                className={cn(
+                    "h-nav-item aspect-square relative flex items-center justify-center rounded-full",
+                    iconWrapperClassName,
+                )}
+            >
                 {theme === ThemeOptions.DARK ? (
                     <SunIcon size={iconSize} className={iconClassName} />
                 ) : (

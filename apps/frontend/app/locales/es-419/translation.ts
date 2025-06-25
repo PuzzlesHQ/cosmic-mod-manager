@@ -94,7 +94,8 @@ export default {
         confirmPass: "Confirmar contraseña",
         confirmPass_label: "Vuelve a ingresar tu contraseña",
         deleteAccount: "Eliminar cuenta",
-        deleteAccountDesc: "Al eliminar tu cuenta, se borrarán todos tus datos de nuestra base de datos. Este proceso es irreversible.",
+        deleteAccountDesc:
+            "Al eliminar tu cuenta, se borrarán todos tus datos de nuestra base de datos. Este proceso es irreversible.",
         enterEmail: "Ingresa tu dirección de correo electrónico",
     },
 
@@ -282,7 +283,8 @@ export default {
         platform: "Plataforma:",
         selectPlatform: "Seleccionar plataforma",
         onlyAvailableFor: (project: string, platform: string) => `${project} solo está disponible para ${platform}`,
-        noVersionsAvailableFor: (gameVersion: string, loader: string) => `No hay versiones disponibles para la ${gameVersion} en ${loader}`,
+        noVersionsAvailableFor: (gameVersion: string, loader: string) =>
+            `No hay versiones disponibles para la ${gameVersion} en ${loader}`,
         declinedInvitation: "Invitación rechazada",
         teamInvitationTitle: (teamType: string) => `Invitación para unirse a un equipo (${teamType})`, // teamType = organization | project
         teamInviteDesc: (teamType: string, role: string) =>
@@ -319,11 +321,13 @@ export default {
             selectTags: "Seleccionar etiquetas",
             selectTagsDesc: "Selecciona todas las etiquetas que correspondan a tu proyecto.",
             addExtLinks: "Añadir enlaces externos",
-            addExtLinksDesc: "Añade enlaces relevantes, como fuentes, un sitio web para rastrear errores o una invitación de Discord.",
+            addExtLinksDesc:
+                "Añade enlaces relevantes, como fuentes, un sitio web para rastrear errores o una invitación de Discord.",
             selectLicense: "Seleccionar licencia",
             selectLicenseDesc: (projectType: string) => `Selecciona la licencia bajo la cual se distribuye tu ${projectType}.`,
             selectEnv: "Seleccionar entornos compatibles",
-            selectEnvDesc: (projectType: string) => `Selecciona si el ${projectType} funciona en el lado del cliente o del servidor.`,
+            selectEnvDesc: (projectType: string) =>
+                `Selecciona si el ${projectType} funciona en el lado del cliente o del servidor.`,
             requiredStepsDesc: "Todo lo que está marcado con un asterisco (*) es obligatorio",
             submitForReview: "Enviar para revisión",
             submitForReviewDesc:
@@ -408,7 +412,8 @@ export default {
         upload: "Subir",
         externalLinks: "Enlaces externos",
         issueTracker: "Rastreador de problemas",
-        issueTrackerDesc: "Un sitio donde los usuarios puedan informar sobre errores o discutir temas relacionados con tu proyecto.",
+        issueTrackerDesc:
+            "Un sitio donde los usuarios puedan informar sobre errores o discutir temas relacionados con tu proyecto.",
         sourceCode: "Código fuente",
         sourceCodeDesc: "Una página o repositorio que contiene el código fuente de tu proyecto.",
         wikiPage: "Página wiki",
@@ -513,7 +518,8 @@ export default {
         orgDoesntHaveProjects: "Esta organización no tiene proyectos aún.",
         manageProjects: "Gestionar proyectos",
         orgSettings: "Ajustes de la organización",
-        transferProjectsTip: "Puedes transferir tus proyectos existentes a esta organización desde: Ajustes del proyecto > Miembros",
+        transferProjectsTip:
+            "Puedes transferir tus proyectos existentes a esta organización desde: Ajustes del proyecto > Miembros",
         noProjects_CreateOne: "Esta organización no tiene proyectos. Haz clic en el botón de arriba para crear uno.",
         orgInfo: "Información de la organización",
         deleteOrg: "Eliminar organización",

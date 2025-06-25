@@ -113,7 +113,10 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
                             <div className="w-full flex flex-col items-center justify-center">
                                 <div className="w-full flex flex-wrap sm:flex-nowrap items-center justify-between bg-shallow-background rounded px-4 py-3 gap-x-4 gap-y-2 rounded-b-none">
                                     <div className="w-full flex items-center justify-start gap-1.5">
-                                        <FileIcon aria-hidden className="flex-shrink-0 w-btn-icon h-btn-icon text-muted-foreground" />
+                                        <FileIcon
+                                            aria-hidden
+                                            className="flex-shrink-0 w-btn-icon h-btn-icon text-muted-foreground"
+                                        />
 
                                         <div className="flex items-center flex-wrap justify-start gap-x-2">
                                             <span className="font-semibold">{t.project.currImage}</span>
@@ -209,7 +212,11 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
                                             id="gallery-item-featured"
                                         >
                                             {field.value === true ? (
-                                                <StarIcon aria-hidden fill="currentColor" className="w-btn-icon-md h-btn-icon-md" />
+                                                <StarIcon
+                                                    aria-hidden
+                                                    fill="currentColor"
+                                                    className="w-btn-icon-md h-btn-icon-md"
+                                                />
                                             ) : (
                                                 <StarIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
                                             )}
@@ -226,7 +233,11 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
                                 </DialogClose>
 
                                 <Button type="submit" disabled={isLoading}>
-                                    {isLoading ? <LoadingSpinner size="xs" /> : <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />}
+                                    {isLoading ? (
+                                        <LoadingSpinner size="xs" />
+                                    ) : (
+                                        <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                    )}
                                     {t.form.saveChanges}
                                 </Button>
                             </DialogFooter>

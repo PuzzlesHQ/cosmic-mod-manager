@@ -38,7 +38,10 @@ function CopyBtn({ id, text, label, className, labelClassName, iconClassName, ma
             id={`copy-btn-${text}-${label}`}
             variant="ghost"
             aria-label="Copy"
-            className={cn("w-fit h-fit px-1 py-0 min-h-6 min-w-6 gap-2 shrink-0 flex items-center justify-center rounded-md", className)}
+            className={cn(
+                "w-fit h-fit px-1 py-0 min-h-6 min-w-6 gap-2 shrink-0 flex items-center justify-center rounded-md",
+                className,
+            )}
             onClick={copyText}
         >
             {label ? (

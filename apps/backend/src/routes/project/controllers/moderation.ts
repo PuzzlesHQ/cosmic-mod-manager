@@ -33,15 +33,20 @@ export async function QueueProjectForApproval(projectId: string, userSession: Co
         }
     }
 
-    if (project.status !== ProjectPublishingStatus.DRAFT && !RejectedStatuses.includes(project.status as ProjectPublishingStatus)) {
+    if (
+        project.status !== ProjectPublishingStatus.DRAFT &&
+        !RejectedStatuses.includes(project.status as ProjectPublishingStatus)
+    ) {
         return invalidReqestResponseData("You cannot request for approval in project's current state!");
     }
 
     // Check if the project is eligible to be queued for approval
     // If project doesn't have any supported game versions, that means it hasn't uploaded any versions yet
-    if (project.gameVersions.length <= 0) return invalidReqestResponseData("Project submitted for approval without any initial versions!");
+    if (project.gameVersions.length <= 0)
+        return invalidReqestResponseData("Project submitted for approval without any initial versions!");
     if (!project.description?.length) return invalidReqestResponseData("Project submitted for approval without a description!");
-    if (!project.licenseId && !project.licenseName) return invalidReqestResponseData("Project submitted for approval without a license!");
+    if (!project.licenseId && !project.licenseName)
+        return invalidReqestResponseData("Project submitted for approval without a license!");
 
     const newStatus = ProjectPublishingStatus.PROCESSING;
 

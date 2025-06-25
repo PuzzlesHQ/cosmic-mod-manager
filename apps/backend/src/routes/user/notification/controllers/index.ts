@@ -54,7 +54,12 @@ export async function getNotificationById(ctx: Context, userSession: ContextUser
     return { data: notification, status: HTTP_STATUS.OK };
 }
 
-export async function markNotificationAsRead(ctx: Context, userSession: ContextUserData, notificationIds: string[], notifUserId: string) {
+export async function markNotificationAsRead(
+    ctx: Context,
+    userSession: ContextUserData,
+    notificationIds: string[],
+    notifUserId: string,
+) {
     const notifications = await prisma.notification.findMany({
         where: {
             id: {
@@ -98,7 +103,12 @@ export async function markNotificationAsRead(ctx: Context, userSession: ContextU
     return { data: { success: true, message: "Notifications marked as read." }, status: HTTP_STATUS.OK };
 }
 
-export async function deleteNotifications(ctx: Context, userSession: ContextUserData, userSlug: string, notificationIds: string[]) {
+export async function deleteNotifications(
+    ctx: Context,
+    userSession: ContextUserData,
+    userSlug: string,
+    notificationIds: string[],
+) {
     if (!hasNotificationAccess(userSession, userSlug)) {
         await addInvalidAuthAttempt(ctx);
         return unauthorizedReqResponseData();
@@ -131,6 +141,8 @@ export async function deleteNotifications(ctx: Context, userSession: ContextUser
 // Helpers
 export function hasNotificationAccess(session: ContextUserData, notificationUser: string) {
     return (
-        session.id === notificationUser || session.userName.toLowerCase() === notificationUser.toLowerCase() || isModerator(session.role)
+        session.id === notificationUser ||
+        session.userName.toLowerCase() === notificationUser.toLowerCase() ||
+        isModerator(session.role)
     );
 }

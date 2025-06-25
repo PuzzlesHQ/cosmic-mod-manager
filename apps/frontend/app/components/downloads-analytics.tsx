@@ -212,7 +212,9 @@ export default function DownloadsAnalyticsChart(props: DownloadsAnalyticsProps) 
                         {analyticsData.loading ? (
                             <WanderingCubesSpinner />
                         ) : (
-                            <span className="text-md text-center font-mono text-extra-muted-foreground">{t.graph.noDataAvailable}</span>
+                            <span className="text-md text-center font-mono text-extra-muted-foreground">
+                                {t.graph.noDataAvailable}
+                            </span>
                         )}
                     </div>
                 )}

@@ -71,7 +71,13 @@ export default function TeamInvitationBanner({ teamId, role, className, refreshD
                     {t.common.accept}
                 </Button>
 
-                <Button className="" size="sm" variant="secondary-destructive" disabled={isLoading.value} onClick={handleDeclineInvite}>
+                <Button
+                    className=""
+                    size="sm"
+                    variant="secondary-destructive"
+                    disabled={isLoading.value}
+                    onClick={handleDeclineInvite}
+                >
                     {isLoading.value === true && isLoading.action === "decline" ? (
                         <LoadingSpinner size="xs" />
                     ) : (

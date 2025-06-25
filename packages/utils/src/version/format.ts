@@ -25,10 +25,12 @@ export function formatVersionsForDisplay(gameVersions: string[]) {
     const inputVersions = sortVersionsWithReference(gameVersions, AllGameVersions);
 
     const allReleases = allVersions.filter(
-        (version) => version.releaseType === GameVersionReleaseType.RELEASE || version.releaseType === GameVersionReleaseType.ALPHA,
+        (version) =>
+            version.releaseType === GameVersionReleaseType.RELEASE || version.releaseType === GameVersionReleaseType.ALPHA,
     );
     const allSnapshots = allVersions.filter(
-        (version) => version.releaseType === GameVersionReleaseType.SNAPSHOT || version.releaseType === GameVersionReleaseType.PRE_RELEASE,
+        (version) =>
+            version.releaseType === GameVersionReleaseType.SNAPSHOT || version.releaseType === GameVersionReleaseType.PRE_RELEASE,
     );
     const allLegacy = allVersions.filter(
         (version) =>
@@ -119,7 +121,9 @@ function groupVersions(versions: string[], consecutive = false) {
 
                 let prevInRange: Range | undefined;
 
-                prevInRange = ranges.find((x) => x.major === majorVersion && (!consecutive || x.minor.at(-1) === minorNumeric - 1));
+                prevInRange = ranges.find(
+                    (x) => x.major === majorVersion && (!consecutive || x.minor.at(-1) === minorNumeric - 1),
+                );
                 if (prevInRange) {
                     prevInRange.minor.push(minorNumeric);
                     return ranges;

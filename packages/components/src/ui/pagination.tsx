@@ -106,7 +106,11 @@ PaginationNext.displayName = "PaginationNext";
 
 function PaginationEllipsis({ className, ...props }: React.ComponentProps<"span">) {
     return (
-        <span aria-hidden className={cn("flex h-iconified-btn w-iconified-btn items-center justify-center", className)} {...props}>
+        <span
+            aria-hidden
+            className={cn("flex h-iconified-btn w-iconified-btn items-center justify-center", className)}
+            {...props}
+        >
             <MoreHorizontalIcon aria-hidden className="w-btn-icon h-btn-icon text-extra-muted-foreground" />
             <span className="sr-only">More pages</span>
         </span>

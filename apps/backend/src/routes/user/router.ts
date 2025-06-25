@@ -22,7 +22,12 @@ import {
     removeAccountPassword,
     sendAccountPasswordChangeLink,
 } from "~/routes/user/controllers/account";
-import { getAllVisibleProjects, getUserFollowedProjects, getUserProfileData, updateUserProfile } from "~/routes/user/controllers/profile";
+import {
+    getAllVisibleProjects,
+    getUserFollowedProjects,
+    getUserProfileData,
+    updateUserProfile,
+} from "~/routes/user/controllers/profile";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { HTTP_STATUS, invalidReqestResponse, serverErrorResponse, unauthorizedReqResponse } from "~/utils/http";
 import { getUserFromCtx } from "../auth/helpers/session";

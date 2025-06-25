@@ -92,7 +92,9 @@ export async function getAllProjectVersions(slug: string, userSession: ContextUs
                       id: version.author.id,
                       userName: version.author.userName,
                       avatar: userIconUrl(version.author.id, version.author.avatar),
-                      role: getCurrMember(version.author?.id, project.team.members, project.organisation?.team.members || [])?.role || "",
+                      role:
+                          getCurrMember(version.author?.id, project.team.members, project.organisation?.team.members || [])
+                              ?.role || "",
                   }
                 : DELETED_USER_AUTHOR_OBJ,
             dependencies: version.dependencies.map((dependency) => ({
@@ -127,7 +129,11 @@ interface GetLatestVersionFilters {
     loader?: string;
 }
 
-export async function getLatestVersion(projectSlug: string, userSession: ContextUserData | undefined, filters: GetLatestVersionFilters) {
+export async function getLatestVersion(
+    projectSlug: string,
+    userSession: ContextUserData | undefined,
+    filters: GetLatestVersionFilters,
+) {
     const whereInput: Prisma.VersionWhereInput = {};
     if (filters.releaseChannel?.length) whereInput.releaseChannel = { in: GetReleaseChannelFilter(filters.releaseChannel) };
     if (filters.gameVersion?.length) whereInput.gameVersions = { has: filters.gameVersion };

@@ -4,7 +4,12 @@ import { cn } from "~/utils";
 
 export function Panel({ children, className }: { children: React.ReactNode; className?: string }) {
     return (
-        <div className={cn("w-full gap-panel-cards relative grid place-items-start grid-cols-1 lg:grid-cols-[min-content_1fr]", className)}>
+        <div
+            className={cn(
+                "w-full gap-panel-cards relative grid place-items-start grid-cols-1 lg:grid-cols-[min-content_1fr]",
+                className,
+            )}
+        >
             {children}
         </div>
     );
@@ -16,11 +21,20 @@ export function PanelAside({ children, className, aside }: { children: React.Rea
 }
 
 export function PanelContent({ children, className, main }: { children: React.ReactNode; className?: string; main?: boolean }) {
-    if (main === true) return <main className={cn("w-full grid grid-cols-1 overflow-auto gap-panel-cards", className)}>{children}</main>;
+    if (main === true)
+        return <main className={cn("w-full grid grid-cols-1 overflow-auto gap-panel-cards", className)}>{children}</main>;
     return <div className={cn("w-full grid grid-cols-1 overflow-auto gap-panel-cards", className)}>{children}</div>;
 }
 
-export function PanelAsideNavCard({ children, className, label }: { children: React.ReactNode; className?: string; label: string }) {
+export function PanelAsideNavCard({
+    children,
+    className,
+    label,
+}: {
+    children: React.ReactNode;
+    className?: string;
+    label: string;
+}) {
     return (
         <Card className={cn("w-full gap-1 flex flex-col items-start justify-center p-4", className)}>
             <CardHeader className="p-0">

@@ -12,7 +12,10 @@ const sendEmailLimiterBucket = new TokenBucket(sendEmailLimit.namespace, sendEma
 export async function sendEmailRateLimiter(ctx: Context, next: Next) {
     const ipAddr = getUserIpAddress(ctx);
     if (!ipAddr) {
-        return ctx.json({ message: "Cannot get request's IP Address. Although this should never happen, but if it does, idk :)" }, 500);
+        return ctx.json(
+            { message: "Cannot get request's IP Address. Although this should never happen, but if it does, idk :)" },
+            500,
+        );
     }
 
     const res = await sendEmailLimiterBucket.consume(ipAddr);

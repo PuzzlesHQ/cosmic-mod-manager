@@ -2,7 +2,14 @@ import { isModerator } from "@app/utils/constants/roles";
 import type { z } from "@app/utils/schemas";
 import type { createThreadMessage_Schema } from "@app/utils/schemas/thread";
 import { GlobalUserRole } from "@app/utils/types";
-import { type MessageBody, MessageType, type Thread, type ThreadMember, type ThreadMessage, ThreadType } from "@app/utils/types/api/thread";
+import {
+    type MessageBody,
+    MessageType,
+    type Thread,
+    type ThreadMember,
+    type ThreadMessage,
+    ThreadType,
+} from "@app/utils/types/api/thread";
 import type { Thread as DB_Thread } from "@prisma/client";
 import { GetProject_Details } from "~/db/project_item";
 import { GetManyUsers_ByIds } from "~/db/user_item";
@@ -114,7 +121,11 @@ export async function GetThreadMessages(user: ContextUserData, threadId: string)
     };
 }
 
-export async function CreateThreadMessage(user: ContextUserData, threadId: string, data: z.infer<typeof createThreadMessage_Schema>) {
+export async function CreateThreadMessage(
+    user: ContextUserData,
+    threadId: string,
+    data: z.infer<typeof createThreadMessage_Schema>,
+) {
     if (data.isPrivate && !isModerator(user.role)) return unauthorizedReqResponseData("You cannot send private messages!");
 
     const thread = await prisma.thread.findUnique({

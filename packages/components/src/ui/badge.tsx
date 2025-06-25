@@ -46,7 +46,9 @@ const notificationBadgeVariants = cva(
     },
 );
 
-export interface NotificationBadgeProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof notificationBadgeVariants> {}
+export interface NotificationBadgeProps
+    extends React.HTMLAttributes<HTMLDivElement>,
+        VariantProps<typeof notificationBadgeVariants> {}
 
 export function NotificationBadge({ className, variant, align, ...props }: NotificationBadgeProps) {
     return <div className={cn(notificationBadgeVariants({ variant, align }), className)} {...props} />;

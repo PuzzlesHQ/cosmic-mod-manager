@@ -339,8 +339,17 @@ function FilterCategory({
             >
                 <h3 className="font-bold text-base">{label}</h3>
                 {collapsible && (
-                    <button type="button" onClick={toggleVisibility} className="text-extra-muted-foreground" aria-label="Toggle visibility">
-                        {isOpen ? <ChevronUpIcon aria-hidden className="w-5 h-5" /> : <ChevronDownIcon aria-hidden className="w-5 h-5" />}
+                    <button
+                        type="button"
+                        onClick={toggleVisibility}
+                        className="text-extra-muted-foreground"
+                        aria-label="Toggle visibility"
+                    >
+                        {isOpen ? (
+                            <ChevronUpIcon aria-hidden className="w-5 h-5" />
+                        ) : (
+                            <ChevronDownIcon aria-hidden className="w-5 h-5" />
+                        )}
                     </button>
                 )}
             </div>

@@ -98,7 +98,11 @@ export function getLoadersFromNames(loaderNames: string[]) {
     return loadersList;
 }
 
-export function getEnumEntryFromStr<T extends object, K>(str: string | undefined | null, enumObj: T, defaultValue: K): T[keyof T] | K {
+export function getEnumEntryFromStr<T extends object, K>(
+    str: string | undefined | null,
+    enumObj: T,
+    defaultValue: K,
+): T[keyof T] | K {
     if (!str) return defaultValue;
 
     return Object.values(enumObj).find((v) => v === str) || defaultValue;

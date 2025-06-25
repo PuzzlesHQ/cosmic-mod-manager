@@ -1,11 +1,15 @@
 import type { Prisma } from "@prisma/client";
 import prisma from "~/services/prisma";
 
-export function GetSession_Unique<T extends Prisma.SessionFindUniqueArgs>(args: Prisma.SelectSubset<T, Prisma.SessionFindUniqueArgs>) {
+export function GetSession_Unique<T extends Prisma.SessionFindUniqueArgs>(
+    args: Prisma.SelectSubset<T, Prisma.SessionFindUniqueArgs>,
+) {
     return prisma.session.findUnique(args);
 }
 
-export function GetSession_First<T extends Prisma.SessionFindFirstArgs>(args: Prisma.SelectSubset<T, Prisma.SessionFindFirstArgs>) {
+export function GetSession_First<T extends Prisma.SessionFindFirstArgs>(
+    args: Prisma.SelectSubset<T, Prisma.SessionFindFirstArgs>,
+) {
     return prisma.session.findFirst(args);
 }
 
@@ -25,6 +29,8 @@ export function DeleteSession<T extends Prisma.SessionDeleteArgs>(args: Prisma.S
     return prisma.session.delete(args);
 }
 
-export function DeleteManySessions<T extends Prisma.SessionDeleteManyArgs>(args: Prisma.SelectSubset<T, Prisma.SessionDeleteManyArgs>) {
+export function DeleteManySessions<T extends Prisma.SessionDeleteManyArgs>(
+    args: Prisma.SelectSubset<T, Prisma.SessionDeleteManyArgs>,
+) {
     return prisma.session.deleteMany(args);
 }

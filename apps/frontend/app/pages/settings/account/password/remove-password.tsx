@@ -94,7 +94,12 @@ export default function RemovePasswordForm() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel htmlFor="password-input">{t.auth.password}</FormLabel>
-                                        <Input {...field} type="password" id="password-input" placeholder={t.settings.enterCurrentPass} />
+                                        <Input
+                                            {...field}
+                                            type="password"
+                                            id="password-input"
+                                            placeholder={t.settings.enterCurrentPass}
+                                        />
                                         <FormMessage />
                                     </FormItem>
                                 )}

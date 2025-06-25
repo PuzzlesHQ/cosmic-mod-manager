@@ -12,7 +12,10 @@ const modifyLimiter = new TokenBucket(modifyLimit.namespace, modifyLimit.max, mo
 export async function modifyReqRateLimiter(ctx: Context, next: Next) {
     const ipAddr = getUserIpAddress(ctx);
     if (!ipAddr) {
-        return ctx.json({ message: "Cannot get request's IP Address. Although this should never happen, but if it does, idk :)" }, 500);
+        return ctx.json(
+            { message: "Cannot get request's IP Address. Although this should never happen, but if it does, idk :)" },
+            500,
+        );
     }
 
     const res = await modifyLimiter.consume(ipAddr);
@@ -32,7 +35,10 @@ const critModifyLimiter = new TokenBucket(critModifyLimit.namespace, critModifyL
 export async function critModifyReqRateLimiter(ctx: Context, next: Next) {
     const ipAddr = getUserIpAddress(ctx);
     if (!ipAddr) {
-        return ctx.json({ message: "Cannot get request's IP Address. Although this should never happen, but if it does, idk :)" }, 500);
+        return ctx.json(
+            { message: "Cannot get request's IP Address. Although this should never happen, but if it does, idk :)" },
+            500,
+        );
     }
 
     const res = await critModifyLimiter.consume(ipAddr);

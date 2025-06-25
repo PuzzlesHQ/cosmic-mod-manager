@@ -22,7 +22,16 @@ import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import { MarkdownRenderBox } from "~/md-editor/render-md";
 import { Button, CancelButton } from "~/ui/button";
-import { Dialog, DialogBody, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "~/ui/dialog";
+import {
+    Dialog,
+    DialogBody,
+    DialogClose,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "~/ui/dialog";
 import { FormErrorMessage } from "~/ui/form-message";
 import { Input } from "~/ui/input";
 import { Label } from "~/ui/label";
@@ -365,7 +374,9 @@ export default function MarkdownEditor({
 
                 <div className="mt-2 flex w-full items-start justify-center gap-2">
                     {/* Editor area */}
-                    <div className={cn("flex w-full flex-col items-center justify-center gap-2", previewOpen === true && "hidden")}>
+                    <div
+                        className={cn("flex w-full flex-col items-center justify-center gap-2", previewOpen === true && "hidden")}
+                    >
                         <Textarea
                             name="markdown-textarea"
                             placeholder={placeholder}
@@ -418,14 +429,20 @@ export default function MarkdownEditor({
                                     <InfoIcon aria-hidden className="w-btn-icon h-btn-icon" />
                                     <MarkdownRenderBox text={`${t.supportsMarkdown("/md-editor")}`} />
                                 </div>
-                                <KeyboardShortcutsDialog open={keyboardShortcutsModalOpen} setOpen={setKeyboardShortcutsModalOpen} t={t}>
+                                <KeyboardShortcutsDialog
+                                    open={keyboardShortcutsModalOpen}
+                                    setOpen={setKeyboardShortcutsModalOpen}
+                                    t={t}
+                                >
                                     <div className="hidden lg:flex items-center justify-center gap-2 cursor-pointer font-mono">
                                         <span>{t.keyboardShortcuts}</span>
                                         <div className="flex items-center justify-center gap-1 font-mono">
                                             <span className="flex items-center justify-center bg-shallow-background rounded px-1">
                                                 ctrl
                                             </span>
-                                            <span className="flex items-center justify-center bg-shallow-background rounded px-1">/</span>
+                                            <span className="flex items-center justify-center bg-shallow-background rounded px-1">
+                                                /
+                                            </span>
                                         </div>
                                     </div>
                                 </KeyboardShortcutsDialog>
@@ -648,7 +665,9 @@ function LinkInsertionModal({
                 <div className="flex w-full flex-col items-start justify-center gap-1.5">
                     <Label htmlFor="markdown-editor-link-label-input" className="flex items-center justify-center">
                         {altTextInputLabel}{" "}
-                        {isAltTextRequired && <span className="flex h-full items-start justify-center text-accent-foreground">*</span>}
+                        {isAltTextRequired && (
+                            <span className="flex h-full items-start justify-center text-accent-foreground">*</span>
+                        )}
                     </Label>
                     <Input
                         type="text"

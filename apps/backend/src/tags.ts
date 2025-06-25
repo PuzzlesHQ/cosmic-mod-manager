@@ -25,7 +25,15 @@ const tagsRouter = new Hono()
     .get("/licenses/:id", licenses_get)
     .get("/project-types", projectTypes_get);
 
-function getCategories({ projectType, headerType, namesOnly }: { projectType?: ProjectType; headerType?: TagType; namesOnly?: boolean }) {
+function getCategories({
+    projectType,
+    headerType,
+    namesOnly,
+}: {
+    projectType?: ProjectType;
+    headerType?: TagType;
+    namesOnly?: boolean;
+}) {
     const list = getValidProjectCategories(projectType ? [projectType] : [], headerType);
 
     if (namesOnly) {

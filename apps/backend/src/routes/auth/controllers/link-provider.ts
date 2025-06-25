@@ -9,7 +9,12 @@ import prisma from "~/services/prisma";
 import type { ContextUserData } from "~/types";
 import { HTTP_STATUS, invalidReqestResponseData } from "~/utils/http";
 
-export async function linkAuthProviderHandler(ctx: Context, userSession: ContextUserData, authProvider: string, tokenExchangeCode: string) {
+export async function linkAuthProviderHandler(
+    ctx: Context,
+    userSession: ContextUserData,
+    authProvider: string,
+    tokenExchangeCode: string,
+) {
     const profileData = await getAuthProviderProfileData(authProvider, tokenExchangeCode);
 
     if (!profileData || !profileData?.email || !profileData?.providerName || !profileData?.providerAccountId) {

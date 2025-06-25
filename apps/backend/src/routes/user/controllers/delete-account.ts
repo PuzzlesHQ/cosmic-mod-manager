@@ -23,7 +23,10 @@ export async function confirmUserAccountDeletion(token: string) {
         where: { accessCode: tokenHash, confirmationType: ConfirmationType.DELETE_USER_ACCOUNT },
     });
 
-    if (!confirmationEmail?.id || !isConfirmationCodeValid(confirmationEmail.dateCreated, DELETE_USER_ACCOUNT_EMAIL_VALIDITY_ms)) {
+    if (
+        !confirmationEmail?.id ||
+        !isConfirmationCodeValid(confirmationEmail.dateCreated, DELETE_USER_ACCOUNT_EMAIL_VALIDITY_ms)
+    ) {
         return invalidReqestResponseData("Expired or invalid code");
     }
     if (confirmationEmail.userId === env.ARCHIVE_USER_ID) {

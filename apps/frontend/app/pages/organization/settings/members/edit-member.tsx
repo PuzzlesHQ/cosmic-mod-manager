@@ -164,7 +164,9 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                                             {t.projectSettings.role}
                                             <FormMessage />
                                         </FormLabel>
-                                        <span className="text-muted-foreground/90 leading-tight">{t.projectSettings.roleDesc}</span>
+                                        <span className="text-muted-foreground/90 leading-tight">
+                                            {t.projectSettings.roleDesc}
+                                        </span>
                                     </div>
                                     <Input
                                         {...field}

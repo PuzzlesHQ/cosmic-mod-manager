@@ -77,8 +77,15 @@ export default function DescriptionSettings() {
                     />
 
                     <div className="w-full flex items-center justify-end">
-                        <Button type="submit" disabled={(ctx.projectData.description || "") === form.getValues().description || isLoading}>
-                            {isLoading ? <LoadingSpinner size="xs" /> : <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />}
+                        <Button
+                            type="submit"
+                            disabled={(ctx.projectData.description || "") === form.getValues().description || isLoading}
+                        >
+                            {isLoading ? (
+                                <LoadingSpinner size="xs" />
+                            ) : (
+                                <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                            )}
                             {t.form.saveChanges}
                         </Button>
                     </div>

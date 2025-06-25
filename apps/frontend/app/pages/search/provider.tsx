@@ -61,7 +61,9 @@ export function SearchProvider(props: SearchProviderProps) {
 
     const navigated_ProjectType = useProjectType(navigation?.location?.pathname || "");
     const nextPathname_WithoutLocalePrefix = (navigation?.location?.pathname || "").replace(localePrefix, "").replaceAll("/", "");
-    const isNavigatedPage_SearchPage = ["project", ...projectTypes].map((t) => `${t}s`).includes(nextPathname_WithoutLocalePrefix);
+    const isNavigatedPage_SearchPage = ["project", ...projectTypes]
+        .map((t) => `${t}s`)
+        .includes(nextPathname_WithoutLocalePrefix);
 
     const [query, setQuery] = useState({
         isLoading: false,
@@ -76,7 +78,10 @@ export function SearchProvider(props: SearchProviderProps) {
             data: query.data || null,
         });
 
-        const res = await getSearchResults(searchParams.toString(), projectType_Coerced === projectType ? projectType_Coerced : undefined);
+        const res = await getSearchResults(
+            searchParams.toString(),
+            projectType_Coerced === projectType ? projectType_Coerced : undefined,
+        );
         setQuery({ isLoading: false, isFetching: false, data: res });
     }
 

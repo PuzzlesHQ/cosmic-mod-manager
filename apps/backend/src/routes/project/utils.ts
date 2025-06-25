@@ -158,7 +158,9 @@ export async function deleteVersionFiles(projectId: string, versionId: string, f
         if (!file) continue;
 
         fileIds.push(file.id);
-        promises.push(deleteProjectVersionFile(file.storageService as FILE_STORAGE_SERVICE, projectId, versionId, `/${file.name}`));
+        promises.push(
+            deleteProjectVersionFile(file.storageService as FILE_STORAGE_SERVICE, projectId, versionId, `/${file.name}`),
+        );
     }
 
     // Delete files from database

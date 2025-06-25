@@ -165,7 +165,9 @@ export async function getManyProjects(userSession: ContextUserData | undefined, 
         if (!projectAccessible) continue;
 
         const isOrgOwned = !!project.organisationId;
-        const author = isOrgOwned ? project.organisation?.slug : project.team.members.find((member) => member.isOwner)?.user.userName;
+        const author = isOrgOwned
+            ? project.organisation?.slug
+            : project.team.members.find((member) => member.isOwner)?.user.userName;
 
         projectsList.push({
             icon: projectIconUrl(project.id, project.iconFileId),

@@ -41,7 +41,11 @@ function DropdownMenuSubTrigger({
 }
 DropdownMenuSubTrigger.displayName = DropdownMenuPrimitive.SubTrigger.displayName;
 
-function DropdownMenuSubContent({ ref, className, ...props }: React.ComponentPropsWithRef<typeof DropdownMenuPrimitive.SubContent>) {
+function DropdownMenuSubContent({
+    ref,
+    className,
+    ...props
+}: React.ComponentPropsWithRef<typeof DropdownMenuPrimitive.SubContent>) {
     return (
         <DropdownMenuPrimitive.SubContent
             ref={ref}
@@ -163,13 +167,27 @@ function DropdownMenuLabel({
     inset?: boolean;
 }) {
     return (
-        <DropdownMenuPrimitive.Label ref={ref} className={cn("px-2 py-1.5 text-sm font-semibold", inset && "ps-8", className)} {...props} />
+        <DropdownMenuPrimitive.Label
+            ref={ref}
+            className={cn("px-2 py-1.5 text-sm font-semibold", inset && "ps-8", className)}
+            {...props}
+        />
     );
 }
 DropdownMenuLabel.displayName = DropdownMenuPrimitive.Label.displayName;
 
-function DropdownMenuSeparator({ ref, className, ...props }: React.ComponentPropsWithRef<typeof DropdownMenuPrimitive.Separator>) {
-    return <DropdownMenuPrimitive.Separator ref={ref} className={cn("-mx-1 my-1 h-px bg-shallow-background", className)} {...props} />;
+function DropdownMenuSeparator({
+    ref,
+    className,
+    ...props
+}: React.ComponentPropsWithRef<typeof DropdownMenuPrimitive.Separator>) {
+    return (
+        <DropdownMenuPrimitive.Separator
+            ref={ref}
+            className={cn("-mx-1 my-1 h-px bg-shallow-background", className)}
+            {...props}
+        />
+    );
 }
 DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName;
 

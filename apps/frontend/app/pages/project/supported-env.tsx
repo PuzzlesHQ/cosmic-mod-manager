@@ -80,7 +80,11 @@ export function ProjectSupprotedEnvironments({
     }
 
     if (clientSide === EnvironmentSupport.OPTIONAL && serverSide === EnvironmentSupport.OPTIONAL) {
-        return [<ServerSide key="Server-side" />, <ClientSide key="Client-side" />, <ClientAndServerSide key="Client-and-server" />];
+        return [
+            <ServerSide key="Server-side" />,
+            <ClientSide key="Client-side" />,
+            <ClientAndServerSide key="Client-and-server" />,
+        ];
     }
 
     if (clientSide === EnvironmentSupport.REQUIRED && serverSide === EnvironmentSupport.OPTIONAL) {

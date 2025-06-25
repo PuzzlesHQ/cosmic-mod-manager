@@ -29,7 +29,10 @@ const confirmationEmailValidityDict = {
     [ConfirmationType.DELETE_USER_ACCOUNT]: DELETE_USER_ACCOUNT_EMAIL_VALIDITY_ms,
 };
 
-export async function addNewPassword_ConfirmationEmail(userSession: ContextUserData, formData: z.infer<typeof setNewPasswordFormSchema>) {
+export async function addNewPassword_ConfirmationEmail(
+    userSession: ContextUserData,
+    formData: z.infer<typeof setNewPasswordFormSchema>,
+) {
     if (formData.newPassword !== formData.confirmNewPassword)
         return { data: { success: false, message: "Passwords do not match" }, status: HTTP_STATUS.BAD_REQUEST };
 
@@ -168,7 +171,10 @@ export async function removeAccountPassword(
     return { data: { success: true, message: "Account password removed successfully" }, status: HTTP_STATUS.OK };
 }
 
-export async function sendAccountPasswordChangeLink(ctx: Context, formData: z.infer<typeof sendAccoutPasswordChangeLinkFormSchema>) {
+export async function sendAccountPasswordChangeLink(
+    ctx: Context,
+    formData: z.infer<typeof sendAccoutPasswordChangeLinkFormSchema>,
+) {
     const targetUser = await GetUser_Unique({
         where: {
             email: formData.email,
@@ -234,7 +240,10 @@ export async function changeUserPassword(
         return invalidReqestResponseData();
     }
 
-    if (!confirmationEmail?.userId || !isConfirmationCodeValid(confirmationEmail.dateCreated, CHANGE_ACCOUNT_PASSWORD_EMAIL_VALIDITY_ms)) {
+    if (
+        !confirmationEmail?.userId ||
+        !isConfirmationCodeValid(confirmationEmail.dateCreated, CHANGE_ACCOUNT_PASSWORD_EMAIL_VALIDITY_ms)
+    ) {
         return invalidReqestResponseData();
     }
     const hashedPassword = await hashPassword(formData.newPassword);

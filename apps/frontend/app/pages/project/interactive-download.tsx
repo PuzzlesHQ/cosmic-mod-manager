@@ -17,7 +17,11 @@ import {
 import { ReleaseChannelBadge } from "@app/components/ui/release-channel-pill";
 import { VisuallyHidden } from "@app/components/ui/visually-hidden";
 import { cn } from "@app/components/utils";
-import { getGameVersionFromValue, getGameVersionsFromValues, isExperimentalGameVersion } from "@app/utils/src/constants/game-versions";
+import {
+    getGameVersionFromValue,
+    getGameVersionsFromValues,
+    isExperimentalGameVersion,
+} from "@app/utils/src/constants/game-versions";
 import { CapitalizeAndFormatString } from "@app/utils/string";
 import { VersionReleaseChannel } from "@app/utils/types";
 import type { ProjectVersionData } from "@app/utils/types/api";
@@ -66,7 +70,11 @@ export default function InteractiveDownloadPopup() {
                 label: gameVersion.label,
                 value: gameVersion.value,
                 disabled: !projectVersion.loaders.includes(selectedLoader),
-                disabledReason: t.project.doesNotSupport(projectData.name, gameVersion.label, CapitalizeAndFormatString(selectedLoader)),
+                disabledReason: t.project.doesNotSupport(
+                    projectData.name,
+                    gameVersion.label,
+                    CapitalizeAndFormatString(selectedLoader),
+                ),
             });
         }
         return list;
@@ -112,7 +120,11 @@ export default function InteractiveDownloadPopup() {
 
     if (!projectData || !allProjectVersions) return null;
 
-    const isVersionDetailsPage = isCurrLinkActive(ProjectPagePath(ctx.projectType, projectData.slug, "version/"), location.pathname, false);
+    const isVersionDetailsPage = isCurrLinkActive(
+        ProjectPagePath(ctx.projectType, projectData.slug, "version/"),
+        location.pathname,
+        false,
+    );
 
     return (
         <Dialog>
@@ -264,7 +276,10 @@ function AvailableVersionsList({ selectedGameVersion, selectedLoader }: Availabl
         if (!projectdata || !allProjectVersions) return [];
         const list: ProjectVersionData[] = [];
         for (const version of allProjectVersions) {
-            if (version.gameVersions.includes(selectedGameVersion) && (!selectedLoader || version.loaders.includes(selectedLoader))) {
+            if (
+                version.gameVersions.includes(selectedGameVersion) &&
+                (!selectedLoader || version.loaders.includes(selectedLoader))
+            ) {
                 const lastItem = list[list.length - 1];
                 if (lastItem && lastItem.releaseChannel === VersionReleaseChannel.RELEASE) break;
                 if (
@@ -291,7 +306,10 @@ function AvailableVersionsList({ selectedGameVersion, selectedLoader }: Availabl
         <div className="w-full flex flex-col items-center justify-center gap-3">
             {versionsList.map((version) => {
                 return (
-                    <div key={version.id} className="w-full flex items-center justify-between gap-x-4 gap-y-2 bg-background p-2 rounded-lg">
+                    <div
+                        key={version.id}
+                        className="w-full flex items-center justify-between gap-x-4 gap-y-2 bg-background p-2 rounded-lg"
+                    >
                         <div className="flex gap-3 items-center justify-start">
                             <ReleaseChannelBadge releaseChannel={version.releaseChannel} />
                             <div className="flex flex-col items-start justify-center gap-1">

@@ -11,7 +11,10 @@ const invalidAuthAttemptsBucket = new TokenBucket(limitObj.namespace, limitObj.m
 export async function invalidAuthAttemptLimiter(ctx: Context, next: Next) {
     const ipAddr = getUserIpAddress(ctx);
     if (!ipAddr) {
-        return serverErrorResponse(ctx, "Cannot get request's IP Address. Although this should never happen, but if it did, idk :)");
+        return serverErrorResponse(
+            ctx,
+            "Cannot get request's IP Address. Although this should never happen, but if it did, idk :)",
+        );
     }
 
     // This is just to read the data, so cost is 0

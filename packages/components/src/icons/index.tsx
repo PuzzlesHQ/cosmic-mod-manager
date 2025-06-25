@@ -266,7 +266,9 @@ export const fallbackOrgIcon = <Building2Icon aria-hidden className="w-[65%] h-[
 export const fallbackUserIcon = <UserIcon aria-hidden className="w-[65%] h-[65%] text-extra-muted-foreground" />;
 
 export const PROJECT_STATUS_ICONS = {
-    [ProjectPublishingStatus.DRAFT]: (className?: string) => <FileText className={cn("inline h-[1.15em] w-[1.15em]", className)} />,
+    [ProjectPublishingStatus.DRAFT]: (className?: string) => (
+        <FileText className={cn("inline h-[1.15em] w-[1.15em]", className)} />
+    ),
     [ProjectPublishingStatus.PROCESSING]: (className?: string) => (
         <LoaderIcon aria-hidden className={cn("inline h-[1.15em] w-[1.15em]", className)} />
     ),

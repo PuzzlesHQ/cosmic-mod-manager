@@ -101,7 +101,10 @@ async function GetVersions_FromDb(projectSlug?: string, projectId?: string) {
 export async function GetVersions(projectSlug?: string, projectId?: string) {
     if (!projectSlug && !projectId) throw new Error("Either the project id or slug is required!");
 
-    const cachedData = await GetData_FromCache<GetVersions_ReturnType>(PROJECT_VERSIONS_CACHE_KEY, projectSlug?.toLowerCase() || projectId);
+    const cachedData = await GetData_FromCache<GetVersions_ReturnType>(
+        PROJECT_VERSIONS_CACHE_KEY,
+        projectSlug?.toLowerCase() || projectId,
+    );
     if (cachedData) return cachedData;
 
     const data = await GetVersions_FromDb(projectSlug, projectId);
@@ -234,7 +237,10 @@ export async function Delete_VersionCache(projectId: string, _projectSlug?: stri
         projectSlug = (await valkey.get(cacheKey(projectId, PROJECT_VERSIONS_CACHE_KEY))) || "";
     }
 
-    const delKeys = valkey.del([cacheKey(projectId, PROJECT_VERSIONS_CACHE_KEY), cacheKey(projectSlug, PROJECT_VERSIONS_CACHE_KEY)]);
+    const delKeys = valkey.del([
+        cacheKey(projectId, PROJECT_VERSIONS_CACHE_KEY),
+        cacheKey(projectSlug, PROJECT_VERSIONS_CACHE_KEY),
+    ]);
     const delProjectCache = Delete_ProjectCache_All(projectId, projectSlug);
 
     await Promise.all([delKeys, delProjectCache]);

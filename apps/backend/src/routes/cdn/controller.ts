@@ -29,7 +29,10 @@ export async function serveVersionFile(
     userSession: ContextUserData | undefined,
     isCdnRequest = true,
 ) {
-    const [project, _projectVersions] = await Promise.all([GetProject_ListItem(undefined, projectId), GetVersions(undefined, projectId)]);
+    const [project, _projectVersions] = await Promise.all([
+        GetProject_ListItem(undefined, projectId),
+        GetVersions(undefined, projectId),
+    ]);
 
     const targetVersion = (_projectVersions?.versions || []).find((version) => version.id === versionId);
     if (!project?.id || !targetVersion?.files?.[0]?.fileId) {
@@ -128,7 +131,9 @@ export async function serveProjectGalleryImage(ctx: Context, projectId: string, 
     const project = await GetProject_Details(undefined, projectId);
     if (!project || !project?.gallery?.[0]?.id) return notFoundResponse(ctx);
 
-    const targetGalleryItem = project.gallery.find((item) => item.imageFileId === imgFileId || item.thumbnailFileId === imgFileId);
+    const targetGalleryItem = project.gallery.find(
+        (item) => item.imageFileId === imgFileId || item.thumbnailFileId === imgFileId,
+    );
     if (!targetGalleryItem) return notFoundResponse(ctx);
 
     const dbFile = await GetFile(imgFileId);

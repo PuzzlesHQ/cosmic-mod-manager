@@ -52,7 +52,11 @@ function SelectScrollUpButton({ ref, className, ...props }: React.ComponentProps
 }
 SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName;
 
-function SelectScrollDownButton({ ref, className, ...props }: React.ComponentPropsWithRef<typeof SelectPrimitive.ScrollDownButton>) {
+function SelectScrollDownButton({
+    ref,
+    className,
+    ...props
+}: React.ComponentPropsWithRef<typeof SelectPrimitive.ScrollDownButton>) {
     return (
         <SelectPrimitive.ScrollDownButton
             ref={ref}
@@ -90,7 +94,8 @@ function SelectContent({
                 <SelectPrimitive.Viewport
                     className={cn(
                         "p-1",
-                        position === "popper" && "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]",
+                        position === "popper" &&
+                            "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]",
                     )}
                 >
                     {children}
@@ -130,7 +135,9 @@ function SelectItem({ ref, className, children, ...props }: React.ComponentProps
 SelectItem.displayName = SelectPrimitive.Item.displayName;
 
 function SelectSeparator({ ref, className, ...props }: React.ComponentPropsWithRef<typeof SelectPrimitive.Separator>) {
-    return <SelectPrimitive.Separator ref={ref} className={cn("-mx-1 my-1 h-px bg-shallower-background", className)} {...props} />;
+    return (
+        <SelectPrimitive.Separator ref={ref} className={cn("-mx-1 my-1 h-px bg-shallower-background", className)} {...props} />
+    );
 }
 SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
 

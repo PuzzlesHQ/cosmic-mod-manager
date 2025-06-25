@@ -42,7 +42,9 @@ export function ImgLoader({ src, alt, className, wrapperClassName, spinner, setL
 
     return (
         <div className={cn("relative", wrapperClassName)}>
-            {!isImageLoaded && thumbnailSrc ? <img src={thumbnailSrc} alt={alt} className={cn("brightness-75", className)} /> : null}
+            {!isImageLoaded && thumbnailSrc ? (
+                <img src={thumbnailSrc} alt={alt} className={cn("brightness-75", className)} />
+            ) : null}
 
             {isImageLoaded ? <img src={src} alt={alt} className={className} /> : null}
 

@@ -53,7 +53,15 @@ function BreadcrumbLink({
 BreadcrumbLink.displayName = "BreadcrumbLink";
 
 function BreadcrumbPage({ ref, className, ...props }: React.ComponentPropsWithRef<"span">) {
-    return <span ref={ref} aria-disabled="true" aria-current="page" className={cn("font-normal text-foreground", className)} {...props} />;
+    return (
+        <span
+            ref={ref}
+            aria-disabled="true"
+            aria-current="page"
+            className={cn("font-normal text-foreground", className)}
+            {...props}
+        />
+    );
 }
 BreadcrumbPage.displayName = "BreadcrumbPage";
 
@@ -73,7 +81,12 @@ BreadcrumbSeparator.displayName = "BreadcrumbSeparator";
 
 function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps<"span">) {
     return (
-        <span role="presentation" aria-hidden="true" className={cn("flex h-9 w-9 items-center justify-center", className)} {...props}>
+        <span
+            role="presentation"
+            aria-hidden="true"
+            className={cn("flex h-9 w-9 items-center justify-center", className)}
+            {...props}
+        >
             <MoreHorizontalIcon aria-hidden className="w-btn-icon h-btn-icon" />
             <span className="sr-only">More</span>
         </span>

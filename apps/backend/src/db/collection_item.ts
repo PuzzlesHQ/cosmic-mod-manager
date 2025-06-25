@@ -100,14 +100,18 @@ export async function GetCollections_ByUserId(userId: string) {
     return collectionIds;
 }
 
-export async function CreateCollection<T extends Prisma.CollectionCreateArgs>(args: Prisma.SelectSubset<T, Prisma.CollectionCreateArgs>) {
+export async function CreateCollection<T extends Prisma.CollectionCreateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.CollectionCreateArgs>,
+) {
     const collection = await prisma.collection.create(args);
     await Delete_UserCollectionsListCache(collection.userId);
 
     return collection;
 }
 
-export async function UpdateCollection<T extends Prisma.CollectionUpdateArgs>(args: Prisma.SelectSubset<T, Prisma.CollectionUpdateArgs>) {
+export async function UpdateCollection<T extends Prisma.CollectionUpdateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.CollectionUpdateArgs>,
+) {
     const data = await prisma.collection.update(args);
     await Delete_CollectionCache(data.id);
     return data;
@@ -119,7 +123,9 @@ export async function GetManyCollections<T extends Prisma.CollectionFindManyArgs
     return prisma.collection.findMany(args);
 }
 
-export async function DeleteCollection<T extends Prisma.CollectionDeleteArgs>(args: Prisma.SelectSubset<T, Prisma.CollectionDeleteArgs>) {
+export async function DeleteCollection<T extends Prisma.CollectionDeleteArgs>(
+    args: Prisma.SelectSubset<T, Prisma.CollectionDeleteArgs>,
+) {
     const collection = await prisma.collection.delete(args);
     await Delete_CollectionCache(collection.id);
     await Delete_UserCollectionsListCache(collection.userId);

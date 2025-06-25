@@ -30,7 +30,10 @@ export function SearchResults(props: { viewType: ViewType }) {
             {pagination}
 
             <section
-                className={cn("w-full h-fit grid grid-cols-1 gap-panel-cards", props.viewType === ViewType.GALLERY && "sm:grid-cols-2")}
+                className={cn(
+                    "w-full h-fit grid grid-cols-1 gap-panel-cards",
+                    props.viewType === ViewType.GALLERY && "sm:grid-cols-2",
+                )}
                 // biome-ignore lint/a11y/useSemanticElements: <explanation>
                 role="list"
                 aria-label="Search Results"

@@ -139,13 +139,21 @@ export default function NavButton({ session, notifications, toggleNavMenu }: Nav
                         matchExactUrl: false,
                     },
                     {
-                        icon: <Building2Icon aria-hidden className="w-btn-icon h-btn-icon" aria-label={t.dashboard.organizations} />,
+                        icon: (
+                            <Building2Icon aria-hidden className="w-btn-icon h-btn-icon" aria-label={t.dashboard.organizations} />
+                        ),
                         label: t.dashboard.organizations,
                         url: "/dashboard/organizations",
                         matchExactUrl: false,
                     },
                     {
-                        icon: <LayoutDashboardIcon aria-hidden className="w-btn-icon h-btn-icon" aria-label={t.dashboard.dashboard} />,
+                        icon: (
+                            <LayoutDashboardIcon
+                                aria-hidden
+                                className="w-btn-icon h-btn-icon"
+                                aria-label={t.dashboard.dashboard}
+                            />
+                        ),
                         label: t.dashboard.dashboard,
                         url: "/dashboard",
                         matchExactUrl: true,

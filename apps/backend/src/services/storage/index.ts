@@ -76,7 +76,12 @@ export async function getUserFile(storageService: FILE_STORAGE_SERVICE, userId: 
 }
 
 // ? Project Files
-export async function saveProjectFile(storageService: FILE_STORAGE_SERVICE, projectId: string, file: WritableFile, fileName: string) {
+export async function saveProjectFile(
+    storageService: FILE_STORAGE_SERVICE,
+    projectId: string,
+    file: WritableFile,
+    fileName: string,
+) {
     return await saveFile(storageService, file, projectsDir(projectId, fileName));
 }
 
@@ -116,7 +121,12 @@ export async function deleteProjectVersionDirectory(storageService: FILE_STORAGE
     return await deleteDirectory(storageService, versionsDir(projectId, versionId));
 }
 
-export async function getProjectVersionFile(storageService: FILE_STORAGE_SERVICE, projectId: string, versionId: string, fileName: string) {
+export async function getProjectVersionFile(
+    storageService: FILE_STORAGE_SERVICE,
+    projectId: string,
+    versionId: string,
+    fileName: string,
+) {
     return await getFile(storageService, versionsDir(projectId, versionId, fileName));
 }
 
@@ -159,7 +169,12 @@ export function getOrgFile(storageService: FILE_STORAGE_SERVICE, orgId: string, 
 }
 
 // ? Collection Files
-export function saveCollectionFile(storageService: FILE_STORAGE_SERVICE, collectionId: string, file: WritableFile, filename: string) {
+export function saveCollectionFile(
+    storageService: FILE_STORAGE_SERVICE,
+    collectionId: string,
+    file: WritableFile,
+    filename: string,
+) {
     return saveFile(storageService, file, collectionDir(collectionId, filename));
 }
 

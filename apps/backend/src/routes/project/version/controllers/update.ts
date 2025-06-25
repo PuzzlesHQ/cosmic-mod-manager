@@ -146,7 +146,10 @@ export async function updateVersionData(
 
             let isNewDependency = true;
             for (const existingDependency of targetVersion.dependencies) {
-                if (existingDependency.projectId === dependency.projectId && existingDependency.versionId === dependency.versionId) {
+                if (
+                    existingDependency.projectId === dependency.projectId &&
+                    existingDependency.versionId === dependency.versionId
+                ) {
                     isNewDependency = false;
                     break;
                 }
@@ -158,7 +161,10 @@ export async function updateVersionData(
         for (const existingDependency of targetVersion.dependencies) {
             let isDeletedDependency = true;
             for (const dependency of dependenciesList) {
-                if (existingDependency.projectId === dependency.projectId && existingDependency.versionId === dependency.versionId) {
+                if (
+                    existingDependency.projectId === dependency.projectId &&
+                    existingDependency.versionId === dependency.versionId
+                ) {
                     isDeletedDependency = false;
                     break;
                 }

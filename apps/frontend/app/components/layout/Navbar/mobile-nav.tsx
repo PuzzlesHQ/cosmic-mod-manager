@@ -65,7 +65,9 @@ export function MobileNav({ session, notifications, isNavMenuOpen, toggleNavMenu
                                             fallback={fallbackUserIcon}
                                         />
 
-                                        <span className="leading-none text-lg font-semibold text-foreground/90">{session?.userName}</span>
+                                        <span className="leading-none text-lg font-semibold text-foreground/90">
+                                            {session?.userName}
+                                        </span>
                                     </div>
                                 </li>
 
@@ -98,7 +100,10 @@ export function MobileNav({ session, notifications, isNavMenuOpen, toggleNavMenu
                                     },
                                 ]?.map((link) => {
                                     return (
-                                        <li key={`${link.url}`} className="w-full group flex items-center justify-center relative">
+                                        <li
+                                            key={`${link.url}`}
+                                            className="w-full group flex items-center justify-center relative"
+                                        >
                                             <NavMenuLink
                                                 href={link.url}
                                                 label={link.label}

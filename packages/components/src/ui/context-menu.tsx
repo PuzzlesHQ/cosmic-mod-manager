@@ -42,7 +42,11 @@ function ContextMenuSubTrigger({
 }
 ContextMenuSubTrigger.displayName = ContextMenuPrimitive.SubTrigger.displayName;
 
-function ContextMenuSubContent({ ref, className, ...props }: React.ComponentPropsWithRef<typeof ContextMenuPrimitive.SubContent>) {
+function ContextMenuSubContent({
+    ref,
+    className,
+    ...props
+}: React.ComponentPropsWithRef<typeof ContextMenuPrimitive.SubContent>) {
     return (
         <ContextMenuPrimitive.SubContent
             ref={ref}
@@ -126,7 +130,12 @@ function ContextMenuCheckboxItem({
 }
 ContextMenuCheckboxItem.displayName = ContextMenuPrimitive.CheckboxItem.displayName;
 
-function ContextMenuRadioItem({ ref, className, children, ...props }: React.ComponentPropsWithRef<typeof ContextMenuPrimitive.RadioItem>) {
+function ContextMenuRadioItem({
+    ref,
+    className,
+    children,
+    ...props
+}: React.ComponentPropsWithRef<typeof ContextMenuPrimitive.RadioItem>) {
     return (
         <ContextMenuPrimitive.RadioItem
             ref={ref}
@@ -167,7 +176,9 @@ function ContextMenuLabel({
 ContextMenuLabel.displayName = ContextMenuPrimitive.Label.displayName;
 
 function ContextMenuSeparator({ ref, className, ...props }: React.ComponentPropsWithRef<typeof ContextMenuPrimitive.Separator>) {
-    return <ContextMenuPrimitive.Separator ref={ref} className={cn("-mx-1 my-1 h-px bg-shallow-background", className)} {...props} />;
+    return (
+        <ContextMenuPrimitive.Separator ref={ref} className={cn("-mx-1 my-1 h-px bg-shallow-background", className)} {...props} />
+    );
 }
 ContextMenuSeparator.displayName = ContextMenuPrimitive.Separator.displayName;
 

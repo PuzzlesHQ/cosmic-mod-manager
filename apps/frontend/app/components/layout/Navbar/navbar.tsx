@@ -169,7 +169,11 @@ export default function Navbar(props: NavbarProps) {
                         <div className="flex lg:hidden">{MemoizedThemeSwitch}</div>
 
                         <div className="hidden lg:flex">
-                            <NavButton session={props.session} notifications={props.notifications} toggleNavMenu={toggleNavMenu} />
+                            <NavButton
+                                session={props.session}
+                                notifications={props.notifications}
+                                toggleNavMenu={toggleNavMenu}
+                            />
                         </div>
 
                         <div className="flex lg:hidden align-center justify-center">
@@ -209,7 +213,10 @@ export function Navlink({ href, label, children, className }: NavlinkProps) {
     return (
         <ButtonLink
             url={href}
-            className={cn("bg-background hover:bg-card-background/70 dark:hover:bg-shallow-background/75 font-semibold", className)}
+            className={cn(
+                "bg-background hover:bg-card-background/70 dark:hover:bg-shallow-background/75 font-semibold",
+                className,
+            )}
             activeClassName="bg-card-background dark:bg-shallow-background"
         >
             {children ? children : label}
@@ -256,7 +263,12 @@ function CreateThingsPopup() {
     return (
         <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
             <PopoverTrigger asChild>
-                <Button variant="ghost-inverted" size="sm" aria-label="Create new project or organization" className="bg-background">
+                <Button
+                    variant="ghost-inverted"
+                    size="sm"
+                    aria-label="Create new project or organization"
+                    className="bg-background"
+                >
                     <PlusIcon aria-hidden className="w-5 h-5" />
                     <ChevronDownIcon
                         aria-hidden

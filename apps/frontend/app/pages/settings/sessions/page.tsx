@@ -61,7 +61,10 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
             <CardHeader className="gap-3">
                 <div className="flex items-center justify-between gap-x-6 gap-y-2">
                     <CardTitle>{t.settings.sessions}</CardTitle>
-                    <label className="flex gap-2 items-center justify-center text-sm text-muted-foreground" htmlFor="show-ip-addresses">
+                    <label
+                        className="flex gap-2 items-center justify-center text-sm text-muted-foreground"
+                        htmlFor="show-ip-addresses"
+                    >
                         {t.settings.showIpAddr}
                         <Switch checked={showIp} onCheckedChange={setShowIp} id="show-ip-addresses" />
                     </label>
@@ -108,7 +111,9 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
 
                                         <Tooltip>
                                             <TooltipTrigger className="cursor-text">
-                                                <span>{t.settings.lastAccessed(TimePassedSince({ date: session.dateLastActive }))}</span>
+                                                <span>
+                                                    {t.settings.lastAccessed(TimePassedSince({ date: session.dateLastActive }))}
+                                                </span>
                                             </TooltipTrigger>
                                             <TooltipContent className="bg-shallower-background dark:bg-shallow-background">
                                                 <FormattedDate date={session.dateLastActive} />

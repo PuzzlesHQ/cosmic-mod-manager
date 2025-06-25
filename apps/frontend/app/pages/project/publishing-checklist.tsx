@@ -124,7 +124,12 @@ export function PublishingChecklist() {
             },
         },
         {
-            condition: !(project.issueTrackerUrl || project.projectSourceUrl || project.projectWikiUrl || project.discordInviteUrl),
+            condition: !(
+                project.issueTrackerUrl ||
+                project.projectSourceUrl ||
+                project.projectWikiUrl ||
+                project.discordInviteUrl
+            ),
             id: "add-links",
             title: pubChecklist.addExtLinks,
             description: pubChecklist.addExtLinksDesc,
@@ -272,7 +277,8 @@ export function PublishingChecklist() {
                                                 variant="moderation-submit"
                                                 size="sm"
                                             >
-                                                <SendIcon aria-hidden className="w-iconh-btn-icon h-btn-icon" /> {step.action.title}
+                                                <SendIcon aria-hidden className="w-iconh-btn-icon h-btn-icon" />{" "}
+                                                {step.action.title}
                                             </Button>
                                         </>
                                     ) : null}

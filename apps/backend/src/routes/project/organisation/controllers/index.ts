@@ -80,7 +80,9 @@ export async function getUserOrganisations(userSession: ContextUserData | undefi
                 isOwner: member.isOwner,
                 accepted: member.accepted,
                 permissions: (currMember?.accepted === true ? member.permissions : []) as ProjectPermission[],
-                organisationPermissions: (currMember?.accepted === true ? member.organisationPermissions : []) as OrganisationPermission[],
+                organisationPermissions: (currMember?.accepted === true
+                    ? member.organisationPermissions
+                    : []) as OrganisationPermission[],
             })),
         });
     }

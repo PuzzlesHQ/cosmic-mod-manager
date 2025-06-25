@@ -154,7 +154,10 @@ export function MetadataInputCard({ projectType, formControl }: MetadataInputCar
     const availableLoaders = getLoadersByProjectType(projectType);
 
     return (
-        <ContentCardTemplate className="w-full min-w-[19rem] px-card-surround flex flex-col gap-form-elements" title={t.version.metadata}>
+        <ContentCardTemplate
+            className="w-full min-w-[19rem] px-card-surround flex flex-col gap-form-elements"
+            title={t.version.metadata}
+        >
             <FormField
                 control={formControl}
                 name="releaseChannel"
@@ -448,7 +451,9 @@ export function AddDependencies({ dependencies, setDependencies, currProjectId, 
                     <Select
                         defaultValue={DependsOn.PROJECT}
                         value={dependsOn}
-                        onValueChange={(value: string) => setDependsOn(value === DependsOn.PROJECT ? DependsOn.PROJECT : DependsOn.VERSION)}
+                        onValueChange={(value: string) =>
+                            setDependsOn(value === DependsOn.PROJECT ? DependsOn.PROJECT : DependsOn.VERSION)
+                        }
                     >
                         <SelectTrigger>
                             <SelectValue />
@@ -459,7 +464,11 @@ export function AddDependencies({ dependencies, setDependencies, currProjectId, 
                         </SelectContent>
                     </Select>
 
-                    <Input placeholder={t.version.enterProjectId} value={projectSlug} onChange={(e) => setProjectSlug(e.target.value)} />
+                    <Input
+                        placeholder={t.version.enterProjectId}
+                        value={projectSlug}
+                        onChange={(e) => setProjectSlug(e.target.value)}
+                    />
 
                     {dependsOn === DependsOn.VERSION ? (
                         <Input
@@ -478,9 +487,15 @@ export function AddDependencies({ dependencies, setDependencies, currProjectId, 
                             <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value={DependencyType.REQUIRED}>{CapitalizeAndFormatString(DependencyType.REQUIRED)}</SelectItem>
-                            <SelectItem value={DependencyType.OPTIONAL}>{CapitalizeAndFormatString(DependencyType.OPTIONAL)}</SelectItem>
-                            <SelectItem value={DependencyType.EMBEDDED}>{CapitalizeAndFormatString(DependencyType.EMBEDDED)}</SelectItem>
+                            <SelectItem value={DependencyType.REQUIRED}>
+                                {CapitalizeAndFormatString(DependencyType.REQUIRED)}
+                            </SelectItem>
+                            <SelectItem value={DependencyType.OPTIONAL}>
+                                {CapitalizeAndFormatString(DependencyType.OPTIONAL)}
+                            </SelectItem>
+                            <SelectItem value={DependencyType.EMBEDDED}>
+                                {CapitalizeAndFormatString(DependencyType.EMBEDDED)}
+                            </SelectItem>
                             <SelectItem value={DependencyType.INCOMPATIBLE}>
                                 {CapitalizeAndFormatString(DependencyType.INCOMPATIBLE)}
                             </SelectItem>
@@ -488,7 +503,11 @@ export function AddDependencies({ dependencies, setDependencies, currProjectId, 
                     </Select>
 
                     <Button onClick={addDependencyHandler} type="button" disabled={isfetchingData}>
-                        {isfetchingData ? <LoadingSpinner size="xs" /> : <PlusIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />}
+                        {isfetchingData ? (
+                            <LoadingSpinner size="xs" />
+                        ) : (
+                            <PlusIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                        )}
                         {t.version.addDep}
                     </Button>
                 </div>

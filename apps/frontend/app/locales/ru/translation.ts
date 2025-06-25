@@ -316,7 +316,8 @@ export default {
             progress: "Прогресс:",
             title: "План публикации",
             uploadVersion: "Загрузите версию",
-            uploadVersionDesc: "Для того, чтобы проект можно было отправить на рассмотрение, необходимо загрузить как минимум одну версию.",
+            uploadVersionDesc:
+                "Для того, чтобы проект можно было отправить на рассмотрение, необходимо загрузить как минимум одну версию.",
             addDescription: "Добавьте описание",
             addDescriptionDesc: "Необходимо понятное описание к проекту.",
             addIcon: "Добавьте иконку",
@@ -413,7 +414,8 @@ export default {
         upload: "Загруженное",
         externalLinks: "Внешние ссылки",
         issueTracker: "Трекер проблем",
-        issueTrackerDesc: "Место, где пользователи делятся своими проблемами, ошибками и переживаниями касательно вашего проекта.",
+        issueTrackerDesc:
+            "Место, где пользователи делятся своими проблемами, ошибками и переживаниями касательно вашего проекта.",
         sourceCode: "Исходный код",
         sourceCodeDesc: "Страница/репозиторий, где содержится исходный код вашего проекта.",
         wikiPage: "Вики",
@@ -431,7 +433,8 @@ export default {
         spdxId: "SPDX идентификатор",
         doesntHaveSpdxId: "Лицензия не имеет SPDX идентификатор",
         // ? Use the projectType string instead of "Mod"
-        tagsDesc: (_projectType) => "Правильно выбранные теги помогут людям найти ваш мод. Убедитесь, что выбрали все подходящие теги.",
+        tagsDesc: (_projectType) =>
+            "Правильно выбранные теги помогут людям найти ваш мод. Убедитесь, что выбрали все подходящие теги.",
         featuredCategories: "Избранные категории",
         featuredCategoriesDesc: (count) => `Вы можете избрать до ${count} самых релевантных тегов.`,
         selectAtLeastOneCategory: "Выберите как минимум одну категорию, чтобы сделать ее избранной.",
@@ -498,7 +501,8 @@ export default {
         removeMember: "Удалить участника",
         transferOwnership: "Передать роль владельца",
         overrideValues: "Переопределить значения",
-        overrideValuesDesc: "Переопределите стандартные значения и назначьте специальные разрешения и роли для этого участника проекта.",
+        overrideValuesDesc:
+            "Переопределите стандартные значения и назначьте специальные разрешения и роли для этого участника проекта.",
         projectNotManagedByOrg:
             "Этот проект не находится под управлением организации. If you are the member of any organizations, you can transfer management to one of them.",
         transferManagementToOrg: "Передать управление",
@@ -509,7 +513,8 @@ export default {
         memberRemoved: "Участник успешно удалён",
         sureToRemoveMember: (memberName: string) => `Вы уверены, что хотите удалить ${memberName} из этой командны?`,
         ownershipTransfered: "Роль владельца успешно передана",
-        sureToTransferOwnership: (memberName: string) => `Вы уверены, что хотите передать роль владельца участнику ${memberName}?`,
+        sureToTransferOwnership: (memberName: string) =>
+            `Вы уверены, что хотите передать роль владельца участнику ${memberName}?`,
     },
 
     organization: {

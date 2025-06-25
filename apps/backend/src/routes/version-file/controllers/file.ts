@@ -249,7 +249,8 @@ export async function GetLatestProjectVersionsFromHashes(hashes: string[], algor
 
             if (filter.gameVersions?.length && !version.gameVersions.some((gv) => filter.gameVersions?.includes(gv))) continue;
             if (filter.loader && !version.loaders.includes(filter.loader)) continue;
-            if (filter.releaseChannel && !GetReleaseChannelFilter(filter.releaseChannel).includes(version.releaseChannel)) continue;
+            if (filter.releaseChannel && !GetReleaseChannelFilter(filter.releaseChannel).includes(version.releaseChannel))
+                continue;
 
             Versions.push(version);
         }

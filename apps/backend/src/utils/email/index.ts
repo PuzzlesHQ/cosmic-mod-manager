@@ -100,7 +100,15 @@ export async function sendConfirmNewPasswordEmail({
     }
 }
 
-export async function sendChangePasswordEmail({ name, code, receiverEmail }: { name: string; code: string; receiverEmail: string }) {
+export async function sendChangePasswordEmail({
+    name,
+    code,
+    receiverEmail,
+}: {
+    name: string;
+    code: string;
+    receiverEmail: string;
+}) {
     try {
         const emailTemplate = changeAccountPasswordEmailTemplate({
             fullName: name,

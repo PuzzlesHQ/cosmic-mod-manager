@@ -31,7 +31,11 @@ export async function getReqRateLimiter(ctx: Context, next: Next) {
 }
 
 const strictGetReqLimit = rateLimits.global.STRICT_GET;
-const strictGetReqLimiterBucket = new TokenBucket(strictGetReqLimit.namespace, strictGetReqLimit.max, strictGetReqLimit.timeWindow_seconds);
+const strictGetReqLimiterBucket = new TokenBucket(
+    strictGetReqLimit.namespace,
+    strictGetReqLimit.max,
+    strictGetReqLimit.timeWindow_seconds,
+);
 
 // Restricted get request rate limiter
 export async function strictGetReqRateLimiter(ctx: Context, next: Next) {
@@ -56,7 +60,11 @@ export async function strictGetReqRateLimiter(ctx: Context, next: Next) {
 }
 
 const searchReqLimiter = rateLimits.SEARCH;
-const searchReqLimiterBucket = new TokenBucket(searchReqLimiter.namespace, searchReqLimiter.max, searchReqLimiter.timeWindow_seconds);
+const searchReqLimiterBucket = new TokenBucket(
+    searchReqLimiter.namespace,
+    searchReqLimiter.max,
+    searchReqLimiter.timeWindow_seconds,
+);
 
 // Separate rate limiter for search api endpoint
 export async function searchReqRateLimiter(ctx: Context, next: Next) {

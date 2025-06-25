@@ -31,9 +31,17 @@ export default function TitleBar() {
                 // @ts-ignore
                 style={noDrag}
             >
-                <ActionButton title="Mimimize" onClick={WindowMinimise} className="bg-yellow-500/75 group-hover/btn:bg-yellow-500" />
+                <ActionButton
+                    title="Mimimize"
+                    onClick={WindowMinimise}
+                    className="bg-yellow-500/75 group-hover/btn:bg-yellow-500"
+                />
 
-                <ActionButton title="Maximize" onClick={WindowToggleMaximise} className="bg-green-500/75 group-hover/btn:bg-green-500" />
+                <ActionButton
+                    title="Maximize"
+                    onClick={WindowToggleMaximise}
+                    className="bg-green-500/75 group-hover/btn:bg-green-500"
+                />
 
                 <ActionButton title="Close" onClick={Quit} className="bg-red-500/75 group-hover/btn:bg-red-500">
                     <XIcon aria-hidden className="w-[0.87rem] h-[0.87rem]" />
