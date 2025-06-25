@@ -1,15 +1,16 @@
-import { useProjectData } from "~/hooks/project";
 import { useTranslation } from "~/locales/provider";
 import DescriptionSettings from "~/pages/project/settings/description";
+import { getProjectLoaderData } from "~/routes/project/utils";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
 import { ProjectPagePath } from "~/utils/urls";
+import type { Route } from "./+types/description";
 
 export default DescriptionSettings;
 
-export function meta() {
+export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
-    const ctx = useProjectData();
+    const ctx = getProjectLoaderData(props.matches);
 
     return MetaTags({
         title: t.meta.addContext(ctx.projectData.name, t.form.description),

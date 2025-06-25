@@ -4,9 +4,11 @@ import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import ProjectSettingsLayout from "~/pages/project/settings/layout";
+import { getProjectLoaderData } from "~/routes/project/utils";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
 import { ProjectPagePath } from "~/utils/urls";
+import type { Route } from "../+types/layout";
 
 export default function () {
     const ctx = useProjectData();
@@ -19,9 +21,9 @@ export default function () {
     return <ProjectSettingsLayout />;
 }
 
-export function meta() {
+export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
-    const ctx = useProjectData();
+    const ctx = getProjectLoaderData(props.matches);
 
     return MetaTags({
         title: t.meta.addContext(ctx.projectData.name, t.common.settings),

@@ -85,6 +85,7 @@ export default function LoginPage() {
                                             {...field}
                                             type="email"
                                             placeholder="example@abc.com"
+                                            autoComplete="email"
                                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                                 field.onChange(e);
                                                 setFormError("");
@@ -103,6 +104,7 @@ export default function LoginPage() {
                                         <FormLabel>{t.auth.password}</FormLabel>
                                         <Input
                                             {...field}
+                                            autoComplete="current-password"
                                             placeholder="********"
                                             type="password"
                                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -118,7 +120,11 @@ export default function LoginPage() {
                             {formError && <FormErrorMessage text={formError} />}
 
                             <Button type="submit" aria-label="Login" className="w-full h-form-submit-btn" disabled={isLoading}>
-                                {isLoading ? <LoadingSpinner size="xs" /> : <LogInIcon aria-hidden className="w-[1.1rem] h-[1.1rem]" />}
+                                {isLoading ? (
+                                    <LoadingSpinner size="xs" />
+                                ) : (
+                                    <LogInIcon aria-hidden className="w-[1.1rem] h-[1.1rem]" />
+                                )}
                                 {t.form.login}
                             </Button>
                         </form>
@@ -142,7 +148,12 @@ export default function LoginPage() {
                         </div>
                         <div className="text-center">
                             <span className="text-muted-foreground">{t.auth.forgotPassword}</span>{" "}
-                            <Link prefetch={Prefetch.Render} to="/change-password" aria-label="Change password" className="text_link">
+                            <Link
+                                prefetch={Prefetch.Render}
+                                to="/change-password"
+                                aria-label="Change password"
+                                className="text_link"
+                            >
                                 {t.auth.changePassword}
                             </Link>
                         </div>

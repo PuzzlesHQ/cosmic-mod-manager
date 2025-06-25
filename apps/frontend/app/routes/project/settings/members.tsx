@@ -1,8 +1,8 @@
 import type { Organisation } from "@app/utils/types/api";
 import { useLoaderData } from "react-router";
-import { useProjectData } from "~/hooks/project";
 import { useTranslation } from "~/locales/provider";
 import ProjectMemberSettingsPage from "~/pages/project/settings/members/page";
+import { getProjectLoaderData } from "~/routes/project/utils";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
 import { resJson, serverFetch } from "~/utils/server-fetch";
@@ -22,9 +22,9 @@ export async function loader(props: Route.LoaderArgs): Promise<Organisation[]> {
     return orgs || [];
 }
 
-export function meta() {
+export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
-    const ctx = useProjectData();
+    const ctx = getProjectLoaderData(props.matches);
 
     return MetaTags({
         title: t.meta.addContext(ctx.projectData.name, t.projectSettings.members),

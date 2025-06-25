@@ -1,6 +1,6 @@
-import { useProjectData } from "~/hooks/project";
 import { useTranslation } from "~/locales/provider";
 import ModerationPage from "~/pages/project/moderation";
+import { getProjectLoaderData } from "~/routes/project/utils";
 import { MetaTags } from "~/utils/meta";
 import type { Route } from "./+types/moderation";
 
@@ -8,7 +8,7 @@ export default ModerationPage;
 
 export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
-    const ctx = useProjectData();
+    const ctx = getProjectLoaderData(props.matches);
     const project = ctx?.projectData;
 
     return MetaTags({

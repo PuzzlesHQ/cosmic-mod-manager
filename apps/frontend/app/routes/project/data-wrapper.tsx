@@ -4,6 +4,7 @@ import { Outlet, type ShouldRevalidateFunctionArgs } from "react-router";
 import { useProjectData } from "~/hooks/project";
 import { useTranslation } from "~/locales/provider";
 import NotFoundPage from "~/pages/not-found";
+import { getProjectLoaderData } from "~/routes/project/utils";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
 import { resJson, serverFetch } from "~/utils/server-fetch";
@@ -78,9 +79,9 @@ export async function loader(props: Route.LoaderArgs): Promise<ProjectLoaderData
     };
 }
 
-export function meta() {
+export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
-    const data = useProjectData();
+    const data = getProjectLoaderData(props.matches);
     const project = data?.projectData;
 
     if (!project) {

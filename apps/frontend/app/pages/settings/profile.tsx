@@ -7,7 +7,7 @@ import { Input } from "@app/components/ui/input";
 import { toast } from "@app/components/ui/sonner";
 import { LoadingSpinner } from "@app/components/ui/spinner";
 import { Textarea } from "@app/components/ui/textarea";
-import { MAX_DISPLAY_NAME_LENGTH, MAX_USERNAME_LENGTH, MAX_USER_BIO_LENGTH } from "@app/utils/constants";
+import { MAX_DISPLAY_NAME_LENGTH, MAX_USER_BIO_LENGTH, MAX_USERNAME_LENGTH } from "@app/utils/constants";
 import type { z } from "@app/utils/schemas";
 import { profileUpdateFormSchema } from "@app/utils/schemas/settings";
 import type { LoggedInUserData } from "@app/utils/types";
@@ -17,7 +17,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 import IconPicker from "~/components/icon-picker";
-import { VariantButtonLink, useNavigate } from "~/components/ui/link";
+import { useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";
@@ -169,7 +169,11 @@ export function ProfileSettingsPage({ session }: Props) {
                                 type="submit"
                                 disabled={JSON.stringify(initialValues) === JSON.stringify(form.getValues()) || isLoading}
                             >
-                                {isLoading ? <LoadingSpinner size="xs" /> : <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />}
+                                {isLoading ? (
+                                    <LoadingSpinner size="xs" />
+                                ) : (
+                                    <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                )}
                                 {t.form.saveChanges}
                             </Button>
 

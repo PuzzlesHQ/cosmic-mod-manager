@@ -1,7 +1,7 @@
 import { getProjectTypeFromName } from "@app/utils/convertors";
-import { useProjectData } from "~/hooks/project";
 import { useTranslation } from "~/locales/provider";
 import ProjectGallery from "~/pages/project/gallery/page";
+import { getProjectLoaderData } from "~/routes/project/utils";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
 import { ProjectPagePath } from "~/utils/urls";
@@ -11,7 +11,7 @@ export default ProjectGallery;
 
 export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
-    const ctx = useProjectData();
+    const ctx = getProjectLoaderData(props.matches);
 
     const project = ctx?.projectData;
     const projectType = t.navbar[getProjectTypeFromName(project.type[0])];

@@ -11,6 +11,7 @@ import { useProjectData } from "~/hooks/project";
 import { useTranslation } from "~/locales/provider";
 import NotFoundPage from "~/pages/not-found";
 import VersionPage from "~/pages/project/version/page";
+import { getProjectLoaderData } from "~/routes/project/utils";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
 import { getCurrLocation, ProjectPagePath, VersionPagePath } from "~/utils/urls";
@@ -48,12 +49,12 @@ export default function () {
 
 export function meta(props: Route.MetaArgs) {
     const { t, formattedLocaleName } = useTranslation();
-    const ctx = useProjectData();
+    const ctx = getProjectLoaderData(props.matches);
     const project = ctx?.projectData;
     const versionSlug = props.params?.versionSlug;
 
     const url = getCurrLocation();
-    const version = filterGameVersion(ctx.allProjectVersions, versionSlug, new URLSearchParams(url.search));
+    const version = filterGameVersion(ctx.versions, versionSlug, new URLSearchParams(url.search));
 
     if (!version?.id) {
         return MetaTags({
