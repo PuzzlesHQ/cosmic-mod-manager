@@ -1,6 +1,7 @@
 import type { Organisation, ProjectListItem } from "@app/utils/types/api";
 import { Outlet, type ShouldRevalidateFunctionArgs } from "react-router";
 import { useOrgData } from "~/hooks/org";
+import { useTranslation } from "~/locales/provider";
 import NotFoundPage from "~/pages/not-found";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
@@ -10,14 +11,15 @@ import type { Route } from "./+types/data-wrapper";
 
 export default function () {
     const ctx = useOrgData();
+    const { t } = useTranslation();
 
     if (!ctx?.orgData?.id) {
         return (
             <NotFoundPage
-                title="Organization not found"
-                description={`The organization with the slug/ID "${ctx?.orgSlug}" does not exist.`}
+                title={t.error.oraganizationNotFound}
+                description={t.error.oraganizationNotFoundDesc(ctx.orgSlug)}
                 linkHref="/"
-                linkLabel="Home"
+                linkLabel={t.common.home}
             />
         );
     }
@@ -60,22 +62,22 @@ export function shouldRevalidate({ currentParams, nextParams, nextUrl, defaultSh
 }
 
 export function meta(props: Route.MetaArgs) {
+    const { t } = useTranslation();
     const data = props.data as OrgLoaderData;
     const orgData = data?.orgData;
 
     if (!orgData?.id) {
         return MetaTags({
-            title: "Organization Not Found",
-            description: "The organization you are looking for could not be found.",
+            title: t.error.oraganizationNotFound,
+            description: t.error.oraganizationNotFoundDesc(props.params.orgSlug),
             image: Config.SITE_ICON,
-            url: Config.FRONTEND_URL,
-            suffixTitle: true,
+            url: undefined,
         });
     }
 
     return MetaTags({
-        title: `${orgData.name} - Organization`,
-        description: `${orgData.description} - View the organization ${orgData.name} on ${Config.SITE_NAME_SHORT}`,
+        title: t.meta.organization(orgData.name),
+        description: t.meta.organizationDesc(orgData.description || "", orgData.name, Config.SITE_NAME_SHORT),
         image: orgData.icon || "",
         url: `${Config.FRONTEND_URL}${OrgPagePath(orgData.slug)}`,
     });

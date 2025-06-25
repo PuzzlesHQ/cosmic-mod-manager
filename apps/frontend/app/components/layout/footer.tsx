@@ -92,8 +92,16 @@ export default function Footer() {
                     </FooterLink>
                 </LinksColumn>
 
-                <div style={{ gridArea: "buttons" }} className="grid grid-cols-1 h-fit gap-2 place-items-center lg:place-items-start">
-                    <ThemeSwitch label={t.footer.changeTheme} noDefaultStyle variant="outline" className="rounded-full px-1 gap-0" />
+                <div
+                    style={{ gridArea: "buttons" }}
+                    className="grid grid-cols-1 h-fit gap-2 place-items-center lg:place-items-start"
+                >
+                    <ThemeSwitch
+                        label={t.footer.changeTheme}
+                        noDefaultStyle
+                        variant="outline"
+                        className="rounded-full px-1 gap-0"
+                    />
 
                     <VariantButtonLink prefetch={Prefetch.Render} url="/settings" variant="outline" className="rounded-full">
                         <Settings2Icon aria-hidden className="w-btn-icon-md h-btn-icon-md" aria-label={t.common.settings} />

@@ -1,5 +1,5 @@
 import { CubeIcon, fallbackOrgIcon } from "@app/components/icons";
-import { MicrodataItemType, itemType } from "@app/components/microdata";
+import { itemType, MicrodataItemType } from "@app/components/microdata";
 import RefreshPage from "@app/components/misc/refresh-page";
 import { Button } from "@app/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@app/components/ui/card";
@@ -15,10 +15,9 @@ import { imageUrl } from "@app/utils/url";
 import { Building2Icon, ClipboardCopyIcon, DownloadIcon, SettingsIcon, UsersIcon } from "lucide-react";
 import { Outlet, useLocation } from "react-router";
 import { PageHeader } from "~/components/page-header";
-import { VariantButtonLink, useNavigate } from "~/components/ui/link";
+import { useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { useOrgData } from "~/hooks/org";
 import { useSession } from "~/hooks/session";
-import { formatLocaleCode } from "~/locales";
 import { useTranslation } from "~/locales/provider";
 import { OrgPagePath } from "~/utils/urls";
 import TeamInvitationBanner from "../project/join-project-banner";
@@ -50,7 +49,11 @@ export default function OrgPageLayout() {
     }
 
     return (
-        <main className="header-content-sidebar-layout pb-12 gap-panel-cards" itemScope itemType={itemType(MicrodataItemType.Organization)}>
+        <main
+            className="header-content-sidebar-layout pb-12 gap-panel-cards"
+            itemScope
+            itemType={itemType(MicrodataItemType.Organization)}
+        >
             <OrgInfoHeader
                 session={session}
                 orgData={orgData}
@@ -127,14 +130,21 @@ interface OrgInfoHeaderProps {
     fetchOrgData: () => Promise<void>;
 }
 
-function OrgInfoHeader({ session, orgData, totalProjects, totalDownloads, currUsersMembership, fetchOrgData }: OrgInfoHeaderProps) {
-    const { t, locale } = useTranslation();
+function OrgInfoHeader({
+    session,
+    orgData,
+    totalProjects,
+    totalDownloads,
+    currUsersMembership,
+    fetchOrgData,
+}: OrgInfoHeaderProps) {
+    const { t, formattedLocaleName } = useTranslation();
 
     const MembersCount = t.count.members(orgData.members.length);
     const ProjectsCount = t.count.projects(totalProjects);
     const DownloadsCount = t.count.downloads(totalDownloads);
 
-    let DownloadsCount_Str = FormatCount(totalDownloads, formatLocaleCode(locale));
+    let DownloadsCount_Str = FormatCount(totalDownloads, formattedLocaleName);
     if (DownloadsCount[0].length > 0) DownloadsCount_Str = `${DownloadsCount[0]} ${DownloadsCount_Str}`;
     if (DownloadsCount[2].length > 0) DownloadsCount_Str += ` ${DownloadsCount[2]}`;
 

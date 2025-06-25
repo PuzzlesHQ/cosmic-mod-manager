@@ -107,3 +107,7 @@ export function BoolFromStr(str: string | null | undefined) {
     if (!str) return false;
     return str.toLowerCase() === "true";
 }
+
+export function ParseInt(str: string) {
+    return Number.parseInt(str, 10);
+}

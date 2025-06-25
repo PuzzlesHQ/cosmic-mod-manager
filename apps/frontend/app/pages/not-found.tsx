@@ -3,6 +3,7 @@ import { VariantButtonLink } from "~/components/ui/link";
 import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
+import { getCurrLocation } from "~/utils/urls";
 
 interface Props {
     title?: string | React.ReactNode;
@@ -22,7 +23,7 @@ export default function NotFoundPage({ className, title, description, linkHref, 
                     {title || t.error.pageNotFound}
                 </h1>
             </div>
-            <p className="text-lg dark:text-foreground-muted max-w-xl flex items-center justify-center text-center">
+            <p className="text-lg dark:text-muted-foreground max-w-xl flex items-center justify-center text-center">
                 {description || t.error.pageNotFoundDesc}
             </p>
 
@@ -34,10 +35,12 @@ export default function NotFoundPage({ className, title, description, linkHref, 
 }
 
 export function meta() {
+    const { t } = useTranslation();
+
     return MetaTags({
-        title: "404 | Page not found.",
-        description: "Sorry, we couldn't find the page you're looking for.",
+        title: `${t.error.pageNotFound} | ${Config.SITE_NAME_SHORT}`,
+        description: t.error.pageNotFoundDesc,
         image: Config.SITE_ICON,
-        url: Config.FRONTEND_URL,
+        url: getCurrLocation().href,
     });
 }

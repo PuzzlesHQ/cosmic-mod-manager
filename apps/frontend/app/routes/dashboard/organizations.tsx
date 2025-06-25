@@ -2,6 +2,7 @@ import type { Organisation } from "@app/utils/types/api";
 import { useLoaderData } from "react-router";
 import Redirect from "~/components/ui/redirect";
 import { useSession } from "~/hooks/session";
+import { useTranslation } from "~/locales/provider";
 import OrganisationDashboardPage from "~/pages/dashboard/organization/page";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
@@ -24,11 +25,12 @@ export async function loader(props: Route.LoaderArgs): Promise<Organisation[]> {
 }
 
 export function meta() {
+    const { t } = useTranslation();
+
     return MetaTags({
-        title: "Organizations",
-        description: `Your ${Config.SITE_NAME_SHORT} organizations`,
+        title: t.meta.addContext(t.dashboard.organizations, Config.SITE_NAME_SHORT),
+        description: t.dashboard.organizations,
         image: Config.SITE_ICON,
-        url: `${Config.FRONTEND_URL}/dashboard/organizations`,
-        suffixTitle: true,
+        url: undefined,
     });
 }

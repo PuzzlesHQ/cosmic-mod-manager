@@ -2,11 +2,11 @@ import type { SessionListData } from "@app/utils/types/api";
 import { useLoaderData } from "react-router";
 import Redirect from "~/components/ui/redirect";
 import { useSession } from "~/hooks/session";
+import { useTranslation } from "~/locales/provider";
 import SessionsPage from "~/pages/settings/sessions/page";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
 import { resJson, serverFetch } from "~/utils/server-fetch";
-import { FormatUrl_WithHintLocale } from "~/utils/urls";
 import type { Route } from "./+types/sessions";
 
 export default function () {
@@ -25,11 +25,12 @@ export async function loader(props: Route.LoaderArgs): Promise<SessionListData[]
 }
 
 export function meta() {
+    const { t } = useTranslation();
+
     return MetaTags({
-        title: "User Sessions",
-        description: "All the devices where you are logged in",
+        title: t.meta.addContext(t.common.settings, t.settings.sessions),
+        description: t.settings.sessionsDesc,
         image: Config.SITE_ICON,
-        url: `${Config.FRONTEND_URL}${FormatUrl_WithHintLocale("settings/sessions")}`,
-        suffixTitle: true,
+        url: `${Config.FRONTEND_URL}/settings/sessions`,
     });
 }

@@ -1,6 +1,6 @@
 import { DiscordIcon, fallbackOrgIcon, fallbackProjectIcon, fallbackUserIcon } from "@app/components/icons";
 import tagIcons from "@app/components/icons/tag-icons";
-import { MicrodataItemProps, MicrodataItemType, itemType } from "@app/components/microdata";
+import { itemType, MicrodataItemProps, MicrodataItemType } from "@app/components/microdata";
 import { DownloadAnimationContext } from "@app/components/misc/download-animation";
 import RefreshPage from "@app/components/misc/refresh-page";
 import { TextSpacer } from "@app/components/misc/text";
@@ -13,11 +13,12 @@ import { ReleaseChannelBadge } from "@app/components/ui/release-channel-pill";
 import { Separator } from "@app/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@app/components/ui/tooltip";
 import { cn } from "@app/components/utils";
-import { RejectedStatuses, isRejected, isUnderReview } from "@app/utils/config/project";
+import { isRejected, isUnderReview, RejectedStatuses } from "@app/utils/config/project";
+import type { LoaderNames } from "@app/utils/constants/loaders";
 import { getLoadersFromNames } from "@app/utils/convertors";
 import { parseFileSize } from "@app/utils/number";
 import SPDX_LICENSE_LIST from "@app/utils/src/constants/license-list";
-import { MODERATOR_ROLES, isModerator } from "@app/utils/src/constants/roles";
+import { isModerator, MODERATOR_ROLES } from "@app/utils/src/constants/roles";
 import { Capitalize, CapitalizeAndFormatString } from "@app/utils/string";
 import { ProjectPublishingStatus, ProjectVisibility } from "@app/utils/types";
 import type { ProjectDetailsData, TeamMember } from "@app/utils/types/api";
@@ -46,13 +47,13 @@ import { PageHeader } from "~/components/page-header";
 import { ImgWrapper } from "~/components/ui/avatar";
 import { FormattedCount } from "~/components/ui/count";
 import { FormattedDate, TimePassedSince } from "~/components/ui/date";
-import Link, { ButtonLink, VariantButtonLink, useNavigate } from "~/components/ui/link";
+import Link, { ButtonLink, useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import useTheme from "~/hooks/theme";
 import { useTranslation } from "~/locales/provider";
-import { OrgPagePath, ProjectPagePath, UserProfilePath, VersionPagePath, isCurrLinkActive } from "~/utils/urls";
+import { isCurrLinkActive, OrgPagePath, ProjectPagePath, UserProfilePath, VersionPagePath } from "~/utils/urls";
 import { AddToCollection_Popup } from "../collection/add-to-collection";
 import { FollowProject_Btn } from "../collection/follow-btn";
 import InteractiveDownloadPopup from "./interactive-download";
@@ -76,9 +77,11 @@ export default function ProjectPageLayout() {
     const customNavigate = useNavigate();
     const location = useLocation();
 
-    if (!projectData) return null;
-
-    const isVersionDetailsPage = isCurrLinkActive(ProjectPagePath(ctx.projectType, projectData.slug, "version/"), location.pathname, false);
+    const isVersionDetailsPage = isCurrLinkActive(
+        ProjectPagePath(ctx.projectType, projectData.slug, "version/"),
+        location.pathname,
+        false,
+    );
     const projectEnvironments = ProjectSupprotedEnvironments({
         clientSide: projectData.clientSide,
         serverSide: projectData.serverSide,
@@ -147,8 +150,7 @@ export default function ProjectPageLayout() {
                                 <div className="w-full flex flex-wrap gap-1">
                                     {listedLoaders.map((loader) => {
                                         const accentForeground = loader?.metadata?.foreground;
-                                        // @ts-ignore
-                                        const loaderIcon: React.ReactNode = tagIcons[loader.name];
+                                        const loaderIcon: React.ReactNode = tagIcons[loader.name as LoaderNames];
 
                                         return (
                                             <Chip
@@ -172,14 +174,14 @@ export default function ProjectPageLayout() {
 
                         {projectEnvironments?.length ? (
                             <section className="flex flex-wrap items-start justify-start gap-1">
-                                <h3 className="block w-full font-bold text-muted-foreground" title="Environment(s) the mod is made for">
+                                <h3
+                                    className="block w-full font-bold text-muted-foreground"
+                                    title="Environment(s) the mod is made for"
+                                >
                                     {t.project.environments}
                                 </h3>
                                 {projectEnvironments.map((item, i) => {
-                                    return (
-                                        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                                        <Chip key={i}>{item}</Chip>
-                                    );
+                                    return <Chip key={i}>{item}</Chip>;
                                 })}
                             </section>
                         ) : null}
@@ -220,7 +222,9 @@ export default function ProjectPageLayout() {
                             <ExternalLink
                                 url={projectData?.discordInviteUrl}
                                 label={t.project.joinDiscord}
-                                icon={<DiscordIcon aria-hidden className="w-btn-icon h-btn-icon fill-current dark:fill-current" />}
+                                icon={
+                                    <DiscordIcon aria-hidden className="w-btn-icon h-btn-icon fill-current dark:fill-current" />
+                                }
                             />
                         ) : null}
                     </Card>
@@ -231,7 +235,6 @@ export default function ProjectPageLayout() {
                         <h2 className="text-lg font-bold pb-2">{t.project.featuredVersions}</h2>
                         <TooltipProvider>
                             {ctx.featuredProjectVersions?.map((version) => (
-                                // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
                                 <div
                                     key={version.id}
                                     className="w-full flex items-start justify-start p-2 pb-2.5 rounded cursor-pointer text-muted-foreground hover:bg-background/75 bg_hover_stagger gap-2 group/card"
@@ -253,7 +256,10 @@ export default function ProjectPageLayout() {
                                             className=" group-hover/card:hidden group-focus-within/card:hidden"
                                         />
                                         <Tooltip>
-                                            <TooltipTrigger asChild className="hidden group-hover/card:flex group-focus-within/card:flex">
+                                            <TooltipTrigger
+                                                asChild
+                                                className="hidden group-hover/card:flex group-focus-within/card:flex"
+                                            >
                                                 <a
                                                     href={version.primaryFile?.url}
                                                     className={cn(
@@ -271,7 +277,11 @@ export default function ProjectPageLayout() {
                                                     onClick={showDownloadAnimation}
                                                     rel="nofollow noindex"
                                                 >
-                                                    <DownloadIcon aria-hidden className="w-[1.07rem] h-[1.07rem]" strokeWidth={2.2} />
+                                                    <DownloadIcon
+                                                        aria-hidden
+                                                        className="w-[1.07rem] h-[1.07rem]"
+                                                        strokeWidth={2.2}
+                                                    />
                                                 </a>
                                             </TooltipTrigger>
                                             <TooltipContent className="hidden group-hover/card:flex group-focus-within/card:flex">
@@ -419,7 +429,8 @@ export default function ProjectPageLayout() {
                             label: t.moderation.moderation,
                             href: "/moderation",
                             isShown:
-                                (!!ctx.currUsersMembership && (isRejected(projectData.status) || isUnderReview(projectData.status))) ||
+                                (!!ctx.currUsersMembership &&
+                                    (isRejected(projectData.status) || isUnderReview(projectData.status))) ||
                                 isModerator(session?.role),
                         },
                     ]}
@@ -463,9 +474,11 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
                 title={projectData.name}
                 description={projectData.summary}
                 titleBadge={
-                    [ProjectPublishingStatus.REJECTED, ProjectPublishingStatus.PROCESSING, ProjectPublishingStatus.WITHHELD].includes(
-                        projectData.status,
-                    ) ? (
+                    [
+                        ProjectPublishingStatus.REJECTED,
+                        ProjectPublishingStatus.PROCESSING,
+                        ProjectPublishingStatus.WITHHELD,
+                    ].includes(projectData.status) ? (
                         <ProjectStatusBadge status={projectData.status} t={t} />
                     ) : null
                 }
@@ -650,7 +663,10 @@ export function TeamMember_Card({
                         {userName}
                     </span>
                     {isOwner === true && (
-                        <CrownIcon aria-hidden className="w-btn-icon-sm h-btn-icon-sm shrink-0 text-orange-500 dark:text-orange-400" />
+                        <CrownIcon
+                            aria-hidden
+                            className="w-btn-icon-sm h-btn-icon-sm shrink-0 text-orange-500 dark:text-orange-400"
+                        />
                     )}
                 </div>
                 <span className="text-sm font-medium leading-tight text-muted-foreground/75">{roleName}</span>

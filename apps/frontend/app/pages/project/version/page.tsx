@@ -25,7 +25,7 @@ import type { ProjectVersionData } from "@app/utils/types/api";
 import { imageUrl } from "@app/utils/url";
 import { formatGameVersionsListString_verbose } from "@app/utils/version/format-verbose";
 import { ChevronRightIcon, CopyIcon, DownloadIcon, Edit3Icon, FileIcon, FlagIcon, LinkIcon, StarIcon } from "lucide-react";
-import { Suspense, lazy, useContext } from "react";
+import { lazy, Suspense, useContext } from "react";
 import MarkdownRenderBox from "~/components/md-renderer";
 import { ImgWrapper } from "~/components/ui/avatar";
 import { FormattedCount } from "~/components/ui/count";
@@ -34,7 +34,7 @@ import Link, { VariantButtonLink } from "~/components/ui/link";
 import type { ProjectContextData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
-import { ProjectPagePath, VersionPagePath, appendPathInUrl } from "~/utils/urls";
+import { appendPathInUrl, ProjectPagePath, VersionPagePath } from "~/utils/urls";
 import { TeamMember_Card } from "../layout";
 
 const DeleteVersionDialog = lazy(() => import("./delete-version"));
@@ -162,7 +162,10 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                                 );
 
                                 if (!dependencyProject?.id) return null;
-                                const dependencyProjectPageUrl = ProjectPagePath(dependencyProject.type[0], dependencyProject.slug);
+                                const dependencyProjectPageUrl = ProjectPagePath(
+                                    dependencyProject.type[0],
+                                    dependencyProject.slug,
+                                );
                                 const dependencyVersionPageUrl = dependencyVersion?.id
                                     ? VersionPagePath(dependencyProject.type[0], dependencyProject.slug, dependencyVersion.slug)
                                     : null;
@@ -254,7 +257,9 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                             {
                                 label: t.search.gameVersions,
                                 content: (
-                                    <span className="leading-tight">{formatGameVersionsListString_verbose(versionData.gameVersions)}</span>
+                                    <span className="leading-tight">
+                                        {formatGameVersionsListString_verbose(versionData.gameVersions)}
+                                    </span>
                                 ),
                             },
                             {

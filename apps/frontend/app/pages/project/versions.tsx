@@ -63,7 +63,9 @@ export default function ProjectVersionsPage() {
 
     return (
         <>
-            {canUploadVersion ? <UploadVersionLinkCard uploadPageUrl={VersionPagePath(ctx.projectType, projectData.slug, "new")} /> : null}
+            {canUploadVersion ? (
+                <UploadVersionLinkCard uploadPageUrl={VersionPagePath(ctx.projectType, projectData.slug, "new")} />
+            ) : null}
 
             {versionFilterRes.component}
 
@@ -109,7 +111,13 @@ interface VersionsTableProps {
     anyFilterEnabled: boolean;
 }
 
-function ProjectVersionsListTable({ projectType, projectData, allProjectVersions, canEditVersion, anyFilterEnabled }: VersionsTableProps) {
+function ProjectVersionsListTable({
+    projectType,
+    projectData,
+    allProjectVersions,
+    canEditVersion,
+    anyFilterEnabled,
+}: VersionsTableProps) {
     const { t } = useTranslation();
     const pageSearchParamKey = "page";
     const [urlSearchParams] = useSearchParams();
@@ -172,109 +180,125 @@ function ProjectVersionsListTable({ projectType, projectData, allProjectVersions
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {allProjectVersions.slice((activePage - 1) * ITEMS_PER_PAGE, activePage * ITEMS_PER_PAGE).map((version) => (
-                                    <TableRow
-                                        key={version.id}
-                                        className="cursor-pointer"
-                                        onClick={(e) => {
-                                            //@ts-expect-error
-                                            if (!e.target.closest(".noClickRedirect")) {
-                                                customNavigate(versionPagePathname(version.slug));
-                                            }
-                                        }}
-                                    >
-                                        <TableCell className="md:hidden ps-table-side-pad-sm">
-                                            {/* MOBILE ONLY */}
-                                            <div className="w-full flex flex-col items-start justify-start gap-1.5">
-                                                <div className="w-full flex items-center justify-start gap-2.5" title={version.title}>
-                                                    <ReleaseChannelBadge releaseChannel={version.releaseChannel} />
-                                                    <VersionName
+                                {allProjectVersions
+                                    .slice((activePage - 1) * ITEMS_PER_PAGE, activePage * ITEMS_PER_PAGE)
+                                    .map((version) => (
+                                        <TableRow
+                                            key={version.id}
+                                            className="cursor-pointer"
+                                            onClick={(e) => {
+                                                //@ts-expect-error
+                                                if (!e.target.closest(".noClickRedirect")) {
+                                                    customNavigate(versionPagePathname(version.slug));
+                                                }
+                                            }}
+                                        >
+                                            <TableCell className="md:hidden ps-table-side-pad-sm">
+                                                {/* MOBILE ONLY */}
+                                                <div className="w-full flex flex-col items-start justify-start gap-1.5">
+                                                    <div
+                                                        className="w-full flex items-center justify-start gap-2.5"
                                                         title={version.title}
-                                                        number={version.versionNumber}
-                                                        url={versionPagePathname(version.slug)}
-                                                    />
+                                                    >
+                                                        <ReleaseChannelBadge releaseChannel={version.releaseChannel} />
+                                                        <VersionName
+                                                            title={version.title}
+                                                            number={version.versionNumber}
+                                                            url={versionPagePathname(version.slug)}
+                                                        />
+                                                    </div>
+                                                    <div className="w-full flex flex-wrap items-center justify-start gap-1.5">
+                                                        <GameVersions
+                                                            gameVersions={version.gameVersions}
+                                                            verbose={anyFilterEnabled}
+                                                        />
+                                                        <ProjectLoaders versionLoaders={version.loaders} />
+                                                    </div>
+                                                    <div className="flex flex-wrap items-start justify-start gap-3">
+                                                        <DatePublished dateStr={version.datePublished} />
+                                                        <DownloadsCount downloads={version.downloads} />
+                                                    </div>
                                                 </div>
-                                                <div className="w-full flex flex-wrap items-center justify-start gap-1.5">
-                                                    <GameVersions gameVersions={version.gameVersions} verbose={anyFilterEnabled} />
+                                            </TableCell>
+
+                                            {/* MID WIDTH AND ABOVE */}
+                                            <TableCell className="hidden md:table-cell ps-table-side-pad pe-2">
+                                                <ReleaseChannelBadge releaseChannel={version.releaseChannel} />
+                                            </TableCell>
+
+                                            {/* MID WIDTH AND ABOVE */}
+                                            <TableCell className="hidden md:table-cell" title={version.title}>
+                                                <VersionName
+                                                    title={version.title}
+                                                    number={version.versionNumber}
+                                                    url={versionPagePathname(version.slug)}
+                                                />
+                                            </TableCell>
+
+                                            {/* MID WIDTH AND ABOVE */}
+                                            <TableCell className="hidden md:table-cell">
+                                                <div className="w-full flex flex-wrap items-start justify-start gap-1.5">
+                                                    <GameVersions
+                                                        gameVersions={version.gameVersions}
+                                                        verbose={anyFilterEnabled}
+                                                    />
                                                     <ProjectLoaders versionLoaders={version.loaders} />
                                                 </div>
-                                                <div className="flex flex-wrap items-start justify-start gap-3">
+                                            </TableCell>
+
+                                            {/* MID WIDTH AND BELOW XL*/}
+                                            <TableCell className="hidden md:table-cell xl:hidden">
+                                                <div className="min-w-max lex flex-wrap items-start justify-start gap-3">
                                                     <DatePublished dateStr={version.datePublished} />
                                                     <DownloadsCount downloads={version.downloads} />
                                                 </div>
-                                            </div>
-                                        </TableCell>
+                                            </TableCell>
 
-                                        {/* MID WIDTH AND ABOVE */}
-                                        <TableCell className="hidden md:table-cell ps-table-side-pad pe-2">
-                                            <ReleaseChannelBadge releaseChannel={version.releaseChannel} />
-                                        </TableCell>
+                                            {/* XL WIDTH AND ABOVE */}
+                                            <TableCell className="hidden md:hidden xl:table-cell">
+                                                <DatePublished dateStr={version.datePublished} iconVisible={false} />
+                                            </TableCell>
 
-                                        {/* MID WIDTH AND ABOVE */}
-                                        <TableCell className="hidden md:table-cell" title={version.title}>
-                                            <VersionName
-                                                title={version.title}
-                                                number={version.versionNumber}
-                                                url={versionPagePathname(version.slug)}
-                                            />
-                                        </TableCell>
+                                            {/* XL WIDTH AND ABOVE */}
+                                            <TableCell className="hidden md:hidden xl:table-cell">
+                                                <DownloadsCount downloads={version.downloads} iconVisible={false} />
+                                            </TableCell>
 
-                                        {/* MID WIDTH AND ABOVE */}
-                                        <TableCell className="hidden md:table-cell">
-                                            <div className="w-full flex flex-wrap items-start justify-start gap-1.5">
-                                                <GameVersions gameVersions={version.gameVersions} verbose={anyFilterEnabled} />
-                                                <ProjectLoaders versionLoaders={version.loaders} />
-                                            </div>
-                                        </TableCell>
+                                            {/* ALWAYS THE SAME */}
+                                            <TableCell className="pe-table-side-pad-sm md:pe-table-side-pad">
+                                                <div className="w-full flex gap-1 items-center justify-end">
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <VariantButtonLink
+                                                                url={version.primaryFile?.url || ""}
+                                                                variant="outline"
+                                                                size="icon"
+                                                                className="noClickRedirect shrink-0 !w-10 !h-10 rounded-full"
+                                                                aria-label={`Download ${version.title}`}
+                                                                onClick={showDownloadAnimation}
+                                                                rel="nofollow noindex"
+                                                            >
+                                                                <DownloadIcon
+                                                                    aria-hidden
+                                                                    className="w-btn-icon h-btn-icon"
+                                                                    strokeWidth={2.2}
+                                                                />
+                                                            </VariantButtonLink>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent>
+                                                            {version.primaryFile?.name} (
+                                                            {parseFileSize(version.primaryFile?.size || 0)})
+                                                        </TooltipContent>
+                                                    </Tooltip>
 
-                                        {/* MID WIDTH AND BELOW XL*/}
-                                        <TableCell className="hidden md:table-cell xl:hidden">
-                                            <div className="min-w-max lex flex-wrap items-start justify-start gap-3">
-                                                <DatePublished dateStr={version.datePublished} />
-                                                <DownloadsCount downloads={version.downloads} />
-                                            </div>
-                                        </TableCell>
-
-                                        {/* XL WIDTH AND ABOVE */}
-                                        <TableCell className="hidden md:hidden xl:table-cell">
-                                            <DatePublished dateStr={version.datePublished} iconVisible={false} />
-                                        </TableCell>
-
-                                        {/* XL WIDTH AND ABOVE */}
-                                        <TableCell className="hidden md:hidden xl:table-cell">
-                                            <DownloadsCount downloads={version.downloads} iconVisible={false} />
-                                        </TableCell>
-
-                                        {/* ALWAYS THE SAME */}
-                                        <TableCell className="pe-table-side-pad-sm md:pe-table-side-pad">
-                                            <div className="w-full flex gap-1 items-center justify-end">
-                                                <Tooltip>
-                                                    <TooltipTrigger asChild>
-                                                        <VariantButtonLink
-                                                            url={version.primaryFile?.url || ""}
-                                                            variant="outline"
-                                                            size="icon"
-                                                            className="noClickRedirect shrink-0 !w-10 !h-10 rounded-full"
-                                                            aria-label={`Download ${version.title}`}
-                                                            onClick={showDownloadAnimation}
-                                                            rel="nofollow noindex"
-                                                        >
-                                                            <DownloadIcon aria-hidden className="w-btn-icon h-btn-icon" strokeWidth={2.2} />
-                                                        </VariantButtonLink>
-                                                    </TooltipTrigger>
-                                                    <TooltipContent>
-                                                        {version.primaryFile?.name} ({parseFileSize(version.primaryFile?.size || 0)})
-                                                    </TooltipContent>
-                                                </Tooltip>
-
-                                                <ThreeDotMenu
-                                                    canEditVersion={canEditVersion}
-                                                    versionPageUrl={versionPagePathname(version.slug)}
-                                                />
-                                            </div>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
+                                                    <ThreeDotMenu
+                                                        canEditVersion={canEditVersion}
+                                                        versionPageUrl={versionPagePathname(version.slug)}
+                                                    />
+                                                </div>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
                             </TableBody>
                         </Table>
                     </Card>

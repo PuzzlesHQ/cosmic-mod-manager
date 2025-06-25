@@ -8,7 +8,7 @@ export default function StatsPage({ stats }: { stats: Statistics }) {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Statistics</CardTitle>
+                <CardTitle>{t.moderation.statistics}</CardTitle>
             </CardHeader>
 
             <CardContent className="grid gap-4 grid-cols-1 sm:grid-cols-[repeat(auto-fit,_minmax(15rem,_1fr))]">

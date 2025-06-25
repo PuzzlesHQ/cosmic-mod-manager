@@ -21,7 +21,6 @@ import { ImgWrapper } from "~/components/ui/avatar";
 import { TimePassedSince } from "~/components/ui/date";
 import Link, { useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { useSession } from "~/hooks/session";
-import { formatLocaleCode } from "~/locales";
 import { useTranslation } from "~/locales/provider";
 import type { UserOutletData } from "~/routes/user/layout";
 import { OrgPagePath, UserProfilePath } from "~/utils/urls";
@@ -94,10 +93,11 @@ export default function UserPageLayout(props: Props) {
 
                 {navLinks.length < 1 ? (
                     <div className="w-full flex items-center justify-center py-12">
-                        <p className="text-lg text-muted-foreground italic text-center">{t.user.doesntHaveProjects(props.userData.name)}</p>
+                        <p className="text-lg text-muted-foreground italic text-center">
+                            {t.user.doesntHaveProjects(props.userData.name)}
+                        </p>
                     </div>
                 ) : (
-                    // biome-ignore lint/a11y/useSemanticElements: <explanation>
                     <div className="w-full flex flex-col gap-panel-cards" role="list">
                         <Outlet
                             context={
@@ -168,7 +168,7 @@ interface ProfilePageHeaderProps {
 }
 
 function ProfilePageHeader({ userData, totalProjects, totalDownloads }: ProfilePageHeaderProps) {
-    const { t, locale } = useTranslation();
+    const { t, formattedLocaleName } = useTranslation();
     const session = useSession();
     let title = null;
 
@@ -181,7 +181,7 @@ function ProfilePageHeader({ userData, totalProjects, totalDownloads }: ProfileP
     const ProjectsCount = t.count.projects(totalProjects);
     const DownloadsCount = t.count.downloads(totalDownloads);
 
-    let DownloadsCount_Str = FormatCount(totalDownloads, formatLocaleCode(locale));
+    let DownloadsCount_Str = FormatCount(totalDownloads, formattedLocaleName);
     if (DownloadsCount[0].length > 0) DownloadsCount_Str = `${DownloadsCount[0]} ${DownloadsCount_Str}`;
     if (DownloadsCount[2].length > 0) DownloadsCount_Str += ` ${DownloadsCount[2]}`;
     return (

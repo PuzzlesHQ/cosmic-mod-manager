@@ -15,7 +15,7 @@ import { createURLSafeSlug } from "~/string";
 import { DependencyType, VersionReleaseChannel } from "~/types";
 
 const AdditionVersionFilesList = z
-    .instanceof(File)
+    .file()
     .array()
     .max(MAX_OPTIONAL_FILES, `You can upload up to ${MAX_OPTIONAL_FILES} additional files only.`)
     .optional()
@@ -82,14 +82,14 @@ export const VersionDependencies = z
 export const newVersionFormSchema = z.object({
     title: z.string().min(MIN_VERSION_TITLE_LENGTH).max(MAX_VERSION_TITLE_LENGTH),
     changelog: z.string().max(MAX_VERSION_CHANGELOG_LENGTH).optional(),
-    releaseChannel: z.enum(VersionReleaseChannel).default(VersionReleaseChannel.RELEASE),
+    releaseChannel: z.enum(VersionReleaseChannel).default(VersionReleaseChannel.RELEASE).optional(),
     featured: z.boolean(),
     versionNumber: VersionNumber,
     loaders: ProjectLoaders,
     gameVersions: SupportedGameVersions,
     dependencies: VersionDependencies,
 
-    primaryFile: z.instanceof(File).refine(
+    primaryFile: z.file().refine(
         (file) => {
             if (!file || file.size > MAX_VERSION_FILE_SIZE) return false;
             return true;
@@ -103,14 +103,14 @@ export const newVersionFormSchema = z.object({
 export const updateVersionFormSchema = z.object({
     title: z.string().min(MIN_VERSION_TITLE_LENGTH).max(MAX_VERSION_TITLE_LENGTH),
     changelog: z.string().max(MAX_VERSION_CHANGELOG_LENGTH).optional(),
-    releaseChannel: z.enum(VersionReleaseChannel).default(VersionReleaseChannel.RELEASE),
+    releaseChannel: z.enum(VersionReleaseChannel).default(VersionReleaseChannel.RELEASE).optional(),
     featured: z.boolean(),
     versionNumber: VersionNumber,
     loaders: ProjectLoaders,
     gameVersions: SupportedGameVersions,
     dependencies: VersionDependencies,
     additionalFiles: z
-        .instanceof(File)
+        .file()
         .or(
             z.object({
                 id: z.string(),

@@ -10,7 +10,7 @@ import { cn } from "@app/components/utils";
 import { disableInteractions } from "@app/utils/dom";
 import { MODERATOR_ROLES } from "@app/utils/src/constants/roles";
 import type { LoggedInUserData } from "@app/utils/types";
-import type { Notification } from "@app/utils/types/api";
+import type { Notification } from "@app/utils/types/api/notification";
 import { imageUrl } from "@app/utils/url";
 import {
     BellIcon,
@@ -26,19 +26,13 @@ import {
 import { useState } from "react";
 import { useLocation } from "react-router";
 import { ImgWrapper } from "~/components/ui/avatar";
-import { ButtonLink, VariantButtonLink, useNavigate } from "~/components/ui/link";
+import { ButtonLink, useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { useTranslation } from "~/locales/provider";
 import { setReturnUrl } from "~/pages/auth/oauth-providers";
 import clientFetch from "~/utils/client-fetch";
 import { UserProfilePath } from "~/utils/urls";
 
-export function LoginButton({
-    className,
-    onClick,
-}: {
-    className?: string;
-    onClick?: () => void;
-}) {
+export function LoginButton({ className, onClick }: { className?: string; onClick?: () => void }) {
     const { t } = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();

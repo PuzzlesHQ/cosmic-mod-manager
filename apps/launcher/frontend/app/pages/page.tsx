@@ -1,7 +1,5 @@
-import useRootData from "~/hooks/root-data";
-
 export default function HomePage() {
-    const ctx = useRootData();
+    const ctx = useRouteLoaderData("root") as RootOutletData;
 
     return (
         <div>

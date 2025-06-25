@@ -7,9 +7,9 @@ import { TooltipProvider, TooltipTemplate } from "@app/components/ui/tooltip";
 import { cn } from "@app/components/utils";
 import { projectTypes } from "@app/utils/config/project";
 import {
-    MAX_SEARCH_LIMIT,
     defaultSearchLimit,
     defaultSortBy,
+    MAX_SEARCH_LIMIT,
     searchLimitParamNamespace,
     searchQueryParamNamespace,
     sortByParamNamespace,
@@ -19,7 +19,7 @@ import { FilterIcon, ImageIcon, LayoutListIcon, SearchIcon } from "lucide-react"
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useSpinnerCtx } from "~/components/global-spinner";
-import { type UserConfig, setUserConfig, useUserConfig } from "~/hooks/user-config";
+import { setUserConfig, type UserConfig, useUserConfig } from "~/hooks/user-config";
 import { useTranslation } from "~/locales/provider";
 import { removePageOffsetSearchParam, updateSearchParam, useSearchContext } from "./provider";
 import { SearchResults } from "./search_results";
@@ -224,7 +224,11 @@ function ViewTypeToggle({
     projectType,
     viewType,
     reRender,
-}: { projectType: ProjectType; viewType: ViewType; reRender: (str: string) => void }) {
+}: {
+    projectType: ProjectType;
+    viewType: ViewType;
+    reRender: (str: string) => void;
+}) {
     const userConfig = useUserConfig();
     const { t } = useTranslation();
 

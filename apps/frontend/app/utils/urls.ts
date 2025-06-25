@@ -1,6 +1,7 @@
 import { append, prepend, removeLeading, removeTrailing } from "@app/utils/string";
 import { useLocation } from "react-router";
 import { parseLocale } from "~/locales";
+import Config from "./config";
 
 export const HINT_LOCALE_KEY = "hl";
 
@@ -18,7 +19,7 @@ export function getHintLocale(searchParams?: URLSearchParams) {
 
 export function getCurrLocation() {
     const loc = globalThis?.window ? window.location : useLocation();
-    return new URL(`https://example.com${loc.pathname}${loc.search}${loc.hash}`);
+    return new URL(`${Config.FRONTEND_URL}${loc.pathname}${loc.search}${loc.hash}`);
 }
 
 // ? URL Formatters
@@ -88,9 +89,9 @@ export function CollectionPagePath(id: string, extra?: string) {
 export function appendPathInUrl(_url: string | URL, str: string) {
     let url: URL;
     if (typeof _url === "string") {
-        if (_url.startsWith("/")) url = new URL(`https://example.com${_url}`);
+        if (_url.startsWith("/")) url = new URL(`${Config.FRONTEND_URL}${_url}`);
         else if (_url.startsWith("http")) url = new URL(_url);
-        else url = new URL(`https://example.com/${_url}`);
+        else url = new URL(`${Config.FRONTEND_URL}/${_url}`);
     } else {
         url = _url;
     }

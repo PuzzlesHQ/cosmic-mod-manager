@@ -1,5 +1,6 @@
 import Redirect from "~/components/ui/redirect";
 import { useSession } from "~/hooks/session";
+import { useTranslation } from "~/locales/provider";
 import DashboardLayout from "~/pages/dashboard/layout";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
@@ -12,11 +13,12 @@ export default function () {
 }
 
 export function meta() {
+    const { t } = useTranslation();
+
     return MetaTags({
-        title: "Dashboard",
-        description: `Your ${Config.SITE_NAME_SHORT} dashboard`,
+        title: t.meta.addContext(t.dashboard.dashboard, Config.SITE_NAME_SHORT),
+        description: t.dashboard.dashboard,
         image: Config.SITE_ICON,
-        url: `${Config.FRONTEND_URL}/dashboard`,
-        suffixTitle: true,
+        url: undefined,
     });
 }

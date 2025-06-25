@@ -2,11 +2,11 @@ import type { LinkedProvidersListData } from "@app/utils/types";
 import { useLoaderData } from "react-router";
 import Redirect from "~/components/ui/redirect";
 import { useSession } from "~/hooks/session";
+import { useTranslation } from "~/locales/provider";
 import AccountSettingsPage from "~/pages/settings/account/page";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
 import { resJson, serverFetch } from "~/utils/server-fetch";
-import { FormatUrl_WithHintLocale } from "~/utils/urls";
 import type { Route } from "./+types/account";
 
 export default function () {
@@ -25,11 +25,12 @@ export async function loader(props: Route.LoaderArgs): Promise<LinkedProvidersLi
 }
 
 export function meta() {
+    const { t } = useTranslation();
+
     return MetaTags({
-        title: "Account settings",
-        description: `Your ${Config.SITE_NAME_SHORT} account settings`,
+        title: t.meta.addContext(t.common.settings, t.settings.accountAndSecurity),
+        description: t.settings.accountAndSecurity,
         image: Config.SITE_ICON,
-        url: `${Config.FRONTEND_URL}${FormatUrl_WithHintLocale("settings/account")}`,
-        suffixTitle: true,
+        url: `${Config.FRONTEND_URL}/settings/account`,
     });
 }

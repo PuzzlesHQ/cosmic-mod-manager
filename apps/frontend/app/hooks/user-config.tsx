@@ -76,7 +76,8 @@ function validateConfig(config?: Partial<UserConfig>) {
             for (const item of Object.entries(config.viewPrefs)) {
                 const projectType = item[0] as ProjectType;
 
-                if (isValidViewType(config.viewPrefs[projectType])) defaultConf.viewPrefs[projectType] = config.viewPrefs[projectType];
+                if (isValidViewType(config.viewPrefs[projectType]))
+                    defaultConf.viewPrefs[projectType] = config.viewPrefs[projectType];
             }
         }
 

@@ -95,8 +95,6 @@ export interface ProjectDetailsData {
         description: string | null;
         members: TeamMember[];
     } | null;
-
-    versions?: ProjectVersionData[];
 }
 
 export interface VersionFile {

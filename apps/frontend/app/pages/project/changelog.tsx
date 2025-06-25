@@ -4,6 +4,7 @@ import { buttonVariants } from "@app/components/ui/button";
 import { Card } from "@app/components/ui/card";
 import { TooltipProvider, TooltipTemplate } from "@app/components/ui/tooltip";
 import { cn } from "@app/components/utils";
+import { ParseInt } from "@app/utils/string";
 import { VersionReleaseChannel } from "@app/utils/types";
 import { DownloadIcon, FlaskConicalIcon } from "lucide-react";
 import { useContext } from "react";
@@ -20,31 +21,31 @@ const ITEMS_PER_PAGE = 15;
 
 export default function VersionChangelogs() {
     const ctx = useProjectData();
-    const { t, locale } = useTranslation();
+    const { t } = useTranslation();
     const pageSearchParamKey = "page";
     const [urlSearchParams] = useSearchParams();
     const page = urlSearchParams.get(pageSearchParamKey) || "1";
     const pagesCount = Math.ceil((ctx.allProjectVersions?.length || 0) / ITEMS_PER_PAGE);
-    const activePage = Number.parseInt(page) <= pagesCount ? Number.parseInt(page) : 1;
+    const activePage = ParseInt(page) <= pagesCount ? ParseInt(page) : 1;
 
     const { show: showDownloadAnimation } = useContext(DownloadAnimationContext);
 
-    const filterData = VersionFilters({
+    const filter = VersionFilters({
         allProjectVersions: ctx.allProjectVersions,
         supportedGameVersions: ctx.projectData.gameVersions,
         showDevVersions_Default: true,
     });
 
     const Pagination =
-        (filterData.filteredItems.length || 0) > ITEMS_PER_PAGE ? (
+        (filter.filteredItems.length || 0) > ITEMS_PER_PAGE ? (
             <PaginatedNavigation pagesCount={pagesCount} activePage={activePage} searchParamKey={pageSearchParamKey} />
         ) : null;
 
-    const visibleVersionItems = filterData.filteredItems.slice((activePage - 1) * ITEMS_PER_PAGE, activePage * ITEMS_PER_PAGE);
+    const visibleVersionItems = filter.filteredItems.slice((activePage - 1) * ITEMS_PER_PAGE, activePage * ITEMS_PER_PAGE);
 
     return (
         <>
-            {filterData.component}
+            {filter.component}
 
             <Card className="p-5 w-full flex flex-col items-start justify-start">
                 {visibleVersionItems.map((version, index) => {
@@ -60,6 +61,7 @@ export default function VersionChangelogs() {
                             <div className="w-full flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
                                 <div className="flex flex-wrap gap-x-1.5 items-baseline justify-start">
                                     <ChangelogBar releaseChannel={version.releaseChannel} isDuplicate={isDuplicate === true} />
+
                                     {version.releaseChannel === VersionReleaseChannel.DEV ? (
                                         <TooltipProvider>
                                             <TooltipTemplate content="Dev release!" className="font-normal">
@@ -72,7 +74,7 @@ export default function VersionChangelogs() {
                                     ) : null}
 
                                     {t.version.publishedBy(
-                                        <h2 className="leading-tight">
+                                        <h2 key="version-title" className="leading-tight">
                                             <Link
                                                 to={VersionPagePath(ctx.projectType, ctx.projectData.slug, version.slug)}
                                                 className="text-[1.25rem] font-bold flex items-baseline gap-2"
@@ -81,11 +83,20 @@ export default function VersionChangelogs() {
                                             </Link>
                                         </h2>,
 
-                                        <Link to={UserProfilePath(version.author.userName)} className="link_blue hover:underline">
+                                        <Link
+                                            key="version-author"
+                                            to={UserProfilePath(version.author.userName)}
+                                            className="link_blue hover:underline"
+                                        >
                                             {version.author.userName}
                                         </Link>,
 
-                                        <FormattedDate date={version.datePublished} includeTime={false} shortMonthNames={true} />,
+                                        <FormattedDate
+                                            key="date-published"
+                                            date={version.datePublished}
+                                            includeTime={false}
+                                            shortMonthNames={true}
+                                        />,
                                     )}
                                 </div>
 
@@ -101,6 +112,7 @@ export default function VersionChangelogs() {
                                     </a>
                                 ) : null}
                             </div>
+
                             {version.changelog && !isDuplicate ? (
                                 <MarkdownRenderBox addIdToHeadings={false} text={version.changelog} className="me-2" />
                             ) : null}
@@ -116,23 +128,21 @@ export default function VersionChangelogs() {
 
 function ChangelogBar({ releaseChannel, isDuplicate }: { releaseChannel: VersionReleaseChannel; isDuplicate: boolean }) {
     return (
-        <>
-            <div
-                className={cn(
-                    "changelog-bar absolute w-1 h-full top-2.5 start-2 rounded-full",
-                    releaseChannel === VersionReleaseChannel.RELEASE
-                        ? "text-blue-500 dark:text-blue-400"
-                        : releaseChannel === VersionReleaseChannel.BETA
-                          ? "text-orange-500 dark:text-orange-400"
-                          : releaseChannel === VersionReleaseChannel.ALPHA || releaseChannel === VersionReleaseChannel.DEV
-                            ? "text-danger-background"
-                            : "",
+        <div
+            className={cn(
+                "changelog-bar absolute w-1 h-full top-2.5 start-2 rounded-full",
+                releaseChannel === VersionReleaseChannel.RELEASE
+                    ? "text-blue-500 dark:text-blue-400"
+                    : releaseChannel === VersionReleaseChannel.BETA
+                      ? "text-orange-500 dark:text-orange-400"
+                      : releaseChannel === VersionReleaseChannel.ALPHA || releaseChannel === VersionReleaseChannel.DEV
+                        ? "text-danger-background"
+                        : "",
 
-                    isDuplicate && "duplicate",
-                )}
-            >
-                <span className="absolute top-0 left-[-0.5rem] w-4 h-4 rounded-full translate-x-[0.125rem] bg-current" />
-            </div>
-        </>
+                isDuplicate && "duplicate",
+            )}
+        >
+            <span className="absolute top-0 left-[-0.5rem] w-4 h-4 rounded-full translate-x-[0.125rem] bg-current" />
+        </div>
     );
 }

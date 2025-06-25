@@ -1,7 +1,9 @@
 import { SuspenseFallback } from "@app/components/ui/spinner";
-import type { Notification, OrganisationListItem, ProjectListItem } from "@app/utils/types/api";
+import type { OrganisationListItem, ProjectListItem } from "@app/utils/types/api";
+import { type Notification, NotificationType } from "@app/utils/types/api/notification";
 import type { UserProfileData } from "@app/utils/types/api/user";
 import { useLoaderData } from "react-router";
+import { useTranslation } from "~/locales/provider";
 import NotificationsPage from "~/pages/dashboard/notification/page";
 import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";
@@ -39,14 +41,20 @@ export async function clientLoader(): Promise<LoaderData> {
     const userIds: string[] = [];
 
     for (const notification of notifications) {
-        const projectId = notification.body?.projectId;
-        if (projectId && typeof projectId === "string") projectIds.push(projectId);
+        switch (notification.type) {
+            case NotificationType.ORGANIZATION_INVITE:
+                orgIds.push(notification.body.orgId);
+                userIds.push(notification.body.invitedBy);
+                break;
 
-        const orgId = notification.body?.orgId;
-        if (orgId && typeof orgId === "string") orgIds.push(orgId);
+            case NotificationType.TEAM_INVITE:
+                projectIds.push(notification.body.projectId);
+                userIds.push(notification.body.invitedBy);
+                break;
 
-        const userId = notification.body?.invitedBy;
-        if (userId && typeof userId === "string") userIds.push(userId);
+            case NotificationType.STATUS_CHANGE:
+                projectIds.push(notification.body.projectId);
+        }
     }
 
     const [projectsRes, orgsRes, usersRes] = await Promise.all([
@@ -72,11 +80,12 @@ export function HydrateFallback() {
 }
 
 export function meta() {
+    const { t } = useTranslation();
+
     return MetaTags({
-        title: "Notifications",
-        description: `Your ${Config.SITE_NAME_SHORT} notifications`,
+        title: t.meta.addContext(t.dashboard.notifications, Config.SITE_NAME_SHORT),
+        description: t.dashboard.notifications,
         image: Config.SITE_ICON,
-        url: `${Config.FRONTEND_URL}/dashboard/notifications`,
-        suffixTitle: true,
+        url: undefined,
     });
 }

@@ -1,4 +1,4 @@
-import { MicrodataItemProps, MicrodataItemType, itemType } from "@app/components/microdata";
+import { itemType, MicrodataItemProps, MicrodataItemType } from "@app/components/microdata";
 import { ImgLoader } from "@app/components/misc/img-loading-spinner";
 import { Button, buttonVariants } from "@app/components/ui/button";
 import { Card } from "@app/components/ui/card";
@@ -22,7 +22,7 @@ import {
     Trash2Icon,
     XIcon,
 } from "lucide-react";
-import { Suspense, lazy, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { FormattedDate } from "~/components/ui/date";
 import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
@@ -274,7 +274,9 @@ function ImageDialog({
 
                     <div className="max-w-full flex flex-col items-center justify-center group p-16 pt-24 pb-4 rounded w-fit absolute left-[50%] bottom-[0.5rem] translate-x-[-50%] z-20">
                         <div className="max-w-full w-max flex flex-col items-center justify-center transition-all duration-300 opacity-0 scale-75 translate-y-[1rem] group-hover:translate-y-[-1rem] group-hover:scale-100 group-hover:opacity-100 text-[hsla(var(--foreground-dark))]">
-                            <span className="font-bold text-lg text-center bg-black/80 rounded-[0.1rem] px-1">{galleryItem.name}</span>
+                            <span className="font-bold text-lg text-center bg-black/80 rounded-[0.1rem] px-1">
+                                {galleryItem.name}
+                            </span>
                             <span className="max-w-[80ch] text-pretty text-center bg-black/80 rounded-[0.1rem] px-1">
                                 {galleryItem.description}
                             </span>

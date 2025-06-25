@@ -1,5 +1,6 @@
 import type { ProjectListItem } from "@app/utils/types/api";
 import { useLoaderData } from "react-router";
+import { useTranslation } from "~/locales/provider";
 import ProjectsPage from "~/pages/dashboard/projects/page";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
@@ -20,11 +21,12 @@ export async function loader(props: Route.LoaderArgs): Promise<ProjectListItem[]
 }
 
 export function meta() {
+    const { t } = useTranslation();
+
     return MetaTags({
-        title: "Projects",
-        description: `Your ${Config.SITE_NAME_SHORT} projects`,
+        title: t.meta.addContext(t.dashboard.projects, Config.SITE_NAME_SHORT),
+        description: t.dashboard.projects,
         image: Config.SITE_ICON,
-        url: `${Config.FRONTEND_URL}/dashboard/projects`,
-        suffixTitle: true,
+        url: undefined,
     });
 }

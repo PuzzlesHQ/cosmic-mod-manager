@@ -14,7 +14,17 @@ import type { z } from "@app/utils/schemas";
 import type { createThreadMessage_Schema } from "@app/utils/schemas/thread/index";
 import { GlobalUserRole, ProjectPublishingStatus } from "@app/utils/types";
 import { MessageType, type Thread, type ThreadMember, type ThreadMessage as ThreadMessageT } from "@app/utils/types/api/thread";
-import { BanIcon, LockIcon, MoreHorizontalIcon, MoreVerticalIcon, ReplyIcon, ScaleIcon, SendIcon, Trash2Icon, XIcon } from "lucide-react";
+import {
+    BanIcon,
+    LockIcon,
+    MoreHorizontalIcon,
+    MoreVerticalIcon,
+    ReplyIcon,
+    ScaleIcon,
+    SendIcon,
+    Trash2Icon,
+    XIcon,
+} from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router";
 import ConfirmDialog from "~/components/confirm-dialog";
@@ -160,6 +170,7 @@ export function ChatThread(props: ChatThreadProps) {
                             <span className="text-muted-foreground leading-none text-sm">
                                 {t.chatThread.replyingTo(
                                     <Button
+                                        key="replying-to-user"
                                         onClick={() => {
                                             scrollMsgIntoView(replyingTo);
                                         }}
@@ -197,7 +208,11 @@ export function ChatThread(props: ChatThreadProps) {
                             />
                         </div>
 
-                        <Button onClick={() => PostThreadMessage()} disabled={sendingMsg || !editorText.trim().length} variant="secondary">
+                        <Button
+                            onClick={() => PostThreadMessage()}
+                            disabled={sendingMsg || !editorText.trim().length}
+                            variant="secondary"
+                        >
                             <SendIcon className="w-btn-icon-md h-btn-icon-md" />
                         </Button>
                     </div>
@@ -358,8 +373,8 @@ function ThreadMessage(props: ThreadMessageProps) {
                 msgText = (
                     <p className="flex items-center justify-start gap-space">
                         {t.chatThread.changedProjectStatus(
-                            <ProjectStatusBadge status={msg.body.prev_status} t={t} />,
-                            <ProjectStatusBadge status={msg.body.new_status} t={t} />,
+                            <ProjectStatusBadge key="prev-status" status={msg.body.prev_status} t={t} />,
+                            <ProjectStatusBadge key="new-status" status={msg.body.new_status} t={t} />,
                         )}
                     </p>
                 );
@@ -384,7 +399,7 @@ function ThreadMessage(props: ThreadMessageProps) {
         <span className={timestamp_class}>{fullDate}</span>
     ) : (
         <TooltipTemplate content={FormattedDate({ date: props.message.createdAt })}>
-            <span className={timestamp_class} aria-label={fullDate}>
+            <span className={timestamp_class}>
                 <FormattedDate date={props.message.createdAt} includeDay={false} includeMonth={false} includeYear={false} />
             </span>
         </TooltipTemplate>
@@ -451,7 +466,9 @@ function ThreadMessage(props: ThreadMessageProps) {
             )}
             id={msgElemId(msg.id)}
             style={{
-                gridTemplateAreas: props.inResponseTo ? `"reply reply" "avatar info" "avatar body"` : `"avatar info" "avatar body"`,
+                gridTemplateAreas: props.inResponseTo
+                    ? `"reply reply" "avatar info" "avatar body"`
+                    : `"avatar info" "avatar body"`,
                 gridTemplateColumns: "2.5rem 1fr",
                 gridTemplateRows: props.inResponseTo ? "fit-content fit-content 1fr" : "fit-content 1fr",
             }}
@@ -469,7 +486,6 @@ function ThreadMessage(props: ThreadMessageProps) {
             )}
 
             {!!props.inResponseTo && props.inResponseTo.msg?.type === MessageType.TEXT && (
-                // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
                 <div
                     style={{ gridArea: "reply" }}
                     className="flex items-center justify-start gap-space text-xs text-extra-muted-foreground hover:text-muted-foreground cursor-pointer pb-2 group/replied-msg-preview"
@@ -519,7 +535,9 @@ function ThreadMessage(props: ThreadMessageProps) {
                                 {authorUsername}
                             </Link>
                         ) : (
-                            <span className={cn("w-fit text-base font-bold leading-none", specialNameColor)}>{authorUsername}</span>
+                            <span className={cn("w-fit text-base font-bold leading-none", specialNameColor)}>
+                                {authorUsername}
+                            </span>
                         )}
 
                         {msg.type === MessageType.TEXT && msg.body.isPrivate === true && (

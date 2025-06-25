@@ -3,6 +3,7 @@ import type { UserProfileData } from "@app/utils/types/api/user";
 import { UserXIcon } from "lucide-react";
 import type { MetaDescriptor } from "react-router";
 import { type ShouldRevalidateFunctionArgs, useLoaderData } from "react-router";
+import { useTranslation } from "~/locales/provider";
 import NotFoundPage from "~/pages/not-found";
 import UserPageLayout from "~/pages/user/layout";
 import Config from "~/utils/config";
@@ -19,12 +20,13 @@ export interface UserOutletData {
 
 export default function () {
     const data = useLoaderData() as LoaderData;
+    const { t } = useTranslation();
 
     if (data.userSlug === "deleted_user") {
         return (
             <div className="full_page flex flex-col py-12 items-center justify-center text-extra-muted-foreground">
                 <UserXIcon className="w-20 h-20" />
-                <h2 className="text-2xl font-semibold">The user account was deleted.</h2>
+                <h2 className="text-2xl font-semibold">{t.user.accountDeleted}</h2>
             </div>
         );
     }
@@ -32,10 +34,10 @@ export default function () {
     if (!data.userData?.id) {
         return (
             <NotFoundPage
-                title="User not found"
-                description={`The user with username/ID "${data?.userSlug}" does not exist.`}
+                title={t.error.userNotFound}
+                description={t.error.userNotFoundDesc(data.userSlug || "")}
                 linkHref="/"
-                linkLabel="Home"
+                linkLabel={t.common.home}
             />
         );
     }
@@ -94,25 +96,23 @@ export async function loader(props: Route.LoaderArgs): Promise<LoaderData> {
 }
 
 export function meta(props: Route.MetaArgs): MetaDescriptor[] {
-    const { userData, userSlug } = props.data as LoaderData;
-    const image = userData?.avatar || Config.SITE_ICON;
+    const { t } = useTranslation();
+    const { userData, userSlug } = props.data;
 
     if (!userData?.id) {
         return MetaTags({
-            title: "User not found",
-            description: `No user with the username/ID ${userSlug} exists on ${Config.SITE_NAME_SHORT}`,
+            title: t.error.userNotFound,
+            description: t.error.userNotFoundDesc(userSlug || ""),
             image: Config.SITE_ICON,
-            url: `${Config.FRONTEND_URL}${UserProfilePath(userSlug || "")}`,
-            suffixTitle: true,
+            url: undefined,
         });
     }
 
     return MetaTags({
-        title: userData?.userName || "",
-        description: `${userData?.bio} - Download ${userData?.userName}'s projects on ${Config.SITE_NAME_SHORT}`,
-        image: image,
-        url: `${Config.FRONTEND_URL}${UserProfilePath(userData?.userName)}`,
-        suffixTitle: true,
+        title: t.meta.addContext(userData.userName, Config.SITE_NAME_SHORT),
+        description: t.meta.userPageDesc(userData.bio || "", userData.userName, Config.SITE_NAME_SHORT),
+        image: userData?.avatar || Config.SITE_ICON,
+        url: Config.FRONTEND_URL + UserProfilePath(userData?.userName),
     });
 }
 

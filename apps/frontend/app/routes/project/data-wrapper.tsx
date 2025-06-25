@@ -1,5 +1,4 @@
 import { getProjectTypeFromName } from "@app/utils/convertors";
-import { CapitalizeAndFormatString } from "@app/utils/string";
 import type { ProjectDetailsData, ProjectListItem, ProjectVersionData } from "@app/utils/types/api";
 import { Outlet, type ShouldRevalidateFunctionArgs } from "react-router";
 import { useProjectData } from "~/hooks/project";
@@ -15,16 +14,16 @@ export default function () {
     const { t } = useTranslation();
     const data = useProjectData();
 
-    if (!data?.projectSlug || !data?.projectType) return null;
+    if (!data.projectSlug || !data.projectType) return null;
 
-    if (!data?.projectData?.id) {
+    if (!data.projectData?.id) {
         const type = getProjectTypeFromName(data?.projectType);
 
         return (
             <NotFoundPage
                 title={t.error.projectNotFound}
                 description={t.error.projectNotFoundDesc(t.navbar[type], data.projectSlug)}
-                linkHref={`/${data?.projectType}s`}
+                linkHref={`/${type}s`}
                 linkLabel={t.project.browse[type]}
             />
         );
@@ -79,29 +78,29 @@ export async function loader(props: Route.LoaderArgs): Promise<ProjectLoaderData
     };
 }
 
-export function meta(props: Route.MetaArgs) {
-    const data = props.data as ProjectLoaderData;
+export function meta() {
+    const { t } = useTranslation();
+    const data = useProjectData();
     const project = data?.projectData;
 
     if (!project) {
         return MetaTags({
-            title: "Project Not Found",
-            description: "The project you are looking for could not be found.",
+            title: t.meta.addContext(t.error.projectNotFound, Config.SITE_NAME_SHORT),
+            description: t.error.projectNotFoundDesc(t.navbar[getProjectTypeFromName(data.projectType)], data.projectSlug),
             image: Config.SITE_ICON,
             url: Config.FRONTEND_URL,
-            suffixTitle: true,
         });
     }
 
     const creator = project.members.find((member) => member.isOwner);
-    const author = project.organisation?.name || creator?.userName;
+    const author = project.organisation?.name || creator?.userName || "<unknown>";
 
     const authorProfileLink = creator?.userName ? `${Config.FRONTEND_URL}${UserProfilePath(creator.userName)}` : undefined;
+    const projectType_translated = t.navbar[getProjectTypeFromName(project.type[0])];
 
     return MetaTags({
-        title: `${project.name} - Cosmic Reach ${CapitalizeAndFormatString(project.type?.[0])}`,
-        description: project.summary,
-        siteMetaDescription: `${project.summary} - Download the Cosmic Reach ${CapitalizeAndFormatString(project.type[0])} '${project.name}' by ${author} on ${Config.SITE_NAME_SHORT}`,
+        title: t.meta.project(project.name, projectType_translated),
+        description: t.meta.projectDesc(project.name, project.summary, projectType_translated, author, Config.SITE_NAME_SHORT),
         image: project.icon || "",
         url: `${Config.FRONTEND_URL}${ProjectPagePath(project.type?.[0], project.slug)}`,
         authorProfile: authorProfileLink,

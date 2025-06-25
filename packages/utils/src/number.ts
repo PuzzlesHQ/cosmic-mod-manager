@@ -29,7 +29,7 @@ export function parseFileSize(size: number): string {
 }
 
 export function FormatCount(count = 0, locale = "en-US", options?: Intl.NumberFormatOptions) {
-    let minimumFractionDigits: number | undefined = undefined;
+    let minimumFractionDigits: number | undefined;
     if (count > 1_000_000) {
         minimumFractionDigits = 2;
     } else if (count > 1_000) {

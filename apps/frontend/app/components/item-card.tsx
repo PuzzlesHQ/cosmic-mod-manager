@@ -1,6 +1,6 @@
 import {
-    OrgListItemCard as DefaultOrgListItemCard,
     CollectionListItemCard as DefaultCollectionListItemCard,
+    OrgListItemCard as DefaultOrgListItemCard,
 } from "@app/components/misc/item-card";
 import type React from "react";
 import { useRootData } from "~/hooks/root-data";

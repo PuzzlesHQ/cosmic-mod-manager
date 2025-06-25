@@ -1,40 +1,49 @@
 {
     "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
     "files": {
-        "ignore": [
-            "./**/node_modules/*",
-            "./**/dist/*",
-            "./**/build/*",
-            "./**/public/*",
-            "./**/pm2.config.cjs",
-            "./**/.react-router/*",
-            "./**/clickhouse/*",
-            "./**/redis/*",
-            "./**/meilisearch/*",
-            "./**/wailsjs/*",
-            "./**/.vitepress/*"
-        ],
-        "include": ["./*"]
+        "includes": [
+            "./**/*.{tsx,ts,json}",
+            "!**/node_modules/*",
+            "!**/dist/*",
+            "!**/build/*",
+            "!**/public/*",
+            "!**/pm2.config.cjs",
+            "!**/.react-router/*",
+            "!**/redis/*",
+            "!**/meilisearch/*",
+            "!**/wailsjs/*",
+            "!**/prisma/client/*",
+            "!**/clickhouse/*",
+            "!**/.vitepress/*"
+        ]
     },
     "linter": {
         "enabled": true,
-        "ignore": ["./**/*.css", "./**/entry.server.tsx"],
         "rules": {
             "correctness": {
                 "useExhaustiveDependencies": "off",
                 "noUnusedImports": "error"
             },
             "style": {
-                "noParameterAssign": "off"
+                "noParameterAssign": "off",
+                "useImportType": "error"
+            },
+            "nursery": {
+                "noTsIgnore": "off"
+            },
+            "a11y": {
+                "useSemanticElements": "info",
+                "noStaticElementInteractions": "info",
+                "useKeyWithClickEvents": "info"
+            },
+            "suspicious": {
+                "noArrayIndexKey": "info"
             }
         }
     },
     "formatter": {
-        "lineWidth": 140,
+        "lineWidth": 130,
         "indentWidth": 4,
         "indentStyle": "space"
-    },
-    "organizeImports": {
-        "enabled": true
     }
 }

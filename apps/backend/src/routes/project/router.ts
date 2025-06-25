@@ -7,6 +7,7 @@ import { generalProjectSettingsFormSchema } from "@app/utils/schemas/project/set
 import { updateProjectLicenseFormSchema } from "@app/utils/schemas/project/settings/license";
 import { updateExternalLinksFormSchema } from "@app/utils/schemas/project/settings/links";
 import { parseInput } from "@app/utils/schemas/utils";
+import type { ProjectDetailsData, ProjectVersionData } from "@app/utils/types/api";
 import { type Context, Hono } from "hono";
 import type { z } from "zod/v4";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
@@ -83,20 +84,30 @@ async function project_get(ctx: Context) {
 
         const includeVersions = ctx.req.query("includeVersions") === "true";
         const featuredVersionsOnly = ctx.req.query("featuredOnly") === "true";
-
         const res = await getProjectData(slug, userSession);
-        // Fetch the project versions if it's to be included
-        if (includeVersions === true && res.data.project) {
+
+        if (includeVersions !== true || !res.data.project) {
+            return ctx.json(res.data, res.status);
+        } else {
+            // Fetch the project versions if it's to be included
+            const project = res.data.project as ProjectDetailsData & { versions: ProjectVersionData[] };
             const versions = await getAllProjectVersions(slug, userSession, featuredVersionsOnly);
 
             if ("data" in versions.data && versions.data.data) {
-                res.data.project.versions = versions.data.data;
+                project.versions = versions.data.data;
             } else {
-                res.data.project.versions = [];
+                project.versions = [];
             }
-        }
 
-        return ctx.json(res.data, res.status);
+            return ctx.json(
+                {
+                    success: res.data.success,
+                    message: res.data.message,
+                    project: project,
+                },
+                res.status,
+            );
+        }
     } catch (error) {
         console.error(error);
         return serverErrorResponse(ctx);

@@ -87,7 +87,7 @@ export default function EditVersionPage() {
             const formData = new FormData();
             formData.append("title", values.title);
             formData.append("changelog", values.changelog || "");
-            formData.append("releaseChannel", values.releaseChannel);
+            formData.append("releaseChannel", values.releaseChannel || VersionReleaseChannel.RELEASE);
             formData.append("featured", values.featured.toString());
             formData.append("versionNumber", values.versionNumber);
             formData.append("loaders", JSON.stringify(values.loaders || []));
@@ -123,126 +123,122 @@ export default function EditVersionPage() {
     const currVersionPageUrl = ProjectPagePath(ctx.projectType, projectData.slug, `version/${versionData.slug}`);
 
     return (
-        <>
-            <title>{`Edit ${versionData.versionNumber} - ${projectData.name}`}</title>
-
-            <Form {...form}>
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault();
+        <Form {...form}>
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                }}
+                className="w-full flex flex-col gap-panel-cards items-start justify-start"
+            >
+                <UploadVersionPageTopCard
+                    isLoading={isLoading}
+                    submitBtnLabel={t.form.saveChanges}
+                    submitBtnIcon={<SaveIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />}
+                    versionPageUrl={versionsPageUrl}
+                    versionTitle={form.getValues().title}
+                    backUrl={currVersionPageUrl}
+                    onSubmitBtnClick={async () => {
+                        await handleFormError(async () => {
+                            const formValues = await updateVersionFormSchema.parseAsync(form.getValues());
+                            await handleSubmit(formValues);
+                        }, toast.error);
                     }}
-                    className="w-full flex flex-col gap-panel-cards items-start justify-start"
-                >
-                    <UploadVersionPageTopCard
-                        isLoading={isLoading}
-                        submitBtnLabel={t.form.saveChanges}
-                        submitBtnIcon={<SaveIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />}
-                        versionPageUrl={versionsPageUrl}
-                        versionTitle={form.getValues().title}
-                        backUrl={currVersionPageUrl}
-                        onSubmitBtnClick={async () => {
-                            await handleFormError(async () => {
-                                const formValues = await updateVersionFormSchema.parseAsync(form.getValues());
-                                await handleSubmit(formValues);
-                            }, toast.error);
-                        }}
-                        featuredBtn={
-                            <FormField
-                                control={form.control}
-                                name="featured"
-                                render={({ field }) => (
-                                    <FeaturedBtn isLoading={isLoading} featured={field.value} setFeatured={field.onChange} />
-                                )}
-                            />
-                        }
-                    >
+                    featuredBtn={
                         <FormField
                             control={form.control}
-                            name="title"
+                            name="featured"
                             render={({ field }) => (
-                                <FormItem>
-                                    <VersionTitleInput
-                                        name={field.name}
-                                        value={field.value}
-                                        inputRef={field.ref}
-                                        disabled={field.disabled === true}
-                                        onChange={field.onChange}
-                                    />
-                                </FormItem>
+                                <FeaturedBtn isLoading={isLoading} featured={field.value} setFeatured={field.onChange} />
                             )}
                         />
-                    </UploadVersionPageTopCard>
-
-                    <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_min-content] gap-panel-cards items-start justify-start">
-                        <div className="overflow-auto flex flex-col gap-panel-cards">
-                            <ContentCardTemplate title={t.project.changelog}>
-                                <FormField
-                                    control={form.control}
-                                    name="changelog"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <MarkdownEditor editorValue={field.value || ""} setEditorValue={field.onChange} />
-                                        </FormItem>
-                                    )}
+                    }
+                >
+                    <FormField
+                        control={form.control}
+                        name="title"
+                        render={({ field }) => (
+                            <FormItem>
+                                <VersionTitleInput
+                                    name={field.name}
+                                    value={field.value}
+                                    inputRef={field.ref}
+                                    disabled={field.disabled === true}
+                                    onChange={field.onChange}
                                 />
-                            </ContentCardTemplate>
+                            </FormItem>
+                        )}
+                    />
+                </UploadVersionPageTopCard>
 
-                            <ContentCardTemplate title={t.version.dependencies}>
-                                <FormField
-                                    control={form.control}
-                                    name="dependencies"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <AddDependencies
-                                                dependencies={field.value || []}
-                                                setDependencies={field.onChange}
-                                                currProjectId={projectData.id}
-                                                dependenciesData={ctx.dependencies}
-                                            />
-                                        </FormItem>
-                                    )}
-                                />
-                            </ContentCardTemplate>
+                <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_min-content] gap-panel-cards items-start justify-start">
+                    <div className="overflow-auto flex flex-col gap-panel-cards">
+                        <ContentCardTemplate title={t.project.changelog}>
+                            <FormField
+                                control={form.control}
+                                name="changelog"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <MarkdownEditor editorValue={field.value || ""} setEditorValue={field.onChange} />
+                                    </FormItem>
+                                )}
+                            />
+                        </ContentCardTemplate>
 
-                            <ContentCardTemplate title={t.version.files} className="gap-form-elements">
-                                {/* PRIMARY FILE */}
-                                <div className="w-full flex flex-wrap sm:flex-nowrap items-center justify-between bg-shallow-background rounded px-4 py-2 gap-x-4 gap-y-2">
-                                    <div className="flex items-center justify-start gap-1.5">
-                                        <FileIcon aria-hidden className="flex-shrink-0 w-btn-icon h-btn-icon text-muted-foreground" />
+                        <ContentCardTemplate title={t.version.dependencies}>
+                            <FormField
+                                control={form.control}
+                                name="dependencies"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <AddDependencies
+                                            dependencies={field.value || []}
+                                            setDependencies={field.onChange}
+                                            currProjectId={projectData.id}
+                                            dependenciesData={ctx.dependencies}
+                                        />
+                                    </FormItem>
+                                )}
+                            />
+                        </ContentCardTemplate>
 
-                                        <div className="flex items-center flex-wrap justify-start gap-x-2">
-                                            <span>
-                                                <strong className="font-semibold">{versionData?.primaryFile?.name}</strong>{" "}
-                                                <span className="whitespace-nowrap ms-0.5">
-                                                    ({parseFileSize(versionData?.primaryFile?.size || 0)})
-                                                </span>{" "}
-                                                <span className="text-muted-foreground italic ms-1">{t.version.primary}</span>
-                                            </span>
-                                        </div>
+                        <ContentCardTemplate title={t.version.files} className="gap-form-elements">
+                            {/* PRIMARY FILE */}
+                            <div className="w-full flex flex-wrap sm:flex-nowrap items-center justify-between bg-shallow-background rounded px-4 py-2 gap-x-4 gap-y-2">
+                                <div className="flex items-center justify-start gap-1.5">
+                                    <FileIcon aria-hidden className="flex-shrink-0 w-btn-icon h-btn-icon text-muted-foreground" />
+
+                                    <div className="flex items-center flex-wrap justify-start gap-x-2">
+                                        <span>
+                                            <strong className="font-semibold">{versionData?.primaryFile?.name}</strong>{" "}
+                                            <span className="whitespace-nowrap ms-0.5">
+                                                ({parseFileSize(versionData?.primaryFile?.size || 0)})
+                                            </span>{" "}
+                                            <span className="text-muted-foreground italic ms-1">{t.version.primary}</span>
+                                        </span>
                                     </div>
-
-                                    <Button disabled type="button" variant="secondary-dark">
-                                        <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
-                                        {t.form.remove}
-                                    </Button>
                                 </div>
 
-                                <SelectAdditionalProjectFiles
-                                    fieldName="existingAdditionalFiles"
-                                    // @ts-ignore
-                                    formControl={form.control}
-                                />
-                            </ContentCardTemplate>
-                        </div>
+                                <Button disabled type="button" variant="secondary-dark">
+                                    <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                                    {t.form.remove}
+                                </Button>
+                            </div>
 
-                        <MetadataInputCard
-                            projectType={projectData.type}
-                            // @ts-ignore
-                            formControl={form.control}
-                        />
+                            <SelectAdditionalProjectFiles
+                                fieldName="existingAdditionalFiles"
+                                // @ts-ignore
+                                formControl={form.control}
+                            />
+                        </ContentCardTemplate>
                     </div>
-                </form>
-            </Form>
-        </>
+
+                    <MetadataInputCard
+                        projectType={projectData.type}
+                        // @ts-ignore
+                        formControl={form.control}
+                    />
+                </div>
+            </form>
+        </Form>
     );
 }

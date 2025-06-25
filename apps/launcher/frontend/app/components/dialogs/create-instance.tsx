@@ -1,6 +1,6 @@
 import { fallbackProjectIcon } from "@app/components/icons";
 import { ImgWrapper } from "@app/components/ui/avatar";
-import { Button, CancelButton, buttonVariants } from "@app/components/ui/button";
+import { Button, buttonVariants, CancelButton } from "@app/components/ui/button";
 import ComboBox from "@app/components/ui/combobox";
 import {
     Dialog,

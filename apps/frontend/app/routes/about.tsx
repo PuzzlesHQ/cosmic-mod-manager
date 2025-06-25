@@ -1,6 +1,7 @@
 import MarkdownRenderBox from "~/components/md-renderer";
 import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
+import { MetaTags } from "~/utils/meta";
 
 export default function () {
     const { t } = useTranslation();
@@ -16,4 +17,15 @@ export default function () {
             />
         </main>
     );
+}
+
+export function meta() {
+    const { t } = useTranslation();
+
+    return MetaTags({
+        title: t.meta.addContext(t.meta.about, Config.SITE_NAME_SHORT),
+        description: t.meta.about,
+        image: Config.SITE_ICON,
+        url: undefined,
+    });
 }

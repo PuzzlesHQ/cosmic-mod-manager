@@ -1,7 +1,7 @@
 import { disableInteractions, enableInteractions } from "@app/utils/dom";
-import { type ReactNode, createContext, use, useState } from "react";
+import { createContext, type ReactNode, use, useState } from "react";
 import type { NavigateFunction } from "react-router";
-import { HINT_LOCALE_KEY, getCurrLocation } from "~/utils/urls";
+import { getCurrLocation, HINT_LOCALE_KEY } from "~/utils/urls";
 import { formatLocaleCode, getLocale, parseLocale } from ".";
 import en from "./en/translation";
 import { DefaultLocale, GetLocaleMetadata } from "./meta";
@@ -10,11 +10,13 @@ import type { Locale, LocaleMetaData } from "./types";
 interface LocaleContext {
     locale: LocaleMetaData;
     t: Locale;
+    formattedLocaleName: string;
     changeLocale: (locale: string, navigate?: NavigateFunction) => void;
 }
 const LocaleContext = createContext<LocaleContext>({
     locale: DefaultLocale,
     t: en,
+    formattedLocaleName: formatLocaleCode(DefaultLocale),
     changeLocale: (_locale: string, _navigate?: NavigateFunction) => {},
 });
 
@@ -42,7 +44,8 @@ export function LocaleProvider({ children, initLocale, initMetadata }: Props) {
             value={{
                 locale: localeMetadata,
                 t: translation,
-                changeLocale,
+                changeLocale: changeLocale,
+                formattedLocaleName: formatLocaleCode(localeMetadata),
             }}
         >
             {children}

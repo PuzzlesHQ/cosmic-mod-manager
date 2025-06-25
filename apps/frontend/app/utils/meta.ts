@@ -3,49 +3,36 @@ import { formatLocaleCode } from "~/locales";
 import SupportedLocales, { DefaultLocale, GetLocaleMetadata } from "~/locales/meta";
 import { alterUrlHintLocale } from "~/locales/provider";
 import Config from "~/utils/config";
-import { getHintLocale } from "./urls";
+import { getCurrLocation, getHintLocale } from "./urls";
 
-type MetaTags =
+type BaseMetaProps = {
+    url: string | undefined; // when no url is provided, uses the curr page's url
+    siteMetaDescription?: string;
+    parentMetaTags?: MetaDescriptor[];
+    authorProfile?: string;
+};
+
+type UnionMetaProps =
     | {
           title: string;
-          siteMetaDescription?: string;
           description: string;
           image: string;
-          url: string;
-          parentMetaTags?: MetaDescriptor[];
-          suffixTitle?: boolean;
           linksOnly?: false;
-          authorProfile?: string;
       }
     | {
-          title?: string;
-          siteMetaDescription?: string;
-          description?: string;
-          image?: string;
-          url: string;
-          parentMetaTags?: MetaDescriptor[];
           linksOnly: true;
-          suffixTitle?: boolean;
-          authorProfile?: string;
       };
+
+type MetaTagsProps = BaseMetaProps & UnionMetaProps;
 
 /**
  * Generate meta tags like, title, description and their open graph equivalents
  * @param { MetaTags } props
  */
-export function MetaTags(props: MetaTags): MetaDescriptor[] {
-    if (props.suffixTitle) {
-        props.title = `${props.title} - ${Config.SITE_NAME_SHORT}`;
-    }
+export function MetaTags(props: MetaTagsProps): MetaDescriptor[] {
     if (!props.parentMetaTags) props.parentMetaTags = [];
 
-    try {
-        new URL(props.url);
-    } catch (error) {
-        console.log(props.url);
-    }
-
-    const url = new URL(props.url);
+    const url = props.url ? new URL(props.url) : getCurrLocation();
     const currHintLocale_meta = GetLocaleMetadata(getHintLocale(url.searchParams)) || DefaultLocale;
 
     const alternateLocaleLinks = SupportedLocales.map((locale) => {

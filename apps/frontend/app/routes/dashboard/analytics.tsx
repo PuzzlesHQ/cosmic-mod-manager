@@ -1,5 +1,6 @@
 import type { ProjectListItem } from "@app/utils/types/api";
 import { useLoaderData } from "react-router";
+import { useTranslation } from "~/locales/provider";
 import DashboardAnalyticsPage from "~/pages/dashboard/analytics";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
@@ -25,11 +26,12 @@ export function shouldRevalidate() {
 }
 
 export function meta() {
+    const { t } = useTranslation();
+
     return MetaTags({
-        title: "Analytics",
-        description: `Your ${Config.SITE_NAME_SHORT} project's analytics`,
+        title: t.meta.addContext(t.dashboard.analytics, Config.SITE_NAME_SHORT),
+        description: t.dashboard.analytics,
         image: Config.SITE_ICON,
-        url: `${Config.FRONTEND_URL}/dashboard/analytics`,
-        suffixTitle: true,
+        url: undefined,
     });
 }

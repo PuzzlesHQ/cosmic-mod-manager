@@ -351,7 +351,8 @@ export default {
             selectLicense: "Select license",
             selectLicenseDesc: (projectType: string) => `Select the license your ${projectType} is distributed under.`,
             selectEnv: "Select supported environments",
-            selectEnvDesc: (projectType: string) => `Select if the ${projectType} functions on the client-side and/or server-side.`,
+            selectEnvDesc: (projectType: string) =>
+                `Select if the ${projectType} functions on the client-side and/or server-side.`,
             requiredStepsDesc: "All marked with an asterisk(*) are required",
             submitForReview: "Submit for review",
             submitForReviewDesc:
@@ -467,7 +468,8 @@ export default {
         clientSide: "Client side",
         clientSideDesc: (projectType: string) => `Select based on if your ${projectType} has functionality on the client side.`,
         serverSide: "Server side",
-        serverSideDesc: (projectType: string) => `Select based on if your ${projectType} has functionality on the logical server.`,
+        serverSideDesc: (projectType: string) =>
+            `Select based on if your ${projectType} has functionality on the logical server.`,
         unknown: "Unknown",
         clientOrServer: "Client or server",
         clientAndServer: "Client and server",
@@ -527,7 +529,8 @@ export default {
         removeMember: "Remove member",
         transferOwnership: "Transfer ownership",
         overrideValues: "Override values",
-        overrideValuesDesc: "Override organization default values and assign custom permissions and roles to this user on the project.",
+        overrideValuesDesc:
+            "Override organization default values and assign custom permissions and roles to this user on the project.",
         projectNotManagedByOrg:
             "This project is not managed by an organization. If you are the member of any organizations, you can transfer management to one of them.",
         transferManagementToOrg: "Transfer management",
@@ -573,6 +576,7 @@ export default {
         doesntHaveProjects: (user: string) => `${user} doesn't have any projects yet.`,
         isntPartOfAnyOrgs: (user: string) => `${user} is not a member of any Organization.`,
         joined: (when: string) => `Joined ${when}`, // eg: Joined 2 months ago
+        accountDeleted: "The user account was deleted.",
     },
 
     collection: {
@@ -654,7 +658,8 @@ export default {
         rejected_msg: (contentRules_url: string) => `Your project does not currently meet our
             [content rules](${contentRules_url}) and the moderators have requested you make changes before it can be approved. 
             Read the messages from the moderators below and address their comments before resubmitting.`,
-        repeatedSubmission_warning: "Repeated submissions without addressing the moderators' comments may result in an account suspension.",
+        repeatedSubmission_warning:
+            "Repeated submissions without addressing the moderators' comments may result in an account suspension.",
         messages: "Messages",
         resubmitDesc: {
             _1: (project: string) => `You're submitting ${project} to be reviewed again by the moderators.`,
@@ -720,10 +725,23 @@ export default {
         sthWentWrong: "Oops! Something went wrong",
         errorDesc: "Seems like something broke, while we try to resolve the issue try refreshing the page.",
         refresh: "Refresh",
+
         pageNotFound: "404 | Page not found.",
         pageNotFoundDesc: "Sorry, we couldn't find the page you're looking for.",
+
         projectNotFound: "Project not found",
-        projectNotFoundDesc: (type: string, slug: string) => `The ${type} with the slug/ID "${slug}" does not exist.`,
+        projectNotFoundDesc: (projectType: string, slug: string) => `No ${projectType} exists with slug/ID '${slug}'`,
+
+        versionNotFound: "Version not found",
+        versionNotFoundDesc: (project: string, type: string) =>
+            `The version of '${project}' ${type} you're looking for could not be found.`,
+        gotoVersionsList: "Go to versions list",
+
+        oraganizationNotFound: "Organization not found",
+        oraganizationNotFoundDesc: (slug: string) => `No organization exists with slug/ID '${slug}'`,
+
+        userNotFound: "User not found",
+        userNotFoundDesc: (userName: string) => `No user exists with userName/ID '${userName}'`,
     },
 
     editor: {
@@ -778,5 +796,76 @@ export default {
             previous_365_days: "Previous 365 days",
             all_time: "All time",
         },
+    },
+
+    meta: {
+        /* name would be site name in most cases
+         For example on login page: "Login - CRMM"
+         but on pages like project settings it will be project's name: "Settings - SomeMod"
+         same for organization pages
+        */
+        addContext: (title: string, name: string) => `${title} - ${name}`,
+
+        siteDesc: (siteName_long: string, siteName_short: string) =>
+            `Download Cosmic Reach mods, plugins, datamods, shaders, resourcepacks, and modpacks on ${siteName_short} (${siteName_long}). Discover and publish projects on ${siteName_short} with a modern, easy to use interface and API.`,
+
+        searchDesc: (projectType: string, siteName_short: string, siteName_long: string) =>
+            `Search and download your favorite cosmic reach ${projectType} with ease here on ${siteName_short} (${siteName_long}).`,
+
+        about: "About Us",
+        loginDesc: (siteName_short: string) => `Log into your ${siteName_short} account.`,
+        signupDesc: (siteName_short: string) => `Sign up for a ${siteName_short} account.`,
+        changePassDesc: (siteName_short: string) => `Change your ${siteName_short} account password.`,
+
+        userPageDesc: (userBio: string, userName: string, siteName_short: string) =>
+            `${userBio} - Download ${userName}'s projects on ${siteName_short}`,
+
+        collection: (name: string) => `${name} - Collection`,
+        collectionDesc: (userProvidedDesc: string, name: string, siteName_short: string) =>
+            `${userProvidedDesc} - View the collection ${name} on ${siteName_short}`,
+        collectionNotFound: "Collection not found",
+        collectionNotFoundDesc: (collectionId: string) => `No collection found with id: ${collectionId}`,
+
+        copyrightPolicyPageDesc: (siteName_short: string) =>
+            `The Copyright Policy of ${siteName_short}, an open source modding platform focused on Cosmic Reach`,
+        privacyPolicyPageDesc: (siteName_short: string) =>
+            `The Privacy Policy of ${siteName_short}, an open source modding platform focused on Cosmic Reach`,
+        contentRulesPageDesc: (siteName_short: string) =>
+            `The Content Rules of ${siteName_short}, an open source modding platform focused on Cosmic Reach`,
+        securityNoticePageDesc: (siteName_short: string) =>
+            `The Security Notice of ${siteName_short}, an open source modding platform focused on Cosmic Reach`,
+        tosPageDesc: (siteName_short: string) =>
+            `The Terms of Use of ${siteName_short}, an open source modding platform focused on Cosmic Reach`,
+
+        project: (project: string, type: string) => `${project} - Cosmic Reach ${type}`, // type will be mod, datamod etc
+        projectDesc: (project: string, summary: string, type: string, author: string, siteName_short: string) =>
+            `${summary} - Download the Cosmic Reach ${type} '${project}' by ${author} on ${siteName_short}`,
+
+        galleryDesc: (numImages: number, project: string, type: string, siteName_short: string) =>
+            `View ${numImages} image(s) of '${project}' ${type} on ${siteName_short}`,
+
+        changelogDesc: (project: string, versionsNum: number) => `View the changelog of ${project}'s ${versionsNum} version(s).`,
+
+        versionsListDesc: (project: string, versionsNum: number) => `List of ${project}'s ${versionsNum} version(s).`,
+        versionPageDesc: (o: {
+            project: string;
+            versionNumber: string;
+            siteName_short: string;
+            supportedGameVersions: string;
+            loaders: string | null;
+            publishedAt: string;
+            author: string;
+            downloads: string;
+        }) => {
+            let string = `Download ${o.project} ${o.versionNumber} on ${o.siteName_short}. Supports cosmic reach ${o.supportedGameVersions}`;
+            if (o.loaders) string += ` on ${o.loaders}.`;
+            string += ` Published on ${o.publishedAt} by ${o.author}. ${o.downloads} downloads.`;
+
+            return string;
+        },
+
+        organization: (name: string) => `${name} - Organization`,
+        organizationDesc: (orgDesc: string, name: string, siteName_short: string) =>
+            `${orgDesc} - View the organization ${name} on ${siteName_short}`,
     },
 } satisfies Translation;

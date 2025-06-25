@@ -71,7 +71,10 @@ function Unsupported({ className }: Props) {
 export function ProjectSupprotedEnvironments({
     clientSide,
     serverSide,
-}: { clientSide: EnvironmentSupport; serverSide: EnvironmentSupport }) {
+}: {
+    clientSide: EnvironmentSupport;
+    serverSide: EnvironmentSupport;
+}) {
     if (clientSide === EnvironmentSupport.REQUIRED && serverSide === EnvironmentSupport.REQUIRED) {
         return [<ClientAndServerSide key="Client-and-server" />];
     }
@@ -103,7 +106,11 @@ export default function ProjectSupportedEnv({
     clientSide,
     serverSide,
     className,
-}: { clientSide: EnvironmentSupport; serverSide: EnvironmentSupport; className?: string }) {
+}: {
+    clientSide: EnvironmentSupport;
+    serverSide: EnvironmentSupport;
+    className?: string;
+}) {
     if (clientSide === EnvironmentSupport.REQUIRED && serverSide === EnvironmentSupport.REQUIRED)
         return <ClientAndServerSide className={className} />;
     if (clientSide === EnvironmentSupport.OPTIONAL && serverSide === EnvironmentSupport.OPTIONAL)

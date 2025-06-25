@@ -5,9 +5,11 @@ import { Input } from "@app/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@app/components/ui/popover";
 import { BookmarkIcon, PlusIcon, SquareArrowOutUpRightIcon } from "lucide-react";
 import { useState } from "react";
+import { useLocation } from "react-router";
 import Link, { useNavigate } from "~/components/ui/link";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
+import { setReturnUrl } from "~/pages/auth/oauth-providers";
 import CreateNewCollection_Dialog from "../dashboard/collections/new-collection";
 import useCollections from "./provider";
 
@@ -16,6 +18,7 @@ export function AddToCollection_Popup({ projectId }: { projectId: string }) {
     const session = useSession();
     const ctx = useCollections();
     const navigate = useNavigate();
+    const location = useLocation();
     const [searchQuery, setSearchQuery] = useState("");
 
     if (!session?.id) {
@@ -23,6 +26,7 @@ export function AddToCollection_Popup({ projectId }: { projectId: string }) {
             <AddToCollection_PopupTrigger
                 bookmarked={false}
                 onClick={() => {
+                    setReturnUrl(location);
                     navigate("/login");
                 }}
             />

@@ -7,7 +7,7 @@ import { imageUrl } from "@app/utils/url";
 import { Building2Icon, CalendarIcon, DownloadIcon, HeartIcon, RefreshCcwIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { TagIcon } from "~/icons/tag-icons";
-import { MicrodataItemProps, MicrodataItemType, itemType } from "~/microdata";
+import { itemType, MicrodataItemProps, MicrodataItemType } from "~/microdata";
 import { ImgWrapper } from "~/ui/avatar";
 import Chip from "~/ui/chip";
 import Link from "~/ui/link";
@@ -74,7 +74,8 @@ function BaseView(props: SearchListItemProps) {
     const projectCategoriesData = getProjectCategoriesDataFromNames(props.featuredCategories);
     const loadersData = getLoadersFromNames(props.loaders);
 
-    const effectiveProjectType = !props.pageProjectType || props.pageProjectType === "project" ? props.projectType : props.pageProjectType;
+    const effectiveProjectType =
+        !props.pageProjectType || props.pageProjectType === "project" ? props.projectType : props.pageProjectType;
     const projectPageUrl = props.ProjectPagePath(effectiveProjectType, props.projectSlug);
 
     // View Types
@@ -88,7 +89,6 @@ function BaseView(props: SearchListItemProps) {
 
     return (
         <article
-            // biome-ignore lint/a11y/useSemanticElements: <explanation>
             role="listitem"
             itemProp={MicrodataItemProps.works}
             itemScope
@@ -149,21 +149,29 @@ function BaseView(props: SearchListItemProps) {
             </Link>
 
             <div
-                className={cn("h-fit whitespace-break-spaces text-wrap leading-none", galleryViewType && "me-card-surround leading-tight")}
+                className={cn(
+                    "h-fit whitespace-break-spaces text-wrap leading-none",
+                    galleryViewType && "me-card-surround leading-tight",
+                )}
                 style={{ gridArea: "title" }}
             >
                 {!props.author ? (
-                    <ProjectLink projectName={props.projectName} projectPageUrl={projectPageUrl} galleryViewType={galleryViewType} />
+                    <ProjectLink
+                        projectName={props.projectName}
+                        projectPageUrl={projectPageUrl}
+                        galleryViewType={galleryViewType}
+                    />
                 ) : (
                     t.search.searchItemAuthor(
                         <ProjectLink
-                            key={`${props.projectSlug}`}
+                            key="project"
                             projectName={props.projectName}
                             projectPageUrl={projectPageUrl}
                             galleryViewType={galleryViewType}
                         />,
+
                         <AuthorLink
-                            key={`${props.projectSlug}-${props.author}`}
+                            key="project-author"
                             author={props.author}
                             authorDisplayName={props.author}
                             OrgPagePath={props.OrgPagePath}
@@ -187,7 +195,10 @@ function BaseView(props: SearchListItemProps) {
 
             <p
                 itemProp={MicrodataItemProps.description}
-                className={cn("leading-tight sm:text-pretty max-w-[80ch] mobile-break-words", galleryViewType && "mx-card-surround")}
+                className={cn(
+                    "leading-tight sm:text-pretty max-w-[80ch] mobile-break-words",
+                    galleryViewType && "mx-card-surround",
+                )}
                 style={{ gridArea: "summary" }}
             >
                 {props.summary}
@@ -213,7 +224,6 @@ function BaseView(props: SearchListItemProps) {
                         <span
                             className="flex gap-1 items-center justify-center"
                             key={category.name}
-                            aria-label={category.name}
                             title={`${t.search[category.type]} / ${tagName}`}
                         >
                             <TagIcon name={category.name} />
@@ -319,7 +329,10 @@ function ProjectLink(props: ProjectLinkProps) {
         <Link
             itemProp={MicrodataItemProps.url}
             to={props.projectPageUrl}
-            className={cn("w-fit text-xl font-bold leading-none mobile-break-words", props.galleryViewType && "block leading-tight")}
+            className={cn(
+                "w-fit text-xl font-bold leading-none mobile-break-words",
+                props.galleryViewType && "block leading-tight",
+            )}
             aria-label={props.projectName}
         >
             <p itemProp={MicrodataItemProps.name} className={cn("inline leading-none", props.galleryViewType && "leading-tight")}>
@@ -343,7 +356,10 @@ function AuthorLink(props: AuthorLinkProps) {
     return (
         <Link
             to={props.isOrgOwned ? props.OrgPagePath(props.author) : props.UserProfilePath(props.author)}
-            className={cn("underline hover:brightness-110 mobile-break-words leading-none", props.galleryViewType && "leading-tight")}
+            className={cn(
+                "underline hover:brightness-110 mobile-break-words leading-none",
+                props.galleryViewType && "leading-tight",
+            )}
             title={props.isOrgOwned ? `${props.author} (${props.Organization_translation})` : props.author}
         >
             {props.authorDisplayName}

@@ -2,7 +2,6 @@ import DefaultProjectCardItem from "@app/components/misc/search-list-item";
 import { FormatCount } from "@app/utils/number";
 import type React from "react";
 import { useRootData } from "~/hooks/root-data";
-import { formatLocaleCode } from "~/locales";
 import { useTranslation } from "~/locales/provider";
 import ProjectSupportedEnv from "~/pages/project/supported-env";
 import { OrgPagePath, ProjectPagePath, UserProfilePath } from "~/utils/urls";
@@ -25,14 +24,18 @@ type Props = Omit<
 
 export default function ProjectCardItem(props: Props) {
     const viewTransitions = useRootData()?.userConfig.viewTransitions !== false;
-    const { t, locale } = useTranslation();
+    const { t, formattedLocaleName } = useTranslation();
 
     return (
         <DefaultProjectCardItem
             {...props}
             t={t}
             supportedEnv={
-                <ProjectSupportedEnv clientSide={props.clientSide} serverSide={props.serverSide} className="text-extra-muted-foreground" />
+                <ProjectSupportedEnv
+                    clientSide={props.clientSide}
+                    serverSide={props.serverSide}
+                    className="text-extra-muted-foreground"
+                />
             }
             UserProfilePath={UserProfilePath}
             ProjectPagePath={ProjectPagePath}
@@ -42,7 +45,7 @@ export default function ProjectCardItem(props: Props) {
                 return TimePassedSince({ date: date });
             }}
             NumberFormatter={(num: number) => {
-                return FormatCount(num, formatLocaleCode(locale));
+                return FormatCount(num, formattedLocaleName);
             }}
             DateFormatter={(date: string | Date) => {
                 return FormattedDate({ date: date });

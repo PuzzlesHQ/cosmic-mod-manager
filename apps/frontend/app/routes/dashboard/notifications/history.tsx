@@ -1,5 +1,6 @@
 import { SuspenseFallback } from "@app/components/ui/spinner";
 import { useLoaderData } from "react-router";
+import { useTranslation } from "~/locales/provider";
 import NotificationsHistoryPage from "~/pages/dashboard/notification/history";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
@@ -25,11 +26,12 @@ export function HydrateFallback() {
 }
 
 export function meta() {
+    const { t } = useTranslation();
+
     return MetaTags({
-        title: "Notifications history",
-        description: `Your ${Config.SITE_NAME_SHORT} notifications history`,
+        title: t.meta.addContext(t.dashboard.notifHistory, Config.SITE_NAME_SHORT),
+        description: t.dashboard.viewNotifHistory,
         image: Config.SITE_ICON,
-        url: `${Config.FRONTEND_URL}/dashboard/notifications`,
-        suffixTitle: true,
+        url: undefined,
     });
 }

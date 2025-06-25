@@ -1,3 +1,4 @@
+import { getProjectTypeFromName } from "@app/utils/convertors";
 import { FormatDate_ToLocaleString } from "@app/utils/date";
 import { FormatCount } from "@app/utils/number";
 import { CapitalizeAndFormatString } from "@app/utils/string";
@@ -7,14 +8,16 @@ import { useEffect } from "react";
 import { useParams, useSearchParams } from "react-router";
 import { useNavigate } from "~/components/ui/link";
 import { useProjectData } from "~/hooks/project";
+import { useTranslation } from "~/locales/provider";
 import NotFoundPage from "~/pages/not-found";
 import VersionPage from "~/pages/project/version/page";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
-import { ProjectPagePath, VersionPagePath, getCurrLocation } from "~/utils/urls";
+import { getCurrLocation, ProjectPagePath, VersionPagePath } from "~/utils/urls";
 import type { Route } from "./+types/page";
 
 export default function () {
+    const { t } = useTranslation();
     const ctx = useProjectData();
     const { projectSlug, versionSlug } = useParams();
     const [searchParams] = useSearchParams();
@@ -25,9 +28,12 @@ export default function () {
         return (
             <NotFoundPage
                 className="no_full_page py-16"
-                title="Version not found"
-                description="The version you are looking for doesn't exist"
-                linkLabel="See versions list"
+                title={t.error.versionNotFound}
+                description={t.error.versionNotFoundDesc(
+                    ctx.projectData.name,
+                    t.navbar[getProjectTypeFromName(ctx.projectData.type[0])],
+                )}
+                linkLabel={t.error.gotoVersionsList}
                 linkHref={ProjectPagePath(ctx.projectType, projectSlug || "", "versions")}
             />
         );
@@ -41,31 +47,21 @@ export default function () {
 }
 
 export function meta(props: Route.MetaArgs) {
-    const parentMetaTags = props.matches?.at(-3)?.meta;
-    // 2nd from top is the __mod__data-wrapper which holds the project related data returned from the loader
-    const parentData = props.matches[1].data;
-    const project = parentData?.projectData;
+    const { t, formattedLocaleName } = useTranslation();
+    const ctx = useProjectData();
+    const project = ctx?.projectData;
     const versionSlug = props.params?.versionSlug;
 
-    if (!parentData || !project?.id) {
-        return MetaTags({
-            title: "Project not found",
-            description: `The project with the slug/ID "${parentData.projectSlug}" does not exist.`,
-            image: Config.SITE_ICON,
-            url: `${Config.FRONTEND_URL}`,
-            suffixTitle: true,
-        });
-    }
-
     const url = getCurrLocation();
-    const version = filterGameVersion(parentData.versions, versionSlug, new URLSearchParams(url.search));
+    const version = filterGameVersion(ctx.allProjectVersions, versionSlug, new URLSearchParams(url.search));
 
     if (!version?.id) {
         return MetaTags({
-            title: `Version not found - ${project.name}`,
-            description: `${project.name} does not have a version with the slug/ID "${versionSlug}".`,
-            image: Config.SITE_ICON,
-            url: `${Config.FRONTEND_URL}${ProjectPagePath(project.type?.[0], project.slug, "versions")}`,
+            title: t.meta.addContext(t.error.versionNotFound, project.name),
+            description: t.error.versionNotFoundDesc(project.name, t.navbar[getProjectTypeFromName(project.type[0])]),
+            image: project.icon || Config.SITE_ICON,
+            url: undefined,
+            parentMetaTags: props.matches[1].meta,
         });
     }
 
@@ -78,16 +74,31 @@ export function meta(props: Route.MetaArgs) {
 
     const titleIncludesProjectName = version.title.toLowerCase().includes(project.name.toLowerCase());
 
+    const description = t.meta.versionPageDesc({
+        project: project.name,
+        versionNumber: version.versionNumber,
+        siteName_short: Config.SITE_NAME_SHORT,
+        supportedGameVersions: formatVersionsForDisplay(version.gameVersions).join(", "),
+        loaders: loaders,
+        publishedAt: publishedAt,
+        author: version.author.userName,
+        downloads: FormatCount(version.downloads, formattedLocaleName),
+    });
+
     return MetaTags({
-        title: `${version.title}${titleIncludesProjectName ? "" : ` - ${project.name}`}`,
-        description: `Download ${project.name} ${version.versionNumber} on ${Config.SITE_NAME_SHORT}. Supports cosmic reach ${formatVersionsForDisplay(version.gameVersions).join(", ")}${loaders ? ` on ${loaders}` : ""}. Published on ${publishedAt} by ${version.author?.userName}. ${FormatCount(version.downloads)} downloads.`,
-        url: `${Config.FRONTEND_URL}${ProjectPagePath(project.type?.[0], project.slug, `version/${version.slug}`)}`,
+        title: titleIncludesProjectName ? version.title : t.meta.addContext(version.title, project.name),
+        description: description,
         image: project.icon || "",
-        parentMetaTags,
+        url: Config.FRONTEND_URL + ProjectPagePath(project.type?.[0], project.slug, `version/${version.slug}`),
+        parentMetaTags: props.matches[1].meta,
     });
 }
 
-function filterGameVersion(gameVersions: ProjectVersionData[] | undefined, slug: string | undefined, searchParams: URLSearchParams) {
+function filterGameVersion(
+    gameVersions: ProjectVersionData[] | undefined,
+    slug: string | undefined,
+    searchParams: URLSearchParams,
+) {
     if (!slug || !gameVersions?.length) return null;
     if (slug !== "latest") return gameVersions?.find((version) => version.slug === slug || version.id === slug);
 

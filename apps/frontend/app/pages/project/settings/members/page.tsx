@@ -52,9 +52,17 @@ export default function ProjectMemberSettingsPage({ userOrgs }: Props) {
         <>
             <Card className="w-full flex flex-col p-card-surround gap-4">
                 <CardTitle>{t.projectSettings.manageMembers}</CardTitle>
-                <InviteMemberForm teamId={projectData.teamId} canInviteMembers={canInviteMembers} dataRefetch={refreshProjectData} />
+                <InviteMemberForm
+                    teamId={projectData.teamId}
+                    canInviteMembers={canInviteMembers}
+                    dataRefetch={refreshProjectData}
+                />
                 {isProjectTeamMember && !isOrgMember ? (
-                    <LeaveTeam teamId={projectData.teamId} currUsersMembership={currUsersMembership} refreshData={refreshProjectData} />
+                    <LeaveTeam
+                        teamId={projectData.teamId}
+                        currUsersMembership={currUsersMembership}
+                        refreshData={refreshProjectData}
+                    />
                 ) : null}
             </Card>
 
@@ -115,7 +123,8 @@ export function LeaveTeam({ currUsersMembership, teamId, refreshData, isOrgTeam 
 
     const disabled = currUsersMembership?.isOwner || currUsersMembership?.teamId !== teamId;
     let disabledReason = null;
-    if (currUsersMembership?.isOwner === true) disabledReason = "Transfer ownership of this project to someone else to leave the team!";
+    if (currUsersMembership?.isOwner === true)
+        disabledReason = "Transfer ownership of this project to someone else to leave the team!";
     if (currUsersMembership?.id) disabledReason = "You're the only member of this team!";
 
     return (

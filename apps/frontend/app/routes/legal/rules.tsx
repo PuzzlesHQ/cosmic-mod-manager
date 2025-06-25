@@ -3,9 +3,6 @@ import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
 import { FormatUrl_WithHintLocale } from "~/utils/urls";
-import { descriptionSuffix } from "./layout";
-
-const title = "Content Rules";
 
 export default function () {
     const { t } = useTranslation();
@@ -25,11 +22,12 @@ export default function () {
 }
 
 export function meta() {
+    const { t } = useTranslation();
+
     return MetaTags({
-        title: title,
-        description: `The ${title} of ${Config.SITE_NAME_SHORT}, ${descriptionSuffix}.`,
+        title: t.meta.addContext(t.legal.rulesTitle, Config.SITE_NAME_SHORT),
+        description: t.meta.contentRulesPageDesc(Config.SITE_NAME_SHORT),
         image: Config.SITE_ICON,
-        url: `${Config.FRONTEND_URL}${FormatUrl_WithHintLocale("legal/rules")}`,
-        suffixTitle: true,
+        url: undefined,
     });
 }

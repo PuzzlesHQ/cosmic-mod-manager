@@ -1,19 +1,20 @@
+import { getProjectTypeFromName } from "@app/utils/convertors";
 import { useProjectType } from "~/hooks/project";
+import { useTranslation } from "~/locales/provider";
 import SearchPage from "~/pages/search/page";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
-import { FormatUrl_WithHintLocale } from "~/utils/urls";
 
 export default SearchPage;
 
 export function meta() {
-    const type = `${useProjectType()}s`;
+    const { t } = useTranslation();
+    const type = useProjectType();
 
     return MetaTags({
-        title: `Search ${type}`,
-        description: `Search and download your favorite cosmic reach ${type} with ease here on ${Config.SITE_NAME_SHORT} (${Config.SITE_NAME_LONG}).`,
-        url: `${Config.FRONTEND_URL}${FormatUrl_WithHintLocale(type)}`,
+        title: t.meta.addContext(t.search[type], Config.SITE_NAME_SHORT),
+        description: t.meta.searchDesc(t.navbar[getProjectTypeFromName(type)], Config.SITE_NAME_SHORT, Config.SITE_NAME_LONG),
         image: Config.SITE_ICON,
-        suffixTitle: true,
+        url: undefined,
     });
 }

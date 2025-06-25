@@ -1,5 +1,6 @@
 import Redirect from "~/components/ui/redirect";
 import { useSession } from "~/hooks/session";
+import { useTranslation } from "~/locales/provider";
 import SignUpPage from "~/pages/auth/signup/page";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
@@ -14,11 +15,12 @@ export default function () {
 }
 
 export function meta() {
+    const { t } = useTranslation();
+
     return MetaTags({
-        title: "SignUp",
-        description: `Sign up for ${Config.SITE_NAME_SHORT} account`,
+        title: t.meta.addContext(t.form.signup, Config.SITE_NAME_SHORT),
+        description: t.meta.signupDesc(Config.SITE_NAME_SHORT),
         image: Config.SITE_ICON,
         url: `${Config.FRONTEND_URL}/signup`,
-        suffixTitle: true,
     });
 }

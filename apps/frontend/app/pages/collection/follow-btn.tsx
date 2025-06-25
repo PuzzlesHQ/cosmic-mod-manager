@@ -1,18 +1,24 @@
 import { Button } from "@app/components/ui/button";
 import { HeartIcon } from "lucide-react";
+import { useLocation } from "react-router";
 import { useNavigate } from "~/components/ui/link";
 import { useSession } from "~/hooks/session";
+import { setReturnUrl } from "~/pages/auth/oauth-providers";
 import useCollections from "./provider";
 
 export function FollowProject_Btn(props: { projectId: string }) {
     const session = useSession();
     const ctx = useCollections();
     const navigate = useNavigate();
+    const location = useLocation();
     const isFollowing = ctx.followingProjects.includes(props.projectId);
 
     async function toggleFollow() {
         // Redirect to login page if the user isn't logged in
-        if (!session?.id) return navigate("/login");
+        if (!session?.id) {
+            setReturnUrl(location);
+            return navigate("/login");
+        }
 
         if (isFollowing) {
             ctx.unfollowProject(props.projectId);

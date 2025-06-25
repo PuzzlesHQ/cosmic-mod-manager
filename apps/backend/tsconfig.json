@@ -1,9 +1,6 @@
 {
     "compilerOptions": {
-        "lib": [
-            "ESNext",
-            "DOM"
-        ],
+        "lib": ["ESNext", "DOM"],
         "composite": true,
         "target": "ESNext",
         "module": "ESNext",
@@ -19,27 +16,13 @@
         "noUnusedParameters": false,
         "noPropertyAccessFromIndexSignature": false,
         "paths": {
-            "~/*": [
-                "./src/*"
-            ],
-            "@app/utils/*": [
-                "./../../packages/utils/src/*"
-            ],
-            "@prisma/client": [
-                "./prisma/client"
-            ]
+            "~/*": ["./src/*"],
+            "@app/utils/*": ["./../../packages/utils/src/*"],
+            "@prisma/client": ["./prisma/client"]
         }
     },
-    "include": [
-        ".",
-        "./../../packages/utils/src"
-    ],
-    "exclude": [
-        "node_modules",
-        "dist",
-        "pm2.config.cjs",
-        "prisma/client"
-    ],
+    "include": [".", "./../../packages/utils/src"],
+    "exclude": ["node_modules", "dist", "pm2.config.cjs", "prisma/client"],
     "references": [
         {
             "path": "./../../packages/utils"

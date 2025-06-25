@@ -37,7 +37,11 @@ export default function PreferencesPage() {
                             <span className="block text-lg font-bold text-foreground my-0">{t.settings.viewTransitions}</span>
                             <span className="block text-muted-foreground my-0">{t.settings.viewTransitionsDesc}</span>
                         </label>
-                        <Switch id="view-transitions" checked={data?.userConfig.viewTransitions} onCheckedChange={toggleViewTransitions} />
+                        <Switch
+                            id="view-transitions"
+                            checked={data?.userConfig.viewTransitions}
+                            onCheckedChange={toggleViewTransitions}
+                        />
                     </div>
                 </CardContent>
             </SectionCard>

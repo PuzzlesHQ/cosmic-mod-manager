@@ -1,9 +1,9 @@
 import Redirect from "~/components/ui/redirect";
 import { useSession } from "~/hooks/session";
+import { useTranslation } from "~/locales/provider";
 import { ProfileSettingsPage } from "~/pages/settings/profile";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
-import { FormatUrl_WithHintLocale } from "~/utils/urls";
 
 export default function () {
     const session = useSession();
@@ -13,11 +13,12 @@ export default function () {
 }
 
 export function meta() {
+    const { t } = useTranslation();
+
     return MetaTags({
-        title: "Profile settings",
-        description: `Your ${Config.SITE_NAME_SHORT} profile settings`,
+        title: t.meta.addContext(t.common.settings, t.settings.publicProfile),
+        description: t.settings.publicProfile,
         image: Config.SITE_ICON,
-        url: `${Config.FRONTEND_URL}${FormatUrl_WithHintLocale("settings/profile")}`,
-        suffixTitle: true,
+        url: `${Config.FRONTEND_URL}/settings/profile`,
     });
 }

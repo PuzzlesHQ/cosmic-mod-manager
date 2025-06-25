@@ -2,6 +2,7 @@ import type { Collection } from "@app/utils/types/api";
 import { useLoaderData } from "react-router";
 import Redirect from "~/components/ui/redirect";
 import { useSession } from "~/hooks/session";
+import { useTranslation } from "~/locales/provider";
 import CollectionsDashboardPage from "~/pages/dashboard/collections/page";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
@@ -24,11 +25,12 @@ export async function loader(props: Route.LoaderArgs): Promise<Collection[]> {
 }
 
 export function meta() {
+    const { t } = useTranslation();
+
     return MetaTags({
-        title: "Collections",
-        description: `Your ${Config.SITE_NAME_SHORT} project collections`,
+        title: t.meta.addContext(t.dashboard.collections, Config.SITE_NAME_SHORT),
+        description: t.dashboard.collections,
         image: Config.SITE_ICON,
-        url: `${Config.FRONTEND_URL}/dashboard/collections`,
-        suffixTitle: true,
+        url: undefined,
     });
 }

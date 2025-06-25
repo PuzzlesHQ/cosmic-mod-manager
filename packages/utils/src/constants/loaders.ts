@@ -64,4 +64,6 @@ export const loaders_list = [
     },
 ] as const satisfies Loader[];
 
+export type LoaderNames = (typeof loaders_list)[number]["name"];
+
 export const loaders = loaders_list as Loader[];

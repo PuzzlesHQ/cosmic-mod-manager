@@ -62,5 +62,3 @@ export default function () {
         </Panel>
     );
 }
-
-export const descriptionSuffix = "an open source modding platform focused on Cosmic Reach";

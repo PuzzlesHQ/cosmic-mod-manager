@@ -2,7 +2,7 @@
     "name": "cosmic-mod-manager",
     "module": "index.ts",
     "devDependencies": {
-        "@biomejs/biome": "^1.9.4",
+        "@biomejs/biome": "^2.0.5",
         "@types/bun": "latest"
     },
     "peerDependencies": {
@@ -12,5 +12,10 @@
         "lint": "biome lint"
     },
     "type": "module",
-    "workspaces": ["packages/*", "apps/backend", "apps/frontend", "apps/launcher/frontend"]
+    "workspaces": [
+        "packages/*",
+        "apps/backend",
+        "apps/frontend",
+        "apps/launcher/frontend"
+    ]
 }

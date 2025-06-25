@@ -23,7 +23,7 @@ import { LoadingSpinner } from "@app/components/ui/spinner";
 import { Textarea } from "@app/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@app/components/ui/tooltip";
 import { VisuallyHidden } from "@app/components/ui/visually-hidden";
-import { ShowEnvSupportSettingsForType, projectTypes } from "@app/utils/config/project";
+import { projectTypes, ShowEnvSupportSettingsForType } from "@app/utils/config/project";
 import { MAX_PROJECT_NAME_LENGTH, MAX_PROJECT_SUMMARY_LENGTH } from "@app/utils/constants";
 import { getProjectTypesFromNames, getProjectVisibilityFromString } from "@app/utils/convertors";
 import type { z } from "@app/utils/schemas";
@@ -318,18 +318,30 @@ export default function GeneralSettingsPage() {
                                                 <span className="flex items-center justify-center gap-1.5">
                                                     {field.value === ProjectVisibility.LISTED ||
                                                     field.value === ProjectVisibility.ARCHIVED ? (
-                                                        <CheckIcon aria-hidden className="w-btn-icon h-btn-icon text-success-foreground" />
+                                                        <CheckIcon
+                                                            aria-hidden
+                                                            className="w-btn-icon h-btn-icon text-success-foreground"
+                                                        />
                                                     ) : (
-                                                        <XIcon aria-hidden className="w-btn-icon h-btn-icon text-danger-foreground" />
+                                                        <XIcon
+                                                            aria-hidden
+                                                            className="w-btn-icon h-btn-icon text-danger-foreground"
+                                                        />
                                                     )}
                                                     {t.projectSettings.visibleInSearch}
                                                 </span>
                                                 <span className="flex items-center justify-center gap-1.5">
                                                     {field.value === ProjectVisibility.LISTED ||
                                                     field.value === ProjectVisibility.ARCHIVED ? (
-                                                        <CheckIcon aria-hidden className="w-btn-icon h-btn-icon text-success-foreground" />
+                                                        <CheckIcon
+                                                            aria-hidden
+                                                            className="w-btn-icon h-btn-icon text-success-foreground"
+                                                        />
                                                     ) : (
-                                                        <XIcon aria-hidden className="w-btn-icon h-btn-icon text-danger-foreground" />
+                                                        <XIcon
+                                                            aria-hidden
+                                                            className="w-btn-icon h-btn-icon text-danger-foreground"
+                                                        />
                                                     )}
                                                     {t.projectSettings.visibleOnProfile}
                                                 </span>
@@ -345,11 +357,16 @@ export default function GeneralSettingsPage() {
                                                                         />
                                                                     </span>
                                                                 </TooltipTrigger>
-                                                                <TooltipContent>{t.projectSettings.visibleToMembersOnly}</TooltipContent>
+                                                                <TooltipContent>
+                                                                    {t.projectSettings.visibleToMembersOnly}
+                                                                </TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     ) : (
-                                                        <CheckIcon aria-hidden className="w-btn-icon h-btn-icon text-success-foreground" />
+                                                        <CheckIcon
+                                                            aria-hidden
+                                                            className="w-btn-icon h-btn-icon text-success-foreground"
+                                                        />
                                                     )}
                                                     {t.projectSettings.visibleViaUrl}
                                                 </span>
@@ -387,7 +404,11 @@ export default function GeneralSettingsPage() {
                                 type="submit"
                                 disabled={JSON.stringify(initialValues) === JSON.stringify(form.getValues()) || isLoading}
                             >
-                                {isLoading ? <LoadingSpinner size="xs" /> : <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />}
+                                {isLoading ? (
+                                    <LoadingSpinner size="xs" />
+                                ) : (
+                                    <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                )}
                                 {t.form.saveChanges}
                             </Button>
                         </div>
@@ -403,7 +424,9 @@ export default function GeneralSettingsPage() {
                             currUsersMembership={ctx.currUsersMembership}
                             teamId={ctx.projectData.teamId}
                             isOrgTeam={false}
-                            refreshData={async () => RefreshPage(navigate, ProjectPagePath(projectData.type[0], projectData.slug))}
+                            refreshData={async () =>
+                                RefreshPage(navigate, ProjectPagePath(projectData.type[0], projectData.slug))
+                            }
                         />
                     </CardContent>
                 </Card>
@@ -450,7 +473,10 @@ function DeleteProjectDialog({ name, slug, returnUrl }: { name: string; slug: st
     }
 
     return (
-        <ContentCardTemplate title={t.projectSettings.deleteProject} className="w-full flex flex-row flex-wrap gap-4 justify-between">
+        <ContentCardTemplate
+            title={t.projectSettings.deleteProject}
+            className="w-full flex flex-row flex-wrap gap-4 justify-between"
+        >
             <p className="text-muted-foreground max-w-[65ch]">{t.projectSettings.deleteProjectDesc(Config.SITE_NAME_SHORT)}</p>
 
             <Dialog>
@@ -490,7 +516,11 @@ function DeleteProjectDialog({ name, slug, returnUrl }: { name: string; slug: st
                                 <CancelButton />
                             </DialogClose>
                             <Button disabled={!submittable || isLoading} variant="destructive" onClick={deleteProject}>
-                                {isLoading ? <LoadingSpinner size="xs" /> : <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />}
+                                {isLoading ? (
+                                    <LoadingSpinner size="xs" />
+                                ) : (
+                                    <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                                )}
                                 {t.projectSettings.deleteProject}
                             </Button>
                         </DialogFooter>

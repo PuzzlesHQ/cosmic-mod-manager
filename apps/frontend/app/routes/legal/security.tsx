@@ -2,10 +2,6 @@ import MarkdownRenderBox from "~/components/md-renderer";
 import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
-import { FormatUrl_WithHintLocale } from "~/utils/urls";
-import { descriptionSuffix } from "./layout";
-
-const title = "Security Notice";
 
 export default function () {
     const { t } = useTranslation();
@@ -23,11 +19,12 @@ export default function () {
 }
 
 export function meta() {
+    const { t } = useTranslation();
+
     return MetaTags({
-        title: title,
-        description: `The ${title} of ${Config.SITE_NAME_SHORT}, ${descriptionSuffix}.`,
+        title: t.meta.addContext(t.legal.securityNoticeTitle, Config.SITE_NAME_SHORT),
+        description: t.meta.securityNoticePageDesc(Config.SITE_NAME_SHORT),
         image: Config.SITE_ICON,
-        url: `${Config.FRONTEND_URL}${FormatUrl_WithHintLocale("legal/security")}`,
-        suffixTitle: true,
+        url: undefined,
     });
 }

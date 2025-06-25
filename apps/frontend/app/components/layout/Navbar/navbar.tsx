@@ -6,7 +6,7 @@ import { cn } from "@app/components/utils";
 import { projectTypes } from "@app/utils/config/project";
 import { Capitalize } from "@app/utils/string";
 import type { LoggedInUserData } from "@app/utils/types";
-import type { Notification } from "@app/utils/types/api";
+import type { Notification } from "@app/utils/types/api/notification";
 import { Building2Icon, ChevronDownIcon, LibraryIcon, PlusIcon } from "lucide-react";
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";

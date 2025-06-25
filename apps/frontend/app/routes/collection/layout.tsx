@@ -1,21 +1,25 @@
 import type { Collection, CollectionOwner, ProjectListItem } from "@app/utils/types/api";
 import { type ShouldRevalidateFunctionArgs, useLoaderData } from "react-router";
+import { useTranslation } from "~/locales/provider";
 import CollectionPageLayout from "~/pages/collection/layout";
 import NotFoundPage from "~/pages/not-found";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
 import { resJson, serverFetch } from "~/utils/server-fetch";
-import { CollectionPagePath } from "~/utils/urls";
 import type { Route } from "./+types/layout";
 
 export default function () {
+    const { t } = useTranslation();
     const data = useLoaderData<typeof loader>();
 
-    if (!data.collection?.id || !data.owner) return <NotFoundPage />;
+    if (!data.collection?.id || !data.owner) {
+        return <NotFoundPage title={t.meta.collectionNotFound} description={t.meta.collectionNotFoundDesc(data.collectionId)} />;
+    }
     return <CollectionPageLayout collection={data.collection} projects={data.projects} owner={data.owner} />;
 }
 
 interface CollectionLoaderData {
+    collectionId: string;
     collection: Collection | null;
     projects: ProjectListItem[];
     owner: CollectionOwner | null;
@@ -25,6 +29,7 @@ export async function loader(props: Route.LoaderArgs): Promise<CollectionLoaderD
     const collectionId = props.params?.collectionId;
 
     const NoData = {
+        collectionId: collectionId,
         collection: null,
         projects: [],
         owner: null,
@@ -45,6 +50,7 @@ export async function loader(props: Route.LoaderArgs): Promise<CollectionLoaderD
     ]);
 
     return {
+        collectionId: collectionId,
         collection: collection,
         projects: projects || [],
         owner: owner,
@@ -59,27 +65,26 @@ export function shouldRevalidate({ currentParams, nextParams, nextUrl, defaultSh
     const nextId = nextParams?.collectionId?.toLowerCase();
 
     if (currentId === nextId) return false;
-
     return defaultShouldRevalidate;
 }
 
 export function meta(props: Route.MetaArgs) {
+    const { t } = useTranslation();
     const collection = props.data.collection;
 
     if (!collection?.id) {
         return MetaTags({
-            title: "Collection Not Found",
-            description: "The collection you are looking for could not be found.",
+            title: t.meta.collectionNotFound,
+            description: t.meta.collectionNotFoundDesc(props.params.collectionId),
             image: Config.SITE_ICON,
-            url: Config.FRONTEND_URL,
-            suffixTitle: true,
+            url: undefined,
         });
     }
 
     return MetaTags({
-        title: `${collection.name} - Collection`,
-        description: `${collection.description} - View the collection ${collection.name} on ${Config.SITE_NAME_SHORT}`,
+        title: t.meta.collection(collection.name),
+        description: t.meta.collectionDesc(collection.description || "", Config.SITE_NAME_SHORT, collection.name),
         image: collection.icon || Config.SITE_ICON,
-        url: `${Config.FRONTEND_URL}${CollectionPagePath(collection.id)}`,
+        url: undefined,
     });
 }

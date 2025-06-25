@@ -109,6 +109,7 @@ export function TeamInviteNotification({
                     <div className="flex items-center justify-start gap-x-space flex-wrap text-muted-foreground">
                         {t.dashboard.invitedToJoin(
                             <Link
+                                key="invited-by"
                                 aria-label={invitedBy.userName || (notification.body?.invitedBy as string)}
                                 to={UserProfilePath(invitedBy.userName)}
                                 className="flex items-center justify-center gap-1 font-semibold hover:underline text-foreground"
@@ -122,7 +123,8 @@ export function TeamInviteNotification({
 
                                 {invitedBy.userName || notification.body?.invitedBy}
                             </Link>,
-                            <Link to={pageUrl} className="font-semibold hover:underline text-foreground">
+
+                            <Link key="invited-to" to={pageUrl} className="font-semibold hover:underline text-foreground">
                                 {title}
                             </Link>,
                         )}
@@ -145,7 +147,11 @@ export function TeamInviteNotification({
                                             {isLoading === "accept" ? (
                                                 <LoadingSpinner size="xs" />
                                             ) : (
-                                                <CheckIcon aria-hidden strokeWidth={2.2} className="w-btn-icon-md h-btn-icon-md" />
+                                                <CheckIcon
+                                                    aria-hidden
+                                                    strokeWidth={2.2}
+                                                    className="w-btn-icon-md h-btn-icon-md"
+                                                />
                                             )}
                                         </Button>
                                     </TooltipTrigger>
@@ -201,7 +207,11 @@ export function TeamInviteNotification({
                     </Button>
 
                     <Button variant="secondary-destructive-inverted" size="sm" disabled={!!isLoading} onClick={declineInvite}>
-                        {isLoading === "decline" ? <LoadingSpinner size="xs" /> : <XIcon aria-hidden className="w-btn-icon h-btn-icon" />}
+                        {isLoading === "decline" ? (
+                            <LoadingSpinner size="xs" />
+                        ) : (
+                            <XIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                        )}
                         {t.common.decline}
                     </Button>
                 </div>
@@ -238,16 +248,21 @@ export function StatusChangeNotif_Item({ notification, project, ...props }: Stat
             <div className="w-full flex flow-row items-center justify-between">
                 <div className="grow flex flex-wrap items-center justify-start gap-1">
                     <Link to={projectPageUrl} className="me-1.5" aria-label={projectName}>
-                        <ImgWrapper src={imageUrl(project?.icon)} alt={projectName} fallback={fallbackProjectIcon} className="w-11 h-11" />
+                        <ImgWrapper
+                            src={imageUrl(project?.icon)}
+                            alt={projectName}
+                            fallback={fallbackProjectIcon}
+                            className="w-11 h-11"
+                        />
                     </Link>
                     <div className="flex items-center justify-start gap-x-1 flex-wrap text-muted-foreground">
                         {t.dashboard.projectStatusUpdated(
-                            <Link to={projectPageUrl} className="font-semibold hover:underline text-foreground">
+                            <Link key="project" to={projectPageUrl} className="font-semibold hover:underline text-foreground">
                                 {projectName}
                             </Link>,
 
-                            <ProjectStatusBadge status={notification.body.prev_status} t={t} />,
-                            <ProjectStatusBadge status={notification.body.new_status} t={t} />,
+                            <ProjectStatusBadge key="prev-status" status={notification.body.prev_status} t={t} />,
+                            <ProjectStatusBadge key="new-status" status={notification.body.new_status} t={t} />,
                         )}
                     </div>
                 </div>
