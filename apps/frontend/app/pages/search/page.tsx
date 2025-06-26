@@ -59,6 +59,7 @@ export default function SearchPage() {
 
         if (e.key === "/") {
             e.stopPropagation();
+            e.preventDefault();
             if (searchInput.current) searchInput.current.focus();
         }
     }
