@@ -1,11 +1,25 @@
-import en from "./en/translation";
-import SupportedLocales, { DefaultLocale } from "./meta";
+import default_locale from "~/locales/default/translation";
+import SupportedLocales, { DefaultLocale, GetLocaleMetadata } from "./meta";
 import { fillEmptyKeys } from "./obj-merge";
 import type { Locale, LocaleMetaData } from "./types";
 
-export async function getLocale(locale: string): Promise<Locale> {
-    const localeModule = await getLocaleFile(locale);
-    return fillEmptyKeys(localeModule.default, en);
+export async function getLocale(locale: string, seenLocales: string[] = []): Promise<Locale> {
+    if (locale === formatLocaleCode(DefaultLocale)) return default_locale;
+
+    if (seenLocales.includes(locale)) {
+        console.error(`Circular fallback detected: ${[...seenLocales, locale].join(" -> ")}`);
+        return {} as Locale;
+    }
+    seenLocales.push(locale);
+
+    const meta = GetLocaleMetadata(locale);
+    if (!meta || !meta.fallback || [locale, formatLocaleCode(DefaultLocale)].includes(meta.fallback)) {
+        const localeModule = await getLocaleFile(locale);
+        return fillEmptyKeys(localeModule.default, default_locale) as Locale;
+    } else {
+        const [localeModule, fallback] = await Promise.all([getLocaleFile(locale), getLocale(meta.fallback, seenLocales)]);
+        return fillEmptyKeys(fillEmptyKeys(localeModule.default, fallback), default_locale) as Locale;
+    }
 }
 
 function getLocaleFile(locale: string) {
