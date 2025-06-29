@@ -9,7 +9,6 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@app/components/ui/breadcrumb";
-import { Button } from "@app/components/ui/button";
 import { Card } from "@app/components/ui/card";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@app/components/ui/context-menu";
 import CopyBtn, { copyTextToClipboard } from "@app/components/ui/copy-btn";
@@ -22,9 +21,10 @@ import { doesMemberHaveAccess } from "@app/utils/project";
 import { CapitalizeAndFormatString } from "@app/utils/string";
 import { ProjectPermission } from "@app/utils/types";
 import type { ProjectVersionData } from "@app/utils/types/api";
+import { ReportItemType } from "@app/utils/types/api/report";
 import { imageUrl } from "@app/utils/url";
 import { formatGameVersionsListString_verbose } from "@app/utils/version/format-verbose";
-import { ChevronRightIcon, CopyIcon, DownloadIcon, Edit3Icon, FileIcon, FlagIcon, LinkIcon, StarIcon } from "lucide-react";
+import { ChevronRightIcon, CopyIcon, DownloadIcon, Edit3Icon, FileIcon, LinkIcon, StarIcon } from "lucide-react";
 import { lazy, Suspense, useContext } from "react";
 import MarkdownRenderBox from "~/components/md-renderer";
 import { ImgWrapper } from "~/components/ui/avatar";
@@ -34,6 +34,7 @@ import Link, { VariantButtonLink } from "~/components/ui/link";
 import type { ProjectContextData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
+import ReportButton from "~/routes/report/report-btn";
 import { appendPathInUrl, ProjectPagePath, VersionPagePath } from "~/utils/urls";
 import { TeamMember_Card } from "../layout";
 
@@ -105,10 +106,11 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                     </TooltipProvider>
 
                     {!currUsersMembership?.userId ? (
-                        <Button variant="secondary">
-                            <FlagIcon aria-hidden className="w-btn-icon h-btn-icon" />
-                            {t.common.report}
-                        </Button>
+                        <ReportButton
+                            itemType={ReportItemType.VERSION}
+                            itemId={`${ctx.projectData.id}/version/${versionData.id}`}
+                            btnVariant="secondary"
+                        />
                     ) : null}
 
                     {doesMemberHaveAccess(

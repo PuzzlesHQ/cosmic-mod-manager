@@ -31,6 +31,9 @@
 }
 
 /* Chat Thread UI */
+.autoresizing-textarea {
+    display: grid;
+}
 
 .autoresizing-textarea::after {
     content: attr(data-editor-value) " ";
@@ -40,6 +43,7 @@
 }
 
 .autoresizing-textarea > textarea,
+.autoresizing-textarea > .textarea,
 .autoresizing-textarea::after {
     grid-area: 1 / 1 / -1 / -1;
     @apply font-mono min-h-10 max-h-[16rem] py-2 px-3 text-base;

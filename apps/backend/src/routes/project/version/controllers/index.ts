@@ -112,11 +112,9 @@ export async function getProjectVersionData(projectSlug: string, versionId: stri
     const res = await getAllProjectVersions(projectSlug, userSession, false);
 
     if (("success" in res.data && res.data.success === false) || !("data" in res.data))
-        return { data: { success: res.data.success, message: res.data.message }, status: res.status } as const;
+        return { data: res.data, status: res.status } as const;
 
-    const list = res.data.data;
-    if (!list.length) return notFoundResponseData(`Version "${versionId}" not found`);
-
+    const list = res.data.data || [];
     const targetVersion = list.find((version) => version.id === versionId || version.slug === versionId);
     if (!targetVersion?.id) return notFoundResponseData(`Version "${versionId}" not found`);
 

@@ -112,6 +112,7 @@ async function version_post(ctx: Context) {
             primaryFile: formData.get("primaryFile"),
             additionalFiles: (formData.getAll("additionalFiles") || []).filter((file: unknown) => {
                 if (file instanceof File) return file;
+                return null;
             }),
         };
 

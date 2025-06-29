@@ -108,14 +108,14 @@ export function meta(props: Route.MetaArgs) {
     });
 }
 
-export function shouldRevalidate({ currentParams, nextParams, nextUrl, defaultShouldRevalidate }: ShouldRevalidateFunctionArgs) {
-    const revalidate = nextUrl.searchParams.get("revalidate") === "true";
+export function shouldRevalidate(props: ShouldRevalidateFunctionArgs) {
+    const revalidate = props.nextUrl.searchParams.get("revalidate") === "true";
     if (revalidate) return true;
 
-    const currentId = currentParams.projectSlug?.toLowerCase();
-    const nextId = nextParams.projectSlug?.toLowerCase();
+    const currentId = props.currentParams.projectSlug?.toLowerCase();
+    const nextId = props.nextParams.projectSlug?.toLowerCase();
 
     if (currentId === nextId) return false;
 
-    return defaultShouldRevalidate;
+    return props.defaultShouldRevalidate;
 }

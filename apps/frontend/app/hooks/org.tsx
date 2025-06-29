@@ -13,7 +13,7 @@ export interface OrgContextData {
 
 export function useOrgData(): OrgContextData {
     const session = useSession();
-    const loaderData = useRouteLoaderData("__organization-data-wrapper") as OrgLoaderData;
+    const loaderData = useRouteLoaderData("organization-data-wrapper") as OrgLoaderData;
 
     // We can safely return incomplete data, because the data-wrapper will handle not found cases
     if (!loaderData?.orgData?.id) {

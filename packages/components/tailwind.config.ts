@@ -60,6 +60,7 @@ export default {
                 lg: "var(--font-lg)",
                 "lg-plus": "var(--font-lg-plus)",
                 xl: "var(--font-xl)",
+                "xl-plus": "var(--font-xl-plus)",
                 "2xl": "var(--font-2xl)",
             },
             borderRadius: {

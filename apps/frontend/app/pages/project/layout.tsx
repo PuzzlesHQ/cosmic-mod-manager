@@ -22,6 +22,7 @@ import { isModerator, MODERATOR_ROLES } from "@app/utils/src/constants/roles";
 import { Capitalize, CapitalizeAndFormatString } from "@app/utils/string";
 import { ProjectPublishingStatus, ProjectVisibility } from "@app/utils/types";
 import type { ProjectDetailsData, TeamMember } from "@app/utils/types/api";
+import { ReportItemType } from "@app/utils/types/api/report";
 import { imageUrl } from "@app/utils/url";
 import { formatVersionsForDisplay, getVersionsToDisplay } from "@app/utils/version/format";
 import {
@@ -34,7 +35,6 @@ import {
     CodeIcon,
     CrownIcon,
     DownloadIcon,
-    FlagIcon,
     GitCommitHorizontalIcon,
     HeartIcon,
     SettingsIcon,
@@ -53,6 +53,7 @@ import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import useTheme from "~/hooks/theme";
 import { useTranslation } from "~/locales/provider";
+import ReportButton from "~/routes/report/report-btn";
 import { isCurrLinkActive, OrgPagePath, ProjectPagePath, UserProfilePath, VersionPagePath } from "~/utils/urls";
 import { AddToCollection_Popup } from "../collection/add-to-collection";
 import { FollowProject_Btn } from "../collection/follow-btn";
@@ -504,10 +505,13 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
                 }
                 threeDotMenu={
                     <>
-                        <Button variant="ghost-destructive" className="w-full justify-start" size="sm">
-                            <FlagIcon aria-hidden className="w-btn-icon h-btn-icon" />
-                            {t.common.report}
-                        </Button>
+                        <ReportButton
+                            itemType={ReportItemType.PROJECT}
+                            itemId={projectData.id}
+                            btnVariant="ghost-destructive"
+                            btnSize="sm"
+                            className="w-full justify-start"
+                        />
 
                         <PopoverClose asChild>
                             <Button

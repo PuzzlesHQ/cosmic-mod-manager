@@ -25,7 +25,7 @@ export function useProjectData(): ProjectContextData {
     const session = useSession();
     const projectType = useProjectType();
     // Getting the loader data
-    const loaderData = useRouteLoaderData(`__${projectType}__data-wrapper`) as ProjectLoaderData;
+    const loaderData = useRouteLoaderData(`${projectType}__data-wrapper`) as ProjectLoaderData;
 
     // We can safely return incomplete data, because the data-wrapper will handle not found cases
     // So no component using this hook will break

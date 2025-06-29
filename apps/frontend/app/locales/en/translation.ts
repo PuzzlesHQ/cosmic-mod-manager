@@ -780,6 +780,13 @@ export default {
         toggleLineWrap: "Toggle line wrap",
     },
 
+    report: {
+        content: "content",
+        reportToMods: (item: string) => `Report ${item} to moderators`,
+        whatTypeOfContent: "What type of content are you reporting?",
+        whatIsContentId: (item: string) => `What is the ID of the ${item}?`,
+    },
+
     graph: {
         noDataAvailable: "No data available for the selected date range.",
         timeline: {

@@ -11,9 +11,10 @@ import { getProjectTypesFromNames } from "@app/utils/convertors";
 import { FormatCount } from "@app/utils/number";
 import { GlobalUserRole } from "@app/utils/types";
 import type { Collection, Organisation, ProjectListItem } from "@app/utils/types/api";
+import { ReportItemType } from "@app/utils/types/api/report";
 import type { UserProfileData } from "@app/utils/types/api/user";
 import { imageUrl } from "@app/utils/url";
-import { CalendarIcon, ClipboardCopyIcon, DownloadIcon, EditIcon, FlagIcon } from "lucide-react";
+import { CalendarIcon, ClipboardCopyIcon, DownloadIcon, EditIcon } from "lucide-react";
 import { useEffect } from "react";
 import { Outlet } from "react-router";
 import { PageHeader } from "~/components/page-header";
@@ -22,6 +23,7 @@ import { TimePassedSince } from "~/components/ui/date";
 import Link, { useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
+import ReportButton from "~/routes/report/report-btn";
 import type { UserOutletData } from "~/routes/user/layout";
 import { OrgPagePath, UserProfilePath } from "~/utils/urls";
 import SecondaryNav from "../project/secondary-nav";
@@ -201,10 +203,15 @@ function ProfilePageHeader({ userData, totalProjects, totalDownloads }: ProfileP
             }
             threeDotMenu={
                 <>
-                    <Button variant="ghost-destructive" className="w-full justify-start" size="sm">
-                        <FlagIcon aria-hidden className="w-btn-icon h-btn-icon" />
-                        {t.common.report}
-                    </Button>
+                    {session?.id !== userData.id && (
+                        <ReportButton
+                            itemType={ReportItemType.USER}
+                            itemId={userData.id}
+                            btnVariant="ghost-destructive"
+                            btnSize="sm"
+                            className="w-full justify-start"
+                        />
+                    )}
 
                     <PopoverClose asChild>
                         <Button

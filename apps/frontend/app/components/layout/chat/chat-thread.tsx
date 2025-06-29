@@ -194,7 +194,7 @@ export function ChatThread(props: ChatThreadProps) {
                     )}
 
                     <div className="grid grid-cols-[1fr_auto] gap-2">
-                        <div className="autoresizing-textarea grid" data-editor-value={editorText}>
+                        <div className="autoresizing-textarea" data-editor-value={editorText}>
                             <textarea
                                 className={cn(
                                     "resize-none rounded overflow-y-auto",

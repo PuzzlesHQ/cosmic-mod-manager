@@ -302,3 +302,18 @@ model ThreadMessage {
 
     thread Thread @relation(name: "ThreadMessages", references: [id], fields: [threadId], onDelete: Cascade)
 }
+
+// Report
+
+model Report {
+    id             String @id @db.VarChar(32)
+    reportedItem   String @db.VarChar(32)
+    reportedItemId String @db.VarChar(32)
+
+    body       String
+    reporter   String   @db.VarChar(32)
+    closed     Boolean
+    reportType String   @db.VarChar(32)
+    createdAt  DateTime @default(now())
+    threadId   String   @db.VarChar(32)
+}
