@@ -1,5 +1,5 @@
-import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
 import { CheckIcon, ChevronRightIcon, DotIcon } from "lucide-react";
+import { ContextMenu as ContextMenuPrimitive } from "radix-ui";
 import type React from "react";
 import { cn } from "~/utils";
 

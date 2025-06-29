@@ -1,6 +1,6 @@
-import type { DialogProps } from "@radix-ui/react-dialog";
 import { Command as CommandPrimitive } from "cmdk";
 import { SearchIcon } from "lucide-react";
+import type { Dialog as DialogPrimitive } from "radix-ui";
 import type * as React from "react";
 import { Dialog, DialogContent } from "~/ui/dialog";
 import { cn } from "~/utils";
@@ -16,7 +16,7 @@ function Command({ ref, className, ...props }: React.ComponentPropsWithRef<typeo
 }
 Command.displayName = CommandPrimitive.displayName;
 
-interface CommandDialogProps extends DialogProps {}
+interface CommandDialogProps extends DialogPrimitive.DialogProps {}
 
 function CommandDialog({ children, ...props }: CommandDialogProps) {
     return (

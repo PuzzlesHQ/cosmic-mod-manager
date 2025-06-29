@@ -1,1 +1,2 @@
-export * from "@radix-ui/react-visually-hidden";
+import { VisuallyHidden } from "radix-ui";
+export { VisuallyHidden };

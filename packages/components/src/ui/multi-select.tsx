@@ -1,6 +1,6 @@
 import type { VariantProps } from "class-variance-authority";
 import { CheckIcon, ChevronDownIcon, XCircle } from "lucide-react";
-import * as React from "react";
+import { useState } from "react";
 import type { RefProp } from "~/types";
 import type { badgeVariants } from "~/ui/badge";
 import { Button } from "~/ui/button";
@@ -66,7 +66,7 @@ export const MultiSelect = ({
     inputPlaceholder,
     ...props
 }: MultiSelectProps & RefProp<HTMLButtonElement>) => {
-    const [localOpen, setLocalOpen] = React.useState(false);
+    const [localOpen, setLocalOpen] = useState(false);
     const isPopoverOpen = open === undefined ? localOpen : open;
 
     const selectedValues = values || defaultValue || [];

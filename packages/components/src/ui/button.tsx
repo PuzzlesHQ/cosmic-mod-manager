@@ -1,5 +1,5 @@
-import { Slot } from "@radix-ui/react-slot";
-import { type VariantProps, cva } from "class-variance-authority";
+import { cva, type VariantProps } from "class-variance-authority";
+import { Slot } from "radix-ui";
 import type * as React from "react";
 import { CancelButtonIcon } from "~/icons";
 import type { RefProp } from "~/types";
@@ -62,7 +62,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 function Button({ ref, className, variant, size, asChild = false, ...props }: ButtonProps & RefProp<HTMLButtonElement>) {
-    const Comp = asChild ? Slot : "button";
+    const Comp = asChild ? Slot.Slot : "button";
     return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
 }
 Button.displayName = "Button";
