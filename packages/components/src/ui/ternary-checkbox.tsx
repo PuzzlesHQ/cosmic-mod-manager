@@ -13,7 +13,7 @@ export function useTernaryState(init?: TernaryStates) {
     return useState<TernaryStates>(init || TernaryStates.UNCHECKED);
 }
 
-interface ThreeStateCheckboxProps extends React.ComponentPropsWithRef<"div"> {
+interface ThreeStateCheckboxProps extends React.ComponentProps<"div"> {
     state: TernaryStates;
     onCheckedChange: (val: TernaryStates) => void;
     disabled?: boolean;

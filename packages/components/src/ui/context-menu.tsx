@@ -21,7 +21,7 @@ function ContextMenuSubTrigger({
     inset,
     children,
     ...props
-}: React.ComponentPropsWithRef<typeof ContextMenuPrimitive.SubTrigger> & {
+}: React.ComponentProps<typeof ContextMenuPrimitive.SubTrigger> & {
     inset?: boolean;
 }) {
     return (
@@ -42,11 +42,7 @@ function ContextMenuSubTrigger({
 }
 ContextMenuSubTrigger.displayName = ContextMenuPrimitive.SubTrigger.displayName;
 
-function ContextMenuSubContent({
-    ref,
-    className,
-    ...props
-}: React.ComponentPropsWithRef<typeof ContextMenuPrimitive.SubContent>) {
+function ContextMenuSubContent({ ref, className, ...props }: React.ComponentProps<typeof ContextMenuPrimitive.SubContent>) {
     return (
         <ContextMenuPrimitive.SubContent
             ref={ref}
@@ -60,7 +56,7 @@ function ContextMenuSubContent({
 }
 ContextMenuSubContent.displayName = ContextMenuPrimitive.SubContent.displayName;
 
-function ContextMenuContent({ ref, className, ...props }: React.ComponentPropsWithRef<typeof ContextMenuPrimitive.Content>) {
+function ContextMenuContent({ ref, className, ...props }: React.ComponentProps<typeof ContextMenuPrimitive.Content>) {
     return (
         <ContextMenuPrimitive.Portal>
             <ContextMenuPrimitive.Content
@@ -83,7 +79,7 @@ function ContextMenuItem({
     className,
     inset,
     ...props
-}: React.ComponentPropsWithRef<typeof ContextMenuPrimitive.Item> & {
+}: React.ComponentProps<typeof ContextMenuPrimitive.Item> & {
     inset?: boolean;
 }) {
     return (
@@ -107,7 +103,7 @@ function ContextMenuCheckboxItem({
     children,
     checked,
     ...props
-}: React.ComponentPropsWithRef<typeof ContextMenuPrimitive.CheckboxItem>) {
+}: React.ComponentProps<typeof ContextMenuPrimitive.CheckboxItem>) {
     return (
         <ContextMenuPrimitive.CheckboxItem
             ref={ref}
@@ -135,7 +131,7 @@ function ContextMenuRadioItem({
     className,
     children,
     ...props
-}: React.ComponentPropsWithRef<typeof ContextMenuPrimitive.RadioItem>) {
+}: React.ComponentProps<typeof ContextMenuPrimitive.RadioItem>) {
     return (
         <ContextMenuPrimitive.RadioItem
             ref={ref}
@@ -162,7 +158,7 @@ function ContextMenuLabel({
     className,
     inset,
     ...props
-}: React.ComponentPropsWithRef<typeof ContextMenuPrimitive.Label> & {
+}: React.ComponentProps<typeof ContextMenuPrimitive.Label> & {
     inset?: boolean;
 }) {
     return (
@@ -175,7 +171,7 @@ function ContextMenuLabel({
 }
 ContextMenuLabel.displayName = ContextMenuPrimitive.Label.displayName;
 
-function ContextMenuSeparator({ ref, className, ...props }: React.ComponentPropsWithRef<typeof ContextMenuPrimitive.Separator>) {
+function ContextMenuSeparator({ ref, className, ...props }: React.ComponentProps<typeof ContextMenuPrimitive.Separator>) {
     return (
         <ContextMenuPrimitive.Separator ref={ref} className={cn("-mx-1 my-1 h-px bg-shallow-background", className)} {...props} />
     );

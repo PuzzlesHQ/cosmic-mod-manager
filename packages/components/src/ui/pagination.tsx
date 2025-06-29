@@ -1,30 +1,20 @@
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from "lucide-react";
-import type * as React from "react";
 import type { LinkProps } from "react-router";
-import type { RefProp } from "~/types";
 import { Button, type ButtonProps, buttonVariants } from "~/ui/button";
 import Link from "~/ui/link";
 import { cn } from "~/utils";
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
-    return (
-        <nav
-            // biome-ignore lint/a11y/noRedundantRoles: <explanation>
-            role="navigation"
-            aria-label="pagination"
-            className={cn("mx-auto flex w-full justify-center", className)}
-            {...props}
-        />
-    );
+    return <nav aria-label="pagination" className={cn("mx-auto flex w-full justify-center", className)} {...props} />;
 }
 Pagination.displayName = "Pagination";
 
-function PaginationContent({ ref, className, ...props }: React.ComponentProps<"ul"> & RefProp<HTMLUListElement>) {
+function PaginationContent({ ref, className, ...props }: React.ComponentProps<"ul">) {
     return <ul ref={ref} className={cn("flex flex-row items-center gap-1", className)} {...props} />;
 }
 PaginationContent.displayName = "PaginationContent";
 
-function PaginationItem({ ref, className, ...props }: React.ComponentProps<"li"> & RefProp<HTMLLIElement>) {
+function PaginationItem({ ref, className, ...props }: React.ComponentProps<"li">) {
     return <li ref={ref} className={cn("", className)} {...props} />;
 }
 PaginationItem.displayName = "PaginationItem";

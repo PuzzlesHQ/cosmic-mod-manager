@@ -1,10 +1,9 @@
 import { CheckIcon } from "lucide-react";
 import { Checkbox as CheckboxPrimitive } from "radix-ui";
-import type * as React from "react";
 import { cn } from "~/utils";
 import { Label } from "./label";
 
-function Checkbox({ ref, className, name, ...props }: React.ComponentPropsWithRef<typeof CheckboxPrimitive.Root>) {
+function Checkbox({ ref, className, name, ...props }: React.ComponentProps<typeof CheckboxPrimitive.Root>) {
     return (
         <CheckboxPrimitive.Root
             ref={ref}
@@ -45,7 +44,7 @@ function LabelledCheckbox({
     disabled,
     name,
     ...props
-}: React.ComponentPropsWithRef<typeof CheckboxPrimitive.Root> & LabelledCheckboxProps) {
+}: React.ComponentProps<typeof CheckboxPrimitive.Root> & LabelledCheckboxProps) {
     return (
         <Label
             className={cn(

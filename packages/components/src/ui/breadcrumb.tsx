@@ -1,6 +1,5 @@
 import { ChevronRightIcon, MoreHorizontalIcon } from "lucide-react";
 import { Slot } from "radix-ui";
-import type * as React from "react";
 import Link from "~/ui/link";
 import { cn } from "~/utils";
 
@@ -8,14 +7,14 @@ function Breadcrumb({
     ref,
     className,
     ...props
-}: React.ComponentPropsWithRef<"nav"> & {
+}: React.ComponentProps<"nav"> & {
     separator?: React.ReactNode;
 }) {
     return <nav ref={ref} aria-label="breadcrumb" className={cn("max-w-full overflow-x-hidden", className)} {...props} />;
 }
 Breadcrumb.displayName = "Breadcrumb";
 
-function BreadcrumbList({ ref, className, ...props }: React.ComponentPropsWithRef<"ol">) {
+function BreadcrumbList({ ref, className, ...props }: React.ComponentProps<"ol">) {
     return (
         <ol
             ref={ref}
@@ -26,7 +25,7 @@ function BreadcrumbList({ ref, className, ...props }: React.ComponentPropsWithRe
 }
 BreadcrumbList.displayName = "BreadcrumbList";
 
-function BreadcrumbItem({ ref, className, ...props }: React.ComponentPropsWithRef<"li">) {
+function BreadcrumbItem({ ref, className, ...props }: React.ComponentProps<"li">) {
     return <li ref={ref} className={cn("inline-flex items-center gap-x-1", className)} {...props} />;
 }
 BreadcrumbItem.displayName = "BreadcrumbItem";
@@ -37,7 +36,7 @@ function BreadcrumbLink({
     className,
     href,
     ...props
-}: React.ComponentPropsWithRef<"a"> & {
+}: React.ComponentProps<"a"> & {
     asChild?: boolean;
 }) {
     const Comp = asChild ? Slot.Slot : Link;
@@ -52,7 +51,7 @@ function BreadcrumbLink({
 }
 BreadcrumbLink.displayName = "BreadcrumbLink";
 
-function BreadcrumbPage({ ref, className, ...props }: React.ComponentPropsWithRef<"span">) {
+function BreadcrumbPage({ ref, className, ...props }: React.ComponentProps<"span">) {
     return (
         <span
             ref={ref}

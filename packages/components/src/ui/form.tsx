@@ -65,7 +65,7 @@ type FormItemContextValue = {
 
 const FormItemContext = createContext<FormItemContextValue>({} as FormItemContextValue);
 
-function FormItem({ ref, className, ...props }: React.ComponentPropsWithRef<"div">) {
+function FormItem({ ref, className, ...props }: React.ComponentProps<"div">) {
     const id = useId();
 
     return (
@@ -80,7 +80,7 @@ function FormItem({ ref, className, ...props }: React.ComponentPropsWithRef<"div
 }
 FormItem.displayName = "FormItem";
 
-function FormLabel({ ref, className, ...props }: React.ComponentPropsWithRef<typeof LabelPrimitive.Root>) {
+function FormLabel({ ref, className, ...props }: React.ComponentProps<typeof LabelPrimitive.Root>) {
     const { formItemId } = useFormField();
 
     return (
@@ -97,7 +97,7 @@ function FormLabel({ ref, className, ...props }: React.ComponentPropsWithRef<typ
 }
 FormLabel.displayName = "FormLabel";
 
-function FormControl({ ref, ...props }: React.ComponentPropsWithRef<typeof Slot.Root>) {
+function FormControl({ ref, ...props }: React.ComponentProps<typeof Slot.Root>) {
     const { error, formItemId, formDescriptionId, formMessageId } = useFormField();
 
     return (
@@ -112,14 +112,14 @@ function FormControl({ ref, ...props }: React.ComponentPropsWithRef<typeof Slot.
 }
 FormControl.displayName = "FormControl";
 
-function FormDescription({ ref, className, ...props }: React.ComponentPropsWithRef<"p">) {
+function FormDescription({ ref, className, ...props }: React.ComponentProps<"p">) {
     const { formDescriptionId } = useFormField();
 
     return <p ref={ref} id={formDescriptionId} className={cn("text-[0.87rem] text-muted-foreground", className)} {...props} />;
 }
 FormDescription.displayName = "FormDescription";
 
-function FormMessage({ ref, className, children, ...props }: React.ComponentPropsWithRef<"p">) {
+function FormMessage({ ref, className, children, ...props }: React.ComponentProps<"p">) {
     const { error, formMessageId } = useFormField();
     const body = error ? String(error?.message) : children;
 
@@ -140,7 +140,7 @@ function FormMessage({ ref, className, children, ...props }: React.ComponentProp
 }
 FormMessage.displayName = "FormMessage";
 
-interface CharacterCounterProps extends React.ComponentPropsWithRef<"span"> {
+interface CharacterCounterProps extends React.ComponentProps<"span"> {
     currVal: string | undefined;
     max: number;
     visibleAfter?: number;

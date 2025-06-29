@@ -1,6 +1,5 @@
 import { XIcon } from "lucide-react";
 import { Dialog as DialogPrimitive } from "radix-ui";
-import type * as React from "react";
 import { cn } from "~/utils";
 
 const Dialog = DialogPrimitive.Root;
@@ -11,7 +10,7 @@ const DialogPortal = DialogPrimitive.Portal;
 
 const DialogClose = DialogPrimitive.Close;
 
-function DialogOverlay({ ref, className, ...props }: React.ComponentPropsWithRef<typeof DialogPrimitive.Overlay>) {
+function DialogOverlay({ ref, className, ...props }: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
     return (
         <DialogPrimitive.Overlay
             ref={ref}
@@ -25,7 +24,7 @@ function DialogOverlay({ ref, className, ...props }: React.ComponentPropsWithRef
 }
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
-function DialogContent({ ref, className, children, ...props }: React.ComponentPropsWithRef<typeof DialogPrimitive.Content>) {
+function DialogContent({ ref, className, children, ...props }: React.ComponentProps<typeof DialogPrimitive.Content>) {
     return (
         <DialogPortal>
             <DialogOverlay />
@@ -73,7 +72,7 @@ function DialogFooter({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
 }
 DialogFooter.displayName = "DialogFooter";
 
-function DialogTitle({ ref, className, ...props }: React.ComponentPropsWithRef<typeof DialogPrimitive.Title>) {
+function DialogTitle({ ref, className, ...props }: React.ComponentProps<typeof DialogPrimitive.Title>) {
     return (
         <DialogPrimitive.Title
             ref={ref}
@@ -84,7 +83,7 @@ function DialogTitle({ ref, className, ...props }: React.ComponentPropsWithRef<t
 }
 DialogTitle.displayName = DialogPrimitive.Title.displayName;
 
-function DialogDescription({ ref, className, ...props }: React.ComponentPropsWithRef<typeof DialogPrimitive.Description>) {
+function DialogDescription({ ref, className, ...props }: React.ComponentProps<typeof DialogPrimitive.Description>) {
     return <DialogPrimitive.Description ref={ref} className={cn("text-sm text-muted-foreground pe-8", className)} {...props} />;
 }
 DialogDescription.displayName = DialogPrimitive.Description.displayName;

@@ -2,15 +2,16 @@ import { isCurrLinkActive } from "@app/utils/string";
 import type { VariantProps } from "class-variance-authority";
 import type React from "react";
 import type { LinkProps } from "react-router";
-import { Link as RemixLink, useNavigate as __useNavigate, useLocation } from "react-router";
-import type { RefProp } from "~/types";
+import { useNavigate as __useNavigate, Link as RemixLink, useLocation } from "react-router";
 import { cn } from "~/utils";
 import { buttonVariants } from "./button";
 
-interface CustomLinkProps extends LinkProps {}
+interface CustomLinkProps extends LinkProps {
+    ref?: React.ComponentProps<"a">["ref"];
+}
 export type PrefetchBehavior = "intent" | "render" | "none" | "viewport";
 
-function Link({ ref, ...props }: CustomLinkProps & RefProp<HTMLAnchorElement>) {
+function Link({ ref, ...props }: CustomLinkProps) {
     return <RemixLink ref={ref} {...props} to={props.to} viewTransition={props.viewTransition !== false} />;
 }
 export default Link;
@@ -25,6 +26,7 @@ interface ButtonLinkProps extends Omit<LinkProps, "to"> {
     onClick?: React.MouseEventHandler<HTMLAnchorElement>;
     activeClassName?: string;
     preventScrollReset?: boolean;
+    ref: React.ComponentProps<"a">["ref"];
 }
 
 export function ButtonLink({
@@ -36,7 +38,7 @@ export function ButtonLink({
     activityIndicator = true,
     activeClassName,
     ...props
-}: ButtonLinkProps & RefProp<HTMLAnchorElement>) {
+}: ButtonLinkProps) {
     const location = useLocation();
 
     return (
@@ -69,6 +71,7 @@ export interface VariantLinkProps extends VariantProps<typeof buttonVariants> {
     preventScrollReset?: boolean;
     prefetch?: PrefetchBehavior;
     viewTransition?: boolean;
+    ref: React.ComponentProps<"a">["ref"];
 }
 
 export function VariantButtonLink({
@@ -80,7 +83,7 @@ export function VariantButtonLink({
     variant = "secondary",
     size = "default",
     ...props
-}: VariantLinkProps & RefProp<HTMLAnchorElement> & Omit<CustomLinkProps, "to">) {
+}: VariantLinkProps & Omit<CustomLinkProps, "to">) {
     return (
         <Link
             to={url}

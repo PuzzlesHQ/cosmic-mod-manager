@@ -1,5 +1,4 @@
 import { Popover as PopoverPrimitive } from "radix-ui";
-import type * as React from "react";
 import { cn } from "~/utils";
 
 const Popover = PopoverPrimitive.Root;
@@ -14,7 +13,7 @@ function PopoverContent({
     align = "center",
     sideOffset = 4,
     ...props
-}: React.ComponentPropsWithRef<typeof PopoverPrimitive.Content>) {
+}: React.ComponentProps<typeof PopoverPrimitive.Content>) {
     return (
         <PopoverPrimitive.Portal>
             <PopoverPrimitive.Content

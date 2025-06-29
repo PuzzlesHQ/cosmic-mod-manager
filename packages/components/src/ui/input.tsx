@@ -1,10 +1,6 @@
-import type * as React from "react";
-import type { RefProp } from "~/types";
 import { cn } from "~/utils";
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
-
-function Input({ ref, className, type, ...props }: InputProps & RefProp<HTMLInputElement>) {
+function Input({ ref, className, type, ...props }: React.ComponentProps<"input">) {
     return (
         <input
             type={type}

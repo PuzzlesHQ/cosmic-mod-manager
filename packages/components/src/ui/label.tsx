@@ -1,6 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { Label as LabelPrimitive } from "radix-ui";
-import type * as React from "react";
 import { cn } from "~/utils";
 
 const labelVariants = cva("text-lg font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70");
@@ -9,12 +8,12 @@ export function Label({
     ref,
     className,
     ...props
-}: React.ComponentPropsWithRef<typeof LabelPrimitive.Root> & VariantProps<typeof labelVariants>) {
+}: React.ComponentProps<typeof LabelPrimitive.Root> & VariantProps<typeof labelVariants>) {
     return <LabelPrimitive.Root ref={ref} className={cn(labelVariants(), className)} {...props} />;
 }
 Label.displayName = LabelPrimitive.Root.displayName;
 
-interface LabelElemProps extends React.ComponentPropsWithRef<"label"> {}
+interface LabelElemProps extends React.ComponentProps<"label"> {}
 
 export function InteractiveLabel({ children, htmlFor, ...props }: LabelElemProps) {
     return (
