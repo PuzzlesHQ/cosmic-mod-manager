@@ -125,8 +125,13 @@ export default {
         alreadyHaveAccount: "Du hast bereits ein Konto?",
         forgotPassword: "Passwort vergessen?",
         signupWithProviders: "Registriere dich mit einer dieser Anmeldemethoden:",
-        aggrement:
-            "Mit dem Erstellen eines Kontos akzeptierst du unsere [Nutzungsbedingungen](/legal/terms) und [Privatsphärebestimmungen](/legal/privacy).",
+        agreement: (terms, privacyPolicy) => [
+            "Mit dem Erstellen eines Kontos akzeptierst du unsere ",
+            terms,
+            " und ",
+            privacyPolicy,
+            ".",
+        ],
         invalidCode: "Ungültiger oder abgelaufener Code",
         didntRequest: "Nicht angefragt?",
         checkSessions: "Angemeldete Sitzungen überprüfen",

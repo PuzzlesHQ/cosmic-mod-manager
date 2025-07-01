@@ -95,7 +95,13 @@ export default {
         alreadyHaveAccount: "Already have an account?",
         forgotPassword: "Forgot Password?",
         signupWithProviders: "Signup using any of the auth providers:",
-        aggrement: "By creating an account, you agree to our [Terms](/legal/terms) and [Privacy Policy](/legal/privacy).",
+        agreement: (terms: React.ReactNode, privacyPolicy: React.ReactNode) => [
+            "By creating an account, you agree to our ",
+            terms,
+            " and ",
+            privacyPolicy,
+            ".",
+        ],
         invalidCode: "Invalid or expired code",
         didntRequest: "Didn't request this?",
         checkSessions: "Check loggedIn sessions",
@@ -376,6 +382,7 @@ export default {
     },
 
     version: {
+        version: "Version",
         deleteVersion: "Delete version",
         sureToDelete: "Are you sure you want to delete this version?",
         deleteDesc: "This will remove this version forever (like really forever).",
@@ -571,6 +578,7 @@ export default {
     },
 
     user: {
+        user: "User",
         admin: "Admin",
         moderator: "Moderator",
         doesntHaveProjects: (user: string) => `${user} doesn't have any projects yet.`,
@@ -602,6 +610,7 @@ export default {
 
     legal: {
         legal: "Legal",
+        rules: "Rules",
         rulesTitle: "Content Rules",
         contentRules: Rules,
         termsTitle: "Terms of Use",
@@ -784,7 +793,47 @@ export default {
         content: "content",
         reportToMods: (item: string) => `Report ${item} to moderators`,
         whatTypeOfContent: "What type of content are you reporting?",
-        whatIsContentId: (item: string) => `What is the ID of the ${item}?`,
+        whatIsContentId: (item: string) => `What is the ID of the ${item.toLowerCase()}?`,
+        pleaseReport: "Please report:",
+        itsNotFor: "This form is not for:",
+        rulesViolation: (siteName_short: string, rules: React.ReactNode, tos: React.ReactNode) => [
+            `Violation of ${siteName_short} `,
+            rules,
+            " or ",
+            tos,
+        ],
+        violationExamples: "Examples include malicious, spam, offensive, deceptive, misleading, and illegal content.",
+        bugReports: "Bug reports",
+        dmcaTakedowns: "DMCA takedowns",
+        seeCopyrightPolicy: (copyrightPolicy: React.ReactNode) => ["See our ", copyrightPolicy, "."],
+        whichRuleIsBeingViolated: (siteName_short: string, item: string) =>
+            `Which of ${siteName_short}'s rules is this ${item.toLowerCase()} violating?`,
+        violationType: {
+            spam: "Spam",
+            reuploaded_work: "Reuploaded work",
+            reuploaded_work_desc: {
+                _1: "Please note that you are *not* submitting a DMCA takedown request, but rather a report of reuploaded content.",
+                _2: (copyrightPolicy: React.ReactNode) => [
+                    "If you meant to file a DMCA takedown request (which is a legal action) instead, please see our ",
+                    copyrightPolicy,
+                    ".",
+                ],
+            },
+            inappropriate: "Inappropriate",
+            malicious: "Malicious",
+            malicious_desc: [
+                "Reports for malicious or deceptive content must include substantial evidence of the behavior, such as code samples.",
+                "Summaries from Microsoft Defender, VirusTotal, or AI malware detection are not sufficient forms of evidence and will not be accepted.",
+            ],
+            name_squatting: "Name-squatting",
+            poor_description: "Poor description",
+            invalid_metadata: "Invalid metadata",
+            other: "Other",
+        },
+        provideAdditionalContext: "Please provide additional context about your report",
+        additionalContextDesc:
+            "Include links and images if possible and relevant. Empty or insufficient reports will be closed and ignored.",
+        submitReport: "Submit report",
     },
 
     graph: {

@@ -2,8 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@app/components/ui/car
 import { Prefetch } from "@app/components/ui/link";
 import { Separator } from "@app/components/ui/separator";
 import { AuthActionIntent } from "@app/utils/types";
-import MarkdownRenderBox from "~/components/md-renderer";
-import Link from "~/components/ui/link";
+import Link, { TextLink } from "~/components/ui/link";
 import { useTranslation } from "~/locales/provider";
 import OAuthProvidersWidget from "../oauth-providers";
 
@@ -24,7 +23,16 @@ export default function SignUpPage() {
                         </div>
                     </div>
 
-                    <MarkdownRenderBox text={t.auth.aggrement} divElem />
+                    <p className="text-muted-foreground">
+                        {t.auth.agreement(
+                            <TextLink key="terms-link" to="/legal/terms">
+                                {t.legal.termsTitle}
+                            </TextLink>,
+                            <TextLink key="privacy-link" to="/legal/privacy">
+                                {t.legal.privacyPolicyTitle}
+                            </TextLink>,
+                        )}
+                    </p>
 
                     <Separator />
 

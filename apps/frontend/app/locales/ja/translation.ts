@@ -81,8 +81,13 @@ export default {
         alreadyHaveAccount: "すでにアカウントをお持ちですか？",
         forgotPassword: "パスワードをお忘れですか？",
         signupWithProviders: "外部アカウントでログイン：",
-        aggrement:
-            "アカウントを作成すると、CRMMの[利用規約](/legal/terms)および[プライバシーポリシー](/legal/privacy)に同意したものとみなされます。",
+        agreement: (terms, privacyPolicy) => [
+            "アカウントを作成すると、",
+            terms,
+            "および",
+            privacyPolicy,
+            "に同意したものとみなされます。",
+        ],
         invalidCode: "無効または期限切れのコード",
         didntRequest: "これをリクエストしませんでしたか？",
         checkSessions: "ログインされいるセッションを見る",

@@ -82,7 +82,7 @@ export default {
         alreadyHaveAccount: "¿Ya tienes una cuenta?",
         forgotPassword: "¿Olvidaste tu contraseña?",
         signupWithProviders: "Regístrate usando cualquiera de los proveedores de autenticación:",
-        aggrement: "Al crear una cuenta, aceptas nuestros [Términos](/legal/terms) y [Política de Privacidad](/legal/privacy).",
+        agreement: (terms, privacyPolicy) => ["Al crear una cuenta, aceptas nuestros ", terms, " y ", privacyPolicy, "."],
         invalidCode: "Código inválido o expirado",
         didntRequest: "¿No solicitaste esto?",
         checkSessions: "Revisar sesiones iniciadas",

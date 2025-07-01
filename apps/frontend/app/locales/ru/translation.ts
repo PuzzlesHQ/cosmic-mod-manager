@@ -1,5 +1,6 @@
 import type { Locale } from "~/locales/types";
 import tags from "./tags";
+
 // import { AboutUs } from "./about";
 // import { CopyrightPolicy } from "./legal/copyright";
 // import { PrivacyPolicy } from "./legal/privacy";
@@ -95,8 +96,7 @@ export default {
         alreadyHaveAccount: "Уже зарегистрированы?",
         forgotPassword: "Забыли пароль?",
         signupWithProviders: "Зарегистрируйтесь одним из способов:",
-        aggrement:
-            "Создавая аккаунт, вы соглашаетесь с нашими [Условиями использования](/legal/terms) и [Политикой Конфиденциальности](/legal/privacy).",
+        agreement: (terms, privacyPolicy) => ["Создавая аккаунт, вы соглашаетесь с нашими ", terms, " и ", privacyPolicy, "."],
         invalidCode: "Неверный или уже истекший код",
         didntRequest: "Не запрашивали это?",
         checkSessions: "Посмотреть авторизованные сессии",
