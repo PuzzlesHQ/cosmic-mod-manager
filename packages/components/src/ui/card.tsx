@@ -12,7 +12,7 @@ function SectionCard({ ref, className, ...props }: React.ComponentProps<"div">) 
 SectionCard.displayName = "Card";
 
 function CardHeader({ ref, className, ...props }: React.ComponentProps<"div">) {
-    return <div ref={ref} className={cn("flex flex-col gap-y-1.5 p-5", className)} {...props} />;
+    return <div ref={ref} className={cn("flex flex-col gap-y-1.5 p-card-surround", className)} {...props} />;
 }
 CardHeader.displayName = "CardHeader";
 
@@ -27,12 +27,18 @@ function CardDescription({ ref, className, ...props }: React.ComponentProps<"p">
 CardDescription.displayName = "CardDescription";
 
 function CardContent({ ref, className, ...props }: React.ComponentProps<"div">) {
-    return <div ref={ref} className={cn("p-5 pt-0 w-full flex flex-col items-start justify-start", className)} {...props} />;
+    return (
+        <div
+            ref={ref}
+            className={cn("p-card-surround pt-0 w-full flex flex-col items-start justify-start", className)}
+            {...props}
+        />
+    );
 }
 CardContent.displayName = "CardContent";
 
 function CardFooter({ ref, className, ...props }: React.ComponentProps<"div">) {
-    return <div ref={ref} className={cn("flex justify-end gap-3 items-center p-5 pt-0", className)} {...props} />;
+    return <div ref={ref} className={cn("flex justify-end gap-3 items-center p-card-surround pt-0", className)} {...props} />;
 }
 CardFooter.displayName = "CardFooter";
 

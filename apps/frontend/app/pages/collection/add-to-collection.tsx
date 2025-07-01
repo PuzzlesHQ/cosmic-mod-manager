@@ -1,35 +1,27 @@
-import type { RefProp } from "@app/components/types";
 import { Button } from "@app/components/ui/button";
 import { LabelledCheckbox } from "@app/components/ui/checkbox";
 import { Input } from "@app/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@app/components/ui/popover";
 import { BookmarkIcon, PlusIcon, SquareArrowOutUpRightIcon } from "lucide-react";
 import { useState } from "react";
-import { useLocation } from "react-router";
-import Link, { useNavigate } from "~/components/ui/link";
+import Link from "~/components/ui/link";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
-import { setReturnUrl } from "~/pages/auth/oauth-providers";
-import CreateNewCollection_Dialog from "../dashboard/collections/new-collection";
+import CreateNewCollection_Dialog from "~/pages/dashboard/collections/new-collection";
+import { LoginDialog } from "../auth/login/login-card";
 import useCollections from "./provider";
 
 export function AddToCollection_Popup({ projectId }: { projectId: string }) {
     const { t } = useTranslation();
     const session = useSession();
     const ctx = useCollections();
-    const navigate = useNavigate();
-    const location = useLocation();
     const [searchQuery, setSearchQuery] = useState("");
 
     if (!session?.id) {
         return (
-            <AddToCollection_PopupTrigger
-                bookmarked={false}
-                onClick={() => {
-                    setReturnUrl(location);
-                    navigate("/login");
-                }}
-            />
+            <LoginDialog>
+                <AddToCollection_PopupTrigger bookmarked={false} />
+            </LoginDialog>
         );
     }
 
@@ -100,11 +92,12 @@ export function AddToCollection_Popup({ projectId }: { projectId: string }) {
 }
 
 interface TriggerProps {
+    ref?: React.ComponentProps<"button">["ref"];
     bookmarked: boolean;
     onClick?: () => void;
 }
 
-function AddToCollection_PopupTrigger(props: TriggerProps & RefProp<HTMLButtonElement>) {
+function AddToCollection_PopupTrigger(props: TriggerProps) {
     return (
         <Button
             ref={props.ref}

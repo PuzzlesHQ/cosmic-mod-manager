@@ -2,7 +2,6 @@ import { fallbackUserIcon } from "@app/components/icons";
 import RefreshPage from "@app/components/misc/refresh-page";
 import { NotificationBadge } from "@app/components/ui/badge";
 import { Button } from "@app/components/ui/button";
-import { Prefetch } from "@app/components/ui/link";
 import { Popover, PopoverContent, PopoverTrigger } from "@app/components/ui/popover";
 import { Separator } from "@app/components/ui/separator";
 import { LoadingSpinner } from "@app/components/ui/spinner";
@@ -26,45 +25,31 @@ import {
 import { useState } from "react";
 import { useLocation } from "react-router";
 import { ImgWrapper } from "~/components/ui/avatar";
-import { ButtonLink, useNavigate, VariantButtonLink } from "~/components/ui/link";
+import { ButtonLink, useNavigate } from "~/components/ui/link";
 import { useTranslation } from "~/locales/provider";
-import { setReturnUrl } from "~/pages/auth/oauth-providers";
+import { LoginDialog } from "~/pages/auth/login/login-card";
 import clientFetch from "~/utils/client-fetch";
 import { UserProfilePath } from "~/utils/urls";
 
-export function LoginButton({ className, onClick }: { className?: string; onClick?: () => void }) {
+export function LoginButton({ className }: { className?: string }) {
     const { t } = useTranslation();
-    const location = useLocation();
-    const navigate = useNavigate();
 
     return (
-        <VariantButtonLink
-            prefetch={Prefetch.Render}
-            url={"/login"}
-            className={className}
-            variant="secondary-inverted"
-            aria-label={t.form.login_withSpace}
-            onClick={(e) => {
-                e.preventDefault();
-
-                onClick?.();
-                setReturnUrl(location);
-                navigate("/login");
-            }}
-        >
-            <LogInIcon aria-hidden className="w-btn-icon h-btn-icon" aria-label={t.form.login_withSpace} />
-            {t.form.login_withSpace}
-        </VariantButtonLink>
+        <LoginDialog>
+            <Button className={className} variant="secondary-inverted" aria-label={t.form.login_withSpace}>
+                <LogInIcon aria-hidden className="w-btn-icon h-btn-icon" aria-label={t.form.login_withSpace} />
+                {t.form.login_withSpace}
+            </Button>
+        </LoginDialog>
     );
 }
 
 interface NavbuttonProps {
-    toggleNavMenu: (newState?: boolean) => void;
     session: LoggedInUserData | null;
     notifications: Notification[] | null;
 }
 
-export default function NavButton({ session, notifications, toggleNavMenu }: NavbuttonProps) {
+export default function NavButton({ session, notifications }: NavbuttonProps) {
     const { t } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
 
@@ -75,13 +60,7 @@ export default function NavButton({ session, notifications, toggleNavMenu }: Nav
     const undreadNotifications = (notifications || [])?.filter((n) => !n.read).length;
 
     if (!session?.id) {
-        return (
-            <LoginButton
-                onClick={() => {
-                    toggleNavMenu(false);
-                }}
-            />
-        );
+        return <LoginButton />;
     }
 
     return (

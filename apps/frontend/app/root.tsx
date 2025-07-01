@@ -8,11 +8,11 @@ import { useEffect } from "react";
 import type { LinkDescriptor, LinksFunction } from "react-router";
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, type ShouldRevalidateFunctionArgs, useLoaderData } from "react-router";
 import ClientOnly from "~/components/client-only";
-import Navbar from "~/components/layout/Navbar/navbar";
 import Footer from "~/components/layout/footer";
+import Navbar from "~/components/layout/Navbar/navbar";
 import ToastAnnouncer from "~/components/toast-announcer";
 import { useNavigate } from "~/components/ui/link";
-import { type UserConfig, getUserConfig } from "~/hooks/user-config";
+import { getUserConfig, type UserConfig } from "~/hooks/user-config";
 import SupportedLocales, { DefaultLocale, GetLocaleMetadata } from "~/locales/meta";
 import type { LocaleMetaData } from "~/locales/types";
 import ContextProviders from "~/providers";
@@ -25,6 +25,7 @@ import type { Route } from "./+types/root";
 import { PageBreadCrumbs } from "./hooks/breadcrumb";
 import { formatLocaleCode, parseLocale } from "./locales";
 import { useTranslation } from "./locales/provider";
+import { LoginDialog } from "./pages/auth/login/login-card";
 import Config from "./utils/config";
 
 export interface RootOutletData {
@@ -117,6 +118,7 @@ export default function App() {
 
     return (
         <ContextProviders theme={data.userConfig.theme}>
+            {!data.session?.id && <LoginDialog isMainDialog />}
             <ValidateClientSession />
             <ClientOnly Element={ToastAnnouncer} />
             <ClientOnly Element={LoaderBar} />

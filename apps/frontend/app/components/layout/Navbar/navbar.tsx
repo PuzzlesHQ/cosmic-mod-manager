@@ -169,11 +169,7 @@ export default function Navbar(props: NavbarProps) {
                         <div className="flex lg:hidden">{MemoizedThemeSwitch}</div>
 
                         <div className="hidden lg:flex">
-                            <NavButton
-                                session={props.session}
-                                notifications={props.notifications}
-                                toggleNavMenu={toggleNavMenu}
-                            />
+                            <NavButton session={props.session} notifications={props.notifications} />
                         </div>
 
                         <div className="flex lg:hidden align-center justify-center">
