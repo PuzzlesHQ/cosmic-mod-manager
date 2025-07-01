@@ -200,6 +200,8 @@ export function LoginDialog(props: LoginDialogProps) {
     const dialogOpen = useMemo(() => searchParams.get("loginDialog") === "true", [searchParams.get("loginDialog")]);
 
     function toggleDialog() {
+        if (location.pathname === "/login") return;
+
         setReturnUrl(location);
         setSearchParams((params) => {
             if (!dialogOpen) {
