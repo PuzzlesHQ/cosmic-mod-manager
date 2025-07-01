@@ -29,7 +29,7 @@
     --shallow-background-dark: var(--bg-tint-hue), var(--bg-saturation), 24%;
     --shallower-background-dark: var(--bg-tint-hue), var(--bg-saturation), 32%;
     --danger-background-dark: 0, 92%, 65%;
-    --danger-foreground-dark: 0, 96%, 66%;
+    --danger-foreground-dark: 0, 96%, 70%;
     --warning-background-dark: 35, 78%, 48%;
     --warning-foreground-dark: 33, 94%, 64%;
     --success-background-dark: 154, 94%, 42%;
