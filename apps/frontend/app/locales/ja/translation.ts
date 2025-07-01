@@ -77,9 +77,9 @@ export default {
         password: "パスワード",
         changePassword: "パスワードを再設定する",
         loginUsing: "外部アカウントでログイン：",
-        dontHaveAccount: "アカウントをお持ちではありませんか？",
-        alreadyHaveAccount: "すでにアカウントをお持ちですか？",
-        forgotPassword: "パスワードをお忘れですか？",
+        dontHaveAccount: (signup) => ["アカウントをお持ちではありませんか？ ", signup],
+        alreadyHaveAccount: (login) => ["すでにアカウントをお持ちですか？ ", login],
+        forgotPassword: (changePassword) => ["パスワードをお忘れですか？ ", changePassword],
         signupWithProviders: "外部アカウントでログイン：",
         agreement: (terms, privacyPolicy) => [
             "アカウントを作成すると、",

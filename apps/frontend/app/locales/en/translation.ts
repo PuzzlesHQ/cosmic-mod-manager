@@ -91,9 +91,9 @@ export default {
         password: "Password",
         changePassword: "Change Password",
         loginUsing: "Login using:",
-        dontHaveAccount: "Don't have an account?",
-        alreadyHaveAccount: "Already have an account?",
-        forgotPassword: "Forgot Password?",
+        dontHaveAccount: (signup: React.ReactNode) => ["Don't have an account? ", signup],
+        alreadyHaveAccount: (login: React.ReactNode) => ["Already have an account? ", login],
+        forgotPassword: (changePassword: React.ReactNode) => ["Forgot Password? ", changePassword],
         signupWithProviders: "Signup using any of the auth providers:",
         agreement: (terms: React.ReactNode, privacyPolicy: React.ReactNode) => [
             "By creating an account, you agree to our ",

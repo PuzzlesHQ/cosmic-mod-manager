@@ -121,9 +121,9 @@ export default {
         password: "Passwort",
         changePassword: "Passwort ändern",
         loginUsing: "Anmelden mit:",
-        dontHaveAccount: "Du hast kein Konto?",
-        alreadyHaveAccount: "Du hast bereits ein Konto?",
-        forgotPassword: "Passwort vergessen?",
+        dontHaveAccount: (signup) => ["Du hast kein Konto? ", signup],
+        alreadyHaveAccount: (login) => ["Du hast bereits ein Konto? ", login],
+        forgotPassword: (changePassword) => ["Passwort vergessen? ", changePassword],
         signupWithProviders: "Registriere dich mit einer dieser Anmeldemethoden:",
         agreement: (terms, privacyPolicy) => [
             "Mit dem Erstellen eines Kontos akzeptierst du unsere ",

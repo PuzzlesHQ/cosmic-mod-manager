@@ -12,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRightIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import Link from "~/components/ui/link";
+import { TextLink } from "~/components/ui/link";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 
@@ -89,9 +89,9 @@ export default function ChangePasswordPage() {
                         <CardFooter className="w-full flex flex-col gap-1 items-center justify-center">
                             <HorizontalSeparator />
 
-                            <Link prefetch={Prefetch.Render} className="text_link" to="/login">
+                            <TextLink prefetch={Prefetch.Render} to="/login">
                                 {t.form.login}
-                            </Link>
+                            </TextLink>
                         </CardFooter>
                     </Card>
                 </form>

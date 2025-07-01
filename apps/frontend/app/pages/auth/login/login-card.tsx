@@ -20,7 +20,7 @@ import { Slot } from "radix-ui";
 import { useId, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useSearchParams } from "react-router";
-import Link, { useNavigate } from "~/components/ui/link";
+import { TextLink, useNavigate } from "~/components/ui/link";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import OAuthProvidersWidget, { setReturnUrl } from "../oauth-providers";
@@ -155,18 +155,25 @@ export function LoginPageCard(props: LoginPageCardProps) {
                     </div>
                 </div>
 
-                <div className="w-full flex flex-col items-center justify-center mt-4">
+                <div className="w-full flex flex-col items-center justify-center mt-4 text-muted-foreground">
                     <div className="text-center">
-                        <span className="text-muted-foreground">{t.auth.dontHaveAccount}</span>{" "}
-                        <Link prefetch={Prefetch.Render} to="/signup" aria-label="Sign up" className="text_link">
-                            {t.form.signup}
-                        </Link>
+                        {t.auth.dontHaveAccount(
+                            <TextLink key="signup-link" prefetch={Prefetch.Render} to="/signup" aria-label={t.form.signup}>
+                                {t.form.signup}
+                            </TextLink>,
+                        )}
                     </div>
                     <div className="text-center">
-                        <span className="text-muted-foreground">{t.auth.forgotPassword}</span>{" "}
-                        <Link prefetch={Prefetch.Render} to="/change-password" aria-label="Change password" className="text_link">
-                            {t.auth.changePassword}
-                        </Link>
+                        {t.auth.forgotPassword(
+                            <TextLink
+                                key="change-password-link"
+                                prefetch={Prefetch.Render}
+                                to="/change-password"
+                                aria-label={t.auth.changePassword}
+                            >
+                                {t.auth.changePassword}
+                            </TextLink>,
+                        )}
                     </div>
                 </div>
             </CardContent>
@@ -212,7 +219,7 @@ export function LoginDialog(props: LoginDialogProps) {
 
     return (
         <Dialog open={dialogOpen} onOpenChange={toggleDialog}>
-            <DialogContent className="max-w-md !py-0">
+            <DialogContent className="max-w-md py-0">
                 <VisuallyHidden>
                     <DialogTitle>{t.form.login}</DialogTitle>
                     <DialogDescription>{t.form.login}</DialogDescription>

@@ -26,7 +26,7 @@ interface ButtonLinkProps extends Omit<LinkProps, "to"> {
     onClick?: React.MouseEventHandler<HTMLAnchorElement>;
     activeClassName?: string;
     preventScrollReset?: boolean;
-    ref: React.ComponentProps<"a">["ref"];
+    ref?: React.ComponentProps<"a">["ref"];
 }
 
 export function ButtonLink({
@@ -71,7 +71,7 @@ export interface VariantLinkProps extends VariantProps<typeof buttonVariants> {
     preventScrollReset?: boolean;
     prefetch?: PrefetchBehavior;
     viewTransition?: boolean;
-    ref: React.ComponentProps<"a">["ref"];
+    ref?: React.ComponentProps<"a">["ref"];
 }
 
 export function VariantButtonLink({

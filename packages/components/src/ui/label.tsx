@@ -2,7 +2,9 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { Label as LabelPrimitive } from "radix-ui";
 import { cn } from "~/utils";
 
-const labelVariants = cva("text-lg font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70");
+const labelVariants = cva(
+    "text-md font-semibold dark:text-foreground leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+);
 
 export function Label({
     ref,

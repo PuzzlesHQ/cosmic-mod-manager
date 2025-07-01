@@ -13,7 +13,7 @@ export function CopyrightPolicy(props: CopyrightProps) {
 
 ${props.siteName_Short} (${props.siteName_Long}) respects the rights of copyright holders and expects our users to do the same. This policy outlines how we handle copyright claims, counter claims, and repeat infringements in accordance with UK copyright law. While the United Kingdom does not have a direct equivalent to the US DMCA, we adhere to similar principles to ensure fair treatment of all parties. We also operate under the Copyright, Designs and Patents Act 1988, which provides the legal framework for protecting original creative works in the UK.
 
-\---
+---
 
 **Reporting Copyright Infringement**
 
@@ -34,7 +34,7 @@ Your request should include the following:
 
 We will reject any complaint that is clearly unprofessional or automated in nature. This includes messages that lack essential details, are copy-pasted form letters without proper names or context, or appear to be mass-generated notices. All copyright claims must be submitted with genuine intent and sufficient information to be considered.
 
-\---
+---
 
 **Response and Removal Process**
 
@@ -42,7 +42,7 @@ We will review your request and, **if valid**, may remove or restrict access to 
 
 If the complaint is clearly **invalid** or **abusive**, we reserve the right to **reject it outright**. Abusive complaints include those submitted in bad faith, submitted as a means of harassment, or lacking the necessary information outlined above.
 
-\---
+---
 
 **Counter Notification Process**
 
@@ -57,7 +57,7 @@ Your counter notice should include:
 
 We will forward your counter notice to the original complainant. If they do not take legal action within **five** (5) business days, we may restore the content. If the original claim does not meet the necessary requirements—such as missing contact information, lacking a clear description of the copyrighted work, or failing to assert good faith—it will be considered invalid upon review and we may restore the content **immediately**.
 
-\---
+---
 
 **Repeat Infringer Policy**
 
@@ -65,13 +65,13 @@ Users who receive **three** (3) valid copyright complaints will have their accou
 
 Users who submit **false or malicious claims** or counterclaims may also face **account termination** and potential **legal liability**.
 
-\---
+---
 
 **Content Moderation & Hosting**
 
 ${props.siteName_Short} hosts mod files directly. When a project is created, it is manually reviewed by our moderation team before being published. However, we do not manually verify each file uploaded thereafter. We plan to implement automated scanning, such as integration with VirusTotal, in the future to improve safety. Users are **solely** responsible for ensuring that any files they upload **do not** infringe on the rights of others.
 
-\---
+---
 
 **Contact**
 
@@ -82,7 +82,7 @@ ${props.siteName_Short} Admin Team
 [${props.adminEmail}](mailto:${props.adminEmail})
 
 
-\---
+---
 
 **Changes to This Policy**
 

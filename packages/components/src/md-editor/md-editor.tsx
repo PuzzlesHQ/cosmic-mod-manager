@@ -152,25 +152,25 @@ export default function MarkdownEditor({
         editorTextarea.current.focus();
     }
 
-    function Bold() {
+    function bold() {
         toggleTextAtCursorsLine(`**${textSeparatorChar}**`);
     }
-    function Italic() {
+    function italic() {
         toggleTextAtCursorsLine(`_${textSeparatorChar}_`);
     }
-    function Underline() {
+    function underline() {
         toggleTextAtCursorsLine(`<u>${textSeparatorChar}</u>`);
     }
-    function UnorderedList() {
+    function unorderedList() {
         toggleTextAtCursorsLine("- ", true);
     }
-    function Quote() {
+    function quote() {
         toggleTextAtCursorsLine("> ", true);
     }
-    function CodeBlock() {
+    function codeBlock() {
         toggleTextAtCursorsLine(`\`\`\`\n${textSeparatorChar}\n\`\`\``);
     }
-    function Spoiler() {
+    function spoiler() {
         toggleTextAtCursorsLine(`<details>\n<summary>Spoiler</summary>\n\n${textSeparatorChar}\n\n</details>`);
     }
 
@@ -242,13 +242,13 @@ export default function MarkdownEditor({
                         </BtnGroup>
                         <Separator />
                         <BtnGroup>
-                            <IconButton tooltipContent={t.bold} disabled={previewOpen} onClick={Bold}>
+                            <IconButton tooltipContent={t.bold} disabled={previewOpen} onClick={bold}>
                                 <BoldIcon aria-hidden className="h-5 w-5" />
                             </IconButton>
-                            <IconButton tooltipContent={t.italic} disabled={previewOpen} onClick={Italic}>
+                            <IconButton tooltipContent={t.italic} disabled={previewOpen} onClick={italic}>
                                 <ItalicIcon aria-hidden className="h-5 w-5" />
                             </IconButton>
-                            <IconButton tooltipContent={t.underline} disabled={previewOpen} onClick={Underline}>
+                            <IconButton tooltipContent={t.underline} disabled={previewOpen} onClick={underline}>
                                 <UnderlineIcon aria-hidden className="h-5 w-5" />
                             </IconButton>
                             <IconButton
@@ -260,16 +260,16 @@ export default function MarkdownEditor({
                             >
                                 <StrikethroughIcon aria-hidden className="h-5 w-5" />
                             </IconButton>
-                            <IconButton tooltipContent={t.code} disabled={previewOpen} onClick={CodeBlock}>
+                            <IconButton tooltipContent={t.code} disabled={previewOpen} onClick={codeBlock}>
                                 <CodeIcon aria-hidden className="h-5 w-5" />
                             </IconButton>
-                            <IconButton tooltipContent={t.spoiler} disabled={previewOpen} onClick={Spoiler}>
+                            <IconButton tooltipContent={t.spoiler} disabled={previewOpen} onClick={spoiler}>
                                 <ScanEyeIcon aria-hidden className="h-btn-icon w-btn-icon" />
                             </IconButton>
                         </BtnGroup>
                         <Separator />
                         <BtnGroup>
-                            <IconButton tooltipContent={t.bulletedList} disabled={previewOpen} onClick={UnorderedList}>
+                            <IconButton tooltipContent={t.bulletedList} disabled={previewOpen} onClick={unorderedList}>
                                 <ListIcon aria-hidden className="h-5 w-5" />
                             </IconButton>
                             <IconButton
@@ -281,7 +281,7 @@ export default function MarkdownEditor({
                             >
                                 <ListOrderedIcon aria-hidden className="h-5 w-5" />
                             </IconButton>
-                            <IconButton tooltipContent={t.quote} disabled={previewOpen} onClick={Quote}>
+                            <IconButton tooltipContent={t.quote} disabled={previewOpen} onClick={quote}>
                                 <TextQuoteIcon aria-hidden className="h-5 w-5" />
                             </IconButton>
                         </BtnGroup>
@@ -411,13 +411,13 @@ export default function MarkdownEditor({
                                     e.preventDefault();
 
                                     if (pressedKey === "z") setWordWrap((prev) => !prev);
-                                    else if (pressedKey === "b") Bold();
-                                    else if (pressedKey === "i") Italic();
-                                    else if (pressedKey === "u") Underline();
-                                    else if (pressedKey === "c") CodeBlock();
-                                    else if (pressedKey === "s") Spoiler();
-                                    else if (pressedKey === "q") Quote();
-                                    else if (pressedKey === "l") UnorderedList();
+                                    else if (pressedKey === "b") bold();
+                                    else if (pressedKey === "i") italic();
+                                    else if (pressedKey === "u") underline();
+                                    else if (pressedKey === "c") codeBlock();
+                                    else if (pressedKey === "s") spoiler();
+                                    else if (pressedKey === "q") quote();
+                                    else if (pressedKey === "l") unorderedList();
                                 }
                             }}
                             spellCheck={false}
@@ -437,10 +437,10 @@ export default function MarkdownEditor({
                                     <div className="hidden lg:flex items-center justify-center gap-2 cursor-pointer font-mono">
                                         <span>{t.keyboardShortcuts}</span>
                                         <div className="flex items-center justify-center gap-1 font-mono">
-                                            <span className="flex items-center justify-center bg-shallow-background rounded px-1">
+                                            <span className="flex items-center justify-center bg-shallow-background rounded-sm px-1">
                                                 ctrl
                                             </span>
-                                            <span className="flex items-center justify-center bg-shallow-background rounded px-1">
+                                            <span className="flex items-center justify-center bg-shallow-background rounded-sm px-1">
                                                 /
                                             </span>
                                         </div>

@@ -15,11 +15,11 @@ export interface LocaleMetaData {
     };
 }
 
-type TranslationReturnType = string | number | React.ReactNode;
-type TranslationFunction = (...args: any[]) => TranslationReturnType | TranslationReturnType[] | TranslationReturnType[][];
+type TranslationReturnType = React.ReactNode;
+type TranslationFunction = (...args: any[]) => TranslationReturnType;
 
 export interface Translation {
-    [key: string]: string | TranslationFunction | Translation;
+    [key: string]: TranslationReturnType | TranslationFunction | Translation;
 }
 
 export type Locale = typeof default_locale;

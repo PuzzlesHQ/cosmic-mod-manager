@@ -1,8 +1,9 @@
 import DefaultLink, {
+    useNavigate as __useNavigate,
     ButtonLink as DefaultButtonLink,
     VariantButtonLink as DefaultVariantButtonLink,
-    useNavigate as __useNavigate,
 } from "@app/components/ui/link";
+import { cn } from "@app/components/utils";
 import type React from "react";
 import type { NavigateFunction, NavigateOptions } from "react-router";
 import { FormatUrl_WithHintLocale } from "~/utils/urls";
@@ -18,6 +19,13 @@ export default function Link({ ref, escapeUrlWrapper, ...props }: Props) {
     if (escapeUrlWrapper !== true) to = FormatUrl_WithHintLocale(to.toString());
 
     return <DefaultLink {...props} ref={ref} to={to} />;
+}
+
+export function TextLink({ ref, escapeUrlWrapper, ...props }: Props) {
+    let to = props.to;
+    if (escapeUrlWrapper !== true) to = FormatUrl_WithHintLocale(to.toString());
+
+    return <DefaultLink {...props} ref={ref} to={to} className={cn(props.className, "link_blue hover:underline")} />;
 }
 
 type ButtonLinkProps = React.ComponentProps<typeof DefaultButtonLink>;

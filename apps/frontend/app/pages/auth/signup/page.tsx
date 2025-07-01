@@ -1,8 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@app/components/ui/card";
-import { Prefetch } from "@app/components/ui/link";
 import { Separator } from "@app/components/ui/separator";
 import { AuthActionIntent } from "@app/utils/types";
-import Link, { TextLink } from "~/components/ui/link";
+import { TextLink } from "~/components/ui/link";
 import { useTranslation } from "~/locales/provider";
 import OAuthProvidersWidget from "../oauth-providers";
 
@@ -36,12 +35,13 @@ export default function SignUpPage() {
 
                     <Separator />
 
-                    <div className="w-full flex flex-col items-center justify-center gap-1">
+                    <div className="w-full flex flex-col items-center justify-center gap-1 text-muted-foreground">
                         <p className="text-center">
-                            <span className="text-muted-foreground">{t.auth.alreadyHaveAccount}</span>{" "}
-                            <Link prefetch={Prefetch.Render} to="/login" aria-label={t.form.login} className="text_link">
-                                {t.form.login}
-                            </Link>
+                            {t.auth.alreadyHaveAccount(
+                                <TextLink key="login-link" to="/login" aria-label={t.form.login}>
+                                    {t.form.login}
+                                </TextLink>,
+                            )}
                         </p>
                     </div>
                 </CardContent>
