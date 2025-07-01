@@ -2,7 +2,7 @@
     "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
     "files": {
         "includes": [
-            "./**/*.{tsx,ts,json}",
+            "**/*.{tsx,ts,json,css}",
             "!**/node_modules/*",
             "!**/dist/*",
             "!**/build/*",
@@ -22,14 +22,16 @@
         "rules": {
             "correctness": {
                 "useExhaustiveDependencies": "off",
-                "noUnusedImports": "error"
+                "noUnusedImports": "error",
+                "useJsxKeyInIterable": "error"
             },
             "style": {
                 "noParameterAssign": "off",
                 "useImportType": "error"
             },
             "nursery": {
-                "noTsIgnore": "off"
+                "noTsIgnore": "off",
+                "useUniqueElementIds": "off"
             },
             "a11y": {
                 "useSemanticElements": "info",
