@@ -10,6 +10,7 @@ import { cn } from "@app/components/utils";
 import { isRejected, isUnderReview } from "@app/utils/config/project";
 import { isModerator } from "@app/utils/constants/roles";
 import { DateFromStr, FormatDate_ToLocaleString } from "@app/utils/date";
+import { scrollElementIntoView } from "@app/utils/dom";
 import type { z } from "@app/utils/schemas";
 import type { createThreadMessage_Schema } from "@app/utils/schemas/thread/index";
 import { GlobalUserRole, ProjectPublishingStatus } from "@app/utils/types";
@@ -117,6 +118,12 @@ export function ChatThread(props: ChatThreadProps) {
 
         return thread.members.find((m) => m.id === replyingTo_msg?.authorId) || null;
     }, [replyingTo]);
+
+    useEffect(() => {
+        if (!thread) return;
+
+        scrollElementIntoView(document.querySelector("#thread-bottom"));
+    }, [thread?.id]);
 
     if (thread === undefined) {
         return <SuspenseFallback />;
@@ -309,6 +316,8 @@ export function ChatThread(props: ChatThreadProps) {
                             </>
                         )}
                     </div>
+
+                    <div id="thread-bottom" />
                 </div>
             </div>
         </TooltipProvider>
@@ -408,7 +417,7 @@ function ThreadMessage(props: ThreadMessageProps) {
     const avatar =
         author?.id && !msgAuthorHidden ? (
             <ImgWrapper
-                className="w-auto h-auto aspect-square rounded-full"
+                className="w-auto h-auto aspect-square rounded-full bg-card-background"
                 src={author.avatar}
                 alt={author.userName}
                 fallback={fallbackUserIcon}
@@ -419,7 +428,7 @@ function ThreadMessage(props: ThreadMessageProps) {
                 src={""}
                 alt={msg.authorId || ""}
                 fallback={<BrandIcon className="w-[65%] h-[65%]" />}
-                className="w-auto h-auto aspect-square rounded-full"
+                className="w-auto h-auto aspect-square rounded-full bg-card-background"
             />
         );
 
@@ -437,19 +446,21 @@ function ThreadMessage(props: ThreadMessageProps) {
     const isReplyToAMsg = props.inResponseTo?.user?.id === session?.id && props.message.authorId !== session?.id;
     const isSelectedMsgForReply = props.replyingTo === msg.id;
 
-    let specialNameColor = "";
+    let userNameColor = "";
     let senderTitle = author?.userName;
 
     if (author?.role) {
         switch (author.role) {
             case GlobalUserRole.MODERATOR:
-                specialNameColor = "text-blue-500 dark:text-blue-400";
+                userNameColor = "text-blue-500 dark:text-blue-400";
                 senderTitle += ` (${t.user.moderator})`;
                 break;
             case GlobalUserRole.ADMIN:
-                specialNameColor = "text-purple-600 dark:text-purple-400";
+                userNameColor = "text-purple-600 dark:text-purple-400";
                 senderTitle += ` (${t.user.admin})`;
                 break;
+            default:
+                userNameColor = "text-muted-foreground";
         }
     }
 
@@ -461,7 +472,7 @@ function ThreadMessage(props: ThreadMessageProps) {
                 isContinuationMessage && "mt-0",
                 isReplyToAMsg &&
                     !isSelectedMsgForReply &&
-                    "border-orange-400 bg-orange-500/10 hover:bg-orange-500/5 dark:bg-orange-300/10 dark:hover:bg-orange-300/5",
+                    "border-orange-400 bg-orange-500/10 hover:bg-orange-500/5 dark:bg-orange-300/5 dark:hover:bg-orange-300/10",
                 isSelectedMsgForReply && "border-blue-400 bg-blue-300/15",
             )}
             id={msgElemId(msg.id)}
@@ -529,13 +540,13 @@ function ThreadMessage(props: ThreadMessageProps) {
                         {profileUrl ? (
                             <Link
                                 to={profileUrl}
-                                className={cn("w-fit text-base font-bold leading-none", specialNameColor)}
+                                className={cn("w-fit text-base font-medium leading-none", userNameColor)}
                                 title={senderTitle}
                             >
                                 {authorUsername}
                             </Link>
                         ) : (
-                            <span className={cn("w-fit text-base font-bold leading-none", specialNameColor)}>
+                            <span className={cn("w-fit text-base font-medium leading-none", userNameColor)}>
                                 {authorUsername}
                             </span>
                         )}
@@ -590,10 +601,8 @@ function ThreadMessage(props: ThreadMessageProps) {
 }
 
 function scrollMsgIntoView(msgId: string) {
-    document.querySelector(`#${msgElemId(msgId)}`)?.scrollIntoView({
-        behavior: "smooth",
+    scrollElementIntoView(document.querySelector(`#${msgElemId(msgId)}`), {
         block: "center",
-        inline: "center",
     });
 }
 

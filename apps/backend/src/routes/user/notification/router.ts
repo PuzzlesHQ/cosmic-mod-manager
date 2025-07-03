@@ -1,3 +1,4 @@
+import { decodeStringArray } from "@app/utils/string";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
 import { getReqRateLimiter } from "~/middleware/rate-limit/get-req";
@@ -79,14 +80,10 @@ async function bulkNotifications_patch(ctx: Context) {
     try {
         const userSession = getUserFromCtx(ctx);
         const userSlug = ctx.req.param("userId") || userSession?.id;
-        const notificationIds = JSON.parse(ctx.req.query("ids") as string);
+        const notificationIds = decodeStringArray(ctx.req.query("ids"));
 
         if (!userSession || !userSlug || !notificationIds.length) {
             return invalidReqestResponse(ctx);
-        }
-
-        if (notificationIds.some((id: unknown) => typeof id !== "string")) {
-            return invalidReqestResponse(ctx, "Invalid notification ids list");
         }
 
         const res = await markNotificationsAsRead(ctx, userSession, notificationIds, userSlug);
@@ -119,14 +116,10 @@ async function bulkNotifications_delete(ctx: Context) {
     try {
         const userSession = getUserFromCtx(ctx);
         const userSlug = ctx.req.param("userId") || userSession?.id;
-        const notificationIds = JSON.parse(ctx.req.query("ids") as string);
+        const notificationIds = decodeStringArray(ctx.req.query("ids"));
 
         if (!userSession || !userSlug || !notificationIds.length) {
             return invalidReqestResponse(ctx);
-        }
-
-        if (notificationIds.some((id: unknown) => typeof id !== "string")) {
-            return invalidReqestResponse(ctx, "Invalid notification ids list");
         }
 
         const res = await deleteNotifications(ctx, userSession, userSlug, notificationIds);

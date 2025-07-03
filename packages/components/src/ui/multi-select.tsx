@@ -39,7 +39,7 @@ interface MultiSelectProps extends React.ButtonHTMLAttributes<HTMLButtonElement>
     noResultsElement?: React.ReactNode;
     inputPlaceholder?: string;
 
-    ref: React.ComponentProps<"button">["ref"];
+    ref?: React.ComponentProps<"button">["ref"];
 }
 
 export const MultiSelect = ({

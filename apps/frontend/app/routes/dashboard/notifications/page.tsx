@@ -1,4 +1,5 @@
 import { SuspenseFallback } from "@app/components/ui/spinner";
+import { encodeArrayIntoStr } from "@app/utils/string";
 import type { OrganisationListItem, ProjectListItem } from "@app/utils/types/api";
 import { type Notification, NotificationType } from "@app/utils/types/api/notification";
 import type { UserProfileData } from "@app/utils/types/api/user";
@@ -25,9 +26,9 @@ export default function () {
 
 interface LoaderData {
     notifications: Notification[] | null;
-    projects?: ProjectListItem[];
-    orgs?: OrganisationListItem[];
-    users?: UserProfileData[];
+    projects?: ProjectListItem[] | null;
+    orgs?: OrganisationListItem[] | null;
+    users?: UserProfileData[] | null;
 }
 
 export async function clientLoader(): Promise<LoaderData> {
@@ -58,14 +59,14 @@ export async function clientLoader(): Promise<LoaderData> {
     }
 
     const [projectsRes, orgsRes, usersRes] = await Promise.all([
-        clientFetch(`/api/projects?ids=${encodeURIComponent(JSON.stringify(projectIds))}`),
-        clientFetch(`/api/organizations?ids=${encodeURIComponent(JSON.stringify(orgIds))}`),
-        clientFetch(`/api/users?ids=${encodeURIComponent(JSON.stringify(userIds))}`),
+        clientFetch(`/api/projects?ids=${encodeArrayIntoStr(projectIds)}`),
+        clientFetch(`/api/organizations?ids=${encodeArrayIntoStr(orgIds)}`),
+        clientFetch(`/api/users?ids=${encodeArrayIntoStr(userIds)}`),
     ]);
 
-    const projects = ((await resJson(projectsRes)) as ProjectListItem[]) || null;
-    const orgs = ((await resJson(orgsRes)) as OrganisationListItem[]) || null;
-    const users = ((await resJson(usersRes)) as UserProfileData[]) || null;
+    const projects = await resJson<ProjectListItem[]>(projectsRes);
+    const orgs = await resJson<OrganisationListItem[]>(orgsRes);
+    const users = await resJson<UserProfileData[]>(usersRes);
 
     return {
         notifications,

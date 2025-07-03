@@ -35,6 +35,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
                 id: "notifications-history",
             });
 
+            route("reports", path("dashboard/reports.tsx"), { id: "reports" });
             route("analytics", path("dashboard/analytics.tsx"), { id: "analytics" });
 
             route("projects", path("dashboard/projects.tsx"), { id: "dashboard-projects" });

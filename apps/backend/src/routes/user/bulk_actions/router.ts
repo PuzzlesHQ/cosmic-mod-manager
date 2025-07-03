@@ -1,3 +1,4 @@
+import { decodeStringArray } from "@app/utils/string";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware } from "~/middleware/auth";
 import { strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
@@ -16,11 +17,7 @@ async function users_get(ctx: Context) {
         const userIds = ctx.req.query("ids");
         if (!userIds) return invalidReqestResponse(ctx);
 
-        const idsArray = JSON.parse(userIds);
-
-        if (idsArray.some((id: unknown) => typeof id !== "string")) {
-            return invalidReqestResponse(ctx, "Invalid user ids list");
-        }
+        const idsArray = decodeStringArray(userIds);
         if (idsArray.length > 100) {
             return invalidReqestResponse(ctx, "Maximum 100 users can be fetched at once");
         }

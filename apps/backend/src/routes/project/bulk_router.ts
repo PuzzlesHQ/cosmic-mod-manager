@@ -1,3 +1,4 @@
+import { decodeStringArray } from "@app/utils/string";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware } from "~/middleware/auth";
 import { getReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
@@ -20,11 +21,7 @@ async function projects_get(ctx: Context) {
         const userSession = getUserFromCtx(ctx);
         if (!projectIds) return invalidReqestResponse(ctx);
 
-        const idsArray = JSON.parse(projectIds);
-
-        if (idsArray.some((id: unknown) => typeof id !== "string")) {
-            return invalidReqestResponse(ctx, "Invalid project ids list");
-        }
+        const idsArray = decodeStringArray(projectIds);
         if (idsArray.length > 100) {
             return invalidReqestResponse(ctx, "Maximum of 100 projects can be fetched at once");
         }

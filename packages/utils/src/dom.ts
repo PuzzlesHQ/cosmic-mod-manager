@@ -20,3 +20,13 @@ export function enableInteractions() {
     document.documentElement.classList.remove("disable-interactions");
     document.removeEventListener("keydown", disablePathNavigations);
 }
+
+export function scrollElementIntoView(element: HTMLElement | null, options?: ScrollIntoViewOptions) {
+    if (!element) return;
+    element.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "nearest",
+        ...options,
+    });
+}

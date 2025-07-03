@@ -1,3 +1,6 @@
+import type { ProjectListItem, ProjectVersionData } from "~/types/api";
+import type { UserProfileData } from "~/types/api/user";
+
 export enum ReportItemType {
     PROJECT = "project",
     VERSION = "version",
@@ -18,11 +21,30 @@ export enum RuleViolationType {
 export interface Report {
     id: string;
     reportType: RuleViolationType;
-    reportedItem: ReportItemType;
-    reportedItemId: string;
+    itemType: ReportItemType;
+    itemId: string;
     body: string;
     reporter: string;
     closed: boolean;
     createdAt: Date;
     threadId: string;
 }
+
+type ReportItemData =
+    | {
+          itemType: ReportItemType.PROJECT;
+          project: ProjectListItem | null;
+      }
+    | {
+          itemType: ReportItemType.VERSION;
+          version: ProjectVersionData | null;
+      }
+    | {
+          itemType: ReportItemType.USER;
+          user: UserProfileData | null;
+      };
+
+export type DetailedReport = Report &
+    ReportItemData & {
+        reporterUser: UserProfileData;
+    };

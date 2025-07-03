@@ -1,4 +1,5 @@
 import { DateFromStr, ISO_DateStr, getTimeRange } from "@app/utils/date";
+import { encodeArrayIntoStr } from "@app/utils/string";
 import { TimelineOptions } from "@app/utils/types";
 import type { ProjectDownloads_Analytics } from "@app/utils/types/api/stats";
 import clientFetch from "./client-fetch";
@@ -22,7 +23,7 @@ export async function getProjectDownload_AnalyticsData(
 ) {
     const timeRange = getTimeRange(timeline);
     const searchParams = new URLSearchParams();
-    searchParams.set("projectIds", JSON.stringify(projectIds));
+    searchParams.set("projectIds", encodeArrayIntoStr(projectIds));
     searchParams.set("startDate", ISO_DateStr(timeRange[0]));
     searchParams.set("endDate", ISO_DateStr(timeRange[1]));
 

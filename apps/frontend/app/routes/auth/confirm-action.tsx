@@ -25,7 +25,7 @@ export async function loader(props: Route.LoaderArgs): Promise<LoaderData> {
 
         const res = await serverFetch(props.request, "/api/user/confirmation-action", {
             method: "POST",
-            body: JSON.stringify({ code }),
+            body: JSON.stringify({ code: code }),
         });
         const data = await resJson<{ actionType: ConfirmationType }>(res);
 

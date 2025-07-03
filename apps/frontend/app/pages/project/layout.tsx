@@ -53,7 +53,7 @@ import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import useTheme from "~/hooks/theme";
 import { useTranslation } from "~/locales/provider";
-import ReportButton from "~/routes/report/report-btn";
+import ReportButton from "~/pages/report/report-btn";
 import { isCurrLinkActive, OrgPagePath, ProjectPagePath, UserProfilePath, VersionPagePath } from "~/utils/urls";
 import { AddToCollection_Popup } from "../collection/add-to-collection";
 import { FollowProject_Btn } from "../collection/follow-btn";

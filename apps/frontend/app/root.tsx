@@ -49,6 +49,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <meta name="color-scheme" content="dark light" />
                 <meta property="og:logo" content={Config.SITE_ICON} />
                 <meta name="google-site-verification" content="saVDIhLaNSit_2LnqK9Zz-yxY2hMGTEC_Vud5v7-Tug" />
+                {/* <script crossOrigin="anonymous" src="//unpkg.com/react-scan/dist/auto.global.js" /> */}
                 <Meta />
                 <Links />
                 <script

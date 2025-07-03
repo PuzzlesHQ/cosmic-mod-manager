@@ -34,7 +34,7 @@ import Link, { VariantButtonLink } from "~/components/ui/link";
 import type { ProjectContextData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
-import ReportButton from "~/routes/report/report-btn";
+import ReportButton from "~/pages/report/report-btn";
 import { appendPathInUrl, ProjectPagePath, VersionPagePath } from "~/utils/urls";
 import { TeamMember_Card } from "../layout";
 

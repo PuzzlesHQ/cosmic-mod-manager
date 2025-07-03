@@ -1,7 +1,8 @@
 # Get multiple projects
 Get multiple projects by their IDs.
 
-GET [`/api/projects?ids=[...]`](/api/projects?ids=["4xvLkWrQx2lt6Vyx6Z"])
+GET [`/api/projects?ids=ID1,ID2`](/api/projects?ids=4xvLkWrQx2lt6Vyx6Z) \
+_*ids is not json encoded, it's just a comma separated list_
 ```json
 [
     {

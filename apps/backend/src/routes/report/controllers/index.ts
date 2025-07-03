@@ -44,8 +44,8 @@ export async function createReport(data: z.infer<typeof newReportFormSchema>, us
             id: reportId,
             reporter: user.id,
             reportType: data.reportType,
-            reportedItem: data.itemType,
-            reportedItemId: itemData.data.id,
+            itemType: data.itemType,
+            itemId: itemData.data.id,
             body: data.body,
             threadId: reportThread.id,
         },
@@ -73,8 +73,8 @@ export async function getReportData(reportId: string, user: ContextUserData) {
     const reportData: Report = {
         id: report.id,
         reportType: report.reportType as RuleViolationType,
-        reportedItem: report.reportedItem as ReportItemType,
-        reportedItemId: report.reportedItemId,
+        itemType: report.itemType as ReportItemType,
+        itemId: report.itemId,
         body: report.body,
         reporter: report.reporter,
         closed: report.closed,
@@ -91,8 +91,8 @@ export async function getReportData(reportId: string, user: ContextUserData) {
 export async function getExistingReport(itemType: ReportItemType, itemId: string, user: ContextUserData) {
     const existingReport = await prisma.report.findFirst({
         where: {
-            reportedItem: itemType,
-            reportedItemId: itemId,
+            itemType: itemType,
+            itemId: itemId,
             reporter: user.id,
             closed: false,
         },
@@ -108,8 +108,8 @@ export async function getExistingReport(itemType: ReportItemType, itemId: string
     const report: Report = {
         id: existingReport.id,
         reportType: existingReport.reportType as RuleViolationType,
-        reportedItem: itemType,
-        reportedItemId: itemId,
+        itemType: itemType,
+        itemId: itemId,
         body: existingReport.body,
         reporter: user.id,
         closed: existingReport.closed,
@@ -177,8 +177,8 @@ export async function getAllUserReports(user: ContextUserData, userId?: string) 
         reportList.push({
             id: report.id,
             reportType: report.reportType as RuleViolationType,
-            reportedItem: report.reportedItem as ReportItemType,
-            reportedItemId: report.reportedItemId,
+            itemType: report.itemType as ReportItemType,
+            itemId: report.itemId,
             body: report.body,
             reporter: report.reporter,
             closed: report.closed,

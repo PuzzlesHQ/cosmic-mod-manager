@@ -1,4 +1,5 @@
 import { DateFromStr } from "@app/utils/date";
+import { decodeStringArray } from "@app/utils/string";
 import { TimelineOptions } from "@app/utils/types";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
@@ -7,7 +8,6 @@ import { strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { invalidReqestResponse, serverErrorResponse, unauthorizedReqResponse } from "~/utils/http";
 import { getUserFromCtx } from "~/utils/router";
-import { parseJson } from "~/utils/str";
 import { getAllProjects_DownloadsAnalyticsData, getDownloadsAnalyticsData } from "./controllers";
 
 const AnalyticsRouter = new Hono()
@@ -42,13 +42,10 @@ async function downloadsAnalytics_get(ctx: Context) {
                 "Either startDate and endDate (YYYY-MM-DD) or timeline query param must be provided",
             );
 
-        const projectIds = await parseJson(projectIds_query);
-        if (!projectIds || !Array.isArray(projectIds))
-            return invalidReqestResponse(ctx, "projectIds query param is not valid JSON");
-
+        const projectIds = decodeStringArray(projectIds_query);
         const startDate = DateFromStr(startDate_query);
         const endDate = DateFromStr(endDate_query);
-        let timeline: TimelineOptions | undefined = undefined;
+        let timeline: TimelineOptions | undefined;
         if (timeline_query) {
             if (Object.values(TimelineOptions).includes(timeline_query as TimelineOptions)) {
                 timeline = timeline_query as TimelineOptions;

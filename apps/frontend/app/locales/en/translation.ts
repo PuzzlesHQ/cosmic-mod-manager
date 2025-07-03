@@ -32,6 +32,7 @@ export default {
         noResults: "No results",
         more: "More",
         search: "Search...",
+        you: "You",
     },
 
     // NOTE: It isn't necessary to return the count in the array, because an Intl formatted count is used in the actual html
@@ -840,6 +841,10 @@ export default {
         additionalContextDesc:
             "Include links and images if possible and relevant. Empty or insufficient reports will be closed and ignored.",
         submitReport: "Submit report",
+        noOpenReports: "You don't have any open reports.",
+        closed: "Closed",
+        viewReport: "View report",
+        reportedBy: (reporter: React.ReactNode) => ["Reported by ", reporter],
     },
 
     graph: {

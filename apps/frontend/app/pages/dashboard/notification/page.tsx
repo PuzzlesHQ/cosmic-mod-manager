@@ -4,13 +4,14 @@ import { Button } from "@app/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@app/components/ui/card";
 import { toast } from "@app/components/ui/sonner";
 import { LoadingSpinner } from "@app/components/ui/spinner";
+import { encodeArrayIntoStr } from "@app/utils/string";
 import type { OrganisationListItem, ProjectListItem } from "@app/utils/types/api";
 import { type Notification, NotificationType } from "@app/utils/types/api/notification";
 import type { UserProfileData } from "@app/utils/types/api/user";
 import { CheckCheckIcon, HistoryIcon } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "react-router";
-import { VariantButtonLink, useNavigate } from "~/components/ui/link";
+import { useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import { OrgPagePath, ProjectPagePath } from "~/utils/urls";
@@ -36,12 +37,9 @@ export default function NotificationsPage({ notifications, relatedProjects, rela
         setMarkingAsRead(true);
         try {
             const unreadNotificationIds = unreadNotifications.map((n) => n.id);
-            const result = await clientFetch(
-                `/api/notifications?ids=${encodeURIComponent(JSON.stringify(unreadNotificationIds))}`,
-                {
-                    method: "PATCH",
-                },
-            );
+            const result = await clientFetch(`/api/notifications?ids=${encodeArrayIntoStr(unreadNotificationIds)}`, {
+                method: "PATCH",
+            });
 
             if (!result.ok) {
                 return toast.error("Failed to mark notifications as read");
@@ -223,6 +221,8 @@ export function NotificationsList(props: NotificationsListProps) {
                         );
                     }
                 }
+
+                return null;
             })}
         </ul>
     );

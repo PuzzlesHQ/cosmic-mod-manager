@@ -111,3 +111,17 @@ export function BoolFromStr(str: string | null | undefined) {
 export function ParseInt(str: string) {
     return Number.parseInt(str, 10);
 }
+
+export function encodeArrayIntoStr(items: Set<string> | string[]) {
+    const arr = items instanceof Set ? Array.from(items) : items;
+    return arr.map((item) => encodeURIComponent(item)).join(",");
+}
+
+export function decodeStringArray(str: string | undefined | null) {
+    if (!str?.trim()) return [];
+
+    return str
+        .split(",")
+        .filter((item) => item.length > 0)
+        .map((item) => decodeURIComponent(item));
+}

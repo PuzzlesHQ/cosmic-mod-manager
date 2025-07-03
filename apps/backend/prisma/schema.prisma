@@ -306,10 +306,9 @@ model ThreadMessage {
 // Report
 
 model Report {
-    id             String @id @db.VarChar(32)
-    reportedItem   String @db.VarChar(32)
-    reportedItemId String @db.VarChar(32)
-
+    id         String   @id @db.VarChar(32)
+    itemType   String   @db.VarChar(32) // Type of the reported entity, like Project, Version etc.y
+    itemId     String   @db.VarChar(32) // Reported entity ID
     body       String
     reporter   String   @db.VarChar(32)
     closed     Boolean  @default(false)
