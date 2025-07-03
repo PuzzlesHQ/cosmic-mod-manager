@@ -16,7 +16,7 @@ export default function () {
             <CardHeader>
                 <CardTitle>{t.moderation.reports}</CardTitle>
             </CardHeader>
-            <CardContent>{!data.reports ? <p>{t.report.noOpenReports}</p> : <ReportList data={data} />}</CardContent>
+            <CardContent>{!data.reports.length ? <p>{t.report.noOpenReports}</p> : <ReportList data={data} />}</CardContent>
         </Card>
     );
 }
