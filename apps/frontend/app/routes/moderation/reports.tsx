@@ -22,7 +22,7 @@ export default function () {
 }
 
 export async function loader(props: Route.LoaderArgs) {
-    const res = await serverFetch(props.request, "/api/report");
+    const res = await serverFetch(props.request, "/api/report/getAll");
     const reports = await resJson<Report[]>(res);
 
     return ReportsDataLoader(props.request, reports);

@@ -2,7 +2,7 @@ import { RESERVED_VERSION_SLUGS } from "@app/utils/config/reserved";
 import { getFileType } from "@app/utils/convertors";
 import { date } from "@app/utils/date";
 import { doesMemberHaveAccess, getCurrMember, getLoadersByProjectType } from "@app/utils/project";
-import type { VersionDependencies, newVersionFormSchema } from "@app/utils/schemas/project/version";
+import type { newVersionFormSchema, VersionDependencies } from "@app/utils/schemas/project/version";
 import { isVersionPrimaryFileValid } from "@app/utils/schemas/validation";
 import { ProjectPermission, type ProjectType, ProjectVisibility, VersionReleaseChannel } from "@app/utils/types";
 import type { Dependency, VersionFile } from "@prisma/client";
@@ -103,7 +103,7 @@ export async function createNewVersion(
             changelog: formData.changelog,
             slug: newUrlSlug,
             featured: formData.featured,
-            releaseChannel: formData.releaseChannel,
+            releaseChannel: formData.releaseChannel as VersionReleaseChannel,
             gameVersions: formData.gameVersions,
             loaders: formData.loaders || [],
         },

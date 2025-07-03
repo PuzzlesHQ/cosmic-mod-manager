@@ -691,9 +691,14 @@ export default {
             " to ",
             newStatus,
         ],
+        closedTheThread: "closed the thread.",
+        reopenedTheThread: "reopened the thread.",
         reply: "Reply",
         deleteMsg: "Delete message",
         sureToDeleteMsg: "Are you sure you want to delete this message?",
+        threadClosedDesc: "This thread is closed and new messages cannot be sent to it.",
+        closeThread: "Close thread",
+        reopenThread: "Reopen thread",
     },
 
     form: {
@@ -845,6 +850,7 @@ export default {
         closed: "Closed",
         viewReport: "View report",
         reportedBy: (reporter: React.ReactNode) => ["Reported by ", reporter],
+        reportDetails: "Report details",
     },
 
     graph: {

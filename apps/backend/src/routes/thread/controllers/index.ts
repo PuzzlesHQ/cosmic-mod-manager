@@ -25,13 +25,17 @@ export async function GetThreadMessages(user: ContextUserData, threadId: string)
             id: threadId,
         },
         include: {
-            messages: true,
+            messages: {
+                orderBy: {
+                    created: "asc",
+                },
+            },
         },
     });
     if (!thread?.id) return invalidReqestResponseData("Invalid thread ID");
     if (!canUserAccessThread(user, thread)) return unauthorizedReqResponseData();
 
-    const memberIds = new Set<string>();
+    const memberIds = new Set<string>(thread.members);
     const threadMessages: ThreadMessage[] = [];
 
     for (const msg of thread.messages) {

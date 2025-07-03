@@ -14,10 +14,13 @@ import { scrollElementIntoView } from "@app/utils/dom";
 import type { z } from "@app/utils/schemas";
 import type { createThreadMessage_Schema } from "@app/utils/schemas/thread/index";
 import { GlobalUserRole, ProjectPublishingStatus } from "@app/utils/types";
+import type { DetailedReport } from "@app/utils/types/api/report";
 import { MessageType, type Thread, type ThreadMember, type ThreadMessage as ThreadMessageT } from "@app/utils/types/api/thread";
 import {
     BanIcon,
+    CheckCircleIcon,
     LockIcon,
+    LockKeyholeIcon,
     MoreHorizontalIcon,
     MoreVerticalIcon,
     ReplyIcon,
@@ -34,22 +37,24 @@ import { ImgWrapper } from "~/components/ui/avatar";
 import { FormattedDate } from "~/components/ui/date";
 import Link, { useNavigate } from "~/components/ui/link";
 import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
-import { useProjectData } from "~/hooks/project";
+import { type ProjectContextData, useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import { submitForReview } from "~/pages/project/publishing-checklist";
 import UpdateProjectStatusDialog from "~/pages/project/update-project-status";
 import clientFetch from "~/utils/client-fetch";
+import { resJson } from "~/utils/server-fetch";
 import { UserProfilePath } from "~/utils/urls";
 
 interface ChatThreadProps {
     threadId: string;
+    report?: DetailedReport;
 }
 
 export function ChatThread(props: ChatThreadProps) {
     const { t } = useTranslation();
     const session = useSession();
-    const ctx = useProjectData();
+    const ctx = useProjectData() as ProjectContextData | null;
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -57,6 +62,7 @@ export function ChatThread(props: ChatThreadProps) {
     const [replyingTo, setReplyingTo] = useState<string | null>(null);
     const [editorText, setEditorText] = useState("");
     const [sendingMsg, setSendingMsg] = useState(false);
+    const [updatingReportStatus, setUpdatingReportStatus] = useState(false);
 
     if (!session) return;
 
@@ -99,6 +105,34 @@ export function ChatThread(props: ChatThreadProps) {
         }
     }
 
+    async function updateReportStatus(closed: boolean) {
+        if (!props.report) return;
+        if (updatingReportStatus) return;
+        setUpdatingReportStatus(true);
+
+        try {
+            const res = await clientFetch(`/api/report/${props.report.id}`, {
+                method: "PATCH",
+                body: JSON.stringify({
+                    closed: closed,
+                }),
+            });
+
+            if (!res.ok) {
+                const err = await resJson<{ message: string }>(res);
+                toast.error(closed === true ? "Error closing thread!" : "Error reopening thread!", {
+                    description: err?.message,
+                });
+            }
+
+            RefreshPage(navigate, location);
+            await FetchThreadMessages();
+            toast.success(closed === true ? "Closed thread successfully!" : "Reopened thread successfully!");
+        } finally {
+            setUpdatingReportStatus(false);
+        }
+    }
+
     useEffect(() => {
         FetchThreadMessages();
     }, [props.threadId]);
@@ -129,6 +163,11 @@ export function ChatThread(props: ChatThreadProps) {
         return <SuspenseFallback />;
     }
     if (!thread) return <FormErrorMessage text={`Error loading thread ${props.threadId}!`} />;
+
+    const isThreadOpen = !props.report || props.report.closed === false;
+
+    const isReportOpen = !!props.report && props.report.closed === false;
+    const isReportClosed = !!props.report && props.report.closed === true;
 
     return (
         <TooltipProvider>
@@ -199,33 +238,54 @@ export function ChatThread(props: ChatThreadProps) {
                             </Button>
                         </div>
                     )}
+                    {!isThreadOpen ? (
+                        <p className="text-muted-foreground">{t.chatThread.threadClosedDesc}</p>
+                    ) : (
+                        <div className="grid grid-cols-[1fr_auto] gap-2">
+                            <div className="autoresizing-textarea" data-editor-value={editorText}>
+                                <textarea
+                                    className={cn(
+                                        "resize-none rounded overflow-y-auto",
+                                        "bg-background/50 dark:bg-shallow-background/50 focus-within:bg-background/10 dark:focus-within:bg-shallow-background/10",
+                                        "focus-visible:outline-none focus-visible:ring-2 ring-shallow-background",
+                                    )}
+                                    rows={1}
+                                    placeholder={t.chatThread.messagePlaceholder}
+                                    value={editorText}
+                                    onChange={(e) => setEditorText(e.target.value)}
+                                />
+                            </div>
 
-                    <div className="grid grid-cols-[1fr_auto] gap-2">
-                        <div className="autoresizing-textarea" data-editor-value={editorText}>
-                            <textarea
-                                className={cn(
-                                    "resize-none rounded overflow-y-auto",
-                                    "bg-background/50 dark:bg-shallow-background/50 focus-within:bg-background/10 dark:focus-within:bg-shallow-background/10",
-                                    "focus-visible:outline-none focus-visible:ring-2 ring-shallow-background",
-                                )}
-                                rows={1}
-                                placeholder={t.chatThread.messagePlaceholder}
-                                value={editorText}
-                                onChange={(e) => setEditorText(e.target.value)}
-                            />
+                            <Button
+                                onClick={() => PostThreadMessage()}
+                                disabled={sendingMsg || !editorText.trim().length}
+                                variant="secondary"
+                            >
+                                <SendIcon className="w-btn-icon-md h-btn-icon-md" />
+                            </Button>
                         </div>
-
-                        <Button
-                            onClick={() => PostThreadMessage()}
-                            disabled={sendingMsg || !editorText.trim().length}
-                            variant="secondary"
-                        >
-                            <SendIcon className="w-btn-icon-md h-btn-icon-md" />
-                        </Button>
-                    </div>
+                    )}
 
                     <div className="flex items-center gap-2">
-                        {isModerator(session.role) && (
+                        {isReportOpen && (
+                            <Button
+                                variant="destructive"
+                                onClick={() => updateReportStatus(true)}
+                                disabled={updatingReportStatus}
+                            >
+                                <LockKeyholeIcon aria-hidden="true" className="w-btn-icon-md h-btn-icon-md" strokeWidth={2.2} />
+                                {t.chatThread.closeThread}
+                            </Button>
+                        )}
+
+                        {isReportClosed && (
+                            <Button onClick={() => updateReportStatus(false)} disabled={updatingReportStatus}>
+                                <CheckCircleIcon aria-hidden="true" className="w-btn-icon-md h-btn-icon-md" strokeWidth={2.2} />
+                                {t.chatThread.reopenThread}
+                            </Button>
+                        )}
+
+                        {isThreadOpen && isModerator(session.role) && (
                             <Button
                                 variant="secondary"
                                 onClick={() => PostThreadMessage(true)}
@@ -237,84 +297,92 @@ export function ChatThread(props: ChatThreadProps) {
                             </Button>
                         )}
 
-                        {ctx.currUsersMembership?.isOwner && isRejected(ctx.projectData.status) && (
-                            <ConfirmDialog
-                                title={t.project.publishingChecklist.resubmitForReview}
-                                confirmText={t.project.publishingChecklist.resubmitForReview}
-                                onConfirm={() => submitForReview(ctx.projectData.id, () => RefreshPage(navigate, location))}
-                                description={
-                                    <>
-                                        <span className="block">{t.moderation.resubmitDesc._1(ctx.projectData.name)}</span>
-                                        <span className="block">{t.moderation.resubmitDesc._2}</span>
-                                        <span className="block text-danger-foreground font-medium">
-                                            {t.moderation.resubmitDesc.warning}
-                                        </span>
-                                    </>
-                                }
-                                confirmIcon={<ScaleIcon className="w-btn-icon h-btn-icon" />}
-                                variant="moderation-submit"
-                            >
-                                <Button variant="moderation-submit">
-                                    <ScaleIcon className="w-btn-icon h-btn-icon" />
-                                    {t.project.publishingChecklist.resubmitForReview}
-                                </Button>
-                            </ConfirmDialog>
-                        )}
-
-                        {isModerator(session.role) && isUnderReview(ctx.projectData.status) && (
+                        {ctx?.projectData?.id ? (
                             <>
-                                <UpdateProjectStatusDialog
-                                    projectId={ctx.projectData.id}
-                                    projectName={ctx.projectData.name}
-                                    projectType={ctx.projectData.type[0]}
-                                    prevStatus={ctx.projectData.status}
-                                    newStatus={ProjectPublishingStatus.APPROVED}
-                                    trigger={{
-                                        text: t.moderation.approve,
-                                        size: "default",
-                                        className: "justify-start",
-                                    }}
-                                />
-
-                                <UpdateProjectStatusDialog
-                                    projectId={ctx.projectData.id}
-                                    projectName={ctx.projectData.name}
-                                    projectType={ctx.projectData.type[0]}
-                                    prevStatus={ctx.projectData.status}
-                                    newStatus={ProjectPublishingStatus.REJECTED}
-                                    trigger={{
-                                        text: t.moderation.reject,
-                                        size: "default",
-                                        variant: "secondary-destructive",
-                                        className: "justify-start",
-                                    }}
-                                    dialogConfirmBtn={{ variant: "destructive" }}
-                                />
-
-                                <Popover>
-                                    <PopoverTrigger asChild>
-                                        <Button size="icon" className="rounded-full" variant="outline">
-                                            <MoreVerticalIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                {ctx.currUsersMembership?.isOwner && isRejected(ctx.projectData.status) && (
+                                    <ConfirmDialog
+                                        title={t.project.publishingChecklist.resubmitForReview}
+                                        confirmText={t.project.publishingChecklist.resubmitForReview}
+                                        onConfirm={() =>
+                                            submitForReview(ctx.projectData.id, () => RefreshPage(navigate, location))
+                                        }
+                                        description={
+                                            <>
+                                                <span className="block">
+                                                    {t.moderation.resubmitDesc._1(ctx.projectData.name)}
+                                                </span>
+                                                <span className="block">{t.moderation.resubmitDesc._2}</span>
+                                                <span className="block text-danger-foreground font-medium">
+                                                    {t.moderation.resubmitDesc.warning}
+                                                </span>
+                                            </>
+                                        }
+                                        confirmIcon={<ScaleIcon className="w-btn-icon h-btn-icon" />}
+                                        variant="moderation-submit"
+                                    >
+                                        <Button variant="moderation-submit">
+                                            <ScaleIcon className="w-btn-icon h-btn-icon" />
+                                            {t.project.publishingChecklist.resubmitForReview}
                                         </Button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="min-w-0 w-fit p-1" align="end">
+                                    </ConfirmDialog>
+                                )}
+
+                                {isModerator(session.role) && isUnderReview(ctx.projectData.status) && (
+                                    <>
                                         <UpdateProjectStatusDialog
                                             projectId={ctx.projectData.id}
                                             projectName={ctx.projectData.name}
                                             projectType={ctx.projectData.type[0]}
                                             prevStatus={ctx.projectData.status}
-                                            newStatus={ProjectPublishingStatus.WITHHELD}
+                                            newStatus={ProjectPublishingStatus.APPROVED}
                                             trigger={{
-                                                text: t.moderation.withhold,
-                                                variant: "ghost-destructive",
+                                                text: t.moderation.approve,
+                                                size: "default",
+                                                className: "justify-start",
+                                            }}
+                                        />
+
+                                        <UpdateProjectStatusDialog
+                                            projectId={ctx.projectData.id}
+                                            projectName={ctx.projectData.name}
+                                            projectType={ctx.projectData.type[0]}
+                                            prevStatus={ctx.projectData.status}
+                                            newStatus={ProjectPublishingStatus.REJECTED}
+                                            trigger={{
+                                                text: t.moderation.reject,
+                                                size: "default",
+                                                variant: "secondary-destructive",
                                                 className: "justify-start",
                                             }}
                                             dialogConfirmBtn={{ variant: "destructive" }}
                                         />
-                                    </PopoverContent>
-                                </Popover>
+
+                                        <Popover>
+                                            <PopoverTrigger asChild>
+                                                <Button size="icon" className="rounded-full" variant="outline">
+                                                    <MoreVerticalIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="min-w-0 w-fit p-1" align="end">
+                                                <UpdateProjectStatusDialog
+                                                    projectId={ctx.projectData.id}
+                                                    projectName={ctx.projectData.name}
+                                                    projectType={ctx.projectData.type[0]}
+                                                    prevStatus={ctx.projectData.status}
+                                                    newStatus={ProjectPublishingStatus.WITHHELD}
+                                                    trigger={{
+                                                        text: t.moderation.withhold,
+                                                        variant: "ghost-destructive",
+                                                        className: "justify-start",
+                                                    }}
+                                                    dialogConfirmBtn={{ variant: "destructive" }}
+                                                />
+                                            </PopoverContent>
+                                        </Popover>
+                                    </>
+                                )}
                             </>
-                        )}
+                        ) : null}
                     </div>
 
                     <div id="thread-bottom" />
@@ -357,14 +425,15 @@ function ThreadMessage(props: ThreadMessageProps) {
         props.prevMsg.authorId === props.message.authorId && // Is from the same user,
         (createdAt?.getTime() || 0) - (prevMsgCreatedAt?.getTime() || 0) < 1000 * 60 * 10 && // was sent within next 10 minutes
         createdAt?.getDate() === prevMsgCreatedAt?.getDate() && // and was sent on the same day
-        !(props.message.type === MessageType.TEXT && props.message.body.replying_to);
+        !(props.message.type === MessageType.TEXT && props.message.body.replying_to) &&
+        isSameMessageType(props.message.type, props.prevMsg.type);
 
     const authorUsername = author?.id && !msgAuthorHidden ? author.userName : t.user.moderator;
 
     let msgText: React.ReactNode = null;
     switch (msg.type) {
         case MessageType.TEXT:
-            msgText = <MarkdownRenderBox text={msg.body.text} className="text-muted-foreground" />;
+            msgText = <MarkdownRenderBox text={msg.body.text} className="text-muted-foreground chat-msg" />;
             break;
 
         case MessageType.DELETED:
@@ -391,13 +460,21 @@ function ThreadMessage(props: ThreadMessageProps) {
             break;
         }
 
-        // case MessageType.THREAD_CLOSURE:
-        //     msgText = <p>closed the thread.</p>;
-        //     break;
+        case MessageType.THREAD_CLOSURE:
+            msgText = (
+                <p className="text-extra-muted-foreground">
+                    <LockIcon aria-hidden="true" className="inline w-4 h-4" /> {t.chatThread.closedTheThread}
+                </p>
+            );
+            break;
 
-        // case MessageType.THREAD_REOPEN:
-        //     msgText = <p>reopened the thread.</p>;
-        //     break;
+        case MessageType.THREAD_REOPEN:
+            msgText = (
+                <p className="text-extra-muted-foreground ">
+                    <CheckCircleIcon aria-hidden="true" className="inline w-4 h-4" /> {t.chatThread.reopenedTheThread}
+                </p>
+            );
+            break;
     }
 
     const showFullDate = now.getDate() !== createdAt?.getDate() && !isContinuationMessage;
@@ -568,7 +645,7 @@ function ThreadMessage(props: ThreadMessageProps) {
 
             {props.message.type === MessageType.TEXT && (
                 <Popover>
-                    <PopoverTrigger className="ms-auto absolute top-0 end-0 translate-y-[-50%] bg-shallow-background px-1 py-0.5 rounded-md invisible group-hover/chat-msg:visible group-focus-within/chat-msg:visible">
+                    <PopoverTrigger className="ms-auto absolute top-0 end-0 translate-y-[-25%] bg-shallow-background px-1 py-0.5 rounded-md invisible group-hover/chat-msg:visible group-focus-within/chat-msg:visible">
                         <MoreHorizontalIcon className="w-btn-icon-lg h-btn-icon-lg" />
                     </PopoverTrigger>
                     <PopoverContent className="min-w-0 p-1" align="end">
@@ -619,4 +696,14 @@ function highlightChatMessage(msgId: string, timeoutIdMap: Map<string, number | 
         timeoutIdMap.delete(msgId);
     }, 3500);
     timeoutIdMap.set(msgId, timeoutId);
+}
+
+function isSameMessageType(type1: MessageType, type2: MessageType): boolean {
+    return (
+        type1 === type2 ||
+        (type1 === MessageType.TEXT && type2 === MessageType.DELETED) ||
+        (type1 === MessageType.DELETED && type2 === MessageType.TEXT) ||
+        (type1 === MessageType.THREAD_CLOSURE && type2 === MessageType.THREAD_REOPEN) ||
+        (type1 === MessageType.THREAD_REOPEN && type2 === MessageType.THREAD_CLOSURE)
+    );
 }

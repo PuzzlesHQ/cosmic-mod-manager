@@ -2,7 +2,7 @@ import { isModerator } from "@app/utils/constants/roles";
 import type { z } from "@app/utils/schemas";
 import type { newReportFormSchema } from "@app/utils/schemas/report";
 import { type Report, ReportItemType, type RuleViolationType } from "@app/utils/types/api/report";
-import { ThreadType } from "@app/utils/types/api/thread";
+import { type MessageBody, MessageType, ThreadType } from "@app/utils/types/api/thread";
 import { GetProject_ListItem } from "~/db/project_item";
 import { GetUser_ByIdOrUsername } from "~/db/user_item";
 import { getVersionsData } from "~/routes/versions/handler";
@@ -158,17 +158,23 @@ async function getReportEntityData(itemType: ReportItemType, itemId: string) {
 }
 
 export async function getAllUserReports(user: ContextUserData, userId?: string) {
+    if (!userId && !isModerator(user.role)) {
+        return invalidReqestResponseData("User ID is required to get reports.");
+    }
+
     if (userId && user.id !== userId && !isModerator(user.role)) {
         return unauthorizedReqResponseData("You cannot access someone else's reports!");
     }
-
-    if (!userId) userId = user.id;
 
     const reports = await prisma.report.findMany({
         where: {
             reporter: userId,
             closed: false,
         },
+        orderBy: {
+            createdAt: "desc",
+        },
+        take: 100,
     });
 
     const reportList: Report[] = [];
@@ -189,6 +195,50 @@ export async function getAllUserReports(user: ContextUserData, userId?: string) 
 
     return {
         data: reportList,
+        status: HTTP_STATUS.OK,
+    };
+}
+
+export async function patchReport(reportId: string, closed: boolean, user: ContextUserData) {
+    const report = await prisma.report.findUnique({
+        where: {
+            id: reportId,
+        },
+    });
+
+    if (!report || (report.reporter !== user.id && !isModerator(user.role))) {
+        return notFoundResponseData("Report not found.");
+    }
+
+    await prisma.report.update({
+        where: {
+            id: reportId,
+        },
+        data: {
+            closed: closed === true,
+        },
+    });
+
+    // create a message in the report thread
+    const msg_data: MessageBody = {
+        type: closed === true ? MessageType.THREAD_CLOSURE : MessageType.THREAD_REOPEN,
+        body: null,
+    };
+
+    await prisma.threadMessage.create({
+        data: {
+            id: generateDbId(),
+            threadId: report.threadId,
+            authorId: user.id,
+            type: msg_data.type,
+            authorHidden: isModerator(user.role),
+        },
+    });
+
+    return {
+        data: {
+            success: true,
+        },
         status: HTTP_STATUS.OK,
     };
 }

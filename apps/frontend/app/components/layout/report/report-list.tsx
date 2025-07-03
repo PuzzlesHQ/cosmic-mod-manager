@@ -12,7 +12,7 @@ import Link, { TextLink } from "~/components/ui/link";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import { ProjectPagePath, ReportPagePath, UserProfilePath, VersionPagePath } from "~/utils/urls";
-import type { ReportsData } from "./_additional-data-loader";
+import { getDetailedReports, type ReportsData } from "./_additional-data-loader";
 
 interface Props {
     data: ReportsData;
@@ -22,41 +22,7 @@ export default function ReportList(props: Props) {
     const data = props.data;
 
     const detailedReports = useMemo(() => {
-        const _reports: DetailedReport[] = [];
-
-        for (const report of data.reports) {
-            const reporter = data.users.get(report.reporter);
-            if (!reporter) continue;
-
-            switch (report.itemType) {
-                case ReportItemType.PROJECT:
-                    _reports.push({
-                        ...report,
-                        itemType: ReportItemType.PROJECT,
-                        project: data.reportedProjects.get(report.itemId) || null,
-                        reporterUser: reporter,
-                    });
-                    break;
-                case ReportItemType.VERSION:
-                    _reports.push({
-                        ...report,
-                        itemType: ReportItemType.VERSION,
-                        version: data.reportedVersions.get(report.itemId) || null,
-                        reporterUser: reporter,
-                    });
-                    break;
-                case ReportItemType.USER:
-                    _reports.push({
-                        ...report,
-                        itemType: ReportItemType.USER,
-                        user: data.users.get(report.itemId) || null,
-                        reporterUser: reporter,
-                    });
-                    break;
-            }
-        }
-
-        return _reports;
+        return getDetailedReports(data);
     }, [props.data.reports]);
 
     return (
@@ -70,6 +36,7 @@ export default function ReportList(props: Props) {
 
 interface ReportInfoProps {
     report: DetailedReport;
+    viewReportBtn?: boolean;
 }
 
 export function ReportInfo(props: ReportInfoProps) {
@@ -79,7 +46,7 @@ export function ReportInfo(props: ReportInfoProps) {
     const reporter = props.report.reporterUser;
 
     return (
-        <div className="grid gap-2 bg-background p-card-surround rounded-lg text-muted-foreground group/report-item">
+        <div className="w-full grid gap-2 bg-background p-card-surround rounded-lg text-muted-foreground group/report-item">
             <div className="flex items-center justify-between gap-x-3 gap-y-1 flex-wrap">
                 <ReportedItem report={props.report} />
 
@@ -92,6 +59,7 @@ export function ReportInfo(props: ReportInfoProps) {
                         t.common.you
                     ) : (
                         <Link
+                            key="reporter-user"
                             to={UserProfilePath(reporter.userName)}
                             className="w-fit inline-flex items-center justify-center gap-space group/profile-link"
                         >
@@ -115,10 +83,12 @@ export function ReportInfo(props: ReportInfoProps) {
                     </TooltipTemplate>
                 </TooltipProvider>
 
-                <TextLink to={ReportPagePath(props.report.id)} className="ms-auto flex items-center justify-center gap-space">
-                    {t.report.viewReport}
-                    <ChevronRightIcon className="w-btn-icon-md h-btn-icon-md" />
-                </TextLink>
+                {props.viewReportBtn !== false && (
+                    <TextLink to={ReportPagePath(props.report.id)} className="ms-auto flex items-center justify-center gap-space">
+                        {t.report.viewReport}
+                        <ChevronRightIcon className="w-btn-icon-md h-btn-icon-md" />
+                    </TextLink>
+                )}
             </div>
         </div>
     );

@@ -1,6 +1,6 @@
 import { encodeArrayIntoStr } from "@app/utils/string";
 import type { ProjectListItem, ProjectVersionData } from "@app/utils/types/api";
-import { type Report, ReportItemType } from "@app/utils/types/api/report";
+import { type DetailedReport, type Report, ReportItemType } from "@app/utils/types/api/report";
 import type { UserProfileData } from "@app/utils/types/api/user";
 import { resJson, serverFetch } from "~/utils/server-fetch";
 
@@ -8,7 +8,7 @@ export type ReportsData = Awaited<ReturnType<typeof ReportsDataLoader>>;
 
 export async function ReportsDataLoader(clientReq: Request, reports: Report[] | null) {
     const initData = {
-        reports: reports || [],
+        reports: [] as Report[],
         users: new Map<string, UserProfileData>(),
         reportedProjects: new Map<string, ProjectListItem>(),
         reportedVersions: new Map<string, ProjectVersionData>(),
@@ -60,6 +60,45 @@ export async function ReportsDataLoader(clientReq: Request, reports: Report[] | 
     for (const version of versions || []) {
         initData.reportedVersions.set(version.id, version);
     }
+    initData.reports = reports;
 
     return initData;
+}
+
+export function getDetailedReports(data: ReportsData) {
+    const _reports: DetailedReport[] = [];
+
+    for (const report of data.reports) {
+        const reporter = data.users.get(report.reporter);
+        if (!reporter) continue;
+
+        switch (report.itemType) {
+            case ReportItemType.PROJECT:
+                _reports.push({
+                    ...report,
+                    itemType: ReportItemType.PROJECT,
+                    project: data.reportedProjects.get(report.itemId) || null,
+                    reporterUser: reporter,
+                });
+                break;
+            case ReportItemType.VERSION:
+                _reports.push({
+                    ...report,
+                    itemType: ReportItemType.VERSION,
+                    version: data.reportedVersions.get(report.itemId) || null,
+                    reporterUser: reporter,
+                });
+                break;
+            case ReportItemType.USER:
+                _reports.push({
+                    ...report,
+                    itemType: ReportItemType.USER,
+                    user: data.users.get(report.itemId) || null,
+                    reporterUser: reporter,
+                });
+                break;
+        }
+    }
+
+    return _reports;
 }

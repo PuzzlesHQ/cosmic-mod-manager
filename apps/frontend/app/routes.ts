@@ -36,6 +36,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
             });
 
             route("reports", path("dashboard/reports.tsx"), { id: "reports" });
+            route("report/:reportId", path("dashboard/report/page.tsx"), { id: "report__details" });
             route("analytics", path("dashboard/analytics.tsx"), { id: "analytics" });
 
             route("projects", path("dashboard/projects.tsx"), { id: "dashboard-projects" });
@@ -165,6 +166,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
             route("", path("moderation/page.tsx"), { id: "moderation__index-page", index: true });
             route("analytics", path("moderation/analytics.tsx"), { id: "moderation__analytics-page" });
             route("review", path("moderation/review.tsx"), { id: "moderation__review-page" });
+            route("reports", path("moderation/reports.tsx"), { id: "moderation__reports" });
         });
 
         // Report
