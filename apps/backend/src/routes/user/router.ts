@@ -12,6 +12,7 @@ import { sendEmailRateLimiter } from "~/middleware/rate-limit/email";
 import { getReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
 import { addInvalidAuthAttempt, invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { critModifyReqRateLimiter } from "~/middleware/rate-limit/modify-req";
+import { GetUserCollections } from "~/routes/collections/controllers";
 import {
     addNewPassword_ConfirmationEmail,
     changeUserPassword,
@@ -30,8 +31,7 @@ import {
 } from "~/routes/user/controllers/profile";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { HTTP_STATUS, invalidReqestResponse, serverErrorResponse, unauthorizedReqResponse } from "~/utils/http";
-import { getUserFromCtx } from "../auth/helpers/session";
-import { GetUserCollections } from "../collections/controllers";
+import { getUserFromCtx } from "~/utils/router";
 import { confirmUserAccountDeletion } from "./controllers/delete-account";
 
 const userRouter = new Hono()

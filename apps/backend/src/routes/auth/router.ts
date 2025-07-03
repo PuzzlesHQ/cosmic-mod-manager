@@ -10,6 +10,7 @@ import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-
 import { critModifyReqRateLimiter } from "~/middleware/rate-limit/modify-req";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { HTTP_STATUS, invalidReqestResponse, serverErrorResponse } from "~/utils/http";
+import { getUserFromCtx } from "~/utils/router";
 import { userIconUrl } from "~/utils/urls";
 import { getLinkedAuthProviders, linkAuthProviderHandler, unlinkAuthProvider } from "./controllers/link-provider";
 import { deleteUserSession, getUserSessions, revokeSessionFromAccessCode } from "./controllers/session";
@@ -17,7 +18,6 @@ import { oAuthSignInHandler } from "./controllers/signin";
 import credentialSignIn from "./controllers/signin/credential";
 import { oAuthSignUpHandler } from "./controllers/signup";
 import { getOAuthUrl } from "./helpers";
-import { getUserFromCtx } from "./helpers/session";
 
 const authRouter = new Hono()
 

@@ -2,9 +2,10 @@ import { GUEST_SESSION_ID_VALIDITY } from "@app/utils/constants";
 import type { Context, Next } from "hono";
 import { getCookie } from "hono/cookie";
 import { getUserIpAddress } from "~/routes/auth/helpers";
-import { getUserFromCtx, validateContextSession } from "~/routes/auth/helpers/session";
+import { validateContextSession } from "~/routes/auth/helpers/session";
 import { CTX_USER_NAMESPACE } from "~/types/namespaces";
-import { HTTP_STATUS, deleteCookie, serverErrorResponse, setCookie } from "~/utils/http";
+import { deleteCookie, HTTP_STATUS, serverErrorResponse, setCookie } from "~/utils/http";
+import { getUserFromCtx } from "~/utils/router";
 import { generateRandomId } from "~/utils/str";
 
 export async function AuthenticationMiddleware(ctx: Context, next: Next) {

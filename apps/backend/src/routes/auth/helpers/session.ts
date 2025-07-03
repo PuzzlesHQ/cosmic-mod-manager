@@ -13,14 +13,13 @@ import {
     GetSession_Unique,
     UpdateSession,
 } from "~/db/session_item";
+import { GetUser_ByIdOrUsername } from "~/db/user_item";
 import { deleteSessionTokenAndIdCache, getSessionCacheFromToken, setSessionTokenCache } from "~/services/cache/session";
 import type { ContextUserData } from "~/types";
-import { CTX_USER_NAMESPACE } from "~/types/namespaces";
 import { sendNewSigninAlertEmail } from "~/utils/email";
 import { deleteCookie, setCookie } from "~/utils/http";
 import { generateDbId, generateRandomId } from "~/utils/str";
 import { generateRandomToken, getUserSessionCookie, hashString } from "./index";
-import { GetUser_ByIdOrUsername } from "~/db/user_item";
 
 interface CreateNewSessionProps {
     userId: string;
@@ -257,8 +256,4 @@ export function setSessionCookie(ctx: Context, value: string, options?: CookieOp
 
 export function deleteSessionCookie(ctx: Context, options?: CookieOptions) {
     return deleteCookie(ctx, AUTHTOKEN_COOKIE_NAMESPACE, options);
-}
-
-export function getUserFromCtx(ctx: Context) {
-    return ctx.get(CTX_USER_NAMESPACE) as ContextUserData | undefined;
 }

@@ -3,7 +3,6 @@ import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth
 import { getReqRateLimiter } from "~/middleware/rate-limit/get-req";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { modifyReqRateLimiter } from "~/middleware/rate-limit/modify-req";
-import { getUserFromCtx } from "~/routes/auth/helpers/session";
 import {
     deleteNotifications,
     getNotificationById,
@@ -11,6 +10,7 @@ import {
     markNotificationAsRead as markNotificationsAsRead,
 } from "~/routes/user/notification/controllers";
 import { invalidReqestResponse, serverErrorResponse } from "~/utils/http";
+import { getUserFromCtx } from "~/utils/router";
 
 const notificationRouter = new Hono()
     .use(invalidAuthAttemptLimiter)

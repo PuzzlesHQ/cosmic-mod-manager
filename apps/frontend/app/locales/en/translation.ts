@@ -791,7 +791,13 @@ export default {
 
     report: {
         content: "content",
-        reportToMods: (item: string) => `Report ${item} to moderators`,
+        reportToMods: (itemName: string) => `Report ${itemName} to moderators`,
+
+        alreadyReported: (itemName: string) => `You've already reported ${itemName}`,
+        alreadyReportedDesc: (itemType: string) =>
+            `You have an open report for this ${itemType} already. You can add more details to your report if you have more information to add.`,
+        backToContent: (itemType: string) => `Back to ${itemType}`,
+        goToReport: "Go to report",
         whatTypeOfContent: "What type of content are you reporting?",
         whatIsContentId: (item: string) => `What is the ID of the ${item.toLowerCase()}?`,
         pleaseReport: "Please report:",

@@ -17,7 +17,7 @@ export const formLink = z
     );
 
 export const ProjectTypeField = z
-    .nativeEnum(ProjectType)
+    .enum(ProjectType)
     .array()
     .min(1)
     .refine(

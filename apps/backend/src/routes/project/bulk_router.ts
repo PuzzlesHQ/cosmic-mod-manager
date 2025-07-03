@@ -3,7 +3,7 @@ import { AuthenticationMiddleware } from "~/middleware/auth";
 import { getReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { invalidReqestResponse, serverErrorResponse } from "~/utils/http";
-import { getUserFromCtx } from "../auth/helpers/session";
+import { getUserFromCtx } from "~/utils/router";
 import { getManyProjects, getRandomProjects } from "./controllers";
 
 const bulkProjectsRouter = new Hono()

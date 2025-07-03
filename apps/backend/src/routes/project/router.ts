@@ -14,9 +14,9 @@ import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth
 import { getReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { critModifyReqRateLimiter, modifyReqRateLimiter } from "~/middleware/rate-limit/modify-req";
-import { getUserFromCtx } from "~/routes/auth/helpers/session";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { HTTP_STATUS, invalidReqestResponse, serverErrorResponse } from "~/utils/http";
+import { getUserFromCtx } from "~/utils/router";
 import { getAllVisibleProjects } from "../user/controllers/profile";
 import { checkProjectSlugValidity, getProjectData } from "./controllers";
 import { getProjectDependencies } from "./controllers/dependency";

@@ -7,17 +7,17 @@ import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-
 import { critModifyReqRateLimiter } from "~/middleware/rate-limit/modify-req";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { invalidReqestResponse, serverErrorResponse, unauthenticatedReqResponse } from "~/utils/http";
-import { getUserFromCtx } from "../auth/helpers/session";
+import { getUserFromCtx } from "~/utils/router";
 import {
     AddProjectsToCollection,
     CreateNewCollection,
     DeleteProjectsFromCollection,
+    deleteUserCollection,
+    editUserCollectionDetails,
     GetCollectionOwner,
     GetCollectionProjects,
     GetUserCollection_ByCollectionId,
     GetUserCollections,
-    deleteUserCollection,
-    editUserCollectionDetails,
 } from "./controllers";
 
 const collectionsRouter = new Hono()

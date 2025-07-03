@@ -312,7 +312,7 @@ model Report {
 
     body       String
     reporter   String   @db.VarChar(32)
-    closed     Boolean
+    closed     Boolean  @default(false)
     reportType String   @db.VarChar(32)
     createdAt  DateTime @default(now())
     threadId   String   @db.VarChar(32)

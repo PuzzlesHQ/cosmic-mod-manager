@@ -8,9 +8,9 @@ import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth
 import { strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { critModifyReqRateLimiter } from "~/middleware/rate-limit/modify-req";
-import { getUserFromCtx } from "~/routes/auth/helpers/session";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { invalidReqestResponse, serverErrorResponse, unauthorizedReqResponse } from "~/utils/http";
+import { getUserFromCtx } from "~/utils/router";
 import { createOrganisation, getOrganisationById, getOrganisationProjects, getUserOrganisations } from "./controllers";
 import {
     addProjectToOrganisation,

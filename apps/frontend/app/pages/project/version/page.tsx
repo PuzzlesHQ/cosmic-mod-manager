@@ -106,11 +106,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                     </TooltipProvider>
 
                     {!currUsersMembership?.userId ? (
-                        <ReportButton
-                            itemType={ReportItemType.VERSION}
-                            itemId={`${ctx.projectData.id}/version/${versionData.id}`}
-                            btnVariant="secondary"
-                        />
+                        <ReportButton itemType={ReportItemType.VERSION} itemId={versionData.id} btnVariant="secondary" />
                     ) : null}
 
                     {doesMemberHaveAccess(

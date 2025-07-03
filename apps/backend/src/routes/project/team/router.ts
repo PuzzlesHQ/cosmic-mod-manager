@@ -4,9 +4,9 @@ import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { critModifyReqRateLimiter } from "~/middleware/rate-limit/modify-req";
-import { getUserFromCtx } from "~/routes/auth/helpers/session";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { invalidReqestResponse, serverErrorResponse } from "~/utils/http";
+import { getUserFromCtx } from "~/utils/router";
 import {
     acceptProjectTeamInvite,
     editProjectMember,

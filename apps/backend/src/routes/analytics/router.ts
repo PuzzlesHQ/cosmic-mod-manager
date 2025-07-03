@@ -6,8 +6,8 @@ import { applyCacheHeaders } from "~/middleware/cache";
 import { strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { invalidReqestResponse, serverErrorResponse, unauthorizedReqResponse } from "~/utils/http";
+import { getUserFromCtx } from "~/utils/router";
 import { parseJson } from "~/utils/str";
-import { getUserFromCtx } from "../auth/helpers/session";
 import { getAllProjects_DownloadsAnalyticsData, getDownloadsAnalyticsData } from "./controllers";
 
 const AnalyticsRouter = new Hono()

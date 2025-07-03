@@ -1,16 +1,14 @@
-import { getCurrMember, sortVersionsWithReference } from "@app/utils/project";
-import { gameVersionsList } from "@app/utils/src/constants/game-versions";
-import type { DependencyType, VersionReleaseChannel } from "@app/utils/types";
-import type { ProjectVersionData, VersionFile } from "@app/utils/types/api";
+import { getCurrMember } from "@app/utils/project";
+import type { ProjectVersionData } from "@app/utils/types/api";
 import type { Prisma } from "@prisma/client";
 import { GetProject_Details } from "~/db/project_item";
 import { GetVersions } from "~/db/version_item";
 import { getFilesFromId } from "~/routes/project/queries/file";
-import { DELETED_USER_AUTHOR_OBJ, isProjectAccessible } from "~/routes/project/utils";
+import { isProjectAccessible } from "~/routes/project/utils";
 import type { ContextUserData } from "~/types";
 import { HTTP_STATUS, notFoundResponseData } from "~/utils/http";
 import { GetReleaseChannelFilter } from "~/utils/project";
-import { userIconUrl, versionFileUrl } from "~/utils/urls";
+import { formatVersionData } from "./utils";
 
 export async function getAllProjectVersions(slug: string, userSession: ContextUserData | undefined, featuredOnly = false) {
     const [project, _projectVersions] = await Promise.all([GetProject_Details(slug, slug), GetVersions(slug, slug)]);
@@ -48,61 +46,14 @@ export async function getAllProjectVersions(slug: string, userSession: ContextUs
 
     for (let i = 0; i < projectVersions.length; i++) {
         const version = projectVersions[i];
-        let primaryFile: VersionFile | null = null;
-        const files: VersionFile[] = [];
 
-        for (const file of version.files) {
-            const fileData = versionFilesMap.get(file.fileId);
-            if (!fileData?.id) continue;
-
-            const formattedFile = {
-                id: file.id,
-                isPrimary: file.isPrimary,
-                name: fileData.name,
-                size: fileData.size,
-                type: fileData.type,
-                url: versionFileUrl(project.id, version.id, fileData.name) || "",
-                sha1_hash: fileData.sha1_hash,
-                sha512_hash: fileData.sha512_hash,
-            };
-
-            files.push(formattedFile);
-            if (formattedFile.isPrimary === true) {
-                primaryFile = formattedFile;
-            }
-        }
-
-        versionsList.push({
-            id: version.id,
-            projectId: project.id,
-            title: version.title,
-            versionNumber: version.versionNumber,
-            slug: version.slug,
-            datePublished: version.datePublished,
-            featured: version.featured,
-            downloads: version.downloads,
-            changelog: version.changelog,
-            releaseChannel: version.releaseChannel as VersionReleaseChannel,
-            gameVersions: sortVersionsWithReference(version.gameVersions, gameVersionsList),
-            loaders: version.loaders,
-            primaryFile: primaryFile?.id ? primaryFile : null,
-            files: files,
-            author: version.author
-                ? {
-                      id: version.author.id,
-                      userName: version.author.userName,
-                      avatar: userIconUrl(version.author.id, version.author.avatar),
-                      role:
-                          getCurrMember(version.author?.id, project.team.members, project.organisation?.team.members || [])
-                              ?.role || "",
-                  }
-                : DELETED_USER_AUTHOR_OBJ,
-            dependencies: version.dependencies.map((dependency) => ({
-                projectId: dependency.projectId,
-                versionId: dependency.versionId,
-                dependencyType: dependency.dependencyType as DependencyType,
-            })),
-        });
+        versionsList.push(
+            formatVersionData(
+                version,
+                versionFilesMap,
+                getCurrMember(version.author?.id, project.team.members, project.organisation?.team.members || [])?.role,
+            ),
+        );
     }
 
     return { data: { success: true, data: versionsList }, status: HTTP_STATUS.OK } as const;

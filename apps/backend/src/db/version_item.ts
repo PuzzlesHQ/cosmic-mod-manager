@@ -6,7 +6,7 @@ import { PROJECT_VERSIONS_CACHE_KEY } from "~/types/namespaces";
 import { GetData_FromCache, SetCache, VERSION_CACHE_EXPIRY_seconds } from "./_cache";
 import { Delete_ProjectCache_All } from "./project_item";
 
-const VERSION_SELECT = {
+export const VERSION_SELECT = {
     id: true,
     projectId: true,
     authorId: true,

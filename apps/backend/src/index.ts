@@ -26,7 +26,9 @@ import env from "~/utils/env";
 import { HTTP_STATUS, serverErrorResponse } from "~/utils/http";
 import AnalyticsRouter from "./routes/analytics/router";
 import collectionsRouter from "./routes/collections/router";
+import reportRouter from "./routes/report/router";
 import threadRouter from "./routes/thread/router";
+import versionsRouter from "./routes/versions/router";
 
 const corsAllowedOrigins = env.CORS_ALLOWED_URLS.split(" ");
 
@@ -67,6 +69,7 @@ const app = new Hono()
     .route("/api/user/:userId/notifications", notificationRouter)
 
     .route("/api/project", projectRouter)
+    .route("/api/version", versionsRouter)
     .route("/api/version-file", versionFileRouter)
     .route("/api/version-files", versionFiles_Router)
     .route("/api/projects", bulkProjectsRouter)
@@ -78,6 +81,7 @@ const app = new Hono()
     .route("/api/organizations", bulkOrgsRouter)
 
     .route("/api/thread", threadRouter)
+    .route("/api/report", reportRouter)
 
     .route("/api/collections", collectionsRouter)
     .route("/api/analytics", AnalyticsRouter)
@@ -101,13 +105,6 @@ const app = new Hono()
         }
     });
 
-Bun.serve({
-    port: 5500,
-    fetch(req, server) {
-        return app.fetch(req, { ip: server.requestIP(req) });
-    },
-});
-
 async function apiDetails(ctx: Context) {
     return ctx.json(
         {
@@ -125,5 +122,12 @@ async function apiDetails(ctx: Context) {
 await queueDownloadsCounterQueueProcessing();
 await QueueSearchIndexUpdate();
 await startSitemapGenerator();
+
+Bun.serve({
+    port: 5500,
+    fetch(req, server) {
+        return app.fetch(req, { ip: server.requestIP(req) });
+    },
+});
 
 export { app };

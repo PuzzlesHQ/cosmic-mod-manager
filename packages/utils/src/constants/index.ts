@@ -76,3 +76,6 @@ export const FOLLOWS_COLLECTIONS_ID = "follows";
 
 // Thread
 export const MAX_THREAD_MESSAGE_LENGTH = 2048;
+
+// Report
+export const MAX_REPORT_DESCRIPTION_LENGTH = 8192;

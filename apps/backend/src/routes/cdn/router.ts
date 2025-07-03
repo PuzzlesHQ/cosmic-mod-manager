@@ -7,7 +7,7 @@ import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-
 import { getSitemap } from "~/services/sitemap-gen";
 import env from "~/utils/env";
 import { invalidReqestResponse, notFoundResponse, serverErrorResponse } from "~/utils/http";
-import { getUserFromCtx } from "../auth/helpers/session";
+import { getUserFromCtx } from "~/utils/router";
 import {
     serveCollectionIcon,
     serveOrgIconFile,

@@ -5,12 +5,10 @@ import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { invalidReqestResponse, serverErrorResponse, unauthenticatedReqResponse } from "~/utils/http";
-import { getUserFromCtx } from "../auth/helpers/session";
+import { getUserFromCtx } from "~/utils/router";
 import { CreateThreadMessage, DeleteThreadMessage, GetThreadMessages } from "./controllers";
 
-const threadRouter = new Hono();
-
-threadRouter
+const threadRouter = new Hono()
     .use(invalidAuthAttemptLimiter)
     .use(AuthenticationMiddleware)
     .use(LoginProtectedRoute)
