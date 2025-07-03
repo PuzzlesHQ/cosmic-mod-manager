@@ -47,7 +47,7 @@ async function userReports_get(ctx: Context) {
         const user = getUserFromCtx(ctx);
         if (!user?.id) return unauthorizedReqResponse(ctx);
 
-        const res = await getManyReports(user, userId || undefined);
+        const res = await getManyReports(user, userId || user.id);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
