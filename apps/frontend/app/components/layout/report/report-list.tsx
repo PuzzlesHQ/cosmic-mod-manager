@@ -55,7 +55,7 @@ export function ReportInfo(props: ReportInfoProps) {
 
             <div className="flex items-center gap-x-space flex-wrap">
                 {t.report.reportedBy(
-                    props.report.reporter !== session?.id ? (
+                    props.report.reporter === session?.id ? (
                         t.common.you
                     ) : (
                         <Link
