@@ -156,7 +156,9 @@ export function ChatThread(props: ChatThreadProps) {
     useEffect(() => {
         if (!thread) return;
 
-        scrollElementIntoView(document.querySelector("#thread-bottom"));
+        scrollElementIntoView(document.querySelector("#thread-bottom"), {
+            block: "end",
+        });
     }, [thread?.id]);
 
     if (thread === undefined) {
