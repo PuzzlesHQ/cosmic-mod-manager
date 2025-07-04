@@ -1,8 +1,15 @@
 import { isModerator } from "@app/utils/constants/roles";
 import type { z } from "@app/utils/schemas";
 import type { newReportFormSchema } from "@app/utils/schemas/report";
-import { type Report, ReportItemType, type RuleViolationType } from "@app/utils/types/api/report";
+import {
+    type Report,
+    type ReportFilters,
+    ReportItemType,
+    type RuleViolationType,
+    reportFilters_defaults,
+} from "@app/utils/types/api/report";
 import { type MessageBody, MessageType, ThreadType } from "@app/utils/types/api/thread";
+import type { Prisma } from "@prisma/client";
 import { GetProject_ListItem } from "~/db/project_item";
 import { GetUser_ByIdOrUsername } from "~/db/user_item";
 import { getVersionsData } from "~/routes/versions/handler";
@@ -157,7 +164,7 @@ async function getReportEntityData(itemType: ReportItemType, itemId: string) {
     }
 }
 
-export async function getAllUserReports(user: ContextUserData, userId?: string) {
+export async function getAllUserReports(user: ContextUserData, userId?: string, filters?: ReportFilters) {
     if (!userId && !isModerator(user.role)) {
         return invalidReqestResponseData("User ID is required to get reports.");
     }
@@ -166,11 +173,35 @@ export async function getAllUserReports(user: ContextUserData, userId?: string) 
         return unauthorizedReqResponseData("You cannot access someone else's reports!");
     }
 
+    const whereConditions: Prisma.ReportWhereInput = {};
+    if (filters) {
+        if (filters.status === "closed") {
+            whereConditions.closed = true;
+        } else if (filters.status === "open") {
+            whereConditions.closed = false;
+        }
+
+        if (filters.itemType && filters.itemType !== reportFilters_defaults.itemType) {
+            whereConditions.itemType = filters.itemType;
+        }
+
+        if (filters.itemId.trim().length > 0) {
+            whereConditions.itemId = filters.itemId;
+        }
+
+        if (filters.ruleViolated.length > 0) {
+            whereConditions.reportType = {
+                in: filters.ruleViolated,
+            };
+        }
+    }
+
+    if (filters?.reportedBy || userId) {
+        whereConditions.reporter = userId || filters?.reportedBy;
+    }
+
     const reports = await prisma.report.findMany({
-        where: {
-            reporter: userId,
-            closed: false,
-        },
+        where: whereConditions,
         orderBy: {
             createdAt: "desc",
         },

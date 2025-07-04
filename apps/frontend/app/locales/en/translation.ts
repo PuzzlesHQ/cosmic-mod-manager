@@ -33,6 +33,10 @@ export default {
         more: "More",
         search: "Search...",
         you: "You",
+        closed: "Closed",
+        open: "Open",
+        filter: "Filter",
+        reset: "Reset",
     },
 
     // NOTE: It isn't necessary to return the count in the array, because an Intl formatted count is used in the actual html
@@ -847,10 +851,12 @@ export default {
             "Include links and images if possible and relevant. Empty or insufficient reports will be closed and ignored.",
         submitReport: "Submit report",
         noOpenReports: "You don't have any open reports.",
-        closed: "Closed",
         viewReport: "View report",
         reportedBy: (reporter: React.ReactNode) => ["Reported by ", reporter],
         reportDetails: "Report details",
+        status: (status: string) => ["Status: ", status],
+        reportedItem: (itemType: string) => ["Reported item: ", itemType],
+        ruleViolated: (ruleType: string) => ["Rule violated: ", ruleType],
     },
 
     graph: {

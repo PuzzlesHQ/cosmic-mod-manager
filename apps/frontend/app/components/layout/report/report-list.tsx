@@ -4,7 +4,7 @@ import CopyBtn from "@app/components/ui/copy-btn";
 import { TooltipProvider, TooltipTemplate } from "@app/components/ui/tooltip";
 import { cn } from "@app/components/utils";
 import { type DetailedReport, ReportItemType } from "@app/utils/types/api/report";
-import { ChevronRightIcon, GitCommitHorizontalIcon } from "lucide-react";
+import { ChevronRightIcon, GitCommitHorizontalIcon, LockKeyholeIcon } from "lucide-react";
 import { useMemo } from "react";
 import { ImgWrapper } from "~/components/ui/avatar";
 import { FormattedDate, TimePassedSince } from "~/components/ui/date";
@@ -50,7 +50,24 @@ export function ReportInfo(props: ReportInfoProps) {
             <div className="flex items-center justify-between gap-x-3 gap-y-1 flex-wrap">
                 <ReportedItem report={props.report} />
 
-                <Badge variant="warning">{t.report.violationType[props.report.reportType]}</Badge>
+                <div className="flex gap-2 items-center">
+                    {props.report.closed && (
+                        <Badge
+                            variant="destructive"
+                            className="flex items-center justify-center gap-0.5"
+                            title={t.report.status(t.common.closed).join("")}
+                        >
+                            <LockKeyholeIcon className="w-3 h-3" strokeWidth={2.5} />
+                            {t.common.closed}
+                        </Badge>
+                    )}
+                    <Badge
+                        variant="warning"
+                        title={t.report.ruleViolated(t.report.violationType[props.report.reportType]).join("")}
+                    >
+                        {t.report.violationType[props.report.reportType]}
+                    </Badge>
+                </div>
             </div>
 
             <div className="flex items-center gap-x-space flex-wrap">
@@ -181,6 +198,8 @@ interface ReportedItem_CompProps {
 }
 
 function ReportedItem_Comp(props: ReportedItem_CompProps) {
+    const { t } = useTranslation();
+
     return (
         <Link to={props.url} className="w-fit flex items-center justify-center gap-2 group/item-link">
             <ImgWrapper
@@ -192,7 +211,11 @@ function ReportedItem_Comp(props: ReportedItem_CompProps) {
 
             <span className="font-bold group-hover/item-link:underline">{props.itemTitle}</span>
 
-            <Badge variant="outline" className="text-extra-muted-foreground">
+            <Badge
+                variant="outline"
+                className="text-extra-muted-foreground"
+                title={t.report.reportedItem(props.itemType_translated).join("")}
+            >
                 {props.itemType_translated}
             </Badge>
         </Link>

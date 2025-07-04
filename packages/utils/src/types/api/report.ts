@@ -48,3 +48,27 @@ export type DetailedReport = Report &
     ReportItemData & {
         reporterUser: UserProfileData;
     };
+
+//  Filters
+
+export enum ReportStatus_Filter {
+    ALL = "all",
+    OPEN = "open",
+    CLOSED = "closed",
+}
+
+export interface ReportFilters {
+    status: ReportStatus_Filter;
+    itemType: ReportItemType | "all";
+    itemId: string;
+    ruleViolated: RuleViolationType[];
+    reportedBy: string;
+}
+
+export const reportFilters_defaults = {
+    status: ReportStatus_Filter.OPEN,
+    itemType: "all",
+    itemId: "",
+    ruleViolated: [],
+    reportedBy: "",
+} as const satisfies ReportFilters;

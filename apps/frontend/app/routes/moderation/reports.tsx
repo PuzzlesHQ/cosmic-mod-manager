@@ -1,33 +1,27 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@app/components/ui/card";
 import type { Report } from "@app/utils/types/api/report";
 import { useLoaderData } from "react-router";
 import { ReportsDataLoader } from "~/components/layout/report/_additional-data-loader";
-import ReportList from "~/components/layout/report/report-list";
 import { SoftRedirect } from "~/components/ui/redirect";
 import { useSession } from "~/hooks/session";
-import { useTranslation } from "~/locales/provider";
+import Reports_ModerationPage from "~/pages/moderation/reports";
 import { resJson, serverFetch } from "~/utils/server-fetch";
+import ErrorView from "../error-view";
 import type { Route } from "./+types/reports";
 
 export default function () {
     const session = useSession();
     const data = useLoaderData<typeof loader>();
-    const { t } = useTranslation();
 
     if (!session?.id) return <SoftRedirect to="/login" />;
+    if (!data) return <ErrorView />;
 
-    return (
-        <Card>
-            <CardHeader>
-                <CardTitle>{t.moderation.reports}</CardTitle>
-            </CardHeader>
-            <CardContent>{!data?.reports?.length ? <p>{t.report.noOpenReports}</p> : <ReportList data={data} />}</CardContent>
-        </Card>
-    );
+    return <Reports_ModerationPage data={data} />;
 }
 
 export async function loader(props: Route.LoaderArgs) {
-    const res = await serverFetch(props.request, "/api/report/getAll");
+    const url = new URL(props.request.url);
+
+    const res = await serverFetch(props.request, `/api/report/getAll?${url.searchParams.toString()}`);
     const reports = await resJson<Report[]>(res);
 
     return ReportsDataLoader(props.request, reports);

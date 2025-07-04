@@ -26,7 +26,6 @@ function Chip({ children, className, style }: ChipProps) {
 export const ChipButton = forwardRef<HTMLDivElement, ButtonProps>(
     ({ variant = "secondary-inverted", className, children, id, onClick, style }, ref) => {
         return (
-            // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
             <div
                 ref={ref}
                 className={cn(

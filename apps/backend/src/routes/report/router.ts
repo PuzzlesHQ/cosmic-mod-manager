@@ -1,7 +1,8 @@
 import { isModerator } from "@app/utils/constants/roles";
 import { newReportFormSchema } from "@app/utils/schemas/report";
 import { parseInput } from "@app/utils/schemas/utils";
-import type { ReportItemType } from "@app/utils/types/api/report";
+import { decodeStringArray } from "@app/utils/string";
+import { type ReportItemType, reportFilters_defaults } from "@app/utils/types/api/report";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
@@ -60,7 +61,25 @@ async function getAllReports(ctx: Context) {
         const user = getUserFromCtx(ctx);
         if (!user?.id || !isModerator(user.role)) return unauthorizedReqResponse(ctx);
 
-        const res = await getManyReports(user);
+        const filters = { ...reportFilters_defaults };
+        const reqUrl = new URL(ctx.req.url);
+
+        for (const key of Object.keys(filters) as (keyof typeof reportFilters_defaults)[]) {
+            const value = reqUrl.searchParams.get(key);
+            if (!value?.length) continue;
+
+            const defaultValue = reportFilters_defaults[key];
+
+            if (Array.isArray(defaultValue)) {
+                // @ts-ignore - TypeScript doesn't know that value is of the correct type
+                filters[key] = decodeStringArray(value);
+            } else if (value !== defaultValue) {
+                // @ts-ignore - TypeScript doesn't know that value is of the correct type
+                filters[key] = value;
+            }
+        }
+
+        const res = await getManyReports(user, undefined, filters);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
