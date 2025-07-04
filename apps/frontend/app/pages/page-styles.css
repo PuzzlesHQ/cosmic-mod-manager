@@ -73,10 +73,15 @@
     --line-color: hsla(var(--shallower-background), 0.2);
     --transition-from-bg: var(--background);
 
-    background: linear-gradient(var(--line-color) var(--line-width), transparent var(--line-width)),
-        linear-gradient(to right, var(--line-color) var(--line-width), transparent var(--line-width)), hsla(var(--transition-from-bg));
+    background:
+        linear-gradient(var(--line-color) var(--line-width), transparent var(--line-width)),
+        linear-gradient(to right, var(--line-color) var(--line-width), transparent var(--line-width)),
+        hsla(var(--transition-from-bg));
     background-size: var(--bg-size) var(--bg-size);
-    background-position: -0.7rem -0.7rem, -0.7rem -0.7rem, 0 0;
+    background-position:
+        -0.7rem -0.7rem,
+        -0.7rem -0.7rem,
+        0 0;
     background-attachment: absolute;
 }
 

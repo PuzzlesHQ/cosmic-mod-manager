@@ -29,7 +29,9 @@
 .ham_menu_line_3 {
     transform-origin: 0% 0%;
     transform-box: content-box;
-    transition: rotate var(--rotate-duration) ease-in-out, top var(--translate-duration) var(--rotate-duration) ease-in-out;
+    transition:
+        rotate var(--rotate-duration) ease-in-out,
+        top var(--translate-duration) var(--rotate-duration) ease-in-out;
 }
 
 .ham_menu_line_2 {
@@ -39,7 +41,9 @@
 
 .ham_menu_open .ham_menu_line_1,
 .ham_menu_open .ham_menu_line_3 {
-    transition: rotate var(--rotate-duration) var(--translate-duration) ease-in-out, top var(--translate-duration) ease-in-out;
+    transition:
+        rotate var(--rotate-duration) var(--translate-duration) ease-in-out,
+        top var(--translate-duration) ease-in-out;
 }
 
 .ham_menu_open .ham_menu_line_1 {
