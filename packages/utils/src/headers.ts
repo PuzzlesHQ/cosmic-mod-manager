@@ -1,4 +1,5 @@
 import { UAParser } from "ua-parser-js";
+
 type GetHeader = (key: string) => string | null | undefined;
 
 export function getSessionIp(getHeader: GetHeader, fallbackIp: string): string {

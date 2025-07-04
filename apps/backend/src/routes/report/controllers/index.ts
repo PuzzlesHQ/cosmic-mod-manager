@@ -206,7 +206,7 @@ export async function patchReport(reportId: string, closed: boolean, user: Conte
         },
     });
 
-    if (!report || (report.reporter !== user.id && !isModerator(user.role))) {
+    if (!report?.id || !isModerator(user.role)) {
         return notFoundResponseData("Report not found.");
     }
 
