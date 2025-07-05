@@ -68,7 +68,7 @@ export default function ReportPage({ data }: { data: LoaderData }) {
 
     function Main(props: { children: React.ReactNode }) {
         return (
-            <main className="w-full grid max-w-4xl p-card-surround justify-self-center gap-4">
+            <main className="w-full grid max-w-4xl p-card-surround mx-auto gap-4">
                 <div className="grid text-center">
                     <ScaleIcon className="w-full h-12 text-warning-foreground" />
                     <h1 className="text-xl-plus font-bold text-foreground-bright leading-loose">

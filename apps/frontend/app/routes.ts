@@ -35,8 +35,8 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
                 id: "notifications-history",
             });
 
-            route("reports", path("dashboard/reports.tsx"), { id: "reports" });
-            route("report/:reportId", path("dashboard/report/page.tsx"), { id: "report__details" });
+            route("reports", path("dashboard/reports.tsx"), { id: "dashboard__reports" });
+            route("report/:reportId", path("report/report-details.tsx"), { id: "dashboard__report__details" });
             route("analytics", path("dashboard/analytics.tsx"), { id: "analytics" });
 
             route("projects", path("dashboard/projects.tsx"), { id: "dashboard-projects" });
@@ -167,6 +167,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
             route("analytics", path("moderation/analytics.tsx"), { id: "moderation__analytics-page" });
             route("review", path("moderation/review.tsx"), { id: "moderation__review-page" });
             route("reports", path("moderation/reports.tsx"), { id: "moderation__reports" });
+            route("report/:reportId", path("report/report-details.tsx"), { id: "moderation__report__details" });
         });
 
         // Report

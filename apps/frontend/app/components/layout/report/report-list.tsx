@@ -3,6 +3,7 @@ import { Badge } from "@app/components/ui/badge";
 import CopyBtn from "@app/components/ui/copy-btn";
 import { TooltipProvider, TooltipTemplate } from "@app/components/ui/tooltip";
 import { cn } from "@app/components/utils";
+import { isModerator } from "@app/utils/constants/roles";
 import { type DetailedReport, ReportItemType } from "@app/utils/types/api/report";
 import { ChevronRightIcon, GitCommitHorizontalIcon, LockKeyholeIcon } from "lucide-react";
 import { useMemo } from "react";
@@ -101,7 +102,10 @@ export function ReportInfo(props: ReportInfoProps) {
                 </TooltipProvider>
 
                 {props.viewReportBtn !== false && (
-                    <TextLink to={ReportPagePath(props.report.id)} className="ms-auto flex items-center justify-center gap-space">
+                    <TextLink
+                        to={ReportPagePath(props.report.id, isModerator(session?.role))}
+                        className="ms-auto flex items-center justify-center gap-space"
+                    >
                         {t.report.viewReport}
                         <ChevronRightIcon className="w-btn-icon-md h-btn-icon-md" />
                     </TextLink>

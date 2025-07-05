@@ -86,11 +86,8 @@ export function CollectionPagePath(id: string, extra?: string) {
     return appendPathInUrl(collectionPageUrl, extra);
 }
 
-export function ReportPagePath(reportId: string, extra?: string) {
-    const pageUrl = FormatUrl_WithHintLocale(`dashboard/report/${reportId}`);
-    if (!extra) return pageUrl;
-
-    return appendPathInUrl(pageUrl, extra);
+export function ReportPagePath(reportId: string, isMod = false) {
+    return FormatUrl_WithHintLocale(isMod ? `moderation/report/${reportId}` : `dashboard/report/${reportId}`);
 }
 
 export function appendPathInUrl(_url: string | URL, str: string) {
