@@ -2,16 +2,11 @@ import GAME_VERSIONS, { type GameVersion, getGameVersionsFromValues, isExperimen
 import { sortVersionsWithReference } from "~/project";
 
 /**
- * Formats a list of game version strings into a verbose, human-readable list.
- * Groups continuous versions and represents them as ranges.
- * Starts a new group when the next version is of a different release type (e.g., experimental) to not omit any versions.
- *
- * @param inputVersions - An array of version strings to format.
- * @returns An array of formatted version strings, where continuous versions are grouped as ranges.
+ * does the same thing as ./format.ts/formatVersionsForDisplay, but does not omit any versions.
  *
  * @example
- * formatGameVersionsList_verbose(["0.3.6", "0.3.5", "0.3.2-pre2", "0.3.2-pre1", "0.3.0"]);
- * // Returns ["0.3.5–0.3.6", "0.3.2-pre1–0.3.2-pre2", "0.3"];
+ * formatVersionsForDisplay_noOmit(["0.3.3", "0.3.2", "0.3.2-pre2", "0.3.2-pre1", "0.3.1"]);
+ * // Returns ["0.3.2–0.3.3", "0.3.2-pre1–0.3.2-pre2", "0.3.1"];
  */
 
 export function formatVersionsForDisplay_noOmit(inputVersions: string[]): string[] {

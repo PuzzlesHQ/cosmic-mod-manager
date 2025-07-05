@@ -23,10 +23,10 @@ describe("formatGameVersionsList_verbose", () => {
     });
 
     test("doesn't omit non-release versions", () => {
-        expect(formatVersionsForDisplay_noOmit(["0.3.6", "0.3.5", "0.3.2-pre2", "0.3.2-pre1", "0.3.0"])).toEqual([
-            "0.3.5–0.3.6",
+        expect(formatVersionsForDisplay_noOmit(["0.3.3", "0.3.2", "0.3.2-pre2", "0.3.2-pre1", "0.3.1"])).toEqual([
+            "0.3.2–0.3.3",
             "0.3.2-pre1–0.3.2-pre2",
-            "0.3",
+            "0.3.1",
         ]);
     });
 });

@@ -26,6 +26,6 @@ describe("formatVersionsForDisplay", () => {
     });
 
     test("handles range when different release types are in between", () => {
-        expect(formatVersionsForDisplay(["0.3.3", "0.3.2-pre2", "0.3.2-pre1", "0.3.2", "0.3.0"])).toEqual(["0.3.2–0.3.3", "0.3"]);
+        expect(formatVersionsForDisplay(["0.3.3", "0.3.2", "0.3.2-pre2", "0.3.2-pre1", "0.3.1"])).toEqual(["0.3.1–0.3.3"]);
     });
 });

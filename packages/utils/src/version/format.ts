@@ -7,14 +7,12 @@ import { GameVersionReleaseType } from "~/types";
 // Source: https://github.com/modrinth/code/blob/10ef25eabb478275129518b606333ecb14b609e4/apps/frontend/src/helpers/projects.js#L85
 
 /**
- * Formats an array of game versions for display purposes.
+ * Formats game versions list into a more readable format by grouping them into ranges. (excludes experimental versions)
  *
- * This function takes an array of game versions and sorts them based on a reference list of all game versions.
- * It then categorizes the versions into releases, snapshots, and legacy versions. The function groups the versions
- * into ranges where applicable and returns an array of formatted version strings.
  *
- * @param gameVersions - An array of game version strings to be formatted.
- * @returns An array of formatted version strings for display.
+ * @example
+ * formatVersionsForDisplay(["0.3.3", "0.3.2", "0.3.2-pre2", "0.3.2-pre1", "0.3.1"]);
+ * // Returns ["0.3.1–0.3.3"];
  */
 export function formatVersionsForDisplay(gameVersions: string[]) {
     const allVersions = GAME_VERSIONS.slice();
