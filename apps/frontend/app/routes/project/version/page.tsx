@@ -41,8 +41,12 @@ export default function () {
     }
 
     useEffect(() => {
+        if (versionSlug !== "latest") return;
+        // If the version slug is "latest", we redirect to the specific version page
+        // This is to ensure that the URL is always specific to a version
+        // and not just "latest", which can be confusing for users.
         navigate(VersionPagePath(ctx.projectType, projectSlug, versionData.slug));
-    }, []);
+    }, [versionSlug]);
 
     return <VersionPage ctx={ctx} versionData={versionData} projectSlug={projectSlug} />;
 }
@@ -101,7 +105,7 @@ function filterGameVersion(
     searchParams: URLSearchParams,
 ) {
     if (!slug || !gameVersions?.length) return null;
-    if (slug !== "latest") return gameVersions?.find((version) => version.slug === slug || version.id === slug);
+    if (slug !== "latest") return gameVersions.find((version) => version.slug === slug || version.id === slug);
 
     const gameVersion = searchParams.get("gameVersion");
     const loader = searchParams.get("loader");
