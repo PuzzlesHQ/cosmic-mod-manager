@@ -1,13 +1,10 @@
-name: Run backend tests
+name: Run tests
 
 on: [push]
 
 jobs:
-    Backend-Test:
+    Test:
         runs-on: ubuntu-latest
-        defaults:
-            run:
-                working-directory: ./apps/backend
         
         steps:
             - name: Checkout
