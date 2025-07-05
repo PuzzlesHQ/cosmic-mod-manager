@@ -110,7 +110,7 @@ export default function CreateNewOrg_Dialog({ children }: { children: React.Reac
                                                 field.onChange(e);
                                                 if (!autoFillUrlSlug) return;
                                                 const name = e.target.value;
-                                                form.setValue("slug", createURLSafeSlug(name).value);
+                                                form.setValue("slug", createURLSafeSlug(name));
                                             }}
                                         />
                                         <FormMessage />

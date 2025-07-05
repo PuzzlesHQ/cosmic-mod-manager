@@ -24,7 +24,7 @@ import { ProjectPublishingStatus, ProjectVisibility } from "@app/utils/types";
 import type { ProjectDetailsData, TeamMember } from "@app/utils/types/api";
 import { ReportItemType } from "@app/utils/types/api/report";
 import { imageUrl } from "@app/utils/url";
-import { formatVersionsForDisplay, getVersionsToDisplay } from "@app/utils/version/format";
+import { formatVersionsForDisplay } from "@app/utils/version/format";
 import {
     ArrowUpRightIcon,
     BookOpenIcon,
@@ -137,7 +137,7 @@ export default function ProjectPageLayout() {
                         <section>
                             <h3 className="flex font-bold text-muted-foreground pb-1">{t.search.gameVersions}</h3>
                             <div className="w-full flex flex-wrap gap-1">
-                                {getVersionsToDisplay(projectData).map((version) => (
+                                {formatVersionsForDisplay(projectData.gameVersions).map((version) => (
                                     <Chip key={version} className="text-muted-foreground">
                                         {version}
                                     </Chip>

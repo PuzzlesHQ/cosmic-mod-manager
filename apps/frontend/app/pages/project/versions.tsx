@@ -18,7 +18,7 @@ import { CapitalizeAndFormatString } from "@app/utils/string";
 import { ProjectPermission } from "@app/utils/types";
 import type { ProjectDetailsData, ProjectVersionData } from "@app/utils/types/api";
 import { formatVersionsForDisplay } from "@app/utils/version/format";
-import { formatGameVersionsList_verbose } from "@app/utils/version/format-verbose";
+import { formatVersionsForDisplay_noOmit } from "@app/utils/version/format-verbose";
 import {
     CalendarIcon,
     DownloadIcon,
@@ -327,7 +327,7 @@ function VersionName({ title, number, url }: { title: string; number: string; ur
 
 function GameVersions({ gameVersions, verbose }: { gameVersions: string[]; verbose: boolean }) {
     if (verbose) {
-        return formatGameVersionsList_verbose(gameVersions).map((version) => (
+        return formatVersionsForDisplay_noOmit(gameVersions).map((version) => (
             <Chip key={version} className="text-muted-foreground">
                 {version}
             </Chip>

@@ -38,7 +38,7 @@ export const ProjectSlugField = z
     .max(MAX_PROJECT_NAME_LENGTH)
     .refine(
         (slug) => {
-            if (slug !== createURLSafeSlug(slug).value) return false;
+            if (slug !== createURLSafeSlug(slug)) return false;
             return true;
         },
         { message: "Slug must be a URL safe string" },

@@ -7,7 +7,7 @@ export class MersenneTwister {
     mt: number[];
     mti: number;
 
-    constructor(seed = new Date().getTime()) {
+    constructor(seed = Date.now()) {
         /* Period parameters */
         this.N = 624;
         this.M = 397;

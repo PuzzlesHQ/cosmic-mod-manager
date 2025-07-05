@@ -45,7 +45,7 @@ const VersionNumber = z
     .max(MAX_VERSION_NUMBER_LENGTH)
     .refine(
         (val) => {
-            return val === createURLSafeSlug(val).value;
+            return val === createURLSafeSlug(val);
         },
         { message: "Version number must be a URL safe string" },
     );

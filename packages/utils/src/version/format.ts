@@ -1,14 +1,10 @@
 import GAME_VERSIONS, { gameVersionsList as AllGameVersions, type GameVersion } from "~/constants/game-versions";
 import { sortVersionsWithReference } from "~/project";
+import { ParseInt } from "~/string";
 import { GameVersionReleaseType } from "~/types";
-import type { ProjectDetailsData } from "~/types/api";
 
 // Full credits to modrinth
 // Source: https://github.com/modrinth/code/blob/10ef25eabb478275129518b606333ecb14b609e4/apps/frontend/src/helpers/projects.js#L85
-
-export function getVersionsToDisplay(project: ProjectDetailsData) {
-    return formatVersionsForDisplay(project.gameVersions);
-}
 
 /**
  * Formats an array of game versions for display purposes.
@@ -75,7 +71,6 @@ export function formatVersionsForDisplay(gameVersions: string[]) {
     );
 
     let output = [...legacyVersionsAsRanges];
-
     // show all snapshots if there's no release versions
     if (releaseVersionsAsRanges.length === 0) {
         const snapshotVersionsAsRanges = groupConsecutiveIndices(
@@ -117,7 +112,7 @@ function groupVersions(versions: string[], consecutive = false) {
             if (matchesVersion) {
                 const majorVersion = matchesVersion[1];
                 const minorVersion = matchesVersion[2];
-                const minorNumeric = minorVersion ? Number.parseInt(minorVersion.replace(".", "")) : 0;
+                const minorNumeric = minorVersion ? ParseInt(minorVersion.replace(".", "")) : 0;
 
                 let prevInRange: Range | undefined;
 

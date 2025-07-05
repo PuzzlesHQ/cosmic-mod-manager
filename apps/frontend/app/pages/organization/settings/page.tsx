@@ -146,7 +146,7 @@ export default function GeneralOrgSettings() {
                                         <Input
                                             {...field}
                                             onChange={(e) => {
-                                                field.onChange(createURLSafeSlug(e.target.value).value);
+                                                field.onChange(createURLSafeSlug(e.target.value));
                                             }}
                                             className="md:w-[32ch]"
                                             id="org-slug-input"

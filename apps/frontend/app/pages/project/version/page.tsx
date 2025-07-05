@@ -10,6 +10,7 @@ import {
     BreadcrumbSeparator,
 } from "@app/components/ui/breadcrumb";
 import { Card } from "@app/components/ui/card";
+import Chip from "@app/components/ui/chip";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@app/components/ui/context-menu";
 import CopyBtn, { copyTextToClipboard } from "@app/components/ui/copy-btn";
 import { Prefetch } from "@app/components/ui/link";
@@ -23,7 +24,7 @@ import { ProjectPermission } from "@app/utils/types";
 import type { ProjectVersionData } from "@app/utils/types/api";
 import { ReportItemType } from "@app/utils/types/api/report";
 import { imageUrl } from "@app/utils/url";
-import { formatGameVersionsListString_verbose } from "@app/utils/version/format-verbose";
+import { formatVersionsForDisplay_noOmit } from "@app/utils/version/format-verbose";
 import { ChevronRightIcon, CopyIcon, DownloadIcon, Edit3Icon, FileIcon, LinkIcon, StarIcon } from "lucide-react";
 import { lazy, Suspense, useContext } from "react";
 import MarkdownRenderBox from "~/components/md-renderer";
@@ -255,8 +256,14 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                             {
                                 label: t.search.gameVersions,
                                 content: (
-                                    <span className="leading-tight">
-                                        {formatGameVersionsListString_verbose(versionData.gameVersions)}
+                                    <span className="flex items-center gap-1 flex-wrap">
+                                        {formatVersionsForDisplay_noOmit(versionData.gameVersions).map((ver) => {
+                                            return (
+                                                <Chip key={ver} className="text-muted-foreground">
+                                                    {ver}
+                                                </Chip>
+                                            );
+                                        })}
                                     </span>
                                 ),
                             },

@@ -150,7 +150,7 @@ export default function CreateNewProjectDialog({ orgId, trigger }: Props) {
                                                 field.onChange(e);
                                                 if (!autoFillUrlSlug) return;
                                                 const name = e.target.value;
-                                                form.setValue("slug", createURLSafeSlug(name).value);
+                                                form.setValue("slug", createURLSafeSlug(name));
                                             }}
                                         />
                                         <FormMessage />

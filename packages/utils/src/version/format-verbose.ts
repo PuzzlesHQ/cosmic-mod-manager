@@ -1,15 +1,38 @@
 import GAME_VERSIONS, { type GameVersion, getGameVersionsFromValues, isExperimentalGameVersion } from "~/constants/game-versions";
 import { sortVersionsWithReference } from "~/project";
 
-function gameVersionIndex(version: GameVersion, referenceList: GameVersion[]): number {
-    for (let i = 0; i < referenceList.length; i++) {
-        if (referenceList[i].value === version.value) return i;
-    }
+/**
+ * Formats a list of game version strings into a verbose, human-readable list.
+ * Groups continuous versions and represents them as ranges.
+ * Starts a new group when the next version is of a different release type (e.g., experimental) to not omit any versions.
+ *
+ * @param inputVersions - An array of version strings to format.
+ * @returns An array of formatted version strings, where continuous versions are grouped as ranges.
+ *
+ * @example
+ * formatGameVersionsList_verbose(["0.3.6", "0.3.5", "0.3.2-pre2", "0.3.2-pre1", "0.3.0"]);
+ * // Returns ["0.3.5–0.3.6", "0.3.2-pre1–0.3.2-pre2", "0.3"];
+ */
 
-    return -1;
+export function formatVersionsForDisplay_noOmit(inputVersions: string[]): string[] {
+    if (!inputVersions.length) return [];
+
+    const formattedList: string[] = [];
+    const groupedVersions = groupContinuousVersions(inputVersions);
+
+    for (const versionGroup of groupedVersions) {
+        const firstItem = versionGroup[0]?.label;
+
+        if (firstItem && versionGroup.length === 1) formattedList.push(firstItem);
+        else {
+            const lastItem = versionGroup.at(-1)?.label;
+            formattedList.push(`${lastItem}–${firstItem}`);
+        }
+    }
+    return formattedList;
 }
 
-export function groupContinuousVersions(versions: string[]): GameVersion[][] {
+function groupContinuousVersions(versions: string[]): GameVersion[][] {
     let referenceList = GAME_VERSIONS;
     const groupedList: GameVersion[][] = [[]];
     const sortedVersions = getGameVersionsFromValues(
@@ -53,39 +76,10 @@ export function groupContinuousVersions(versions: string[]): GameVersion[][] {
     return groupedList;
 }
 
-export function formatGameVersionsList_verbose(list: string[]): string[] {
-    if (!list.length) return [];
-
-    const formattedList: string[] = [];
-    const groupedVersions = groupContinuousVersions(list);
-
-    for (const versionGroup of groupedVersions) {
-        const firstItem = versionGroup[0]?.label;
-
-        if (firstItem && versionGroup.length === 1) formattedList.push(firstItem);
-        else {
-            const lastItem = versionGroup.at(-1)?.label;
-            formattedList.push(`${lastItem}–${firstItem}`);
-        }
-    }
-    return formattedList;
-}
-
-export function formatGameVersionsListString_verbose(list: string[]): string {
-    if (!list.length) return "";
-
-    let formattedStr = "";
-    const groupedVersions = groupContinuousVersions(list);
-
-    for (const versionGroup of groupedVersions) {
-        const firstItem = versionGroup[0]?.label;
-
-        if (versionGroup.length === 1) formattedStr += `${firstItem}, `;
-        else {
-            const lastItem = versionGroup.at(-1)?.label;
-            formattedStr += `${lastItem}–${firstItem}, `;
-        }
+function gameVersionIndex(version: GameVersion, referenceList: GameVersion[]): number {
+    for (let i = 0; i < referenceList.length; i++) {
+        if (referenceList[i].value === version.value) return i;
     }
 
-    return formattedStr.slice(0, -2);
+    return -1;
 }

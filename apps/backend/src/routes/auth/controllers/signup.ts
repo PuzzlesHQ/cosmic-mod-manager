@@ -62,7 +62,7 @@ export async function oAuthSignUpHandler(ctx: Context, authProvider: string, tok
     }
 
     const userId = generateDbId();
-    let userName = createURLSafeSlug(profileData.name || "").value;
+    let userName = createURLSafeSlug(profileData.name || "");
 
     // Check if the username is available
     const existingUserWithSameUserName = userName?.length > 0 ? await GetUser_ByIdOrUsername(userName) : null;

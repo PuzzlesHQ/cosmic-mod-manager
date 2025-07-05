@@ -7,6 +7,7 @@ export function trimWhitespaces(str: string) {
 }
 
 export function Capitalize(str: string, eachWord = false) {
+    if (!str) return str;
     if (eachWord === false) return `${str[0].toUpperCase()}${str.slice(1)}`;
 
     let newStr = "";
@@ -14,7 +15,7 @@ export function Capitalize(str: string, eachWord = false) {
         newStr += `${word[0].toUpperCase()}${word.length > 1 ? word.slice(1) : ""} `;
     }
 
-    return newStr;
+    return newStr.slice(0, -1); // Remove the trailing space
 }
 
 export function FormatString(str: string) {
@@ -27,20 +28,16 @@ export function CapitalizeAndFormatString<T extends string | null | undefined>(s
 }
 
 export function createURLSafeSlug(slug: string, additionalAllowedChars?: string) {
+    let res = "";
+    if (!slug) return res;
+
     const allowedURLCharacters = `${lowerCaseAlphabets}${upperCaseAlphabets}${digits}\`!@$()-+_.,"${additionalAllowedChars || ""}`;
-
-    const result = {
-        validInput: false,
-        value: "",
-    };
-
     for (const char of slug.replaceAll(" ", "-").toLowerCase()) {
         if (allowedURLCharacters.includes(char)) {
-            result.value += char;
+            res += char;
         }
     }
-
-    return result;
+    return res;
 }
 
 export function formatUserName(str: string, additionalChars?: string) {
@@ -114,14 +111,30 @@ export function ParseInt(str: string) {
 
 export function encodeArrayIntoStr(items: Set<string> | string[]) {
     const arr = items instanceof Set ? Array.from(items) : items;
-    return arr.map((item) => encodeURIComponent(item)).join(",");
+    if (!arr || !arr.length) return "";
+
+    let result = "";
+    for (let i = 0; i < arr.length; i++) {
+        const item = arr[i];
+        if (!(typeof item === "string") || !item.length) continue;
+        result += encodeURIComponent(item);
+
+        if (i < arr.length - 1) result += ",";
+    }
+
+    return result;
 }
 
 export function decodeStringArray(str: string | undefined | null) {
     if (!str?.trim()) return [];
 
-    return str
-        .split(",")
-        .filter((item) => item.length > 0)
-        .map((item) => decodeURIComponent(item));
+    const arr = [];
+    for (const item of str.split(",")) {
+        if (item.length === 0) continue; // Skip empty items
+        if (typeof item !== "string") continue; // Ensure item is a string
+
+        arr.push(decodeURIComponent(item));
+    }
+
+    return arr;
 }

@@ -209,7 +209,7 @@ export function MetadataInputCard({ projectType, formControl }: MetadataInputCar
                             placeholder="# a.b.c"
                             {...field}
                             onChange={(e) => {
-                                field.onChange(createURLSafeSlug(e.target.value).value);
+                                field.onChange(createURLSafeSlug(e.target.value));
                             }}
                         />
                     </FormItem>
@@ -313,7 +313,8 @@ export function AddDependencies({ dependencies, setDependencies, currProjectId, 
 
     function removeDependency(projectId: string, versionId: string | null) {
         const filteredDependencies = (dependencies || []).filter((dependency) => {
-            if (dependency.projectId !== projectId || dependency.versionId !== versionId) return dependency;
+            if (dependency.projectId !== projectId || dependency.versionId !== versionId) return true;
+            return false;
         });
         setDependencies(filteredDependencies);
     }

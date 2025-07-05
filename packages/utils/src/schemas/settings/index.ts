@@ -4,8 +4,8 @@ import {
     MAX_DISPLAY_NAME_LENGTH,
     MAX_EMAIL_LENGTH,
     MAX_PASSWORD_LENGTH,
-    MAX_USERNAME_LENGTH,
     MAX_USER_BIO_LENGTH,
+    MAX_USERNAME_LENGTH,
     MIN_EMAIL_LENGTH,
     MIN_PASSWORD_LENGTH,
 } from "~/constants";
@@ -18,7 +18,7 @@ const userNameSchema = z
     .max(MAX_USERNAME_LENGTH)
     .refine(
         (userName) => {
-            if (userName.length !== createURLSafeSlug(userName).value.length) return false;
+            if (userName.length !== createURLSafeSlug(userName).length) return false;
             return true;
         },
         { message: "Username must be a URL safe string" },

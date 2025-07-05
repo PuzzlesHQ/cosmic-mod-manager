@@ -8,7 +8,7 @@ export const orgSlugField = z
     .max(MAX_ORGANISATION_NAME_LENGTH)
     .refine(
         (slug) => {
-            if (slug !== createURLSafeSlug(slug).value) return false;
+            if (slug !== createURLSafeSlug(slug)) return false;
             return true;
         },
         { message: "Slug must be a URL safe string" },
