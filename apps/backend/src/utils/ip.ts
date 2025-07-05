@@ -5,7 +5,6 @@ const _IP = require("ip");
  * If the input is an IPv4 address, it converts it to an IPv6-mapped address.
  * @param src The IP address as a string.
  * @returns The IPv6 address as a string.
- * @throws Error if the input is not a valid IPv4 or IPv6 address.
  */
 export function convertToIPv6(src: string): string | null {
     if (_IP.isV4Format(src)) {

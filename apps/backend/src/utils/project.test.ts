@@ -1,11 +1,12 @@
 import { describe, expect, test } from "bun:test";
 
 import { VersionReleaseChannel } from "@app/utils/types";
-import { GetReleaseChannelFilter } from "~/utils/project";
+import { GetReleaseChannelFilter } from "./project";
 
 describe("GetReleaseChannelFilter", () => {
-    test("handles undefined input", () => {
+    test("handles undefined/invalid input", () => {
         expect(GetReleaseChannelFilter()).toEqual([VersionReleaseChannel.RELEASE]);
+        expect(GetReleaseChannelFilter("invalid-channel")).toEqual([VersionReleaseChannel.RELEASE]);
     });
 
     test("returns correct channels", () => {
