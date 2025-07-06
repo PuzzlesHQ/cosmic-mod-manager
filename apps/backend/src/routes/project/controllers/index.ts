@@ -245,28 +245,36 @@ export async function getHomePageCarouselProjects(userSession: ContextUserData |
     const randomProjects_count = Math.floor(projectsCount / 2);
     const trendingProjects_count = projectsCount - randomProjects_count;
 
-    const randomProjects: { id: string }[] = await prisma.$queryRaw`
-        SELECT id
-        FROM "Project"
-        TABLESAMPLE SYSTEM_ROWS(${randomProjects_count})
-        WHERE "status" = 'approved'
-            AND "visibility" = 'listed'
-    `;
-
-    const idsArray = randomProjects?.map((project) => project.id);
-    const reandomProjects_details = await getManyProjects(userSession, idsArray);
-
     const index = meilisearch.index(MEILISEARCH_PROJECT_INDEX);
     const result = await index.search(undefined, {
         sort: ["recentDownloads:desc"],
         limit: trendingProjects_count,
     });
 
+    const alreadyAddedIds = new Set<string>();
     const projectsList: ProjectListItem[] = [];
     for (const project of result.hits as ProjectSearchDocument[]) {
         projectsList.push(mapSearchProjectToListItem(project));
+        alreadyAddedIds.add(project.id);
     }
 
+    // --- Taking more than randomProjects count so that we can have a few more
+    // --- in case of duplicates between trending and random projects
+    const randomProjects: { id: string }[] = await prisma.$queryRaw`
+        SELECT id
+        FROM "Project"
+        TABLESAMPLE SYSTEM_ROWS(${projectsCount}) 
+        WHERE "status" = 'approved' AND "visibility" = 'listed'
+    `;
+
+    const randomProjects_IDs: string[] = [];
+    for (const p of randomProjects) {
+        if (alreadyAddedIds.has(p.id)) continue; // Skip if the project from trending is already added
+        randomProjects_IDs.push(p.id);
+        if (randomProjects_IDs.length >= randomProjects_count) break; // Limit to randomProjects_count
+    }
+
+    const reandomProjects_details = await getManyProjects(userSession, randomProjects_IDs);
     if (reandomProjects_details.data.length > 0) {
         projectsList.push(...reandomProjects_details.data);
     }
