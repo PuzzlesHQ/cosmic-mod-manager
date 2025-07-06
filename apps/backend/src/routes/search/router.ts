@@ -1,11 +1,11 @@
 import {
-    MAX_SEARCH_LIMIT,
     categoryFilterParamNamespace,
     defaultSearchLimit,
     defaultSortBy,
     gameVersionFilterParamNamespace,
     licenseFilterParamNamespace,
     loaderFilterParamNamespace,
+    MAX_SEARCH_LIMIT,
     pageOffsetParamNamespace,
     searchLimitParamNamespace,
     sortByParamNamespace,

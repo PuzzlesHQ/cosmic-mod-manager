@@ -1,7 +1,8 @@
-import { EnvironmentSupport, ProjectPublishingStatus, type ProjectType, SearchResultSortMethod } from "@app/utils/types";
+import { EnvironmentSupport, type ProjectType, SearchResultSortMethod } from "@app/utils/types";
 import type { ProjectListItem } from "@app/utils/types/api";
 import meilisearch from "~/services/meilisearch";
 import { HTTP_STATUS, invalidReqestResponseData } from "~/utils/http";
+import { mapSearchProjectToListItem } from "../_helpers";
 import { type ProjectSearchDocument, projectSearchNamespace } from "../sync-utils";
 
 interface Props {
@@ -30,9 +31,7 @@ export async function searchProjects(props: Props) {
         if (isValidFilterStr(item) === false) return invalidReqestResponseData(`Invalid filter string: ${item}`);
     }
 
-    const index = meilisearch.index(projectSearchNamespace);
     let sortBy = null;
-
     switch (props.sortBy) {
         case SearchResultSortMethod.RELEVANCE:
             sortBy = props.query ? null : "recentDownloads:desc";
@@ -78,6 +77,7 @@ export async function searchProjects(props: Props) {
     if (props.type) filters.push(formatFilterItems("type", [props.type], " OR "));
     if (props.openSourceOnly) filters.push(formatFilterItems("openSource", [props.openSourceOnly], " AND "));
 
+    const index = meilisearch.index(projectSearchNamespace);
     const result = await index.search(props.query, {
         sort: sortBy ? [sortBy] : [],
         limit: props.limit,
@@ -89,30 +89,7 @@ export async function searchProjects(props: Props) {
     const hits = result.hits as ProjectSearchDocument[];
 
     for (const project of hits) {
-        projects.push({
-            id: project.id,
-            slug: project.slug,
-            name: project.name,
-            summary: project.summary,
-            type: project.type,
-            status: ProjectPublishingStatus.APPROVED, // Because only approved projects are indexed for search :)
-            icon: project.iconUrl,
-            downloads: project.downloads,
-            followers: project.followers,
-            dateUpdated: project.dateUpdated,
-            datePublished: project.datePublished,
-            categories: project.categories,
-            featuredCategories: project.featuredCategories,
-            gameVersions: project.gameVersions,
-            loaders: project.loaders,
-            author: project.author,
-            clientSide: project.clientSide,
-            serverSide: project.serverSide,
-            featured_gallery: project.featured_gallery,
-            color: project.color || null,
-            isOrgOwned: project.isOrgOwned,
-            visibility: project.visibility,
-        });
+        projects.push(mapSearchProjectToListItem(project));
     }
 
     result.hits = projects;

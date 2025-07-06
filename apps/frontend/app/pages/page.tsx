@@ -78,7 +78,6 @@ export default function HomePage({ projects }: Props) {
                                     {showcaseItems?.map((item, index) => {
                                         return (
                                             <strong
-                                                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                                                 key={`${item}${index}`}
                                                 className={cn(
                                                     "flex font-bold items-center justify-center h-12 lg:h-[4.5rem] text-4xl lg:text-6xl bg-clip-text leading-loose text-nowrap whitespace-nowrap",
@@ -149,13 +148,14 @@ export default function HomePage({ projects }: Props) {
 function ShowCase({ projects }: { projects: ProjectListItem[] }) {
     if (!projects?.length) return null;
 
-    const carousel1Items = projects.slice(0, Math.floor(projects.length / 2));
-    const carousel2Items = projects.slice(Math.floor(projects.length / 2));
+    const mid = Math.floor(projects.length / 2);
+
+    const parts = [projects.slice(0, mid), projects.slice(mid, projects.length)];
 
     return (
         <div className="w-full flex flex-col gap-6">
-            <MarqueeScroll items={carousel1Items || []} />
-            <MarqueeScroll items={carousel2Items || []} reverse />
+            <MarqueeScroll items={parts[0] || []} />
+            <MarqueeScroll items={parts[1] || []} reverse />
         </div>
     );
 }

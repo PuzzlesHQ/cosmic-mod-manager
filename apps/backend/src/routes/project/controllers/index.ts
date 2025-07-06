@@ -11,6 +11,9 @@ import type {
 import type { ProjectDetailsData, ProjectListItem } from "@app/utils/types/api";
 import type { TeamMember as DBTeamMember } from "@prisma/client";
 import { GetManyProjects_ListItem, GetProject_Details, GetProject_ListItem } from "~/db/project_item";
+import { mapSearchProjectToListItem } from "~/routes/search/_helpers";
+import { type ProjectSearchDocument, projectSearchNamespace } from "~/routes/search/sync-utils";
+import meilisearch from "~/services/meilisearch";
 import prisma from "~/services/prisma";
 import valkey from "~/services/redis";
 import type { ContextUserData } from "~/types";
@@ -203,18 +206,10 @@ export async function getManyProjects(userSession: ContextUserData | undefined, 
     };
 }
 
-export async function getRandomProjects(userSession: ContextUserData | undefined, count: number, cached = false) {
+export async function getRandomProjects(userSession: ContextUserData | undefined, count: number) {
     let projectsCount = 20;
     if (isNumber(count) && count > 0 && count <= 100) {
         projectsCount = count;
-    }
-
-    if (cached) {
-        const cache = await valkey.get(`random-projects-cache:${count}`);
-        const cachedData = await parseJson<ProjectListItem>(cache);
-        if (cachedData) {
-            return { data: cachedData, status: HTTP_STATUS.OK };
-        }
     }
 
     const randomProjects: { id: string }[] = await prisma.$queryRaw`
@@ -228,6 +223,54 @@ export async function getRandomProjects(userSession: ContextUserData | undefined
     const idsArray = randomProjects?.map((project) => project.id);
     const res = await getManyProjects(userSession, idsArray);
 
-    if (cached) await valkey.set(`random-projects-cache:${count}`, JSON.stringify(res.data), "EX", 300);
     return res;
+}
+
+function homePageProjects_CacheKey(count: number) {
+    return `homepage-carousel-projects:${count}`;
+}
+
+export async function getHomePageCarouselProjects(userSession: ContextUserData | undefined, count: number) {
+    let projectsCount = 20;
+    if (isNumber(count) && count > 0 && count <= 100) {
+        projectsCount = count;
+    }
+
+    const cache = await valkey.get(homePageProjects_CacheKey(count));
+    const cachedData = await parseJson<ProjectListItem[]>(cache);
+    if (cachedData) {
+        return { data: cachedData, status: HTTP_STATUS.OK };
+    }
+
+    const randomProjects_count = Math.floor(projectsCount / 2);
+    const trendingProjects_count = projectsCount - randomProjects_count;
+
+    const randomProjects: { id: string }[] = await prisma.$queryRaw`
+        SELECT id
+        FROM "Project"
+        TABLESAMPLE SYSTEM_ROWS(${randomProjects_count})
+        WHERE "status" = 'approved'
+            AND "visibility" = 'listed'
+    `;
+
+    const idsArray = randomProjects?.map((project) => project.id);
+    const reandomProjects_details = await getManyProjects(userSession, idsArray);
+
+    const index = meilisearch.index(projectSearchNamespace);
+    const result = await index.search(undefined, {
+        sort: ["recentDownloads:desc"],
+        limit: trendingProjects_count,
+    });
+
+    const projectsList: ProjectListItem[] = [];
+    for (const project of result.hits as ProjectSearchDocument[]) {
+        projectsList.push(mapSearchProjectToListItem(project));
+    }
+
+    if (reandomProjects_details.data.length > 0) {
+        projectsList.push(...reandomProjects_details.data);
+    }
+
+    await valkey.set(homePageProjects_CacheKey(count), JSON.stringify(projectsList), "EX", 600);
+    return { data: projectsList, status: HTTP_STATUS.OK };
 }
