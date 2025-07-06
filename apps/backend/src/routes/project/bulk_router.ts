@@ -50,8 +50,7 @@ async function projectsRandom_get(ctx: Context) {
 async function homePageCarousel_get(ctx: Context) {
     try {
         const userSession = getUserFromCtx(ctx);
-
-        const res = await getHomePageCarouselProjects(userSession, 20);
+        const res = await getHomePageCarouselProjects(userSession);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);

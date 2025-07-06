@@ -5,7 +5,7 @@ import { cn } from "@app/components/utils";
 import type { ProjectListItem } from "@app/utils/types/api";
 import { imageUrl } from "@app/utils/url";
 import { CompassIcon, LayoutDashboardIcon, LogInIcon } from "lucide-react";
-import { type CSSProperties, useEffect, useState } from "react";
+import { type CSSProperties, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { ImgWrapper } from "~/components/ui/avatar";
 import Link, { VariantButtonLink } from "~/components/ui/link";
@@ -146,27 +146,42 @@ export default function HomePage({ projects }: Props) {
 }
 
 function ShowCase({ projects }: { projects: ProjectListItem[] }) {
-    if (!projects?.length) return null;
+    console.log("Rendering showcase with", projects.length, "projects");
 
-    const mid = Math.floor(projects.length / 2);
+    const rows = useMemo(() => {
+        if (!projects || projects.length === 0) return [];
 
-    const parts = [projects.slice(0, mid), projects.slice(mid, projects.length)];
+        const rowSize = Math.ceil(projects.length / 3);
+        const scrollRows: React.ReactNode[] = [];
 
-    return (
-        <div className="w-full flex flex-col gap-6">
-            <MarqueeScroll items={parts[0] || []} />
-            <MarqueeScroll items={parts[1] || []} reverse />
-        </div>
-    );
+        let rowIndex = 1;
+        for (let i = 0; i < projects.length; i += rowSize) {
+            const part = projects.slice(i, i + rowSize);
+
+            if (i % (rowSize * 2) === 0) {
+                scrollRows.push(<MarqueeScroll key={i} items={part || []} index={rowIndex} />);
+            } else {
+                scrollRows.push(<MarqueeScroll key={i} items={part || []} reverse index={rowIndex} />);
+            }
+
+            rowIndex++;
+        }
+
+        return scrollRows;
+    }, [projects.at(-1)?.id, projects.length]);
+
+    if (!rows?.length) return null;
+    return <div className="w-full flex flex-col gap-6">{rows}</div>;
 }
 
 interface MarqueeScrollProps {
     items: ProjectListItem[];
     reverse?: boolean;
+    index: number;
 }
 
-function MarqueeScroll({ items, reverse = false }: MarqueeScrollProps) {
-    const duration = 7.5 * items.length;
+function MarqueeScroll({ items, reverse = false, index }: MarqueeScrollProps) {
+    const duration = (5.5 + index) * items.length; // Randomize duration based on number of items
 
     const scrollItems = items.map((item) => <ShowcaseItem key={item.id} item={item} />);
 

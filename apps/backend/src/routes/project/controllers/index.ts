@@ -230,20 +230,17 @@ function homePageProjects_CacheKey(count: number) {
     return `homepage-carousel-projects:${count}`;
 }
 
-export async function getHomePageCarouselProjects(userSession: ContextUserData | undefined, count: number) {
-    let projectsCount = 20;
-    if (isNumber(count) && count > 0 && count <= 100) {
-        projectsCount = count;
-    }
+export async function getHomePageCarouselProjects(userSession: ContextUserData | undefined) {
+    const projectsCount = 30;
 
-    const cache = await valkey.get(homePageProjects_CacheKey(count));
+    const cache = await valkey.get(homePageProjects_CacheKey(projectsCount));
     const cachedData = await parseJson<ProjectListItem[]>(cache);
     if (cachedData) {
         return { data: cachedData, status: HTTP_STATUS.OK };
     }
 
-    const randomProjects_count = Math.floor(projectsCount / 2);
-    const trendingProjects_count = projectsCount - randomProjects_count;
+    const trendingProjects_count = Math.floor(projectsCount / 3);
+    const randomProjects_count = projectsCount - trendingProjects_count;
 
     const index = meilisearch.index(MEILISEARCH_PROJECT_INDEX);
     const result = await index.search(undefined, {
@@ -252,9 +249,9 @@ export async function getHomePageCarouselProjects(userSession: ContextUserData |
     });
 
     const alreadyAddedIds = new Set<string>();
-    const projectsList: ProjectListItem[] = [];
+    const formattedTrendingProjects: ProjectListItem[] = [];
     for (const project of result.hits as ProjectSearchDocument[]) {
-        projectsList.push(mapSearchProjectToListItem(project));
+        formattedTrendingProjects.push(mapSearchProjectToListItem(project));
         alreadyAddedIds.add(project.id);
     }
 
@@ -274,11 +271,17 @@ export async function getHomePageCarouselProjects(userSession: ContextUserData |
         if (randomProjects_IDs.length >= randomProjects_count) break; // Limit to randomProjects_count
     }
 
-    const reandomProjects_details = await getManyProjects(userSession, randomProjects_IDs);
-    if (reandomProjects_details.data.length > 0) {
-        projectsList.push(...reandomProjects_details.data);
+    const projectsList: ProjectListItem[] = [];
+
+    const randomProjects_details = await getManyProjects(userSession, randomProjects_IDs);
+    if (randomProjects_details.data.length > 0) {
+        projectsList.push(...randomProjects_details.data);
     }
 
-    await valkey.set(homePageProjects_CacheKey(count), JSON.stringify(projectsList), "EX", 600);
+    if (formattedTrendingProjects.length > 0) {
+        projectsList.push(...formattedTrendingProjects);
+    }
+
+    await valkey.set(homePageProjects_CacheKey(projectsCount), JSON.stringify(projectsList), "EX", 600);
     return { data: projectsList, status: HTTP_STATUS.OK };
 }
