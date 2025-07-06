@@ -146,8 +146,6 @@ export default function HomePage({ projects }: Props) {
 }
 
 function ShowCase({ projects }: { projects: ProjectListItem[] }) {
-    console.log("Rendering showcase with", projects.length, "projects");
-
     const rows = useMemo(() => {
         if (!projects || projects.length === 0) return [];
 
