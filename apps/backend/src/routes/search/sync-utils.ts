@@ -7,12 +7,12 @@ import meilisearch from "~/services/meilisearch";
 import prisma from "~/services/prisma";
 import { projectGalleryFileUrl, projectIconUrl } from "~/utils/urls";
 
-export const projectSearchNamespace = "projects";
+export const MEILISEARCH_PROJECT_INDEX = "projects";
 const SYNC_BATCH_SIZE = 1000;
 
 export async function InitialiseSearchDb() {
     try {
-        const index = meilisearch.index(projectSearchNamespace);
+        const index = meilisearch.index(MEILISEARCH_PROJECT_INDEX);
 
         // Setup the search index
         await AwaitEnqueuedTasks([
@@ -71,7 +71,7 @@ export interface ProjectSearchDocument {
 
 async function _SyncBatch(cursor: null | string) {
     try {
-        const index = meilisearch.index(projectSearchNamespace);
+        const index = meilisearch.index(MEILISEARCH_PROJECT_INDEX);
 
         const _Projects_Ids_Res = await prisma.project.findMany({
             where: {

@@ -1,6 +1,6 @@
 import { projectTypes } from "@app/utils/config/project";
 import { GetMany_ProjectsVersions } from "~/db/version_item";
-import { type ProjectSearchDocument, projectSearchNamespace } from "~/routes/search/sync-utils";
+import { MEILISEARCH_PROJECT_INDEX, type ProjectSearchDocument } from "~/routes/search/sync-utils";
 import meilisearch from "~/services/meilisearch";
 import { getFileFromLocalStorage, saveFileToLocalStorage } from "~/services/storage/local";
 import env from "~/utils/env";
@@ -25,7 +25,7 @@ export async function generateSitemap() {
     if (isGenerating) return;
     isGenerating = true;
     try {
-        const index = meilisearch.index(projectSearchNamespace);
+        const index = meilisearch.index(MEILISEARCH_PROJECT_INDEX);
         const res = await index.search(null);
         if (res.estimatedTotalHits === 0) {
             startupTries -= 1;
@@ -134,7 +134,7 @@ async function generateXml(projects: ProjectSearchDocument[]) {
 }
 
 async function getProjects(offset: number): Promise<ProjectSearchDocument[]> {
-    const index = meilisearch.index(projectSearchNamespace);
+    const index = meilisearch.index(MEILISEARCH_PROJECT_INDEX);
 
     const result = await index.search(null, {
         sort: ["downloads:desc"],

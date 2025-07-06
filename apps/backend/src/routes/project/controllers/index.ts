@@ -12,7 +12,7 @@ import type { ProjectDetailsData, ProjectListItem } from "@app/utils/types/api";
 import type { TeamMember as DBTeamMember } from "@prisma/client";
 import { GetManyProjects_ListItem, GetProject_Details, GetProject_ListItem } from "~/db/project_item";
 import { mapSearchProjectToListItem } from "~/routes/search/_helpers";
-import { type ProjectSearchDocument, projectSearchNamespace } from "~/routes/search/sync-utils";
+import { MEILISEARCH_PROJECT_INDEX, type ProjectSearchDocument } from "~/routes/search/sync-utils";
 import meilisearch from "~/services/meilisearch";
 import prisma from "~/services/prisma";
 import valkey from "~/services/redis";
@@ -256,7 +256,7 @@ export async function getHomePageCarouselProjects(userSession: ContextUserData |
     const idsArray = randomProjects?.map((project) => project.id);
     const reandomProjects_details = await getManyProjects(userSession, idsArray);
 
-    const index = meilisearch.index(projectSearchNamespace);
+    const index = meilisearch.index(MEILISEARCH_PROJECT_INDEX);
     const result = await index.search(undefined, {
         sort: ["recentDownloads:desc"],
         limit: trendingProjects_count,

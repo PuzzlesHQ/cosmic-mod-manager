@@ -3,7 +3,7 @@ import type { ProjectListItem } from "@app/utils/types/api";
 import meilisearch from "~/services/meilisearch";
 import { HTTP_STATUS, invalidReqestResponseData } from "~/utils/http";
 import { mapSearchProjectToListItem } from "../_helpers";
-import { type ProjectSearchDocument, projectSearchNamespace } from "../sync-utils";
+import { MEILISEARCH_PROJECT_INDEX, type ProjectSearchDocument } from "../sync-utils";
 
 interface Props {
     query: string;
@@ -77,7 +77,7 @@ export async function searchProjects(props: Props) {
     if (props.type) filters.push(formatFilterItems("type", [props.type], " OR "));
     if (props.openSourceOnly) filters.push(formatFilterItems("openSource", [props.openSourceOnly], " AND "));
 
-    const index = meilisearch.index(projectSearchNamespace);
+    const index = meilisearch.index(MEILISEARCH_PROJECT_INDEX);
     const result = await index.search(props.query, {
         sort: sortBy ? [sortBy] : [],
         limit: props.limit,
