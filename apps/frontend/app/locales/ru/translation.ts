@@ -284,9 +284,9 @@ export default {
             return `${project} не поддерживает версию ${version} для ${loader}`;
         },
         downloadProject: (project: string) => `Скачать ${project}`,
-        gameVersion: "Версия игры:",
+        gameVersion: (version) => ["Версия игры: ", version],
         selectGameVersion: "Выберите версию игры",
-        platform: "Платформа:",
+        platform: (loader) => ["Платформа: ", loader],
         selectPlatform: "Выберите платформу",
         onlyAvailableFor: (project: string, platform: string) => `${project} доступен только для ${platform}`,
         noVersionsAvailableFor: (gameVersion: string, loader: string) => `Версий не найдено для ${gameVersion} на ${loader}`,

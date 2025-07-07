@@ -312,9 +312,9 @@ export default {
             return `${project} does not support ${version} for ${loader}`;
         },
         downloadProject: (project: string) => `Download ${project}`,
-        gameVersion: "Game version:",
+        gameVersion: (version: React.ReactNode) => ["Game version: ", version],
         selectGameVersion: "Select game version",
-        platform: "Platform:",
+        platform: (loader: React.ReactNode) => ["Platform: ", loader],
         selectPlatform: "Select platform",
         onlyAvailableFor: (project: string, platform: string) => `${project} is only available for ${platform}`,
         noVersionsAvailableFor: (gameVersion: string, loader: string) => `No versions available for ${gameVersion} on ${loader}`,

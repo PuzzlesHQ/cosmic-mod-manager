@@ -278,9 +278,9 @@ export default {
             return `${project} no es compatible con la versión ${version} de ${loader}`;
         },
         downloadProject: (project: string) => `Descargar ${project}`,
-        gameVersion: "Versión del juego:",
+        gameVersion: (version) => ["Versión del juego: ", version],
         selectGameVersion: "Seleccionar versión del juego",
-        platform: "Plataforma:",
+        platform: (loader) => ["Plataforma: ", loader],
         selectPlatform: "Seleccionar plataforma",
         onlyAvailableFor: (project: string, platform: string) => `${project} solo está disponible para ${platform}`,
         noVersionsAvailableFor: (gameVersion: string, loader: string) =>

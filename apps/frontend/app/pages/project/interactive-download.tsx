@@ -180,16 +180,13 @@ export default function InteractiveDownloadPopup() {
                             <span className="flex items-center justify-start gap-2 font-medium">
                                 <Gamepad2Icon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                                 <span className="text-muted-foreground">
-                                    {selectedGameVersion ? (
-                                        <>
-                                            {t.project.gameVersion}{" "}
-                                            <em className="text-foreground/90 not-italic">
-                                                {getGameVersionFromValue(selectedGameVersion)?.label}
-                                            </em>
-                                        </>
-                                    ) : (
-                                        t.project.selectGameVersion
-                                    )}
+                                    {selectedGameVersion
+                                        ? t.project.gameVersion(
+                                              <em key="download-game-version" className="text-foreground/90 not-italic">
+                                                  {getGameVersionFromValue(selectedGameVersion)?.label}
+                                              </em>,
+                                          )
+                                        : t.project.selectGameVersion}
                                 </span>
                             </span>
                             <ChevronsUpDownIcon aria-hidden className="ms-2 h-4 w-4 shrink-0" />
@@ -213,16 +210,13 @@ export default function InteractiveDownloadPopup() {
                                 <span className="flex items-center justify-start gap-2 font-medium">
                                     <WrenchIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                                     <span className="text-muted-foreground">
-                                        {selectedLoader ? (
-                                            <>
-                                                {t.project.platform}{" "}
-                                                <em className="text-foreground/90 not-italic">
-                                                    {CapitalizeAndFormatString(selectedLoader)}
-                                                </em>
-                                            </>
-                                        ) : (
-                                            t.project.selectPlatform
-                                        )}
+                                        {selectedLoader
+                                            ? t.project.platform(
+                                                  <em key="download-version-loader" className="text-foreground/90 not-italic">
+                                                      {CapitalizeAndFormatString(selectedLoader)}
+                                                  </em>,
+                                              )
+                                            : t.project.selectPlatform}
                                     </span>
                                 </span>
                                 <ChevronsUpDownIcon aria-hidden className="ms-2 h-4 w-4 shrink-0" />

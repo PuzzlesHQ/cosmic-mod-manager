@@ -279,9 +279,9 @@ export default {
             return `${project}の${version}は${loader}をサポートしていません`;
         },
         downloadProject: (project: string) => `${project}をダウンロード`,
-        gameVersion: "ゲームのバージョン：",
+        gameVersion: (version) => ["ゲームのバージョン：", version],
         selectGameVersion: "ゲームのバージョンを選択",
-        platform: "プラットフォーム：",
+        platform: (loader) => ["プラットフォーム：", loader],
         selectPlatform: "プラットフォームを選択",
         onlyAvailableFor: (project: string, platform: string) => `${project}は${platform}のみで利用可能です`,
         noVersionsAvailableFor: (gameVersion: string, loader: string) =>
