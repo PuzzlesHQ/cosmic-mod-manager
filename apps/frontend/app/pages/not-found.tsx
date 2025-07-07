@@ -17,13 +17,13 @@ export default function NotFoundPage({ className, title, description, linkHref, 
     const { t } = useTranslation();
 
     return (
-        <div className={cn("w-full full_page flex flex-col items-center justify-center", className)}>
-            <div className="w-full flex flex-col items-center justify-center">
-                <h1 className="w-full text-5xl leading-snug font-extrabold flex items-center justify-center text-center">
+        <div className={cn("full_page flex w-full flex-col items-center justify-center", className)}>
+            <div className="flex w-full flex-col items-center justify-center">
+                <h1 className="flex w-full items-center justify-center text-center font-extrabold text-5xl leading-snug">
                     {title || t.error.pageNotFound}
                 </h1>
             </div>
-            <p className="text-lg dark:text-muted-foreground max-w-xl flex items-center justify-center text-center">
+            <p className="flex max-w-xl items-center justify-center text-center text-lg dark:text-muted-foreground">
                 {description || t.error.pageNotFoundDesc}
             </p>
 

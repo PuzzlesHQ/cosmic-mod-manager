@@ -21,7 +21,7 @@ export default function NotificationsHistoryPage({
 
     return (
         <Card className="w-full">
-            <CardHeader className="w-full flex flex-col gap-4">
+            <CardHeader className="flex w-full flex-col gap-4">
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>

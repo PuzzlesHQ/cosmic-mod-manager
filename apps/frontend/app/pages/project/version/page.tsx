@@ -59,7 +59,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
 
     return (
         <>
-            <Card className="w-full flex flex-col items-start justify-start p-card-surround gap-4">
+            <Card className="flex w-full flex-col items-start justify-start gap-4 p-card-surround">
                 <Breadcrumb>
                     <BreadcrumbList className="flex items-center">
                         <BreadcrumbItem>
@@ -76,11 +76,11 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                     </BreadcrumbList>
                 </Breadcrumb>
 
-                <div className="w-full flex flex-wrap items-center justify-start gap-x-4">
-                    <h1 className="text-2xl font-[700] text-foreground leading-tight">{versionData.title}</h1>
+                <div className="flex w-full flex-wrap items-center justify-start gap-x-4">
+                    <h1 className="font-[700] text-2xl text-foreground leading-tight">{versionData.title}</h1>
                     {versionData.featured ? (
                         <span className="flex items-center justify-center gap-1 text-extra-muted-foreground italic">
-                            <StarIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                            <StarIcon aria-hidden className="h-btn-icon w-btn-icon" />
                             {t.version.featured}
                         </span>
                     ) : null}
@@ -96,7 +96,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                                     onClick={showDownloadAnimation}
                                     rel="nofollow noindex"
                                 >
-                                    <DownloadIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                    <DownloadIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                     {t.common.download}
                                 </VariantButtonLink>
                             </TooltipTrigger>
@@ -120,7 +120,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                             url={VersionPagePath(ctx.projectType, ctx.projectData.slug, versionData.slug, "edit")}
                             prefetch={Prefetch.Render}
                         >
-                            <Edit3Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                            <Edit3Icon aria-hidden className="h-btn-icon w-btn-icon" />
                             {t.form.edit}
                         </VariantButtonLink>
                     ) : null}
@@ -142,8 +142,8 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                 </div>
             </Card>
 
-            <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_min-content] gap-panel-cards items-start justify-start">
-                <div className="overflow-auto flex flex-col gap-panel-cards items-start justify-start">
+            <div className="grid w-full grid-cols-1 items-start justify-start gap-panel-cards lg:grid-cols-[1fr_min-content]">
+                <div className="flex flex-col items-start justify-start gap-panel-cards overflow-auto">
                     {versionData.changelog?.length ? (
                         <ContentCardTemplate title={t.project.changelog}>
                             <MarkdownRenderBox text={versionData.changelog} />
@@ -175,7 +175,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                                     <Link
                                         to={redirectUrl}
                                         key={`${dependencyProject.id}-${dependencyVersion?.id}`}
-                                        className="bg_hover_stagger w-full flex items-center justify-start gap-3 text-muted-foreground hover:bg-background/75 cursor-pointer p-2 rounded-lg "
+                                        className="bg_hover_stagger flex w-full cursor-pointer items-center justify-start gap-3 rounded-lg p-2 text-muted-foreground hover:bg-background/75 "
                                     >
                                         <ImgWrapper
                                             vtId={dependencyProject.id}
@@ -233,8 +233,8 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                     </ContentCardTemplate>
                 </div>
 
-                <Card className="p-card-surround grid grid-cols-1 w-full sm:min-w-[19rem] text-muted-foreground gap-3">
-                    <h3 className="text-lg font-bold text-foreground">{t.version.metadata}</h3>
+                <Card className="grid w-full grid-cols-1 gap-3 p-card-surround text-muted-foreground sm:min-w-[19rem]">
+                    <h3 className="font-bold text-foreground text-lg">{t.version.metadata}</h3>
                     <div className="grid grid-cols-1 gap-5">
                         {[
                             {
@@ -256,7 +256,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                             {
                                 label: t.search.gameVersions,
                                 content: (
-                                    <span className="flex items-center gap-1 flex-wrap">
+                                    <span className="flex flex-wrap items-center gap-1">
                                         {formatVersionsForDisplay_noOmit(versionData.gameVersions).map((ver) => {
                                             return (
                                                 <Chip key={ver} className="text-muted-foreground">
@@ -303,7 +303,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                             if (!item.content) return null;
 
                             return (
-                                <div key={item.label} className="w-full flex flex-col items-start justify-start gap-1.5">
+                                <div key={item.label} className="flex w-full flex-col items-start justify-start gap-1.5">
                                     <span className="font-bold leading-none">{item.label}</span>
                                     {item.content}
                                 </div>
@@ -342,7 +342,7 @@ function FileDetailsItem({
             <ContextMenuTrigger asChild>
                 <div
                     className={cn(
-                        "w-full flex flex-wrap sm:flex-nowrap items-center justify-between rounded px-4 py-2.5 pe-3 gap-x-4 gap-y-2 cursor-context-menu",
+                        "flex w-full cursor-context-menu flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded px-4 py-2.5 pe-3 sm:flex-nowrap",
                         isPrimary ? "bg-shallow-background" : "bg-shallow-background/70",
                     )}
                 >
@@ -350,43 +350,43 @@ function FileDetailsItem({
                         <FileIcon
                             aria-hidden
                             className={cn(
-                                "inline me-1.5 flex-shrink-0 w-btn-icon h-btn-icon text-muted-foreground",
+                                "me-1.5 inline h-btn-icon w-btn-icon flex-shrink-0 text-muted-foreground",
                                 !isPrimary && "text-extra-muted-foreground",
                             )}
                         />
 
                         <span className={!isPrimary ? "text-muted-foreground" : ""}>
                             <strong className="font-semibold">{fileName}</strong>{" "}
-                            <span className="whitespace-nowrap ms-0.5">({parseFileSize(fileSize)})</span>{" "}
-                            {isPrimary ? <span className="text-muted-foreground italic ms-1">{t.version.primary}</span> : null}
+                            <span className="ms-0.5 whitespace-nowrap">({parseFileSize(fileSize)})</span>{" "}
+                            {isPrimary ? <span className="ms-1 text-muted-foreground italic">{t.version.primary}</span> : null}
                         </span>
                     </div>
 
                     <VariantButtonLink
                         variant={isPrimary ? "secondary-dark" : "ghost"}
                         url={downloadLink}
-                        className={cn(!isPrimary && "hover:bg-transparent dark:hover:bg-transparent hover:text-foreground")}
+                        className={cn(!isPrimary && "hover:bg-transparent hover:text-foreground dark:hover:bg-transparent")}
                         onClick={showDownloadAnimation}
                         rel="nofollow noindex"
                     >
-                        <DownloadIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                        <DownloadIcon aria-hidden className="h-btn-icon w-btn-icon" />
                         {t.common.download}
                     </VariantButtonLink>
                 </div>
             </ContextMenuTrigger>
             <ContextMenuContent>
                 <ContextMenuItem className="flex gap-2" onClick={() => copyTextToClipboard(sha1_hash)}>
-                    <CopyIcon aria-hidden className="w-btn-icon-sm h-btn-icon-sm text-extra-muted-foreground" />
+                    <CopyIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm text-extra-muted-foreground" />
                     {t.version.copySha1}
                 </ContextMenuItem>
 
                 <ContextMenuItem className="flex gap-2" onClick={() => copyTextToClipboard(sha512_hash)}>
-                    <CopyIcon aria-hidden className="w-btn-icon-sm h-btn-icon-sm text-extra-muted-foreground" />
+                    <CopyIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm text-extra-muted-foreground" />
                     {t.version.copySha512}
                 </ContextMenuItem>
 
                 <ContextMenuItem className="flex gap-2" onClick={() => copyTextToClipboard(downloadLink)}>
-                    <LinkIcon aria-hidden className="w-btn-icon-sm h-btn-icon-sm text-extra-muted-foreground" />
+                    <LinkIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm text-extra-muted-foreground" />
                     {t.version.copyFileUrl}
                 </ContextMenuItem>
             </ContextMenuContent>

@@ -102,7 +102,7 @@ export default function GeneralOrgSettings() {
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(saveSettings)}
-                        className="w-full flex flex-col items-start justify-start gap-form-elements"
+                        className="flex w-full flex-col items-start justify-start gap-form-elements"
                     >
                         <FormField
                             control={form.control}
@@ -142,7 +142,7 @@ export default function GeneralOrgSettings() {
                                         {t.form.url}
                                         <CharacterCounter currVal={field.value} max={MAX_ORGANISATION_NAME_LENGTH} />
                                     </FormLabel>
-                                    <div className="w-full flex flex-col items-start justify-center gap-0.5">
+                                    <div className="flex w-full flex-col items-start justify-center gap-0.5">
                                         <Input
                                             {...field}
                                             onChange={(e) => {
@@ -152,9 +152,9 @@ export default function GeneralOrgSettings() {
                                             id="org-slug-input"
                                             autoComplete="off"
                                         />
-                                        <span className="text-sm lg:text-base text-muted-foreground px-1">
+                                        <span className="px-1 text-muted-foreground text-sm lg:text-base">
                                             {Config.FRONTEND_URL}/organization/
-                                            <em className="not-italic text-foreground font-[500]">{form.getValues().slug}</em>
+                                            <em className="font-[500] text-foreground not-italic">{form.getValues().slug}</em>
                                         </span>
                                     </div>
                                     <FormMessage />
@@ -173,7 +173,7 @@ export default function GeneralOrgSettings() {
                                     </FormLabel>
                                     <Textarea
                                         {...field}
-                                        className="resize-none md:w-[48ch] min-h-32"
+                                        className="min-h-32 resize-none md:w-[48ch]"
                                         spellCheck="false"
                                         id="org-description-input"
                                     />
@@ -182,7 +182,7 @@ export default function GeneralOrgSettings() {
                             )}
                         />
 
-                        <div className="w-full flex items-center justify-end mt-2">
+                        <div className="mt-2 flex w-full items-center justify-end">
                             <Button
                                 type="submit"
                                 disabled={JSON.stringify(initialValues) === JSON.stringify(form.getValues()) || isLoading}
@@ -190,7 +190,7 @@ export default function GeneralOrgSettings() {
                                 {isLoading ? (
                                     <LoadingSpinner size="xs" />
                                 ) : (
-                                    <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                    <SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                 )}
                                 {t.form.saveChanges}
                             </Button>
@@ -244,13 +244,13 @@ function DeleteOrgDialog({ name, slug }: { name: string; slug: string }) {
     }
 
     return (
-        <ContentCardTemplate title={t.organization.deleteOrg} className="w-full flex-row flex flex-wrap gap-4 justify-between">
-            <p className="text-muted-foreground max-w-[65ch]">{t.organization.deleteOrgDesc}</p>
+        <ContentCardTemplate title={t.organization.deleteOrg} className="flex w-full flex-row flex-wrap justify-between gap-4">
+            <p className="max-w-[65ch] text-muted-foreground">{t.organization.deleteOrgDesc}</p>
 
             <Dialog>
                 <DialogTrigger asChild>
                     <Button variant="destructive">
-                        <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                        <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
                         {t.organization.deleteOrg}
                     </Button>
                 </DialogTrigger>
@@ -261,10 +261,10 @@ function DeleteOrgDialog({ name, slug }: { name: string; slug: string }) {
                             <DialogDescription>{t.organization.deleteOrgNamed(name)}</DialogDescription>
                         </VisuallyHidden>
                     </DialogHeader>
-                    <DialogBody className="text-muted-foreground flex flex-col gap-4">
+                    <DialogBody className="flex flex-col gap-4 text-muted-foreground">
                         <p className="leading-snug">{t.organization.deletionWarning}</p>
 
-                        <div className="w-full flex flex-col gap-1">
+                        <div className="flex w-full flex-col gap-1">
                             <MarkdownRenderBox text={t.projectSettings.typeToVerify(name)} divElem />
 
                             <Input
@@ -287,7 +287,7 @@ function DeleteOrgDialog({ name, slug }: { name: string; slug: string }) {
                                 {isLoading ? (
                                     <LoadingSpinner size="xs" />
                                 ) : (
-                                    <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                                    <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
                                 )}
                                 {t.organization.deleteOrg}
                             </Button>

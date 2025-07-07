@@ -58,22 +58,22 @@ export default function InviteMemberForm({ teamId, canInviteMembers, dataRefetch
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(inviteMember)} className="w-full flex flex-col gap-2">
-                <div className="w-full flex flex-col gap-1.5">
-                    <h3 className="leading-none text-lg font-bold">{t.projectSettings.inviteMember}</h3>
-                    <span className="leading-none text-muted-foreground">{inviteDesc}</span>
+            <form onSubmit={form.handleSubmit(inviteMember)} className="flex w-full flex-col gap-2">
+                <div className="flex w-full flex-col gap-1.5">
+                    <h3 className="font-bold text-lg leading-none">{t.projectSettings.inviteMember}</h3>
+                    <span className="text-muted-foreground leading-none">{inviteDesc}</span>
                 </div>
 
                 <FormField
                     control={form.control}
                     name="userName"
                     render={({ field }) => (
-                        <FormItem className="w-fit mb-0">
+                        <FormItem className="mb-0 w-fit">
                             <FormLabel htmlFor="username-input">
                                 <FormMessage />
                             </FormLabel>
 
-                            <div className="w-full flex flex-wrap gap-x-4 gap-y-2">
+                            <div className="flex w-full flex-wrap gap-x-4 gap-y-2">
                                 <Input
                                     {...field}
                                     className="w-full md:w-[32ch]"
@@ -84,7 +84,7 @@ export default function InviteMemberForm({ teamId, canInviteMembers, dataRefetch
                                     {isLoading ? (
                                         <LoadingSpinner size="xs" />
                                     ) : (
-                                        <UserPlusIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" strokeWidth={2.25} />
+                                        <UserPlusIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" strokeWidth={2.25} />
                                     )}
                                     {t.projectSettings.invite}
                                 </Button>

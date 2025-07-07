@@ -50,7 +50,7 @@ export default function ProjectMemberSettingsPage({ userOrgs }: Props) {
 
     return (
         <>
-            <Card className="w-full flex flex-col p-card-surround gap-4">
+            <Card className="flex w-full flex-col gap-4 p-card-surround">
                 <CardTitle>{t.projectSettings.manageMembers}</CardTitle>
                 <InviteMemberForm
                     teamId={projectData.teamId}
@@ -129,11 +129,11 @@ export function LeaveTeam({ currUsersMembership, teamId, refreshData, isOrgTeam 
 
     return (
         <div
-            className="w-full flex flex-wrap items-center justify-between gap-x-6 gap-y-2"
+            className="flex w-full flex-wrap items-center justify-between gap-x-6 gap-y-2"
             title={disabled && disabledReason ? disabledReason : undefined}
         >
             <div>
-                <h2 className="text-lg font-semibold">{leaveTeamMsg}</h2>
+                <h2 className="font-semibold text-lg">{leaveTeamMsg}</h2>
                 <p className="text-muted-foreground">{leaveTeamDesc}</p>
             </div>
 
@@ -142,11 +142,11 @@ export function LeaveTeam({ currUsersMembership, teamId, refreshData, isOrgTeam 
                 description={t.projectSettings.sureToLeaveTeam}
                 confirmText={leaveTeamMsg}
                 onConfirm={handleLeaveProject}
-                confirmIcon={<UserXIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" strokeWidth={2.5} />}
+                confirmIcon={<UserXIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" strokeWidth={2.5} />}
                 variant="destructive"
             >
                 <Button variant="secondary-destructive" disabled={disabled}>
-                    <UserXIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" strokeWidth={2.5} />
+                    <UserXIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" strokeWidth={2.5} />
                     {leaveTeamMsg}
                 </Button>
             </ConfirmDialog>

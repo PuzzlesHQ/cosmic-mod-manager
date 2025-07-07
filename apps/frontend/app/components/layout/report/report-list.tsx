@@ -27,7 +27,7 @@ export default function ReportList(props: Props) {
     }, [props.data.reports]);
 
     return (
-        <div className="w-full grid gap-panel-cards">
+        <div className="grid w-full gap-panel-cards">
             {detailedReports.map((report) => (
                 <ReportInfo key={report.id} report={report} />
             ))}
@@ -47,18 +47,18 @@ export function ReportInfo(props: ReportInfoProps) {
     const reporter = props.report.reporterUser;
 
     return (
-        <div className="w-full grid gap-2 bg-background p-card-surround rounded-lg text-muted-foreground group/report-item">
-            <div className="flex items-center justify-between gap-x-3 gap-y-1 flex-wrap">
+        <div className="group/report-item grid w-full gap-2 rounded-lg bg-background p-card-surround text-muted-foreground">
+            <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
                 <ReportedItem report={props.report} />
 
-                <div className="flex gap-2 items-center">
+                <div className="flex items-center gap-2">
                     {props.report.closed && (
                         <Badge
                             variant="destructive"
                             className="flex items-center justify-center gap-0.5"
                             title={t.report.status(t.common.closed).join("")}
                         >
-                            <LockKeyholeIcon className="w-3 h-3" strokeWidth={2.5} />
+                            <LockKeyholeIcon className="h-3 w-3" strokeWidth={2.5} />
                             {t.common.closed}
                         </Badge>
                     )}
@@ -71,7 +71,7 @@ export function ReportInfo(props: ReportInfoProps) {
                 </div>
             </div>
 
-            <div className="flex items-center gap-x-space flex-wrap">
+            <div className="flex flex-wrap items-center gap-x-space">
                 {t.report.reportedBy(
                     props.report.reporter === session?.id ? (
                         t.common.you
@@ -79,13 +79,13 @@ export function ReportInfo(props: ReportInfoProps) {
                         <Link
                             key="reporter-user"
                             to={UserProfilePath(reporter.userName)}
-                            className="w-fit inline-flex items-center justify-center gap-space group/profile-link"
+                            className="group/profile-link inline-flex w-fit items-center justify-center gap-space"
                         >
                             <ImgWrapper
                                 alt={reporter.userName}
                                 src={reporter.avatar}
                                 fallback={fallbackUserIcon}
-                                className="w-5 h-5 rounded-full"
+                                className="h-5 w-5 rounded-full"
                             />
 
                             <span className="font-medium group-hover/profile-link:underline">{reporter.userName}</span>
@@ -95,7 +95,7 @@ export function ReportInfo(props: ReportInfoProps) {
 
                 <TooltipProvider>
                     <TooltipTemplate content={<FormattedDate date={props.report.createdAt} />}>
-                        <span className="text-extra-muted-foreground cursor-help">
+                        <span className="cursor-help text-extra-muted-foreground">
                             <TimePassedSince date={props.report.createdAt} />
                         </span>
                     </TooltipTemplate>
@@ -107,7 +107,7 @@ export function ReportInfo(props: ReportInfoProps) {
                         className="ms-auto flex items-center justify-center gap-space"
                     >
                         {t.report.viewReport}
-                        <ChevronRightIcon className="w-btn-icon-md h-btn-icon-md" />
+                        <ChevronRightIcon className="h-btn-icon-md w-btn-icon-md" />
                     </TextLink>
                 )}
             </div>
@@ -120,7 +120,7 @@ function ReportedItem({ report }: { report: DetailedReport }) {
 
     function NotFoundMsg({ msg }: { msg: string }) {
         return (
-            <span className="w-fit flex items-center justify-center gap-2">
+            <span className="flex w-fit items-center justify-center gap-2">
                 {msg}: <CopyBtn id={report.itemId} text={report.itemId} label={report.itemId} />
             </span>
         );
@@ -159,7 +159,7 @@ function ReportedItem({ report }: { report: DetailedReport }) {
                     url={VersionPagePath("project", version.projectId, version.id)}
                     imgAlt={version.title}
                     icon={null}
-                    fallback={<GitCommitHorizontalIcon className="w-[100%] h-[100%] text-extra-muted-foreground" />}
+                    fallback={<GitCommitHorizontalIcon className="h-[100%] w-[100%] text-extra-muted-foreground" />}
                     itemTitle={version.title}
                     itemType={report.itemType}
                     itemType_translated={t.version.version}
@@ -205,12 +205,12 @@ function ReportedItem_Comp(props: ReportedItem_CompProps) {
     const { t } = useTranslation();
 
     return (
-        <Link to={props.url} className="w-fit flex items-center justify-center gap-2 group/item-link">
+        <Link to={props.url} className="group/item-link flex w-fit items-center justify-center gap-2">
             <ImgWrapper
                 alt={props.imgAlt}
                 src={props.icon}
                 fallback={props.fallback}
-                className={cn("w-10 h-10 bg-card-background", props.itemType === ReportItemType.USER && "rounded-full")}
+                className={cn("h-10 w-10 bg-card-background", props.itemType === ReportItemType.USER && "rounded-full")}
             />
 
             <span className="font-bold group-hover/item-link:underline">{props.itemTitle}</span>

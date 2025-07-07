@@ -49,7 +49,7 @@ export default function ChangePasswordPage() {
     }
 
     return (
-        <main className="full_page w-full flex items-center justify-center">
+        <main className="full_page flex w-full items-center justify-center">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(sendAccountPasswordChangeEmail)} className="w-full max-w-md">
                     <Card className="w-full">
@@ -80,13 +80,13 @@ export default function ChangePasswordPage() {
                                 {isLoading ? (
                                     <LoadingSpinner size="xs" />
                                 ) : (
-                                    <ArrowRightIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                                    <ArrowRightIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                                 )}
                                 {t.form.continue}
                             </Button>
                         </CardContent>
 
-                        <CardFooter className="w-full flex flex-col gap-1 items-center justify-center">
+                        <CardFooter className="flex w-full flex-col items-center justify-center gap-1">
                             <HorizontalSeparator />
 
                             <TextLink prefetch={Prefetch.Render} to="/login">

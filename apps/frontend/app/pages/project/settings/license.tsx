@@ -113,9 +113,9 @@ export default function LicenseSettingsPage() {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(updateLicense)} className="w-full">
-                <Card className="w-full p-card-surround flex flex-col gap-4">
+                <Card className="flex w-full flex-col gap-4 p-card-surround">
                     <CardTitle>{t.search.license}</CardTitle>
-                    <div className="w-full flex flex-col md:flex-row items-start justify-between gap-x-6 gap-y-2">
+                    <div className="flex w-full flex-col items-start justify-between gap-x-6 gap-y-2 md:flex-row">
                         <MarkdownRenderBox
                             divElem
                             text={`
@@ -124,7 +124,7 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
 `}
                         />
 
-                        <div className="w-full md:w-[52ch] min-w-[32ch] flex flex-col items-start justify-start">
+                        <div className="flex w-full min-w-[32ch] flex-col items-start justify-start md:w-[52ch]">
                             <FormField
                                 control={form.control}
                                 name="id"
@@ -150,7 +150,7 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                                     {isCustomLicense
                                                         ? t.projectSettings.custom
                                                         : selectedFeaturedLicense?.name || t.projectSettings.selectLicense}
-                                                    <ChevronDownIcon aria-hidden className="w-btn-icon h-btn-icon shrink-0" />
+                                                    <ChevronDownIcon aria-hidden className="h-btn-icon w-btn-icon shrink-0" />
                                                 </Button>
                                             </ComboBox>
                                         </FormItem>
@@ -218,7 +218,7 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                         {form.formState.isSubmitting ? (
                             <LoadingSpinner size="xs" />
                         ) : (
-                            <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                            <SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
                         )}
                         {t.form.saveChanges}
                     </Button>

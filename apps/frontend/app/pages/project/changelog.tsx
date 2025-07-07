@@ -47,7 +47,7 @@ export default function VersionChangelogs() {
         <>
             {filter.component}
 
-            <Card className="p-5 w-full flex flex-col items-start justify-start">
+            <Card className="flex w-full flex-col items-start justify-start p-5">
                 {visibleVersionItems.map((version, index) => {
                     const nextVersion = visibleVersionItems[index + 1];
                     const isDuplicate =
@@ -57,9 +57,9 @@ export default function VersionChangelogs() {
                         version.releaseChannel === nextVersion.releaseChannel;
 
                     return (
-                        <div key={version.id} className="w-full ps-7 mb-4 relative dark:text-muted-foreground">
-                            <div className="w-full flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
-                                <div className="flex flex-wrap gap-x-1.5 items-baseline justify-start">
+                        <div key={version.id} className="relative mb-4 w-full ps-7 dark:text-muted-foreground">
+                            <div className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-1">
+                                <div className="flex flex-wrap items-baseline justify-start gap-x-1.5">
                                     <ChangelogBar releaseChannel={version.releaseChannel} isDuplicate={isDuplicate === true} />
 
                                     {version.releaseChannel === VersionReleaseChannel.DEV ? (
@@ -67,7 +67,7 @@ export default function VersionChangelogs() {
                                             <TooltipTemplate content="Dev release!" className="font-normal">
                                                 <FlaskConicalIcon
                                                     aria-hidden
-                                                    className="w-btn-icon-md h-btn-icon-md text-danger-foreground cursor-help"
+                                                    className="h-btn-icon-md w-btn-icon-md cursor-help text-danger-foreground"
                                                 />
                                             </TooltipTemplate>
                                         </TooltipProvider>
@@ -77,7 +77,7 @@ export default function VersionChangelogs() {
                                         <h2 key="version-title" className="leading-tight">
                                             <Link
                                                 to={VersionPagePath(ctx.projectType, ctx.projectData.slug, version.slug)}
-                                                className="text-[1.25rem] font-bold flex items-baseline gap-2"
+                                                className="flex items-baseline gap-2 font-bold text-[1.25rem]"
                                             >
                                                 {version.title}
                                             </Link>
@@ -107,7 +107,7 @@ export default function VersionChangelogs() {
                                         onClick={showDownloadAnimation}
                                         rel="nofollow noindex"
                                     >
-                                        <DownloadIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                        <DownloadIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                         {t.common.download}
                                     </a>
                                 ) : null}
@@ -130,7 +130,7 @@ function ChangelogBar({ releaseChannel, isDuplicate }: { releaseChannel: Version
     return (
         <div
             className={cn(
-                "changelog-bar absolute w-1 h-full top-2.5 start-2 rounded-full",
+                "changelog-bar absolute start-2 top-2.5 h-full w-1 rounded-full",
                 releaseChannel === VersionReleaseChannel.RELEASE
                     ? "text-blue-500 dark:text-blue-400"
                     : releaseChannel === VersionReleaseChannel.BETA
@@ -142,7 +142,7 @@ function ChangelogBar({ releaseChannel, isDuplicate }: { releaseChannel: Version
                 isDuplicate && "duplicate",
             )}
         >
-            <span className="absolute top-0 left-[-0.5rem] w-4 h-4 rounded-full translate-x-[0.125rem] bg-current" />
+            <span className="absolute top-0 left-[-0.5rem] h-4 w-4 translate-x-[0.125rem] rounded-full bg-current" />
         </div>
     );
 }

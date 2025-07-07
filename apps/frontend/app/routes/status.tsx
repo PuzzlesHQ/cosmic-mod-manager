@@ -2,9 +2,9 @@ import MarkdownRenderBox from "~/components/md-renderer";
 
 export default function () {
     return (
-        <main className="grid grid-cols-1 w-full overflow-auto">
+        <main className="grid w-full grid-cols-1 overflow-auto">
             <MarkdownRenderBox
-                className="bg-card-background p-6 pt-0 rounded-lg"
+                className="rounded-lg bg-card-background p-6 pt-0"
                 text={`
 # Services' status
 

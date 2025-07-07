@@ -55,33 +55,33 @@ export default function HomePage({ projects }: Props) {
         <>
             {gridBgPortal
                 ? createPortal(
-                      <div className="overflow-hidden relative grid grid-cols-1 grid-rows-1">
-                          <canvas id="starry_bg_canvas" className="w-full col-span-full row-span-full" />
-                          <div className="hero_section_fading_bg w-full h-full col-span-full row-span-full bg-gradient-to-b from-transparent via-background/65 to-background" />
+                      <div className="relative grid grid-cols-1 grid-rows-1 overflow-hidden">
+                          <canvas id="starry_bg_canvas" className="col-span-full row-span-full w-full" />
+                          <div className="hero_section_fading_bg col-span-full row-span-full h-full w-full bg-gradient-to-b from-transparent via-background/65 to-background" />
                       </div>,
                       gridBgPortal,
                   )
                 : null}
 
-            <main className="w-full hero_section">
-                <section className="w-full flex flex-col items-center justify-center py-28">
+            <main className="hero_section w-full">
+                <section className="flex w-full flex-col items-center justify-center py-28">
                     <div className="p-6">
                         <BrandIcon aria-hidden className="text-accent-foreground" size="15rem" />
                     </div>
 
-                    <div className="w-full max-w-4xl flex flex-col items-center justify-center gap-4">
-                        <h1 className="text-4xl lg:text-6xl font-medium text-foreground inline-flex text-center items-center justify-center gap-x-2.5 lg:gap-x-4 flex-wrap">
+                    <div className="flex w-full max-w-4xl flex-col items-center justify-center gap-4">
+                        <h1 className="inline-flex flex-wrap items-center justify-center gap-x-2.5 text-center font-medium text-4xl text-foreground lg:gap-x-4 lg:text-6xl">
                             {titleParts[0]?.length > 0 && <>{titleParts[0]} </>}
 
-                            <div className="inline-block h-12 lg:h-[4.5rem] mb-1 max-w-full overflow-hidden">
+                            <div className="mb-1 inline-block h-12 max-w-full overflow-hidden lg:h-[4.5rem]">
                                 <span className="hero_section_showcase inline-flex flex-col items-center justify-center [--unit-height:_3rem] lg:[--unit-height:_4.5rem]">
                                     {showcaseItems?.map((item, index) => {
                                         return (
                                             <strong
                                                 key={`${item}${index}`}
                                                 className={cn(
-                                                    "flex font-bold items-center justify-center h-12 lg:h-[4.5rem] text-4xl lg:text-6xl bg-clip-text leading-loose text-nowrap whitespace-nowrap",
-                                                    "bg-accent-background text-transparent bg-cover bg-gradient-to-b from-rose-200 to-accent-background via-accent-background",
+                                                    "flex h-12 items-center justify-center whitespace-nowrap text-nowrap bg-clip-text font-bold text-4xl leading-loose lg:h-[4.5rem] lg:text-6xl",
+                                                    "bg-accent-background bg-cover bg-gradient-to-b from-rose-200 via-accent-background to-accent-background text-transparent",
                                                 )}
                                                 // @ts-ignore
                                                 style={{ "--index": index + 1 }}
@@ -96,21 +96,21 @@ export default function HomePage({ projects }: Props) {
                             {titleParts[2]?.length > 0 && <> {titleParts[2]}</>}
                         </h1>
 
-                        <div className="w-full max-w-2xl flex flex-col items-center justify-center">
+                        <div className="flex w-full max-w-2xl flex-col items-center justify-center">
                             <h2
                                 itemProp={MicrodataItemProps.description}
-                                className="w-full leading-snug text-center text-lg lg:text-xl text-muted-foreground/95"
+                                className="w-full text-center text-lg text-muted-foreground/95 leading-snug lg:text-xl"
                             >
                                 {t.homePage.desc}
                             </h2>
                         </div>
                     </div>
 
-                    <div className="flex gap-4 md:gap-8 flex-wrap items-center justify-center mt-6">
+                    <div className="mt-6 flex flex-wrap items-center justify-center gap-4 md:gap-8">
                         <VariantButtonLink size="lg" variant="default" url="/mods" className="px-6">
                             <CompassIcon
                                 aria-hidden
-                                className="w-btn-icon-lg h-btn-icon-lg"
+                                className="h-btn-icon-lg w-btn-icon-lg"
                                 aria-label={t.homePage.exploreMods}
                             />
                             {t.homePage.exploreMods}
@@ -120,17 +120,17 @@ export default function HomePage({ projects }: Props) {
                             <VariantButtonLink
                                 url="/signup"
                                 size="lg"
-                                className="px-6 bg-card-background hover:bg-card-background/90 dark:bg-shallow-background dark:hover:bg-shallow-background/90"
+                                className="bg-card-background px-6 hover:bg-card-background/90 dark:bg-shallow-background dark:hover:bg-shallow-background/90"
                                 prefetch={Prefetch.Render}
                             >
-                                <LogInIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" aria-label={t.form.signup} />
+                                <LogInIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" aria-label={t.form.signup} />
                                 {t.form.signup}
                             </VariantButtonLink>
                         ) : (
                             <VariantButtonLink url="/dashboard/projects" size="lg" className="px-6" variant="secondary-inverted">
                                 <LayoutDashboardIcon
                                     aria-hidden
-                                    className="w-btn-icon-md h-btn-icon-md"
+                                    className="h-btn-icon-md w-btn-icon-md"
                                     aria-label={t.dashboard.dashboard}
                                 />
                                 {t.dashboard.dashboard}
@@ -169,7 +169,7 @@ function ShowCase({ projects }: { projects: ProjectListItem[] }) {
     }, [projects.at(-1)?.id, projects.length]);
 
     if (!rows?.length) return null;
-    return <div className="w-full flex flex-col gap-6">{rows}</div>;
+    return <div className="flex w-full flex-col gap-6">{rows}</div>;
 }
 
 interface MarqueeScrollProps {
@@ -184,9 +184,9 @@ function MarqueeScroll({ items, reverse = false, index }: MarqueeScrollProps) {
     const scrollItems = items.map((item) => <ShowcaseItem key={item.id} item={item} />);
 
     return (
-        <div className="marquee w-full flex items-center justify-start relative h-[5.7rem] overflow-hidden">
+        <div className="marquee relative flex h-[5.7rem] w-full items-center justify-start overflow-hidden">
             <div
-                className="scroll-container absolute w-fit flex items-center justify-start gap-x-6 px-3"
+                className="scroll-container absolute flex w-fit items-center justify-start gap-x-6 px-3"
                 style={{
                     animationDuration: `${duration}s`,
                     animationDelay: `-${duration / 2}s`,
@@ -197,7 +197,7 @@ function MarqueeScroll({ items, reverse = false, index }: MarqueeScrollProps) {
             </div>
 
             <div
-                className="scroll-container absolute w-fit flex items-center justify-start gap-x-6 px-3"
+                className="scroll-container absolute flex w-fit items-center justify-start gap-x-6 px-3"
                 style={{
                     animationDuration: `${duration}s`,
                     animationDelay: "0s",
@@ -216,8 +216,8 @@ function ShowcaseItem({ className, item, ...props }: { className?: string; item:
             aria-label={item.name}
             to={ProjectPagePath(item.type[0], item.slug)}
             className={cn(
-                "shrink-0 border border-card-background rounded-lg w-72 h-[5.35rem] flex gap-x-3 items-start justify-start p-3",
-                "bg-card-background dark:bg-transparent hover:bg-card-background/35 dark:hover:bg-card-background/35 transition-colors duration-300",
+                "flex h-[5.35rem] w-72 shrink-0 items-start justify-start gap-x-3 rounded-lg border border-card-background p-3",
+                "bg-card-background transition-colors duration-300 hover:bg-card-background/35 dark:bg-transparent dark:hover:bg-card-background/35",
                 className,
             )}
             {...props}
@@ -226,14 +226,14 @@ function ShowcaseItem({ className, item, ...props }: { className?: string; item:
                 src={imageUrl(item.icon)}
                 alt={item.name}
                 fallback={fallbackProjectIcon}
-                className="w-11 h-11"
+                className="h-11 w-11"
                 loading="lazy"
             />
             <div className="flex flex-col gap-1">
-                <span className="max-w-52 text-lg font-bold overflow-hidden whitespace-nowrap text-ellipsis leading-tight">
+                <span className="max-w-52 overflow-hidden text-ellipsis whitespace-nowrap font-bold text-lg leading-tight">
                     {item.name}
                 </span>
-                <span className="max-w-52 text-[0.87rem] line-clamp-2 text-muted-foreground leading-tight text-pretty">
+                <span className="line-clamp-2 max-w-52 text-pretty text-[0.87rem] text-muted-foreground leading-tight">
                     {item.summary}
                 </span>
             </div>

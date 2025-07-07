@@ -78,29 +78,29 @@ export default function UserPageLayout(props: Props) {
 
     return (
         <main
-            className={cn("header-content-sidebar-layout pb-12 gap-y-panel-cards", sidebar && "gap-x-panel-cards")}
+            className={cn("header-content-sidebar-layout gap-y-panel-cards pb-12", sidebar && "gap-x-panel-cards")}
             itemScope
             itemType={itemType(MicrodataItemType.Person)}
         >
             <ProfilePageHeader userData={props.userData} totalDownloads={aggregatedDownloads} totalProjects={totalProjects} />
 
-            <div className="h-fit grid grid-cols-1 gap-panel-cards page-content">
+            <div className="page-content grid h-fit grid-cols-1 gap-panel-cards">
                 {navLinks?.length > 1 || navLinks[0]?.href?.length > 0 ? (
                     <SecondaryNav
-                        className="bg-card-background rounded-lg px-3 py-2"
+                        className="rounded-lg bg-card-background px-3 py-2"
                         urlBase={UserProfilePath(props.userData.userName)}
                         links={navLinks}
                     />
                 ) : null}
 
                 {navLinks.length < 1 ? (
-                    <div className="w-full flex items-center justify-center py-12">
-                        <p className="text-lg text-muted-foreground italic text-center">
+                    <div className="flex w-full items-center justify-center py-12">
+                        <p className="text-center text-lg text-muted-foreground italic">
                             {t.user.doesntHaveProjects(props.userData.name)}
                         </p>
                     </div>
                 ) : (
-                    <div className="w-full flex flex-col gap-panel-cards" role="list">
+                    <div className="flex w-full flex-col gap-panel-cards" role="list">
                         <Outlet
                             context={
                                 {
@@ -129,9 +129,9 @@ function PageSidebar({ userId, orgsList }: { displayName: string; userId: string
     if (!joinedOrgs.length) return null;
 
     return (
-        <div className="w-full lg:w-sidebar page-sidebar flex flex-col gap-panel-cards">
+        <div className="page-sidebar flex w-full flex-col gap-panel-cards lg:w-sidebar">
             <ContentCardTemplate title={t.dashboard.organizations} titleClassName="text-lg">
-                <div className="flex flex-wrap gap-2 items-start justify-start">
+                <div className="flex flex-wrap items-start justify-start gap-2">
                     <TooltipProvider>
                         {joinedOrgs.map((org) => (
                             <Tooltip key={org.id}>
@@ -142,7 +142,7 @@ function PageSidebar({ userId, orgsList }: { displayName: string; userId: string
                                             src={imageUrl(org.icon)}
                                             alt={org.name}
                                             fallback={fallbackOrgIcon}
-                                            className="w-14 h-14"
+                                            className="h-14 w-14"
                                         />
                                     </Link>
                                 </TooltipTrigger>
@@ -196,7 +196,7 @@ function ProfilePageHeader({ userData, totalProjects, totalDownloads }: ProfileP
             description={userData.bio || ""}
             titleBadge={
                 title ? (
-                    <Chip className="font-semibold text-purple-600 dark:text-purple-400 !text-tiny uppercase bg-card-background">
+                    <Chip className="!text-tiny bg-card-background font-semibold text-purple-600 uppercase dark:text-purple-400">
                         {title}
                     </Chip>
                 ) : null
@@ -222,7 +222,7 @@ function ProfilePageHeader({ userData, totalProjects, totalDownloads }: ProfileP
                                 navigator.clipboard.writeText(userData.id);
                             }}
                         >
-                            <ClipboardCopyIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                            <ClipboardCopyIcon aria-hidden className="h-btn-icon w-btn-icon" />
                             {t.common.copyId}
                             <span itemProp={MicrodataItemProps.itemid} className="sr-only">
                                 {userData.id}
@@ -234,22 +234,22 @@ function ProfilePageHeader({ userData, totalProjects, totalDownloads }: ProfileP
             actionBtns={
                 userData.id === session?.id ? (
                     <VariantButtonLink variant="secondary-inverted" url="/settings/profile" prefetch={Prefetch.Render}>
-                        <EditIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                        <EditIcon aria-hidden className="h-btn-icon w-btn-icon" />
                         {t.form.edit}
                     </VariantButtonLink>
                 ) : null
             }
         >
-            <div className="flex items-center gap-2 border-0 border-e border-card-background dark:border-shallow-background pe-4">
-                <CubeIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+            <div className="flex items-center gap-2 border-0 border-card-background border-e pe-4 dark:border-shallow-background">
+                <CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                 <span className="font-semibold">{ProjectsCount.join(" ")}</span>
             </div>
-            <div className="flex items-center gap-2 border-0 border-e border-card-background dark:border-shallow-background pe-4">
-                <DownloadIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+            <div className="flex items-center gap-2 border-0 border-card-background border-e pe-4 dark:border-shallow-background">
+                <DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                 <span className="font-semibold">{DownloadsCount_Str}</span>
             </div>
             <div className="flex items-center gap-2">
-                <CalendarIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                <CalendarIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                 <span className="font-semibold">{t.user.joined(TimePassedSince({ date: userData.dateJoined }))}</span>
             </div>
         </PageHeader>

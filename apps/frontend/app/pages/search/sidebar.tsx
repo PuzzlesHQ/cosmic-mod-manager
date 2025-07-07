@@ -128,7 +128,7 @@ function FilterSidebar({ type, showFilters, searchParams }: Props) {
     return (
         <aside
             className={cn(
-                "relative h-fit flex flex-col gap-3 p-card-surround bg-card-background rounded-lg page-sidebar",
+                "page-sidebar relative flex h-fit flex-col gap-3 rounded-lg bg-card-background p-card-surround",
                 !showFilters && "hidden lg:flex",
             )}
         >
@@ -146,11 +146,11 @@ function FilterSidebar({ type, showFilters, searchParams }: Props) {
                 <VariantButtonLink
                     url={clearFilters()}
                     variant="secondary"
-                    className="shrink-0 !w-10 !h-10"
+                    className="!w-10 !h-10 shrink-0"
                     title={t.search.clearFilters}
                     size="icon"
                 >
-                    <FilterXIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                    <FilterXIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                 </VariantButtonLink>
             </div>
 
@@ -186,7 +186,7 @@ function FilterSidebar({ type, showFilters, searchParams }: Props) {
                         onCheckedChange={(checked) => {
                             setShowAllVersions(checked === true);
                         }}
-                        className="mt-3 ms-0.5 text-extra-muted-foreground"
+                        className="ms-0.5 mt-3 text-extra-muted-foreground"
                     >
                         {t.form.showAllVersions}
                     </LabelledCheckbox>
@@ -346,14 +346,14 @@ function FilterCategory({
                         aria-label="Toggle visibility"
                     >
                         {isOpen ? (
-                            <ChevronUpIcon aria-hidden className="w-5 h-5" />
+                            <ChevronUpIcon aria-hidden className="h-5 w-5" />
                         ) : (
-                            <ChevronDownIcon aria-hidden className="w-5 h-5" />
+                            <ChevronDownIcon aria-hidden className="h-5 w-5" />
                         )}
                     </button>
                 )}
             </div>
-            <div className={cn("w-full flex flex-col", !isOpen && collapsible && "hidden", listWrapperClassName)}>
+            <div className={cn("flex w-full flex-col", !isOpen && collapsible && "hidden", listWrapperClassName)}>
                 {items.map((item) => {
                     const itemValue = typeof item === "string" ? item : item.value;
                     let _itemLabel = typeof item === "string" ? item : item.label;

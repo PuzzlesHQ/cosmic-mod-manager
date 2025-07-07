@@ -75,7 +75,7 @@ export default function VersionFilters(props: VersionFiltersProps) {
     const hasDevVersions = props.allProjectVersions.some((ver) => ver.releaseChannel === VersionReleaseChannel.DEV);
 
     const DownArrowIcon = (
-        <ChevronDownIcon aria-hidden className="w-btn-icon-md h-btn-icon-md text-extra-muted-foreground indicator" />
+        <ChevronDownIcon aria-hidden className="indicator h-btn-icon-md w-btn-icon-md text-extra-muted-foreground" />
     );
 
     const filterComponent = (
@@ -96,7 +96,7 @@ export default function VersionFilters(props: VersionFiltersProps) {
                             defaultMinWidth={false}
                             customTrigger={
                                 <Button variant="secondary-inverted">
-                                    <FilterIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                    <FilterIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                     Loaders
                                     {DownArrowIcon}
                                 </Button>
@@ -117,7 +117,7 @@ export default function VersionFilters(props: VersionFiltersProps) {
                             defaultMinWidth={false}
                             customTrigger={
                                 <Button variant="secondary-inverted">
-                                    <FilterIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                    <FilterIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                     {t.search.gameVersions}
                                     {DownArrowIcon}
                                 </Button>
@@ -129,7 +129,7 @@ export default function VersionFilters(props: VersionFiltersProps) {
                                         <LabelledCheckbox
                                             checked={showExperimentalGameVersions}
                                             onCheckedChange={(checked) => setShowExperimentalGameVersions(checked === true)}
-                                            className="text-extra-muted-foreground pe-2 ps-3.5 my-1"
+                                            className="my-1 ps-3.5 pe-2 text-extra-muted-foreground"
                                         >
                                             {t.form.showAllVersions}
                                         </LabelledCheckbox>
@@ -155,7 +155,7 @@ export default function VersionFilters(props: VersionFiltersProps) {
                             }}
                             customTrigger={
                                 <Button variant="secondary-inverted">
-                                    <FilterIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                    <FilterIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                     {t.search.channels}
                                     {DownArrowIcon}
                                 </Button>
@@ -172,7 +172,7 @@ export default function VersionFilters(props: VersionFiltersProps) {
                             onCheckedChange={(checked) => setShowDevVersions(checked === true)}
                         >
                             <span className="flex items-center justify-center gap-1">
-                                <FlaskConicalIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                <FlaskConicalIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                 {t.project.showDevVersions}
                             </span>
                         </LabelledCheckbox>
@@ -181,11 +181,11 @@ export default function VersionFilters(props: VersionFiltersProps) {
             ) : null}
 
             {filters.loaders.length + filters.gameVersions.length + filters.releaseChannels.length > 0 ? (
-                <div className="w-full flex items-center justify-start flex-wrap gap-x-2 gap-y-1">
+                <div className="flex w-full flex-wrap items-center justify-start gap-x-2 gap-y-1">
                     {filters.loaders.length + filters.gameVersions.length + filters.releaseChannels.length > 1 ? (
                         <ChipButton onClick={() => updateSearchParams(resetFilters(searchParams))}>
                             {t.search.clearFilters}
-                            <XCircleIcon aria-hidden className="w-btn-icon-sm h-btn-icon-sm" />
+                            <XCircleIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />
                         </ChipButton>
                     ) : null}
 
@@ -201,7 +201,7 @@ export default function VersionFilters(props: VersionFiltersProps) {
                             }}
                         >
                             {CapitalizeAndFormatString(channel)}
-                            <XCircleIcon aria-hidden className="w-btn-icon-sm h-btn-icon-sm" />
+                            <XCircleIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />
                         </ChipButton>
                     ))}
 
@@ -216,7 +216,7 @@ export default function VersionFilters(props: VersionFiltersProps) {
                             }}
                         >
                             {version.label}
-                            <XCircleIcon aria-hidden className="w-btn-icon-sm h-btn-icon-sm" />
+                            <XCircleIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />
                         </ChipButton>
                     ))}
 
@@ -243,7 +243,7 @@ export default function VersionFilters(props: VersionFiltersProps) {
                                 }}
                             >
                                 {CapitalizeAndFormatString(loader)}
-                                <XCircleIcon aria-hidden className="w-btn-icon-sm h-btn-icon-sm" />
+                                <XCircleIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />
                             </ChipButton>
                         );
                     })}

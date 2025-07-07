@@ -40,7 +40,7 @@ export default function OrgMemberSettings() {
         <>
             <title>{`Members - ${orgData.name}`}</title>
 
-            <SectionCard className="w-full flex flex-col p-card-surround gap-4">
+            <SectionCard className="flex w-full flex-col gap-4 p-card-surround">
                 <CardTitle>{t.projectSettings.manageMembers}</CardTitle>
                 <InviteMemberForm
                     teamId={orgData.teamId}

@@ -33,7 +33,7 @@ export function AddToCollection_Popup({ projectId }: { projectId: string }) {
                 <AddToCollection_PopupTrigger bookmarked={isBookmarked} />
             </PopoverTrigger>
 
-            <PopoverContent className="p-3 min-w-fit gap-3">
+            <PopoverContent className="min-w-fit gap-3 p-3">
                 {ctx.collections.length > 5 ? (
                     <Input
                         value={searchQuery}
@@ -42,7 +42,7 @@ export function AddToCollection_Popup({ projectId }: { projectId: string }) {
                     />
                 ) : null}
 
-                <div className="py-2 px-3 rounded grid grid-cols-1 gap-1 bg-background">
+                <div className="grid grid-cols-1 gap-1 rounded bg-background px-3 py-2">
                     {ctx.collections.map((collection) => {
                         if (
                             !collection.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
@@ -54,7 +54,7 @@ export function AddToCollection_Popup({ projectId }: { projectId: string }) {
                         const checked = collection.projects.includes(projectId);
 
                         return (
-                            <div key={collection.id} className="flex items-center justify-between gap-2 group/collection-wrapper">
+                            <div key={collection.id} className="group/collection-wrapper flex items-center justify-between gap-2">
                                 <LabelledCheckbox
                                     checked={checked}
                                     onCheckedChange={(checked) => {
@@ -70,10 +70,10 @@ export function AddToCollection_Popup({ projectId }: { projectId: string }) {
 
                                 <Link
                                     to={`/collection/${collection.id}`}
-                                    className="text-extra-muted-foreground hover:text-muted-foreground opacity-0 transition-none group-hover/collection-wrapper:transition-all group-hover/collection-wrapper:opacity-100 group-focus-within/collection-wrapper:opacity-100"
+                                    className="text-extra-muted-foreground opacity-0 transition-none hover:text-muted-foreground group-focus-within/collection-wrapper:opacity-100 group-hover/collection-wrapper:opacity-100 group-hover/collection-wrapper:transition-all"
                                     target="_blank"
                                 >
-                                    <SquareArrowOutUpRightIcon className="w-btn-icon h-btn-icon" />
+                                    <SquareArrowOutUpRightIcon className="h-btn-icon w-btn-icon" />
                                 </Link>
                             </div>
                         );
@@ -81,8 +81,8 @@ export function AddToCollection_Popup({ projectId }: { projectId: string }) {
                 </div>
 
                 <CreateNewCollection_Dialog redirectToCollectionPage={false}>
-                    <Button className="w-fit space-y-0 justify-start" variant="secondary" size="sm">
-                        <PlusIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                    <Button className="w-fit justify-start space-y-0" variant="secondary" size="sm">
+                        <PlusIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                         {t.dashboard.createCollection}
                     </Button>
                 </CreateNewCollection_Dialog>
@@ -102,7 +102,7 @@ function AddToCollection_PopupTrigger(props: TriggerProps) {
         <Button
             ref={props.ref}
             variant="secondary-inverted"
-            className="rounded-full w-11 h-11 p-0"
+            className="h-11 w-11 rounded-full p-0"
             aria-label="Add to collection"
             onClick={props.onClick}
         >

@@ -49,22 +49,22 @@ export default function ReviewProjects({ projects }: { projects: ModerationProje
             <CardHeader>
                 <CardTitle>{t.moderation.review}</CardTitle>
             </CardHeader>
-            <CardContent className="text-muted-foreground grid grid-cols-1">
+            <CardContent className="grid grid-cols-1 text-muted-foreground">
                 <span>{t.moderation.projectsInQueue(projects.length)}</span>
                 {projectsOver24Hours.length > 0 ? (
-                    <span className="text-warning-foreground font-medium">
-                        <TriangleAlertIcon aria-hidden className="inline w-3.5 h-3.5" />{" "}
+                    <span className="font-medium text-warning-foreground">
+                        <TriangleAlertIcon aria-hidden className="inline h-3.5 w-3.5" />{" "}
                         {t.moderation.projectsQueuedFor(projectsOver24Hours.length, 24)}
                     </span>
                 ) : null}
                 {projectsOver48Hours.length > 0 ? (
                     <span className="font-bold text-danger-foreground">
-                        <TriangleAlertIcon aria-hidden className="inline w-4 h-4" />{" "}
+                        <TriangleAlertIcon aria-hidden className="inline h-4 w-4" />{" "}
                         {t.moderation.projectsQueuedFor(projectsOver48Hours.length, 48)}
                     </span>
                 ) : null}
 
-                <div className="grid grid-cols-1 gap-panel-cards mt-3">
+                <div className="mt-3 grid grid-cols-1 gap-panel-cards">
                     {filteredProjects.map((project) => (
                         <ModerationItem key={project.id} project={project} />
                     ))}
@@ -80,8 +80,8 @@ function ModerationItem({ project }: { project: ModerationProjectItem }) {
     const isOver24Hrs = TimePassed_ms(project.dateQueued) > TIME_24H && !isOver48Hrs;
 
     return (
-        <div className="p-card-surround bg-background rounded-lg flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
-            <div className="flex flex-col items-between justify-center flex-wrap gap-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 rounded-lg bg-background p-card-surround">
+            <div className="items-between flex flex-col flex-wrap justify-center gap-y-4">
                 <div className="flex flex-wrap items-center justify-start gap-x-2 gap-y-1">
                     <Link
                         to={ProjectPagePath(project.type[0], project.slug)}
@@ -91,20 +91,20 @@ function ModerationItem({ project }: { project: ModerationProjectItem }) {
                             src={imageUrl(project.icon)}
                             alt={project.name}
                             vtId={project.id}
-                            className="w-10 h-10"
+                            className="h-10 w-10"
                             fallback={fallbackProjectIcon}
                         />
-                        <span className="leading-none font-bold">{project.name}</span>
+                        <span className="font-bold leading-none">{project.name}</span>
                     </Link>
                     by
                     <Link
                         to={project.author.isOrg ? OrgPagePath(project.author.slug) : UserProfilePath(project.author.slug)}
-                        className="hover:brightness-110 flex items-center justify-start gap-x-1.5"
+                        className="flex items-center justify-start gap-x-1.5 hover:brightness-110"
                     >
                         <ImgWrapper
                             src={imageUrl(project.author.icon)}
                             alt={project.author.name}
-                            className="w-5 h-5 rounded-full"
+                            className="h-5 w-5 rounded-full"
                             fallback={fallbackUserIcon}
                         />
                         <span className="underline">{project.author.name}</span>
@@ -119,13 +119,13 @@ function ModerationItem({ project }: { project: ModerationProjectItem }) {
                         isOver48Hrs && "text-danger-foreground",
                     )}
                 >
-                    {isOver24Hrs || (isOver48Hrs && <AlertTriangleIcon aria-hidden className="h-4 w-4 inline" />)}
+                    {isOver24Hrs || (isOver48Hrs && <AlertTriangleIcon aria-hidden className="inline h-4 w-4" />)}
                     {t.moderation.submitted(TimePassedSince({ date: project.dateQueued }))}
                 </span>
             </div>
 
             <VariantButtonLink url={ProjectPagePath(project.type[0], project.slug)} size="sm">
-                <EyeIcon aria-hidden className="w-btn-icon h-btn-icon" /> {t.moderation.viewProject}
+                <EyeIcon aria-hidden className="h-btn-icon w-btn-icon" /> {t.moderation.viewProject}
             </VariantButtonLink>
         </div>
     );

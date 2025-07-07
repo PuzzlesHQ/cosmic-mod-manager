@@ -118,7 +118,7 @@ export default function ProjectPageLayout() {
 
     return (
         <main
-            className="header-content-sidebar-layout w-full max-w-full pb-12 gap-panel-cards"
+            className="header-content-sidebar-layout w-full max-w-full gap-panel-cards pb-12"
             itemScope
             itemType={itemType(MicrodataItemType.CreativeWork)}
         >
@@ -130,13 +130,13 @@ export default function ProjectPageLayout() {
             />
 
             {/* SIDEBAR */}
-            <div className="w-full lg:w-sidebar grid h-fit grid-cols-1 gap-panel-cards page-sidebar">
+            <div className="page-sidebar grid h-fit w-full grid-cols-1 gap-panel-cards lg:w-sidebar">
                 {ctx.allProjectVersions.length > 0 ? (
-                    <Card className="w-full h-fit grid grid-cols-1 p-card-surround gap-3">
-                        <h2 className="text-lg font-extrabold">{t.project.compatibility}</h2>
+                    <Card className="grid h-fit w-full grid-cols-1 gap-3 p-card-surround">
+                        <h2 className="font-extrabold text-lg">{t.project.compatibility}</h2>
                         <section>
-                            <h3 className="flex font-bold text-muted-foreground pb-1">{t.search.gameVersions}</h3>
-                            <div className="w-full flex flex-wrap gap-1">
+                            <h3 className="flex pb-1 font-bold text-muted-foreground">{t.search.gameVersions}</h3>
+                            <div className="flex w-full flex-wrap gap-1">
                                 {formatVersionsForDisplay(projectData.gameVersions).map((version) => (
                                     <Chip key={version} className="text-muted-foreground">
                                         {version}
@@ -147,8 +147,8 @@ export default function ProjectPageLayout() {
 
                         {listedLoaders.length ? (
                             <section>
-                                <h3 className="flex font-bold text-muted-foreground pb-1">{t.search.loaders}</h3>
-                                <div className="w-full flex flex-wrap gap-1">
+                                <h3 className="flex pb-1 font-bold text-muted-foreground">{t.search.loaders}</h3>
+                                <div className="flex w-full flex-wrap gap-1">
                                     {listedLoaders.map((loader) => {
                                         const accentForeground = loader?.metadata?.foreground;
                                         const loaderIcon: React.ReactNode = tagIcons[loader.name as LoaderNames];
@@ -193,13 +193,13 @@ export default function ProjectPageLayout() {
                 projectData?.projectSourceUrl ||
                 projectData?.projectWikiUrl ||
                 projectData?.discordInviteUrl ? (
-                    <Card className="p-card-surround grid grid-cols-1 gap-1">
-                        <h2 className="text-lg font-bold pb-2">{t.projectSettings.links}</h2>
+                    <Card className="grid grid-cols-1 gap-1 p-card-surround">
+                        <h2 className="pb-2 font-bold text-lg">{t.projectSettings.links}</h2>
                         {projectData?.issueTrackerUrl ? (
                             <ExternalLink
                                 url={projectData?.issueTrackerUrl}
                                 label={t.project.reportIssues}
-                                icon={<BugIcon aria-hidden className="w-btn-icon h-btn-icon" />}
+                                icon={<BugIcon aria-hidden className="h-btn-icon w-btn-icon" />}
                             />
                         ) : null}
 
@@ -207,7 +207,7 @@ export default function ProjectPageLayout() {
                             <ExternalLink
                                 url={projectData?.projectSourceUrl}
                                 label={t.project.viewSource}
-                                icon={<CodeIcon aria-hidden className="w-btn-icon h-btn-icon" />}
+                                icon={<CodeIcon aria-hidden className="h-btn-icon w-btn-icon" />}
                             />
                         ) : null}
 
@@ -215,7 +215,7 @@ export default function ProjectPageLayout() {
                             <ExternalLink
                                 url={projectData?.projectWikiUrl}
                                 label={t.project.visitWiki}
-                                icon={<BookOpenIcon aria-hidden className="w-btn-icon h-btn-icon" />}
+                                icon={<BookOpenIcon aria-hidden className="h-btn-icon w-btn-icon" />}
                             />
                         ) : null}
 
@@ -224,7 +224,7 @@ export default function ProjectPageLayout() {
                                 url={projectData?.discordInviteUrl}
                                 label={t.project.joinDiscord}
                                 icon={
-                                    <DiscordIcon aria-hidden className="w-btn-icon h-btn-icon fill-current dark:fill-current" />
+                                    <DiscordIcon aria-hidden className="h-btn-icon w-btn-icon fill-current dark:fill-current" />
                                 }
                             />
                         ) : null}
@@ -232,13 +232,13 @@ export default function ProjectPageLayout() {
                 ) : null}
 
                 {(ctx.featuredProjectVersions?.length || 0) > 0 ? (
-                    <Card className="p-card-surround grid grid-cols-1 gap-1">
-                        <h2 className="text-lg font-bold pb-2">{t.project.featuredVersions}</h2>
+                    <Card className="grid grid-cols-1 gap-1 p-card-surround">
+                        <h2 className="pb-2 font-bold text-lg">{t.project.featuredVersions}</h2>
                         <TooltipProvider>
                             {ctx.featuredProjectVersions?.map((version) => (
                                 <div
                                     key={version.id}
-                                    className="w-full flex items-start justify-start p-2 pb-2.5 rounded cursor-pointer text-muted-foreground hover:bg-background/75 bg_hover_stagger gap-2 group/card"
+                                    className="bg_hover_stagger group/card flex w-full cursor-pointer items-start justify-start gap-2 rounded p-2 pb-2.5 text-muted-foreground hover:bg-background/75"
                                     onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
                                         if (
                                             // @ts-expect-error
@@ -251,15 +251,15 @@ export default function ProjectPageLayout() {
                                         }
                                     }}
                                 >
-                                    <div className="relative flex items-center justify-center min-w-10">
+                                    <div className="relative flex min-w-10 items-center justify-center">
                                         <ReleaseChannelBadge
                                             releaseChannel={version.releaseChannel}
-                                            className=" group-hover/card:hidden group-focus-within/card:hidden"
+                                            className=" group-focus-within/card:hidden group-hover/card:hidden"
                                         />
                                         <Tooltip>
                                             <TooltipTrigger
                                                 asChild
-                                                className="hidden group-hover/card:flex group-focus-within/card:flex"
+                                                className="hidden group-focus-within/card:flex group-hover/card:flex"
                                             >
                                                 <a
                                                     href={version.primaryFile?.url}
@@ -280,17 +280,17 @@ export default function ProjectPageLayout() {
                                                 >
                                                     <DownloadIcon
                                                         aria-hidden
-                                                        className="w-[1.07rem] h-[1.07rem]"
+                                                        className="h-[1.07rem] w-[1.07rem]"
                                                         strokeWidth={2.2}
                                                     />
                                                 </a>
                                             </TooltipTrigger>
-                                            <TooltipContent className="hidden group-hover/card:flex group-focus-within/card:flex">
+                                            <TooltipContent className="hidden group-focus-within/card:flex group-hover/card:flex">
                                                 {version?.primaryFile?.name} ({parseFileSize(version.primaryFile?.size || 0)})
                                             </TooltipContent>
                                         </Tooltip>
                                     </div>
-                                    <div className="flex w-fit h-full grow flex-col select-text">
+                                    <div className="flex h-full w-fit grow select-text flex-col">
                                         <Link
                                             prefetch={Prefetch.Render}
                                             to={VersionPagePath(ctx.projectType, projectData.slug, version.slug)}
@@ -309,8 +309,8 @@ export default function ProjectPageLayout() {
                     </Card>
                 ) : null}
 
-                <Card className="p-card-surround grid grid-cols-1 gap-1">
-                    <h2 className="text-lg font-bold pb-1">{t.project.creators}</h2>
+                <Card className="grid grid-cols-1 gap-1 p-card-surround">
+                    <h2 className="pb-1 font-bold text-lg">{t.project.creators}</h2>
                     {projectData.organisation?.id ? (
                         <>
                             <TeamMember_Card
@@ -344,12 +344,12 @@ export default function ProjectPageLayout() {
                     })}
                 </Card>
 
-                <Card className="items-start justify-start p-card-surround grid grid-cols-1 gap-1">
-                    <h2 className="text-lg font-bold pb-2">{t.project.details}</h2>
+                <Card className="grid grid-cols-1 items-start justify-start gap-1 p-card-surround">
+                    <h2 className="pb-2 font-bold text-lg">{t.project.details}</h2>
 
                     {projectLicenseData?.id || projectLicenseData?.name ? (
                         <div className="flex items-center justify-start gap-2 text-muted-foreground">
-                            <BookTextIcon aria-hidden className="w-btn-icon h-btn-icon shrink-0" />
+                            <BookTextIcon aria-hidden className="h-btn-icon w-btn-icon shrink-0" />
                             <p>
                                 <TextSpacer text={licensed_str[0]} />
                                 {projectLicenseData.url ? (
@@ -357,7 +357,7 @@ export default function ProjectPageLayout() {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         href={projectLicenseData.url}
-                                        className="font-bold link_blue hover:underline"
+                                        className="link_blue font-bold hover:underline"
                                         title={projectLicenseData.url}
                                     >
                                         {licensed_str[1]}
@@ -375,8 +375,8 @@ export default function ProjectPageLayout() {
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild className="cursor-text">
-                                <p className="w-fit max-w-full flex gap-2 items-center justify-start text-muted-foreground">
-                                    <CalendarIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                <p className="flex w-fit max-w-full items-center justify-start gap-2 text-muted-foreground">
+                                    <CalendarIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                     {t.settings.created(TimePassedSince({ date: projectData.datePublished }))}
                                 </p>
                             </TooltipTrigger>
@@ -388,8 +388,8 @@ export default function ProjectPageLayout() {
                         {ctx.allProjectVersions.length > 0 ? (
                             <Tooltip>
                                 <TooltipTrigger asChild className="cursor-text">
-                                    <p className="w-fit max-w-full flex gap-2 items-center justify-start text-muted-foreground">
-                                        <GitCommitHorizontalIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                    <p className="flex w-fit max-w-full items-center justify-start gap-2 text-muted-foreground">
+                                        <GitCommitHorizontalIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                         {t.project.updatedAt(TimePassedSince({ date: projectData.dateUpdated }))}
                                     </p>
                                 </TooltipTrigger>
@@ -402,10 +402,10 @@ export default function ProjectPageLayout() {
                 </Card>
             </div>
 
-            <div className="h-fit overflow-auto grid grid-cols-1 gap-panel-cards page-content">
+            <div className="page-content grid h-fit grid-cols-1 gap-panel-cards overflow-auto">
                 <SecondaryNav
                     urlBase={`/${ctx.projectType}/${projectData?.slug || ""}`}
-                    className="h-fit bg-card-background rounded-lg px-3 py-2"
+                    className="h-fit rounded-lg bg-card-background px-3 py-2"
                     links={[
                         {
                             label: t.form.description,
@@ -466,7 +466,7 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
     }
 
     return (
-        <div className="w-full flex flex-col page-header gap-panel-cards">
+        <div className="page-header flex w-full flex-col gap-panel-cards">
             <PageHeader
                 vtId={projectData.id}
                 icon={imageUrl(projectData.icon)}
@@ -494,7 +494,7 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
                             <VariantButtonLink
                                 url={ProjectPagePath(projectType, projectData.slug, "settings")}
                                 variant="secondary-inverted"
-                                className="rounded-full w-11 h-11 p-0"
+                                className="h-11 w-11 rounded-full p-0"
                                 label="project settings"
                                 prefetch={Prefetch.Render}
                             >
@@ -522,7 +522,7 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
                                     navigator.clipboard.writeText(projectData.id);
                                 }}
                             >
-                                <ClipboardCopyIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                <ClipboardCopyIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                 {t.common.copyId}
                             </Button>
                         </PopoverClose>
@@ -565,27 +565,27 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
                     </>
                 }
             >
-                <div className="flex items-center gap-3 border-0 border-e border-card-background dark:border-shallow-background pe-4">
-                    <DownloadIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                <div className="flex items-center gap-3 border-0 border-card-background border-e pe-4 dark:border-shallow-background">
+                    <DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     <span className="font-semibold">
                         <FormattedCount count={projectData.downloads} />
                     </span>
                 </div>
                 <div
                     className={cn(
-                        "flex items-center gap-3 border-0 dark:border-shallow-background pe-4",
-                        !!projectData.featuredCategories?.length && "border-e border-card-background",
+                        "flex items-center gap-3 border-0 pe-4 dark:border-shallow-background",
+                        !!projectData.featuredCategories?.length && "border-card-background border-e",
                     )}
                 >
-                    <HeartIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                    <HeartIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     <span className="font-semibold">
                         <FormattedCount count={projectData.followers} />
                     </span>
                 </div>
 
                 {(projectData.featuredCategories?.length || 0) > 0 ? (
-                    <div className="hidden md:flex items-center gap-3 pe-4">
-                        <TagsIcon aria-hidden className="w-btn-icon-lg h-btn-icon-lg" />
+                    <div className="hidden items-center gap-3 pe-4 md:flex">
+                        <TagsIcon aria-hidden className="h-btn-icon-lg w-btn-icon-lg" />
                         <div className="flex items-center gap-2">
                             {projectData.featuredCategories.map((category) => (
                                 <Chip key={category} className="bg-card-background dark:bg-shallow-background/75">
@@ -599,7 +599,7 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
             </PageHeader>
 
             {projectData.visibility === ProjectVisibility.ARCHIVED ? (
-                <div className="text-warning-foreground bg-card-background dark:bg-warning-background/15 px-5 py-3 rounded-lg font-medium border-warning-background border-s-2 rounded-l-none">
+                <div className="rounded-lg rounded-l-none border-warning-background border-s-2 bg-card-background px-5 py-3 font-medium text-warning-foreground dark:bg-warning-background/15">
                     {t.project.archivedMessage(projectData.name)}
                 </div>
             ) : null}
@@ -648,7 +648,7 @@ export function TeamMember_Card({
             itemProp={MicrodataItemProps.member}
             aria-label={userName}
             url={url || UserProfilePath(userName)}
-            className={cn("py-1.5 px-2 h-fit items-start gap-3 font-normal hover:bg-background/75", className)}
+            className={cn("h-fit items-start gap-3 px-2 py-1.5 font-normal hover:bg-background/75", className)}
         >
             <link itemProp={MicrodataItemProps.url} href={url || UserProfilePath(userName)} />
 
@@ -661,7 +661,7 @@ export function TeamMember_Card({
                 fallback={fallbackIcon || fallbackUserIcon}
                 loading="eager"
             />
-            <div className="w-full flex flex-col items-start justify-start overflow-hidden">
+            <div className="flex w-full flex-col items-start justify-start overflow-hidden">
                 <div className="flex items-center justify-center gap-1">
                     <span itemProp={MicrodataItemProps.name} className="font-semibold leading-tight" title={userName}>
                         {userName}
@@ -669,11 +669,11 @@ export function TeamMember_Card({
                     {isOwner === true && (
                         <CrownIcon
                             aria-hidden
-                            className="w-btn-icon-sm h-btn-icon-sm shrink-0 text-orange-500 dark:text-orange-400"
+                            className="h-btn-icon-sm w-btn-icon-sm shrink-0 text-orange-500 dark:text-orange-400"
                         />
                     )}
                 </div>
-                <span className="text-sm font-medium leading-tight text-muted-foreground/75">{roleName}</span>
+                <span className="font-medium text-muted-foreground/75 text-sm leading-tight">{roleName}</span>
             </div>
         </ButtonLink>
     );
@@ -683,14 +683,14 @@ function ExternalLink({ url, label, icon }: { url: string; icon: React.ReactNode
     return (
         <Link
             to={url}
-            className="w-fit flex items-center justify-start p-0 gap-2 text-muted-foreground hover:underline"
+            className="flex w-fit items-center justify-start gap-2 p-0 text-muted-foreground hover:underline"
             target="_blank"
             rel="noopener noreferrer"
         >
             {icon}
             <span>
                 {label}
-                <ArrowUpRightIcon aria-hidden className="w-4 h-4 text-extra-muted-foreground inline ms-1" />
+                <ArrowUpRightIcon aria-hidden className="ms-1 inline h-4 w-4 text-extra-muted-foreground" />
             </span>
         </Link>
     );

@@ -66,23 +66,23 @@ export default function ProjectSettingsLayout() {
                         </BreadcrumbList>
                     </Breadcrumb>
 
-                    <div className="w-full flex items-start justify-start gap-3">
+                    <div className="flex w-full items-start justify-start gap-3">
                         <ImgWrapper
                             vtId={projectData.id}
                             src={imageUrl(projectData.icon)}
                             alt={projectData.name}
                             fallback={fallbackProjectIcon}
-                            className="rounded h-14 w-14"
+                            className="h-14 w-14 rounded"
                         />
 
                         <div className="flex flex-col items-start justify-start">
-                            <span className="text-lg font-semibold leading-tight">{projectData.name}</span>
+                            <span className="font-semibold text-lg leading-tight">{projectData.name}</span>
                             <ProjectStatusBadge status={projectData.status} t={t} />
                         </div>
                     </div>
 
-                    <div className="w-full flex flex-col gap-1">
-                        <span className="text-xl font-semibold mt-1 mb-0.5">{t.projectSettings.settings}</span>
+                    <div className="flex w-full flex-col gap-1">
+                        <span className="mt-1 mb-0.5 font-semibold text-xl">{t.projectSettings.settings}</span>
                         {links().sidePanel.map((link) => (
                             <ButtonLink
                                 prefetch={link.prefetch !== false ? "render" : undefined}
@@ -95,7 +95,7 @@ export default function ProjectSettingsLayout() {
                             </ButtonLink>
                         ))}
 
-                        <span className="text-lg font-semibold mt-2">{t.projectSettings.view}</span>
+                        <span className="mt-2 font-semibold text-lg">{t.projectSettings.view}</span>
                         {links().viewPages.map((link) => (
                             <ButtonLink
                                 prefetch={Prefetch.Render}
@@ -107,11 +107,11 @@ export default function ProjectSettingsLayout() {
                                     {link.icon}
                                     {link.name}
                                 </div>
-                                <ChevronRightIcon aria-hidden className="w-btn-icon h-btn-icon text-muted-foreground" />
+                                <ChevronRightIcon aria-hidden className="h-btn-icon w-btn-icon text-muted-foreground" />
                             </ButtonLink>
                         ))}
 
-                        <span className="text-lg font-semibold mt-2">{t.projectSettings.upload}</span>
+                        <span className="mt-2 font-semibold text-lg">{t.projectSettings.upload}</span>
                         {links().uploadPages.map((link) => (
                             <ButtonLink
                                 prefetch={Prefetch.Render}
@@ -123,7 +123,7 @@ export default function ProjectSettingsLayout() {
                                     {link.icon}
                                     {link.name}
                                 </div>
-                                <ChevronRightIcon aria-hidden className="w-btn-icon h-btn-icon text-muted-foreground" />
+                                <ChevronRightIcon aria-hidden className="h-btn-icon w-btn-icon text-muted-foreground" />
                             </ButtonLink>
                         ))}
                     </div>
@@ -147,32 +147,32 @@ function links() {
             {
                 name: t.projectSettings.general,
                 href: "settings",
-                icon: <SettingsIcon aria-hidden className="w-btn-icon h-btn-icon" />,
+                icon: <SettingsIcon aria-hidden className="h-btn-icon w-btn-icon" />,
             },
             {
                 name: t.projectSettings.tags,
                 href: "settings/tags",
-                icon: <TagsIcon aria-hidden className="w-btn-icon h-btn-icon" />,
+                icon: <TagsIcon aria-hidden className="h-btn-icon w-btn-icon" />,
             },
             {
                 name: t.form.description,
                 href: "settings/description",
-                icon: <TextIcon aria-hidden className="w-btn-icon h-btn-icon" />,
+                icon: <TextIcon aria-hidden className="h-btn-icon w-btn-icon" />,
             },
             {
                 name: t.search.license,
                 href: "settings/license",
-                icon: <CopyrightIcon aria-hidden className="w-btn-icon h-btn-icon" />,
+                icon: <CopyrightIcon aria-hidden className="h-btn-icon w-btn-icon" />,
             },
             {
                 name: t.projectSettings.links,
                 href: "settings/links",
-                icon: <LinkIcon aria-hidden className="w-btn-icon h-btn-icon" />,
+                icon: <LinkIcon aria-hidden className="h-btn-icon w-btn-icon" />,
             },
             {
                 name: t.projectSettings.members,
                 href: "settings/members",
-                icon: <UsersIcon aria-hidden className="w-btn-icon h-btn-icon" />,
+                icon: <UsersIcon aria-hidden className="h-btn-icon w-btn-icon" />,
                 prefetch: false,
             },
         ],
@@ -181,7 +181,7 @@ function links() {
             {
                 name: t.dashboard.analytics,
                 href: "settings/analytics",
-                icon: <BarChart2Icon aria-hidden className="w-btn-icon h-btn-icon" />,
+                icon: <BarChart2Icon aria-hidden className="h-btn-icon w-btn-icon" />,
             },
         ],
 
@@ -189,12 +189,12 @@ function links() {
             {
                 name: t.project.gallery,
                 href: "gallery",
-                icon: <ImageIcon aria-hidden className="w-btn-icon h-btn-icon" />,
+                icon: <ImageIcon aria-hidden className="h-btn-icon w-btn-icon" />,
             },
             {
                 name: t.project.versions,
                 href: "versions",
-                icon: <GitCommitHorizontalIcon aria-hidden className="w-btn-icon h-btn-icon" />,
+                icon: <GitCommitHorizontalIcon aria-hidden className="h-btn-icon w-btn-icon" />,
             },
         ],
     };

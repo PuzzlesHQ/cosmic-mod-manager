@@ -25,17 +25,16 @@ export default function PreferencesPage() {
     }
 
     return (
-        <>
-            <SectionCard className="w-full">
+        <SectionCard className="w-full">
                 <CardHeader>
                     <CardTitle>{t.settings.toggleFeatures}</CardTitle>
                     <CardDescription>{t.settings.enableOrDisableFeatures}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="w-full flex items-center justify-between gap-x-6 gap-y-1">
-                        <label htmlFor="view-transitions" className="basis-[min-content] grow shrink-[2]">
-                            <span className="block text-lg font-bold text-foreground my-0">{t.settings.viewTransitions}</span>
-                            <span className="block text-muted-foreground my-0">{t.settings.viewTransitionsDesc}</span>
+                    <div className="flex w-full items-center justify-between gap-x-6 gap-y-1">
+                        <label htmlFor="view-transitions" className="shrink-[2] grow basis-[min-content]">
+                            <span className="my-0 block font-bold text-foreground text-lg">{t.settings.viewTransitions}</span>
+                            <span className="my-0 block text-muted-foreground">{t.settings.viewTransitionsDesc}</span>
                         </label>
                         <Switch
                             id="view-transitions"
@@ -45,6 +44,5 @@ export default function PreferencesPage() {
                     </div>
                 </CardContent>
             </SectionCard>
-        </>
     );
 }

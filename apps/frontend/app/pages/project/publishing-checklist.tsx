@@ -42,10 +42,10 @@ export function PublishingChecklist() {
         }
     }
 
-    const RequiredIcon = <AsteriskIcon aria-hidden className="inline w-4 h-4 text-[#cb2245] dark:text-[#ff496e]" />;
-    const SuggestionIcon = <LightbulbIcon aria-hidden className="inline w-4 h-4 text-purple-600 dark:text-purple-400" />;
-    const SubmitIcon = <ScaleIcon aria-hidden className="inline w-[1.1rem] h-[1.1rem] text-[#e08325] dark:text-[#ffa347]" />;
-    const TickIcon = <CheckIcon aria-hidden className="inline w-4 h-4 text-muted-foreground" />;
+    const RequiredIcon = <AsteriskIcon aria-hidden className="inline h-4 w-4 text-[#cb2245] dark:text-[#ff496e]" />;
+    const SuggestionIcon = <LightbulbIcon aria-hidden className="inline h-4 w-4 text-purple-600 dark:text-purple-400" />;
+    const SubmitIcon = <ScaleIcon aria-hidden className="inline h-[1.1rem] w-[1.1rem] text-[#e08325] dark:text-[#ffa347]" />;
+    const TickIcon = <CheckIcon aria-hidden className="inline h-4 w-4 text-muted-foreground" />;
 
     function StatusIcon({ status }: { status: string }) {
         let icon = null;
@@ -204,20 +204,20 @@ export function PublishingChecklist() {
 
     return (
         <Card>
-            <CardHeader className="flex flex-row gap-x-4 items-center justify-between">
-                <div className="grow flex flex-wrap gap-x-4 gap-y-2 items-center justify-between">
+            <CardHeader className="flex flex-row items-center justify-between gap-x-4">
+                <div className="flex grow flex-wrap items-center justify-between gap-x-4 gap-y-2">
                     <CardTitle className="text-muted-foreground/85">{pubChecklist.title}</CardTitle>
 
-                    <div className="flex items-center gap-1 flex-wrap">
+                    <div className="flex flex-wrap items-center gap-1">
                         <TooltipProvider delayDuration={200}>
-                            <span className="font-bold text-muted-foreground/85 me-2">{pubChecklist.progress}</span>
+                            <span className="me-2 font-bold text-muted-foreground/85">{pubChecklist.progress}</span>
 
                             {steps.map((step) => {
                                 if (step.hide) return;
 
                                 return (
                                     <TooltipTemplate key={step.id} content={step.title}>
-                                        <span className="w-8 h-8 inline-flex items-center justify-center rounded-full bg-background">
+                                        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-background">
                                             {step.condition === true ? <StatusIcon status={step.status} /> : TickIcon}
                                         </span>
                                     </TooltipTemplate>
@@ -233,7 +233,7 @@ export function PublishingChecklist() {
             </CardHeader>
 
             {dropdownOpen && (
-                <CardContent className="grid gap-panel-cards grid-cols-1 sm:grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))]">
+                <CardContent className="grid grid-cols-1 gap-panel-cards sm:grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))]">
                     <TooltipProvider delayDuration={200}>
                         {steps.map((step) => {
                             if (!step.condition || step.hide === true) return;
@@ -277,7 +277,7 @@ export function PublishingChecklist() {
                                                 variant="moderation-submit"
                                                 size="sm"
                                             >
-                                                <SendIcon aria-hidden className="w-iconh-btn-icon h-btn-icon" />{" "}
+                                                <SendIcon aria-hidden className="h-btn-icon w-iconh-btn-icon" />{" "}
                                                 {step.action.title}
                                             </Button>
                                         </>
@@ -322,7 +322,7 @@ interface ChecklistCardProps {
 
 function ChecklistCard(props: ChecklistCardProps) {
     return (
-        <div className="p-card-surround rounded-lg bg-background grid grid-cols-1 gap-3 self-stretch grid-rows-[auto_1fr_auto]">
+        <div className="grid grid-cols-1 grid-rows-[auto_1fr_auto] gap-3 self-stretch rounded-lg bg-background p-card-surround">
             <span className="flex items-center justify-start gap-1 font-semibold text-muted-foreground">
                 {props.icon}
                 {props.label}
@@ -332,10 +332,10 @@ function ChecklistCard(props: ChecklistCardProps) {
 
             {!props.children && props.link && (
                 <Link
-                    className={cn("mt-auto w-fit link_blue hover:underline brightness-100", props.link.hidden && "invisible")}
+                    className={cn("link_blue mt-auto w-fit brightness-100 hover:underline", props.link.hidden && "invisible")}
                     to={props.link.href}
                 >
-                    {props.link.label} <ChevronRightIcon aria-hidden className="inline w-4 h-4" />
+                    {props.link.label} <ChevronRightIcon aria-hidden className="inline h-4 w-4" />
                 </Link>
             )}
         </div>

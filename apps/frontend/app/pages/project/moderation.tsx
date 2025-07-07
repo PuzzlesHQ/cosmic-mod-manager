@@ -26,8 +26,8 @@ export default function ModerationPage() {
         msg = (
             <div>
                 <MarkdownRenderBox text={t.moderation.rejected_msg("/legal/rules")} />
-                <p className="text-warning-foreground mt-0.5 font-semibold">
-                    <TriangleAlertIcon className="inline-block w-btn-icon h-btn-icon" /> {t.moderation.repeatedSubmission_warning}
+                <p className="mt-0.5 font-semibold text-warning-foreground">
+                    <TriangleAlertIcon className="inline-block h-btn-icon w-btn-icon" /> {t.moderation.repeatedSubmission_warning}
                 </p>
             </div>
         );
@@ -39,7 +39,7 @@ export default function ModerationPage() {
         <div className="grid gap-panel-cards">
             <Card>
                 <CardHeader className="flex-row gap-x-2 pb-2">
-                    <CardTitle className="text-lg-plus w-fit">{t.moderation.projectStatus}</CardTitle>
+                    <CardTitle className="w-fit text-lg-plus">{t.moderation.projectStatus}</CardTitle>
                     <ProjectStatusBadge status={project.status} t={t} />
                 </CardHeader>
                 <CardContent>{msg}</CardContent>
@@ -47,7 +47,7 @@ export default function ModerationPage() {
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-lg-plus w-fit">{t.moderation.messages}</CardTitle>
+                    <CardTitle className="w-fit text-lg-plus">{t.moderation.messages}</CardTitle>
 
                     <CardDescription>{t.moderation.pageDesc}</CardDescription>
                 </CardHeader>

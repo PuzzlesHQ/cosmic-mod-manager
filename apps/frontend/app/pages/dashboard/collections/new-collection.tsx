@@ -102,7 +102,7 @@ export default function CreateNewCollection_Dialog({
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(createCollection)}
-                            className="w-full flex flex-col items-start justify-center gap-form-elements"
+                            className="flex w-full flex-col items-start justify-center gap-form-elements"
                         >
                             <FormField
                                 name="name"
@@ -153,7 +153,7 @@ export default function CreateNewCollection_Dialog({
                                     {isLoading ? (
                                         <LoadingSpinner size="xs" />
                                     ) : (
-                                        <PlusIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                                        <PlusIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                                     )}
                                     {t.dashboard.createCollection}
                                 </Button>

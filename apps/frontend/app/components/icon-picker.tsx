@@ -68,7 +68,7 @@ export default function IconPicker(props: IconPickerProps) {
                         htmlFor="project-icon-input"
                         className={cn(buttonVariants({ variant: "secondary", size: "default" }), "cursor-pointer")}
                     >
-                        <UploadIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                        <UploadIcon aria-hidden className="h-btn-icon w-btn-icon" />
                         {t.form.uploadIcon}
                     </InteractiveLabel>
                     {props.icon ? (
@@ -79,7 +79,7 @@ export default function IconPicker(props: IconPickerProps) {
                                 props.onChange(undefined);
                             }}
                         >
-                            <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                            <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
                             {t.form.removeIcon}
                         </Button>
                     ) : null}

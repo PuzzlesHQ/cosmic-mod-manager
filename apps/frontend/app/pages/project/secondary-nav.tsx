@@ -20,7 +20,7 @@ interface Props {
 export default function SecondaryNav({ urlBase, className, links, onClick }: Props) {
     return (
         <nav className={cn("flex items-center justify-start", className)} id="project-page-nav">
-            <ul className="w-full flex gap-1 flex-wrap">
+            <ul className="flex w-full flex-wrap gap-1">
                 {links.map((link) => {
                     if (link.isShown === false) return null;
 
@@ -29,7 +29,7 @@ export default function SecondaryNav({ urlBase, className, links, onClick }: Pro
                             <ButtonLink
                                 prefetch={Prefetch.Render}
                                 url={appendPathInUrl(urlBase, link.href)}
-                                className="h-10 px-4 py-0 rounded font-semibold"
+                                className="h-10 rounded px-4 py-0 font-semibold"
                                 onClick={(e) => onClick?.(e, link)}
                                 preventScrollReset
                             >

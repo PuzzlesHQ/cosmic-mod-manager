@@ -73,7 +73,7 @@ export default function DashboardLayout() {
                         </ButtonLink>
                     ))}
 
-                    <span className="text-lg font-semibold mt-3">{t.dashboard.manage}</span>
+                    <span className="mt-3 font-semibold text-lg">{t.dashboard.manage}</span>
                     {ManagementPagesLinks.map((link) => (
                         <ButtonLink url={link.href} key={link.href} preventScrollReset>
                             {link.icon}

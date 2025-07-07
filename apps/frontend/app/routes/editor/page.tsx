@@ -146,7 +146,7 @@ export default function () {
     const [editorValue, setEditorValue] = useState(defaultText);
 
     return (
-        <div className="p-card-surround bg-card-background rounded-lg">
+        <div className="rounded-lg bg-card-background p-card-surround">
             <MarkdownEditor editorValue={editorValue} setEditorValue={setEditorValue} textAreaClassName="!h-[75dvh]" />
         </div>
     );

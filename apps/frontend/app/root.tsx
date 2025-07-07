@@ -127,7 +127,7 @@ export default function App() {
             {/* A portal for the grid_bg_div inserted from the pages/page.tsx */}
             <div id="hero_section_bg_portal" className="absolute top-0 left-0" aria-hidden />
 
-            <div className="w-full min-h-[100vh] relative grid grid-rows-[auto_1fr_auto]">
+            <div className="relative grid min-h-[100vh] w-full grid-rows-[auto_1fr_auto]">
                 <Navbar session={data.session} notifications={[]} />
 
                 <PageBreadCrumbs />

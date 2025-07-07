@@ -9,7 +9,7 @@ export default function () {
 
     return (
         <MarkdownRenderBox
-            className="bg-card-background bright-heading p-6 rounded-lg"
+            className="bright-heading rounded-lg bg-card-background p-6"
             text={t.legal.privacyPolicy({
                 title: t.legal.privacyPolicyTitle,
                 supportEmail: Config.SUPPORT_EMAIL,

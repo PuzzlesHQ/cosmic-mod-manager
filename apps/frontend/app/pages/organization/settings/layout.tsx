@@ -49,47 +49,47 @@ export default function OrgSettingsLayout() {
                         </BreadcrumbList>
                     </Breadcrumb>
 
-                    <div className="w-full flex items-start justify-start gap-3">
+                    <div className="flex w-full items-start justify-start gap-3">
                         <ImgWrapper
                             vtId={orgData.id}
                             src={imageUrl(orgData.icon)}
                             alt={orgData.name}
                             fallback={fallbackOrgIcon}
-                            className="rounded h-14 w-14"
+                            className="h-14 w-14 rounded"
                         />
 
                         <div className="flex flex-col items-start justify-start">
-                            <span className="text-lg font-semibold">{orgData.name}</span>
+                            <span className="font-semibold text-lg">{orgData.name}</span>
                             <span className="flex items-center justify-center gap-1 text-muted-foreground">
                                 {t.count.projects(projects?.length || 0).join(" ")}
                             </span>
                         </div>
                     </div>
 
-                    <div className="w-full flex flex-col gap-1">
-                        <span className="text-xl font-semibold text-muted-foreground mt-1 mb-0.5">
+                    <div className="flex w-full flex-col gap-1">
+                        <span className="mt-1 mb-0.5 font-semibold text-muted-foreground text-xl">
                             {t.organization.orgSettings}
                         </span>
                         {[
                             {
                                 name: t.dashboard.overview,
                                 href: "settings",
-                                icon: <SettingsIcon aria-hidden className="w-btn-icon h-btn-icon" />,
+                                icon: <SettingsIcon aria-hidden className="h-btn-icon w-btn-icon" />,
                             },
                             {
                                 name: t.projectSettings.members,
                                 href: "settings/members",
-                                icon: <UsersIcon aria-hidden className="w-btn-icon h-btn-icon" />,
+                                icon: <UsersIcon aria-hidden className="h-btn-icon w-btn-icon" />,
                             },
                             {
                                 name: t.dashboard.projects,
                                 href: "settings/projects",
-                                icon: <CubeIcon aria-hidden className="w-btn-icon h-btn-icon" />,
+                                icon: <CubeIcon aria-hidden className="h-btn-icon w-btn-icon" />,
                             },
                             {
                                 name: t.dashboard.analytics,
                                 href: "settings/analytics",
-                                icon: <BarChart2Icon aria-hidden className="w-btn-icon h-btn-icon" />,
+                                icon: <BarChart2Icon aria-hidden className="h-btn-icon w-btn-icon" />,
                             },
                         ].map((link) => (
                             <ButtonLink

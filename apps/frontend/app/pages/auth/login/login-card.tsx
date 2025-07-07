@@ -70,16 +70,16 @@ export function LoginPageCard(props: LoginPageCardProps) {
     }
 
     return (
-        <Card className="w-full max-w-md relative">
+        <Card className="relative w-full max-w-md">
             <CardHeader className="mb-1">
                 <CardTitle>{t.form.login_withSpace}</CardTitle>
             </CardHeader>
-            <CardContent className="w-full flex flex-col items-start justify-start gap-4">
+            <CardContent className="flex w-full flex-col items-start justify-start gap-4">
                 <Form {...loginForm}>
                     <form
                         onSubmit={loginForm.handleSubmit(handleCredentialLogin)}
                         name="Login"
-                        className="w-full flex flex-col items-center justify-center gap-form-elements"
+                        className="flex w-full flex-col items-center justify-center gap-form-elements"
                     >
                         <FormField
                             control={loginForm.control}
@@ -135,11 +135,11 @@ export function LoginPageCard(props: LoginPageCardProps) {
 
                         {formError && <FormErrorMessage text={formError} />}
 
-                        <Button type="submit" aria-label="Login" className="w-full h-form-submit-btn" disabled={isLoading}>
+                        <Button type="submit" aria-label="Login" className="h-form-submit-btn w-full" disabled={isLoading}>
                             {isLoading ? (
                                 <LoadingSpinner size="xs" />
                             ) : (
-                                <LogInIcon aria-hidden className="w-[1.1rem] h-[1.1rem]" />
+                                <LogInIcon aria-hidden className="h-[1.1rem] w-[1.1rem]" />
                             )}
                             {t.form.login}
                         </Button>
@@ -148,14 +148,14 @@ export function LoginPageCard(props: LoginPageCardProps) {
 
                 <HorizontalSeparator />
 
-                <div className="w-full flex flex-col items-start justify-start gap-2">
+                <div className="flex w-full flex-col items-start justify-start gap-2">
                     <p>{t.auth.loginUsing}</p>
-                    <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
                         <OAuthProvidersWidget actionIntent={AuthActionIntent.SIGN_IN} />
                     </div>
                 </div>
 
-                <div className="w-full flex flex-col items-center justify-center mt-4 text-muted-foreground">
+                <div className="mt-4 flex w-full flex-col items-center justify-center text-muted-foreground">
                     <div className="text-center">
                         {t.auth.dontHaveAccount(
                             <TextLink key="signup-link" prefetch={Prefetch.Render} to="/signup" aria-label={t.form.signup}>

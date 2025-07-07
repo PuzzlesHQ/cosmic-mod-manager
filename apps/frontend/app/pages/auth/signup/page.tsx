@@ -9,15 +9,15 @@ export default function SignUpPage() {
     const { t } = useTranslation();
 
     return (
-        <aside className="w-full flex items-center justify-center py-12 min-h-[100vh]">
-            <Card className="w-full max-w-md relative">
+        <aside className="flex min-h-[100vh] w-full items-center justify-center py-12">
+            <Card className="relative w-full max-w-md">
                 <CardHeader className="mb-1">
                     <CardTitle>{t.form.signup}</CardTitle>
                 </CardHeader>
-                <CardContent className="w-full flex flex-col items-start justify-start gap-4">
-                    <div className="w-full flex flex-col items-start justify-start gap-2">
+                <CardContent className="flex w-full flex-col items-start justify-start gap-4">
+                    <div className="flex w-full flex-col items-start justify-start gap-2">
                         <p>{t.auth.signupWithProviders}</p>
-                        <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
                             <OAuthProvidersWidget actionIntent={AuthActionIntent.SIGN_UP} />
                         </div>
                     </div>
@@ -35,7 +35,7 @@ export default function SignUpPage() {
 
                     <Separator />
 
-                    <div className="w-full flex flex-col items-center justify-center gap-1 text-muted-foreground">
+                    <div className="flex w-full flex-col items-center justify-center gap-1 text-muted-foreground">
                         <p className="text-center">
                             {t.auth.alreadyHaveAccount(
                                 <TextLink key="login-link" to="/login" aria-label={t.form.login}>

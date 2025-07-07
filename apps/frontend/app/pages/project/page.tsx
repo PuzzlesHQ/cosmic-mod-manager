@@ -7,11 +7,11 @@ export default function ProjectPage() {
     const ctx = useProjectData();
 
     if (!ctx.projectData.description) {
-        return <span className="text-muted-foreground italic text-center">{t.project.noProjectDesc}</span>;
+        return <span className="text-center text-muted-foreground italic">{t.project.noProjectDesc}</span>;
     }
 
     return (
-        <div className="bg-card-background p-card-surround rounded-lg">
+        <div className="rounded-lg bg-card-background p-card-surround">
             <MarkdownRenderBox text={ctx.projectData.description || ""} />
         </div>
     );

@@ -86,30 +86,30 @@ export default function Navbar(props: NavbarProps) {
     const MemoizedThemeSwitch = useMemo(() => <ThemeSwitch />, []);
 
     return (
-        <header className="w-full flex items-start justify-start relative">
+        <header className="relative flex w-full items-start justify-start">
             <div
                 className={cn(
-                    "nav_bg w-full flex items-center justify-center z-50 bg-transparent transition-colors duration-0 delay-300",
+                    "nav_bg z-50 flex w-full items-center justify-center bg-transparent transition-colors delay-300 duration-0",
                     isNavMenuOpen && "bg-background delay-0",
                 )}
             >
-                <nav className="container flex flex-wrap items-center justify-between py-3 px-4 sm:px-8">
+                <nav className="container flex flex-wrap items-center justify-between px-4 py-3 sm:px-8">
                     <div className="flex items-center justify-center gap-8">
                         <Link
                             to="/"
-                            className="flex items-center justify-center h-nav-item gap-1 bg-background"
+                            className="flex h-nav-item items-center justify-center gap-1 bg-background"
                             aria-label="CRMM Home page"
                             onClick={() => {
                                 toggleNavMenu(false);
                             }}
                         >
                             <BrandIcon size="1.75rem" strokeWidth={26} />
-                            <span className="text-lg font-bold px-1 flex items-end justify-center rounded-lg bg-clip-text bg-accent-bg text-transparent bg-cover bg-gradient-to-b from-rose-200 to-accent-background via-accent-background drop-shadow-2xl">
+                            <span className="flex items-end justify-center rounded-lg bg-accent-bg bg-cover bg-gradient-to-b from-rose-200 via-accent-background to-accent-background bg-clip-text px-1 font-bold text-lg text-transparent drop-shadow-2xl">
                                 {Config.SITE_NAME_SHORT}
                             </span>
                         </Link>
 
-                        <ul className="hidden lg:flex items-center justify-center gap-1">
+                        <ul className="hidden items-center justify-center gap-1 lg:flex">
                             {Important_NavLinks.map((link) => {
                                 return (
                                     <li key={link.href} className="flex items-center justify-center">
@@ -138,7 +138,7 @@ export default function Navbar(props: NavbarProps) {
                                     </PopoverTrigger>
 
                                     <PopoverContent
-                                        className="p-1 min-w-0"
+                                        className="min-w-0 p-1"
                                         onMouseEnter={OpenOtherLinksPopup}
                                         onMouseLeave={() => CloseOtherLinksPopup()}
                                         onClick={() => CloseOtherLinksPopup(true)}
@@ -172,7 +172,7 @@ export default function Navbar(props: NavbarProps) {
                             <NavButton session={props.session} notifications={props.notifications} />
                         </div>
 
-                        <div className="flex lg:hidden align-center justify-center">
+                        <div className="flex justify-center align-center lg:hidden">
                             <HamMenu isNavMenuOpen={isNavMenuOpen} toggleNavMenu={toggleNavMenu} />
                         </div>
                     </div>
@@ -210,7 +210,7 @@ export function Navlink({ href, label, children, className }: NavlinkProps) {
         <ButtonLink
             url={href}
             className={cn(
-                "bg-background hover:bg-card-background/70 dark:hover:bg-shallow-background/75 font-semibold",
+                "bg-background font-semibold hover:bg-card-background/70 dark:hover:bg-shallow-background/75",
                 className,
             )}
             activeClassName="bg-card-background dark:bg-shallow-background"
@@ -265,26 +265,26 @@ function CreateThingsPopup() {
                     aria-label="Create new project or organization"
                     className="bg-background"
                 >
-                    <PlusIcon aria-hidden className="w-5 h-5" />
+                    <PlusIcon aria-hidden className="h-5 w-5" />
                     <ChevronDownIcon
                         aria-hidden
-                        className={cn("w-5 h-5 text-extra-muted-foreground transition-all", popoverOpen && "rotate-180")}
+                        className={cn("h-5 w-5 text-extra-muted-foreground transition-all", popoverOpen && "rotate-180")}
                     />
                 </Button>
             </PopoverTrigger>
             <PopoverContent align="end" className="min-w-fit p-1">
                 <CreateNewProjectDialog
                     trigger={
-                        <Button className="space-y-0 justify-start" variant="ghost" size="sm">
-                            <CubeIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                        <Button className="justify-start space-y-0" variant="ghost" size="sm">
+                            <CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                             {t.dashboard.createProject}
                         </Button>
                     }
                 />
 
                 <CreateNewCollection_Dialog>
-                    <Button className="space-y-0 justify-start" variant="ghost" size="sm">
-                        <LibraryIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                    <Button className="justify-start space-y-0" variant="ghost" size="sm">
+                        <LibraryIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                         {t.dashboard.createCollection}
                     </Button>
                 </CreateNewCollection_Dialog>
@@ -292,8 +292,8 @@ function CreateThingsPopup() {
                 <Separator />
 
                 <CreateNewOrg_Dialog>
-                    <Button className="space-y-0 justify-start" variant="ghost" size="sm">
-                        <Building2Icon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                    <Button className="justify-start space-y-0" variant="ghost" size="sm">
+                        <Building2Icon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                         {t.dashboard.createOrg}
                     </Button>
                 </CreateNewOrg_Dialog>

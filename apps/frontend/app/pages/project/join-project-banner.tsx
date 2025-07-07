@@ -58,15 +58,15 @@ export default function TeamInvitationBanner({ teamId, role, className, refreshD
     const teamType = isOrg ? t.project.organization : t.project.project;
 
     return (
-        <Card className={cn("w-full p-card-surround flex flex-col gap-4", className)}>
+        <Card className={cn("flex w-full flex-col gap-4 p-card-surround", className)}>
             <CardTitle className="text-muted-foreground">{t.project.teamInvitationTitle(teamType)}</CardTitle>
-            <span className="text-muted-foreground ProjectDetailsData">{t.project.teamInviteDesc(teamType, role)}</span>
-            <div className="flex  flex-wrap items-center justify-start gap-3">
+            <span className="ProjectDetailsData text-muted-foreground">{t.project.teamInviteDesc(teamType, role)}</span>
+            <div className="flex flex-wrap items-center justify-start gap-3">
                 <Button className="" size="sm" onClick={handleAcceptInvite} disabled={isLoading.value}>
                     {isLoading.value === true && isLoading.action === "accept" ? (
                         <LoadingSpinner size="xs" />
                     ) : (
-                        <CheckIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                        <CheckIcon aria-hidden className="h-btn-icon w-btn-icon" />
                     )}
                     {t.common.accept}
                 </Button>
@@ -81,7 +81,7 @@ export default function TeamInvitationBanner({ teamId, role, className, refreshD
                     {isLoading.value === true && isLoading.action === "decline" ? (
                         <LoadingSpinner size="xs" />
                     ) : (
-                        <XIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                        <XIcon aria-hidden className="h-btn-icon w-btn-icon" />
                     )}
                     {t.common.decline}
                 </Button>

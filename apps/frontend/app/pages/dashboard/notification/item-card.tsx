@@ -100,31 +100,31 @@ export function TeamInviteNotification({
     }
 
     return (
-        <li className="w-full flex flex-col gap-2 bg-background/75 rounded p-card-surround" aria-label="Team Invite">
-            <div className="w-full flex flow-row items-center justify-between">
-                <div className="grow flex flex-wrap items-center justify-start gap-1">
+        <li className="flex w-full flex-col gap-2 rounded bg-background/75 p-card-surround" aria-label="Team Invite">
+            <div className="flow-row flex w-full items-center justify-between">
+                <div className="flex grow flex-wrap items-center justify-start gap-1">
                     <Link to={pageUrl} className="me-1.5" aria-label={title}>
-                        <ImgWrapper src={icon || ""} alt={title} fallback={fallbackIcon} className="w-11 h-11" />
+                        <ImgWrapper src={icon || ""} alt={title} fallback={fallbackIcon} className="h-11 w-11" />
                     </Link>
-                    <div className="flex items-center justify-start gap-x-space flex-wrap text-muted-foreground">
+                    <div className="flex flex-wrap items-center justify-start gap-x-space text-muted-foreground">
                         {t.dashboard.invitedToJoin(
                             <Link
                                 key="invited-by"
                                 aria-label={invitedBy.userName || (notification.body?.invitedBy as string)}
                                 to={UserProfilePath(invitedBy.userName)}
-                                className="flex items-center justify-center gap-1 font-semibold hover:underline text-foreground"
+                                className="flex items-center justify-center gap-1 font-semibold text-foreground hover:underline"
                             >
                                 <ImgWrapper
                                     src={invitedBy?.avatar || ""}
                                     alt={invitedBy.userName || (notification.body?.invitedBy as string)}
                                     fallback={fallbackUserIcon}
-                                    className="w-6 h-6 rounded-full"
+                                    className="h-6 w-6 rounded-full"
                                 />
 
                                 {invitedBy.userName || notification.body?.invitedBy}
                             </Link>,
 
-                            <Link key="invited-to" to={pageUrl} className="font-semibold hover:underline text-foreground">
+                            <Link key="invited-to" to={pageUrl} className="font-semibold text-foreground hover:underline">
                                 {title}
                             </Link>,
                         )}
@@ -150,7 +150,7 @@ export function TeamInviteNotification({
                                                 <CheckIcon
                                                     aria-hidden
                                                     strokeWidth={2.2}
-                                                    className="w-btn-icon-md h-btn-icon-md"
+                                                    className="h-btn-icon-md w-btn-icon-md"
                                                 />
                                             )}
                                         </Button>
@@ -170,7 +170,7 @@ export function TeamInviteNotification({
                                             {isLoading === "decline" ? (
                                                 <LoadingSpinner size="xs" />
                                             ) : (
-                                                <XIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                                                <XIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                                             )}
                                         </Button>
                                     </TooltipTrigger>
@@ -196,12 +196,12 @@ export function TeamInviteNotification({
                 </TooltipProvider>
             </div>
             {notification.read === false && concise === false && (
-                <div className="w-fit flex items-center justify-start gap-x-2 gap-y-1">
+                <div className="flex w-fit items-center justify-start gap-x-2 gap-y-1">
                     <Button size="sm" disabled={!!isLoading} onClick={acceptInvite}>
                         {isLoading === "accept" ? (
                             <LoadingSpinner size="xs" />
                         ) : (
-                            <CheckIcon aria-hidden strokeWidth={2.2} className="w-btn-icon h-btn-icon" />
+                            <CheckIcon aria-hidden strokeWidth={2.2} className="h-btn-icon w-btn-icon" />
                         )}
                         {t.common.accept}
                     </Button>
@@ -210,7 +210,7 @@ export function TeamInviteNotification({
                         {isLoading === "decline" ? (
                             <LoadingSpinner size="xs" />
                         ) : (
-                            <XIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                            <XIcon aria-hidden className="h-btn-icon w-btn-icon" />
                         )}
                         {t.common.decline}
                     </Button>
@@ -244,20 +244,20 @@ export function StatusChangeNotif_Item({ notification, project, ...props }: Stat
     const projectPageUrl = ProjectPagePath(project?.type?.[0] || "mod", project?.slug || notification.body.projectId);
 
     return (
-        <li className="w-full flex flex-col gap-2 bg-background/75 rounded p-card-surround" aria-label="Team Invite">
-            <div className="w-full flex flow-row items-center justify-between">
-                <div className="grow flex flex-wrap items-center justify-start gap-1">
+        <li className="flex w-full flex-col gap-2 rounded bg-background/75 p-card-surround" aria-label="Team Invite">
+            <div className="flow-row flex w-full items-center justify-between">
+                <div className="flex grow flex-wrap items-center justify-start gap-1">
                     <Link to={projectPageUrl} className="me-1.5" aria-label={projectName}>
                         <ImgWrapper
                             src={imageUrl(project?.icon)}
                             alt={projectName}
                             fallback={fallbackProjectIcon}
-                            className="w-11 h-11"
+                            className="h-11 w-11"
                         />
                     </Link>
-                    <div className="flex items-center justify-start gap-x-1 flex-wrap text-muted-foreground">
+                    <div className="flex flex-wrap items-center justify-start gap-x-1 text-muted-foreground">
                         {t.dashboard.projectStatusUpdated(
-                            <Link key="project" to={projectPageUrl} className="font-semibold hover:underline text-foreground">
+                            <Link key="project" to={projectPageUrl} className="font-semibold text-foreground hover:underline">
                                 {projectName}
                             </Link>,
 
@@ -299,7 +299,7 @@ interface NotifReceivedDateProps {
 
 function NotifReceivedDate(props: NotifReceivedDateProps) {
     return (
-        <div className="w-fit flex items-center justify-center gap-1.5 text-extra-muted-foreground">
+        <div className="flex w-fit items-center justify-center gap-1.5 text-extra-muted-foreground">
             <CalendarIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />
 
             <TooltipProvider>
@@ -335,7 +335,7 @@ function MarkReadNotif(props: MarkReadProps) {
                     disabled={props.disabled}
                     onClick={props.markNotificationAsRead}
                 >
-                    <CheckCheckIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                    <CheckCheckIcon aria-hidden className="h-btn-icon w-btn-icon" />
                 </Button>
             </TooltipTrigger>
             <TooltipContent>{props.deleteNotif_text}</TooltipContent>
@@ -360,7 +360,7 @@ function DeleteNotif(props: DeleteNotifProps) {
                     disabled={props.disabled}
                     onClick={props.deleteNotification}
                 >
-                    <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                    <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
                 </Button>
             </TooltipTrigger>
             <TooltipContent>{props.deleteNotif_text}</TooltipContent>

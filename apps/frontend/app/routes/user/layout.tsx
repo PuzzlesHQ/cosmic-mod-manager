@@ -24,9 +24,9 @@ export default function () {
 
     if (data.userSlug === "deleted_user") {
         return (
-            <div className="full_page flex flex-col py-12 items-center justify-center text-extra-muted-foreground">
-                <UserXIcon className="w-20 h-20" />
-                <h2 className="text-2xl font-semibold">{t.user.accountDeleted}</h2>
+            <div className="full_page flex flex-col items-center justify-center py-12 text-extra-muted-foreground">
+                <UserXIcon className="h-20 w-20" />
+                <h2 className="font-semibold text-2xl">{t.user.accountDeleted}</h2>
             </div>
         );
     }

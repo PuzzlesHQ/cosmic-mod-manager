@@ -49,7 +49,7 @@ export default function ProjectGallery() {
                 ctx.currUsersMembership?.isOwner,
                 session?.role,
             ) ? (
-                <Card className="p-card-surround w-full flex flex-row flex-wrap items-center justify-start gap-x-4 gap-y-2">
+                <Card className="flex w-full flex-row flex-wrap items-center justify-start gap-x-4 gap-y-2 p-card-surround">
                     <Suspense>
                         <UploadGalleryImageForm projectData={projectData} />
                     </Suspense>
@@ -64,9 +64,9 @@ export default function ProjectGallery() {
                 <div
                     itemScope
                     itemType={itemType(MicrodataItemType.ImageGallery)}
-                    className="w-full grid gap-panel-cards grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3"
+                    className="grid w-full grid-cols-1 gap-panel-cards sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3"
                 >
-                    <h2 className="col-span-full sr-only" itemProp={MicrodataItemProps.name}>
+                    <h2 className="sr-only col-span-full" itemProp={MicrodataItemProps.name}>
                         {`A gallery showcasing the ${projectData.name} ${FormatString(projectData.type[0])}`}
                     </h2>
 
@@ -125,11 +125,11 @@ function GalleryItemCard({
             itemScope
             itemProp={MicrodataItemProps.image}
             itemType={itemType(MicrodataItemType.ImageObject)}
-            className="grid grid-cols-1 grid-rows-[min-content,_1fr] bg-card-background rounded-lg p-2"
+            className="grid grid-cols-1 grid-rows-[min-content,_1fr] rounded-lg bg-card-background p-2"
         >
             <button
                 type="button"
-                className="flex items-center justify-center aspect-video bg-[hsla(var(--background))] rounded-lg overflow-hidden"
+                className="flex aspect-video items-center justify-center overflow-hidden rounded-lg bg-[hsla(var(--background))]"
                 onClick={() => {
                     setActiveIndex(index);
                     setdialogOpen(true);
@@ -141,26 +141,26 @@ function GalleryItemCard({
                     loading="lazy"
                     src={imageUrl(galleryItem.imageThumbnail)}
                     alt={galleryItem.name}
-                    className="w-full h-full object-contain cursor-pointer hover:brightness-75 transition-all duration-300"
+                    className="h-full w-full cursor-pointer object-contain transition-all duration-300 hover:brightness-75"
                 />
                 <link itemProp={MicrodataItemProps.contentUrl} href={imageUrl(galleryItem.image)} />
             </button>
 
-            <div className="w-full grid grid-cols-1 place-content-between gap-2 p-2 pb-1 ">
-                <div className="w-full flex flex-col items-start justify-start ">
-                    <span itemProp={MicrodataItemProps.name} className="flex items-center justify-start gap-2 text-lg font-bold">
+            <div className="grid w-full grid-cols-1 place-content-between gap-2 p-2 pb-1 ">
+                <div className="flex w-full flex-col items-start justify-start ">
+                    <span itemProp={MicrodataItemProps.name} className="flex items-center justify-start gap-2 font-bold text-lg">
                         {galleryItem.name}
                         {galleryItem.featured === true ? (
-                            <StarIcon aria-hidden className="w-btn-icon h-btn-icon fill-current text-extra-muted-foreground" />
+                            <StarIcon aria-hidden className="h-btn-icon w-btn-icon fill-current text-extra-muted-foreground" />
                         ) : null}
                     </span>
                     <figcaption itemProp={MicrodataItemProps.description} className="text-muted-foreground leading-tight">
                         {galleryItem.description}
                     </figcaption>
                 </div>
-                <div className="w-full flex flex-col items-start justify-start gap-1.5 mt-1">
-                    <p className="flex gap-1.5 items-center justify-center text-muted-foreground">
-                        <CalendarIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                <div className="mt-1 flex w-full flex-col items-start justify-start gap-1.5">
+                    <p className="flex items-center justify-center gap-1.5 text-muted-foreground">
+                        <CalendarIcon aria-hidden className="h-btn-icon w-btn-icon" />
                         <FormattedDate date={galleryItem.dateCreated} includeTime={false} />
                     </p>
                     {doesMemberHaveAccess(
@@ -169,13 +169,13 @@ function GalleryItemCard({
                         currUsersMembership?.isOwner,
                         session?.role,
                     ) ? (
-                        <div className="w-full flex flex-wrap items-center justify-start gap-x-2 gap-y-1">
+                        <div className="flex w-full flex-wrap items-center justify-start gap-x-2 gap-y-1">
                             <Suspense>
                                 <EditGalleryImage galleryItem={galleryItem} projectData={projectData} />
 
                                 <RemoveGalleryImage id={galleryItem.id} projectData={projectData}>
                                     <Button variant="secondary" size="sm">
-                                        <Trash2Icon aria-hidden className="w-btn-icon-sm h-btn-icon-sm" />
+                                        <Trash2Icon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />
                                         {t.form.remove}
                                     </Button>
                                 </RemoveGalleryImage>
@@ -249,22 +249,22 @@ function ImageDialog({
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogContent
                 id="gallery_dialog_content"
-                className="w-full flex items-center justify-center max-w-full bg-transparent border-none ring-0 p-0 pt-0 pb-0"
+                className="flex w-full max-w-full items-center justify-center border-none bg-transparent p-0 pt-0 pb-0 ring-0"
             >
                 <VisuallyHidden>
                     <DialogTitle>{galleryItem.name}</DialogTitle>
                     <DialogDescription>{galleryItem.description}</DialogDescription>
                 </VisuallyHidden>
-                <div id="image_popup_content" className="w-full h-[100dvh] flex flex-col items-center justify-center relative">
+                <div id="image_popup_content" className="relative flex h-[100dvh] w-full flex-col items-center justify-center">
                     <DialogClose asChild>
-                        <div className="absolute top-0 left-0 w-full h-full z-0" />
+                        <div className="absolute top-0 left-0 z-0 h-full w-full" />
                     </DialogClose>
 
                     <ImgLoader
                         src={imageUrl(galleryItem.image)}
                         alt={galleryItem.name}
                         thumbnailSrc={imageUrl(galleryItem.imageThumbnail)}
-                        className="border-none ring-0 rounded-lg object-contain z-10 w-full h-full"
+                        className="z-10 h-full w-full rounded-lg border-none object-contain ring-0"
                         wrapperClassName={cn(
                             "max-w-[calc(100vw_-_2rem)] sm:max-w-[calc(100vw_-_6rem)] max-h-[calc(100vh_-_4rem)]",
                             isFullWidth && "w-full h-full",
@@ -272,20 +272,20 @@ function ImageDialog({
                         setLoaded={() => {}}
                     />
 
-                    <div className="max-w-full flex flex-col items-center justify-center group p-16 pt-24 pb-4 rounded w-fit absolute left-[50%] bottom-[0.5rem] translate-x-[-50%] z-20">
-                        <div className="max-w-full w-max flex flex-col items-center justify-center transition-all duration-300 opacity-0 scale-75 translate-y-[1rem] group-hover:translate-y-[-1rem] group-hover:scale-100 group-hover:opacity-100 text-[hsla(var(--foreground-dark))]">
-                            <span className="font-bold text-lg text-center bg-black/80 rounded-[0.1rem] px-1">
+                    <div className="group absolute bottom-[0.5rem] left-[50%] z-20 flex w-fit max-w-full translate-x-[-50%] flex-col items-center justify-center rounded p-16 pt-24 pb-4">
+                        <div className="flex w-max max-w-full translate-y-[1rem] scale-75 flex-col items-center justify-center text-[hsla(var(--foreground-dark))] opacity-0 transition-all duration-300 group-hover:translate-y-[-1rem] group-hover:scale-100 group-hover:opacity-100">
+                            <span className="rounded-[0.1rem] bg-black/80 px-1 text-center font-bold text-lg">
                                 {galleryItem.name}
                             </span>
-                            <span className="max-w-[80ch] text-pretty text-center bg-black/80 rounded-[0.1rem] px-1">
+                            <span className="max-w-[80ch] text-pretty rounded-[0.1rem] bg-black/80 px-1 text-center">
                                 {galleryItem.description}
                             </span>
                         </div>
 
-                        <div className="flex items-center justify-start gap-2 p-2.5 px-3 rounded-xl bg-card-background opacity-45 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300 origin-bottom">
+                        <div className="flex origin-bottom scale-90 items-center justify-start gap-2 rounded-xl bg-card-background p-2.5 px-3 opacity-45 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
                             <DialogClose asChild>
                                 <Button className="rounded-full" size="icon" variant="secondary">
-                                    <XIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                                    <XIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                                 </Button>
                             </DialogClose>
 
@@ -297,25 +297,25 @@ function ImageDialog({
                                 rel="noopener noreferrer"
                             >
                                 <VisuallyHidden>{galleryItem.name}</VisuallyHidden>
-                                <ExternalLinkIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                <ExternalLinkIcon aria-hidden className="h-btn-icon w-btn-icon" />
                             </a>
 
                             <Button variant="secondary" size="icon" className="rounded-full" onClick={toggleFullWidth}>
                                 {isFullWidth ? (
-                                    <ShrinkIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                    <ShrinkIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                 ) : (
-                                    <ExpandIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                    <ExpandIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                 )}
                             </Button>
 
                             {totalItems > 1 ? (
                                 <>
                                     <Button variant="secondary" size="icon" className="rounded-full" onClick={previous}>
-                                        <ArrowLeftIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                        <ArrowLeftIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                     </Button>
 
                                     <Button variant="secondary" size="icon" className="rounded-full" onClick={next}>
-                                        <ArrowRightIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                        <ArrowRightIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                     </Button>
                                 </>
                             ) : null}

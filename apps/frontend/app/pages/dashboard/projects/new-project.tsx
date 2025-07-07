@@ -108,7 +108,7 @@ export default function CreateNewProjectDialog({ orgId, trigger }: Props) {
                     trigger
                 ) : (
                     <Button className="space-y-0">
-                        <PlusIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                        <PlusIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                         {t.dashboard.createProject}
                     </Button>
                 )}
@@ -130,7 +130,7 @@ export default function CreateNewProjectDialog({ orgId, trigger }: Props) {
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(createProject)}
-                            className="w-full flex flex-col items-start justify-center gap-form-elements"
+                            className="flex w-full flex-col items-start justify-center gap-form-elements"
                         >
                             <FormField
                                 name="name"
@@ -186,7 +186,7 @@ export default function CreateNewProjectDialog({ orgId, trigger }: Props) {
                                 control={form.control}
                                 name="type"
                                 render={({ field }) => (
-                                    <FormItem className="w-full flex flex-wrap flex-row items-end justify-between">
+                                    <FormItem className="flex w-full flex-row flex-wrap items-end justify-between">
                                         <div className="flex flex-col items-start justify-center">
                                             <FormLabel>{t.form.projectType}</FormLabel>
                                             <FormDescription>{t.dashboard.projectTypeDesc}</FormDescription>
@@ -281,7 +281,7 @@ export default function CreateNewProjectDialog({ orgId, trigger }: Props) {
                                     {isLoading ? (
                                         <LoadingSpinner size="xs" />
                                     ) : (
-                                        <ArrowRightIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                                        <ArrowRightIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                                     )}
                                     {t.form.continue}
                                 </Button>

@@ -16,7 +16,7 @@ export default function ModerationPagesLayout() {
     if (!MODERATOR_ROLES.includes(session?.role as GlobalUserRole)) {
         return (
             <div className="full_page flex items-center justify-center">
-                <span className="italic text-muted-foreground text-xl">Lacking permissions to access this page.</span>
+                <span className="text-muted-foreground text-xl italic">Lacking permissions to access this page.</span>
             </div>
         );
     }
@@ -25,22 +25,22 @@ export default function ModerationPagesLayout() {
         {
             name: t.dashboard.overview,
             href: "/moderation",
-            icon: <LayoutDashboardIcon aria-hidden className="w-4 h-4" />,
+            icon: <LayoutDashboardIcon aria-hidden className="h-4 w-4" />,
         },
         {
             name: t.dashboard.analytics,
             href: "/moderation/analytics",
-            icon: <BarChart2Icon aria-hidden className="w-4 h-4" />,
+            icon: <BarChart2Icon aria-hidden className="h-4 w-4" />,
         },
         {
             name: mod.review,
             href: "/moderation/review",
-            icon: <ScaleIcon aria-hidden className="w-4 h-4" />,
+            icon: <ScaleIcon aria-hidden className="h-4 w-4" />,
         },
         {
             name: mod.reports,
             href: "/moderation/reports",
-            icon: <FlagIcon aria-hidden className="w-4 h-4" />,
+            icon: <FlagIcon aria-hidden className="h-4 w-4" />,
         },
     ];
 

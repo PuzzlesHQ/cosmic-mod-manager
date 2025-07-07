@@ -56,14 +56,14 @@ export function TransferProjectManagementCard({ organisations, projectId }: Prop
             <CardHeader>
                 <CardTitle>{t.project.organization}</CardTitle>
             </CardHeader>
-            <CardContent className="w-full flex flex-col gap-4">
+            <CardContent className="flex w-full flex-col gap-4">
                 <CardDescription className="max-w-[80ch] leading-tight">
                     {t.projectSettings.projectNotManagedByOrg}
                 </CardDescription>
 
-                <div className="w-full flex flex-wrap gap-3">
+                <div className="flex w-full flex-wrap gap-3">
                     <Select value={selectedOrg} onValueChange={setSelectedOrg}>
-                        <SelectTrigger className="w-fit gap-2 min-w-full sm:min-w-[42ch]">
+                        <SelectTrigger className="w-fit min-w-full gap-2 sm:min-w-[42ch]">
                             <SelectValue placeholder={t.projectSettings.selectOrg} />
                         </SelectTrigger>
                         <SelectContent>
@@ -79,7 +79,7 @@ export function TransferProjectManagementCard({ organisations, projectId }: Prop
                         {isLoading ? (
                             <LoadingSpinner size="xs" />
                         ) : (
-                            <CheckIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                            <CheckIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                         )}
                         {t.projectSettings.transferManagementToOrg}
                     </Button>
@@ -134,12 +134,12 @@ export function RemoveProjectFromOrg({ org, projectId }: RemoveProjectFromOrgPro
             <CardHeader>
                 <CardTitle>{t.project.organization}</CardTitle>
             </CardHeader>
-            <CardContent className="w-full flex flex-col gap-4">
+            <CardContent className="flex w-full flex-col gap-4">
                 <CardDescription className="max-w-[80ch] leading-tight">
                     {t.projectSettings.projectManagedByOrg(org.name)}
                 </CardDescription>
 
-                <div className="w-full flex flex-wrap gap-3">
+                <div className="flex w-full flex-wrap gap-3">
                     <div className="w-full">
                         <OrgListItemCard
                             vtId={org.id}
@@ -156,7 +156,7 @@ export function RemoveProjectFromOrg({ org, projectId }: RemoveProjectFromOrgPro
                         {isLoading ? (
                             <LoadingSpinner size="xs" />
                         ) : (
-                            <Building2Icon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                            <Building2Icon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                         )}
                         {t.projectSettings.removeFromOrg}
                     </Button>

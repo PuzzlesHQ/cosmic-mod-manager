@@ -31,7 +31,7 @@ export function ProjectStatusBadge(props: ProjectStatusBadge) {
         <span
             title={props.title === false ? undefined : ProjectStatusDesc(props.status)}
             className={cn(
-                "inline-block gap-x-space font-semibold bg-shallow-background text-sm cursor-help px-2 py-[0.13em] rounded-full",
+                "inline-block cursor-help gap-x-space rounded-full bg-shallow-background px-2 py-[0.13em] font-semibold text-sm",
                 colorClass,
             )}
         >

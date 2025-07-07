@@ -40,8 +40,8 @@ export default function RevokeSessionPage() {
     }, [searchParams]);
 
     return (
-        <main className="w-full full_page flex items-center justify-center">
-            <div className="w-full max-w-md flex items-center justify-center">
+        <main className="full_page flex w-full items-center justify-center">
+            <div className="flex w-full max-w-md items-center justify-center">
                 {isLoading ? (
                     <LoadingSpinner />
                 ) : successMessage ? (

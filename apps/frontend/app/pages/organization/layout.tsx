@@ -50,7 +50,7 @@ export default function OrgPageLayout() {
 
     return (
         <main
-            className="header-content-sidebar-layout pb-12 gap-panel-cards"
+            className="header-content-sidebar-layout gap-panel-cards pb-12"
             itemScope
             itemType={itemType(MicrodataItemType.Organization)}
         >
@@ -63,10 +63,10 @@ export default function OrgPageLayout() {
                 fetchOrgData={refreshOrgData}
             />
 
-            <div className="h-fit grid grid-cols-1 gap-panel-cards page-content">
+            <div className="page-content grid h-fit grid-cols-1 gap-panel-cards">
                 {projectTypesList?.length > 1 && totalProjects > 1 ? (
                     <SecondaryNav
-                        className="bg-card-background rounded-lg px-3 py-2"
+                        className="rounded-lg bg-card-background px-3 py-2"
                         urlBase={OrgPagePath(orgData.slug)}
                         links={[
                             { label: t.common.all, href: "" },
@@ -81,8 +81,8 @@ export default function OrgPageLayout() {
                 {totalProjects ? (
                     <Outlet />
                 ) : (
-                    <div className="w-full flex items-center justify-center py-12">
-                        <p className="text-lg text-muted-foreground italic text-center">{t.organization.orgDoesntHaveProjects}</p>
+                    <div className="flex w-full items-center justify-center py-12">
+                        <p className="text-center text-lg text-muted-foreground italic">{t.organization.orgDoesntHaveProjects}</p>
                     </div>
                 )}
             </div>
@@ -95,7 +95,7 @@ function PageSidebar({ members }: { members: TeamMember[] }) {
     const { t } = useTranslation();
 
     return (
-        <aside className="w-full lg:w-sidebar flex flex-col gap-panel-cards page-sidebar">
+        <aside className="page-sidebar flex w-full flex-col gap-panel-cards lg:w-sidebar">
             <Card>
                 <CardHeader className="pb-2">
                     <CardTitle className="text-lg ">{t.projectSettings.members}</CardTitle>
@@ -149,7 +149,7 @@ function OrgInfoHeader({
     if (DownloadsCount[2].length > 0) DownloadsCount_Str += ` ${DownloadsCount[2]}`;
 
     return (
-        <div className="page-header w-full flex flex-col gap-1">
+        <div className="page-header flex w-full flex-col gap-1">
             <PageHeader
                 vtId={orgData.id}
                 icon={imageUrl(orgData.icon)}
@@ -159,7 +159,7 @@ function OrgInfoHeader({
                 description={orgData.description || ""}
                 titleBadge={
                     <div className="ms-2 flex items-center justify-center gap-1.5 font-bold text-extra-muted-foreground">
-                        <Building2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                        <Building2Icon aria-hidden className="h-btn-icon w-btn-icon" />
                         {t.project.organization}
                     </div>
                 }
@@ -173,7 +173,7 @@ function OrgInfoHeader({
                                     prefetch={Prefetch.Render}
                                     size="sm"
                                 >
-                                    <CubeIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                                    <CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                                     {t.organization.manageProjects}
                                 </VariantButtonLink>
 
@@ -190,7 +190,7 @@ function OrgInfoHeader({
                                     navigator.clipboard.writeText(orgData.id);
                                 }}
                             >
-                                <ClipboardCopyIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                <ClipboardCopyIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                 {t.common.copyId}
                             </Button>
                         </PopoverClose>
@@ -199,22 +199,22 @@ function OrgInfoHeader({
                 actionBtns={
                     currUsersMembership?.id || isModerator(session?.role) ? (
                         <VariantButtonLink variant="secondary-inverted" url={OrgPagePath(orgData.slug, "settings")}>
-                            <SettingsIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                            <SettingsIcon aria-hidden className="h-btn-icon w-btn-icon" />
                             {t.dashboard.manage}
                         </VariantButtonLink>
                     ) : null
                 }
             >
-                <div className="flex items-center gap-2 border-0 border-e border-card-background dark:border-shallow-background pe-4">
-                    <UsersIcon aria-hidden className="w-[1.1rem] h-[1.1rem]" />
+                <div className="flex items-center gap-2 border-0 border-card-background border-e pe-4 dark:border-shallow-background">
+                    <UsersIcon aria-hidden className="h-[1.1rem] w-[1.1rem]" />
                     <span className="font-semibold">{MembersCount.join(" ")}</span>
                 </div>
-                <div className="flex items-center gap-2 border-0 border-e border-card-background dark:border-shallow-background pe-4">
-                    <CubeIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                <div className="flex items-center gap-2 border-0 border-card-background border-e pe-4 dark:border-shallow-background">
+                    <CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     <span className="font-semibold">{ProjectsCount.join(" ")}</span>
                 </div>
                 <div className="flex items-center gap-2 pe-4">
-                    <DownloadIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                    <DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     <span className="font-semibold">{DownloadsCount_Str}</span>
                 </div>
             </PageHeader>

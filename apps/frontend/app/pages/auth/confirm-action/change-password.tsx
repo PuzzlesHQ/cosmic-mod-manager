@@ -77,9 +77,9 @@ export default function ChangePasswordCard({ code }: { code: string }) {
 
     if (successMessage) {
         return (
-            <div className="w-full max-w-md flex flex-col gap-form-elements items-center justify-center">
+            <div className="flex w-full max-w-md flex-col items-center justify-center gap-form-elements">
                 <FormSuccessMessage text={successMessage} className="w-fit" />
-                <Link to="/" className="hover:underline underline-offset-2 font-semibold">
+                <Link to="/" className="font-semibold underline-offset-2 hover:underline">
                     {t.common.home}
                 </Link>
             </div>
@@ -93,7 +93,7 @@ export default function ChangePasswordCard({ code }: { code: string }) {
                     <CardHeader>
                         <CardTitle>{t.auth.changePassword}</CardTitle>
                     </CardHeader>
-                    <CardContent className="w-full flex flex-col items-start justify-start gap-form-elements">
+                    <CardContent className="flex w-full flex-col items-start justify-start gap-form-elements">
                         <FormField
                             control={form.control}
                             name="newPassword"
@@ -130,7 +130,7 @@ export default function ChangePasswordCard({ code }: { code: string }) {
                             )}
                         />
 
-                        <div className="w-full flex flex-col-reverse sm:flex-row sm:justify-end gap-form-elements">
+                        <div className="flex w-full flex-col-reverse gap-form-elements sm:flex-row sm:justify-end">
                             <CancelButton
                                 disabled={isLoading.value}
                                 className=""

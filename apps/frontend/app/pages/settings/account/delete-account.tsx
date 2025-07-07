@@ -30,7 +30,7 @@ export default function DeleteAccountDialog() {
             onConfirm={deleteAccount}
         >
             <Button variant="destructive">
-                <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
                 {t.auth.deleteAccount}
             </Button>
         </ConfirmDialog>

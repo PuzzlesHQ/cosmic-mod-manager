@@ -25,12 +25,12 @@ export default function CollectionsDashboardPage(props: Props) {
 
     return (
         <Card className="w-full overflow-hidden">
-            <CardHeader className="w-full flex flex-row flex-wrap items-center justify-between gap-x-6 gap-y-2">
+            <CardHeader className="flex w-full flex-row flex-wrap items-center justify-between gap-x-6 gap-y-2">
                 <CardTitle>{t.dashboard.collections}</CardTitle>
             </CardHeader>
 
             <CardContent className="gap-4">
-                <div className="w-full gap-3 flex items-center justify-between flex-wrap sm:flex-nowrap">
+                <div className="flex w-full flex-wrap items-center justify-between gap-3 sm:flex-nowrap">
                     <Input
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
@@ -39,13 +39,13 @@ export default function CollectionsDashboardPage(props: Props) {
 
                     <CreateNewCollection_Dialog>
                         <Button>
-                            <PlusIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                            <PlusIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                             {t.form.createNew}
                         </Button>
                     </CreateNewCollection_Dialog>
                 </div>
 
-                <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
                     {!search || t.collection.followedProjects.toLowerCase().includes(search.toLowerCase()) ? (
                         <FollowsCollectionItem followingProjects={ctx.followingProjects.length} />
                     ) : null}
@@ -65,9 +65,9 @@ export default function CollectionsDashboardPage(props: Props) {
                                 visibility={
                                     <div className="inline-flex items-center justify-center gap-1">
                                         {collection.visibility === CollectionVisibility.PRIVATE ? (
-                                            <LockIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                            <LockIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                         ) : (
-                                            <EarthIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                            <EarthIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                         )}
                                         {
                                             t.projectSettings[
@@ -93,13 +93,13 @@ export function FollowsCollectionItem(props: { followingProjects: number; classN
             vtId={FOLLOWS_COLLECTIONS_ID}
             title={t.collection.followedProjects}
             url={CollectionPagePath(FOLLOWS_COLLECTIONS_ID)}
-            icon={<HeartIcon aria-hidden className="w-[60%] h-[60%] text-accent-background fill-current" />}
+            icon={<HeartIcon aria-hidden className="h-[60%] w-[60%] fill-current text-accent-background" />}
             description={t.collection.followedProjectsDesc}
             projects={props.followingProjects}
             className={props.className}
             visibility={
                 <div className="inline-flex items-center justify-center gap-1">
-                    <LockIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                    <LockIcon aria-hidden className="h-btn-icon w-btn-icon" />
                     {t.projectSettings.private}
                 </div>
             }

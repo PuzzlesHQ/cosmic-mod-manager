@@ -128,12 +128,12 @@ export default function EditVersionPage() {
                 onSubmit={(e) => {
                     e.preventDefault();
                 }}
-                className="w-full flex flex-col gap-panel-cards items-start justify-start"
+                className="flex w-full flex-col items-start justify-start gap-panel-cards"
             >
                 <UploadVersionPageTopCard
                     isLoading={isLoading}
                     submitBtnLabel={t.form.saveChanges}
-                    submitBtnIcon={<SaveIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />}
+                    submitBtnIcon={<SaveIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />}
                     versionPageUrl={versionsPageUrl}
                     versionTitle={form.getValues().title}
                     backUrl={currVersionPageUrl}
@@ -170,8 +170,8 @@ export default function EditVersionPage() {
                     />
                 </UploadVersionPageTopCard>
 
-                <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_min-content] gap-panel-cards items-start justify-start">
-                    <div className="overflow-auto flex flex-col gap-panel-cards">
+                <div className="grid w-full grid-cols-1 items-start justify-start gap-panel-cards lg:grid-cols-[1fr_min-content]">
+                    <div className="flex flex-col gap-panel-cards overflow-auto">
                         <ContentCardTemplate title={t.project.changelog}>
                             <FormField
                                 control={form.control}
@@ -203,23 +203,23 @@ export default function EditVersionPage() {
 
                         <ContentCardTemplate title={t.version.files} className="gap-form-elements">
                             {/* PRIMARY FILE */}
-                            <div className="w-full flex flex-wrap sm:flex-nowrap items-center justify-between bg-shallow-background rounded px-4 py-2 gap-x-4 gap-y-2">
+                            <div className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded bg-shallow-background px-4 py-2 sm:flex-nowrap">
                                 <div className="flex items-center justify-start gap-1.5">
-                                    <FileIcon aria-hidden className="flex-shrink-0 w-btn-icon h-btn-icon text-muted-foreground" />
+                                    <FileIcon aria-hidden className="h-btn-icon w-btn-icon flex-shrink-0 text-muted-foreground" />
 
-                                    <div className="flex items-center flex-wrap justify-start gap-x-2">
+                                    <div className="flex flex-wrap items-center justify-start gap-x-2">
                                         <span>
                                             <strong className="font-semibold">{versionData?.primaryFile?.name}</strong>{" "}
-                                            <span className="whitespace-nowrap ms-0.5">
+                                            <span className="ms-0.5 whitespace-nowrap">
                                                 ({parseFileSize(versionData?.primaryFile?.size || 0)})
                                             </span>{" "}
-                                            <span className="text-muted-foreground italic ms-1">{t.version.primary}</span>
+                                            <span className="ms-1 text-muted-foreground italic">{t.version.primary}</span>
                                         </span>
                                     </div>
                                 </div>
 
                                 <Button disabled type="button" variant="secondary-dark">
-                                    <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                                    <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
                                     {t.form.remove}
                                 </Button>
                             </div>

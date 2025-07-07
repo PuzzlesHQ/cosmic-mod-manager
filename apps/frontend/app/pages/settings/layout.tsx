@@ -21,7 +21,7 @@ export default function SettingsPageLayout() {
                         </ButtonLink>
                         {session?.id ? (
                             <>
-                                <span className="text-lg font-semibold mt-3">{t.settings.account}</span>
+                                <span className="mt-3 font-semibold text-lg">{t.settings.account}</span>
                                 <ButtonLink url="/settings/profile" prefetch={Prefetch.Render} preventScrollReset>
                                     <UserIcon aria-hidden className="size-4" />
                                     {t.settings.publicProfile}

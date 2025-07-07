@@ -173,7 +173,7 @@ export function ChatThread(props: ChatThreadProps) {
 
     return (
         <TooltipProvider>
-            <div className="w-full grid bg-background/50 dark:bg-background rounded-lg">
+            <div className="grid w-full rounded-lg bg-background/50 dark:bg-background">
                 <div className="grid py-card-surround">
                     {thread.messages.map((msg, i) => {
                         const createdAt = DateFromStr(msg.createdAt);
@@ -212,10 +212,10 @@ export function ChatThread(props: ChatThreadProps) {
                     )}
                 </div>
 
-                <div className="grid gap-3 p-card-surround rounded-t-lg bg-card-background">
+                <div className="grid gap-3 rounded-t-lg bg-card-background p-card-surround">
                     {!!replyingTo && (
-                        <div className="flex items-center justify-between border-b border-shallow-background pb-2 px-1">
-                            <span className="text-muted-foreground leading-none text-sm">
+                        <div className="flex items-center justify-between border-shallow-background border-b px-1 pb-2">
+                            <span className="text-muted-foreground text-sm leading-none">
                                 {t.chatThread.replyingTo(
                                     <Button
                                         key="replying-to-user"
@@ -223,7 +223,7 @@ export function ChatThread(props: ChatThreadProps) {
                                             scrollMsgIntoView(replyingTo);
                                         }}
                                         variant="link"
-                                        className="p-0 inline h-fit leading-none"
+                                        className="inline h-fit p-0 leading-none"
                                     >
                                         {replyingTo_user?.userName}
                                     </Button>,
@@ -233,10 +233,10 @@ export function ChatThread(props: ChatThreadProps) {
                             <Button
                                 variant="secondary"
                                 size="icon"
-                                className="!p-0.5 aspect-square !w-fit !h-fit rounded-full"
+                                className="!p-0.5 !w-fit !h-fit aspect-square rounded-full"
                                 onClick={() => setReplyingTo(null)}
                             >
-                                <XIcon className="w-btn-icon-sm h-btn-icon-sm" />
+                                <XIcon className="h-btn-icon-sm w-btn-icon-sm" />
                             </Button>
                         </div>
                     )}
@@ -247,9 +247,9 @@ export function ChatThread(props: ChatThreadProps) {
                             <div className="autoresizing-textarea" data-editor-value={editorText}>
                                 <textarea
                                     className={cn(
-                                        "resize-none rounded overflow-y-auto",
-                                        "bg-background/50 dark:bg-shallow-background/50 focus-within:bg-background/10 dark:focus-within:bg-shallow-background/10",
-                                        "focus-visible:outline-none focus-visible:ring-2 ring-shallow-background",
+                                        "resize-none overflow-y-auto rounded",
+                                        "bg-background/50 focus-within:bg-background/10 dark:bg-shallow-background/50 dark:focus-within:bg-shallow-background/10",
+                                        "ring-shallow-background focus-visible:outline-none focus-visible:ring-2",
                                     )}
                                     rows={1}
                                     placeholder={t.chatThread.messagePlaceholder}
@@ -263,26 +263,26 @@ export function ChatThread(props: ChatThreadProps) {
                                 disabled={sendingMsg || !editorText.trim().length}
                                 variant="secondary"
                             >
-                                <SendIcon className="w-btn-icon-md h-btn-icon-md" />
+                                <SendIcon className="h-btn-icon-md w-btn-icon-md" />
                             </Button>
                         </div>
                     )}
 
-                    <div className="flex items-center gap-2 flex-wrap">
+                    <div className="flex flex-wrap items-center gap-2">
                         {isReportOpen && (
                             <Button
                                 variant="destructive"
                                 onClick={() => updateReportStatus(true)}
                                 disabled={updatingReportStatus}
                             >
-                                <LockKeyholeIcon aria-hidden="true" className="w-btn-icon-md h-btn-icon-md" strokeWidth={2.2} />
+                                <LockKeyholeIcon aria-hidden="true" className="h-btn-icon-md w-btn-icon-md" strokeWidth={2.2} />
                                 {t.chatThread.closeThread}
                             </Button>
                         )}
 
                         {isReportClosed && (
                             <Button onClick={() => updateReportStatus(false)} disabled={updatingReportStatus}>
-                                <CheckCircleIcon aria-hidden="true" className="w-btn-icon-md h-btn-icon-md" strokeWidth={2.2} />
+                                <CheckCircleIcon aria-hidden="true" className="h-btn-icon-md w-btn-icon-md" strokeWidth={2.2} />
                                 {t.chatThread.reopenThread}
                             </Button>
                         )}
@@ -294,7 +294,7 @@ export function ChatThread(props: ChatThreadProps) {
                                 disabled={sendingMsg || !editorText.trim().length}
                                 title="Private messages are only accessible to Moderators"
                             >
-                                <ScaleIcon className="w-btn-icon h-btn-icon" />
+                                <ScaleIcon className="h-btn-icon w-btn-icon" />
                                 {t.chatThread.addPrivateNote}
                             </Button>
                         )}
@@ -314,16 +314,16 @@ export function ChatThread(props: ChatThreadProps) {
                                                     {t.moderation.resubmitDesc._1(ctx.projectData.name)}
                                                 </span>
                                                 <span className="block">{t.moderation.resubmitDesc._2}</span>
-                                                <span className="block text-danger-foreground font-medium">
+                                                <span className="block font-medium text-danger-foreground">
                                                     {t.moderation.resubmitDesc.warning}
                                                 </span>
                                             </>
                                         }
-                                        confirmIcon={<ScaleIcon className="w-btn-icon h-btn-icon" />}
+                                        confirmIcon={<ScaleIcon className="h-btn-icon w-btn-icon" />}
                                         variant="moderation-submit"
                                     >
                                         <Button variant="moderation-submit">
-                                            <ScaleIcon className="w-btn-icon h-btn-icon" />
+                                            <ScaleIcon className="h-btn-icon w-btn-icon" />
                                             {t.project.publishingChecklist.resubmitForReview}
                                         </Button>
                                     </ConfirmDialog>
@@ -362,10 +362,10 @@ export function ChatThread(props: ChatThreadProps) {
                                         <Popover>
                                             <PopoverTrigger asChild>
                                                 <Button size="icon" className="rounded-full" variant="outline">
-                                                    <MoreVerticalIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                                    <MoreVerticalIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                                 </Button>
                                             </PopoverTrigger>
-                                            <PopoverContent className="min-w-0 w-fit p-1" align="end">
+                                            <PopoverContent className="w-fit min-w-0 p-1" align="end">
                                                 <UpdateProjectStatusDialog
                                                     projectId={ctx.projectData.id}
                                                     projectName={ctx.projectData.name}
@@ -435,13 +435,13 @@ function ThreadMessage(props: ThreadMessageProps) {
     let msgText: React.ReactNode = null;
     switch (msg.type) {
         case MessageType.TEXT:
-            msgText = <MarkdownRenderBox text={msg.body.text} className="text-muted-foreground chat-msg" />;
+            msgText = <MarkdownRenderBox text={msg.body.text} className="chat-msg text-muted-foreground" />;
             break;
 
         case MessageType.DELETED:
             msgText = (
-                <div className="text-danger-foreground text-sm gap-1">
-                    <BanIcon className="inline mb-[0.25ch] w-btn-icon-sm h-btn-icon-sm" /> {t.chatThread.messageDeleted}
+                <div className="gap-1 text-danger-foreground text-sm">
+                    <BanIcon className="mb-[0.25ch] inline h-btn-icon-sm w-btn-icon-sm" /> {t.chatThread.messageDeleted}
                 </div>
             );
             break;
@@ -465,7 +465,7 @@ function ThreadMessage(props: ThreadMessageProps) {
         case MessageType.THREAD_CLOSURE:
             msgText = (
                 <p className="text-extra-muted-foreground">
-                    <LockIcon aria-hidden="true" className="inline w-4 h-4" /> {t.chatThread.closedTheThread}
+                    <LockIcon aria-hidden="true" className="inline h-4 w-4" /> {t.chatThread.closedTheThread}
                 </p>
             );
             break;
@@ -473,7 +473,7 @@ function ThreadMessage(props: ThreadMessageProps) {
         case MessageType.THREAD_REOPEN:
             msgText = (
                 <p className="text-extra-muted-foreground ">
-                    <CheckCircleIcon aria-hidden="true" className="inline w-4 h-4" /> {t.chatThread.reopenedTheThread}
+                    <CheckCircleIcon aria-hidden="true" className="inline h-4 w-4" /> {t.chatThread.reopenedTheThread}
                 </p>
             );
             break;
@@ -496,7 +496,7 @@ function ThreadMessage(props: ThreadMessageProps) {
     const avatar =
         author?.id && !msgAuthorHidden ? (
             <ImgWrapper
-                className="w-auto h-auto aspect-square rounded-full bg-card-background"
+                className="aspect-square h-auto w-auto rounded-full bg-card-background"
                 src={author.avatar}
                 alt={author.userName}
                 fallback={fallbackUserIcon}
@@ -506,8 +506,8 @@ function ThreadMessage(props: ThreadMessageProps) {
                 style={{ gridArea: "avatar" }}
                 src={""}
                 alt={msg.authorId || ""}
-                fallback={<BrandIcon className="w-[65%] h-[65%]" />}
-                className="w-auto h-auto aspect-square rounded-full bg-card-background"
+                fallback={<BrandIcon className="h-[65%] w-[65%]" />}
+                className="aspect-square h-auto w-auto rounded-full bg-card-background"
             />
         );
 
@@ -546,7 +546,7 @@ function ThreadMessage(props: ThreadMessageProps) {
     return (
         <div
             className={cn(
-                "w-full grid gap-x-panel-cards px-card-surround py-1.5 mt-3 first:mt-0 border-s-2 border-transparent relative group/chat-msg",
+                "group/chat-msg relative mt-3 grid w-full gap-x-panel-cards border-transparent border-s-2 px-card-surround py-1.5 first:mt-0",
                 !isReplyToAMsg && !isSelectedMsgForReply && "hover:bg-card-background dark:hover:bg-card-background/35",
                 isContinuationMessage && "mt-0",
                 isReplyToAMsg &&
@@ -578,7 +578,7 @@ function ThreadMessage(props: ThreadMessageProps) {
             {!!props.inResponseTo && props.inResponseTo.msg?.type === MessageType.TEXT && (
                 <div
                     style={{ gridArea: "reply" }}
-                    className="flex items-center justify-start gap-space text-xs text-extra-muted-foreground hover:text-muted-foreground cursor-pointer pb-2 group/replied-msg-preview"
+                    className="group/replied-msg-preview flex cursor-pointer items-center justify-start gap-space pb-2 text-extra-muted-foreground text-xs hover:text-muted-foreground"
                     onClick={() => {
                         const msgId = props.inResponseTo?.msg?.id;
                         if (!msgId) return;
@@ -587,10 +587,10 @@ function ThreadMessage(props: ThreadMessageProps) {
                         highlightChatMessage(msgId, msgHighlightTimeoutMap);
                     }}
                 >
-                    <div style={{ gridArea: "reply-illustration" }} className="relative grid w-12 h-full shrink-0">
+                    <div style={{ gridArea: "reply-illustration" }} className="relative grid h-full w-12 shrink-0">
                         <div
                             className={cn(
-                                "absolute start-[1.25rem] end-0 top-[50%] bottom-[-0.2rem] border-s-[0.1rem] border-t-[0.1rem] rounded-ss-sm",
+                                "absolute start-[1.25rem] end-0 top-[50%] bottom-[-0.2rem] rounded-ss-sm border-s-[0.1rem] border-t-[0.1rem]",
                                 "border-shallower-background group-hover/replied-msg-preview:border-extra-muted-foreground/75",
                             )}
                         />
@@ -599,7 +599,7 @@ function ThreadMessage(props: ThreadMessageProps) {
                         src={props.inResponseTo.user?.avatar}
                         alt=" "
                         fallback={fallbackUserIcon}
-                        className="w-4 h-4 rounded-full"
+                        className="h-4 w-4 rounded-full"
                     />
                     <strong>
                         @
@@ -614,25 +614,25 @@ function ThreadMessage(props: ThreadMessageProps) {
             )}
 
             {!isContinuationMessage && (
-                <div className="flex items-center justify-start mb-1 gap-3" style={{ gridArea: "info" }}>
+                <div className="mb-1 flex items-center justify-start gap-3" style={{ gridArea: "info" }}>
                     <div className="flex items-center justify-center gap-1.5">
                         {profileUrl ? (
                             <Link
                                 to={profileUrl}
-                                className={cn("w-fit text-base font-medium leading-none", userNameColor)}
+                                className={cn("w-fit font-medium text-base leading-none", userNameColor)}
                                 title={senderTitle}
                             >
                                 {authorUsername}
                             </Link>
                         ) : (
-                            <span className={cn("w-fit text-base font-medium leading-none", userNameColor)}>
+                            <span className={cn("w-fit font-medium text-base leading-none", userNameColor)}>
                                 {authorUsername}
                             </span>
                         )}
 
                         {msg.type === MessageType.TEXT && msg.body.isPrivate === true && (
                             <span title="Only visible to moderators">
-                                <LockIcon className="w-btn-icon-sm h-btn-icon-sm" />
+                                <LockIcon className="h-btn-icon-sm w-btn-icon-sm" />
                             </span>
                         )}
                     </div>
@@ -647,13 +647,13 @@ function ThreadMessage(props: ThreadMessageProps) {
 
             {props.message.type === MessageType.TEXT && (
                 <Popover>
-                    <PopoverTrigger className="ms-auto absolute top-0 end-0 translate-y-[-25%] bg-shallow-background px-1 py-0.5 rounded-md invisible group-hover/chat-msg:visible group-focus-within/chat-msg:visible">
-                        <MoreHorizontalIcon className="w-btn-icon-lg h-btn-icon-lg" />
+                    <PopoverTrigger className="invisible absolute end-0 top-0 ms-auto translate-y-[-25%] rounded-md bg-shallow-background px-1 py-0.5 group-focus-within/chat-msg:visible group-hover/chat-msg:visible">
+                        <MoreHorizontalIcon className="h-btn-icon-lg w-btn-icon-lg" />
                     </PopoverTrigger>
                     <PopoverContent className="min-w-0 p-1" align="end">
                         <PopoverClose asChild>
                             <Button variant="ghost" size="sm" onClick={() => props.setReplyingTo(msg.id)}>
-                                <ReplyIcon className="w-btn-icon-md h-btn-icon-md" />
+                                <ReplyIcon className="h-btn-icon-md w-btn-icon-md" />
                                 {t.chatThread.reply}
                             </Button>
                         </PopoverClose>
@@ -667,7 +667,7 @@ function ThreadMessage(props: ThreadMessageProps) {
                                 variant="destructive"
                             >
                                 <Button variant="ghost-destructive" size="sm">
-                                    <Trash2Icon className="w-btn-icon h-btn-icon" />
+                                    <Trash2Icon className="h-btn-icon w-btn-icon" />
                                     {t.form.delete}
                                 </Button>
                             </ConfirmDialog>

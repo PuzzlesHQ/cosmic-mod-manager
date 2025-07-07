@@ -54,7 +54,7 @@ export function VersionTitleInput({ name, value, disabled, inputRef, onChange }:
     return (
         <Input
             placeholder={t.version.enterVersionTitle}
-            className="!h-12 !py-1 !px-4 text-xl font-semibold !text-muted-foreground"
+            className="!h-12 !py-1 !px-4 !text-muted-foreground font-semibold text-xl"
             name={name}
             value={value}
             disabled={disabled}
@@ -80,7 +80,7 @@ export function FeaturedBtn({ isLoading, featured, setFeatured }: FeaturedBtnPro
             onClick={() => setFeatured(!featured)}
             title="Featured versions show up in your project sidebar."
         >
-            <StarIcon aria-hidden className={cn("w-btn-icon h-btn-icon", featured === true && "fill-current")} />
+            <StarIcon aria-hidden className={cn("h-btn-icon w-btn-icon", featured === true && "fill-current")} />
             {featured === true ? t.version.unfeature : t.version.feature}
         </Button>
     );
@@ -111,7 +111,7 @@ export function UploadVersionPageTopCard({
     const { t } = useTranslation();
 
     return (
-        <Card className="w-full p-card-surround flex flex-col items-start justify-start gap-3">
+        <Card className="flex w-full flex-col items-start justify-start gap-3 p-card-surround">
             <Breadcrumb>
                 <BreadcrumbList>
                     <BreadcrumbItem>
@@ -127,7 +127,7 @@ export function UploadVersionPageTopCard({
 
             {children}
 
-            <div className="w-full flex flex-wrap gap-x-panel-cards gap-y-2 items-center justify-start">
+            <div className="flex w-full flex-wrap items-center justify-start gap-x-panel-cards gap-y-2">
                 <Button type="submit" disabled={isLoading} onClick={onSubmitBtnClick}>
                     {isLoading ? <LoadingSpinner size="xs" /> : submitBtnIcon}
                     {submitBtnLabel || t.form.submit}
@@ -136,7 +136,7 @@ export function UploadVersionPageTopCard({
                 {featuredBtn}
 
                 <VariantButtonLink variant="secondary" url={backUrl} prefetch={Prefetch.Render}>
-                    <CancelButtonIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                    <CancelButtonIcon aria-hidden className="h-btn-icon w-btn-icon" />
                     {t.form.cancel}
                 </VariantButtonLink>
             </div>
@@ -155,7 +155,7 @@ export function MetadataInputCard({ projectType, formControl }: MetadataInputCar
 
     return (
         <ContentCardTemplate
-            className="w-full min-w-[19rem] px-card-surround flex flex-col gap-form-elements"
+            className="flex w-full min-w-[19rem] flex-col gap-form-elements px-card-surround"
             title={t.version.metadata}
         >
             <FormField
@@ -176,7 +176,7 @@ export function MetadataInputCard({ projectType, formControl }: MetadataInputCar
                                         >
                                             <CircleAlertIcon
                                                 aria-hidden
-                                                className="w-btn-icon h-btn-icon text-warning-foreground ms-auto cursor-help"
+                                                className="ms-auto h-btn-icon w-btn-icon cursor-help text-warning-foreground"
                                             />
                                         </TooltipTemplate>
                                     </TooltipProvider>
@@ -266,7 +266,7 @@ export function MetadataInputCard({ projectType, formControl }: MetadataInputCar
                                     <LabelledCheckbox
                                         checked={showAllVersions}
                                         onCheckedChange={(checked) => setShowAllVersions(checked === true)}
-                                        className="text-extra-muted-foreground ps-3.5 mt-1"
+                                        className="mt-1 ps-3.5 text-extra-muted-foreground"
                                     >
                                         {t.form.showAllVersions}
                                     </LabelledCheckbox>
@@ -429,9 +429,9 @@ export function AddDependencies({ dependencies, setDependencies, currProjectId, 
     }
 
     return (
-        <div className="w-full flex flex-col gap-3 items-start justify-center">
+        <div className="flex w-full flex-col items-start justify-center gap-3">
             {dependencies?.length ? (
-                <div className="w-full flex flex-col items-start justify-start gap-4 mb-2">
+                <div className="mb-2 flex w-full flex-col items-start justify-start gap-4">
                     {dependencies?.map((dependency) => (
                         <DependencyItem
                             key={dependency.versionId || dependency.projectId}
@@ -445,10 +445,10 @@ export function AddDependencies({ dependencies, setDependencies, currProjectId, 
                 </div>
             ) : null}
 
-            <div className="w-full flex flex-col gap-1">
+            <div className="flex w-full flex-col gap-1">
                 <span className="font-semibold text-muted-foreground">{t.version.addDep}</span>
 
-                <div className="w-full flex flex-col items-start justify-center gap-2">
+                <div className="flex w-full flex-col items-start justify-center gap-2">
                     <Select
                         defaultValue={DependsOn.PROJECT}
                         value={dependsOn}
@@ -507,7 +507,7 @@ export function AddDependencies({ dependencies, setDependencies, currProjectId, 
                         {isfetchingData ? (
                             <LoadingSpinner size="xs" />
                         ) : (
-                            <PlusIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                            <PlusIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                         )}
                         {t.version.addDep}
                     </Button>
@@ -533,7 +533,7 @@ function DependencyItem({ dependencyData, versionId, projectId, dependencyType, 
     if (!dependencyProject?.id) return null;
 
     return (
-        <div className="w-full flex items-center justify-between gap-x-4 gap-y-1 text-muted-foreground">
+        <div className="flex w-full items-center justify-between gap-x-4 gap-y-1 text-muted-foreground">
             <div className="flex items-center justify-start gap-2">
                 <ImgWrapper src={imageUrl(dependencyProject.icon)} alt={dependencyProject.name} className="h-12 w-12 rounded" />
                 <div className="flex flex-col items-start justify-start">
@@ -547,7 +547,7 @@ function DependencyItem({ dependencyData, versionId, projectId, dependencyType, 
             </div>
 
             <Button variant="secondary" type="button" onClick={() => removeDependency(projectId, versionId)}>
-                <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
                 {t.form.remove}
             </Button>
         </div>
@@ -564,16 +564,16 @@ export function SelectPrimaryFileInput({ children, selectedFile, inputId }: Prim
     const { t } = useTranslation();
 
     return (
-        <div className="w-full flex flex-wrap sm:flex-nowrap items-center justify-between bg-shallow-background/85 rounded px-4 py-2 gap-x-4 gap-y-2">
+        <div className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded bg-shallow-background/85 px-4 py-2 sm:flex-nowrap">
             {children}
 
             <div>
-                <FileIcon aria-hidden className="inline me-1.5 flex-shrink-0 w-btn-icon h-btn-icon text-muted-foreground" />
+                <FileIcon aria-hidden className="me-1.5 inline h-btn-icon w-btn-icon flex-shrink-0 text-muted-foreground" />
                 {selectedFile ? (
-                    <span className="inline-flex items-center flex-wrap justify-start gap-x-2">
+                    <span className="inline-flex flex-wrap items-center justify-start gap-x-2">
                         <strong className="font-semibold">{selectedFile.name}</strong>{" "}
-                        <span className="whitespace-nowrap ms-0.5">({parseFileSize(selectedFile.size)})</span>{" "}
-                        <span className="text-muted-foreground italic ms-1">{t.version.primary}</span>
+                        <span className="ms-0.5 whitespace-nowrap">({parseFileSize(selectedFile.size)})</span>{" "}
+                        <span className="ms-1 text-muted-foreground italic">{t.version.primary}</span>
                     </span>
                 ) : (
                     <span className="text-muted-foreground italic">{t.version.noPrimaryFile}</span>
@@ -652,44 +652,44 @@ function AdditionalFiles({
     }
 
     return (
-        <FormItem className="w-full flex flex-col items-start justify-center gap-0 mb-0">
+        <FormItem className="mb-0 flex w-full flex-col items-start justify-center gap-0">
             {children}
 
-            <div className="w-full flex flex-wrap items-center justify-between gap-x-6">
+            <div className="flex w-full flex-wrap items-center justify-between gap-x-6">
                 <div className="flex flex-col">
                     <span className="font-semibold">{t.version.uploadExtraFiles}</span>
-                    <span className="text-sm text-muted-foreground mb-1">{t.version.uploadExtraFilesDesc}</span>
+                    <span className="mb-1 text-muted-foreground text-sm">{t.version.uploadExtraFilesDesc}</span>
                 </div>
 
                 <InteractiveLabel
                     htmlFor={inputId}
                     className={cn(
-                        "flex items-center justify-center gap-2 px-4 py-2 rounded cursor-pointer",
-                        "text-muted-foreground cursor-pointer border border-shallow-background hover:bg-shallow-background/70",
-                        "focus-visible:outline-none focus-visible:keyboard_focus_ring",
+                        "flex cursor-pointer items-center justify-center gap-2 rounded px-4 py-2",
+                        "cursor-pointer border border-shallow-background text-muted-foreground hover:bg-shallow-background/70",
+                        "focus-visible:keyboard_focus_ring focus-visible:outline-none",
                     )}
                 >
-                    <UploadIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                    <UploadIcon aria-hidden className="h-btn-icon w-btn-icon" />
                     {t.version.selectFiles}
                 </InteractiveLabel>
             </div>
 
             {(selectedFiles?.length || 0) > 0 ? (
-                <div className="w-full flex flex-col gap-2 my-2 items-start justify-center">
+                <div className="my-2 flex w-full flex-col items-start justify-center gap-2">
                     {selectedFiles?.map((file, index) => (
                         <div
                             key={`${file.name}-${index}`}
-                            className="w-full flex flex-wrap sm:flex-nowrap items-center justify-between bg-shallow-background/75 rounded px-4 py-2 gap-x-4 gap-y-2"
+                            className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded bg-shallow-background/75 px-4 py-2 sm:flex-nowrap"
                         >
                             <div className="text-muted-foreground">
                                 {children}
-                                <FileIcon aria-hidden className="me-1.5 inline w-btn-icon h-btn-icon text-muted-foreground" />
-                                <strong className="font-semibold text-wrap">{file.name}</strong>{" "}
-                                <span className="whitespace-nowrap ms-0.5">({parseFileSize(file.size)})</span>
+                                <FileIcon aria-hidden className="me-1.5 inline h-btn-icon w-btn-icon text-muted-foreground" />
+                                <strong className="text-wrap font-semibold">{file.name}</strong>{" "}
+                                <span className="ms-0.5 whitespace-nowrap">({parseFileSize(file.size)})</span>
                             </div>
 
                             <Button variant="secondary-dark" onClick={() => deleteFileFromList(index)}>
-                                <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                                <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
                                 {t.form.remove}
                             </Button>
                         </div>

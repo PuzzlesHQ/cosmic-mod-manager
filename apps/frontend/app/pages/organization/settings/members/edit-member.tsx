@@ -98,9 +98,9 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
     const canTransferOwnership = hasRootAccess(currMember?.isOwner, session?.role) && member.isOwner === false && member.accepted;
 
     return (
-        <Card className="w-full flex flex-col gap-4 p-card-surround">
+        <Card className="flex w-full flex-col gap-4 p-card-surround">
             {/* Head */}
-            <div className="w-full flex flex-wrap items-center justify-between">
+            <div className="flex w-full flex-wrap items-center justify-between">
                 {/* Member profile details */}
                 <div className="flex items-center justify-center gap-2 text-muted-foreground">
                     <ImgWrapper
@@ -117,12 +117,12 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                         >
                             {member.userName}
                             {member.isOwner && (
-                                <span className="flex items-baseline justify-center shrink-0" title={t.projectSettings.owner}>
-                                    <CrownIcon aria-hidden className="w-4 h-4 text-orange-500 dark:text-orange-400" />
+                                <span className="flex shrink-0 items-baseline justify-center" title={t.projectSettings.owner}>
+                                    <CrownIcon aria-hidden className="h-4 w-4 text-orange-500 dark:text-orange-400" />
                                 </span>
                             )}
                         </Link>
-                        <span className="leading-none text-[0.93rem] text-muted-foreground/80">{member.role}</span>
+                        <span className="text-[0.93rem] text-muted-foreground/80 leading-none">{member.role}</span>
                     </div>
                 </div>
 
@@ -130,7 +130,7 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                 <div className="flex items-center justify-center gap-x-4">
                     {member.accepted === false && (
                         <span className="flex items-center justify-center gap-1.5 font-bold text-orange-500 dark:text-orange-400">
-                            <RefreshCcwIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                            <RefreshCcwIcon aria-hidden className="h-btn-icon w-btn-icon" />
                             {t.projectSettings.pending}
                         </span>
                     )}
@@ -138,7 +138,7 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                     <Button size="icon" variant="ghost" onClick={() => setDetailsOpen((prev) => !prev)}>
                         <ChevronDownIcon
                             aria-hidden
-                            className={cn("w-btn-icon-lg h-btn-icon-lg transition-all", detailsOpen && "rotate-180")}
+                            className={cn("h-btn-icon-lg w-btn-icon-lg transition-all", detailsOpen && "rotate-180")}
                         />
                     </Button>
                 </div>
@@ -151,14 +151,14 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                         onSubmit={async (e) => {
                             e.preventDefault();
                         }}
-                        className="w-full flex flex-col gap-form-elements"
+                        className="flex w-full flex-col gap-form-elements"
                     >
                         <FormField
                             control={form.control}
                             name="role"
                             disabled={!canEditMember}
                             render={({ field }) => (
-                                <FormItem className="flex-col md:flex-row justify-between">
+                                <FormItem className="flex-col justify-between md:flex-row">
                                     <div className="flex flex-col items-start justify-center gap-1">
                                         <FormLabel className="font-bold" htmlFor={`member-role-input_${member.id}`}>
                                             {t.projectSettings.role}
@@ -188,7 +188,7 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                                         <FormItem>
                                             <FormLabel className="font-bold">Project permissions</FormLabel>
                                             <div
-                                                className="w-full grid gap-x-4 gap-y-1"
+                                                className="grid w-full gap-x-4 gap-y-1"
                                                 style={{
                                                     gridTemplateColumns: "repeat(auto-fit, minmax(12rem, 1fr))",
                                                 }}
@@ -227,7 +227,7 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                                         <FormItem>
                                             <FormLabel className="font-bold">Organization permissions</FormLabel>
                                             <div
-                                                className="w-full grid gap-x-4 gap-y-1"
+                                                className="grid w-full gap-x-4 gap-y-1"
                                                 style={{
                                                     gridTemplateColumns: "repeat(auto-fit, minmax(12rem, 1fr))",
                                                 }}
@@ -260,7 +260,7 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                             </>
                         )}
 
-                        <div className="w-full flex flex-wrap gap-x-4 gap-y-2">
+                        <div className="flex w-full flex-wrap gap-x-4 gap-y-2">
                             <Button
                                 type="submit"
                                 size="sm"
@@ -272,14 +272,14 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                                     }, toast.error);
                                 }}
                             >
-                                <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                <SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                 {t.form.saveChanges}
                             </Button>
 
                             {!member.isOwner && canRemoveMembers && (
                                 <RemoveMemberDialog member={member} refreshData={fetchOrgData}>
                                     <Button type="button" variant="secondary-destructive" size="sm" disabled={isLoading}>
-                                        <UserXIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                        <UserXIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                         {t.projectSettings.removeMember}
                                     </Button>
                                 </RemoveMemberDialog>
@@ -288,7 +288,7 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                             {canTransferOwnership ? (
                                 <TransferOwnershipDialog member={member} teamId={org.teamId} refreshData={fetchOrgData}>
                                     <Button variant="secondary" size="sm" disabled={isLoading}>
-                                        <ArrowRightLeftIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                        <ArrowRightLeftIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                         {t.projectSettings.transferOwnership}
                                     </Button>
                                 </TransferOwnershipDialog>

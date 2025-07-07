@@ -83,13 +83,13 @@ export default function CollectionPageLayout(props: Props) {
     const isFollowsCollection = props.collection.id === FOLLOWS_COLLECTIONS_ID;
     const icon =
         props.collection.id === FOLLOWS_COLLECTIONS_ID ? (
-            <HeartIcon aria-hidden className="w-[65%] h-[65%] text-accent-background fill-current" />
+            <HeartIcon aria-hidden className="h-[65%] w-[65%] fill-current text-accent-background" />
         ) : (
             imageUrl(props.collection.icon)
         );
 
     return (
-        <main className="header-content-sidebar-layout pb-12 gap-panel-cards">
+        <main className="header-content-sidebar-layout gap-panel-cards pb-12">
             <PageHeader
                 vtId={props.collection.id}
                 icon={icon}
@@ -98,7 +98,7 @@ export default function CollectionPageLayout(props: Props) {
                 description={props.collection.description || ""}
                 titleBadge={
                     <div className="ms-2 flex items-center justify-center gap-1.5 font-bold text-extra-muted-foreground">
-                        <CubeIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                        <CubeIcon aria-hidden className="h-btn-icon w-btn-icon" />
                         {t.dashboard.collection}
                     </div>
                 }
@@ -109,7 +109,7 @@ export default function CollectionPageLayout(props: Props) {
                             onClick={RemoveCollectionProjects}
                             disabled={removingProjects}
                         >
-                            {removingProjects ? <LoadingSpinner size="xs" /> : <Trash2Icon className="w-btn-icon h-btn-icon" />}
+                            {removingProjects ? <LoadingSpinner size="xs" /> : <Trash2Icon className="h-btn-icon w-btn-icon" />}
                             {t.form.remove}
                         </Button>
                     ) : null
@@ -125,7 +125,7 @@ export default function CollectionPageLayout(props: Props) {
                                     navigator.clipboard.writeText(props.collection.id);
                                 }}
                             >
-                                <ClipboardCopyIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                <ClipboardCopyIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                 {t.common.copyId}
                                 <span itemProp={MicrodataItemProps.itemid} className="sr-only">
                                     {props.collection.id}
@@ -147,7 +147,7 @@ export default function CollectionPageLayout(props: Props) {
                                     onConfirm={DeleteCollection}
                                 >
                                     <Button variant="ghost-destructive" size="sm" className="w-full">
-                                        <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                                        <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
                                         {t.form.delete}
                                     </Button>
                                 </ConfirmDialog>
@@ -156,16 +156,16 @@ export default function CollectionPageLayout(props: Props) {
                     </>
                 }
             >
-                <div className="flex items-center gap-2 border-0 border-e border-card-background dark:border-shallow-background pe-4">
-                    <CubeIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                <div className="flex items-center gap-2 border-0 border-card-background border-e pe-4 dark:border-shallow-background">
+                    <CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     <span className="font-semibold">{ProjectsCount.join(" ")}</span>
                 </div>
 
-                <div className="flex items-center gap-2 border-0 border-e border-card-background dark:border-shallow-background pe-4">
+                <div className="flex items-center gap-2 border-0 border-card-background border-e pe-4 dark:border-shallow-background">
                     {props.collection.visibility === CollectionVisibility.PRIVATE ? (
-                        <LockIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                        <LockIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     ) : (
-                        <EarthIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                        <EarthIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     )}
 
                     <span className="font-semibold">
@@ -174,17 +174,17 @@ export default function CollectionPageLayout(props: Props) {
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <CalendarIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                    <CalendarIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     <span className="font-semibold">
                         {t.settings.created(TimePassedSince({ date: props.collection.dateCreated }))}
                     </span>
                 </div>
             </PageHeader>
 
-            <div className="h-fit grid grid-cols-1 gap-panel-cards page-content">
+            <div className="page-content grid h-fit grid-cols-1 gap-panel-cards">
                 {projectTypesList?.length > 1 && props.projects.length > 1 ? (
                     <SecondaryNav
-                        className="bg-card-background rounded-lg px-3 py-2"
+                        className="rounded-lg bg-card-background px-3 py-2"
                         urlBase={CollectionPagePath(props.collection.id)}
                         links={[
                             { label: t.common.all, href: "" },
@@ -223,7 +223,7 @@ function PageSidebar(props: { owner: CollectionOwner }) {
     const { t } = useTranslation();
 
     return (
-        <div className="w-full lg:w-sidebar flex flex-col gap-panel-cards page-sidebar">
+        <div className="page-sidebar flex w-full flex-col gap-panel-cards lg:w-sidebar">
             <ContentCardTemplate title={t.collection.curatedBy} titleClassName="text-lg">
                 <TeamMember_Card
                     vtId={props.owner.id}

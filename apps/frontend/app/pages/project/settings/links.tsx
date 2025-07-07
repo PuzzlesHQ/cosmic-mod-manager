@@ -57,19 +57,19 @@ export default function ExternalLinksSettingsPage() {
         (projectData?.discordInviteUrl || "") !== (formValues.discordServer || "");
 
     return (
-        <Card className="w-full flex flex-col items-start justify-start gap-6 p-card-surround">
+        <Card className="flex w-full flex-col items-start justify-start gap-6 p-card-surround">
             <CardTitle>{t.projectSettings.externalLinks}</CardTitle>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(updateLinks)} className="w-full flex flex-col items-start justify-start gap-4">
+                <form onSubmit={form.handleSubmit(updateLinks)} className="flex w-full flex-col items-start justify-start gap-4">
                     <FormField
                         control={form.control}
                         name="issueTracker"
                         render={({ field }) => (
-                            <FormItem className="flex md:flex-row items-center justify-between gap-x-4">
+                            <FormItem className="flex items-center justify-between gap-x-4 md:flex-row">
                                 <FormLabel htmlFor="issue-tracker-url-input">
                                     <span className="flex flex-col items-start justify-start gap-1">
                                         <span className="font-bold">{t.projectSettings.issueTracker}</span>
-                                        <FormDescription className="text-base font-normal text-muted-foreground">
+                                        <FormDescription className="font-normal text-base text-muted-foreground">
                                             {t.projectSettings.issueTrackerDesc}
                                         </FormDescription>
                                     </span>
@@ -93,11 +93,11 @@ export default function ExternalLinksSettingsPage() {
                         control={form.control}
                         name="sourceCode"
                         render={({ field }) => (
-                            <FormItem className="flex md:flex-row items-center justify-between gap-x-4">
+                            <FormItem className="flex items-center justify-between gap-x-4 md:flex-row">
                                 <FormLabel htmlFor="source-code-url-input">
                                     <span className="flex flex-col items-start justify-start gap-1">
                                         <span className="font-bold">{t.projectSettings.sourceCode}</span>
-                                        <FormDescription className="text-base font-normal text-muted-foreground">
+                                        <FormDescription className="font-normal text-base text-muted-foreground">
                                             {t.projectSettings.sourceCodeDesc}
                                         </FormDescription>
                                     </span>
@@ -121,11 +121,11 @@ export default function ExternalLinksSettingsPage() {
                         control={form.control}
                         name="wikiPage"
                         render={({ field }) => (
-                            <FormItem className="flex md:flex-row items-center justify-between gap-x-4">
+                            <FormItem className="flex items-center justify-between gap-x-4 md:flex-row">
                                 <FormLabel htmlFor="wiki-page-url-input">
                                     <span className="flex flex-col items-start justify-start gap-1">
                                         <span className="font-bold">{t.projectSettings.wikiPage}</span>
-                                        <FormDescription className="text-base font-normal text-muted-foreground">
+                                        <FormDescription className="font-normal text-base text-muted-foreground">
                                             {t.projectSettings.wikiPageDesc}
                                         </FormDescription>
                                     </span>
@@ -149,11 +149,11 @@ export default function ExternalLinksSettingsPage() {
                         control={form.control}
                         name="discordServer"
                         render={({ field }) => (
-                            <FormItem className="flex md:flex-row items-center justify-between gap-x-4">
+                            <FormItem className="flex items-center justify-between gap-x-4 md:flex-row">
                                 <FormLabel htmlFor="discord-invite-url-input">
                                     <span className="flex flex-col items-start justify-start gap-1">
                                         <span className="font-bold">{t.projectSettings.discordInvite}</span>
-                                        <FormDescription className="text-base font-normal text-muted-foreground">
+                                        <FormDescription className="font-normal text-base text-muted-foreground">
                                             {t.projectSettings.discordInviteDesc}
                                         </FormDescription>
                                     </span>
@@ -173,12 +173,12 @@ export default function ExternalLinksSettingsPage() {
                         )}
                     />
 
-                    <div className="w-full flex items-center justify-end">
+                    <div className="flex w-full items-center justify-end">
                         <Button type="submit" disabled={!hasFormChanged || form.formState.isSubmitting}>
                             {form.formState.isSubmitting ? (
                                 <LoadingSpinner size="xs" />
                             ) : (
-                                <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                <SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
                             )}
                             {t.form.saveChanges}
                         </Button>

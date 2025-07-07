@@ -73,7 +73,7 @@ function AddPasswordForm({ email }: { email: string }) {
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
                 <Button variant="secondary">
-                    <KeyRoundIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                    <KeyRoundIcon aria-hidden className="h-btn-icon w-btn-icon" />
                     {t.settings.addPass}
                 </Button>
             </DialogTrigger>
@@ -136,7 +136,7 @@ function AddPasswordForm({ email }: { email: string }) {
                                     {isLoading ? (
                                         <LoadingSpinner size="xs" />
                                     ) : (
-                                        <PlusIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                                        <PlusIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                                     )}
                                     {t.settings.addPass}
                                 </Button>

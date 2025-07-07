@@ -98,21 +98,21 @@ export default function TagsSettingsPage() {
                 }}
                 className="w-full"
             >
-                <Card className="w-full flex flex-col p-card-surround gap-4">
-                    <div className="w-full flex flex-col items-start justify-start gap-1">
+                <Card className="flex w-full flex-col gap-4 p-card-surround">
+                    <div className="flex w-full flex-col items-start justify-start gap-1">
                         <CardTitle>{t.projectSettings.tags}</CardTitle>
                         <span className="text-muted-foreground">{t.projectSettings.tagsDesc(projectType.toLowerCase())}</span>
                     </div>
 
                     {availableTags.map(([type, tags]) => {
                         return (
-                            <div key={type} className="w-full flex flex-col items-start justify-start">
-                                <span className="text-lg font-bold">{t.search[type]}</span>
+                            <div key={type} className="flex w-full flex-col items-start justify-start">
+                                <span className="font-bold text-lg">{t.search[type]}</span>
                                 <FormField
                                     control={form.control}
                                     name="categories"
                                     render={({ field }) => (
-                                        <div className="autofit-grid w-full grid">
+                                        <div className="autofit-grid grid w-full">
                                             {tags.map((tag) => {
                                                 // @ts-ignore
                                                 const tagName = t.search.tags[tag.name] || tag.name;
@@ -157,9 +157,9 @@ export default function TagsSettingsPage() {
                         );
                     })}
 
-                    <div className="w-full flex flex-col items-start justify-start">
-                        <span className="flex items-center justify-center gap-2 text-lg font-bold">
-                            <StarIcon aria-hidden className="w-btn-icon h-btn-icon text-muted-foreground" />
+                    <div className="flex w-full flex-col items-start justify-start">
+                        <span className="flex items-center justify-center gap-2 font-bold text-lg">
+                            <StarIcon aria-hidden className="h-btn-icon w-btn-icon text-muted-foreground" />
                             {t.projectSettings.featuredCategories}
                         </span>
                         <span className="text-muted-foreground">
@@ -169,7 +169,7 @@ export default function TagsSettingsPage() {
                             control={form.control}
                             name="featuredCategories"
                             render={({ field }) => (
-                                <div className="autofit-grid w-full grid mt-2">
+                                <div className="autofit-grid mt-2 grid w-full">
                                     {form.getValues().categories.map((tag) => {
                                         // @ts-ignore
                                         const tagName = t.search.tags[tag] || tag;
@@ -208,7 +208,7 @@ export default function TagsSettingsPage() {
                         ) : null}
                     </div>
 
-                    <div className="w-full flex items-center justify-end">
+                    <div className="flex w-full items-center justify-end">
                         <Button
                             type="submit"
                             disabled={isLoading || isSubmitBtnDisabled}
@@ -222,7 +222,7 @@ export default function TagsSettingsPage() {
                             {isLoading ? (
                                 <LoadingSpinner size="xs" />
                             ) : (
-                                <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                <SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
                             )}
                             {t.form.saveChanges}
                         </Button>

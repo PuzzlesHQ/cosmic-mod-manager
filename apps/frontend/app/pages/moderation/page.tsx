@@ -11,7 +11,7 @@ export default function StatsPage({ stats }: { stats: Statistics }) {
                 <CardTitle>{t.moderation.statistics}</CardTitle>
             </CardHeader>
 
-            <CardContent className="grid gap-4 grid-cols-1 sm:grid-cols-[repeat(auto-fit,_minmax(15rem,_1fr))]">
+            <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-[repeat(auto-fit,_minmax(15rem,_1fr))]">
                 <StatCard label={t.dashboard.projects} value={stats.projects} />
                 <StatCard label={t.project.versions} value={stats.versions} />
                 <StatCard label={t.version.files} value={stats.files} />
@@ -28,9 +28,9 @@ interface StatCardProps {
 
 function StatCard({ label, value }: StatCardProps) {
     return (
-        <div className="bg-background p-card-surround rounded flex flex-col gap-2">
-            <span className="text-muted-foreground font-bold">{label}</span>
-            <span className="text-4xl font-bold">{value}</span>
+        <div className="flex flex-col gap-2 rounded bg-background p-card-surround">
+            <span className="font-bold text-muted-foreground">{label}</span>
+            <span className="font-bold text-4xl">{value}</span>
         </div>
     );
 }

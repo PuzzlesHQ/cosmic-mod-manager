@@ -93,12 +93,12 @@ export default function DownloadsAnalyticsChart(props: DownloadsAnalyticsProps) 
     }, [timeline, props.projectIds.toString()]);
 
     return (
-        <div className="flex gap-3 flex-col bg-card-background rounded-lg p-card-surround ps-0">
+        <div className="flex flex-col gap-3 rounded-lg bg-card-background p-card-surround ps-0">
             <div className="flex items-start justify-between ps-card-surround">
                 <div>
-                    <h1 className="text-foreground text-xl font-semibold leading-none">{t.project.downloads}</h1>
+                    <h1 className="font-semibold text-foreground text-xl leading-none">{t.project.downloads}</h1>
 
-                    <span className="text-sm font-semibold text-extra-muted-foreground leading-none">
+                    <span className="font-semibold text-extra-muted-foreground text-sm leading-none">
                         <FormattedDate
                             includeTime={false}
                             shortMonthNames
@@ -208,11 +208,11 @@ export default function DownloadsAnalyticsChart(props: DownloadsAnalyticsProps) 
                         />
                     </LineChart>
                 ) : (
-                    <div className="h-full ps-card-surround flex items-center justify-center">
+                    <div className="flex h-full items-center justify-center ps-card-surround">
                         {analyticsData.loading ? (
                             <WanderingCubesSpinner />
                         ) : (
-                            <span className="text-md text-center font-mono text-extra-muted-foreground">
+                            <span className="text-center font-mono text-extra-muted-foreground text-md">
                                 {t.graph.noDataAvailable}
                             </span>
                         )}
@@ -220,13 +220,13 @@ export default function DownloadsAnalyticsChart(props: DownloadsAnalyticsProps) 
                 )}
             </ChartContainer>
 
-            <div className="flex items-center justify-center ps-card-surround gap-4">
-                <span className="text-sm font-medium text-extra-muted-foreground leading-none">
+            <div className="flex items-center justify-center gap-4 ps-card-surround">
+                <span className="font-medium text-extra-muted-foreground text-sm leading-none">
                     {t.project.downloads}: <strong>{total}</strong>
                 </span>
 
                 {projectsCount > 1 ? (
-                    <span className="text-sm font-medium text-extra-muted-foreground leading-none">
+                    <span className="font-medium text-extra-muted-foreground text-sm leading-none">
                         {t.dashboard.projects}: <strong>{projectsCount}</strong>
                     </span>
                 ) : null}

@@ -37,7 +37,7 @@ export function LoginButton({ className }: { className?: string }) {
     return (
         <LoginDialog>
             <Button className={className} variant="secondary-inverted" aria-label={t.form.login_withSpace}>
-                <LogInIcon aria-hidden className="w-btn-icon h-btn-icon" aria-label={t.form.login_withSpace} />
+                <LogInIcon aria-hidden className="h-btn-icon w-btn-icon" aria-label={t.form.login_withSpace} />
                 {t.form.login_withSpace}
             </Button>
         </LoginDialog>
@@ -66,33 +66,33 @@ export default function NavButton({ session, notifications }: NavbuttonProps) {
     return (
         <Popover open={isOpen} onOpenChange={setIsOpen}>
             <PopoverTrigger asChild>
-                <Button size="lg" variant="ghost" aria-label="Profile icon" className="p-0 m-0 h-fit rounded-full w-fit relative">
+                <Button size="lg" variant="ghost" aria-label="Profile icon" className="relative m-0 h-fit w-fit rounded-full p-0">
                     <ImgWrapper
                         src={imageUrl(session.avatar)}
                         alt={`Profile picture of ${session?.userName}`}
                         fallback={fallbackUserIcon}
-                        className="p-0.5 h-nav-item w-nav-item rounded-full border-none bg-shallower-background dark:bg-shallow-background"
+                        className="h-nav-item w-nav-item rounded-full border-none bg-shallower-background p-0.5 dark:bg-shallow-background"
                     />
                     {undreadNotifications > 0 ? <NotificationBadge className="min-h-1.5 min-w-1.5" /> : null}
                 </Button>
             </PopoverTrigger>
-            <PopoverContent align="end" className="min-w-52 p-1.5 flex flex-col gap-1">
+            <PopoverContent align="end" className="flex min-w-52 flex-col gap-1 p-1.5">
                 {[
                     {
-                        icon: <UserIcon aria-hidden className="w-btn-icon h-btn-icon" aria-label={t.navbar.profile} />,
+                        icon: <UserIcon aria-hidden className="h-btn-icon w-btn-icon" aria-label={t.navbar.profile} />,
                         label: t.navbar.profile,
                         url: UserProfilePath(session.userName),
                         matchExactUrl: false,
                     },
                     {
-                        icon: <BellIcon aria-hidden className="w-btn-icon h-btn-icon" aria-label={t.dashboard.notifications} />,
+                        icon: <BellIcon aria-hidden className="h-btn-icon w-btn-icon" aria-label={t.dashboard.notifications} />,
                         label: t.dashboard.notifications,
                         url: "/dashboard/notifications",
                         matchExactUrl: false,
                         notificationBadge: undreadNotifications,
                     },
                     {
-                        icon: <Settings2Icon aria-hidden className="w-btn-icon h-btn-icon" aria-label={t.common.settings} />,
+                        icon: <Settings2Icon aria-hidden className="h-btn-icon w-btn-icon" aria-label={t.common.settings} />,
                         label: t.common.settings,
                         url: "/settings/profile",
                         matchExactUrl: false,
@@ -112,14 +112,14 @@ export default function NavButton({ session, notifications }: NavbuttonProps) {
 
                 {[
                     {
-                        icon: <LayoutListIcon aria-hidden className="w-btn-icon h-btn-icon" aria-label={t.dashboard.projects} />,
+                        icon: <LayoutListIcon aria-hidden className="h-btn-icon w-btn-icon" aria-label={t.dashboard.projects} />,
                         label: t.dashboard.projects,
                         url: "/dashboard/projects",
                         matchExactUrl: false,
                     },
                     {
                         icon: (
-                            <Building2Icon aria-hidden className="w-btn-icon h-btn-icon" aria-label={t.dashboard.organizations} />
+                            <Building2Icon aria-hidden className="h-btn-icon w-btn-icon" aria-label={t.dashboard.organizations} />
                         ),
                         label: t.dashboard.organizations,
                         url: "/dashboard/organizations",
@@ -129,7 +129,7 @@ export default function NavButton({ session, notifications }: NavbuttonProps) {
                         icon: (
                             <LayoutDashboardIcon
                                 aria-hidden
-                                className="w-btn-icon h-btn-icon"
+                                className="h-btn-icon w-btn-icon"
                                 aria-label={t.dashboard.dashboard}
                             />
                         ),
@@ -147,7 +147,7 @@ export default function NavButton({ session, notifications }: NavbuttonProps) {
                 })}
                 {MODERATOR_ROLES.includes(session.role) ? (
                     <ButtonLink url="/moderation/review" exactTailMatch={false}>
-                        <ScaleIcon aria-hidden className="w-btn-icon h-btn-icon" aria-label={t.moderation.moderation} />
+                        <ScaleIcon aria-hidden className="h-btn-icon w-btn-icon" aria-label={t.moderation.moderation} />
                         {t.moderation.moderation}
                     </ButtonLink>
                 ) : null}
@@ -187,12 +187,12 @@ export function SignOutBtn({ className, disabled = false }: Props) {
             variant="ghost-destructive"
             onClick={handleClick}
             tabIndex={disabled ? -1 : 0}
-            className={cn("w-full h-nav-item justify-start", className)}
+            className={cn("h-nav-item w-full justify-start", className)}
         >
             {loading ? (
                 <LoadingSpinner size="xs" />
             ) : (
-                <LogOutIcon aria-hidden className="w-btn-icon h-btn-icon" aria-label={t.navbar.signout} />
+                <LogOutIcon aria-hidden className="h-btn-icon w-btn-icon" aria-label={t.navbar.signout} />
             )}
             {t.navbar.signout}
         </Button>

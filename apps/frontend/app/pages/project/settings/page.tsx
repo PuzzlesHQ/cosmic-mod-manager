@@ -115,7 +115,7 @@ export default function GeneralSettingsPage() {
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(saveSettings)}
-                        className="w-full flex flex-col items-start justify-start gap-form-elements"
+                        className="flex w-full flex-col items-start justify-start gap-form-elements"
                     >
                         <FormField
                             control={form.control}
@@ -155,7 +155,7 @@ export default function GeneralSettingsPage() {
                                         {t.form.url}
                                         <CharacterCounter currVal={field.value} max={MAX_PROJECT_NAME_LENGTH} />
                                     </FormLabel>
-                                    <div className="w-full flex flex-col items-start justify-center gap-0.5">
+                                    <div className="flex w-full flex-col items-start justify-center gap-0.5">
                                         <Input
                                             {...field}
                                             onChange={(e) => {
@@ -165,9 +165,9 @@ export default function GeneralSettingsPage() {
                                             id="project-slug-input"
                                             autoComplete="off"
                                         />
-                                        <span className="text-sm lg:text-base text-muted-foreground px-1">
+                                        <span className="px-1 text-muted-foreground text-sm lg:text-base">
                                             {Config.FRONTEND_URL}/{form.getValues().type?.[0] || "project"}/
-                                            <em className="not-italic text-foreground font-[500]">{form.getValues().slug}</em>
+                                            <em className="font-[500] text-foreground not-italic">{form.getValues().slug}</em>
                                         </span>
                                     </div>
 
@@ -187,7 +187,7 @@ export default function GeneralSettingsPage() {
                                     </FormLabel>
                                     <Textarea
                                         {...field}
-                                        className="resize-none md:w-[48ch] min-h-32"
+                                        className="min-h-32 resize-none md:w-[48ch]"
                                         spellCheck="false"
                                         id="project-summary-input"
                                     />
@@ -201,7 +201,7 @@ export default function GeneralSettingsPage() {
                             control={form.control}
                             name="type"
                             render={({ field }) => (
-                                <FormItem className="w-full flex flex-wrap flex-row items-end justify-between">
+                                <FormItem className="flex w-full flex-row flex-wrap items-end justify-between">
                                     <div className="flex flex-col items-start justify-center gap-y-1.5">
                                         <FormLabel className="font-bold">{t.form.projectType}</FormLabel>
                                         <span className="text-muted-foreground">{t.dashboard.projectTypeDesc}</span>
@@ -219,7 +219,7 @@ export default function GeneralSettingsPage() {
                                             field.onChange(getProjectTypesFromNames(values));
                                         }}
                                         placeholder={t.dashboard.chooseProjectType}
-                                        className="w-fit sm:min-w-[15rem] sm:w-fit sm:max-w-[20rem]"
+                                        className="w-fit sm:w-fit sm:min-w-[15rem] sm:max-w-[20rem]"
                                         popoverClassname="min-w-[15rem]"
                                         noResultsElement={t.common.noResults}
                                         inputPlaceholder={t.common.search}
@@ -235,7 +235,7 @@ export default function GeneralSettingsPage() {
                                     control={form.control}
                                     name="clientSide"
                                     render={({ field }) => (
-                                        <FormItem className="w-full flex flex-wrap flex-row items-end justify-between">
+                                        <FormItem className="flex w-full flex-row flex-wrap items-end justify-between">
                                             <div className="flex flex-col items-start justify-center gap-y-1.5">
                                                 <FormLabel className="font-bold">{t.projectSettings.clientSide}</FormLabel>
                                                 <span className="text-muted-foreground">
@@ -269,7 +269,7 @@ export default function GeneralSettingsPage() {
                                     control={form.control}
                                     name="serverSide"
                                     render={({ field }) => (
-                                        <FormItem className="w-full flex flex-wrap flex-row items-end justify-between">
+                                        <FormItem className="flex w-full flex-row flex-wrap items-end justify-between">
                                             <div className="flex flex-col items-start justify-center gap-y-1.5">
                                                 <FormLabel className="font-bold">{t.projectSettings.serverSide}</FormLabel>
                                                 <span className="text-muted-foreground">
@@ -304,10 +304,10 @@ export default function GeneralSettingsPage() {
                             control={form.control}
                             name="visibility"
                             render={({ field }) => (
-                                <FormItem className="w-full flex flex-wrap flex-row items-center justify-between gap-x-6">
+                                <FormItem className="flex w-full flex-row flex-wrap items-center justify-between gap-x-6">
                                     <div className="flex flex-col items-start justify-center gap-y-1.5">
                                         <FormLabel className="font-bold">{t.form.visibility}</FormLabel>
-                                        <div className="max-w-[68ch] flex flex-col items-start justify-start text-muted-foreground gap-1.5">
+                                        <div className="flex max-w-[68ch] flex-col items-start justify-start gap-1.5 text-muted-foreground">
                                             <p className="leading-tight">{t.projectSettings.visibilityDesc}</p>
 
                                             {projectData.status !== ProjectPublishingStatus.APPROVED ? (
@@ -320,12 +320,12 @@ export default function GeneralSettingsPage() {
                                                     field.value === ProjectVisibility.ARCHIVED ? (
                                                         <CheckIcon
                                                             aria-hidden
-                                                            className="w-btn-icon h-btn-icon text-success-foreground"
+                                                            className="h-btn-icon w-btn-icon text-success-foreground"
                                                         />
                                                     ) : (
                                                         <XIcon
                                                             aria-hidden
-                                                            className="w-btn-icon h-btn-icon text-danger-foreground"
+                                                            className="h-btn-icon w-btn-icon text-danger-foreground"
                                                         />
                                                     )}
                                                     {t.projectSettings.visibleInSearch}
@@ -335,12 +335,12 @@ export default function GeneralSettingsPage() {
                                                     field.value === ProjectVisibility.ARCHIVED ? (
                                                         <CheckIcon
                                                             aria-hidden
-                                                            className="w-btn-icon h-btn-icon text-success-foreground"
+                                                            className="h-btn-icon w-btn-icon text-success-foreground"
                                                         />
                                                     ) : (
                                                         <XIcon
                                                             aria-hidden
-                                                            className="w-btn-icon h-btn-icon text-danger-foreground"
+                                                            className="h-btn-icon w-btn-icon text-danger-foreground"
                                                         />
                                                     )}
                                                     {t.projectSettings.visibleOnProfile}
@@ -353,7 +353,7 @@ export default function GeneralSettingsPage() {
                                                                     <span>
                                                                         <TriangleAlertIcon
                                                                             aria-hidden
-                                                                            className="w-btn-icon h-btn-icon text-orange-600 dark:text-orange-400"
+                                                                            className="h-btn-icon w-btn-icon text-orange-600 dark:text-orange-400"
                                                                         />
                                                                     </span>
                                                                 </TooltipTrigger>
@@ -365,7 +365,7 @@ export default function GeneralSettingsPage() {
                                                     ) : (
                                                         <CheckIcon
                                                             aria-hidden
-                                                            className="w-btn-icon h-btn-icon text-success-foreground"
+                                                            className="h-btn-icon w-btn-icon text-success-foreground"
                                                         />
                                                     )}
                                                     {t.projectSettings.visibleViaUrl}
@@ -399,7 +399,7 @@ export default function GeneralSettingsPage() {
                             )}
                         />
 
-                        <div className="w-full flex items-center justify-end mt-2">
+                        <div className="mt-2 flex w-full items-center justify-end">
                             <Button
                                 type="submit"
                                 disabled={JSON.stringify(initialValues) === JSON.stringify(form.getValues()) || isLoading}
@@ -407,7 +407,7 @@ export default function GeneralSettingsPage() {
                                 {isLoading ? (
                                     <LoadingSpinner size="xs" />
                                 ) : (
-                                    <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                    <SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                 )}
                                 {t.form.saveChanges}
                             </Button>
@@ -475,14 +475,14 @@ function DeleteProjectDialog({ name, slug, returnUrl }: { name: string; slug: st
     return (
         <ContentCardTemplate
             title={t.projectSettings.deleteProject}
-            className="w-full flex flex-row flex-wrap gap-4 justify-between"
+            className="flex w-full flex-row flex-wrap justify-between gap-4"
         >
-            <p className="text-muted-foreground max-w-[65ch]">{t.projectSettings.deleteProjectDesc(Config.SITE_NAME_SHORT)}</p>
+            <p className="max-w-[65ch] text-muted-foreground">{t.projectSettings.deleteProjectDesc(Config.SITE_NAME_SHORT)}</p>
 
             <Dialog>
                 <DialogTrigger asChild>
                     <Button variant="destructive">
-                        <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                        <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
                         {t.projectSettings.deleteProject}
                     </Button>
                 </DialogTrigger>
@@ -493,10 +493,10 @@ function DeleteProjectDialog({ name, slug, returnUrl }: { name: string; slug: st
                             <DialogDescription>{t.projectSettings.deleteProject}</DialogDescription>
                         </VisuallyHidden>
                     </DialogHeader>
-                    <DialogBody className="text-muted-foreground flex flex-col gap-4">
+                    <DialogBody className="flex flex-col gap-4 text-muted-foreground">
                         <p className="leading-snug">{t.projectSettings.deleteProjectDesc2}</p>
 
-                        <div className="w-full flex flex-col gap-1">
+                        <div className="flex w-full flex-col gap-1">
                             <MarkdownRenderBox divElem text={t.projectSettings.typeToVerify(name)} />
 
                             <Input
@@ -519,7 +519,7 @@ function DeleteProjectDialog({ name, slug, returnUrl }: { name: string; slug: st
                                 {isLoading ? (
                                     <LoadingSpinner size="xs" />
                                 ) : (
-                                    <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                                    <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
                                 )}
                                 {t.projectSettings.deleteProject}
                             </Button>

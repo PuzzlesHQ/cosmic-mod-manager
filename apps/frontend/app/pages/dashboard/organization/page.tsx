@@ -20,12 +20,12 @@ export default function OrganisationDashboardPage({ organisations }: Props) {
 
     return (
         <Card className="w-full overflow-hidden">
-            <CardHeader className="w-full flex flex-row flex-wrap items-center justify-between gap-x-6 gap-y-2">
+            <CardHeader className="flex w-full flex-row flex-wrap items-center justify-between gap-x-6 gap-y-2">
                 <CardTitle>{t.dashboard.organizations}</CardTitle>
 
                 <CreateNewOrg_Dialog>
                     <Button>
-                        <PlusIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                        <PlusIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                         {t.dashboard.createOrg}
                     </Button>
                 </CreateNewOrg_Dialog>
@@ -35,7 +35,7 @@ export default function OrganisationDashboardPage({ organisations }: Props) {
                 {organisations === undefined ? (
                     <FullWidthSpinner />
                 ) : (
-                    <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
                         {organisations?.map((org) => {
                             if (org.members.find((member) => member.userId === session?.id)?.accepted === false) return;
 

@@ -27,9 +27,9 @@ export default function OverviewPage({ userProjects, notifications, relatedProje
     if (!session?.id) return null;
 
     return (
-        <div className="w-full flex flex-col items-start justify-start gap-panel-cards">
+        <div className="flex w-full flex-col items-start justify-start gap-panel-cards">
             <ContentCardTemplate sectionTag>
-                <div className="w-full flex flex-wrap gap-6">
+                <div className="flex w-full flex-wrap gap-6">
                     <ImgWrapper
                         vtId={session.id}
                         src={imageUrl(session?.avatar)}
@@ -39,10 +39,10 @@ export default function OverviewPage({ userProjects, notifications, relatedProje
                     />
 
                     <div className="flex flex-col items-start justify-center">
-                        <span className="text-xl font-semibold">{session.userName}</span>
-                        <Link to={UserProfilePath(session.userName)} className="flex gap-1 items-center justify-center link_blue">
+                        <span className="font-semibold text-xl">{session.userName}</span>
+                        <Link to={UserProfilePath(session.userName)} className="link_blue flex items-center justify-center gap-1">
                             {t.settings.visitYourProfile}
-                            <ChevronRightIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                            <ChevronRightIcon aria-hidden className="h-btn-icon w-btn-icon" />
                         </Link>
                     </div>
                 </div>
@@ -50,12 +50,12 @@ export default function OverviewPage({ userProjects, notifications, relatedProje
 
             <PanelContent_AsideCardLayout>
                 <SectionCard className="w-full">
-                    <CardHeader className="w-full flex flex-row items-center justify-between gap-x-6 gap-y-2">
+                    <CardHeader className="flex w-full flex-row items-center justify-between gap-x-6 gap-y-2">
                         <CardTitle className="w-fit">{t.dashboard.notifications}</CardTitle>
                         {(unreadNotifications?.length || 0) > 0 ? (
                             <Link to="/dashboard/notifications" className="link_blue flex items-center justify-center">
                                 {t.dashboard.seeAll}
-                                <ChevronRightIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                                <ChevronRightIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                             </Link>
                         ) : null}
                     </CardHeader>
@@ -74,7 +74,7 @@ export default function OverviewPage({ userProjects, notifications, relatedProje
                                 <span className="text-muted-foreground">{t.dashboard.noUnreadNotifs}</span>
 
                                 <ButtonLink url="/dashboard/notifications/history" className="w-fit bg-shallow-background">
-                                    <HistoryIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                    <HistoryIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                     {t.dashboard.viewNotifHistory}
                                 </ButtonLink>
                             </div>
@@ -85,16 +85,16 @@ export default function OverviewPage({ userProjects, notifications, relatedProje
                 <ContentCardTemplate
                     sectionTag
                     title={t.dashboard.analytics}
-                    className="w-full flex flex-wrap flex-row items-start justify-start gap-panel-cards"
+                    className="flex w-full flex-row flex-wrap items-start justify-start gap-panel-cards"
                 >
-                    <div className="w-[14rem] flex flex-col items-start justify-center bg-background p-4 rounded">
-                        <span className="text-lg text-muted-foreground font-semibold mb-1">{t.dashboard.totalDownloads}</span>
-                        <span className="text-2xl font-semibold">{totalDownloads}</span>
+                    <div className="flex w-[14rem] flex-col items-start justify-center rounded bg-background p-4">
+                        <span className="mb-1 font-semibold text-lg text-muted-foreground">{t.dashboard.totalDownloads}</span>
+                        <span className="font-semibold text-2xl">{totalDownloads}</span>
                         <span className="text-muted-foreground">{t.dashboard.fromProjects(totalProjects)}</span>
                     </div>
-                    <div className="w-[14rem] flex flex-col items-start justify-center bg-background p-4 rounded">
-                        <span className="text-lg text-muted-foreground font-semibold mb-1">{t.dashboard.totalFollowers}</span>
-                        <span className="text-2xl font-semibold">{totalFollowers}</span>
+                    <div className="flex w-[14rem] flex-col items-start justify-center rounded bg-background p-4">
+                        <span className="mb-1 font-semibold text-lg text-muted-foreground">{t.dashboard.totalFollowers}</span>
+                        <span className="font-semibold text-2xl">{totalFollowers}</span>
                         <span className="text-muted-foreground">{t.dashboard.fromProjects(totalProjects)}</span>
                     </div>
                 </ContentCardTemplate>

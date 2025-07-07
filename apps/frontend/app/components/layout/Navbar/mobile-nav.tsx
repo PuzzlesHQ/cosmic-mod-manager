@@ -29,17 +29,17 @@ export function MobileNav({ session, notifications, isNavMenuOpen, toggleNavMenu
 
     return (
         <div
-            className={cn("mobile_navmenu w-full absolute top-[100%] start-0 duration-300", isNavMenuOpen && "menu_open")}
+            className={cn("mobile_navmenu absolute start-0 top-[100%] w-full duration-300", isNavMenuOpen && "menu_open")}
             aria-hidden={isNavMenuOpen !== true}
         >
-            <div className="w-full flex flex-col items-center justify-center row-span-2 relative">
-                <div className="absolute top-0 left-0 w-full h-full bg-background opacity-[0.975] dark:opacity-[0.985] z-[3]" />
+            <div className="relative row-span-2 flex w-full flex-col items-center justify-center">
+                <div className="absolute top-0 left-0 z-[3] h-full w-full bg-background opacity-[0.975] dark:opacity-[0.985]" />
 
-                <div className="navlink_list_wrapper overscroll-contain w-full flex items-start justify-center z-20 h-[100vh] overflow-y-auto">
-                    <ul className="navlink_list container pt-8 pb-28 px-6 flex flex-col items-start justify-start z-20 gap-1">
+                <div className="navlink_list_wrapper z-20 flex h-[100vh] w-full items-start justify-center overflow-y-auto overscroll-contain">
+                    <ul className="navlink_list container z-20 flex flex-col items-start justify-start gap-1 px-6 pt-8 pb-28">
                         {NavLinks.map((link) => {
                             return (
-                                <li key={`${link.href}`} className="w-full group">
+                                <li key={`${link.href}`} className="group w-full">
                                     <NavMenuLink
                                         href={link.href}
                                         label={link.label}
@@ -54,18 +54,18 @@ export function MobileNav({ session, notifications, isNavMenuOpen, toggleNavMenu
                         })}
                         {!!session?.id && (
                             <>
-                                <li className="w-full h-px bg-shallower-background dark:bg-shallow-background my-2"> </li>
+                                <li className="my-2 h-px w-full bg-shallower-background dark:bg-shallow-background"> </li>
 
-                                <li className="w-full flex flex-col gap-1 items-center justify-center mb-2">
-                                    <div className="w-full flex items-center justify-center gap-2">
+                                <li className="mb-2 flex w-full flex-col items-center justify-center gap-1">
+                                    <div className="flex w-full items-center justify-center gap-2">
                                         <ImgWrapper
                                             src={imageUrl(session?.avatar)}
                                             alt={`Profile picture of ${session?.userName}`}
-                                            className="w-10 h-10 rounded-full"
+                                            className="h-10 w-10 rounded-full"
                                             fallback={fallbackUserIcon}
                                         />
 
-                                        <span className="leading-none text-lg font-semibold text-foreground/90">
+                                        <span className="font-semibold text-foreground/90 text-lg leading-none">
                                             {session?.userName}
                                         </span>
                                     </div>
@@ -73,28 +73,28 @@ export function MobileNav({ session, notifications, isNavMenuOpen, toggleNavMenu
 
                                 {[
                                     {
-                                        icon: <UserIcon aria-hidden className="w-btn-icon h-btn-icon" />,
+                                        icon: <UserIcon aria-hidden className="h-btn-icon w-btn-icon" />,
                                         label: t.navbar.profile,
                                         url: UserProfilePath(session.userName),
                                     },
                                     {
-                                        icon: <BellIcon aria-hidden className="w-btn-icon h-btn-icon" />,
+                                        icon: <BellIcon aria-hidden className="h-btn-icon w-btn-icon" />,
                                         label: t.dashboard.notifications,
                                         url: "/dashboard/notifications",
                                         notificationBadge: unreadNotifications,
                                     },
                                     {
-                                        icon: <Settings2Icon aria-hidden className="w-btn-icon h-btn-icon" />,
+                                        icon: <Settings2Icon aria-hidden className="h-btn-icon w-btn-icon" />,
                                         label: t.common.settings,
                                         url: "/settings/profile",
                                     },
                                     {
-                                        icon: <LayoutListIcon aria-hidden className="w-btn-icon h-btn-icon" />,
+                                        icon: <LayoutListIcon aria-hidden className="h-btn-icon w-btn-icon" />,
                                         label: t.dashboard.projects,
                                         url: "/dashboard/projects",
                                     },
                                     {
-                                        icon: <Building2Icon aria-hidden className="w-btn-icon h-btn-icon" />,
+                                        icon: <Building2Icon aria-hidden className="h-btn-icon w-btn-icon" />,
                                         label: t.dashboard.organizations,
                                         url: "/dashboard/organizations",
                                     },
@@ -102,7 +102,7 @@ export function MobileNav({ session, notifications, isNavMenuOpen, toggleNavMenu
                                     return (
                                         <li
                                             key={`${link.url}`}
-                                            className="w-full group flex items-center justify-center relative"
+                                            className="group relative flex w-full items-center justify-center"
                                         >
                                             <NavMenuLink
                                                 href={link.url}
@@ -123,7 +123,7 @@ export function MobileNav({ session, notifications, isNavMenuOpen, toggleNavMenu
                                 })}
 
                                 {MODERATOR_ROLES.includes(session.role) ? (
-                                    <li className="w-full group flex items-center justify-center relative">
+                                    <li className="group relative flex w-full items-center justify-center">
                                         <NavMenuLink
                                             href="/moderation/review"
                                             label={t.moderation.moderation}
@@ -131,7 +131,7 @@ export function MobileNav({ session, notifications, isNavMenuOpen, toggleNavMenu
                                             toggleNavMenu={toggleNavMenu}
                                             className="h-nav-item items-center justify-center hover:bg-shallower-background dark:hover:bg-shallow-background"
                                         >
-                                            <ScaleIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                            <ScaleIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                             {t.moderation.moderation}
                                         </NavMenuLink>
                                     </li>
@@ -146,7 +146,7 @@ export function MobileNav({ session, notifications, isNavMenuOpen, toggleNavMenu
                             </>
                         )}
                         {!session?.id && (
-                            <li className="w-full flex group">
+                            <li className="group flex w-full">
                                 {isNavMenuOpen && <LoginButton onClick={() => toggleNavMenu(false)} className="w-full" />}
                             </li>
                         )}
@@ -170,14 +170,14 @@ export function HamMenu({ isNavMenuOpen, toggleNavMenu }: HamMenuProps) {
     return (
         <button
             type="button"
-            className="navItemHeight w-10 flex items-center justify-center hover:bg-card-background dark:hover:bg-shallow-background cursor-pointer rounded text-foreground"
+            className="navItemHeight flex w-10 cursor-pointer items-center justify-center rounded text-foreground hover:bg-card-background dark:hover:bg-shallow-background"
             onClick={handleHamMenuClick}
             aria-label="Menu"
         >
-            <div className={`ham_menu_icon ${isNavMenuOpen && "ham_menu_open"} aspect-square w-full relative`}>
-                <i className="ham_menu_line_1 block absolute top-[33%] start-1/2 h-[0.12rem] w-[50%] bg-current rounded-full translate-y-[-50%] translate-x-[-50%]" />
-                <i className="ham_menu_line_2 block absolute top-[50%] start-1/2 h-[0.12rem] w-[50%] bg-current rounded-full translate-y-[-50%] translate-x-[-50%]" />
-                <i className="ham_menu_line_3 block absolute top-[67%] start-1/2 h-[0.12rem] w-[50%] bg-current rounded-full translate-y-[-50%] translate-x-[-50%]" />
+            <div className={`ham_menu_icon ${isNavMenuOpen && "ham_menu_open"} relative aspect-square w-full`}>
+                <i className="ham_menu_line_1 absolute start-1/2 top-[33%] block h-[0.12rem] w-[50%] translate-x-[-50%] translate-y-[-50%] rounded-full bg-current" />
+                <i className="ham_menu_line_2 absolute start-1/2 top-[50%] block h-[0.12rem] w-[50%] translate-x-[-50%] translate-y-[-50%] rounded-full bg-current" />
+                <i className="ham_menu_line_3 absolute start-1/2 top-[67%] block h-[0.12rem] w-[50%] translate-x-[-50%] translate-y-[-50%] rounded-full bg-current" />
             </div>
         </button>
     );

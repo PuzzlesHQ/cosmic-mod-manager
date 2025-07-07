@@ -53,13 +53,13 @@ export default function NotificationsPage({ notifications, relatedProjects, rela
 
     return (
         <Card className="w-full">
-            <CardHeader className="w-full flex flex-row flex-wrap gap-x-4 gap-y-2 items-center justify-between">
+            <CardHeader className="flex w-full flex-row flex-wrap items-center justify-between gap-x-4 gap-y-2">
                 <CardTitle className="w-fit">{t.dashboard.notifications}</CardTitle>
 
                 {(notifications?.length || 0) > 0 && (
                     <div className="flex flex-wrap items-center justify-start gap-x-2 gap-y-1">
                         <VariantButtonLink url="/dashboard/notifications/history" className="w-fit">
-                            <HistoryIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                            <HistoryIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                             {t.dashboard.viewHistory}
                         </VariantButtonLink>
 
@@ -68,7 +68,7 @@ export default function NotificationsPage({ notifications, relatedProjects, rela
                                 {markingAsRead ? (
                                     <LoadingSpinner size="xs" />
                                 ) : (
-                                    <CheckCheckIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                                    <CheckCheckIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                                 )}
                                 {t.dashboard.markAllRead}
                             </Button>
@@ -149,7 +149,7 @@ export function NotificationsList(props: NotificationsListProps) {
     };
 
     return (
-        <ul aria-label="Notifications list" className="w-full flex flex-col gap-panel-cards">
+        <ul aria-label="Notifications list" className="flex w-full flex-col gap-panel-cards">
             {props.notifications.map((notification) => {
                 switch (notification.type) {
                     case NotificationType.TEAM_INVITE: {

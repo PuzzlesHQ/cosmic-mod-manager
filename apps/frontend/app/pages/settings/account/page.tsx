@@ -22,13 +22,13 @@ export default function AccountSettingsPage({ session, linkedAuthProviders }: Pr
                     <CardTitle>{t.settings.accountSecurity}</CardTitle>
                 </CardHeader>
                 <CardContent className="gap-6">
-                    <div className="flex flex-col items-start justify-center max-w-md w-full gap-1.5">
+                    <div className="flex w-full max-w-md flex-col items-start justify-center gap-1.5">
                         <Label className="">{t.auth.email}</Label>
                         <Input readOnly value={session?.email} />
                     </div>
 
-                    <div className="w-full flex flex-wrap items-end gap-x-8 justify-between gap-2">
-                        <div className="flex flex-col items-start justify-start gap-1.5 flex-shrink-0">
+                    <div className="flex w-full flex-wrap items-end justify-between gap-2 gap-x-8">
+                        <div className="flex flex-shrink-0 flex-col items-start justify-start gap-1.5">
                             <Label>{t.auth.password}</Label>
                             {session.hasAPassword ? (
                                 <p className="text-muted-foreground">{t.settings.changePassTitle}</p>
@@ -40,7 +40,7 @@ export default function AccountSettingsPage({ session, linkedAuthProviders }: Pr
                         <ManagePassword session={session} />
                     </div>
 
-                    <div className="w-full flex flex-wrap items-end gap-x-8 justify-between gap-2">
+                    <div className="flex w-full flex-wrap items-end justify-between gap-2 gap-x-8">
                         <div className="flex flex-col items-start justify-start gap-1.5">
                             <Label>{t.settings.manageAuthProviders}</Label>
                             <p className="text-muted-foreground">{t.settings.manageProvidersDesc}</p>
@@ -56,8 +56,8 @@ export default function AccountSettingsPage({ session, linkedAuthProviders }: Pr
                     <CardTitle>{t.auth.deleteAccount}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className="w-full flex flex-wrap items-center justify-between gap-x-12 gap-y-4">
-                        <p className="text-muted-foreground max-w-[60ch]">{t.auth.deleteAccountDesc}</p>
+                    <div className="flex w-full flex-wrap items-center justify-between gap-x-12 gap-y-4">
+                        <p className="max-w-[60ch] text-muted-foreground">{t.auth.deleteAccountDesc}</p>
                         <DeleteAccountDialog />
                     </div>
                 </CardContent>

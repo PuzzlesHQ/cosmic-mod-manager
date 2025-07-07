@@ -101,12 +101,12 @@ export default function UploadVersionPage() {
                 onSubmit={(e) => {
                     e.preventDefault();
                 }}
-                className="w-full flex flex-col gap-panel-cards items-start justify-start"
+                className="flex w-full flex-col items-start justify-start gap-panel-cards"
             >
                 <UploadVersionPageTopCard
                     isLoading={isLoading}
                     submitBtnLabel="Create"
-                    submitBtnIcon={<PlusIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />}
+                    submitBtnIcon={<PlusIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />}
                     versionPageUrl={versionsPageUrl}
                     versionTitle={form.getValues().title}
                     backUrl={versionsPageUrl}
@@ -143,8 +143,8 @@ export default function UploadVersionPage() {
                     />
                 </UploadVersionPageTopCard>
 
-                <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_min-content] gap-panel-cards items-start justify-start">
-                    <div className="overflow-auto max-w-full flex flex-col gap-panel-cards">
+                <div className="grid w-full grid-cols-1 items-start justify-start gap-panel-cards lg:grid-cols-[1fr_min-content]">
+                    <div className="flex max-w-full flex-col gap-panel-cards overflow-auto">
                         <ContentCardTemplate title={t.project.changelog}>
                             <FormField
                                 control={form.control}

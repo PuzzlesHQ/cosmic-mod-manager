@@ -60,7 +60,7 @@ export default function ManageAuthProviders({ linkedAuthProviders }: { linkedAut
         <Dialog>
             <DialogTrigger asChild>
                 <Button variant="secondary">
-                    <SettingsIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                    <SettingsIcon aria-hidden className="h-btn-icon w-btn-icon" />
                     {t.settings.manageProviders}
                 </Button>
             </DialogTrigger>
@@ -86,11 +86,11 @@ export default function ManageAuthProviders({ linkedAuthProviders }: { linkedAut
                                 <AccordionItem key={authProvider.name} value={authProvider.name} className="border-transparent">
                                     <AccordionTrigger className="text-base">
                                         <div className="flex items-center justify-start gap-2">
-                                            <i className="w-6 flex items-center justify-start">{authProvider.icon}</i>
+                                            <i className="flex w-6 items-center justify-start">{authProvider.icon}</i>
                                             {Capitalize(authProvider.name)}
                                         </div>
                                     </AccordionTrigger>
-                                    <AccordionContent className="w-full flex items-center justify-between">
+                                    <AccordionContent className="flex w-full items-center justify-between">
                                         <p className="text-muted-foreground">
                                             {additionalProviderDetails ? (
                                                 <span className="font-medium text-foreground">
@@ -110,7 +110,7 @@ export default function ManageAuthProviders({ linkedAuthProviders }: { linkedAut
                                                 {isLoading.provider === getAuthProviderFromString(authProvider.name) ? (
                                                     <LoadingSpinner size="xs" />
                                                 ) : (
-                                                    <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                                                    <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
                                                 )}
                                                 {t.form.remove}
                                             </Button>
@@ -125,7 +125,7 @@ export default function ManageAuthProviders({ linkedAuthProviders }: { linkedAut
                                                 {isLoading.provider === getAuthProviderFromString(authProvider.name) ? (
                                                     <LoadingSpinner size="xs" />
                                                 ) : (
-                                                    <Link2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                                                    <Link2Icon aria-hidden className="h-btn-icon w-btn-icon" />
                                                 )}
                                                 {t.settings.link}
                                             </Button>

@@ -28,7 +28,7 @@ export default function ReportButton(props: Props) {
         return (
             <LoginDialog>
                 <Button variant={props.btnVariant || "secondary-destructive"} size={props.btnSize} className={props.className}>
-                    <FlagIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                    <FlagIcon aria-hidden className="h-btn-icon w-btn-icon" />
                     {t.common.report}
                 </Button>
             </LoginDialog>
@@ -42,7 +42,7 @@ export default function ReportButton(props: Props) {
             className={props.className}
             onClick={handleClick}
         >
-            <FlagIcon aria-hidden className="w-btn-icon h-btn-icon" />
+            <FlagIcon aria-hidden className="h-btn-icon w-btn-icon" />
             {t.common.report}
         </Button>
     );

@@ -72,7 +72,7 @@ export default function SearchPage() {
     const searchLabel = t.search[projectType];
 
     return (
-        <div className="search-page-grid-layout w-full grid gap-panel-cards pb-16">
+        <div className="search-page-grid-layout grid w-full gap-panel-cards pb-16">
             {useMemo(() => {
                 return (
                     <FilterSidebar
@@ -83,11 +83,11 @@ export default function SearchPage() {
                 );
             }, [projectType, showFilters, searchParams.toString()])}
 
-            <main id="main" className="h-fit grid grid-cols-1 gap-panel-cards page-content">
-                <Card className="h-fit p-card-surround flex flex-wrap items-center justify-start gap-2">
+            <main id="main" className="page-content grid h-fit grid-cols-1 gap-panel-cards">
+                <Card className="flex h-fit flex-wrap items-center justify-start gap-2 p-card-surround">
                     <form
                         method="get"
-                        className="grow flex items-center justify-center min-w-full sm:min-w-[32ch]"
+                        className="flex min-w-full grow items-center justify-center sm:min-w-[32ch]"
                         // If JS is enabled, prevent the form from submitting
                         // and instead use the search input value to update the URL
                         onSubmit={(e) => {
@@ -95,20 +95,20 @@ export default function SearchPage() {
                             e.stopPropagation();
                         }}
                     >
-                        <label htmlFor="search-input" className="w-full relative flex items-center justify-center">
+                        <label htmlFor="search-input" className="relative flex w-full items-center justify-center">
                             <SearchBarIcon />
                             <Input
                                 ref={searchInput}
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value || "")}
                                 placeholder={`${searchLabel}...`}
-                                className="text-md font-medium !ps-9 focus:[&>kbd]:invisible"
+                                className="!ps-9 font-medium text-md focus:[&>kbd]:invisible"
                                 id="search-input"
                                 name={searchQueryParamNamespace}
                                 aria-label={searchLabel}
                             />
 
-                            <kbd className="absolute end-3 top-1/2 -translate-y-1/2 px-1 rounded-[0.3rem] bg-shallower-background/50 border border-shallower-background/85">
+                            <kbd className="-translate-y-1/2 absolute end-3 top-1/2 rounded-[0.3rem] border border-shallower-background/85 bg-shallower-background/50 px-1">
                                 /
                             </kbd>
                         </label>
@@ -133,7 +133,7 @@ export default function SearchPage() {
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
-                                <SelectLabel className="text-foreground font-bold">{t.search.sortBy}</SelectLabel>
+                                <SelectLabel className="font-bold text-foreground">{t.search.sortBy}</SelectLabel>
                                 {[
                                     SearchResultSortMethod.RELEVANCE,
                                     SearchResultSortMethod.TRENDING,
@@ -170,7 +170,7 @@ export default function SearchPage() {
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
-                                <SelectLabel className="text-foreground font-bold">{t.search.showPerPage}</SelectLabel>
+                                <SelectLabel className="font-bold text-foreground">{t.search.showPerPage}</SelectLabel>
                                 {[10, defaultSearchLimit, 50, MAX_SEARCH_LIMIT].map((option) => {
                                     const optionStr = option.toString();
                                     return (
@@ -188,7 +188,7 @@ export default function SearchPage() {
                         variant="secondary"
                         onClick={() => setShowFilters((prev) => !prev)}
                     >
-                        <FilterIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                        <FilterIcon aria-hidden className="h-btn-icon w-btn-icon" />
                         {t.search.filters}
                     </Button>
 
@@ -205,12 +205,12 @@ function SearchBarIcon() {
     const { showSpinner } = useSpinnerCtx();
 
     return (
-        <span className="absolute start-2.5 top-[50%] translate-y-[-50%] grid grid-cols-1 grid-rows-1">
+        <span className="absolute start-2.5 top-[50%] grid translate-y-[-50%] grid-cols-1 grid-rows-1">
             <Spinner className={cn("col-span-full row-span-full opacity-0", showSpinner && "opacity-100")} />
             <SearchIcon
                 aria-hidden
                 className={cn(
-                    "w-btn-icon-md h-btn-icon-md text-extra-muted-foreground col-span-full row-span-full opacity-100 transition-opacity duration-500",
+                    "col-span-full row-span-full h-btn-icon-md w-btn-icon-md text-extra-muted-foreground opacity-100 transition-opacity duration-500",
                     showSpinner && "opacity-0",
                 )}
             />
@@ -222,7 +222,7 @@ function Spinner({ className }: { className?: string }) {
     return (
         <div
             className={cn(
-                "w-[1.17rem] h-[1.17rem] border-[0.17rem] rounded-full border-accent-background border-t-transparent transition-opacity animate-spin duration-500",
+                "h-[1.17rem] w-[1.17rem] animate-spin rounded-full border-[0.17rem] border-accent-background border-t-transparent transition-opacity duration-500",
                 className,
             )}
         />
@@ -264,9 +264,9 @@ function ViewTypeToggle({
                     className="h-nav-item w-nav-item"
                 >
                     {viewType === ViewType.GALLERY ? (
-                        <ImageIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                        <ImageIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     ) : (
-                        <LayoutListIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                        <LayoutListIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     )}
                 </Button>
             </TooltipTemplate>

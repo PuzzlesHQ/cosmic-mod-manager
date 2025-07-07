@@ -23,7 +23,7 @@ export default function ModerationBanner() {
                 <CardTitle className="text-lg-plus">{t.moderation.awaitingApproval}</CardTitle>
             </CardHeader>
 
-            <CardContent className="flex flex-wrap gap-x-3 flex-row items-center justify-start">
+            <CardContent className="flex flex-row flex-wrap items-center justify-start gap-x-3">
                 <UpdateProjectStatusDialog
                     projectId={ctx.projectData.id}
                     projectName={ctx.projectData.name}
@@ -46,7 +46,7 @@ export default function ModerationBanner() {
                     trigger={{
                         text: t.moderation.reject,
                         variant: "secondary-destructive",
-                        icon: <XIcon aria-hidden className="w-btn-icon h-btn-icon" />,
+                        icon: <XIcon aria-hidden className="h-btn-icon w-btn-icon" />,
                     }}
                     dialogConfirmBtn={{ variant: "destructive" }}
                 />
@@ -54,10 +54,10 @@ export default function ModerationBanner() {
                 <Popover>
                     <PopoverTrigger asChild>
                         <Button size="icon" className="rounded-full" variant="outline">
-                            <MoreVerticalIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                            <MoreVerticalIcon aria-hidden className="h-btn-icon w-btn-icon" />
                         </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="min-w-0 w-fit p-1">
+                    <PopoverContent className="w-fit min-w-0 p-1">
                         <UpdateProjectStatusDialog
                             projectId={ctx.projectData.id}
                             projectName={ctx.projectData.name}

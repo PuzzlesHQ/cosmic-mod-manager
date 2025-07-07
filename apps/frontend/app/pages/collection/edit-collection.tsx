@@ -101,7 +101,7 @@ export default function EditCollection(props: EditCollectionProps) {
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
                 <Button variant="ghost" size="sm" className="w-full">
-                    <EditIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                    <EditIcon aria-hidden className="h-btn-icon w-btn-icon" />
                     {t.form.edit}
                 </Button>
             </DialogTrigger>
@@ -116,7 +116,7 @@ export default function EditCollection(props: EditCollectionProps) {
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(createCollection)}
-                            className="w-full flex flex-col items-start justify-center gap-form-elements"
+                            className="flex w-full flex-col items-start justify-center gap-form-elements"
                         >
                             <FormField
                                 name="icon"
@@ -209,7 +209,7 @@ export default function EditCollection(props: EditCollectionProps) {
                                     {isLoading ? (
                                         <LoadingSpinner size="xs" />
                                     ) : (
-                                        <SaveIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                                        <SaveIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                                     )}
                                     {t.form.saveChanges}
                                 </Button>

@@ -21,15 +21,15 @@ export default function CollectionProjectsList() {
 
     if (!filteredProjects.length) {
         return (
-            <div className="w-full flex items-center justify-center py-12">
-                <p className="text-lg text-muted-foreground italic text-center">{t.common.noResults}</p>
+            <div className="flex w-full items-center justify-center py-12">
+                <p className="text-center text-lg text-muted-foreground italic">{t.common.noResults}</p>
             </div>
         );
     }
 
     return (
         // biome-ignore lint/a11y/useSemanticElements: A list of project cards but not an actual list
-        <div className="w-full grid grid-cols-1 gap-panel-cards" role="list">
+        <div className="grid w-full grid-cols-1 gap-panel-cards" role="list">
             {filteredProjects.map((project) => {
                 const projectItem = (
                     <ProjectCardItem
@@ -61,14 +61,14 @@ export default function CollectionProjectsList() {
 
                 const isChecked = ctx.markedProjects.includes(project.id);
                 return (
-                    <div key={project.id} className="relative group/search-item overflow-hidden rounded-lg">
+                    <div key={project.id} className="group/search-item relative overflow-hidden rounded-lg">
                         {projectItem}
 
                         <label
                             htmlFor={project.slug}
                             className={cn(
-                                "h-full w-12 flex items-center justify-center absolute end-0 bottom-0 cursor-pointer rounded-r-lg invisible bg-card-background shadow-xl shadow-background",
-                                "group-hover/search-item:visible group-focus-within/search-item:visible",
+                                "invisible absolute end-0 bottom-0 flex h-full w-12 cursor-pointer items-center justify-center rounded-r-lg bg-card-background shadow-background shadow-xl",
+                                "group-focus-within/search-item:visible group-hover/search-item:visible",
                                 isChecked && "visible",
                             )}
                         >

@@ -62,7 +62,7 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
                 <div className="flex items-center justify-between gap-x-6 gap-y-2">
                     <CardTitle>{t.settings.sessions}</CardTitle>
                     <label
-                        className="flex gap-2 items-center justify-center text-sm text-muted-foreground"
+                        className="flex items-center justify-center gap-2 text-muted-foreground text-sm"
                         htmlFor="show-ip-addresses"
                     >
                         {t.settings.showIpAddr}
@@ -71,21 +71,21 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
                 </div>
                 <CardDescription>{t.settings.sessionsDesc}</CardDescription>
             </CardHeader>
-            <CardContent className="w-full flex items-center justify-center flex-col gap-form-elements relative min-h-24">
+            <CardContent className="relative flex min-h-24 w-full flex-col items-center justify-center gap-form-elements">
                 {loggedInSessions.map((session) => {
                     return (
                         <TooltipProvider key={session.id}>
                             <div
                                 key={session.id}
-                                className="w-full flex flex-wrap gap-x-6 gap-y-3 items-center justify-between bg-background rounded py-3 px-4"
+                                className="flex w-full flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded bg-background px-4 py-3"
                             >
-                                <div className="flex flex-col gap-2.5 sm:gap-1 grow">
-                                    <div className="font-medium flex flex-wrap gap-x-2 items-center justify-start">
+                                <div className="flex grow flex-col gap-2.5 sm:gap-1">
+                                    <div className="flex flex-wrap items-center justify-start gap-x-2 font-medium">
                                         <span>{session.browser}</span>
                                         <DotSeparator />
                                         <span>{session.os}</span>
                                         <DotSeparator />
-                                        <div className="flex gap-2 items-center justify-center">
+                                        <div className="flex items-center justify-center gap-2">
                                             {showIp ? (
                                                 <span>{session.ip}</span>
                                             ) : (
@@ -97,7 +97,7 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
                                         </div>
                                     </div>
 
-                                    <div className="w-full flex flex-wrap gap-x-2 items-center justify-start text-muted-foreground">
+                                    <div className="flex w-full flex-wrap items-center justify-start gap-x-2 text-muted-foreground">
                                         {session.city || session.country ? (
                                             <>
                                                 <span>
@@ -132,9 +132,9 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
                                         </Tooltip>
                                     </div>
 
-                                    <div className="flex items-center justify-start mt-1">
+                                    <div className="mt-1 flex items-center justify-start">
                                         <Tooltip>
-                                            <TooltipTrigger className="cursor-default flex gap-2 items-center justify-start text-muted-foreground">
+                                            <TooltipTrigger className="flex cursor-default items-center justify-start gap-2 text-muted-foreground">
                                                 {session?.providerName !== AuthProvider.CREDENTIAL ? (
                                                     authProvidersList?.map((authProvider) => {
                                                         if (authProvider?.name.toLowerCase() === session?.providerName) {
@@ -147,7 +147,7 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
                                                         return <React.Fragment key={authProvider.name}>{null}</React.Fragment>;
                                                     })
                                                 ) : (
-                                                    <KeyRoundIcon aria-hidden className="w-4 h-4" />
+                                                    <KeyRoundIcon aria-hidden className="h-4 w-4" />
                                                 )}
                                                 <span className="capitalize">{session?.providerName}</span>
                                             </TooltipTrigger>
@@ -171,7 +171,7 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
                                             {isLoading.value && isLoading.sessionId === session.id ? (
                                                 <LoadingSpinner size="xs" />
                                             ) : (
-                                                <XIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                                <XIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                             )}
                                             {t.settings.revokeSession}
                                         </Button>

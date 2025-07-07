@@ -106,7 +106,7 @@ export default function Reports_ModerationPage(props: Props) {
                 <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                     <DialogTrigger asChild>
                         <Button variant="secondary">
-                            <SlidersHorizontalIcon className="w-4 h-4" />
+                            <SlidersHorizontalIcon className="h-4 w-4" />
                             {t.search.filters}
                         </Button>
                     </DialogTrigger>
@@ -119,8 +119,8 @@ export default function Reports_ModerationPage(props: Props) {
                             </VisuallyHidden>
                         </DialogHeader>
 
-                        <DialogBody className="grid gap-x-4 gap-y-2 grid-cols-[2fr_3fr] items-center">
-                            <span className="font-medium px-0.5 text-muted-foreground" id="report-status-label">
+                        <DialogBody className="grid grid-cols-[2fr_3fr] items-center gap-x-4 gap-y-2">
+                            <span className="px-0.5 font-medium text-muted-foreground" id="report-status-label">
                                 {t.report.status("")}
                             </span>
                             <Select
@@ -141,7 +141,7 @@ export default function Reports_ModerationPage(props: Props) {
                                 </SelectContent>
                             </Select>
 
-                            <span className="font-medium px-0.5 text-muted-foreground">{t.report.reportedItem("")}</span>
+                            <span className="px-0.5 font-medium text-muted-foreground">{t.report.reportedItem("")}</span>
                             <Select
                                 value={filters.itemType}
                                 onValueChange={(val) => updateFilters({ itemType: val as ReportItemType | "all" })}
@@ -167,7 +167,7 @@ export default function Reports_ModerationPage(props: Props) {
 
                             {filters.itemType !== "all" && (
                                 <>
-                                    <span className="font-medium px-0.5 text-muted-foreground" id="report-status-label">
+                                    <span className="px-0.5 font-medium text-muted-foreground" id="report-status-label">
                                         {itemId_label}
                                     </span>
                                     <Input
@@ -178,7 +178,7 @@ export default function Reports_ModerationPage(props: Props) {
                                 </>
                             )}
 
-                            <span className="font-medium px-0.5 text-muted-foreground">{t.report.ruleViolated("")}</span>
+                            <span className="px-0.5 font-medium text-muted-foreground">{t.report.ruleViolated("")}</span>
 
                             <MultiSelect
                                 searchBox={false}
@@ -199,7 +199,7 @@ export default function Reports_ModerationPage(props: Props) {
                                 inputPlaceholder={t.common.search}
                             />
 
-                            <span className="font-medium px-0.5 text-muted-foreground" id="report-status-label">
+                            <span className="px-0.5 font-medium text-muted-foreground" id="report-status-label">
                                 {t.report.reportedBy(":")}
                             </span>
                             <Input
@@ -211,12 +211,12 @@ export default function Reports_ModerationPage(props: Props) {
 
                         <DialogFooter className="px-card-surround">
                             <Button variant="secondary" onClick={resetFilters}>
-                                <RotateCcwIcon className="w-btn-icon h-btn-icon" />
+                                <RotateCcwIcon className="h-btn-icon w-btn-icon" />
                                 {t.common.reset}
                             </Button>
 
                             <Button onClick={() => applyFilters()}>
-                                <FilterIcon className="w-btn-icon h-btn-icon" />
+                                <FilterIcon className="h-btn-icon w-btn-icon" />
                                 {t.common.filter}
                             </Button>
                         </DialogFooter>
@@ -228,10 +228,10 @@ export default function Reports_ModerationPage(props: Props) {
                 {!data?.reports?.length ? (
                     anyChangedFilter ? (
                         <div className="grid gap-3">
-                            <p className="text-md text-extra-muted-foreground italic">{t.common.noResults}</p>
+                            <p className="text-extra-muted-foreground text-md italic">{t.common.noResults}</p>
 
                             <Button variant="secondary" onClick={() => applyFilters(reportFilters_defaults)}>
-                                <RotateCcwIcon className="w-btn-icon h-btn-icon" />
+                                <RotateCcwIcon className="h-btn-icon w-btn-icon" />
                                 {t.search.clearFilters}
                             </Button>
                         </div>

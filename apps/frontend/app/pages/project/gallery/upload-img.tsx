@@ -113,7 +113,7 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
                 <Button variant="default">
-                    <UploadIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                    <UploadIcon aria-hidden className="h-btn-icon w-btn-icon" />
                     {t.project.uploadImg}
                 </Button>
             </DialogTrigger>
@@ -129,21 +129,21 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(uploadGalleryImage)}
-                            className="w-full flex flex-col items-start justify-start gap-form-elements"
+                            className="flex w-full flex-col items-start justify-start gap-form-elements"
                         >
                             <FormField
                                 control={form.control}
                                 name="image"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <div className="w-full grid grid-cols-1">
+                                        <div className="grid w-full grid-cols-1">
                                             <div
                                                 className={cn(
-                                                    "flex flex-wrap sm:flex-nowrap items-center justify-between bg-shallow-background rounded px-4 py-3 gap-x-4 gap-y-2",
+                                                    "flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded bg-shallow-background px-4 py-3 sm:flex-nowrap",
                                                     field.value && "rounded-b-none",
                                                 )}
                                             >
-                                                <div className="w-full flex items-center justify-start gap-1.5">
+                                                <div className="flex w-full items-center justify-start gap-1.5">
                                                     <input
                                                         hidden
                                                         type="file"
@@ -160,11 +160,11 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
                                                     />
                                                     <FileIcon
                                                         aria-hidden
-                                                        className="flex-shrink-0 w-btn-icon h-btn-icon text-muted-foreground"
+                                                        className="h-btn-icon w-btn-icon flex-shrink-0 text-muted-foreground"
                                                     />
                                                     {field.value ? (
-                                                        <div className="flex items-center flex-wrap justify-start gap-x-2">
-                                                            <span className="font-semibold break-words break-all">
+                                                        <div className="flex flex-wrap items-center justify-start gap-x-2">
+                                                            <span className="break-words break-all font-semibold">
                                                                 {field.value.name}
                                                             </span>
                                                         </div>
@@ -186,11 +186,11 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
                                                 </InteractiveLabel>
                                             </div>
                                             {field.value ? (
-                                                <div className="w-full aspect-[2/1] rounded rounded-t-none overflow-hidden bg-[hsla(var(--background-dark))]">
+                                                <div className="aspect-[2/1] w-full overflow-hidden rounded rounded-t-none bg-[hsla(var(--background-dark))]">
                                                     <img
                                                         src={URL.createObjectURL(field.value)}
                                                         alt="img"
-                                                        className="object-contain w-full h-full"
+                                                        className="h-full w-full object-contain"
                                                     />
                                                 </div>
                                             ) : null}
@@ -242,7 +242,7 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
                                     <FormItem>
                                         <FormLabel htmlFor="gallery-item-ordering">
                                             {t.form.ordering}
-                                            <FormDescription className="my-1 leading-normal text-sm">
+                                            <FormDescription className="my-1 text-sm leading-normal">
                                                 {t.project.galleryOrderingDesc}
                                             </FormDescription>
                                         </FormLabel>
@@ -267,7 +267,7 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
                                         <FormLabel htmlFor="gallery-item-featured">
                                             {t.form.featured}
 
-                                            <FormDescription className="my-1 leading-normal text-sm">
+                                            <FormDescription className="my-1 text-sm leading-normal">
                                                 {t.project.featuredGalleryImgDesc}
                                             </FormDescription>
                                         </FormLabel>
@@ -281,10 +281,10 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
                                                 <StarIcon
                                                     aria-hidden
                                                     fill="currentColor"
-                                                    className="w-btn-icon-md h-btn-icon-md"
+                                                    className="h-btn-icon-md w-btn-icon-md"
                                                 />
                                             ) : (
-                                                <StarIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                                                <StarIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                                             )}
                                             {field.value === true ? t.project.unfeatureImg : t.project.featureImg}
                                         </Button>
@@ -306,7 +306,7 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
                                     {isLoading ? (
                                         <LoadingSpinner size="xs" />
                                     ) : (
-                                        <PlusIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                                        <PlusIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                                     )}
                                     {t.project.addGalleryImg}
                                 </Button>

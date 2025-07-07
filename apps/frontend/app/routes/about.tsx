@@ -7,9 +7,9 @@ export default function () {
     const { t } = useTranslation();
 
     return (
-        <main className="w-full grid grid-cols-1">
+        <main className="grid w-full grid-cols-1">
             <MarkdownRenderBox
-                className="max-w-[80ch] bright-heading mx-auto bg-card-background p-card-surround rounded-lg"
+                className="bright-heading mx-auto max-w-[80ch] rounded-lg bg-card-background p-card-surround"
                 text={t.legal.aboutUs({
                     discordInvite: Config.DISCORD_INVITE,
                     repoLink: Config.REPO_LINK,

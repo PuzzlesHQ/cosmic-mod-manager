@@ -45,7 +45,7 @@ export default function OAuthProvidersWidget({ actionIntent = AuthActionIntent.S
                             className="w-full font-medium capitalize"
                             variant="secondary"
                         >
-                            <i className="min-w-6 flex items-center justify-start">{provider.icon}</i>
+                            <i className="flex min-w-6 items-center justify-start">{provider.icon}</i>
                             {provider.name}
                         </VariantButtonLink>
                     </React.Fragment>

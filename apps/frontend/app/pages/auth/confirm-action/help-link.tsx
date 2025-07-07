@@ -5,7 +5,7 @@ export default function SessionsPageLink() {
     const { t } = useTranslation();
 
     return (
-        <div className="w-full flex items-center justify-start gap-1 text-sm">
+        <div className="flex w-full items-center justify-start gap-1 text-sm">
             {t.auth.didntRequest}
             <Link to="/settings/sessions" className="text_link">
                 {t.auth.checkSessions}

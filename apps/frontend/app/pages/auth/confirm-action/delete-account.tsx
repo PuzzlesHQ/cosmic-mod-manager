@@ -71,9 +71,9 @@ export default function DeleteAccountConfirmationCard({ code }: { code: string }
                     <CardTitle>{t.auth.deleteAccount}</CardTitle>
                 </CardHeader>
                 {successMessage ? (
-                    <CardContent className="gap-2 items-center justify-center">
+                    <CardContent className="items-center justify-center gap-2">
                         <FormSuccessMessage text={successMessage} />
-                        <a href="/" className="font-semibold hover:underline underline-offset-2">
+                        <a href="/" className="font-semibold underline-offset-2 hover:underline">
                             {t.common.home}
                         </a>
                     </CardContent>
@@ -81,7 +81,7 @@ export default function DeleteAccountConfirmationCard({ code }: { code: string }
                     <>
                         <CardContent>
                             <CardDescription>{t.auth.deleteAccountDesc}</CardDescription>
-                            <div className="w-full flex items-center justify-end gap-panel-cards mt-3">
+                            <div className="mt-3 flex w-full items-center justify-end gap-panel-cards">
                                 <CancelButton
                                     icon={isLoading.action === "cancelling" ? <LoadingSpinner size="xs" /> : null}
                                     onClick={cancelAccountDeletion}
@@ -92,7 +92,7 @@ export default function DeleteAccountConfirmationCard({ code }: { code: string }
                                     {isLoading.action === "confirming" ? (
                                         <LoadingSpinner size="xs" />
                                     ) : (
-                                        <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                                        <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
                                     )}
                                     {t.form.delete}
                                 </Button>

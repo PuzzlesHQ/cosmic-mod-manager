@@ -26,11 +26,11 @@ export default function Footer() {
     useLocation();
 
     return (
-        <footer className="w-full bg-card-background dark:bg-card-background/35 mt-24 pt-20 pb-8 mx-auto">
+        <footer className="mx-auto mt-24 w-full bg-card-background pt-20 pb-8 dark:bg-card-background/35">
             <div className="footer-grid container gap-y-5 pb-16">
                 <LinksColumn area="logo">
                     <span
-                        className="flex gap-2 items-center justify-center text-[1.72rem] font-bold leading-none"
+                        className="flex items-center justify-center gap-2 font-bold text-[1.72rem] leading-none"
                         title={Config.SITE_NAME_LONG}
                     >
                         <BrandIcon size="2.75rem" aria-label="Logo" />
@@ -74,9 +74,9 @@ export default function Footer() {
                 </LinksColumn>
 
                 <LinksColumn area="links-3">
-                    <Link to="/legal" className="flex gap-2 items-center hover:underline">
+                    <Link to="/legal" className="flex items-center gap-2 hover:underline">
                         <Title>{legal.legal}</Title>
-                        <LinkIcon className="text-muted-foreground h-3.5 w-3.5" />
+                        <LinkIcon className="h-3.5 w-3.5 text-muted-foreground" />
                     </Link>
 
                     <FooterLink to="/legal/terms" aria-label={legal.termsTitle}>
@@ -94,17 +94,17 @@ export default function Footer() {
 
                 <div
                     style={{ gridArea: "buttons" }}
-                    className="grid grid-cols-1 h-fit gap-2 place-items-center lg:place-items-start"
+                    className="grid h-fit grid-cols-1 place-items-center gap-2 lg:place-items-start"
                 >
                     <ThemeSwitch
                         label={t.footer.changeTheme}
                         noDefaultStyle
                         variant="outline"
-                        className="rounded-full px-1 gap-0"
+                        className="gap-0 rounded-full px-1"
                     />
 
                     <VariantButtonLink prefetch={Prefetch.Render} url="/settings" variant="outline" className="rounded-full">
-                        <Settings2Icon aria-hidden className="w-btn-icon-md h-btn-icon-md" aria-label={t.common.settings} />
+                        <Settings2Icon aria-hidden className="h-btn-icon-md w-btn-icon-md" aria-label={t.common.settings} />
                         {t.common.settings}
                     </VariantButtonLink>
 
@@ -149,7 +149,7 @@ export default function Footer() {
 }
 
 function Title({ children }: { children: React.ReactNode }) {
-    return <h4 className="text-foreground-bright font-bold">{children}</h4>;
+    return <h4 className="font-bold text-foreground-bright">{children}</h4>;
 }
 
 function FooterLink({ children, ...props }: LinkProps) {
@@ -157,7 +157,7 @@ function FooterLink({ children, ...props }: LinkProps) {
         <Link
             {...props}
             prefetch={Prefetch.Viewport}
-            className="w-fit flex items-center justify-center lg:justify-start gap-1 leading-none text-muted-foreground hover:text-foreground hover:underline"
+            className="flex w-fit items-center justify-center gap-1 text-muted-foreground leading-none hover:text-foreground hover:underline lg:justify-start"
         >
             {children}
         </Link>
@@ -165,12 +165,12 @@ function FooterLink({ children, ...props }: LinkProps) {
 }
 
 function OpenInNewTab_Icon() {
-    return <ArrowUpRightIcon aria-hidden aria-label="Open in new tab" className="w-4 h-4 text-extra-muted-foreground inline" />;
+    return <ArrowUpRightIcon aria-hidden aria-label="Open in new tab" className="inline h-4 w-4 text-extra-muted-foreground" />;
 }
 
 function LinksColumn({ children, area }: { area: string; children: React.ReactNode }) {
     return (
-        <div style={{ gridArea: area }} className="grid gap-4 h-fit lg:me-16 place-items-center lg:place-items-start">
+        <div style={{ gridArea: area }} className="grid h-fit place-items-center gap-4 lg:me-16 lg:place-items-start">
             {children}
         </div>
     );
@@ -216,12 +216,12 @@ export function LangSwitcher() {
 
                         return (
                             <SelectItem key={label} value={formatLocaleCode(locale)} aria-label={label} title={label}>
-                                <div className="w-full flex items-center justify-center gap-1.5 break-words">
+                                <div className="flex w-full items-center justify-center gap-1.5 break-words">
                                     <span className="flex items-end justify-center align-bottom">{locale.nativeName}</span>
                                     {region ? (
                                         <>
                                             <DotSeparator className="bg-extra-muted-foreground" />
-                                            <span className="text-sm text-muted-foreground/85">{region.displayName}</span>
+                                            <span className="text-muted-foreground/85 text-sm">{region.displayName}</span>
                                         </>
                                     ) : null}
                                 </div>

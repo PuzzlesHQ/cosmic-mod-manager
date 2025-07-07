@@ -48,11 +48,11 @@ export function ReportDetails(props: Props) {
                 <CardContent className="gap-panel-cards">
                     <ReportInfo report={props.data} viewReportBtn={false} />
 
-                    <div className="w-full grid gap-2">
-                        <span className="text-lg font-bold px-1">{t.form.description}</span>
+                    <div className="grid w-full gap-2">
+                        <span className="px-1 font-bold text-lg">{t.form.description}</span>
                         <MarkdownRenderBox
                             text={props.data.body}
-                            className="p-card-surround border-2 dark:border-shallow-background rounded-lg"
+                            className="rounded-lg border-2 p-card-surround dark:border-shallow-background"
                         />
                     </div>
                 </CardContent>

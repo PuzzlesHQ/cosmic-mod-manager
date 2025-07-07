@@ -18,13 +18,13 @@ export default function OrgProjectsSettings() {
             <title>{`Projects - ${orgData.name}`}</title>
 
             <Card className="w-full overflow-hidden">
-                <CardHeader className="w-full flex flex-row flex-wrap items-start justify-between gap-x-6 gap-y-2">
+                <CardHeader className="flex w-full flex-row flex-wrap items-start justify-between gap-x-6 gap-y-2">
                     <CardTitle>{t.dashboard.projects}</CardTitle>
                     <div className="flex items-center justify-center gap-3">
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <BadgeInfoIcon aria-hidden className="w-btn-icon-md h-btn-icon-md text-muted-foreground" />
+                                    <BadgeInfoIcon aria-hidden className="h-btn-icon-md w-btn-icon-md text-muted-foreground" />
                                 </TooltipTrigger>
                                 <TooltipContent className="max-w-md">{t.organization.transferProjectsTip}</TooltipContent>
                             </Tooltip>
@@ -35,7 +35,7 @@ export default function OrgProjectsSettings() {
                 </CardHeader>
                 <CardContent className="p-0">
                     {!projects?.length ? (
-                        <div className="w-full flex items-center justify-start p-6">
+                        <div className="flex w-full items-center justify-start p-6">
                             <p>{t.organization.noProjects_CreateOne}</p>
                         </div>
                     ) : (

@@ -92,7 +92,7 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
                 <Button variant="secondary" size="sm">
-                    <Edit3Icon aria-hidden className="w-3.5 h-3.5" />
+                    <Edit3Icon aria-hidden className="h-3.5 w-3.5" />
                     {t.form.edit}
                 </Button>
             </DialogTrigger>
@@ -108,23 +108,23 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(updateGalleryImage)}
-                            className="w-full flex flex-col items-start justify-start gap-form-elements"
+                            className="flex w-full flex-col items-start justify-start gap-form-elements"
                         >
-                            <div className="w-full flex flex-col items-center justify-center">
-                                <div className="w-full flex flex-wrap sm:flex-nowrap items-center justify-between bg-shallow-background rounded px-4 py-3 gap-x-4 gap-y-2 rounded-b-none">
-                                    <div className="w-full flex items-center justify-start gap-1.5">
+                            <div className="flex w-full flex-col items-center justify-center">
+                                <div className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded rounded-b-none bg-shallow-background px-4 py-3 sm:flex-nowrap">
+                                    <div className="flex w-full items-center justify-start gap-1.5">
                                         <FileIcon
                                             aria-hidden
-                                            className="flex-shrink-0 w-btn-icon h-btn-icon text-muted-foreground"
+                                            className="h-btn-icon w-btn-icon flex-shrink-0 text-muted-foreground"
                                         />
 
-                                        <div className="flex items-center flex-wrap justify-start gap-x-2">
+                                        <div className="flex flex-wrap items-center justify-start gap-x-2">
                                             <span className="font-semibold">{t.project.currImage}</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="w-full aspect-[2/1] rounded rounded-t-none overflow-hidden bg-[hsla(var(--background-dark))]">
-                                    <img src={imageUrl(galleryItem.image)} alt="img" className="object-contain w-full h-full" />
+                                <div className="aspect-[2/1] w-full overflow-hidden rounded rounded-t-none bg-[hsla(var(--background-dark))]">
+                                    <img src={imageUrl(galleryItem.image)} alt="img" className="h-full w-full object-contain" />
                                 </div>
                             </div>
 
@@ -170,7 +170,7 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
                                     <FormItem>
                                         <FormLabel htmlFor="gallery-item-ordering">
                                             {t.form.ordering}
-                                            <FormDescription className="my-1 leading-normal text-sm">
+                                            <FormDescription className="my-1 text-sm leading-normal">
                                                 {t.project.galleryOrderingDesc}
                                             </FormDescription>
                                         </FormLabel>
@@ -201,7 +201,7 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
                                     <FormItem>
                                         <FormLabel htmlFor="gallery-item-featured">
                                             {t.form.featured}
-                                            <FormDescription className="my-1 leading-normal text-sm">
+                                            <FormDescription className="my-1 text-sm leading-normal">
                                                 {t.project.featuredGalleryImgDesc}
                                             </FormDescription>
                                         </FormLabel>
@@ -215,10 +215,10 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
                                                 <StarIcon
                                                     aria-hidden
                                                     fill="currentColor"
-                                                    className="w-btn-icon-md h-btn-icon-md"
+                                                    className="h-btn-icon-md w-btn-icon-md"
                                                 />
                                             ) : (
-                                                <StarIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                                                <StarIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                                             )}
                                             {field.value === true ? t.project.unfeatureImg : t.project.featureImg}
                                         </Button>
@@ -236,7 +236,7 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
                                     {isLoading ? (
                                         <LoadingSpinner size="xs" />
                                     ) : (
-                                        <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                        <SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                     )}
                                     {t.form.saveChanges}
                                 </Button>

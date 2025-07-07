@@ -89,7 +89,7 @@ export function ProfileSettingsPage({ session }: Props) {
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(saveSettings)}
-                        className="w-full flex flex-col items-start justify-start gap-form-elements"
+                        className="flex w-full flex-col items-start justify-start gap-form-elements"
                     >
                         <FormField
                             control={form.control}
@@ -154,7 +154,7 @@ export function ProfileSettingsPage({ session }: Props) {
 
                                     <Textarea
                                         {...field}
-                                        className="resize-none md:w-[48ch] min-h-32"
+                                        className="min-h-32 resize-none md:w-[48ch]"
                                         spellCheck="false"
                                         id="user-description-input"
                                         placeholder={t.settings.bioDesc}
@@ -164,7 +164,7 @@ export function ProfileSettingsPage({ session }: Props) {
                             )}
                         />
 
-                        <div className="w-full flex flex-wrap items-center mt-2 gap-x-3 gap-y-2">
+                        <div className="mt-2 flex w-full flex-wrap items-center gap-x-3 gap-y-2">
                             <Button
                                 type="submit"
                                 disabled={JSON.stringify(initialValues) === JSON.stringify(form.getValues()) || isLoading}
@@ -172,13 +172,13 @@ export function ProfileSettingsPage({ session }: Props) {
                                 {isLoading ? (
                                     <LoadingSpinner size="xs" />
                                 ) : (
-                                    <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                    <SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                 )}
                                 {t.form.saveChanges}
                             </Button>
 
                             <VariantButtonLink url={UserProfilePath(session.userName)}>
-                                <UserIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                <UserIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                 {t.settings.visitYourProfile}
                             </VariantButtonLink>
                         </div>

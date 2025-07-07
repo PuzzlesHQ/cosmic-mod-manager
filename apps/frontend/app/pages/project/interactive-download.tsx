@@ -130,12 +130,12 @@ export default function InteractiveDownloadPopup() {
         <Dialog>
             <DialogTrigger asChild>
                 <Button variant={isVersionDetailsPage ? "secondary-inverted" : "default"}>
-                    <DownloadIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                    <DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     {t.common.download}
                 </Button>
             </DialogTrigger>
             <DialogContent>
-                <DialogHeader className="flex flex-row gap-3 items-center justify-start pb-3">
+                <DialogHeader className="flex flex-row items-center justify-start gap-3 pb-3">
                     <ImgWrapper
                         vtId={projectData.id}
                         src={imageUrl(projectData.icon)}
@@ -162,7 +162,7 @@ export default function InteractiveDownloadPopup() {
                                     <LabelledCheckbox
                                         checked={showAllVersions}
                                         onCheckedChange={(checked) => setShowAllVersions(checked === true)}
-                                        className="text-extra-muted-foreground px-2 pb-2 ms-2 mt-1"
+                                        className="ms-2 mt-1 px-2 pb-2 text-extra-muted-foreground"
                                     >
                                         {t.form.showAllVersions}
                                     </LabelledCheckbox>
@@ -177,12 +177,12 @@ export default function InteractiveDownloadPopup() {
                             disabled={projectData.gameVersions.length < 2}
                         >
                             <span className="flex items-center justify-start gap-2 font-medium">
-                                <Gamepad2Icon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                                <Gamepad2Icon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                                 <span className="text-muted-foreground">
                                     {selectedGameVersion ? (
                                         <>
                                             {t.project.gameVersion}{" "}
-                                            <em className="not-italic text-foreground/90">
+                                            <em className="text-foreground/90 not-italic">
                                                 {getGameVersionFromValue(selectedGameVersion)?.label}
                                             </em>
                                         </>
@@ -209,12 +209,12 @@ export default function InteractiveDownloadPopup() {
                                 className="w-full justify-between text-extra-muted-foreground"
                             >
                                 <span className="flex items-center justify-start gap-2 font-medium">
-                                    <WrenchIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                                    <WrenchIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                                     <span className="text-muted-foreground">
                                         {selectedLoader ? (
                                             <>
                                                 {t.project.platform}{" "}
-                                                <em className="not-italic text-foreground/90">
+                                                <em className="text-foreground/90 not-italic">
                                                     {CapitalizeAndFormatString(selectedLoader)}
                                                 </em>
                                             </>
@@ -294,21 +294,21 @@ function AvailableVersionsList({ selectedGameVersion, selectedLoader }: Availabl
 
     if (!versionsList.length)
         return (
-            <span className="w-full flex items-center justify-start py-3 px-1 italic text-extra-muted-foreground">
+            <span className="flex w-full items-center justify-start px-1 py-3 text-extra-muted-foreground italic">
                 No versions available for {getGameVersionFromValue(selectedGameVersion)?.label} on{" "}
                 {CapitalizeAndFormatString(selectedLoader)}
             </span>
         );
 
     return (
-        <div className="w-full flex flex-col items-center justify-center gap-3">
+        <div className="flex w-full flex-col items-center justify-center gap-3">
             {versionsList.map((version) => {
                 return (
                     <div
                         key={version.id}
-                        className="w-full flex items-center justify-between gap-x-4 gap-y-2 bg-background p-2 rounded-lg"
+                        className="flex w-full items-center justify-between gap-x-4 gap-y-2 rounded-lg bg-background p-2"
                     >
-                        <div className="flex gap-3 items-center justify-start">
+                        <div className="flex items-center justify-start gap-3">
                             <ReleaseChannelBadge releaseChannel={version.releaseChannel} />
                             <div className="flex flex-col items-start justify-center gap-1">
                                 <DialogClose asChild>
@@ -319,7 +319,7 @@ function AvailableVersionsList({ selectedGameVersion, selectedLoader }: Availabl
                                         {version.versionNumber}
                                     </Link>
                                 </DialogClose>
-                                <span className="text-sm font-medium text-muted-foreground/85 leading-none">{version.title}</span>
+                                <span className="font-medium text-muted-foreground/85 text-sm leading-none">{version.title}</span>
                             </div>
                         </div>
 
@@ -332,7 +332,7 @@ function AvailableVersionsList({ selectedGameVersion, selectedLoader }: Availabl
                             onClick={showDownloadAnimation}
                             rel="nofollow noindex"
                         >
-                            <DownloadIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                            <DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                         </VariantButtonLink>
                     </div>
                 );

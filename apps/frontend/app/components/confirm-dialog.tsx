@@ -31,7 +31,7 @@ export default function ConfirmDialog(props: ConfirmDialogProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [open, setOpen] = useState(false);
 
-    const primaryBtnIcon = props.confirmIcon ? props.confirmIcon : <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />;
+    const primaryBtnIcon = props.confirmIcon ? props.confirmIcon : <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />;
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>

@@ -60,7 +60,7 @@ export default function DescriptionSettings() {
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(updateDescription)}
-                    className="w-full flex flex-col items-start justify-start gap-form-elements"
+                    className="flex w-full flex-col items-start justify-start gap-form-elements"
                 >
                     <FormField
                         control={form.control}
@@ -76,7 +76,7 @@ export default function DescriptionSettings() {
                         )}
                     />
 
-                    <div className="w-full flex items-center justify-end">
+                    <div className="flex w-full items-center justify-end">
                         <Button
                             type="submit"
                             disabled={(ctx.projectData.description || "") === form.getValues().description || isLoading}
@@ -84,7 +84,7 @@ export default function DescriptionSettings() {
                             {isLoading ? (
                                 <LoadingSpinner size="xs" />
                             ) : (
-                                <SaveIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                <SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
                             )}
                             {t.form.saveChanges}
                         </Button>

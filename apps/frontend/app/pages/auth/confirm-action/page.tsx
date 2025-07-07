@@ -15,11 +15,11 @@ export default function ConfirmActionPage({ actionType, code }: Props) {
     const { t } = useTranslation();
 
     return (
-        <main className="w-full full_page flex flex-col items-center justify-center px-4">
+        <main className="full_page flex w-full flex-col items-center justify-center px-4">
             {!code || actionType === null ? (
-                <div className="w-full max-w-md flex flex-col items-center justify-center gap-6">
+                <div className="flex w-full max-w-md flex-col items-center justify-center gap-6">
                     <FormErrorMessage text={t.auth.invalidCode} />
-                    <Link to="/" className="hover:underline underline-offset-2 font-semibold">
+                    <Link to="/" className="font-semibold underline-offset-2 hover:underline">
                         {t.common.home}
                     </Link>
                 </div>
@@ -42,9 +42,9 @@ function ActionCard({ actionType, code }: { actionType: ConfirmationType; code: 
             return <DeleteAccountConfirmationCard code={code} />;
         default:
             return (
-                <div className="w-full max-w-md flex flex-col items-center justify-center gap-6">
+                <div className="flex w-full max-w-md flex-col items-center justify-center gap-6">
                     <FormErrorMessage text={t.auth.invalidCode} />
-                    <Link to="/" className="hover:underline underline-offset-2 font-semibold">
+                    <Link to="/" className="font-semibold underline-offset-2 hover:underline">
                         {t.common.home}
                     </Link>
                 </div>

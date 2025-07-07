@@ -68,10 +68,10 @@ export default function ReportPage({ data }: { data: LoaderData }) {
 
     function Main(props: { children: React.ReactNode }) {
         return (
-            <main className="w-full grid max-w-4xl p-card-surround mx-auto gap-4">
+            <main className="mx-auto grid w-full max-w-4xl gap-4 p-card-surround">
                 <div className="grid text-center">
-                    <ScaleIcon className="w-full h-12 text-warning-foreground" />
-                    <h1 className="text-xl-plus font-bold text-foreground-bright leading-loose">
+                    <ScaleIcon className="h-12 w-full text-warning-foreground" />
+                    <h1 className="font-bold text-foreground-bright text-xl-plus leading-loose">
                         {data?.existingReport?.id
                             ? t.report.alreadyReported(reportingItem || t.report.content)
                             : t.report.reportToMods(reportingItem || t.report.content)}
@@ -89,17 +89,17 @@ export default function ReportPage({ data }: { data: LoaderData }) {
             <Main>
                 <div className="grid gap-3">
                     <p className="text-muted-foreground">{t.report.alreadyReportedDesc(reportingItemType || t.report.content)}</p>
-                    <div className="flex gap-3 items-center justify-end">
+                    <div className="flex items-center justify-end gap-3">
                         {reportingItem_link && reportingItemType ? (
                             <VariantButtonLink url={reportingItem_link} variant="secondary">
-                                <ArrowLeftIcon className="w-btn-icon-md h-btn-icon-md" />
+                                <ArrowLeftIcon className="h-btn-icon-md w-btn-icon-md" />
                                 {t.report.backToContent(reportingItemType)}
                             </VariantButtonLink>
                         ) : null}
 
                         <VariantButtonLink url={ReportPagePath(data.existingReport.id)} variant="default">
                             {t.report.goToReport}
-                            <ArrowRightIcon className="w-btn-icon-md h-btn-icon-md" />
+                            <ArrowRightIcon className="h-btn-icon-md w-btn-icon-md" />
                         </VariantButtonLink>
                     </div>
                 </div>
@@ -109,7 +109,7 @@ export default function ReportPage({ data }: { data: LoaderData }) {
 
     return (
         <Main>
-            <div className="grid items-start sm:grid-cols-2 gap-4 px-card-surround">
+            <div className="grid items-start gap-4 px-card-surround sm:grid-cols-2">
                 {[
                     {
                         heading: t.report.pleaseReport,
@@ -159,15 +159,15 @@ export default function ReportPage({ data }: { data: LoaderData }) {
 
                     return (
                         <div key={section.heading} className="grid gap-2">
-                            <h2 className="text-lg font-bold text-foreground-bright">{section.heading}</h2>
+                            <h2 className="font-bold text-foreground-bright text-lg">{section.heading}</h2>
                             {section.items.map((item) => {
                                 return (
                                     <div key={item.key} className="grid grid-cols-[min-content_1fr] items-center gap-2">
                                         {icon}
                                         <div className="grid">
-                                            <span className="text-base text-foreground-bright font-semibold">{item.title}</span>
+                                            <span className="font-semibold text-base text-foreground-bright">{item.title}</span>
                                             {!!item.desc && (
-                                                <span className="text-sm text-extra-muted-foreground leading-tight">
+                                                <span className="text-extra-muted-foreground text-sm leading-tight">
                                                     {item.desc}
                                                 </span>
                                             )}
@@ -231,7 +231,7 @@ function ReportSelectedItem(props: { itemId: string; itemType: ReportItemType; i
     }
 
     return (
-        <div className="grid gap-5 p-card-surround rounded-lg bg-card-background">
+        <div className="grid gap-5 rounded-lg bg-card-background p-card-surround">
             <div className="grid gap-2">
                 <Label>{t.report.whichRuleIsBeingViolated(Config.SITE_NAME_SHORT, props.itemType)}</Label>
 
@@ -253,8 +253,8 @@ function ReportSelectedItem(props: { itemId: string; itemType: ReportItemType; i
             </div>
 
             {(violationType === RuleViolationType.REUPLOADED_WORK || RuleViolationType.MALICIOUS === violationType) && (
-                <div className="p-card-surround rounded border-2 border-warning-foreground bg-warning-background/20 text-foreground-bright grid grid-cols-[min-content,_1fr] gap-2">
-                    <AlertTriangleIcon className="w-btn-icon-lg h-btn-icon-lg mt-[0.15em] text-warning-foreground" />
+                <div className="grid grid-cols-[min-content,_1fr] gap-2 rounded border-2 border-warning-foreground bg-warning-background/20 p-card-surround text-foreground-bright">
+                    <AlertTriangleIcon className="mt-[0.15em] h-btn-icon-lg w-btn-icon-lg text-warning-foreground" />
 
                     <div className="grid gap-2">
                         {violationType === RuleViolationType.MALICIOUS && (
@@ -290,7 +290,7 @@ function ReportSelectedItem(props: { itemId: string; itemType: ReportItemType; i
                     </div>
 
                     <Button className="justify-self-end" disabled={!reportBody || submittingReport} onClick={submitReport}>
-                        {submittingReport ? <LoadingSpinner size="xs" /> : <SendIcon className="w-btn-icon-md h-btn-icon-md" />}
+                        {submittingReport ? <LoadingSpinner size="xs" /> : <SendIcon className="h-btn-icon-md w-btn-icon-md" />}
                         {t.report.submitReport}
                     </Button>
                 </>
@@ -319,7 +319,7 @@ function SelectWhatToReport() {
     }
 
     return (
-        <div className="grid gap-5 p-card-surround rounded-lg bg-card-background">
+        <div className="grid gap-5 rounded-lg bg-card-background p-card-surround">
             <div className="grid gap-2">
                 <Label>{t.report.whatTypeOfContent}</Label>
                 <RadioGroup
@@ -344,7 +344,7 @@ function SelectWhatToReport() {
 
             {!!itemType && (
                 <>
-                    <Label className="grid gap-2 w-full sm:w-[24ch]">
+                    <Label className="grid w-full gap-2 sm:w-[24ch]">
                         {/* @ts-ignore */}
                         {t.report.whatIsContentId(!itemType ? t.report.content : t[itemType][itemType] || itemType)}
                         <Input
@@ -356,7 +356,7 @@ function SelectWhatToReport() {
                     </Label>
 
                     <Button onClick={updateParams} className="justify-self-end" disabled={cantSubmit}>
-                        <ArrowRightIcon className="w-btn-icon-md h-btn-icon-md" />
+                        <ArrowRightIcon className="h-btn-icon-md w-btn-icon-md" />
                         {t.form.continue}
                     </Button>
                 </>

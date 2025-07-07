@@ -89,9 +89,9 @@ function UploadVersionLinkCard({ uploadPageUrl }: { uploadPageUrl: string }) {
     const { t } = useTranslation();
 
     return (
-        <Card className="p-card-surround flex flex-row flex-wrap items-center justify-start gap-x-4 gap-y-2">
+        <Card className="flex flex-row flex-wrap items-center justify-start gap-x-4 gap-y-2 p-card-surround">
             <VariantButtonLink url={uploadPageUrl} variant="default" prefetch={Prefetch.Render}>
-                <UploadIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                <UploadIcon aria-hidden className="h-btn-icon w-btn-icon" />
                 {t.project.uploadVersion}
             </VariantButtonLink>
 
@@ -142,7 +142,7 @@ function ProjectVersionsListTable({
     if (!allProjectVersions.length) {
         return (
             <div className="flex items-center justify-center py-6">
-                <span className="text-lg italic text-extra-muted-foreground">{t.project.noProjectVersions}</span>
+                <span className="text-extra-muted-foreground text-lg italic">{t.project.noProjectVersions}</span>
             </div>
         );
     }
@@ -154,14 +154,14 @@ function ProjectVersionsListTable({
                     <Card className="overflow-hidden">
                         <Table>
                             <TableHeader className="hidden md:table-header-group">
-                                <TableRow className="hover:bg-transparent dark:hover:bg-transparent h-16">
+                                <TableRow className="h-16 hover:bg-transparent dark:hover:bg-transparent">
                                     {/* MOBILE ONLY */}
-                                    <TableHead className="w-full grow md:hidden ps-table-side-pad-sm"> </TableHead>
+                                    <TableHead className="w-full grow ps-table-side-pad-sm md:hidden"> </TableHead>
                                     {/* MOBILE ONLY */}
-                                    <TableHead className="md:hidden pe-table-side-pad-sm"> </TableHead>
+                                    <TableHead className="pe-table-side-pad-sm md:hidden"> </TableHead>
 
                                     {/* MID WIDTH AND ABOVE */}
-                                    <TableHead className="hidden md:table-cell w-10 ps-table-side-pad"> </TableHead>
+                                    <TableHead className="hidden w-10 ps-table-side-pad md:table-cell"> </TableHead>
                                     {/* MID WIDTH AND ABOVE */}
                                     <TableHead className="hidden md:table-cell">{t.form.name}</TableHead>
                                     {/* MID WIDTH AND ABOVE */}
@@ -176,7 +176,7 @@ function ProjectVersionsListTable({
                                     <TableHead className="hidden md:hidden xl:table-cell">{t.project.downloads}</TableHead>
 
                                     {/* MID WIDTH AND ABOVE */}
-                                    <TableHead className="hidden md:table-cell pe-table-side-pad"> </TableHead>
+                                    <TableHead className="hidden pe-table-side-pad md:table-cell"> </TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -193,11 +193,11 @@ function ProjectVersionsListTable({
                                                 }
                                             }}
                                         >
-                                            <TableCell className="md:hidden ps-table-side-pad-sm">
+                                            <TableCell className="ps-table-side-pad-sm md:hidden">
                                                 {/* MOBILE ONLY */}
-                                                <div className="w-full flex flex-col items-start justify-start gap-1.5">
+                                                <div className="flex w-full flex-col items-start justify-start gap-1.5">
                                                     <div
-                                                        className="w-full flex items-center justify-start gap-2.5"
+                                                        className="flex w-full items-center justify-start gap-2.5"
                                                         title={version.title}
                                                     >
                                                         <ReleaseChannelBadge releaseChannel={version.releaseChannel} />
@@ -207,7 +207,7 @@ function ProjectVersionsListTable({
                                                             url={versionPagePathname(version.slug)}
                                                         />
                                                     </div>
-                                                    <div className="w-full flex flex-wrap items-center justify-start gap-1.5">
+                                                    <div className="flex w-full flex-wrap items-center justify-start gap-1.5">
                                                         <GameVersions
                                                             gameVersions={version.gameVersions}
                                                             verbose={anyFilterEnabled}
@@ -222,7 +222,7 @@ function ProjectVersionsListTable({
                                             </TableCell>
 
                                             {/* MID WIDTH AND ABOVE */}
-                                            <TableCell className="hidden md:table-cell ps-table-side-pad pe-2">
+                                            <TableCell className="hidden ps-table-side-pad pe-2 md:table-cell">
                                                 <ReleaseChannelBadge releaseChannel={version.releaseChannel} />
                                             </TableCell>
 
@@ -237,7 +237,7 @@ function ProjectVersionsListTable({
 
                                             {/* MID WIDTH AND ABOVE */}
                                             <TableCell className="hidden md:table-cell">
-                                                <div className="w-full flex flex-wrap items-start justify-start gap-1.5">
+                                                <div className="flex w-full flex-wrap items-start justify-start gap-1.5">
                                                     <GameVersions
                                                         gameVersions={version.gameVersions}
                                                         verbose={anyFilterEnabled}
@@ -248,7 +248,7 @@ function ProjectVersionsListTable({
 
                                             {/* MID WIDTH AND BELOW XL*/}
                                             <TableCell className="hidden md:table-cell xl:hidden">
-                                                <div className="min-w-max lex flex-wrap items-start justify-start gap-3">
+                                                <div className="lex min-w-max flex-wrap items-start justify-start gap-3">
                                                     <DatePublished dateStr={version.datePublished} />
                                                     <DownloadsCount downloads={version.downloads} />
                                                 </div>
@@ -266,21 +266,21 @@ function ProjectVersionsListTable({
 
                                             {/* ALWAYS THE SAME */}
                                             <TableCell className="pe-table-side-pad-sm md:pe-table-side-pad">
-                                                <div className="w-full flex gap-1 items-center justify-end">
+                                                <div className="flex w-full items-center justify-end gap-1">
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
                                                             <VariantButtonLink
                                                                 url={version.primaryFile?.url || ""}
                                                                 variant="outline"
                                                                 size="icon"
-                                                                className="noClickRedirect shrink-0 !w-10 !h-10 rounded-full"
+                                                                className="noClickRedirect !w-10 !h-10 shrink-0 rounded-full"
                                                                 aria-label={`Download ${version.title}`}
                                                                 onClick={showDownloadAnimation}
                                                                 rel="nofollow noindex"
                                                             >
                                                                 <DownloadIcon
                                                                     aria-hidden
-                                                                    className="w-btn-icon h-btn-icon"
+                                                                    className="h-btn-icon w-btn-icon"
                                                                     strokeWidth={2.2}
                                                                 />
                                                             </VariantButtonLink>
@@ -312,15 +312,15 @@ function ProjectVersionsListTable({
 
 function VersionName({ title, number, url }: { title: string; number: string; url: string }) {
     return (
-        <div className="flex flex-col items-start justify-center overflow-hidden max-w-[24ch] lg:max-w-[32ch]">
+        <div className="flex max-w-[24ch] flex-col items-start justify-center overflow-hidden lg:max-w-[32ch]">
             <Link
                 prefetch={Prefetch.Render}
                 to={url}
-                className="noClickRedirect leading-tight font-bold text-foreground md:whitespace-nowrap"
+                className="noClickRedirect font-bold text-foreground leading-tight md:whitespace-nowrap"
             >
                 {number}
             </Link>
-            <span className="leading-snug font-medium text-muted-foreground/85 text-[0.77rem] md:whitespace-nowrap">{title}</span>
+            <span className="font-medium text-[0.77rem] text-muted-foreground/85 leading-snug md:whitespace-nowrap">{title}</span>
         </div>
     );
 }
@@ -376,8 +376,8 @@ function ProjectLoaders({ versionLoaders }: { versionLoaders: string[] }) {
 function DatePublished({ dateStr, iconVisible = true }: { dateStr: string | Date; iconVisible?: boolean }) {
     return (
         <TooltipTemplate content={<FormattedDate date={dateStr} />}>
-            <span className="flex gap-1.5 items-center justify-start text-muted-foreground font-medium whitespace-nowrap cursor-help">
-                {iconVisible === true ? <CalendarIcon aria-hidden className="w-3.5 h-3.5" /> : null}
+            <span className="flex cursor-help items-center justify-start gap-1.5 whitespace-nowrap font-medium text-muted-foreground">
+                {iconVisible === true ? <CalendarIcon aria-hidden className="h-3.5 w-3.5" /> : null}
                 <TimePassedSince date={dateStr} capitalize />
             </span>
         </TooltipTemplate>
@@ -386,8 +386,8 @@ function DatePublished({ dateStr, iconVisible = true }: { dateStr: string | Date
 
 function DownloadsCount({ downloads, iconVisible = true }: { downloads: number; iconVisible?: boolean }) {
     return (
-        <span className="flex gap-1.5 items-center justify-start text-muted-foreground font-medium">
-            {iconVisible === true ? <DownloadIcon aria-hidden className="w-3.5 h-3.5" /> : null}
+        <span className="flex items-center justify-start gap-1.5 font-medium text-muted-foreground">
+            {iconVisible === true ? <DownloadIcon aria-hidden className="h-3.5 w-3.5" /> : null}
             <FormattedCount count={downloads} />
         </span>
     );
@@ -403,13 +403,13 @@ function ThreeDotMenu({ versionPageUrl, canEditVersion }: { versionPageUrl: stri
                 <Button
                     variant="ghost-no-shadow"
                     size="icon"
-                    className="noClickRedirect rounded-full shrink-0 !w-10 !h-10"
+                    className="noClickRedirect !w-10 !h-10 shrink-0 rounded-full"
                     aria-label="more options"
                 >
-                    <MoreVerticalIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                    <MoreVerticalIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent align="end" className="noClickRedirect p-1 gap-1 min-w-fit">
+            <PopoverContent align="end" className="noClickRedirect min-w-fit gap-1 p-1">
                 <VariantButtonLink
                     className="justify-start"
                     url={versionPageUrl}
@@ -420,7 +420,7 @@ function ThreeDotMenu({ versionPageUrl, canEditVersion }: { versionPageUrl: stri
                         setPopoverOpen(false);
                     }}
                 >
-                    <SquareArrowOutUpRightIcon aria-hidden className="w-btn-icon h-btn-icon text-muted-foreground" />
+                    <SquareArrowOutUpRightIcon aria-hidden className="h-btn-icon w-btn-icon text-muted-foreground" />
                     {t.project.openInNewTab}
                 </VariantButtonLink>
 
@@ -433,7 +433,7 @@ function ThreeDotMenu({ versionPageUrl, canEditVersion }: { versionPageUrl: stri
                         setPopoverOpen(false);
                     }}
                 >
-                    <LinkIcon aria-hidden className="w-btn-icon h-btn-icon text-muted-foreground" />
+                    <LinkIcon aria-hidden className="h-btn-icon w-btn-icon text-muted-foreground" />
                     {t.project.copyLink}
                 </Button>
 
@@ -449,7 +449,7 @@ function ThreeDotMenu({ versionPageUrl, canEditVersion }: { versionPageUrl: stri
                                 setPopoverOpen(false);
                             }}
                         >
-                            <EditIcon aria-hidden className="w-btn-icon h-btn-icon text-muted-foreground" />
+                            <EditIcon aria-hidden className="h-btn-icon w-btn-icon text-muted-foreground" />
                             {t.form.edit}
                         </VariantButtonLink>
                     </>

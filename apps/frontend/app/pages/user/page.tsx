@@ -27,7 +27,7 @@ export default function UserProjectsList(props: Props) {
 
     if (showType === "collections" || showType === "collection") {
         return (
-            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-panel-cards">
+            <div className="grid w-full grid-cols-1 gap-panel-cards md:grid-cols-2">
                 {props.userData.id === session?.id ? (
                     <FollowsCollectionItem
                         className="bg-card-background hover:bg-card-background/85"
@@ -49,9 +49,9 @@ export default function UserProjectsList(props: Props) {
                             visibility={
                                 <div className="inline-flex items-center justify-center gap-1">
                                     {collection.visibility === CollectionVisibility.PRIVATE ? (
-                                        <LockIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                        <LockIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                     ) : (
-                                        <EarthIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                                        <EarthIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                     )}
                                     {
                                         t.projectSettings[
@@ -74,8 +74,8 @@ export default function UserProjectsList(props: Props) {
 
     if (!filteredProjects.length) {
         return (
-            <div className="w-full flex items-center justify-center py-12">
-                <p className="text-lg text-muted-foreground italic text-center">{t.common.noResults}</p>
+            <div className="flex w-full items-center justify-center py-12">
+                <p className="text-center text-lg text-muted-foreground italic">{t.common.noResults}</p>
             </div>
         );
     }

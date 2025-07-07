@@ -31,7 +31,7 @@ export function SearchResults(props: { viewType: ViewType }) {
 
             <section
                 className={cn(
-                    "w-full h-fit grid grid-cols-1 gap-panel-cards",
+                    "grid h-fit w-full grid-cols-1 gap-panel-cards",
                     props.viewType === ViewType.GALLERY && "sm:grid-cols-2",
                 )}
                 role="list"
@@ -68,12 +68,12 @@ export function SearchResults(props: { viewType: ViewType }) {
             </section>
 
             {!searchResult?.hits?.length && !isLoading && !isFetching && (
-                <div className="w-full flex items-center justify-center py-8">
-                    <span className="text-extra-muted-foreground italic text-xl">{t.common.noResults}</span>
+                <div className="flex w-full items-center justify-center py-8">
+                    <span className="text-extra-muted-foreground text-xl italic">{t.common.noResults}</span>
                 </div>
             )}
 
-            {!searchResult?.hits?.length && isFetching && <div className="w-full flex items-center justify-center py-8">...</div>}
+            {!searchResult?.hits?.length && isFetching && <div className="flex w-full items-center justify-center py-8">...</div>}
 
             {pagination}
         </>

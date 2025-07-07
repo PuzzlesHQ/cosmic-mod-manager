@@ -72,7 +72,7 @@ export default function RemovePasswordForm() {
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
                 <Button variant="secondary-destructive">
-                    <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                    <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
                     {t.settings.removePass}
                 </Button>
             </DialogTrigger>
@@ -86,7 +86,7 @@ export default function RemovePasswordForm() {
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(removeAccountPassword)}
-                            className="w-full flex flex-col items-start justify-start gap-form-elements"
+                            className="flex w-full flex-col items-start justify-start gap-form-elements"
                         >
                             <FormField
                                 control={form.control}
@@ -114,7 +114,7 @@ export default function RemovePasswordForm() {
                                     {isLoading ? (
                                         <LoadingSpinner size="xs" />
                                     ) : (
-                                        <Trash2Icon aria-hidden className="w-btn-icon h-btn-icon" />
+                                        <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
                                     )}
                                     {t.settings.removePass}
                                 </Button>

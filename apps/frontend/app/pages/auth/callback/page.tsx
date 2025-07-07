@@ -72,20 +72,20 @@ export default function OAuthCallbackPage() {
     }, [authProvider]);
 
     return (
-        <main className="w-full h-[100vh] min-h-[720px] flex flex-col gap-4 items-center justify-center">
+        <main className="flex h-[100vh] min-h-[720px] w-full flex-col items-center justify-center gap-4">
             {errorMsg ? (
-                <div className="w-full max-w-md flex flex-col gap-4 items-center justify-center">
+                <div className="flex w-full max-w-md flex-col items-center justify-center gap-4">
                     <FormErrorMessage text={errorMsg} />
                     {actionIntent === AuthActionIntent.SIGN_IN ? (
-                        <Link className="hover:underline underline-offset-2" to="/login">
+                        <Link className="underline-offset-2 hover:underline" to="/login">
                             {t.form.login_withSpace}
                         </Link>
                     ) : actionIntent === AuthActionIntent.SIGN_UP ? (
-                        <Link className="hover:underline underline-offset-2" to="/signup">
+                        <Link className="underline-offset-2 hover:underline" to="/signup">
                             {t.form.signup}
                         </Link>
                     ) : (
-                        <Link className="hover:underline underline-offset-2" to="/settings/account">
+                        <Link className="underline-offset-2 hover:underline" to="/settings/account">
                             {t.common.settings}
                         </Link>
                     )}

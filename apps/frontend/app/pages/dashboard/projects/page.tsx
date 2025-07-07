@@ -22,13 +22,13 @@ export default function ProjectsPage({ projects }: Props) {
 
     return (
         <Card className="w-full overflow-hidden">
-            <CardHeader className="w-full flex flex-row flex-wrap items-start justify-between gap-x-6 gap-y-2">
+            <CardHeader className="flex w-full flex-row flex-wrap items-start justify-between gap-x-6 gap-y-2">
                 <CardTitle>{t.dashboard.projects}</CardTitle>
                 <CreateNewProjectDialog />
             </CardHeader>
             <CardContent className="p-0">
                 {projects.length === 0 ? (
-                    <div className="w-full flex items-center justify-start p-6">
+                    <div className="flex w-full items-center justify-start p-6">
                         <p>{t.dashboard.createProjectInfo}</p>
                     </div>
                 ) : projects.length > 0 ? (
@@ -44,12 +44,12 @@ export function ProjectsListTable({ projects }: { projects: ProjectListItem[] })
     const customNavigate = useNavigate();
 
     return (
-        <div className="w-full mt-2">
+        <div className="mt-2 w-full">
             <Table>
                 <TableHeader>
                     <TableRow className="hover:bg-transparent dark:hover:bg-transparent">
                         {/* ICON: VISIBLE ON sm+ width */}
-                        <TableHead className="invisible md:visible w-[5.5rem] sm:w-[6.5rem] ps-table-side-pad-sm sm:ps-table-side-pad">
+                        <TableHead className="invisible w-[5.5rem] ps-table-side-pad-sm sm:w-[6.5rem] sm:ps-table-side-pad md:visible">
                             {t.form.icon}
                         </TableHead>
 
@@ -57,7 +57,7 @@ export function ProjectsListTable({ projects }: { projects: ProjectListItem[] })
                         <TableHead className="invisible md:hidden">{t.form.details}</TableHead>
 
                         {/* NAME: VISIBLE ON sm+ width */}
-                        <TableHead className="hidden md:table-cell min-w-16 lg:min-w-36">{t.form.name}</TableHead>
+                        <TableHead className="hidden min-w-16 md:table-cell lg:min-w-36">{t.form.name}</TableHead>
                         {/* ID: VISIBLE ON sm+ width */}
                         <TableHead className="hidden md:table-cell">{t.form.id}</TableHead>
                         {/* TYPE: VISIBLE ON sm+ width */}
@@ -66,7 +66,7 @@ export function ProjectsListTable({ projects }: { projects: ProjectListItem[] })
                         <TableHead className="hidden md:table-cell">{t.dashboard.status}</TableHead>
 
                         {/* SETTINGS LINK: VISIBLE ON sm+ width */}
-                        <TableHead className="invisible md:visible w-10 pe-table-side-pad-sm sm:pe-table-side-pad"> </TableHead>
+                        <TableHead className="invisible w-10 pe-table-side-pad-sm sm:pe-table-side-pad md:visible"> </TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -101,11 +101,11 @@ export function ProjectsListTable({ projects }: { projects: ProjectListItem[] })
                                 </TableCell>
 
                                 {/* AGGREGATED PROJECT DETAILS: VISIBLE ON MOBILE WIDTH ONLY */}
-                                <TableCell className="md:hidden !ps-0 sm:ps-2">
+                                <TableCell className="!ps-0 sm:ps-2 md:hidden">
                                     <div className="flex flex-col items-start justify-center gap-1">
                                         <Link
                                             to={ProjectPagePath(project.type[0], project.slug)}
-                                            className="noClickRedirect leading-none font-bold text-foreground hover:underline"
+                                            className="noClickRedirect font-bold text-foreground leading-none hover:underline"
                                         >
                                             {project.name}
                                         </Link>
@@ -118,7 +118,7 @@ export function ProjectsListTable({ projects }: { projects: ProjectListItem[] })
                                             text={project.id}
                                             label={project.id}
                                             // maxLabelChars={12}
-                                            className="noClickRedirect px-2 py-1 bg-shallow-background/50"
+                                            className="noClickRedirect bg-shallow-background/50 px-2 py-1"
                                             iconClassName="w-3 h-3"
                                         />
                                     </div>
@@ -128,14 +128,14 @@ export function ProjectsListTable({ projects }: { projects: ProjectListItem[] })
                                 <TableCell className="hidden md:table-cell">
                                     <Link
                                         to={ProjectPagePath(project.type[0], project.slug)}
-                                        className="noClickRedirect text-base leading-none font-medium hover:underline"
+                                        className="noClickRedirect font-medium text-base leading-none hover:underline"
                                     >
                                         {project.name}
                                     </Link>
                                 </TableCell>
                                 {/* ID */}
                                 <TableCell className="hidden md:table-cell">
-                                    <div className="w-fit flex items-center justify-start font-mono text-sm noClickRedirect">
+                                    <div className="noClickRedirect flex w-fit items-center justify-start font-mono text-sm">
                                         <CopyBtn
                                             id={`${project.slug}-${project.id}`}
                                             text={project.id}
@@ -160,10 +160,10 @@ export function ProjectsListTable({ projects }: { projects: ProjectListItem[] })
                                 <TableCell className="pe-table-side-pad-sm sm:pe-table-side-pad">
                                     <Link
                                         to={ProjectPagePath(project.type[0], project.slug, "settings")}
-                                        className="noClickRedirect rounded flex items-center justify-center h-full w-fit p-2 hover:bg-shallow-background"
+                                        className="noClickRedirect flex h-full w-fit items-center justify-center rounded p-2 hover:bg-shallow-background"
                                         aria-label="project settings"
                                     >
-                                        <SettingsIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                                        <SettingsIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                                     </Link>
                                 </TableCell>
                             </TableRow>
