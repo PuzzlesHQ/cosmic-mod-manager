@@ -576,6 +576,8 @@ function ThreadMessage(props: ThreadMessageProps) {
             )}
 
             {!!props.inResponseTo && props.inResponseTo.msg?.type === MessageType.TEXT && (
+                // biome-ignore lint/a11y/noStaticElementInteractions: --
+                // biome-ignore lint/a11y/useKeyWithClickEvents: --
                 <div
                     style={{ gridArea: "reply" }}
                     className="group/replied-msg-preview flex cursor-pointer items-center justify-start gap-space pb-2 text-extra-muted-foreground text-xs hover:text-muted-foreground"

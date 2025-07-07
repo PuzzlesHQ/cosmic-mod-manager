@@ -182,6 +182,7 @@ export default function ProjectPageLayout() {
                                     {t.project.environments}
                                 </h3>
                                 {projectEnvironments.map((item, i) => {
+                                    // biome-ignore lint/suspicious/noArrayIndexKey: --
                                     return <Chip key={i}>{item}</Chip>;
                                 })}
                             </section>
@@ -236,6 +237,8 @@ export default function ProjectPageLayout() {
                         <h2 className="pb-2 font-bold text-lg">{t.project.featuredVersions}</h2>
                         <TooltipProvider>
                             {ctx.featuredProjectVersions?.map((version) => (
+                                // biome-ignore lint/a11y/useKeyWithClickEvents: --
+                                // biome-ignore lint/a11y/noStaticElementInteractions: --
                                 <div
                                     key={version.id}
                                     className="bg_hover_stagger group/card flex w-full cursor-pointer items-start justify-start gap-2 rounded p-2 pb-2.5 text-muted-foreground hover:bg-background/75"

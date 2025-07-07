@@ -100,6 +100,7 @@ export default function UserPageLayout(props: Props) {
                         </p>
                     </div>
                 ) : (
+                    // biome-ignore lint/a11y/useSemanticElements: --
                     <div className="flex w-full flex-col gap-panel-cards" role="list">
                         <Outlet
                             context={

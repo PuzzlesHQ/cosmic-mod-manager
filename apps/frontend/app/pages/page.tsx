@@ -78,6 +78,7 @@ export default function HomePage({ projects }: Props) {
                                     {showcaseItems?.map((item, index) => {
                                         return (
                                             <strong
+                                                // biome-ignore lint/suspicious/noArrayIndexKey: --
                                                 key={`${item}${index}`}
                                                 className={cn(
                                                     "flex h-12 items-center justify-center whitespace-nowrap text-nowrap bg-clip-text font-bold text-4xl leading-loose lg:h-[4.5rem] lg:text-6xl",

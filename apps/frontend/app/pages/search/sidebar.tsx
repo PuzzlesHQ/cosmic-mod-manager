@@ -330,6 +330,7 @@ function FilterCategory({
 
     return (
         <section className={cn("filterCategory grid grid-cols-1", className)}>
+            {/** biome-ignore lint/a11y/noStaticElementInteractions: -- */}
             <div
                 className={cn("flex items-center justify-between gap-x-2 p-0.5", collapsible && "cursor-pointer")}
                 onClick={toggleVisibility}

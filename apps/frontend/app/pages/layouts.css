@@ -8,16 +8,20 @@
 
 @layer view-transitions {
     @view-transition {
+        /* biome-ignore lint/correctness/noUnknownProperty: view transitions are new */
         navigation: auto;
     }
 }
 
+/* biome-ignore lint/correctness/noUnknownTypeSelector: -_- */
 ::view-transition-group(root) {
     /* animation: none; */
     animation-duration: 200ms;
 }
 
+/* biome-ignore lint/correctness/noUnknownTypeSelector: -_- */
 ::view-transition-new(root),
-::view-transition-old(root) {
+/* biome-ignore lint/correctness/noUnknownTypeSelector: -_- */
+    ::view-transition-old(root) {
     mix-blend-mode: multiply;
 }

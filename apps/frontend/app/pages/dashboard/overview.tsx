@@ -70,7 +70,7 @@ export default function OverviewPage({ userProjects, notifications, relatedProje
                         />
 
                         {!unreadNotifications?.length && (
-                            <div aria-label={t.dashboard.noUnreadNotifs}>
+                            <div>
                                 <span className="text-muted-foreground">{t.dashboard.noUnreadNotifs}</span>
 
                                 <ButtonLink url="/dashboard/notifications/history" className="w-fit bg-shallow-background">

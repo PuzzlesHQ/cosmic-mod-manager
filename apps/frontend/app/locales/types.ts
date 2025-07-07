@@ -16,6 +16,7 @@ export interface LocaleMetaData {
 }
 
 type TranslationReturnType = React.ReactNode;
+// biome-ignore lint/suspicious/noExplicitAny: the actual tranlation functions are typed, this is just a generic type
 type TranslationFunction = (...args: any[]) => TranslationReturnType;
 
 export interface Translation {

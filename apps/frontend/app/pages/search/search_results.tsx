@@ -29,6 +29,7 @@ export function SearchResults(props: { viewType: ViewType }) {
         <>
             {pagination}
 
+            {/** biome-ignore lint/a11y/useSemanticElements: -- */}
             <section
                 className={cn(
                     "grid h-fit w-full grid-cols-1 gap-panel-cards",
