@@ -48,6 +48,7 @@ export function ListItemCard(props: ListItemCardProps) {
 
 interface OrgListItemCard extends Omit<ListItemCardProps, "children"> {
     members: number;
+    membersCount: React.ReactNode;
     t?: {
         count: {
             members: typeof membersCount;
@@ -62,7 +63,7 @@ export function OrgListItemCard({ members, ...props }: OrgListItemCard) {
         <ListItemCard {...props} fallbackIcon={fallbackOrgIcon}>
             <div className="flex items-center justify-center gap-1 whitespace-nowrap">
                 <UsersIcon aria-hidden className="h-btn-icon w-btn-icon font-medium text-extra-muted-foreground" />
-                {t.count.members(members).join(" ")}
+                {t.count.members(members, members)}
             </div>
         </ListItemCard>
     );
@@ -85,7 +86,7 @@ export function CollectionListItemCard(props: CollectionListItemCard) {
         <ListItemCard {...props} fallbackIcon={fallbackProjectIcon}>
             <div className="flex items-center justify-center gap-1 whitespace-nowrap">
                 <CubeIcon aria-hidden className="h-btn-icon w-btn-icon font-medium" />
-                {t.count.projects(props.projects).join(" ")}
+                {t.count.projects(props.projects, props.projects)}
             </div>
 
             {props.visibility}
@@ -93,20 +94,20 @@ export function CollectionListItemCard(props: CollectionListItemCard) {
     );
 }
 
-function membersCount(count: number) {
+function membersCount(count: number, formattedCount: React.ReactNode) {
     switch (count) {
         case 1:
-            return ["", "1", "member"];
+            return [formattedCount, " member"];
         default:
-            return ["", count, "members"];
+            return [formattedCount, " members"];
     }
 }
 
-function projectsCount(count: number) {
+function projectsCount(count: number, formattedCount: React.ReactNode) {
     switch (count) {
         case 1:
-            return ["", "1", "project"];
+            return [formattedCount, " project"];
         default:
-            return ["", count, "projects"];
+            return [formattedCount, " projects"];
     }
 }

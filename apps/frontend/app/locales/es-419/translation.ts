@@ -29,21 +29,21 @@ export default {
     },
 
     count: {
-        downloads: (count: number) => {
+        downloads: (count, formattedCount) => {
             const downloads = Pluralize(count, "descarga", "descargas");
-            return ["", count, downloads];
+            return [formattedCount, " ", downloads];
         },
-        followers: (count: number) => {
+        followers: (count, formattedCount) => {
             const followers = Pluralize(count, "seguidor", "seguidores");
-            return ["", count, followers];
+            return [formattedCount, " ", followers];
         },
-        projects: (count: number) => {
+        projects: (count, formattedCount) => {
             const projects = Pluralize(count, "proyecto", "proyectos");
-            return ["", count, projects];
+            return [formattedCount, " ", projects];
         },
-        members: (count: number) => {
+        members: (count, formattedCount) => {
             const members = Pluralize(count, "miembro", "miembros");
-            return ["", count, members];
+            return [formattedCount, " ", members];
         },
     },
 

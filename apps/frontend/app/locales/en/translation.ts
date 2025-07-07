@@ -9,8 +9,6 @@ import { SecurityNotice } from "./legal/security";
 import tags from "./tags";
 import { TermsOfUse } from "./terms";
 
-export type CountTranslation = [string, number | string, string];
-
 function Pluralize(count: number, singular: string, plural: string) {
     return count === 1 ? singular : plural;
 }
@@ -39,29 +37,24 @@ export default {
         reset: "Reset",
     },
 
-    // NOTE: It isn't necessary to return the count in the array, because an Intl formatted count is used in the actual html
-    // it's here just for readability
-    // The returned format should be [prefix, count, suffix]
-    // If there's no suffix or no prefix, just put an empty string there
-
-    // If you're wondering as to why we are returning an array instead of a string, then the reason is html formatting
-    // the count in most places is put in a different html tag for styling purposes
+    // count is a number, whereas the formattedCount is Intl formatted string representation of the count
+    // eg: count: 87_400, formattedCount: "87.4K" (dependent on locale)
     count: {
-        downloads: (count: number): CountTranslation => {
+        downloads: (count: number, formattedCount: React.ReactNode) => {
             const downloads = Pluralize(count, "download", "downloads");
-            return ["", count, downloads];
+            return [formattedCount, " ", downloads];
         },
-        followers: (count: number): CountTranslation => {
+        followers: (count: number, formattedCount: React.ReactNode) => {
             const followers = Pluralize(count, "follower", "followers");
-            return ["", count, followers];
+            return [formattedCount, " ", followers];
         },
-        projects: (count: number): CountTranslation => {
+        projects: (count: number, formattedCount: React.ReactNode) => {
             const projects = Pluralize(count, "project", "projects");
-            return ["", count, projects];
+            return [formattedCount, " ", projects];
         },
-        members: (count: number): CountTranslation => {
+        members: (count: number, formattedCount: React.ReactNode) => {
             const members = Pluralize(count, "member", "members");
-            return ["", count, members];
+            return [formattedCount, " ", members];
         },
     },
 

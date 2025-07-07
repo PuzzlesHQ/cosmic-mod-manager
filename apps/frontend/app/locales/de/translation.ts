@@ -72,21 +72,21 @@ export default {
     },
 
     count: {
-        downloads: (count: number) => {
-            if (count === 1) return ["", count, "Download"];
-            return ["", count, "Downloads"];
+        downloads: (count, formattedCount) => {
+            if (count === 1) return [formattedCount, " Download"];
+            return [formattedCount, " Downloads"];
         },
-        followers: (count: number) => {
-            if (count === 1) return ["", count, "Follower"];
-            return ["", count, "Followers"];
+        followers: (count, formattedCount) => {
+            if (count === 1) return [formattedCount, " Follower"];
+            return [formattedCount, " Followers"];
         },
-        projects: (count: number) => {
-            if (count === 1) return ["", count, "Projekt"];
-            return ["", count, "Projekte"];
+        projects: (count, formattedCount) => {
+            if (count === 1) return [formattedCount, " Projekt"];
+            return [formattedCount, " Projekte"];
         },
-        members: (count: number) => {
-            if (count === 1) return ["", count, "Mitglied"];
-            return ["", count, "Mitglieder"];
+        members: (count, formattedCount) => {
+            if (count === 1) return [formattedCount, " Mitglied"];
+            return [formattedCount, " Mitglieder"];
         },
     },
 

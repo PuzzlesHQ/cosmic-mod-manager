@@ -61,7 +61,7 @@ export default function OrgSettingsLayout() {
                         <div className="flex flex-col items-start justify-start">
                             <span className="font-semibold text-lg">{orgData.name}</span>
                             <span className="flex items-center justify-center gap-1 text-muted-foreground">
-                                {t.count.projects(projects?.length || 0).join(" ")}
+                                {t.count.projects(projects.length, projects.length)}
                             </span>
                         </div>
                     </div>

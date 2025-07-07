@@ -140,14 +140,6 @@ function OrgInfoHeader({
 }: OrgInfoHeaderProps) {
     const { t, formattedLocaleName } = useTranslation();
 
-    const MembersCount = t.count.members(orgData.members.length);
-    const ProjectsCount = t.count.projects(totalProjects);
-    const DownloadsCount = t.count.downloads(totalDownloads);
-
-    let DownloadsCount_Str = FormatCount(totalDownloads, formattedLocaleName);
-    if (DownloadsCount[0].length > 0) DownloadsCount_Str = `${DownloadsCount[0]} ${DownloadsCount_Str}`;
-    if (DownloadsCount[2].length > 0) DownloadsCount_Str += ` ${DownloadsCount[2]}`;
-
     return (
         <div className="page-header flex w-full flex-col gap-1">
             <PageHeader
@@ -207,15 +199,19 @@ function OrgInfoHeader({
             >
                 <div className="flex items-center gap-2 border-0 border-card-background border-e pe-4 dark:border-shallow-background">
                     <UsersIcon aria-hidden className="h-[1.1rem] w-[1.1rem]" />
-                    <span className="font-semibold">{MembersCount.join(" ")}</span>
+                    <span className="font-semibold">
+                        {t.count.members(orgData.members.length, FormatCount(orgData.members.length, formattedLocaleName))}
+                    </span>
                 </div>
                 <div className="flex items-center gap-2 border-0 border-card-background border-e pe-4 dark:border-shallow-background">
                     <CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                    <span className="font-semibold">{ProjectsCount.join(" ")}</span>
+                    <span className="font-semibold">{t.count.projects(totalProjects, totalProjects)}</span>
                 </div>
                 <div className="flex items-center gap-2 pe-4">
                     <DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                    <span className="font-semibold">{DownloadsCount_Str}</span>
+                    <span className="font-semibold">
+                        {t.count.downloads(totalDownloads, FormatCount(totalDownloads, formattedLocaleName))}
+                    </span>
                 </div>
             </PageHeader>
 

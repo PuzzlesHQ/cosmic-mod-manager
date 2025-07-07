@@ -82,9 +82,6 @@ function BaseView(props: SearchListItemProps) {
     const galleryViewType = props.viewType === ViewType.GALLERY;
     const listViewType = props.viewType === ViewType.LIST;
 
-    const ProjectDownloads = t.count.downloads(props.downloads);
-    const ProjectFollowers = t.count.followers(props.followers);
-
     const vtStyle = viewTransitionStyleObj(`${props.pageId}-search-item-${props.vtId}`, props.viewTransitions);
 
     return (
@@ -259,12 +256,15 @@ function BaseView(props: SearchListItemProps) {
                     <div className="flex h-fit items-center justify-end gap-x-1.5">
                         <DownloadIcon aria-hidden className="inline h-[1.17rem] w-[1.17rem] text-extra-muted-foreground" />{" "}
                         <p className="text-nowrap">
-                            {!galleryViewType && ProjectDownloads[0]?.toString().length > 0 && (
-                                <span className="hidden lowercase sm:inline">{ProjectDownloads[0]} </span>
-                            )}
-                            <strong className="font-extrabold text-lg-plus">{props.NumberFormatter(props.downloads)}</strong>
-                            {!galleryViewType && ProjectDownloads[2]?.toString().length > 0 && (
-                                <span className="hidden lowercase sm:inline"> {ProjectDownloads[2]}</span>
+                            <strong key="downloads-count" className="inline font-extrabold text-lg-plus sm:hidden">
+                                {props.NumberFormatter(props.downloads)}
+                            </strong>
+
+                            {t.count.downloads(
+                                props.downloads,
+                                <strong key="downloads-count" className="hidden font-extrabold text-lg-plus sm:inline">
+                                    {props.NumberFormatter(props.downloads)}
+                                </strong>,
                             )}
                         </p>
                     </div>
@@ -272,12 +272,15 @@ function BaseView(props: SearchListItemProps) {
                     <div className="flex h-fit items-center justify-end gap-x-1.5">
                         <HeartIcon aria-hidden className="inline h-[1.07rem] w-[1.07rem] text-extra-muted-foreground" />{" "}
                         <p className="text-nowrap">
-                            {!galleryViewType && ProjectFollowers[0]?.toString().length > 0 && (
-                                <span className="hidden lowercase sm:inline">{ProjectFollowers[0]} </span>
-                            )}
-                            <strong className="font-extrabold text-lg-plus">{props.NumberFormatter(props.followers)}</strong>
-                            {!galleryViewType && ProjectFollowers[2]?.toString().length > 0 && (
-                                <span className="hidden lowercase sm:inline"> {ProjectFollowers[2]}</span>
+                            <strong key="downloads-count" className="inline font-extrabold text-lg-plus sm:hidden">
+                                {props.NumberFormatter(props.followers)}
+                            </strong>
+
+                            {t.count.followers(
+                                props.followers,
+                                <strong key="downloads-count" className="hidden font-extrabold text-lg-plus sm:inline">
+                                    {props.NumberFormatter(props.followers)}
+                                </strong>,
                             )}
                         </p>
                     </div>
@@ -389,8 +392,8 @@ function getDefaultStrings() {
 
     return {
         count: {
-            downloads: (count: number) => ["", count, "downloads"],
-            followers: (count: number) => ["", count, "followers"],
+            downloads: (_count: number, formatted: React.ReactNode) => [formatted, " downloads"],
+            followers: (_count: number, formatted: React.ReactNode) => [formatted, " followers"],
         },
 
         project: {

@@ -52,7 +52,6 @@ export default function CollectionPageLayout(props: Props) {
         setMarkedProjects((prev) => prev.filter((id) => id !== projectId));
     }
 
-    const ProjectsCount = t.count.projects(props.collection.projects.length);
     const aggregatedProjectTypes = new Set<string>();
     for (const project of props.projects || []) {
         for (const type of project.type) {
@@ -158,7 +157,9 @@ export default function CollectionPageLayout(props: Props) {
             >
                 <div className="flex items-center gap-2 border-0 border-card-background border-e pe-4 dark:border-shallow-background">
                     <CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                    <span className="font-semibold">{ProjectsCount.join(" ")}</span>
+                    <span className="font-semibold">
+                        {t.count.projects(props.collection.projects.length, props.collection.projects.length)}
+                    </span>
                 </div>
 
                 <div className="flex items-center gap-2 border-0 border-card-background border-e pe-4 dark:border-shallow-background">

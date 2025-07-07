@@ -181,12 +181,6 @@ function ProfilePageHeader({ userData, totalProjects, totalDownloads }: ProfileP
         title = t.user[GlobalUserRole.MODERATOR];
     }
 
-    const ProjectsCount = t.count.projects(totalProjects);
-    const DownloadsCount = t.count.downloads(totalDownloads);
-
-    let DownloadsCount_Str = FormatCount(totalDownloads, formattedLocaleName);
-    if (DownloadsCount[0].length > 0) DownloadsCount_Str = `${DownloadsCount[0]} ${DownloadsCount_Str}`;
-    if (DownloadsCount[2].length > 0) DownloadsCount_Str += ` ${DownloadsCount[2]}`;
     return (
         <PageHeader
             vtId={userData.id}
@@ -243,11 +237,13 @@ function ProfilePageHeader({ userData, totalProjects, totalDownloads }: ProfileP
         >
             <div className="flex items-center gap-2 border-0 border-card-background border-e pe-4 dark:border-shallow-background">
                 <CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                <span className="font-semibold">{ProjectsCount.join(" ")}</span>
+                <span className="font-semibold">{t.count.projects(totalProjects, totalProjects)}</span>
             </div>
             <div className="flex items-center gap-2 border-0 border-card-background border-e pe-4 dark:border-shallow-background">
                 <DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                <span className="font-semibold">{DownloadsCount_Str}</span>
+                <span className="font-semibold">
+                    {t.count.downloads(totalDownloads, FormatCount(totalDownloads, formattedLocaleName))}
+                </span>
             </div>
             <div className="flex items-center gap-2">
                 <CalendarIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />

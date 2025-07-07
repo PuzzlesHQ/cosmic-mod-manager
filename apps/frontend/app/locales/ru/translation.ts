@@ -39,24 +39,22 @@ export default {
         // ? more: "More"
     },
 
-    // NOTE: It isn't necessary to return the count in the array, because a Intl formatted count is used in the actual html
-    // it's here just for readability
     count: {
-        downloads: (count: number) => {
+        downloads: (count, formattedCount) => {
             const word = Pluralize(count, "загрузка", "загрузки", "загрузок");
-            return ["", count, word];
+            return [formattedCount, " ", word];
         },
-        followers: (count: number) => {
+        followers: (count, formattedCount) => {
             const word = Pluralize(count, "фолловер", "фолловера", "фолловеров");
-            return ["", count, word];
+            return [formattedCount, " ", word];
         },
-        projects: (count: number) => {
+        projects: (count, formattedCount) => {
             const word = Pluralize(count, "проект", "проекта", "проектов");
-            return ["", count, word];
+            return [formattedCount, " ", word];
         },
-        members: (count: number) => {
+        members: (count, formattedCount) => {
             const word = Pluralize(count, "участник", "участника", "участников");
-            return ["", count, word];
+            return [formattedCount, " ", word];
         },
     },
 
