@@ -36,7 +36,7 @@ export class MersenneTwister {
 
     genrand_int32() {
         let y: number;
-        const mag01 = new Array(0x0, this.MATRIX_A);
+        const mag01 = [0x0, this.MATRIX_A];
         /* mag01[x] = x * MATRIX_A  for x=0,1 */
 
         if (this.mti >= this.N) {

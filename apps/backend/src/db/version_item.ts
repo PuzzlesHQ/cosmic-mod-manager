@@ -48,7 +48,7 @@ export type GetVersions_ReturnType = Awaited<ReturnType<typeof GetVersions_FromD
 async function GetVersions_FromDb(projectSlug?: string, projectId?: string) {
     if (!projectSlug && !projectId) throw new Error("Either the project id or slug is required!");
 
-    let data = undefined;
+    let data = null;
 
     // If both id and slug are provided, check if any table matches either one
     if (projectId && projectSlug) {

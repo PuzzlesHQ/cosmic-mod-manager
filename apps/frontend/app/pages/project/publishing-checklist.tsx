@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@app/components/ui/car
 import { toast } from "@app/components/ui/sonner";
 import { TooltipProvider, TooltipTemplate } from "@app/components/ui/tooltip";
 import { cn } from "@app/components/utils";
-import { RejectedStatuses, ShowEnvSupportSettingsForType, isRejected } from "@app/utils/config/project";
+import { isRejected, RejectedStatuses, ShowEnvSupportSettingsForType } from "@app/utils/config/project";
 import { disableInteractions, enableInteractions } from "@app/utils/dom";
 import { Capitalize, isCurrLinkActive } from "@app/utils/string";
 import { EnvironmentSupport, ProjectPublishingStatus } from "@app/utils/types";
@@ -238,7 +238,7 @@ export function PublishingChecklist() {
                         {steps.map((step) => {
                             if (!step.condition || step.hide === true) return;
 
-                            let link = undefined;
+                            let link: ChecklistCardProps["link"] | undefined;
                             if (step.link) {
                                 const href = ProjectPagePath(project.type[0], project.slug, step.link.path);
                                 link = {

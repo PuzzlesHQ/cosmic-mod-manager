@@ -31,7 +31,8 @@
             },
             "nursery": {
                 "noTsIgnore": "off",
-                "useUniqueElementIds": "off"
+                "useUniqueElementIds": "off",
+                "useSortedClasses": "info"
             },
             "a11y": {
                 "useSemanticElements": "info",

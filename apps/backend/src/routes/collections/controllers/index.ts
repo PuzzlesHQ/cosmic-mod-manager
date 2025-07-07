@@ -27,7 +27,7 @@ import { getManyProjects } from "~/routes/project/controllers";
 import { addProjectsToUserFollows, removeProjectsFromUserFollows } from "~/routes/project/controllers/follows";
 
 export async function GetUserCollections(userSlug: string, userSession: ContextUserData | undefined) {
-    let userId: string | undefined = undefined;
+    let userId: string | undefined ;
     if (userSession?.userName === userSlug || userSession?.id === userSlug) userId = userSession.id;
     else {
         const targetUser = await GetUser_ByIdOrUsername(userSlug, userSlug);

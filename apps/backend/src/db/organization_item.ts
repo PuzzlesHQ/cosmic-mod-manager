@@ -25,7 +25,7 @@ export type GetOrganization_ReturnType = Awaited<ReturnType<typeof GetOrganizati
 async function GetOrganization_FromDb(slug?: string, id?: string) {
     if (!slug && !id) throw new Error("Either slug or id is required!");
 
-    let org = undefined;
+    let org = null;
     // If both id and slug are provided, check if any table matches either one
     if (id && slug) {
         org = await prisma.organisation.findFirst({

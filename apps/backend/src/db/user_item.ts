@@ -24,7 +24,7 @@ export type GetUser_ReturnType = Awaited<ReturnType<typeof GetUser_FromDb>>;
 async function GetUser_FromDb(userName?: string, id?: string) {
     if (!userName && !id) throw new Error("Either userName or id is required!");
 
-    let data = undefined;
+    let data = null;
     // If both id and slug are provided, check if any table matches either one
     if (id && userName) {
         data = await prisma.user.findFirst({

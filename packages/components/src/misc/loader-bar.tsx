@@ -3,11 +3,11 @@ import { useEffect, useRef } from "react";
 import { useNavigation } from "react-router";
 import LoadingBar, { type LoadingBarRef } from "./rtk-loading-indicator";
 
-let timeoutRef: number | undefined = undefined;
+let timeoutRef: number | undefined ;
 let loaderStarted = false;
 
 // For performance logging
-let LoadingStartedAt: number | undefined = undefined;
+let LoadingStartedAt: number | undefined ;
 
 interface Props extends Partial<React.ComponentProps<typeof LoadingBar>> {
     instantStart?: boolean;

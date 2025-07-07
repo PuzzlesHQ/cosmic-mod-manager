@@ -33,7 +33,7 @@ import { ImgWrapper } from "~/components/ui/avatar";
 import Link, { VariantButtonLink } from "~/components/ui/link";
 import { useProjectData } from "~/hooks/project";
 import { useTranslation } from "~/locales/provider";
-import { ProjectPagePath, VersionPagePath, isCurrLinkActive } from "~/utils/urls";
+import { isCurrLinkActive, ProjectPagePath, VersionPagePath } from "~/utils/urls";
 
 export default function InteractiveDownloadPopup() {
     const { t } = useTranslation();
@@ -172,7 +172,6 @@ export default function InteractiveDownloadPopup() {
                     >
                         <Button
                             variant="outline"
-                            // biome-ignore lint/a11y/useSemanticElements: <explanation>
                             role="combobox"
                             className="w-full justify-between text-extra-muted-foreground"
                             disabled={projectData.gameVersions.length < 2}
@@ -206,7 +205,6 @@ export default function InteractiveDownloadPopup() {
                         >
                             <Button
                                 variant="outline"
-                                // biome-ignore lint/a11y/useSemanticElements: <explanation>
                                 role="combobox"
                                 className="w-full justify-between text-extra-muted-foreground"
                             >

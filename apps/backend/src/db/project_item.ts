@@ -105,7 +105,7 @@ export type GetProject_Details_FromDb_ReturnType = Awaited<ReturnType<typeof Get
 async function GetProject_Details_FromDb(slug?: string, id?: string) {
     if (!slug && !id) throw new Error("Either the project id or slug is required!");
 
-    let data = undefined;
+    let data = null;
     // If both id and slug are provided, check if any table matches either one
     if (id && slug) {
         data = await prisma.project.findFirst({
@@ -234,7 +234,7 @@ export type GetProject_ListItem_ReturnType = Awaited<ReturnType<typeof GetProjec
 async function GetProject_ListItem_FromDb(slug?: string, id?: string) {
     if (!slug && !id) throw new Error("Either the project id or slug is required!");
 
-    let data = undefined;
+    let data = null;
     if (id && slug) {
         data = await prisma.project.findFirst({
             where: {
