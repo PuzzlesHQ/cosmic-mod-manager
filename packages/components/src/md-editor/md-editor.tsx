@@ -503,7 +503,7 @@ function BtnGroup({ children }: { children: React.ReactNode }) {
     return <div className="flex flex-wrap items-center justify-start gap-x-1.5 gap-y-0.5">{children}</div>;
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>vscode
+// biome-ignore lint/suspicious/noExplicitAny: HTMLTextAreaElement type doesn't have the createTextRange method, idk why, the actual object does
 function setCursorPosition(textarea: any, position: number[]) {
     try {
         if (textarea.setSelectionRange) {

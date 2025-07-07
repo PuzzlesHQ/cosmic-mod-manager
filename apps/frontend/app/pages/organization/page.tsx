@@ -14,11 +14,8 @@ function OrganizationPage() {
         : projectsList;
 
     return (
-        <div
-            className="w-full grid grid-cols-1 gap-panel-cards"
-            // biome-ignore lint/a11y/useSemanticElements: <explanation>
-            role="list"
-        >
+        // biome-ignore lint/a11y/useSemanticElements: A list of project cards but not quite a list
+        <div className="w-full grid grid-cols-1 gap-panel-cards" role="list">
             {filteredProjects.map((project) => {
                 return (
                     <ProjectCardItem

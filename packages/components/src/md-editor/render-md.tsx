@@ -104,7 +104,7 @@ export function MarkdownRenderBox({ text, className, divElem, addIdToHeadings = 
         return (
             <div
                 className={cn("markdown-body w-full overflow-auto", className)}
-                // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+                // biome-ignore lint/security/noDangerouslySetInnerHtml: the html is sanitized
                 dangerouslySetInnerHTML={{ __html: renderHighlightedString(formattedText, urlModifier) }}
             />
         );
@@ -113,7 +113,7 @@ export function MarkdownRenderBox({ text, className, divElem, addIdToHeadings = 
     return (
         <section
             className={cn("markdown-body w-full overflow-auto", className)}
-            // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: the html is sanitized
             dangerouslySetInnerHTML={{ __html: renderHighlightedString(formattedText, urlModifier) }}
         />
     );

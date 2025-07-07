@@ -66,7 +66,7 @@ function ChartStyle({ id, config }: { id: string; config: ChartConfig }) {
 
     return (
         <style
-            // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: no security risk here, this is static CSS
             dangerouslySetInnerHTML={{
                 __html: Object.entries(THEMES)
                     .map(

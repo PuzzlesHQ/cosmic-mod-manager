@@ -28,11 +28,8 @@ export default function CollectionProjectsList() {
     }
 
     return (
-        <div
-            className="w-full grid grid-cols-1 gap-panel-cards"
-            // biome-ignore lint/a11y/useSemanticElements: <explanation>
-            role="list"
-        >
+        // biome-ignore lint/a11y/useSemanticElements: A list of project cards but not an actual list
+        <div className="w-full grid grid-cols-1 gap-panel-cards" role="list">
             {filteredProjects.map((project) => {
                 const projectItem = (
                     <ProjectCardItem

@@ -195,11 +195,6 @@ body.no-scrollbar {
         @apply link_blue hover:underline hover:brightness-110;
     }
 
-    .items-baseline-with-fallback {
-        align-items: center;
-        align-items: baseline;
-    }
-
     .absolute-center {
         position: absolute;
         top: 50%;

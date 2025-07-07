@@ -22,7 +22,7 @@ export function InteractiveLabel({ children, htmlFor, ...props }: LabelElemProps
         <label
             {...props}
             htmlFor={htmlFor}
-            // biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation>
+            // biome-ignore lint/a11y/noNoninteractiveTabindex: tabindex 0 to make the label focusable by keyboard
             tabIndex={0}
             onKeyDown={(e: React.KeyboardEvent<HTMLLabelElement>) => {
                 if (e.code === "Enter" || e.code === "Space") {

@@ -299,8 +299,9 @@ interface NotifReceivedDateProps {
 
 function NotifReceivedDate(props: NotifReceivedDateProps) {
     return (
-        <div className="w-fit flex items-baseline-with-fallback justify-center gap-1.5 text-extra-muted-foreground">
+        <div className="w-fit flex items-center justify-center gap-1.5 text-extra-muted-foreground">
             <CalendarIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />
+
             <TooltipProvider>
                 <Tooltip>
                     <TooltipTrigger asChild>

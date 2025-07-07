@@ -30,7 +30,6 @@ export function TernaryCheckbox(props: ThreeStateCheckboxProps) {
     return (
         <button
             type="button"
-            // biome-ignore lint/a11y/useSemanticElements: <explanation>
             role="checkbox"
             aria-checked={props.state !== TernaryStates.UNCHECKED}
             onClick={handleClick}

@@ -662,7 +662,7 @@ export function TeamMember_Card({
                 loading="eager"
             />
             <div className="w-full flex flex-col items-start justify-start overflow-hidden">
-                <div className="flex items-baseline-with-fallback justify-center gap-1">
+                <div className="flex items-center justify-center gap-1">
                     <span itemProp={MicrodataItemProps.name} className="font-semibold leading-tight" title={userName}>
                         {userName}
                     </span>
