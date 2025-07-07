@@ -28,6 +28,7 @@ export function TernaryCheckbox(props: ThreeStateCheckboxProps) {
     }
 
     return (
+        // biome-ignore lint/a11y/useSemanticElements: can't really use a checkbox here, since it has three states
         <button
             type="button"
             role="checkbox"
