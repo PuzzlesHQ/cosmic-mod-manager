@@ -6,7 +6,7 @@ export function Panel({ children, className }: { children: React.ReactNode; clas
     return (
         <div
             className={cn(
-                "w-full gap-panel-cards relative grid place-items-start grid-cols-1 lg:grid-cols-[min-content_1fr]",
+                "relative grid w-full grid-cols-1 place-items-start gap-panel-cards lg:grid-cols-[min-content_1fr]",
                 className,
             )}
         >
@@ -22,8 +22,8 @@ export function PanelAside({ children, className, aside }: { children: React.Rea
 
 export function PanelContent({ children, className, main }: { children: React.ReactNode; className?: string; main?: boolean }) {
     if (main === true)
-        return <main className={cn("w-full grid grid-cols-1 overflow-auto gap-panel-cards", className)}>{children}</main>;
-    return <div className={cn("w-full grid grid-cols-1 overflow-auto gap-panel-cards", className)}>{children}</div>;
+        return <main className={cn("grid w-full grid-cols-1 gap-panel-cards overflow-auto", className)}>{children}</main>;
+    return <div className={cn("grid w-full grid-cols-1 gap-panel-cards overflow-auto", className)}>{children}</div>;
 }
 
 export function PanelAsideNavCard({
@@ -36,9 +36,9 @@ export function PanelAsideNavCard({
     label: string;
 }) {
     return (
-        <Card className={cn("w-full gap-1 flex flex-col items-start justify-center p-4", className)}>
+        <Card className={cn("flex w-full flex-col items-start justify-center gap-1 p-4", className)}>
             <CardHeader className="p-0">
-                <CardTitle className="text-xl mb-2">{label}</CardTitle>
+                <CardTitle className="mb-2 text-xl">{label}</CardTitle>
             </CardHeader>
             {children}
         </Card>
@@ -78,7 +78,7 @@ export function ContentCardTemplate({
 
 export function PanelContent_AsideCardLayout({ children }: { children: React.ReactNode }) {
     return (
-        <div className="w-full gap-panel-cards grid grid-cols-1 md:grid-cols-[1fr_min-content] lg:grid-cols-1 xl:grid-cols-[1fr_min-content] items-start justify-start">
+        <div className="grid w-full grid-cols-1 items-start justify-start gap-panel-cards md:grid-cols-[1fr_min-content] lg:grid-cols-1 xl:grid-cols-[1fr_min-content]">
             {children}
         </div>
     );

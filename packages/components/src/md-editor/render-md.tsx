@@ -103,7 +103,7 @@ export function MarkdownRenderBox({ text, className, divElem, addIdToHeadings = 
     if (divElem === true) {
         return (
             <div
-                className={cn("w-full overflow-auto markdown-body", className)}
+                className={cn("markdown-body w-full overflow-auto", className)}
                 // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
                 dangerouslySetInnerHTML={{ __html: renderHighlightedString(formattedText, urlModifier) }}
             />
@@ -112,7 +112,7 @@ export function MarkdownRenderBox({ text, className, divElem, addIdToHeadings = 
 
     return (
         <section
-            className={cn("w-full overflow-auto markdown-body", className)}
+            className={cn("markdown-body w-full overflow-auto", className)}
             // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
             dangerouslySetInnerHTML={{ __html: renderHighlightedString(formattedText, urlModifier) }}
         />

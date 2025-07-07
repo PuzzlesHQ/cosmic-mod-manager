@@ -50,7 +50,7 @@ export function ImgLoader({ src, alt, className, wrapperClassName, spinner, setL
 
             {!isImageLoaded
                 ? spinner || (
-                      <WanderingCubesSpinner className="absolute-center bg-[hsla(var(--background-dark),_0.5)] p-4 rounded text-white z-10" />
+                      <WanderingCubesSpinner className="absolute-center z-10 rounded bg-[hsla(var(--background-dark),_0.5)] p-4 text-white" />
                   )
                 : null}
         </div>

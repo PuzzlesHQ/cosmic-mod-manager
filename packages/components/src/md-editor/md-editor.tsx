@@ -381,8 +381,8 @@ export default function MarkdownEditor({
                             name="markdown-textarea"
                             placeholder={placeholder}
                             className={cn(
-                                "h-[32rem] min-h-[16rem] w-full resize-y rounded-lg font-mono text-base focus-within:!bg-shallow-background/10",
-                                "text-muted-foreground dark:text-muted-foreground focus-within:text-black dark:focus-within:text-white",
+                                "focus-within:!bg-shallow-background/10 h-[32rem] min-h-[16rem] w-full resize-y rounded-lg font-mono text-base",
+                                "text-muted-foreground focus-within:text-black dark:text-muted-foreground dark:focus-within:text-white",
                                 wordWrap === true ? "overflow-x-auto whitespace-nowrap" : "break-words",
                                 textAreaClassName,
                             )}
@@ -424,23 +424,23 @@ export default function MarkdownEditor({
                         />
 
                         {showInfoRow !== false && (
-                            <div className="w-full flex items-center justify-between flex-wrap gap-x-6 gap-y-2 text-muted-foreground text-sm">
+                            <div className="flex w-full flex-wrap items-center justify-between gap-x-6 gap-y-2 text-muted-foreground text-sm">
                                 <div className="flex items-center justify-start gap-2">
-                                    <InfoIcon aria-hidden className="w-btn-icon h-btn-icon" />
-                                    <MarkdownRenderBox text={`${t.supportsMarkdown("/md-editor")}`} />
+                                    <InfoIcon aria-hidden className="h-btn-icon w-btn-icon" />
+                                    <MarkdownRenderBox text={t.supportsMarkdown("/md-editor")} />
                                 </div>
                                 <KeyboardShortcutsDialog
                                     open={keyboardShortcutsModalOpen}
                                     setOpen={setKeyboardShortcutsModalOpen}
                                     t={t}
                                 >
-                                    <div className="hidden lg:flex items-center justify-center gap-2 cursor-pointer font-mono">
+                                    <div className="hidden cursor-pointer items-center justify-center gap-2 font-mono lg:flex">
                                         <span>{t.keyboardShortcuts}</span>
                                         <div className="flex items-center justify-center gap-1 font-mono">
-                                            <span className="flex items-center justify-center bg-shallow-background rounded-sm px-1">
+                                            <span className="flex items-center justify-center rounded-sm bg-shallow-background px-1">
                                                 ctrl
                                             </span>
-                                            <span className="flex items-center justify-center bg-shallow-background rounded-sm px-1">
+                                            <span className="flex items-center justify-center rounded-sm bg-shallow-background px-1">
                                                 /
                                             </span>
                                         </div>
@@ -453,7 +453,7 @@ export default function MarkdownEditor({
                     {previewOpen && (
                         <div
                             className={cn(
-                                "flex w-full overflow-auto items-center justify-center rounded border-2 border-shallow-background p-4",
+                                "flex w-full items-center justify-center overflow-auto rounded border-2 border-shallow-background p-4",
                                 !editorValue && "min-h-24",
                             )}
                         >
@@ -500,7 +500,7 @@ function Separator() {
 }
 
 function BtnGroup({ children }: { children: React.ReactNode }) {
-    return <div className="flex items-center justify-start flex-wrap gap-x-1.5 gap-y-0.5">{children}</div>;
+    return <div className="flex flex-wrap items-center justify-start gap-x-1.5 gap-y-0.5">{children}</div>;
 }
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>vscode
@@ -582,7 +582,7 @@ function EditorModal({ disabled, title, trigger, children, modalOpen, t, setModa
                                 setModalOpen(false);
                             }}
                         >
-                            <PlusIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                            <PlusIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                             {t.insert}
                         </Button>
                     </DialogFooter>

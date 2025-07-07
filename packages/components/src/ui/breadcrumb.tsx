@@ -44,7 +44,7 @@ function BreadcrumbLink({
     return (
         <Comp
             to={href || ""}
-            className={cn("transition-colors text-accent-foreground hover:text-accent-foreground/90", className)}
+            className={cn("text-accent-foreground transition-colors hover:text-accent-foreground/90", className)}
             {...props}
         />
     );
@@ -69,7 +69,7 @@ function BreadcrumbSeparator({ children, className, ...props }: React.ComponentP
         <li
             role="presentation"
             aria-hidden="true"
-            className={cn("[&>svg]:w-btn-icon [&>svg]:h-btn-icon text-muted-foreground", className)}
+            className={cn("text-muted-foreground [&>svg]:h-btn-icon [&>svg]:w-btn-icon", className)}
             {...props}
         >
             {children ?? <ChevronRightIcon aria-hidden />}
@@ -86,7 +86,7 @@ function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps<"span"
             className={cn("flex h-9 w-9 items-center justify-center", className)}
             {...props}
         >
-            <MoreHorizontalIcon aria-hidden className="w-btn-icon h-btn-icon" />
+            <MoreHorizontalIcon aria-hidden className="h-btn-icon w-btn-icon" />
             <span className="sr-only">More</span>
         </span>
     );

@@ -21,7 +21,7 @@ function SelectTrigger({
         <SelectPrimitive.Trigger
             ref={ref}
             className={cn(
-                noDefaultStyles !== true && "input_box_styles gap-2 w-full justify-between [&>span]:line-clamp-1",
+                noDefaultStyles !== true && "input_box_styles w-full justify-between gap-2 [&>span]:line-clamp-1",
                 "[&_.indicator]:data-[state=open]:rotate-180",
                 className,
             )}
@@ -31,7 +31,7 @@ function SelectTrigger({
             {children}
 
             <SelectPrimitive.Icon asChild>
-                <ChevronDown className="w-btn-icon h-btn-icon text-muted-foreground indicator transition-transform" />
+                <ChevronDown className="indicator h-btn-icon w-btn-icon text-muted-foreground transition-transform" />
             </SelectPrimitive.Icon>
         </SelectPrimitive.Trigger>
     );
@@ -45,7 +45,7 @@ function SelectScrollUpButton({ ref, className, ...props }: React.ComponentProps
             className={cn("flex cursor-default items-center justify-center py-1", className)}
             {...props}
         >
-            <ChevronUp className="w-4 h-4" />
+            <ChevronUp className="h-4 w-4" />
         </SelectPrimitive.ScrollUpButton>
     );
 }
@@ -58,7 +58,7 @@ function SelectScrollDownButton({ ref, className, ...props }: React.ComponentPro
             className={cn("flex cursor-default items-center justify-center py-1", className)}
             {...props}
         >
-            <ChevronDown className="w-4 h-4" />
+            <ChevronDown className="h-4 w-4" />
         </SelectPrimitive.ScrollDownButton>
     );
 }
@@ -76,9 +76,9 @@ function SelectContent({
             <SelectPrimitive.Content
                 ref={ref}
                 className={cn(
-                    "relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded border border-shallower-background bg-card-background text-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+                    "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded border border-shallower-background bg-card-background text-foreground data-[state=closed]:animate-out data-[state=open]:animate-in",
                     position === "popper" &&
-                        "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
+                        "data-[side=left]:-translate-x-1 data-[side=top]:-translate-y-1 data-[side=right]:translate-x-1 data-[side=bottom]:translate-y-1",
                     className,
                 )}
                 position={position}
@@ -103,7 +103,7 @@ function SelectContent({
 SelectContent.displayName = SelectPrimitive.Content.displayName;
 
 function SelectLabel({ ref, className, ...props }: React.ComponentProps<typeof SelectPrimitive.Label>) {
-    return <SelectPrimitive.Label ref={ref} className={cn("px-2 py-1.5 text-sm font-semibold", className)} {...props} />;
+    return <SelectPrimitive.Label ref={ref} className={cn("px-2 py-1.5 font-semibold text-sm", className)} {...props} />;
 }
 SelectLabel.displayName = SelectPrimitive.Label.displayName;
 
@@ -120,7 +120,7 @@ function SelectItem({ ref, className, children, ...props }: React.ComponentProps
         >
             <span className="absolute end-2 flex h-btn-icon w-btn-icon items-center justify-center">
                 <SelectPrimitive.ItemIndicator>
-                    <CheckIcon aria-hidden className="w-btn-icon h-btn-icon" />
+                    <CheckIcon aria-hidden className="h-btn-icon w-btn-icon" />
                 </SelectPrimitive.ItemIndicator>
             </span>
             <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>

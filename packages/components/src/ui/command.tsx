@@ -36,8 +36,8 @@ function CommandInput({
     ...props
 }: React.ComponentProps<typeof CommandPrimitive.Input> & { wrapperClassName?: string }) {
     return (
-        <div className={cn("flex items-center border-b border-shallow-background px-3", wrapperClassName)} cmdk-input-wrapper="">
-            <SearchIcon aria-hidden className="me-2 w-btn-icon h-btn-icon shrink-0 text-extra-muted-foreground" />
+        <div className={cn("flex items-center border-shallow-background border-b px-3", wrapperClassName)} cmdk-input-wrapper="">
+            <SearchIcon aria-hidden className="me-2 h-btn-icon w-btn-icon shrink-0 text-extra-muted-foreground" />
             <CommandPrimitive.Input
                 ref={ref}
                 className={cn(
@@ -58,7 +58,7 @@ function CommandList({ ref, className, ...props }: React.ComponentProps<typeof C
 CommandList.displayName = CommandPrimitive.List.displayName;
 
 function CommandEmpty({ ref, ...props }: React.ComponentProps<typeof CommandPrimitive.Empty>) {
-    return <CommandPrimitive.Empty ref={ref} className="py-5 text-center text-sm text-muted-foreground" {...props} />;
+    return <CommandPrimitive.Empty ref={ref} className="py-5 text-center text-muted-foreground text-sm" {...props} />;
 }
 CommandEmpty.displayName = CommandPrimitive.Empty.displayName;
 
@@ -67,7 +67,7 @@ function CommandGroup({ ref, className, ...props }: React.ComponentProps<typeof 
         <CommandPrimitive.Group
             ref={ref}
             className={cn(
-                "p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-sm [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-extra-muted-foreground",
+                "p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-extra-muted-foreground [&_[cmdk-group-heading]]:text-sm",
                 className,
             )}
             {...props}
@@ -86,7 +86,7 @@ function CommandItem({ ref, className, ...props }: React.ComponentProps<typeof C
         <CommandPrimitive.Item
             ref={ref}
             className={cn(
-                "relative flex cursor-default select-none text-muted-foreground items-center rounded-md px-2.5 py-1.5 text-sm font-medium outline-none data-[disabled=true]:pointer-events-none data-[selected=true]:bg-shallow-background data-[selected=true]:text-foreground data-[disabled=true]:opacity-50",
+                "relative flex cursor-default select-none items-center rounded-md px-2.5 py-1.5 font-medium text-muted-foreground text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected=true]:bg-shallow-background data-[selected=true]:text-foreground data-[disabled=true]:opacity-50",
                 className,
             )}
             {...props}
@@ -96,7 +96,7 @@ function CommandItem({ ref, className, ...props }: React.ComponentProps<typeof C
 CommandItem.displayName = CommandPrimitive.Item.displayName;
 
 function CommandShortcut({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
-    return <span className={cn("ms-auto text-tiny tracking-widest text-extra-muted-foreground", className)} {...props} />;
+    return <span className={cn("ms-auto text-extra-muted-foreground text-tiny tracking-widest", className)} {...props} />;
 }
 CommandShortcut.displayName = "CommandShortcut";
 

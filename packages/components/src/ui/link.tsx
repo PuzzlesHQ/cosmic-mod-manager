@@ -47,7 +47,7 @@ export function ButtonLink({
             to={url}
             ref={ref}
             className={cn(
-                "bg_hover_stagger w-full min-h-10 px-4 py-2 font-medium text-muted-foreground flex items-center justify-start gap-2 whitespace-nowrap hover:bg-shallow-background/60",
+                "bg_hover_stagger flex min-h-10 w-full items-center justify-start gap-2 whitespace-nowrap px-4 py-2 font-medium text-muted-foreground hover:bg-shallow-background/60",
                 isCurrLinkActive(url, location.pathname, exactTailMatch) &&
                     activityIndicator &&
                     "bg-shallow-background/70 text-foreground",

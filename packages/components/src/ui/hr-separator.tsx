@@ -1,9 +1,9 @@
 function HorizontalSeparator({ text = "OR" }: { text?: string }) {
     return (
-        <div className="w-full flex items-center gap-4">
-            <hr className="bg-shallow-background border-none w-full h-[0.1rem] flex-1" />
-            <p className="shrink-0 text-sm text-extra-muted-foreground">{text}</p>
-            <hr className="bg-shallow-background border-none w-full h-[0.1rem] flex-1" />
+        <div className="flex w-full items-center gap-4">
+            <hr className="h-[0.1rem] w-full flex-1 border-none bg-shallow-background" />
+            <p className="shrink-0 text-extra-muted-foreground text-sm">{text}</p>
+            <hr className="h-[0.1rem] w-full flex-1 border-none bg-shallow-background" />
         </div>
     );
 }

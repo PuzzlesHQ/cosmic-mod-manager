@@ -27,5 +27,5 @@ Separator.displayName = SeparatorPrimitive.Root.displayName;
 export { Separator };
 
 export function DotSeparator({ className }: { className?: string }) {
-    return <i className={cn("flex flex-shrink-0 w-1 h-1 rounded-full bg-foreground/40", className)} />;
+    return <i className={cn("flex h-1 w-1 flex-shrink-0 rounded-full bg-foreground/40", className)} />;
 }

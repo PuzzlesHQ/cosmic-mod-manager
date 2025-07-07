@@ -23,7 +23,7 @@ function TableFooter({ ref, className, ...props }: React.ComponentProps<"tfoot">
     return (
         <tfoot
             ref={ref}
-            className={cn("border-t border-background bg-shallow-background/50 font-medium [&>tr]:last:border-b-0", className)}
+            className={cn("border-background border-t bg-shallow-background/50 font-medium [&>tr]:last:border-b-0", className)}
             {...props}
         />
     );
@@ -34,7 +34,7 @@ function TableRow({ ref, className, ...props }: React.ComponentProps<"tr">) {
     return (
         <tr
             ref={ref}
-            className={cn("border-b border-background h-12 hover:bg-background/30 group bg_hover_stagger", className)}
+            className={cn("group bg_hover_stagger h-12 border-background border-b hover:bg-background/30", className)}
             {...props}
         />
     );
@@ -46,7 +46,7 @@ function TableHead({ ref, className, ...props }: React.ComponentProps<"th">) {
         <th
             ref={ref}
             className={cn(
-                "pt-2.5 pb-1.5 px-2 text-start align-middle text-foreground font-bold [&:has([role=checkbox])]:pe-0 [&>[role=checkbox]]:translate-y-[2px]",
+                "px-2 pt-2.5 pb-1.5 text-start align-middle font-bold text-foreground [&:has([role=checkbox])]:pe-0 [&>[role=checkbox]]:translate-y-[2px]",
                 className,
             )}
             {...props}
@@ -70,7 +70,7 @@ function TableCell({ ref, className, ...props }: React.ComponentProps<"td">) {
 TableCell.displayName = "TableCell";
 
 function TableCaption({ ref, className, ...props }: React.ComponentProps<"caption">) {
-    return <caption ref={ref} className={cn("mt-4 text-sm text-muted-foreground", className)} {...props} />;
+    return <caption ref={ref} className={cn("mt-4 text-muted-foreground text-sm", className)} {...props} />;
 }
 TableCaption.displayName = "TableCaption";
 

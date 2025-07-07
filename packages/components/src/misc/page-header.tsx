@@ -41,7 +41,7 @@ export function PageHeader({
         <div
             {...props}
             className={cn(
-                "page-header w-full max-w-full mt-4 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-x-8 gap-y-6 pb-5 mb-1 border-0 border-b border-card-background dark:border-shallow-background",
+                "page-header mt-4 mb-1 grid w-full max-w-full grid-cols-1 gap-x-8 gap-y-6 border-0 border-card-background border-b pb-5 lg:grid-cols-[1fr_auto] dark:border-shallow-background",
                 className,
             )}
         >
@@ -60,7 +60,7 @@ export function PageHeader({
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                         <h1
                             itemProp={MicrodataItemProps.name}
-                            className="m-0 text-xl font-extrabold leading-tight text-foreground-bright"
+                            className="m-0 font-extrabold text-foreground-bright text-xl leading-tight"
                         >
                             {title}
                         </h1>
@@ -68,11 +68,11 @@ export function PageHeader({
                     </div>
                     <p
                         itemProp={MicrodataItemProps.description}
-                        className="text-muted-foreground leading-tight max-w-[80ch] text-pretty"
+                        className="max-w-[80ch] text-pretty text-muted-foreground leading-tight"
                     >
                         {AllowWordBreaks(description, ["/", "-", "_"])}
                     </p>
-                    <div className="pt-2 mt-auto flex flex-wrap gap-x-4 text-muted-foreground">{children}</div>
+                    <div className="mt-auto flex flex-wrap gap-x-4 pt-2 text-muted-foreground">{children}</div>
                 </div>
             </div>
 
@@ -83,13 +83,13 @@ export function PageHeader({
                     {threeDotMenu ? (
                         <Popover>
                             <PopoverTrigger asChild>
-                                <Button variant="ghost-inverted" className="rounded-full w-11 h-11 p-0" aria-label="More options">
+                                <Button variant="ghost-inverted" className="h-11 w-11 rounded-full p-0" aria-label="More options">
                                     <MoreVerticalIcon aria-hidden className="h-btn-icon-lg w-btn-icon-lg" />
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent
                                 align="end"
-                                className="w-fit flex flex-col gap-1 items-center justify-center min-w-0 px-1 py-1"
+                                className="flex w-fit min-w-0 flex-col items-center justify-center gap-1 px-1 py-1"
                             >
                                 {threeDotMenu}
                             </PopoverContent>

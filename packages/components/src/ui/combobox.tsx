@@ -59,7 +59,7 @@ function ComboBox(props: ComboBoxProps) {
                     {option?.disabled === true ? (
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <InfoIcon aria-hidden className="w-btn-icon h-btn-icon ms-auto me-2" />
+                                <InfoIcon aria-hidden className="ms-auto me-2 h-btn-icon w-btn-icon" />
                             </TooltipTrigger>
 
                             <TooltipContent>{option?.disabledReason || "Disabled"}</TooltipContent>
@@ -73,7 +73,7 @@ function ComboBox(props: ComboBoxProps) {
     return (
         <Popover open={open} onOpenChange={setOpen} modal={true}>
             <PopoverTrigger asChild>{props.children}</PopoverTrigger>
-            <PopoverContent className="p-0 sm:min-w-[28rem] border-none">
+            <PopoverContent className="border-none p-0 sm:min-w-[28rem]">
                 <Command className="border border-shallow-background">
                     {props.inputBox === false ? null : (
                         <CommandInput

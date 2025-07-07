@@ -261,9 +261,9 @@ export const CubeIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props
 
 export const CancelButtonIcon = XIcon;
 
-export const fallbackProjectIcon = <CubeIcon aria-hidden className="w-3/4 h-3/4 text-extra-muted-foreground" />;
-export const fallbackOrgIcon = <Building2Icon aria-hidden className="w-[65%] h-[65%] text-extra-muted-foreground" />;
-export const fallbackUserIcon = <UserIcon aria-hidden className="w-[65%] h-[65%] text-extra-muted-foreground" />;
+export const fallbackProjectIcon = <CubeIcon aria-hidden className="h-3/4 w-3/4 text-extra-muted-foreground" />;
+export const fallbackOrgIcon = <Building2Icon aria-hidden className="h-[65%] w-[65%] text-extra-muted-foreground" />;
+export const fallbackUserIcon = <UserIcon aria-hidden className="h-[65%] w-[65%] text-extra-muted-foreground" />;
 
 export const PROJECT_STATUS_ICONS = {
     [ProjectPublishingStatus.DRAFT]: (className?: string) => (

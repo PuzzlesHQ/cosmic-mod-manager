@@ -22,7 +22,7 @@ export function ListItemCard(props: ListItemCardProps) {
             to={props.url}
             aria-label={props.title}
             className={cn(
-                "w-full grid grid-cols-[max-content_1fr] gap-panel-cards p-card-surround rounded-lg bg-background/75 hover:bg-background/50 transition-colors",
+                "grid w-full grid-cols-[max-content_1fr] gap-panel-cards rounded-lg bg-background/75 p-card-surround transition-colors hover:bg-background/50",
                 props.className,
             )}
         >
@@ -32,13 +32,13 @@ export function ListItemCard(props: ListItemCardProps) {
                 src={props.icon || ""}
                 alt={props.title}
                 fallback={props.fallbackIcon}
-                className="rounded-xl border-shallower-background dark:border-shallow-background w-20 h-20 sm:w-24 sm:h-24"
+                className="h-20 w-20 rounded-xl border-shallower-background sm:h-24 sm:w-24 dark:border-shallow-background"
             />
 
             <div className="flex flex-col items-start justify-start">
-                <div className="w-full text-md font-bold text-foreground-bright">{props.title}</div>
-                <span className="w-full text-sm text-muted-foreground/75 leading-tight">{props.description}</span>
-                <div className="w-full flex items-start justify-start gap-x-3 flex-wrap mt-auto text-extra-muted-foreground">
+                <div className="w-full font-bold text-foreground-bright text-md">{props.title}</div>
+                <span className="w-full text-muted-foreground/75 text-sm leading-tight">{props.description}</span>
+                <div className="mt-auto flex w-full flex-wrap items-start justify-start gap-x-3 text-extra-muted-foreground">
                     {props.children}
                 </div>
             </div>
@@ -60,8 +60,8 @@ export function OrgListItemCard({ members, ...props }: OrgListItemCard) {
 
     return (
         <ListItemCard {...props} fallbackIcon={fallbackOrgIcon}>
-            <div className="flex gap-1 items-center justify-center whitespace-nowrap">
-                <UsersIcon aria-hidden className="text-extra-muted-foreground font-medium w-btn-icon h-btn-icon" />
+            <div className="flex items-center justify-center gap-1 whitespace-nowrap">
+                <UsersIcon aria-hidden className="h-btn-icon w-btn-icon font-medium text-extra-muted-foreground" />
                 {t.count.members(members).join(" ")}
             </div>
         </ListItemCard>
@@ -83,8 +83,8 @@ export function CollectionListItemCard(props: CollectionListItemCard) {
 
     return (
         <ListItemCard {...props} fallbackIcon={fallbackProjectIcon}>
-            <div className="flex gap-1 items-center justify-center whitespace-nowrap">
-                <CubeIcon aria-hidden className="font-medium w-btn-icon h-btn-icon" />
+            <div className="flex items-center justify-center gap-1 whitespace-nowrap">
+                <CubeIcon aria-hidden className="h-btn-icon w-btn-icon font-medium" />
                 {t.count.projects(props.projects).join(" ")}
             </div>
 

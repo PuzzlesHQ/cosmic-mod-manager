@@ -5,7 +5,7 @@ function Input({ ref, className, type, ...props }: React.ComponentProps<"input">
         <input
             type={type}
             className={cn(
-                "input_box_styles text-base font-medium w-full file:border-0 file:bg-transparent file:text-sm file:font-medium",
+                "input_box_styles w-full font-medium text-base file:border-0 file:bg-transparent file:font-medium file:text-sm",
                 className,
             )}
             spellCheck={false}

@@ -17,7 +17,7 @@ function CardHeader({ ref, className, ...props }: React.ComponentProps<"div">) {
 CardHeader.displayName = "CardHeader";
 
 function CardTitle({ ref, className, ...props }: React.ComponentProps<"h2">) {
-    return <h2 ref={ref} className={cn("text-xl font-semibold leading-none tracking-tight", className)} {...props} />;
+    return <h2 ref={ref} className={cn("font-semibold text-xl leading-none tracking-tight", className)} {...props} />;
 }
 CardTitle.displayName = "CardTitle";
 
@@ -30,7 +30,7 @@ function CardContent({ ref, className, ...props }: React.ComponentProps<"div">) 
     return (
         <div
             ref={ref}
-            className={cn("p-card-surround pt-0 w-full flex flex-col items-start justify-start", className)}
+            className={cn("flex w-full flex-col items-start justify-start p-card-surround pt-0", className)}
             {...props}
         />
     );
@@ -38,7 +38,7 @@ function CardContent({ ref, className, ...props }: React.ComponentProps<"div">) 
 CardContent.displayName = "CardContent";
 
 function CardFooter({ ref, className, ...props }: React.ComponentProps<"div">) {
-    return <div ref={ref} className={cn("flex justify-end gap-3 items-center p-card-surround pt-0", className)} {...props} />;
+    return <div ref={ref} className={cn("flex items-center justify-end gap-3 p-card-surround pt-0", className)} {...props} />;
 }
 CardFooter.displayName = "CardFooter";
 

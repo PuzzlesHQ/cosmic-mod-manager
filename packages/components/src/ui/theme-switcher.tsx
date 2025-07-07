@@ -67,7 +67,7 @@ export default function ThemeSwitch({
         >
             <div
                 className={cn(
-                    "h-nav-item aspect-square relative flex items-center justify-center rounded-full",
+                    "relative flex aspect-square h-nav-item items-center justify-center rounded-full",
                     iconWrapperClassName,
                 )}
             >
@@ -77,7 +77,7 @@ export default function ThemeSwitch({
                     <MoonIcon size={iconSize} className={iconClassName} />
                 )}
             </div>
-            {label && <p className="pe-4 whitespace-nowrap text-nowrap">{label}</p>}
+            {label && <p className="whitespace-nowrap text-nowrap pe-4">{label}</p>}
         </Button>
     );
 }

@@ -71,7 +71,7 @@ export { Button, buttonVariants };
 export function CancelButton({ ref, variant = "secondary", children, icon, ...props }: ButtonProps) {
     return (
         <Button variant={variant} ref={ref} {...props}>
-            {icon ? icon : <CancelButtonIcon aria-hidden className="w-btn-icon h-btn-icon" />}
+            {icon ? icon : <CancelButtonIcon aria-hidden className="h-btn-icon w-btn-icon" />}
             {children || "Cancel"}
         </Button>
     );

@@ -10,7 +10,7 @@ export default function Redirect({ to }: { to: string }) {
     }, []);
 
     return (
-        <div className="w-full grid place-items-center py-8 gap-4">
+        <div className="grid w-full place-items-center gap-4 py-8">
             <span className="text-muted-foreground">Redirecting...</span>
         </div>
     );

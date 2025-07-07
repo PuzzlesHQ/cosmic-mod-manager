@@ -72,7 +72,7 @@ function FormItem({ ref, className, ...props }: React.ComponentProps<"div">) {
         <FormItemContext.Provider value={{ id }}>
             <div
                 ref={ref}
-                className={cn("w-full max-w-full flex flex-col items-start justify-center mb-1.5 gap-y-1.5", className)}
+                className={cn("mb-1.5 flex w-full max-w-full flex-col items-start justify-center gap-y-1.5", className)}
                 {...props}
             />
         </FormItemContext.Provider>
@@ -87,7 +87,7 @@ function FormLabel({ ref, className, ...props }: React.ComponentProps<typeof Lab
         <Label
             ref={ref}
             className={cn(
-                "text-md font-medium leading-none text-foreground gap-x-6 w-full flex flex-wrap items-center justify-between",
+                "flex w-full flex-wrap items-center justify-between gap-x-6 font-medium text-foreground text-md leading-none",
                 className,
             )}
             htmlFor={formItemId}
@@ -131,7 +131,7 @@ function FormMessage({ ref, className, children, ...props }: React.ComponentProp
         <p
             ref={ref}
             id={formMessageId}
-            className={cn("ps-0.5 text-sm leading-tight font-medium text-danger-foreground", className)}
+            className={cn("ps-0.5 font-medium text-danger-foreground text-sm leading-tight", className)}
             {...props}
         >
             {body}
@@ -158,7 +158,7 @@ function CharacterCounter({ ref, currVal, max, visibleAfter, className, ...props
         <span
             ref={ref}
             className={cn(
-                "pe-0.5 text-xs leading-none text-extra-muted-foreground self-center font-normal",
+                "self-center pe-0.5 font-normal text-extra-muted-foreground text-xs leading-none",
                 curr > max && "text-danger-foreground",
                 className,
             )}

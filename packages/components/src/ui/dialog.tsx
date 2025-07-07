@@ -15,7 +15,7 @@ function DialogOverlay({ ref, className, ...props }: React.ComponentProps<typeof
         <DialogPrimitive.Overlay
             ref={ref}
             className={cn(
-                "fixed inset-0 z-50 bg-black/90 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+                "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/90 data-[state=closed]:animate-out data-[state=open]:animate-in",
                 className,
             )}
             {...props}
@@ -31,14 +31,14 @@ function DialogContent({ ref, className, children, ...props }: React.ComponentPr
             <DialogPrimitive.Content
                 ref={ref}
                 className={cn(
-                    "fixed left-[50%] top-[50%] z-50 grid w-full max-h-full py-card-surround max-w-lg translate-x-[-50%] translate-y-[-50%] overflow-y-auto gap-4 border border-shallow-background/50 bg-card-background shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded outline-none",
+                    "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] fixed top-[50%] left-[50%] z-50 grid max-h-full w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 overflow-y-auto border border-shallow-background/50 bg-card-background py-card-surround shadow-lg outline-none duration-200 data-[state=closed]:animate-out data-[state=open]:animate-in sm:rounded",
                     className,
                 )}
                 {...props}
             >
                 {children}
-                <DialogPrimitive.Close className="absolute end-3 top-3 rounded p-1.5 transition-opacity text-muted-foreground hover:text-foreground hover:bg-shallow-background disabled:pointer-events-none">
-                    <XIcon aria-hidden className="w-btn-icon-md h-btn-icon-md" />
+                <DialogPrimitive.Close className="absolute end-3 top-3 rounded p-1.5 text-muted-foreground transition-opacity hover:bg-shallow-background hover:text-foreground disabled:pointer-events-none">
+                    <XIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     <span className="sr-only">Close</span>
                 </DialogPrimitive.Close>
             </DialogPrimitive.Content>
@@ -50,7 +50,7 @@ DialogContent.displayName = DialogPrimitive.Content.displayName;
 function DialogHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
     return (
         <div
-            className={cn("flex flex-col gap-1 px-card-surround pb-4 text-start border-b border-b-shallow-background", className)}
+            className={cn("flex flex-col gap-1 border-b border-b-shallow-background px-card-surround pb-4 text-start", className)}
             {...props}
         />
     );
@@ -64,7 +64,7 @@ DialogBody.displayName = "DialogHeader";
 
 function DialogFooter({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
     return (
-        <div className={cn("w-full flex flex-col-reverse sm:flex-row sm:justify-end gap-x-2 gap-y-2", className)} {...props} />
+        <div className={cn("flex w-full flex-col-reverse gap-x-2 gap-y-2 sm:flex-row sm:justify-end", className)} {...props} />
     );
 }
 DialogFooter.displayName = "DialogFooter";
@@ -73,7 +73,7 @@ function DialogTitle({ ref, className, ...props }: React.ComponentProps<typeof D
     return (
         <DialogPrimitive.Title
             ref={ref}
-            className={cn("text-lg text-foreground font-bold leading-none tracking-tight pe-7", className)}
+            className={cn("pe-7 font-bold text-foreground text-lg leading-none tracking-tight", className)}
             {...props}
         />
     );
@@ -81,7 +81,7 @@ function DialogTitle({ ref, className, ...props }: React.ComponentProps<typeof D
 DialogTitle.displayName = DialogPrimitive.Title.displayName;
 
 function DialogDescription({ ref, className, ...props }: React.ComponentProps<typeof DialogPrimitive.Description>) {
-    return <DialogPrimitive.Description ref={ref} className={cn("text-sm text-muted-foreground pe-8", className)} {...props} />;
+    return <DialogPrimitive.Description ref={ref} className={cn("pe-8 text-muted-foreground text-sm", className)} {...props} />;
 }
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
 

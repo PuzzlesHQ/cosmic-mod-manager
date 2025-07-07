@@ -13,13 +13,13 @@ export default function ReleaseChannelChip({ releaseChannel, labelClassName, cla
     return (
         <div
             className={cn(
-                "flex gap-1.5 items-center justify-start",
+                "flex items-center justify-start gap-1.5",
                 releaseChannelTextColor(releaseChannel as VersionReleaseChannel),
                 className,
             )}
         >
-            <div className="w-2 h-2 rounded-full bg-current" />
-            <span className={cn("text-muted-foreground/90 leading-none font-semibold", labelClassName)}>
+            <div className="h-2 w-2 rounded-full bg-current" />
+            <span className={cn("font-semibold text-muted-foreground/90 leading-none", labelClassName)}>
                 {CapitalizeAndFormatString(releaseChannel)}
             </span>
         </div>
@@ -31,7 +31,7 @@ export function ReleaseChannelBadge({ releaseChannel, className }: Props) {
         <div
             aria-hidden
             className={cn(
-                "rounded-full h-10 aspect-square shrink-0 flex items-center justify-center",
+                "flex aspect-square h-10 shrink-0 items-center justify-center rounded-full",
                 releaseChannelTextColor(releaseChannel as VersionReleaseChannel),
                 releaseChannelBackgroundColor(releaseChannel as VersionReleaseChannel),
                 className,
@@ -54,7 +54,7 @@ function ReleaseChannelIcon({ releaseChannel, className }: Props) {
             return <span className={cn("font-bold text-[1.25rem]", className)}>α</span>;
 
         case VersionReleaseChannel.DEV:
-            return <FlaskConicalIcon aria-hidden className={cn("w-5 h-5", className)} />;
+            return <FlaskConicalIcon aria-hidden className={cn("h-5 w-5", className)} />;
 
         default:
             return null;

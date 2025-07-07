@@ -94,7 +94,7 @@ function BaseView(props: SearchListItemProps) {
             itemScope
             itemType={itemType(MicrodataItemType.CreativeWork)}
             className={cn(
-                "h-full search-list-item grid gap-x-3 gap-y-2 text-muted-foreground bg-card-background rounded-lg",
+                "search-list-item grid h-full gap-x-3 gap-y-2 rounded-lg bg-card-background text-muted-foreground",
                 listViewType && "p-card-surround",
                 galleryViewType && "pb-4",
                 props.viewType,
@@ -105,7 +105,7 @@ function BaseView(props: SearchListItemProps) {
             {galleryViewType && (
                 <Link
                     to={projectPageUrl}
-                    className="h-44 overflow-hidden rounded-t-lg rounded-b-none m-0.5 mb-0"
+                    className="m-0.5 mb-0 h-44 overflow-hidden rounded-t-lg rounded-b-none"
                     aria-label={props.projectName}
                     tabIndex={-1}
                     style={{
@@ -117,7 +117,7 @@ function BaseView(props: SearchListItemProps) {
                         <img
                             src={props.featuredGallery}
                             alt={`Featured gallery of ${props.projectName}`}
-                            className="object-cover w-full h-full"
+                            className="h-full w-full object-cover"
                             loading="lazy"
                         />
                     )}
@@ -127,8 +127,8 @@ function BaseView(props: SearchListItemProps) {
             <Link
                 to={projectPageUrl}
                 className={cn(
-                    "w-max h-fit flex shrink-0 relative items-start justify-center",
-                    galleryViewType && "ms-card-surround -mt-12",
+                    "relative flex h-fit w-max shrink-0 items-start justify-center",
+                    galleryViewType && "-mt-12 ms-card-surround",
                 )}
                 aria-label={props.projectName}
                 tabIndex={-1}
@@ -186,7 +186,7 @@ function BaseView(props: SearchListItemProps) {
                 {props.visibility === ProjectVisibility.ARCHIVED && (
                     <>
                         {" "}
-                        <Chip className="inline leading-none text-sm font-medium bg-warning-background/15 text-warning-foreground ms-1">
+                        <Chip className="ms-1 inline bg-warning-background/15 font-medium text-sm text-warning-foreground leading-none">
                             {t.projectSettings.archived}
                         </Chip>
                     </>
@@ -196,7 +196,7 @@ function BaseView(props: SearchListItemProps) {
             <p
                 itemProp={MicrodataItemProps.description}
                 className={cn(
-                    "leading-tight sm:text-pretty max-w-[80ch] mobile-break-words",
+                    "mobile-break-words max-w-[80ch] leading-tight sm:text-pretty",
                     galleryViewType && "mx-card-surround",
                 )}
                 style={{ gridArea: "summary" }}
@@ -209,7 +209,7 @@ function BaseView(props: SearchListItemProps) {
                 itemScope
                 itemType={itemType(MicrodataItemType.Thing)}
                 className={cn(
-                    "flex items-center justify-start gap-x-4 gap-y-0 flex-wrap text-extra-muted-foreground",
+                    "flex flex-wrap items-center justify-start gap-x-4 gap-y-0 text-extra-muted-foreground",
                     galleryViewType && "mx-card-surround",
                 )}
                 style={{ gridArea: "tags" }}
@@ -222,7 +222,7 @@ function BaseView(props: SearchListItemProps) {
 
                     return (
                         <span
-                            className="flex gap-1 items-center justify-center"
+                            className="flex items-center justify-center gap-1"
                             key={category.name}
                             title={`${t.search[category.type]} / ${tagName}`}
                         >
@@ -238,7 +238,7 @@ function BaseView(props: SearchListItemProps) {
                     return (
                         <span
                             key={loader.name}
-                            className="flex gap-1 items-center justify-center"
+                            className="flex items-center justify-center gap-1"
                             title={`${t.search.loaders} / ${loaderName}`}
                         >
                             <TagIcon name={loader.name} />
@@ -254,29 +254,29 @@ function BaseView(props: SearchListItemProps) {
                     gridArea: "stats",
                 }}
             >
-                <div className={cn("flex flex-wrap flex-row lg:flex-col gap-x-5", galleryViewType && "lg:flex-row")}>
-                    <div className="h-fit flex justify-end items-center gap-x-1.5">
-                        <DownloadIcon aria-hidden className="inline w-[1.17rem] h-[1.17rem] text-extra-muted-foreground" />{" "}
+                <div className={cn("flex flex-row flex-wrap gap-x-5 lg:flex-col", galleryViewType && "lg:flex-row")}>
+                    <div className="flex h-fit items-center justify-end gap-x-1.5">
+                        <DownloadIcon aria-hidden className="inline h-[1.17rem] w-[1.17rem] text-extra-muted-foreground" />{" "}
                         <p className="text-nowrap">
                             {!galleryViewType && ProjectDownloads[0]?.toString().length > 0 && (
-                                <span className="hidden sm:inline lowercase">{ProjectDownloads[0]} </span>
+                                <span className="hidden lowercase sm:inline">{ProjectDownloads[0]} </span>
                             )}
-                            <strong className="text-lg-plus font-extrabold">{props.NumberFormatter(props.downloads)}</strong>
+                            <strong className="font-extrabold text-lg-plus">{props.NumberFormatter(props.downloads)}</strong>
                             {!galleryViewType && ProjectDownloads[2]?.toString().length > 0 && (
-                                <span className="hidden sm:inline lowercase"> {ProjectDownloads[2]}</span>
+                                <span className="hidden lowercase sm:inline"> {ProjectDownloads[2]}</span>
                             )}
                         </p>
                     </div>
 
-                    <div className="h-fit flex justify-end items-center gap-x-1.5">
-                        <HeartIcon aria-hidden className="inline w-[1.07rem] h-[1.07rem] text-extra-muted-foreground" />{" "}
+                    <div className="flex h-fit items-center justify-end gap-x-1.5">
+                        <HeartIcon aria-hidden className="inline h-[1.07rem] w-[1.07rem] text-extra-muted-foreground" />{" "}
                         <p className="text-nowrap">
                             {!galleryViewType && ProjectFollowers[0]?.toString().length > 0 && (
-                                <span className="hidden sm:inline lowercase">{ProjectFollowers[0]} </span>
+                                <span className="hidden lowercase sm:inline">{ProjectFollowers[0]} </span>
                             )}
-                            <strong className="text-lg-plus font-extrabold">{props.NumberFormatter(props.followers)}</strong>
+                            <strong className="font-extrabold text-lg-plus">{props.NumberFormatter(props.followers)}</strong>
                             {!galleryViewType && ProjectFollowers[2]?.toString().length > 0 && (
-                                <span className="hidden sm:inline lowercase"> {ProjectFollowers[2]}</span>
+                                <span className="hidden lowercase sm:inline"> {ProjectFollowers[2]}</span>
                             )}
                         </p>
                     </div>
@@ -284,15 +284,15 @@ function BaseView(props: SearchListItemProps) {
 
                 <div
                     className={cn(
-                        "h-fit flex items-center gap-1.5 whitespace-nowrap",
-                        listViewType && "justify-end ms-auto my-auto lg:mb-0",
-                        galleryViewType && "justify-start my-auto",
+                        "flex h-fit items-center gap-1.5 whitespace-nowrap",
+                        listViewType && "my-auto ms-auto justify-end lg:mb-0",
+                        galleryViewType && "my-auto justify-start",
                     )}
                 >
                     <TooltipProvider>
                         {props.showDatePublished === true ? (
                             <Tooltip>
-                                <CalendarIcon aria-hidden className="w-[1.1rem] h-[1.1rem] text-extra-muted-foreground" />
+                                <CalendarIcon aria-hidden className="h-[1.1rem] w-[1.1rem] text-extra-muted-foreground" />
                                 <TooltipTrigger asChild>
                                     <p className="flex items-baseline justify-center gap-1 text-nowrap">
                                         {t.project.publishedAt(props.TimeSince_Fn(props.datePublished))}
@@ -302,7 +302,7 @@ function BaseView(props: SearchListItemProps) {
                             </Tooltip>
                         ) : (
                             <Tooltip>
-                                <RefreshCcwIcon aria-hidden className="w-[1.1rem] h-[1.1rem] text-extra-muted-foreground" />
+                                <RefreshCcwIcon aria-hidden className="h-[1.1rem] w-[1.1rem] text-extra-muted-foreground" />
                                 <TooltipTrigger asChild>
                                     <p className="flex items-baseline justify-center gap-1 text-nowrap">
                                         {t.project.updatedAt(props.TimeSince_Fn(props.dateUpdated))}
@@ -330,7 +330,7 @@ function ProjectLink(props: ProjectLinkProps) {
             itemProp={MicrodataItemProps.url}
             to={props.projectPageUrl}
             className={cn(
-                "w-fit text-xl font-bold leading-none mobile-break-words",
+                "mobile-break-words w-fit font-bold text-xl leading-none",
                 props.galleryViewType && "block leading-tight",
             )}
             aria-label={props.projectName}
@@ -357,7 +357,7 @@ function AuthorLink(props: AuthorLinkProps) {
         <Link
             to={props.isOrgOwned ? props.OrgPagePath(props.author) : props.UserProfilePath(props.author)}
             className={cn(
-                "underline hover:brightness-110 mobile-break-words leading-none",
+                "mobile-break-words leading-none underline hover:brightness-110",
                 props.galleryViewType && "leading-tight",
             )}
             title={props.isOrgOwned ? `${props.author} (${props.Organization_translation})` : props.author}
@@ -366,7 +366,7 @@ function AuthorLink(props: AuthorLinkProps) {
             {props.isOrgOwned ? (
                 <>
                     {" "}
-                    <Building2Icon aria-hidden className="inline-block w-4 h-4" />
+                    <Building2Icon aria-hidden className="inline-block h-4 w-4" />
                 </>
             ) : null}
         </Link>

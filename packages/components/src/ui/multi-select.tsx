@@ -119,17 +119,17 @@ export const MultiSelect = ({
                         {...props}
                         onClick={() => handleTogglePopover(!isPopoverOpen)}
                         variant="secondary"
-                        className={cn("w-full min-h-10 h-auto px-2", className)}
+                        className={cn("h-auto min-h-10 w-full px-2", className)}
                     >
                         {selectedValues.length > 0 ? (
-                            <div className="flex justify-between items-center w-full">
+                            <div className="flex w-full items-center justify-between">
                                 <div className="flex flex-wrap items-center">
                                     {selectedValues.slice(0, maxCount).map((value) => {
                                         const option = (allOptions || options).find((o) => o.value === value);
                                         const IconComponent = option?.icon;
                                         return (
                                             <ChipButton variant="outline" key={value} className={cn("m-[0.17rem]")}>
-                                                {IconComponent && <IconComponent className="h-4 w-4 me-2" />}
+                                                {IconComponent && <IconComponent className="me-2 h-4 w-4" />}
                                                 {option?.label}
                                                 <XCircle
                                                     className="h-4 w-4 cursor-pointer"
@@ -156,14 +156,14 @@ export const MultiSelect = ({
                                 </div>
                             </div>
                         ) : (
-                            <span className="text-muted-foreground me-auto ms-1">{placeholder}</span>
+                            <span className="ms-1 me-auto text-muted-foreground">{placeholder}</span>
                         )}
                         <ChevronDownIcon aria-hidden className="h-4 cursor-pointer text-muted-foreground" />
                     </Button>
                 )}
             </PopoverTrigger>
             <PopoverContent
-                className={cn("w-max p-0 border-none", defaultMinWidth === false && "min-w-48", popoverClassname)}
+                className={cn("w-max border-none p-0", defaultMinWidth === false && "min-w-48", popoverClassname)}
                 align="start"
                 onEscapeKeyDown={() => handleTogglePopover(false)}
             >
@@ -191,7 +191,7 @@ export const MultiSelect = ({
                                             className={cn(
                                                 "me-3 flex h-4 w-4 items-center justify-center rounded-sm border border-extra-muted-foreground/75",
                                                 isSelected
-                                                    ? "bg-muted-foreground text-background border-transparent"
+                                                    ? "border-transparent bg-muted-foreground text-background"
                                                     : "opacity-50 [&_svg]:invisible",
                                             )}
                                         >
