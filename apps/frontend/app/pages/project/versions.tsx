@@ -150,7 +150,7 @@ function ProjectVersionsListTable({
         return (
             <div
                 className={cn(
-                    "col-[1/-1] grid grid-cols-subgrid items-center gap-x-4 gap-y-2 border-background border-b px-4 py-5 last:border-none hover:bg-background/25 md:px-8",
+                    "col-[1/-1] grid grid-cols-subgrid items-center gap-x-4 gap-y-2 border-background border-b px-4 py-4 last:border-none hover:bg-background/25 md:px-8",
                     className,
                 )}
                 {...props}
@@ -202,8 +202,8 @@ function ProjectVersionsListTable({
                             </div>
 
                             <div className="lex min-w-max flex-wrap items-start justify-start gap-3">
-                                <DatePublished dateStr={version.datePublished} />
                                 <DownloadsCount downloads={version.downloads} />
+                                <DatePublished dateStr={version.datePublished} />
                             </div>
 
                             <div className="flex w-full items-center justify-end gap-1">
@@ -303,7 +303,7 @@ function ProjectLoaders({ versionLoaders }: { versionLoaders: string[] }) {
 function DatePublished({ dateStr, iconVisible = true }: { dateStr: string | Date; iconVisible?: boolean }) {
     return (
         <TooltipTemplate content={<FormattedDate date={dateStr} />}>
-            <span className="flex cursor-help items-center justify-start gap-1.5 whitespace-nowrap font-medium text-muted-foreground">
+            <span className="flex cursor-help items-center justify-start gap-1.5 whitespace-nowrap font-medium text-extra-muted-foreground">
                 {iconVisible === true ? <CalendarIcon aria-hidden className="h-3.5 w-3.5" /> : null}
                 <TimePassedSince date={dateStr} capitalize />
             </span>
@@ -311,13 +311,20 @@ function DatePublished({ dateStr, iconVisible = true }: { dateStr: string | Date
     );
 }
 
-function DownloadsCount({ downloads, iconVisible = true }: { downloads: number; iconVisible?: boolean }) {
+function DownloadsCount({ downloads }: { downloads: number }) {
     const { t } = useTranslation();
 
     return (
-        <span className="flex items-center justify-start gap-1.5 font-medium text-muted-foreground">
-            {iconVisible === true ? <DownloadIcon aria-hidden className="h-3.5 w-3.5" /> : null}
-            <FormattedCount count={downloads} />
+        <span className="flex items-center justify-start gap-1.5 font-medium text-extra-muted-foreground">
+            <DownloadIcon aria-hidden className="h-3.5 w-3.5" strokeWidth={2.5} />
+            <span>
+                {t.count.downloads(
+                    downloads,
+                    <em className="font-extrabold text-md not-italic" key="downloads">
+                        <FormattedCount count={downloads} />
+                    </em>,
+                )}
+            </span>
         </span>
     );
 }

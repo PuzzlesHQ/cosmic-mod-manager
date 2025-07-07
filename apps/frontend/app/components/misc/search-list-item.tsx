@@ -1,20 +1,24 @@
-import { categories } from "@app/utils/constants/categories";
 import { getLoadersFromNames } from "@app/utils/convertors";
 import { getProjectCategoriesDataFromNames } from "@app/utils/project";
 import { CapitalizeAndFormatString } from "@app/utils/string";
-import { type EnvironmentSupport, ProjectType, ProjectVisibility, TagType } from "@app/utils/types";
+import { type EnvironmentSupport, ProjectType, ProjectVisibility } from "@app/utils/types";
 import { imageUrl } from "@app/utils/url";
 import { Building2Icon, CalendarIcon, DownloadIcon, HeartIcon, RefreshCcwIcon } from "lucide-react";
-import type { ReactNode } from "react";
 import { fallbackProjectIcon } from "~/components/icons";
 import { TagIcon } from "~/components/icons/tag-icons";
 import { itemType, MicrodataItemProps, MicrodataItemType } from "~/components/microdata";
 import { ImgWrapper } from "~/components/ui/avatar";
 import Chip from "~/components/ui/chip";
+import { FormattedDate, TimePassedSince } from "~/components/ui/date";
 import Link from "~/components/ui/link";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
 import { viewTransitionStyleObj } from "~/components/view-transitions";
+import { useRootData } from "~/hooks/root-data";
+import { useTranslation } from "~/locales/provider";
+import ProjectSupportedEnv from "~/pages/project/supported-env";
+import { OrgPagePath, ProjectPagePath, UserProfilePath } from "~/utils/urls";
+import { FormattedCount } from "../ui/count";
 
 export enum ViewType {
     GALLERY = "gallery",
@@ -36,7 +40,6 @@ interface SearchListItemProps {
     summary: string;
     clientSide: EnvironmentSupport;
     serverSide: EnvironmentSupport;
-    supportedEnv: React.ReactNode;
     loaders: string[];
     featuredCategories: string[];
     downloads: number;
@@ -48,16 +51,6 @@ interface SearchListItemProps {
     isOrgOwned?: boolean;
     visibility: ProjectVisibility;
     vtId: string; // View Transition ID
-    viewTransitions?: boolean;
-    t?: ReturnType<typeof getDefaultStrings>;
-
-    // Functions to override default behavior
-    ProjectPagePath: ProjectPagePath;
-    OrgPagePath: OrgPagePath;
-    UserProfilePath: UserProfilePath;
-    TimeSince_Fn: (date: string | Date) => string;
-    NumberFormatter: (num: number) => string;
-    DateFormatter: (date: string | Date) => ReactNode;
 
     // Search page type for view transitions
     pageId: string;
@@ -70,19 +63,21 @@ export default function ProjectCardItem(props: SearchListItemProps) {
 }
 
 function BaseView(props: SearchListItemProps) {
-    const t = props.t || getDefaultStrings();
+    const viewTransitions = useRootData()?.userConfig.viewTransitions !== false;
+    const { t } = useTranslation();
+
     const projectCategoriesData = getProjectCategoriesDataFromNames(props.featuredCategories);
     const loadersData = getLoadersFromNames(props.loaders);
 
     const effectiveProjectType =
         !props.pageProjectType || props.pageProjectType === "project" ? props.projectType : props.pageProjectType;
-    const projectPageUrl = props.ProjectPagePath(effectiveProjectType, props.projectSlug);
+    const projectPageUrl = ProjectPagePath(effectiveProjectType, props.projectSlug);
 
     // View Types
     const galleryViewType = props.viewType === ViewType.GALLERY;
     const listViewType = props.viewType === ViewType.LIST;
 
-    const vtStyle = viewTransitionStyleObj(`${props.pageId}-search-item-${props.vtId}`, props.viewTransitions);
+    const vtStyle = viewTransitionStyleObj(`${props.pageId}-search-item-${props.vtId}`, viewTransitions);
 
     return (
         // biome-ignore lint/a11y/useSemanticElements: idk, <li> doesn't make sense here
@@ -142,7 +137,6 @@ function BaseView(props: SearchListItemProps) {
                     alt={`Icon of ${props.projectName}`}
                     fallback={fallbackProjectIcon}
                     className="h-24 w-24 rounded-xl"
-                    viewTransitions={props.viewTransitions}
                 />
             </Link>
 
@@ -172,8 +166,6 @@ function BaseView(props: SearchListItemProps) {
                             key="project-author"
                             author={props.author}
                             authorDisplayName={props.author}
-                            OrgPagePath={props.OrgPagePath}
-                            UserProfilePath={props.UserProfilePath}
                             isOrgOwned={props.isOrgOwned === true}
                             galleryViewType={galleryViewType}
                             Organization_translation={t.project.organization}
@@ -212,7 +204,13 @@ function BaseView(props: SearchListItemProps) {
                 )}
                 style={{ gridArea: "tags" }}
             >
-                {!HideEnvSupportFor.includes(props.pageProjectType as ProjectType) && props.supportedEnv}
+                {!HideEnvSupportFor.includes(props.pageProjectType as ProjectType) && (
+                    <ProjectSupportedEnv
+                        clientSide={props.clientSide}
+                        serverSide={props.serverSide}
+                        className="text-extra-muted-foreground"
+                    />
+                )}
 
                 {projectCategoriesData.map((category) => {
                     // @ts-ignore
@@ -256,32 +254,42 @@ function BaseView(props: SearchListItemProps) {
                     <div className="flex h-fit items-center justify-end gap-x-1.5">
                         <DownloadIcon aria-hidden className="inline h-[1.17rem] w-[1.17rem] text-extra-muted-foreground" />{" "}
                         <p className="text-nowrap">
-                            <strong key="downloads-count" className="inline font-extrabold text-lg-plus sm:hidden">
-                                {props.NumberFormatter(props.downloads)}
-                            </strong>
+                            <span
+                                key="downloads-count"
+                                className={cn("inline font-extrabold text-lg-plus sm:hidden", galleryViewType && "sm:inline")}
+                            >
+                                <FormattedCount count={props.downloads} />
+                            </span>
 
-                            {t.count.downloads(
-                                props.downloads,
-                                <strong key="downloads-count" className="hidden font-extrabold text-lg-plus sm:inline">
-                                    {props.NumberFormatter(props.downloads)}
-                                </strong>,
-                            )}
+                            <span className={cn("hidden sm:inline", galleryViewType && "sm:hidden")}>
+                                {t.count.downloads(
+                                    props.downloads,
+                                    <strong key="followers-count" className="font-extrabold text-lg-plus">
+                                        <FormattedCount count={props.downloads} />
+                                    </strong>,
+                                )}
+                            </span>
                         </p>
                     </div>
 
                     <div className="flex h-fit items-center justify-end gap-x-1.5">
                         <HeartIcon aria-hidden className="inline h-[1.07rem] w-[1.07rem] text-extra-muted-foreground" />{" "}
                         <p className="text-nowrap">
-                            <strong key="downloads-count" className="inline font-extrabold text-lg-plus sm:hidden">
-                                {props.NumberFormatter(props.followers)}
-                            </strong>
+                            <span
+                                key="downloads-count"
+                                className={cn("inline font-extrabold text-lg-plus sm:hidden", galleryViewType && "sm:inline")}
+                            >
+                                <FormattedCount count={props.followers} />
+                            </span>
 
-                            {t.count.followers(
-                                props.followers,
-                                <strong key="downloads-count" className="hidden font-extrabold text-lg-plus sm:inline">
-                                    {props.NumberFormatter(props.followers)}
-                                </strong>,
-                            )}
+                            <span className={cn("hidden sm:inline", galleryViewType && "sm:hidden")}>
+                                {t.count.followers(
+                                    props.followers,
+                                    <strong key="downloads-count" className="font-extrabold text-lg-plus">
+                                        <FormattedCount count={props.followers} />
+                                    </strong>,
+                                )}
+                            </span>
                         </p>
                     </div>
                 </div>
@@ -299,20 +307,24 @@ function BaseView(props: SearchListItemProps) {
                                 <CalendarIcon aria-hidden className="h-[1.1rem] w-[1.1rem] text-extra-muted-foreground" />
                                 <TooltipTrigger asChild>
                                     <p className="flex items-baseline justify-center gap-1 text-nowrap">
-                                        {t.project.publishedAt(props.TimeSince_Fn(props.datePublished))}
+                                        {t.project.publishedAt(TimePassedSince({ date: props.datePublished }))}
                                     </p>
                                 </TooltipTrigger>
-                                <TooltipContent>{props.DateFormatter(props.datePublished)}</TooltipContent>
+                                <TooltipContent>
+                                    <FormattedDate date={props.datePublished} />
+                                </TooltipContent>
                             </Tooltip>
                         ) : (
                             <Tooltip>
                                 <RefreshCcwIcon aria-hidden className="h-[1.1rem] w-[1.1rem] text-extra-muted-foreground" />
                                 <TooltipTrigger asChild>
                                     <p className="flex items-baseline justify-center gap-1 text-nowrap">
-                                        {t.project.updatedAt(props.TimeSince_Fn(props.dateUpdated))}
+                                        {t.project.updatedAt(TimePassedSince({ date: props.dateUpdated }))}
                                     </p>
                                 </TooltipTrigger>
-                                <TooltipContent>{props.DateFormatter(props.dateUpdated)}</TooltipContent>
+                                <TooltipContent>
+                                    <FormattedDate date={props.dateUpdated} />
+                                </TooltipContent>
                             </Tooltip>
                         )}
                     </TooltipProvider>
@@ -349,8 +361,6 @@ function ProjectLink(props: ProjectLinkProps) {
 interface AuthorLinkProps {
     author: string;
     authorDisplayName: string;
-    OrgPagePath: OrgPagePath;
-    UserProfilePath: UserProfilePath;
     isOrgOwned: boolean;
     galleryViewType: boolean;
     Organization_translation: string;
@@ -359,7 +369,7 @@ interface AuthorLinkProps {
 function AuthorLink(props: AuthorLinkProps) {
     return (
         <Link
-            to={props.isOrgOwned ? props.OrgPagePath(props.author) : props.UserProfilePath(props.author)}
+            to={props.isOrgOwned ? OrgPagePath(props.author) : UserProfilePath(props.author)}
             className={cn(
                 "mobile-break-words leading-none underline hover:brightness-110",
                 props.galleryViewType && "leading-tight",
@@ -376,45 +386,3 @@ function AuthorLink(props: AuthorLinkProps) {
         </Link>
     );
 }
-
-function getDefaultStrings() {
-    const tags: Record<string, string> = {};
-    for (const c of categories) {
-        tags[c.name] = c.name;
-    }
-
-    const headerStrings: Record<TagType, string> = {
-        [TagType.CATEGORY]: CapitalizeAndFormatString(TagType.CATEGORY),
-        [TagType.FEATURE]: CapitalizeAndFormatString(TagType.FEATURE),
-        [TagType.RESOLUTION]: CapitalizeAndFormatString(TagType.RESOLUTION),
-        [TagType.PERFORMANCE_IMPACT]: CapitalizeAndFormatString(TagType.PERFORMANCE_IMPACT),
-    };
-
-    return {
-        count: {
-            downloads: (_count: number, formatted: React.ReactNode) => [formatted, " downloads"],
-            followers: (_count: number, formatted: React.ReactNode) => [formatted, " followers"],
-        },
-
-        project: {
-            organization: "Organization",
-            updatedAt: (when: string) => `Updated ${when}`,
-            publishedAt: (when: string) => `Published ${when}`,
-        },
-        projectSettings: {
-            archived: "Archived",
-        },
-        search: Object.assign(
-            {
-                tags: tags,
-                searchItemAuthor: (project: React.ReactNode, author: React.ReactNode) => [project, " by ", author],
-                loaders: "",
-            },
-            headerStrings,
-        ),
-    };
-}
-
-type ProjectPagePath = (type: string, projectSlug: string, extra?: string) => string;
-type OrgPagePath = (orgSlug: string, extra?: string) => string;
-type UserProfilePath = (username: string, extra?: string) => string;

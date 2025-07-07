@@ -19,7 +19,6 @@ interface PageHeaderProps {
     iconClassName?: string;
     threeDotMenu?: React.ReactNode;
     style?: CSSProperties;
-    viewTransitions?: boolean;
 }
 
 export function PageHeader({
@@ -34,7 +33,6 @@ export function PageHeader({
     iconClassName,
     threeDotMenu,
     vtId,
-    viewTransitions,
     ...props
 }: PageHeaderProps) {
     return (
@@ -49,7 +47,6 @@ export function PageHeader({
                 <ImgWrapper
                     itemProp={MicrodataItemProps.image}
                     vtId={vtId}
-                    viewTransitions={viewTransitions}
                     src={icon || ""}
                     alt={`Icon image of ${title}`}
                     className={cn("bg-card-background shadow shadow-white dark:shadow-black ", iconClassName)}

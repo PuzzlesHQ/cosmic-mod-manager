@@ -270,7 +270,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                                 label: t.project.downloads,
                                 content: (
                                     <span className="leading-none">
-                                        <FormattedCount count={versionData.downloads} notation="standard" />
+                                        <FormattedCount count={versionData.downloads} options={{ notation: "standard" }} />
                                     </span>
                                 ),
                             },

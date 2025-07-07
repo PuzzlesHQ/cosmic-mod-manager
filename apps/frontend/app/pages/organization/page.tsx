@@ -1,6 +1,6 @@
 import type { ProjectType } from "@app/utils/types";
 import { useParams } from "react-router";
-import ProjectCardItem from "~/components/search-list-item";
+import ProjectCardItem from "~/components/misc/search-list-item";
 import { useOrgData } from "~/hooks/org";
 
 function OrganizationPage() {

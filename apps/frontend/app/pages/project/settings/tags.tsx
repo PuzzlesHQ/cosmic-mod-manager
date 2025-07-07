@@ -66,8 +66,6 @@ export default function TagsSettingsPage() {
         }
     }
 
-    if (!projectData) return null;
-
     const availableTags = useMemo(() => {
         const _tags: [TagType, CategoryT[]][] = [];
         for (const type of tagTypes) {

@@ -23,8 +23,16 @@ export default function () {
     const { projectSlug, versionSlug } = useParams();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
-
     const versionData = filterGameVersion(ctx.allProjectVersions, versionSlug, searchParams);
+
+    useEffect(() => {
+        if (versionSlug !== "latest" || !projectSlug || !versionData) return;
+        // If the version slug is "latest", we redirect to the specific version page
+        // This is to ensure that the URL is always specific to a version
+        // and not just "latest", which can be confusing for users.
+        navigate(VersionPagePath(ctx.projectType, projectSlug, versionData.slug));
+    }, [versionSlug]);
+
     if (!versionData?.id || !projectSlug || !versionSlug) {
         return (
             <NotFoundPage
@@ -39,14 +47,6 @@ export default function () {
             />
         );
     }
-
-    useEffect(() => {
-        if (versionSlug !== "latest") return;
-        // If the version slug is "latest", we redirect to the specific version page
-        // This is to ensure that the URL is always specific to a version
-        // and not just "latest", which can be confusing for users.
-        navigate(VersionPagePath(ctx.projectType, projectSlug, versionData.slug));
-    }, [versionSlug]);
 
     return <VersionPage ctx={ctx} versionData={versionData} projectSlug={projectSlug} />;
 }

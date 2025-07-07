@@ -1,6 +1,6 @@
 import { getCookie, setCookie } from "@app/utils/cookie";
 import { ProjectType, ThemeOptions } from "@app/utils/types";
-import { ViewType } from "~/components/search-list-item";
+import { ViewType } from "~/components/misc/search-list-item";
 import { formatLocaleCode } from "~/locales";
 import { DefaultLocale } from "~/locales/meta";
 import { useRootData } from "./root-data";

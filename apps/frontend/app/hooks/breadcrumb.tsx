@@ -33,7 +33,8 @@ export function useBreadcrumbs() {
 
 export function PageBreadCrumbs() {
     const { breadcrumbs } = useBreadcrumbs();
-    const breadCrumbsList = breadcrumbs.length ? breadcrumbs : getBreadCrumbsFromUrl();
+    const _url_BreadCrumbs = getBreadCrumbsFromUrl();
+    const breadCrumbsList = breadcrumbs.length ? breadcrumbs : _url_BreadCrumbs;
 
     if (!breadCrumbsList?.length) return null;
 

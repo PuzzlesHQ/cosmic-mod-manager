@@ -64,8 +64,6 @@ export function ChatThread(props: ChatThreadProps) {
     const [sendingMsg, setSendingMsg] = useState(false);
     const [updatingReportStatus, setUpdatingReportStatus] = useState(false);
 
-    if (!session) return;
-
     async function FetchThreadMessages() {
         const res = await clientFetch(`/api/thread/${props.threadId}`);
         if (!res.ok) return setThread(null);
@@ -161,9 +159,8 @@ export function ChatThread(props: ChatThreadProps) {
         });
     }, [thread?.id]);
 
-    if (thread === undefined) {
-        return <SuspenseFallback />;
-    }
+    if (!session) return null;
+    if (thread === undefined) return <SuspenseFallback />;
     if (!thread) return <FormErrorMessage text={`Error loading thread ${props.threadId}!`} />;
 
     const isThreadOpen = !props.report || props.report.closed === false;

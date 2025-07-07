@@ -5,7 +5,7 @@ import { imageUrl } from "@app/utils/url";
 import { EarthIcon, LockIcon } from "lucide-react";
 import { useParams } from "react-router";
 import { CollectionListItemCard } from "~/components/item-card";
-import ProjectCardItem from "~/components/search-list-item";
+import ProjectCardItem from "~/components/misc/search-list-item";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import { CollectionPagePath } from "~/utils/urls";

@@ -8,8 +8,8 @@ import { Building2Icon, ClipboardCopyIcon, DownloadIcon, SettingsIcon, UsersIcon
 import { Outlet, useLocation } from "react-router";
 import { CubeIcon, fallbackOrgIcon } from "~/components/icons";
 import { itemType, MicrodataItemType } from "~/components/microdata";
+import { PageHeader } from "~/components/misc/page-header";
 import RefreshPage from "~/components/misc/refresh-page";
-import { PageHeader } from "~/components/page-header";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Prefetch, useNavigate, VariantButtonLink } from "~/components/ui/link";

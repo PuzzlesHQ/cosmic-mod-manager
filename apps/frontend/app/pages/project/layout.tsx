@@ -32,9 +32,9 @@ import { DiscordIcon, fallbackOrgIcon, fallbackProjectIcon, fallbackUserIcon } f
 import tagIcons from "~/components/icons/tag-icons";
 import { itemType, MicrodataItemProps, MicrodataItemType } from "~/components/microdata";
 import { DownloadAnimationContext } from "~/components/misc/download-animation";
+import { PageHeader } from "~/components/misc/page-header";
 import RefreshPage from "~/components/misc/refresh-page";
 import { TextSpacer } from "~/components/misc/text";
-import { PageHeader } from "~/components/page-header";
 import { ImgWrapper } from "~/components/ui/avatar";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";

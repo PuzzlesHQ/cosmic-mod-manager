@@ -2,7 +2,7 @@ import { pageOffsetParamNamespace } from "@app/utils/config/search";
 import { type ProjectType, SearchResultSortMethod } from "@app/utils/types";
 import type { ProjectListItem } from "@app/utils/types/api";
 import PaginatedNavigation from "~/components/misc/pagination-nav";
-import ProjectCardItem, { ViewType } from "~/components/search-list-item";
+import ProjectCardItem, { ViewType } from "~/components/misc/search-list-item";
 import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import { useSearchContext } from "./provider";

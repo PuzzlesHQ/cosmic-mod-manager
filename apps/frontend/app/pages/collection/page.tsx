@@ -1,6 +1,6 @@
 import type { ProjectType } from "@app/utils/types";
 import { useOutletContext, useParams } from "react-router";
-import ProjectCardItem from "~/components/search-list-item";
+import ProjectCardItem from "~/components/misc/search-list-item";
 import { Checkbox } from "~/components/ui/checkbox";
 import { cn } from "~/components/utils";
 import { useSession } from "~/hooks/session";

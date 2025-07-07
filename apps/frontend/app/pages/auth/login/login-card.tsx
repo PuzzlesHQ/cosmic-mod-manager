@@ -215,11 +215,11 @@ export function LoginDialog(props: LoginDialogProps) {
         });
     }
 
+    const loginCard = useMemo(() => <LoginPageCard id={loginInputId} />, []);
+
     if (!props.isMainDialog) {
         return <Slot.Slot onClick={toggleDialog}>{props.children}</Slot.Slot>;
     }
-
-    const loginCard = useMemo(() => <LoginPageCard id={loginInputId} />, []);
 
     return (
         <Dialog open={dialogOpen} onOpenChange={toggleDialog}>

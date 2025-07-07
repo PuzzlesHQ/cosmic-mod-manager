@@ -3,11 +3,11 @@ import { useTranslation } from "~/locales/provider";
 
 interface FormattedCountProps {
     count: number;
-    notation?: Intl.NumberFormatOptions["notation"];
+    options?: Intl.NumberFormatOptions;
 }
 
-export function FormattedCount({ count, notation = "compact" }: FormattedCountProps) {
+export function FormattedCount({ count, options }: FormattedCountProps) {
     const { formattedLocaleName } = useTranslation();
 
-    return FormatCount(count, formattedLocaleName, { notation: notation });
+    return FormatCount(count, formattedLocaleName, options);
 }
