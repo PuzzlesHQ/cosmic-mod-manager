@@ -1,4 +1,4 @@
-import MarkdownRenderBox from "~/components/md-renderer";
+import MarkdownRenderBox from "~/components/md-editor/md-renderer";
 
 export default function () {
     return (

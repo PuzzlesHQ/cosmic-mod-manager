@@ -1,4 +1,4 @@
-import MarkdownRenderBox from "~/components/md-renderer";
+import MarkdownRenderBox from "~/components/md-editor/md-renderer";
 import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";

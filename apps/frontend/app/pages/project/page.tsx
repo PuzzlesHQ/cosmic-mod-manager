@@ -1,4 +1,4 @@
-import MarkdownRenderBox from "~/components/md-renderer";
+import MarkdownRenderBox from "~/components/md-editor/md-renderer";
 import { useProjectData } from "~/hooks/project";
 import { useTranslation } from "~/locales/provider";
 

@@ -1,9 +1,9 @@
-import PaginatedNavigation from "@app/components/misc/pagination-nav";
-import { cn } from "@app/components/utils";
 import { pageOffsetParamNamespace } from "@app/utils/config/search";
 import { type ProjectType, SearchResultSortMethod } from "@app/utils/types";
 import type { ProjectListItem } from "@app/utils/types/api";
+import PaginatedNavigation from "~/components/misc/pagination-nav";
 import ProjectCardItem, { ViewType } from "~/components/search-list-item";
+import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import { useSearchContext } from "./provider";
 

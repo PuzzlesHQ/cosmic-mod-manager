@@ -1,14 +1,14 @@
-import RefreshPage from "@app/components/misc/refresh-page";
-import { FormErrorMessage } from "@app/components/ui/form-message";
-import { toast } from "@app/components/ui/sonner";
-import { LoadingSpinner } from "@app/components/ui/spinner";
 import { CSRF_STATE_COOKIE_NAMESPACE } from "@app/utils/constants";
 import { getAuthProviderFromString } from "@app/utils/convertors";
 import { getCookie } from "@app/utils/cookie";
 import { AuthActionIntent, AuthProvider } from "@app/utils/types";
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
+import RefreshPage from "~/components/misc/refresh-page";
+import { FormErrorMessage } from "~/components/ui/form-message";
 import Link, { useNavigate } from "~/components/ui/link";
+import { toast } from "~/components/ui/sonner";
+import { LoadingSpinner } from "~/components/ui/spinner";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import { getReturnUrl } from "../oauth-providers";

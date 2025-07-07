@@ -1,6 +1,6 @@
-import { cn } from "@app/components/utils";
 import { EnvironmentSupport } from "@app/utils/types";
 import { GlobeIcon, HardDriveIcon, MonitorIcon } from "lucide-react";
+import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 
 interface Props {

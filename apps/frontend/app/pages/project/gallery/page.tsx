@@ -1,10 +1,3 @@
-import { itemType, MicrodataItemProps, MicrodataItemType } from "@app/components/microdata";
-import { ImgLoader } from "@app/components/misc/img-loading-spinner";
-import { Button, buttonVariants } from "@app/components/ui/button";
-import { Card } from "@app/components/ui/card";
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from "@app/components/ui/dialog";
-import { VisuallyHidden } from "@app/components/ui/visually-hidden";
-import { cn } from "@app/components/utils";
 import { doesMemberHaveAccess } from "@app/utils/project";
 import { FormatString } from "@app/utils/string";
 import { type LoggedInUserData, ProjectPermission } from "@app/utils/types";
@@ -23,7 +16,14 @@ import {
     XIcon,
 } from "lucide-react";
 import { lazy, Suspense, useEffect, useState } from "react";
+import { itemType, MicrodataItemProps, MicrodataItemType } from "~/components/microdata";
+import { ImgLoader } from "~/components/misc/img-loading-spinner";
+import { Button, buttonVariants } from "~/components/ui/button";
+import { Card } from "~/components/ui/card";
 import { FormattedDate } from "~/components/ui/date";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from "~/components/ui/dialog";
+import { VisuallyHidden } from "~/components/ui/visually-hidden";
+import { cn } from "~/components/utils";
 import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";

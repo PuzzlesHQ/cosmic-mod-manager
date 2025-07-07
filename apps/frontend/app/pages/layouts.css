@@ -1,10 +1,6 @@
 @import "./page-styles.css";
 @import "./search/styles.css";
 @import "./project/styles.css";
-@import "./../components/ui/styles.css";
-@import "./../../../../packages/components/src/misc/styles.css";
-@import "./../../../../packages/components/src/ui/styles.css";
-@import "./../../../../packages/components/src/md-editor/highlightjs.css";
 
 @layer view-transitions {
     @view-transition {

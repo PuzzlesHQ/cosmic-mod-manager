@@ -1,24 +1,3 @@
-import RefreshPage from "@app/components/misc/refresh-page";
-import { Button } from "@app/components/ui/button";
-import {
-    Dialog,
-    DialogBody,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@app/components/ui/dialog";
-import { CharacterCounter, Form, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@app/components/ui/form";
-import { Input } from "@app/components/ui/input";
-import { MultiSelect } from "@app/components/ui/multi-select";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@app/components/ui/select";
-import { toast } from "@app/components/ui/sonner";
-import { LoadingSpinner } from "@app/components/ui/spinner";
-import { Textarea } from "@app/components/ui/textarea";
-import { VisuallyHidden } from "@app/components/ui/visually-hidden";
 import { projectTypes } from "@app/utils/config/project";
 import { MAX_PROJECT_NAME_LENGTH, MAX_PROJECT_SUMMARY_LENGTH } from "@app/utils/constants";
 import { getProjectTypesFromNames } from "@app/utils/convertors";
@@ -31,8 +10,28 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRightIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { CancelButton } from "~/components/ui/button";
+import RefreshPage from "~/components/misc/refresh-page";
+import { Button, CancelButton } from "~/components/ui/button";
+import {
+    Dialog,
+    DialogBody,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "~/components/ui/dialog";
+import { CharacterCounter, Form, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
 import { useNavigate } from "~/components/ui/link";
+import { MultiSelect } from "~/components/ui/multi-select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import { toast } from "~/components/ui/sonner";
+import { LoadingSpinner } from "~/components/ui/spinner";
+import { Textarea } from "~/components/ui/textarea";
+import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import { VersionPagePath } from "~/utils/urls";

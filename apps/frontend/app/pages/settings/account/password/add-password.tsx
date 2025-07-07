@@ -1,4 +1,11 @@
-import { Button } from "@app/components/ui/button";
+import { disableInteractions, enableInteractions } from "@app/utils/dom";
+import type { z } from "@app/utils/schemas";
+import { setNewPasswordFormSchema } from "@app/utils/schemas/settings";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { KeyRoundIcon, PlusIcon } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Button, CancelButton } from "~/components/ui/button";
 import {
     Dialog,
     DialogBody,
@@ -9,19 +16,11 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@app/components/ui/dialog";
-import { Form, FormField, FormItem, FormLabel, FormMessage } from "@app/components/ui/form";
-import { Input } from "@app/components/ui/input";
-import { toast } from "@app/components/ui/sonner";
-import { LoadingSpinner } from "@app/components/ui/spinner";
-import { disableInteractions, enableInteractions } from "@app/utils/dom";
-import type { z } from "@app/utils/schemas";
-import { setNewPasswordFormSchema } from "@app/utils/schemas/settings";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { KeyRoundIcon, PlusIcon } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { CancelButton } from "~/components/ui/button";
+} from "~/components/ui/dialog";
+import { Form, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
+import { toast } from "~/components/ui/sonner";
+import { LoadingSpinner } from "~/components/ui/spinner";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 

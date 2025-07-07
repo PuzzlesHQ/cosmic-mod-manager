@@ -1,8 +1,8 @@
-import { Checkbox } from "@app/components/ui/checkbox";
-import { cn } from "@app/components/utils";
 import type { ProjectType } from "@app/utils/types";
 import { useOutletContext, useParams } from "react-router";
 import ProjectCardItem from "~/components/search-list-item";
+import { Checkbox } from "~/components/ui/checkbox";
+import { cn } from "~/components/utils";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import type { CollectionOutletData } from "./layout";

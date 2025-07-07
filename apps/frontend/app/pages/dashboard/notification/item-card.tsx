@@ -1,8 +1,3 @@
-import { fallbackProjectIcon, fallbackUserIcon } from "@app/components/icons";
-import { Button } from "@app/components/ui/button";
-import { toast } from "@app/components/ui/sonner";
-import { LoadingSpinner } from "@app/components/ui/spinner";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@app/components/ui/tooltip";
 import type { ProjectListItem } from "@app/utils/types/api";
 import type {
     OrganizationInviteNotification,
@@ -12,10 +7,15 @@ import type {
 import { imageUrl } from "@app/utils/url";
 import { CalendarIcon, CheckCheckIcon, CheckIcon, Trash2Icon, XIcon } from "lucide-react";
 import { useState } from "react";
+import { fallbackProjectIcon, fallbackUserIcon } from "~/components/icons";
 import { ImgWrapper } from "~/components/ui/avatar";
+import { Button } from "~/components/ui/button";
 import { FormattedDate, TimePassedSince } from "~/components/ui/date";
 import Link, { useNavigate } from "~/components/ui/link";
 import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
+import { toast } from "~/components/ui/sonner";
+import { LoadingSpinner } from "~/components/ui/spinner";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 import { useTranslation } from "~/locales/provider";
 import { acceptTeamInvite, leaveTeam } from "~/pages/project/settings/members/utils";
 import { ProjectPagePath, UserProfilePath } from "~/utils/urls";

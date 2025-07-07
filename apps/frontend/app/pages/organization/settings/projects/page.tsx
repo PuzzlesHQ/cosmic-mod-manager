@@ -1,7 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@app/components/ui/card";
-
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@app/components/ui/tooltip";
 import { BadgeInfoIcon } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 import { useOrgData } from "~/hooks/org";
 import { useTranslation } from "~/locales/provider";
 import CreateNewProjectDialog from "~/pages/dashboard/projects/new-project";

@@ -1,23 +1,32 @@
-import { FormattedDate as DefaultFormattedDate } from "@app/components/ui/date";
 import { FormatDate_ToLocaleString, timeSince } from "@app/utils/date";
 import { Capitalize } from "@app/utils/string";
-import type React from "react";
 import ClientOnly from "~/components/client-only";
-import { formatLocaleCode } from "~/locales";
 import { useTranslation } from "~/locales/provider";
 
-type FormatDateProps = Omit<React.ComponentProps<typeof DefaultFormattedDate>, "locale">;
+interface FormatDateProps {
+    date: Date | string;
+    shortMonthNames?: boolean;
+    utc?: boolean;
+
+    includeTime?: boolean;
+    includeYear?: boolean;
+    includeMonth?: boolean;
+    includeDay?: boolean;
+}
 
 export function FormattedDate(props: FormatDateProps) {
-    const { locale } = useTranslation();
+    const { formattedLocaleName } = useTranslation();
 
     return (
         <ClientOnly
-            fallback={<DefaultFormattedDate utc={true} locale={formatLocaleCode(locale)} {...props} />}
+            fallback={FormatDate_ToLocaleString(props.date, {
+                locale: formattedLocaleName,
+                ...props,
+            })}
             Element={() => {
                 return FormatDate_ToLocaleString(props.date, {
                     utc: false,
-                    locale: formatLocaleCode(locale),
+                    locale: formattedLocaleName,
                     ...props,
                 });
             }}
@@ -31,10 +40,10 @@ interface TimePassedSinceProps {
 }
 
 export function TimePassedSince(props: TimePassedSinceProps) {
-    const { locale } = useTranslation();
+    const { formattedLocaleName } = useTranslation();
     const date = new Date(props.date);
 
-    const timeStr = timeSince(date, formatLocaleCode(locale));
+    const timeStr = timeSince(date, formattedLocaleName);
     if (props.capitalize) return Capitalize(timeStr);
     return timeStr;
 }

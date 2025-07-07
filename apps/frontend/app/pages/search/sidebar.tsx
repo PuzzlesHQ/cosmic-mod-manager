@@ -1,8 +1,3 @@
-import { TagIcon } from "@app/components/icons/tag-icons";
-import { LabelledCheckbox } from "@app/components/ui/checkbox";
-import { Input } from "@app/components/ui/input";
-import { LabelledTernaryCheckbox, TernaryStates } from "@app/components/ui/ternary-checkbox";
-import { cn } from "@app/components/utils";
 import {
     categoryFilterParamNamespace,
     environmentFilterParamNamespace,
@@ -18,8 +13,13 @@ import { ChevronDownIcon, ChevronUpIcon, FilterXIcon } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
 import { useSearchParams } from "react-router";
+import { TagIcon } from "~/components/icons/tag-icons";
+import { LabelledCheckbox } from "~/components/ui/checkbox";
+import { Input } from "~/components/ui/input";
 import { VariantButtonLink } from "~/components/ui/link";
 import { SkipNav } from "~/components/ui/skip-nav";
+import { LabelledTernaryCheckbox, TernaryStates } from "~/components/ui/ternary-checkbox";
+import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import { getCurrLocation } from "~/utils/urls";
 import { NOT, removePageOffsetSearchParam, updateSearchParam, updateTernaryState_SearchParam } from "./provider";

@@ -1,5 +1,5 @@
-import { toast } from "@app/components/ui/sonner";
 import { useEffect } from "react";
+import { toast } from "~/components/ui/sonner";
 import { useNavigate } from "./ui/link";
 
 export default function ToastAnnouncer() {

@@ -1,5 +1,13 @@
-import RefreshPage from "@app/components/misc/refresh-page";
-import { Button } from "@app/components/ui/button";
+import { disableInteractions } from "@app/utils/dom";
+import type { z } from "@app/utils/schemas";
+import { removeAccountPasswordFormSchema } from "@app/utils/schemas/settings";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Trash2Icon } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useLocation } from "react-router";
+import RefreshPage from "~/components/misc/refresh-page";
+import { Button, CancelButton } from "~/components/ui/button";
 import {
     Dialog,
     DialogBody,
@@ -10,21 +18,12 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@app/components/ui/dialog";
-import { Form, FormField, FormItem, FormLabel, FormMessage } from "@app/components/ui/form";
-import { Input } from "@app/components/ui/input";
-import { toast } from "@app/components/ui/sonner";
-import { LoadingSpinner } from "@app/components/ui/spinner";
-import { disableInteractions } from "@app/utils/dom";
-import type { z } from "@app/utils/schemas";
-import { removeAccountPasswordFormSchema } from "@app/utils/schemas/settings";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Trash2Icon } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useLocation } from "react-router";
-import { CancelButton } from "~/components/ui/button";
+} from "~/components/ui/dialog";
+import { Form, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
 import { useNavigate } from "~/components/ui/link";
+import { toast } from "~/components/ui/sonner";
+import { LoadingSpinner } from "~/components/ui/spinner";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 

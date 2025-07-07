@@ -1,14 +1,14 @@
-import { fallbackProjectIcon, fallbackUserIcon } from "@app/components/icons";
-import { Card, CardContent, CardHeader, CardTitle } from "@app/components/ui/card";
-import { cn } from "@app/components/utils";
 import type { ProjectType } from "@app/utils/types";
 import type { ModerationProjectItem } from "@app/utils/types/api/moderation";
 import { imageUrl } from "@app/utils/url";
 import { AlertTriangleIcon, EyeIcon, TriangleAlertIcon } from "lucide-react";
 import { useState } from "react";
+import { fallbackProjectIcon, fallbackUserIcon } from "~/components/icons";
 import { ImgWrapper } from "~/components/ui/avatar";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { TimePassedSince } from "~/components/ui/date";
 import Link, { VariantButtonLink } from "~/components/ui/link";
+import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import { OrgPagePath, ProjectPagePath, UserProfilePath } from "~/utils/urls";
 

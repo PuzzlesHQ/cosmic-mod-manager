@@ -1,8 +1,3 @@
-import { BrandIcon, CubeIcon } from "@app/components/icons";
-import { Button } from "@app/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@app/components/ui/popover";
-import { Separator } from "@app/components/ui/separator";
-import { cn } from "@app/components/utils";
 import { projectTypes } from "@app/utils/config/project";
 import { Capitalize } from "@app/utils/string";
 import type { LoggedInUserData } from "@app/utils/types";
@@ -12,8 +7,13 @@ import type React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigation } from "react-router";
 import ClientOnly from "~/components/client-only";
+import { BrandIcon, CubeIcon } from "~/components/icons";
+import { Button } from "~/components/ui/button";
 import Link, { ButtonLink } from "~/components/ui/link";
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
+import { Separator } from "~/components/ui/separator";
 import ThemeSwitch from "~/components/ui/theme-switcher";
+import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import CreateNewCollection_Dialog from "~/pages/dashboard/collections/new-collection";
 import CreateNewOrg_Dialog from "~/pages/dashboard/organization/new-organization";
@@ -21,7 +21,6 @@ import CreateNewProjectDialog from "~/pages/dashboard/projects/new-project";
 import Config from "~/utils/config";
 import { HamMenu, MobileNav } from "./mobile-nav";
 import NavButton from "./nav-button";
-import "./styles.css";
 
 interface NavbarProps {
     session: LoggedInUserData | null;

@@ -1,8 +1,7 @@
-import { Panel, PanelAside, PanelAsideNavCard, PanelContent } from "@app/components/misc/panel";
-import { Prefetch } from "@app/components/ui/link";
 import { CopyrightIcon, HeartHandshakeIcon, LockIcon, ScaleIcon, ShieldIcon } from "lucide-react";
 import { Outlet } from "react-router";
-import { ButtonLink } from "~/components/ui/link";
+import { Panel, PanelAside, PanelAsideNavCard, PanelContent } from "~/components/misc/panel";
+import { ButtonLink, Prefetch } from "~/components/ui/link";
 import { useTranslation } from "~/locales/provider";
 import { FormatUrl_WithHintLocale } from "~/utils/urls";
 

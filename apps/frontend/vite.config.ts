@@ -43,8 +43,8 @@ export default defineConfig({
                     if (id.endsWith(".css")) return "styles";
 
                     // Icons
-                    if (id.includes("components/src/icons/tag-icons")) return "tag-icons";
-                    if (id.includes("components/src/icons")) return "icons";
+                    if (id.includes("components/icons/tag-icons")) return "tag-icons";
+                    if (id.includes("components/icons")) return "icons";
 
                     for (let i = 0; i < CustomSrcChunks.length; i++) {
                         const [chunkName, paths] = CustomSrcChunks[i];

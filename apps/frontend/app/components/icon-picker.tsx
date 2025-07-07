@@ -1,13 +1,13 @@
-import { Button, buttonVariants } from "@app/components/ui/button";
-import { FormItem, FormLabel, FormMessage } from "@app/components/ui/form";
-import { InteractiveLabel } from "@app/components/ui/label";
-import { toast } from "@app/components/ui/sonner";
-import { cn } from "@app/components/utils";
 import { getFileType } from "@app/utils/convertors";
 import { validImgFileExtensions } from "@app/utils/schemas/utils";
 import { isImageFile } from "@app/utils/schemas/validation";
 import { imageUrl } from "@app/utils/url";
 import { Trash2Icon, UploadIcon } from "lucide-react";
+import { Button, buttonVariants } from "~/components/ui/button";
+import { FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import { InteractiveLabel } from "~/components/ui/label";
+import { toast } from "~/components/ui/sonner";
+import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import { ImgWrapper } from "./ui/avatar";
 

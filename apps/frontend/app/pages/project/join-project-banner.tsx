@@ -1,10 +1,10 @@
-import { Button } from "@app/components/ui/button";
-import { Card, CardTitle } from "@app/components/ui/card";
-import { toast } from "@app/components/ui/sonner";
-import { LoadingSpinner } from "@app/components/ui/spinner";
-import { cn } from "@app/components/utils";
 import { CheckIcon, XIcon } from "lucide-react";
 import { useState } from "react";
+import { Button } from "~/components/ui/button";
+import { Card, CardTitle } from "~/components/ui/card";
+import { toast } from "~/components/ui/sonner";
+import { LoadingSpinner } from "~/components/ui/spinner";
+import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import { acceptTeamInvite, leaveTeam } from "./settings/members/utils";
 

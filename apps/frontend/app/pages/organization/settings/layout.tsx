@@ -1,5 +1,9 @@
-import { CubeIcon, fallbackOrgIcon } from "@app/components/icons";
-import { ContentCardTemplate, Panel, PanelAside, PanelContent } from "@app/components/misc/panel";
+import { imageUrl } from "@app/utils/url";
+import { BarChart2Icon, SettingsIcon, UsersIcon } from "lucide-react";
+import { Outlet } from "react-router";
+import { CubeIcon, fallbackOrgIcon } from "~/components/icons";
+import { ContentCardTemplate, Panel, PanelAside, PanelContent } from "~/components/misc/panel";
+import { ImgWrapper } from "~/components/ui/avatar";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -7,13 +11,8 @@ import {
     BreadcrumbList,
     BreadcrumbPage,
     BreadcrumbSeparator,
-} from "@app/components/ui/breadcrumb";
-import { Prefetch } from "@app/components/ui/link";
-import { imageUrl } from "@app/utils/url";
-import { BarChart2Icon, SettingsIcon, UsersIcon } from "lucide-react";
-import { Outlet } from "react-router";
-import { ImgWrapper } from "~/components/ui/avatar";
-import { ButtonLink } from "~/components/ui/link";
+} from "~/components/ui/breadcrumb";
+import { ButtonLink, Prefetch } from "~/components/ui/link";
 import { useOrgData } from "~/hooks/org";
 import { useTranslation } from "~/locales/provider";
 import { appendPathInUrl, FormatUrl_WithHintLocale, OrgPagePath } from "~/utils/urls";

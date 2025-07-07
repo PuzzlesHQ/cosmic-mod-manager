@@ -1,7 +1,6 @@
-import { Prefetch } from "@app/components/ui/link";
-import { cn } from "@app/components/utils";
 import { Capitalize } from "@app/utils/string";
-import { ButtonLink } from "~/components/ui/link";
+import { ButtonLink, Prefetch } from "~/components/ui/link";
+import { cn } from "~/components/utils";
 import { appendPathInUrl } from "~/utils/urls";
 
 interface LinkItem {

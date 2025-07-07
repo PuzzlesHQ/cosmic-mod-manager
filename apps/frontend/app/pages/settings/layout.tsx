@@ -1,8 +1,7 @@
-import { Panel, PanelAside, PanelAsideNavCard, PanelContent } from "@app/components/misc/panel";
-import { Prefetch } from "@app/components/ui/link";
 import { MonitorSmartphoneIcon, PaintbrushIcon, ShieldIcon, UserIcon } from "lucide-react";
 import { Outlet } from "react-router";
-import { ButtonLink } from "~/components/ui/link";
+import { Panel, PanelAside, PanelAsideNavCard, PanelContent } from "~/components/misc/panel";
+import { ButtonLink, Prefetch } from "~/components/ui/link";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 

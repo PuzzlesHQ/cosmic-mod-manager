@@ -1,11 +1,10 @@
-import { Button } from "@app/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@app/components/ui/card";
-import { FormSuccessMessage } from "@app/components/ui/form-message";
-import { toast } from "@app/components/ui/sonner";
-import { LoadingSpinner } from "@app/components/ui/spinner";
 import { Trash2Icon } from "lucide-react";
 import { useState } from "react";
-import { CancelButton } from "~/components/ui/button";
+import { Button, CancelButton } from "~/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
+import { FormSuccessMessage } from "~/components/ui/form-message";
+import { toast } from "~/components/ui/sonner";
+import { LoadingSpinner } from "~/components/ui/spinner";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";

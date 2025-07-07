@@ -1,12 +1,12 @@
-import { fallbackUserIcon } from "@app/components/icons";
-import { NotificationBadge } from "@app/components/ui/badge";
-import { cn } from "@app/components/utils";
 import { MODERATOR_ROLES } from "@app/utils/src/constants/roles";
 import type { LoggedInUserData } from "@app/utils/types";
 import type { Notification } from "@app/utils/types/api/notification";
 import { imageUrl } from "@app/utils/url";
 import { BellIcon, Building2Icon, LayoutListIcon, ScaleIcon, Settings2Icon, UserIcon } from "lucide-react";
+import { fallbackUserIcon } from "~/components/icons";
 import { ImgWrapper } from "~/components/ui/avatar";
+import { NotificationBadge } from "~/components/ui/badge";
+import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import { UserProfilePath } from "~/utils/urls";
 import { LoginButton, SignOutBtn } from "./nav-button";

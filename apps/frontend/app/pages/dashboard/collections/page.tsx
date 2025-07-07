@@ -1,17 +1,17 @@
-import { Button } from "@app/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@app/components/ui/card";
-import { EarthIcon, HeartIcon, LockIcon, PlusIcon } from "lucide-react";
-import { CollectionListItemCard } from "~/components/item-card";
-import { useTranslation } from "~/locales/provider";
-import CreateNewCollection_Dialog from "./new-collection";
-import type { Collection } from "@app/utils/types/api";
-import { CollectionPagePath } from "~/utils/urls";
-import { imageUrl } from "@app/utils/url";
-import { CollectionVisibility } from "@app/utils/types";
-import useCollections from "~/pages/collection/provider";
-import { useState } from "react";
-import { Input } from "@app/components/ui/input";
 import { FOLLOWS_COLLECTIONS_ID } from "@app/utils/constants";
+import { CollectionVisibility } from "@app/utils/types";
+import type { Collection } from "@app/utils/types/api";
+import { imageUrl } from "@app/utils/url";
+import { EarthIcon, HeartIcon, LockIcon, PlusIcon } from "lucide-react";
+import { useState } from "react";
+import { CollectionListItemCard } from "~/components/item-card";
+import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { Input } from "~/components/ui/input";
+import { useTranslation } from "~/locales/provider";
+import useCollections from "~/pages/collection/provider";
+import { CollectionPagePath } from "~/utils/urls";
+import CreateNewCollection_Dialog from "./new-collection";
 
 interface Props {
     collections: Collection[];

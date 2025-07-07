@@ -1,9 +1,9 @@
-import { SuspenseFallback } from "@app/components/ui/spinner";
 import { encodeArrayIntoStr } from "@app/utils/string";
 import type { OrganisationListItem, ProjectListItem } from "@app/utils/types/api";
 import { type Notification, NotificationType } from "@app/utils/types/api/notification";
 import type { UserProfileData } from "@app/utils/types/api/user";
 import { useLoaderData } from "react-router";
+import { SuspenseFallback } from "~/components/ui/spinner";
 import { useTranslation } from "~/locales/provider";
 import NotificationsPage from "~/pages/dashboard/notification/page";
 import clientFetch from "~/utils/client-fetch";

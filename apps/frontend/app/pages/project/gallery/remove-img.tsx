@@ -1,9 +1,9 @@
-import RefreshPage from "@app/components/misc/refresh-page";
-import { toast } from "@app/components/ui/sonner";
 import type { ProjectDetailsData } from "@app/utils/types/api";
 import { useLocation } from "react-router";
 import ConfirmDialog from "~/components/confirm-dialog";
+import RefreshPage from "~/components/misc/refresh-page";
 import { useNavigate } from "~/components/ui/link";
+import { toast } from "~/components/ui/sonner";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 

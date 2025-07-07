@@ -1,4 +1,7 @@
-import { Button, type ButtonVariants_T } from "@app/components/ui/button";
+import { Trash2Icon } from "lucide-react";
+import type React from "react";
+import { useState } from "react";
+import { Button, type ButtonVariants_T, CancelButton } from "~/components/ui/button";
 import {
     Dialog,
     DialogBody,
@@ -9,12 +12,8 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@app/components/ui/dialog";
-import { LoadingSpinner } from "@app/components/ui/spinner";
-import { Trash2Icon } from "lucide-react";
-import type React from "react";
-import { useState } from "react";
-import { CancelButton } from "~/components/ui/button";
+} from "~/components/ui/dialog";
+import { LoadingSpinner } from "~/components/ui/spinner";
 
 interface ConfirmDialogProps extends ButtonVariants_T {
     title: string;

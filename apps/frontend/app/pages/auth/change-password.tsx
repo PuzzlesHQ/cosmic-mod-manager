@@ -1,18 +1,17 @@
-import { Button } from "@app/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@app/components/ui/card";
-import { Form, FormField, FormItem, FormLabel, FormMessage } from "@app/components/ui/form";
-import HorizontalSeparator from "@app/components/ui/hr-separator";
-import { Input } from "@app/components/ui/input";
-import { Prefetch } from "@app/components/ui/link";
-import { toast } from "@app/components/ui/sonner";
-import { LoadingSpinner } from "@app/components/ui/spinner";
 import type { z } from "@app/utils/schemas";
 import { sendAccoutPasswordChangeLinkFormSchema } from "@app/utils/schemas/settings";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRightIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { TextLink } from "~/components/ui/link";
+import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
+import { Form, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import HorizontalSeparator from "~/components/ui/hr-separator";
+import { Input } from "~/components/ui/input";
+import { Prefetch, TextLink } from "~/components/ui/link";
+import { toast } from "~/components/ui/sonner";
+import { LoadingSpinner } from "~/components/ui/spinner";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 

@@ -1,8 +1,8 @@
-import { FormErrorMessage, FormSuccessMessage } from "@app/components/ui/form-message";
-import { toast } from "@app/components/ui/sonner";
-import { LoadingSpinner } from "@app/components/ui/spinner";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
+import { FormErrorMessage, FormSuccessMessage } from "~/components/ui/form-message";
+import { toast } from "~/components/ui/sonner";
+import { LoadingSpinner } from "~/components/ui/spinner";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 

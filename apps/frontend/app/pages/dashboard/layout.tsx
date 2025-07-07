@@ -1,4 +1,3 @@
-import { Panel, PanelAside, PanelAsideNavCard, PanelContent } from "@app/components/misc/panel";
 import {
     BarChart2Icon,
     BellIcon,
@@ -10,6 +9,7 @@ import {
     LibraryIcon,
 } from "lucide-react";
 import { Outlet } from "react-router";
+import { Panel, PanelAside, PanelAsideNavCard, PanelContent } from "~/components/misc/panel";
 import { ButtonLink } from "~/components/ui/link";
 import { useTranslation } from "~/locales/provider";
 

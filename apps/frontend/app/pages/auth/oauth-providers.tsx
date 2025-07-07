@@ -1,7 +1,7 @@
-import { DiscordIcon, GithubIcon, GitlabIcon, GoogleIcon } from "@app/components/icons";
 import { AuthActionIntent, AuthProvider } from "@app/utils/types";
 import React from "react";
 import type { useLocation } from "react-router";
+import { DiscordIcon, GithubIcon, GitlabIcon, GoogleIcon } from "~/components/icons";
 import { VariantButtonLink } from "~/components/ui/link";
 import Config from "~/utils/config";
 import { FormatUrl_WithHintLocale } from "~/utils/urls";

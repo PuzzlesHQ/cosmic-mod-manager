@@ -1,18 +1,3 @@
-import { ViewType } from "@app/components/misc/search-list-item";
-import { Button } from "@app/components/ui/button";
-import { Card } from "@app/components/ui/card";
-import { Input } from "@app/components/ui/input";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from "@app/components/ui/select";
-import { TooltipProvider, TooltipTemplate } from "@app/components/ui/tooltip";
-import { cn } from "@app/components/utils";
 import { projectTypes } from "@app/utils/config/project";
 import {
     defaultSearchLimit,
@@ -27,6 +12,13 @@ import { FilterIcon, ImageIcon, LayoutListIcon, SearchIcon } from "lucide-react"
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useSpinnerCtx } from "~/components/global-spinner";
+import { ViewType } from "~/components/misc/search-list-item";
+import { Button } from "~/components/ui/button";
+import { Card } from "~/components/ui/card";
+import { Input } from "~/components/ui/input";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "~/components/ui/select";
+import { TooltipProvider, TooltipTemplate } from "~/components/ui/tooltip";
+import { cn } from "~/components/utils";
 import { setUserConfig, type UserConfig, useUserConfig } from "~/hooks/user-config";
 import { useTranslation } from "~/locales/provider";
 import { removePageOffsetSearchParam, updateSearchParam, useSearchContext } from "./provider";

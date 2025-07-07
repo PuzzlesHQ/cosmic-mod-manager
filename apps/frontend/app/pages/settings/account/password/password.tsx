@@ -1,6 +1,6 @@
-import { Button } from "@app/components/ui/button";
 import type { LoggedInUserData } from "@app/utils/types";
 import { KeyRound } from "lucide-react";
+import { Button } from "~/components/ui/button";
 import Link from "~/components/ui/link";
 import { useTranslation } from "~/locales/provider";
 import AddPasswordForm from "./add-password";

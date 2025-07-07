@@ -1,14 +1,14 @@
-import { fallbackProjectIcon } from "@app/components/icons";
-import { Card, CardContent, CardHeader, CardTitle } from "@app/components/ui/card";
-import CopyBtn from "@app/components/ui/copy-btn";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@app/components/ui/table";
 import { FormatProjectTypes } from "@app/utils/project";
 import type { ProjectListItem } from "@app/utils/types/api";
 import { imageUrl } from "@app/utils/url";
 import { SettingsIcon } from "lucide-react";
+import { fallbackProjectIcon } from "~/components/icons";
 import { ImgWrapper } from "~/components/ui/avatar";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import CopyBtn from "~/components/ui/copy-btn";
 import Link, { useNavigate } from "~/components/ui/link";
 import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import { useTranslation } from "~/locales/provider";
 import { ProjectPagePath } from "~/utils/urls";
 import CreateNewProjectDialog from "./new-project";

@@ -1,28 +1,3 @@
-import { fallbackProjectIcon } from "@app/components/icons";
-import { ContentCardTemplate } from "@app/components/misc/panel";
-import RefreshPage from "@app/components/misc/refresh-page";
-import { Button } from "@app/components/ui/button";
-import { Card, CardContent } from "@app/components/ui/card";
-import {
-    Dialog,
-    DialogBody,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@app/components/ui/dialog";
-import { CharacterCounter, Form, FormField, FormItem, FormLabel, FormMessage } from "@app/components/ui/form";
-import { Input } from "@app/components/ui/input";
-import { MultiSelect } from "@app/components/ui/multi-select";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@app/components/ui/select";
-import { toast } from "@app/components/ui/sonner";
-import { LoadingSpinner } from "@app/components/ui/spinner";
-import { Textarea } from "@app/components/ui/textarea";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@app/components/ui/tooltip";
-import { VisuallyHidden } from "@app/components/ui/visually-hidden";
 import { projectTypes, ShowEnvSupportSettingsForType } from "@app/utils/config/project";
 import { MAX_PROJECT_NAME_LENGTH, MAX_PROJECT_SUMMARY_LENGTH } from "@app/utils/constants";
 import { getProjectTypesFromNames, getProjectVisibilityFromString } from "@app/utils/convertors";
@@ -36,9 +11,33 @@ import { CheckIcon, SaveIcon, Trash2Icon, TriangleAlertIcon, XIcon } from "lucid
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import IconPicker from "~/components/icon-picker";
-import MarkdownRenderBox from "~/components/md-renderer";
-import { CancelButton } from "~/components/ui/button";
+import { fallbackProjectIcon } from "~/components/icons";
+import MarkdownRenderBox from "~/components/md-editor/md-renderer";
+import { ContentCardTemplate } from "~/components/misc/panel";
+import RefreshPage from "~/components/misc/refresh-page";
+import { Button, CancelButton } from "~/components/ui/button";
+import { Card, CardContent } from "~/components/ui/card";
+import {
+    Dialog,
+    DialogBody,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "~/components/ui/dialog";
+import { CharacterCounter, Form, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
 import { useNavigate } from "~/components/ui/link";
+import { MultiSelect } from "~/components/ui/multi-select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import { toast } from "~/components/ui/sonner";
+import { LoadingSpinner } from "~/components/ui/spinner";
+import { Textarea } from "~/components/ui/textarea";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";

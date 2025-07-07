@@ -1,6 +1,6 @@
-import { ProjectStatusDesc, ProjectStatusIcon } from "@app/components/icons";
-import { cn } from "@app/components/utils";
 import { ProjectPublishingStatus } from "@app/utils/types";
+import { ProjectStatusDesc, ProjectStatusIcon } from "~/components/icons";
+import { cn } from "~/components/utils";
 import type { Locale } from "~/locales/types";
 
 interface ProjectStatusBadge {

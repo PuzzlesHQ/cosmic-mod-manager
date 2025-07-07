@@ -1,9 +1,9 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@app/components/ui/card";
 import { isApproved, isRejected, isUnderReview } from "@app/utils/config/project";
 import { isModerator } from "@app/utils/constants/roles";
 import { TriangleAlertIcon } from "lucide-react";
 import { ChatThread } from "~/components/layout/chat/chat-thread";
-import MarkdownRenderBox from "~/components/md-renderer";
+import MarkdownRenderBox from "~/components/md-editor/md-renderer";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
 import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";

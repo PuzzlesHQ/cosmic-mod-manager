@@ -1,8 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@app/components/ui/card";
 import type { Report } from "@app/utils/types/api/report";
 import { useLoaderData } from "react-router";
 import { ReportsDataLoader } from "~/components/layout/report/_additional-data-loader";
 import ReportList from "~/components/layout/report/report-list";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { SoftRedirect } from "~/components/ui/redirect";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";

@@ -1,6 +1,6 @@
-import { Button, type ButtonVariants_T } from "@app/components/ui/button";
 import type { ReportItemType } from "@app/utils/types/api/report";
 import { FlagIcon } from "lucide-react";
+import { Button, type ButtonVariants_T } from "~/components/ui/button";
 import { useNavigate } from "~/components/ui/link";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";

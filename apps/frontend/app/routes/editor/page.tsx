@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MarkdownEditor from "~/components/md-editor";
+import MarkdownEditor from "~/components/md-editor/editor";
 
 const defaultText = `# h1 Heading
 ## h2 Heading

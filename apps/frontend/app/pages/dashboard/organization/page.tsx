@@ -1,10 +1,10 @@
-import { Button } from "@app/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@app/components/ui/card";
-import { FullWidthSpinner } from "@app/components/ui/spinner";
 import type { Organisation } from "@app/utils/types/api";
 import { imageUrl } from "@app/utils/url";
 import { PlusIcon } from "lucide-react";
 import { OrgListItemCard } from "~/components/item-card";
+import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { FullWidthSpinner } from "~/components/ui/spinner";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import { OrgPagePath } from "~/utils/urls";

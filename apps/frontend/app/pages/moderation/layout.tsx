@@ -1,8 +1,8 @@
-import { Panel, PanelAside, PanelAsideNavCard, PanelContent } from "@app/components/misc/panel";
 import { MODERATOR_ROLES } from "@app/utils/src/constants/roles";
 import type { GlobalUserRole } from "@app/utils/types";
 import { BarChart2Icon, FlagIcon, LayoutDashboardIcon, ScaleIcon } from "lucide-react";
 import { Outlet } from "react-router";
+import { Panel, PanelAside, PanelAsideNavCard, PanelContent } from "~/components/misc/panel";
 import { ButtonLink } from "~/components/ui/link";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";

@@ -1,5 +1,5 @@
-import { Button } from "@app/components/ui/button";
 import { TriangleAlertIcon } from "lucide-react";
+import { Button } from "~/components/ui/button";
 import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";

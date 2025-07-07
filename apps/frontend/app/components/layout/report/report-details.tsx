@@ -1,3 +1,6 @@
+import { isModerator } from "@app/utils/constants/roles";
+import type { DetailedReport } from "@app/utils/types/api/report";
+import MarkdownRenderBox from "~/components/md-editor/md-renderer";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -5,11 +8,8 @@ import {
     BreadcrumbList,
     BreadcrumbPage,
     BreadcrumbSeparator,
-} from "@app/components/ui/breadcrumb";
-import { Card, CardContent, CardHeader, CardTitle } from "@app/components/ui/card";
-import { isModerator } from "@app/utils/constants/roles";
-import type { DetailedReport } from "@app/utils/types/api/report";
-import MarkdownRenderBox from "~/components/md-renderer";
+} from "~/components/ui/breadcrumb";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import { ChatThread } from "../chat/chat-thread";

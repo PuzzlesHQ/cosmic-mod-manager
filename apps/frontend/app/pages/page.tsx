@@ -1,14 +1,13 @@
-import { BrandIcon, fallbackProjectIcon } from "@app/components/icons";
-import { MicrodataItemProps } from "@app/components/microdata";
-import { Prefetch } from "@app/components/ui/link";
-import { cn } from "@app/components/utils";
 import type { ProjectListItem } from "@app/utils/types/api";
 import { imageUrl } from "@app/utils/url";
 import { CompassIcon, LayoutDashboardIcon, LogInIcon } from "lucide-react";
 import { type CSSProperties, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import { BrandIcon, fallbackProjectIcon } from "~/components/icons";
+import { MicrodataItemProps } from "~/components/microdata";
 import { ImgWrapper } from "~/components/ui/avatar";
-import Link, { VariantButtonLink } from "~/components/ui/link";
+import Link, { Prefetch, VariantButtonLink } from "~/components/ui/link";
+import { cn } from "~/components/utils";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import { ProjectPagePath } from "~/utils/urls";

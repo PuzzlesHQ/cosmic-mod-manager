@@ -1,10 +1,10 @@
-import { Button } from "@app/components/ui/button";
-import { LabelledCheckbox } from "@app/components/ui/checkbox";
-import { Input } from "@app/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@app/components/ui/popover";
 import { BookmarkIcon, PlusIcon, SquareArrowOutUpRightIcon } from "lucide-react";
 import { useState } from "react";
+import { Button } from "~/components/ui/button";
+import { LabelledCheckbox } from "~/components/ui/checkbox";
+import { Input } from "~/components/ui/input";
 import Link from "~/components/ui/link";
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import CreateNewCollection_Dialog from "~/pages/dashboard/collections/new-collection";

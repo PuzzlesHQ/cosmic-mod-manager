@@ -1,22 +1,3 @@
-import RefreshPage from "@app/components/misc/refresh-page";
-import { Button } from "@app/components/ui/button";
-import {
-    Dialog,
-    DialogBody,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@app/components/ui/dialog";
-import { CharacterCounter, Form, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@app/components/ui/form";
-import { Input } from "@app/components/ui/input";
-import { toast } from "@app/components/ui/sonner";
-import { LoadingSpinner } from "@app/components/ui/spinner";
-import { Textarea } from "@app/components/ui/textarea";
-import { VisuallyHidden } from "@app/components/ui/visually-hidden";
 import { MAX_GALLERY_DESCRIPTION_LENGTH, MAX_GALLERY_TITLE_LENGTH } from "@app/utils/constants";
 import type { z } from "@app/utils/schemas";
 import { updateGalleryImageFormSchema } from "@app/utils/schemas/project/settings/gallery";
@@ -27,8 +8,26 @@ import { Edit3Icon, FileIcon, SaveIcon, StarIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router";
-import { CancelButton } from "~/components/ui/button";
+import RefreshPage from "~/components/misc/refresh-page";
+import { Button, CancelButton } from "~/components/ui/button";
+import {
+    Dialog,
+    DialogBody,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "~/components/ui/dialog";
+import { CharacterCounter, Form, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
 import { useNavigate } from "~/components/ui/link";
+import { toast } from "~/components/ui/sonner";
+import { LoadingSpinner } from "~/components/ui/spinner";
+import { Textarea } from "~/components/ui/textarea";
+import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 

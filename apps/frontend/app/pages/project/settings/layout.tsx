@@ -1,14 +1,3 @@
-import { fallbackProjectIcon } from "@app/components/icons";
-import { ContentCardTemplate, Panel, PanelAside, PanelContent } from "@app/components/misc/panel";
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
-} from "@app/components/ui/breadcrumb";
-import { Prefetch } from "@app/components/ui/link";
 import { imageUrl } from "@app/utils/url";
 import {
     BarChart2Icon,
@@ -23,12 +12,22 @@ import {
     UsersIcon,
 } from "lucide-react";
 import { Outlet } from "react-router";
+import { fallbackProjectIcon } from "~/components/icons";
+import { ContentCardTemplate, Panel, PanelAside, PanelContent } from "~/components/misc/panel";
 import { ImgWrapper } from "~/components/ui/avatar";
-import { ButtonLink } from "~/components/ui/link";
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "~/components/ui/breadcrumb";
+import { ButtonLink, Prefetch } from "~/components/ui/link";
 import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { useProjectData } from "~/hooks/project";
 import { useTranslation } from "~/locales/provider";
-import { FormatUrl_WithHintLocale, OrgPagePath, ProjectPagePath, appendPathInUrl } from "~/utils/urls";
+import { appendPathInUrl, FormatUrl_WithHintLocale, OrgPagePath, ProjectPagePath } from "~/utils/urls";
 import ModerationBanner from "../moderation-banner";
 import { PublishingChecklist } from "../publishing-checklist";
 

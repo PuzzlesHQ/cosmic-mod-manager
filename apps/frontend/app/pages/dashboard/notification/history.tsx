@@ -5,8 +5,8 @@ import {
     BreadcrumbList,
     BreadcrumbPage,
     BreadcrumbSeparator,
-} from "@app/components/ui/breadcrumb";
-import { Card, CardContent, CardHeader, CardTitle } from "@app/components/ui/card";
+} from "~/components/ui/breadcrumb";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { useTranslation } from "~/locales/provider";
 import { FormatUrl_WithHintLocale } from "~/utils/urls";
 import { type NotificationsData, NotificationsList } from "./page";

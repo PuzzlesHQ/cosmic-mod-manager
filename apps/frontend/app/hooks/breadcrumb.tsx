@@ -1,7 +1,7 @@
-import { MicrodataItemProps, MicrodataItemType, itemType } from "@app/components/microdata";
 import { projectTypes } from "@app/utils/config/project";
 import { prepend, removeLeading } from "@app/utils/string";
 import { createContext, use, useState } from "react";
+import { itemType, MicrodataItemProps, MicrodataItemType } from "~/components/microdata";
 import Link from "~/components/ui/link";
 import { DefaultLocale } from "~/locales/meta";
 import { alterUrlHintLocale, useTranslation } from "~/locales/provider";

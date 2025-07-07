@@ -1,13 +1,13 @@
-import DefaultProjectCardItem from "@app/components/misc/search-list-item";
 import { FormatCount } from "@app/utils/number";
 import type React from "react";
+import DefaultProjectCardItem from "~/components/misc/search-list-item";
 import { useRootData } from "~/hooks/root-data";
 import { useTranslation } from "~/locales/provider";
 import ProjectSupportedEnv from "~/pages/project/supported-env";
 import { OrgPagePath, ProjectPagePath, UserProfilePath } from "~/utils/urls";
 import { FormattedDate, TimePassedSince } from "./ui/date";
 
-export { ViewType } from "@app/components/misc/search-list-item";
+export { ViewType } from "~/components/misc/search-list-item";
 
 type Props = Omit<
     React.ComponentProps<typeof DefaultProjectCardItem>,

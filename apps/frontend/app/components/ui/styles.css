@@ -1,3 +1,50 @@
+/* LOADING SPINNER */
+
+.wandering_cubes_animation {
+    --frame-size: 2.1rem;
+    --cube-size: 0.5rem;
+    --animation-duration: 1.8s;
+}
+
+.wandering_cube {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--cube-size);
+    height: var(--cube-size);
+    animation-name: wandering_cubes;
+    animation-duration: var(--animation-duration);
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+.wandering_cube.cube1 {
+    animation-delay: 0;
+}
+
+.wandering_cube.cube2 {
+    animation-delay: calc(-0.5 * var(--animation-duration));
+}
+
+@keyframes wandering_cubes {
+    25% {
+        transform: translatex(calc(var(--frame-size) - var(--cube-size))) rotate(-90deg) scale(0.5);
+    }
+
+    50% {
+        transform: translatex(calc(var(--frame-size) - var(--cube-size))) translatey(calc(var(--frame-size) - var(--cube-size)))
+            rotate(-180deg);
+    }
+
+    75% {
+        transform: translatex(0) translatey(calc(var(--frame-size) - var(--cube-size))) rotate(-270deg) scale(0.5);
+    }
+
+    100% {
+        transform: rotate(-360deg);
+    }
+}
+
 /* biome-ignore lint/correctness/noUnknownTypeSelector: -_- */
 [data-view-transition="theme-switch"]::view-transition-group(root) {
     animation-duration: 0.6s;

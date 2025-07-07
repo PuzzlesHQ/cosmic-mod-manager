@@ -1,14 +1,14 @@
-import { Button } from "@app/components/ui/button";
-import { Form, FormField, FormItem, FormLabel, FormMessage } from "@app/components/ui/form";
-import { Input } from "@app/components/ui/input";
-import { toast } from "@app/components/ui/sonner";
-import { LoadingSpinner } from "@app/components/ui/spinner";
 import type { z } from "@app/utils/schemas";
 import { inviteTeamMemberFormSchema } from "@app/utils/schemas/project/settings/members";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserPlusIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Button } from "~/components/ui/button";
+import { Form, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
+import { toast } from "~/components/ui/sonner";
+import { LoadingSpinner } from "~/components/ui/spinner";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 

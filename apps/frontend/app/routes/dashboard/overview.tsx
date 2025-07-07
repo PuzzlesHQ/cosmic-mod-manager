@@ -1,6 +1,6 @@
-import { SuspenseFallback } from "@app/components/ui/spinner";
 import type { ProjectListItem } from "@app/utils/types/api";
 import { useLoaderData } from "react-router";
+import { SuspenseFallback } from "~/components/ui/spinner";
 import { useSession } from "~/hooks/session";
 import OverviewPage from "~/pages/dashboard/overview";
 import clientFetch from "~/utils/client-fetch";

@@ -1,5 +1,5 @@
-import { Button } from "@app/components/ui/button";
 import { HeartIcon } from "lucide-react";
+import { Button } from "~/components/ui/button";
 import { useSession } from "~/hooks/session";
 import { LoginDialog } from "../auth/login/login-card";
 import useCollections from "./provider";

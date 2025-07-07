@@ -1,5 +1,5 @@
-import { cn } from "@app/components/utils";
 import { VariantButtonLink } from "~/components/ui/link";
+import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";

@@ -1,7 +1,7 @@
-import { toast } from "@app/components/ui/sonner";
 import { disableInteractions, enableInteractions } from "@app/utils/dom";
 import type { Collection } from "@app/utils/types/api";
 import { createContext, use, useEffect, useState } from "react";
+import { toast } from "~/components/ui/sonner";
 import { useSession } from "~/hooks/session";
 import clientFetch from "~/utils/client-fetch";
 

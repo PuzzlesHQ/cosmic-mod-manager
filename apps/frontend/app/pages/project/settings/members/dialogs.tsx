@@ -1,7 +1,7 @@
-import { toast } from "@app/components/ui/sonner";
 import type { TeamMember } from "@app/utils/types/api";
 import { ArrowRightLeftIcon, UserXIcon } from "lucide-react";
 import ConfirmDialog from "~/components/confirm-dialog";
+import { toast } from "~/components/ui/sonner";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 

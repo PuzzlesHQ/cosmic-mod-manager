@@ -1,22 +1,3 @@
-import { fallbackProjectIcon, fallbackUserIcon } from "@app/components/icons";
-import { DownloadAnimationContext } from "@app/components/misc/download-animation";
-import { ContentCardTemplate } from "@app/components/misc/panel";
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
-} from "@app/components/ui/breadcrumb";
-import { Card } from "@app/components/ui/card";
-import Chip from "@app/components/ui/chip";
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@app/components/ui/context-menu";
-import CopyBtn, { copyTextToClipboard } from "@app/components/ui/copy-btn";
-import { Prefetch } from "@app/components/ui/link";
-import ReleaseChannelChip from "@app/components/ui/release-channel-pill";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@app/components/ui/tooltip";
-import { cn } from "@app/components/utils";
 import { parseFileSize } from "@app/utils/number";
 import { doesMemberHaveAccess } from "@app/utils/project";
 import { CapitalizeAndFormatString } from "@app/utils/string";
@@ -27,11 +8,29 @@ import { imageUrl } from "@app/utils/url";
 import { formatVersionsForDisplay_noOmit } from "@app/utils/version/format-verbose";
 import { ChevronRightIcon, CopyIcon, DownloadIcon, Edit3Icon, FileIcon, LinkIcon, StarIcon } from "lucide-react";
 import { lazy, Suspense, useContext } from "react";
-import MarkdownRenderBox from "~/components/md-renderer";
+import { fallbackProjectIcon, fallbackUserIcon } from "~/components/icons";
+import MarkdownRenderBox from "~/components/md-editor/md-renderer";
+import { DownloadAnimationContext } from "~/components/misc/download-animation";
+import { ContentCardTemplate } from "~/components/misc/panel";
 import { ImgWrapper } from "~/components/ui/avatar";
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "~/components/ui/breadcrumb";
+import { Card } from "~/components/ui/card";
+import Chip from "~/components/ui/chip";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "~/components/ui/context-menu";
+import CopyBtn, { copyTextToClipboard } from "~/components/ui/copy-btn";
 import { FormattedCount } from "~/components/ui/count";
 import { FormattedDate } from "~/components/ui/date";
-import Link, { VariantButtonLink } from "~/components/ui/link";
+import Link, { Prefetch, VariantButtonLink } from "~/components/ui/link";
+import ReleaseChannelChip from "~/components/ui/release-channel-pill";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { cn } from "~/components/utils";
 import type { ProjectContextData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";

@@ -1,13 +1,13 @@
-import { ProjectStatusIcon } from "@app/components/icons";
-import RefreshPage from "@app/components/misc/refresh-page";
-import { Button, type ButtonVariants_T } from "@app/components/ui/button";
-import { toast } from "@app/components/ui/sonner";
 import { disableInteractions, enableInteractions } from "@app/utils/dom";
 import { ProjectPublishingStatus, type ProjectType } from "@app/utils/types";
 import { useLocation } from "react-router";
 import ConfirmDialog from "~/components/confirm-dialog";
-import MarkdownRenderBox from "~/components/md-renderer";
+import { ProjectStatusIcon } from "~/components/icons";
+import MarkdownRenderBox from "~/components/md-editor/md-renderer";
+import RefreshPage from "~/components/misc/refresh-page";
+import { Button, type ButtonVariants_T } from "~/components/ui/button";
 import { useNavigate } from "~/components/ui/link";
+import { toast } from "~/components/ui/sonner";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 

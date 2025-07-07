@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@app/components/ui/card";
 import type { Statistics } from "@app/utils/types/api/stats";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { useTranslation } from "~/locales/provider";
 
 export default function StatsPage({ stats }: { stats: Statistics }) {

@@ -1,27 +1,3 @@
-import { CancelButtonIcon } from "@app/components/icons";
-import { ContentCardTemplate } from "@app/components/misc/panel";
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
-} from "@app/components/ui/breadcrumb";
-import { Button, buttonVariants } from "@app/components/ui/button";
-import { Card } from "@app/components/ui/card";
-import { LabelledCheckbox } from "@app/components/ui/checkbox";
-import { CommandSeparator } from "@app/components/ui/command";
-import { FormField, FormItem, FormLabel } from "@app/components/ui/form";
-import { Input } from "@app/components/ui/input";
-import { InteractiveLabel } from "@app/components/ui/label";
-import { Prefetch } from "@app/components/ui/link";
-import { MultiSelect } from "@app/components/ui/multi-select";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@app/components/ui/select";
-import { toast } from "@app/components/ui/sonner";
-import { LoadingSpinner } from "@app/components/ui/spinner";
-import { TooltipProvider, TooltipTemplate } from "@app/components/ui/tooltip";
-import { cn } from "@app/components/utils";
 import { getFileType } from "@app/utils/convertors";
 import { parseFileSize } from "@app/utils/number";
 import { getLoadersByProjectType } from "@app/utils/project";
@@ -36,8 +12,31 @@ import { imageUrl } from "@app/utils/url";
 import { CircleAlertIcon, FileIcon, PlusIcon, StarIcon, Trash2Icon, UploadIcon } from "lucide-react";
 import { useState } from "react";
 import type { Control, FieldValues, RefCallBack } from "react-hook-form";
+import { CancelButtonIcon } from "~/components/icons";
+import { ContentCardTemplate } from "~/components/misc/panel";
 import { ImgWrapper } from "~/components/ui/avatar";
-import { VariantButtonLink } from "~/components/ui/link";
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "~/components/ui/breadcrumb";
+import { Button, buttonVariants } from "~/components/ui/button";
+import { Card } from "~/components/ui/card";
+import { LabelledCheckbox } from "~/components/ui/checkbox";
+import { CommandSeparator } from "~/components/ui/command";
+import { FormField, FormItem, FormLabel } from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
+import { InteractiveLabel } from "~/components/ui/label";
+import { Prefetch, VariantButtonLink } from "~/components/ui/link";
+import { MultiSelect } from "~/components/ui/multi-select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import { toast } from "~/components/ui/sonner";
+import { LoadingSpinner } from "~/components/ui/spinner";
+import { TooltipProvider, TooltipTemplate } from "~/components/ui/tooltip";
+import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 

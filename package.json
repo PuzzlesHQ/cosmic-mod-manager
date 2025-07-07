@@ -14,9 +14,8 @@
     },
     "type": "module",
     "workspaces": [
-        "packages/*",
+        "packages/utils",
         "apps/backend",
-        "apps/frontend",
-        "apps/launcher/frontend"
+        "apps/frontend"
     ]
 }

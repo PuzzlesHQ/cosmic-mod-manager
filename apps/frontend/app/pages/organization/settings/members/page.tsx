@@ -1,8 +1,8 @@
-import RefreshPage from "@app/components/misc/refresh-page";
-import { CardTitle, SectionCard } from "@app/components/ui/card";
 import { doesOrgMemberHaveAccess } from "@app/utils/project";
 import { OrganisationPermission } from "@app/utils/types";
 import { useLocation } from "react-router";
+import RefreshPage from "~/components/misc/refresh-page";
+import { CardTitle, SectionCard } from "~/components/ui/card";
 import { useNavigate } from "~/components/ui/link";
 import { useOrgData } from "~/hooks/org";
 import { useSession } from "~/hooks/session";

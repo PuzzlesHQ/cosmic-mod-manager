@@ -1,7 +1,7 @@
-import { CardContent, CardHeader, CardTitle, SectionCard } from "@app/components/ui/card";
-import { Input } from "@app/components/ui/input";
-import { Label } from "@app/components/ui/label";
 import type { LinkedProvidersListData, LoggedInUserData } from "@app/utils/types";
+import { CardContent, CardHeader, CardTitle, SectionCard } from "~/components/ui/card";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
 import { useTranslation } from "~/locales/provider";
 import DeleteAccountDialog from "./delete-account";
 import ManageAuthProviders from "./manage-providers";

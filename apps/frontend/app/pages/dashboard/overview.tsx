@@ -1,10 +1,10 @@
-import { fallbackUserIcon } from "@app/components/icons";
-import { ContentCardTemplate, PanelContent_AsideCardLayout } from "@app/components/misc/panel";
-import { CardContent, CardHeader, CardTitle, SectionCard } from "@app/components/ui/card";
 import type { ProjectListItem } from "@app/utils/types/api";
 import { imageUrl } from "@app/utils/url";
 import { ChevronRightIcon, HistoryIcon } from "lucide-react";
+import { fallbackUserIcon } from "~/components/icons";
+import { ContentCardTemplate, PanelContent_AsideCardLayout } from "~/components/misc/panel";
 import { ImgWrapper } from "~/components/ui/avatar";
+import { CardContent, CardHeader, CardTitle, SectionCard } from "~/components/ui/card";
 import Link, { ButtonLink } from "~/components/ui/link";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";

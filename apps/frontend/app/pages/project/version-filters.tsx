@@ -1,9 +1,3 @@
-import { Button } from "@app/components/ui/button";
-import { LabelledCheckbox } from "@app/components/ui/checkbox";
-import { ChipButton } from "@app/components/ui/chip";
-import { CommandSeparator } from "@app/components/ui/command";
-import { MultiSelect } from "@app/components/ui/multi-select";
-import { releaseChannelTextColor } from "@app/components/ui/release-channel-pill";
 import { getLoaderFromString } from "@app/utils/convertors";
 import { sortVersionsWithReference } from "@app/utils/project";
 import {
@@ -18,6 +12,12 @@ import type { ProjectVersionData } from "@app/utils/types/api";
 import { ChevronDownIcon, FilterIcon, FlaskConicalIcon, XCircleIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
+import { Button } from "~/components/ui/button";
+import { LabelledCheckbox } from "~/components/ui/checkbox";
+import { ChipButton } from "~/components/ui/chip";
+import { CommandSeparator } from "~/components/ui/command";
+import { MultiSelect } from "~/components/ui/multi-select";
+import { releaseChannelTextColor } from "~/components/ui/release-channel-pill";
 import useTheme from "~/hooks/theme";
 import { useTranslation } from "~/locales/provider";
 

@@ -61,6 +61,7 @@ function defineLocales<const T extends readonly LocaleMetaData[]>(
 
 export default SupportedLocales;
 export const DefaultLocale = SupportedLocales[0];
+export const SupportedLocalesList = SupportedLocales as readonly LocaleMetaData[];
 
 export function GetLocaleMetadata(code: string) {
     return SupportedLocales.find((locale) => locale.code === code || formatLocaleCode(locale) === code);

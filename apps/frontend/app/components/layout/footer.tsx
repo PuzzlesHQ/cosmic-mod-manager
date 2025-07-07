@@ -1,21 +1,18 @@
-import { BrandIcon } from "@app/components/icons";
-import { buttonVariants } from "@app/components/ui/button";
-import { Prefetch } from "@app/components/ui/link";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@app/components/ui/select";
-import { DotSeparator } from "@app/components/ui/separator";
-import { cn } from "@app/components/utils";
 import { ArrowUpRightIcon, LanguagesIcon, LinkIcon, Settings2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { type LinkProps, useLocation } from "react-router";
-import Link, { useNavigate, VariantButtonLink } from "~/components/ui/link";
+import { BrandIcon } from "~/components/icons";
+import { buttonVariants } from "~/components/ui/button";
+import Link, { Prefetch, useNavigate, VariantButtonLink } from "~/components/ui/link";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import { DotSeparator } from "~/components/ui/separator";
 import ThemeSwitch from "~/components/ui/theme-switcher";
-import { useRootData } from "~/hooks/root-data";
+import { cn } from "~/components/utils";
 import { setUserConfig } from "~/hooks/user-config";
 import { formatLocaleCode, parseLocale } from "~/locales";
-import SupportedLocales from "~/locales/meta";
+import { SupportedLocalesList } from "~/locales/meta";
 import { alterUrlHintLocale, useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
-import "./styles.css";
 
 export default function Footer() {
     const { t, changeLocale } = useTranslation();
@@ -117,8 +114,8 @@ export default function Footer() {
             <div className="container flex flex-wrap items-center justify-start gap-x-3 gap-y-2 text-[small]">
                 <span>{t.footer.siteOfferedIn(Config.SITE_NAME_SHORT)}</span>
 
-                {SupportedLocales.map((locale) => {
-                    const region = locale.region;
+                {SupportedLocalesList.map((locale) => {
+                    const region = locale?.region;
                     const label = region ? `${locale.nativeName} (${region.displayName})` : locale.nativeName;
                     const title = region ? `${locale.name} - ${region.name}` : locale.name;
 
@@ -177,7 +174,6 @@ function LinksColumn({ children, area }: { area: string; children: React.ReactNo
 }
 
 export function LangSwitcher() {
-    const ctx = useRootData();
     const { locale, changeLocale } = useTranslation();
     const [currLang, setCurrLang] = useState(formatLocaleCode(locale));
     const navigate = useNavigate(true);
@@ -210,7 +206,7 @@ export function LangSwitcher() {
 
             <SelectContent>
                 <SelectGroup>
-                    {ctx.supportedLocales?.map((locale) => {
+                    {SupportedLocalesList?.map((locale) => {
                         const region = locale.region;
                         const label = region ? `${locale.name} (${region.displayName})` : locale.name;
 

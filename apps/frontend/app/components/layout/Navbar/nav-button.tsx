@@ -1,11 +1,3 @@
-import { fallbackUserIcon } from "@app/components/icons";
-import RefreshPage from "@app/components/misc/refresh-page";
-import { NotificationBadge } from "@app/components/ui/badge";
-import { Button } from "@app/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@app/components/ui/popover";
-import { Separator } from "@app/components/ui/separator";
-import { LoadingSpinner } from "@app/components/ui/spinner";
-import { cn } from "@app/components/utils";
 import { disableInteractions } from "@app/utils/dom";
 import { MODERATOR_ROLES } from "@app/utils/src/constants/roles";
 import type { LoggedInUserData } from "@app/utils/types";
@@ -24,8 +16,16 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "react-router";
+import { fallbackUserIcon } from "~/components/icons";
+import RefreshPage from "~/components/misc/refresh-page";
 import { ImgWrapper } from "~/components/ui/avatar";
+import { NotificationBadge } from "~/components/ui/badge";
+import { Button } from "~/components/ui/button";
 import { ButtonLink, useNavigate } from "~/components/ui/link";
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
+import { Separator } from "~/components/ui/separator";
+import { LoadingSpinner } from "~/components/ui/spinner";
+import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import { LoginDialog } from "~/pages/auth/login/login-card";
 import clientFetch from "~/utils/client-fetch";

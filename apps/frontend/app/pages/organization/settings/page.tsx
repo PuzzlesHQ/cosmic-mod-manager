@@ -1,25 +1,3 @@
-import { fallbackProjectIcon } from "@app/components/icons";
-import { ContentCardTemplate } from "@app/components/misc/panel";
-import RefreshPage from "@app/components/misc/refresh-page";
-import { Button } from "@app/components/ui/button";
-import { Card, CardContent } from "@app/components/ui/card";
-import {
-    Dialog,
-    DialogBody,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@app/components/ui/dialog";
-import { CharacterCounter, Form, FormField, FormItem, FormLabel, FormMessage } from "@app/components/ui/form";
-import { Input } from "@app/components/ui/input";
-import { toast } from "@app/components/ui/sonner";
-import { LoadingSpinner } from "@app/components/ui/spinner";
-import { Textarea } from "@app/components/ui/textarea";
-import { VisuallyHidden } from "@app/components/ui/visually-hidden";
 import { MAX_ORGANISATION_DESCRIPTION_LENGTH, MAX_ORGANISATION_NAME_LENGTH } from "@app/utils/constants";
 import type { z } from "@app/utils/schemas";
 import { orgSettingsFormSchema } from "@app/utils/schemas/organisation/settings/general";
@@ -30,9 +8,30 @@ import { SaveIcon, Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import IconPicker from "~/components/icon-picker";
-import MarkdownRenderBox from "~/components/md-renderer";
-import { CancelButton } from "~/components/ui/button";
+import { fallbackProjectIcon } from "~/components/icons";
+import MarkdownRenderBox from "~/components/md-editor/md-renderer";
+import { ContentCardTemplate } from "~/components/misc/panel";
+import RefreshPage from "~/components/misc/refresh-page";
+import { Button, CancelButton } from "~/components/ui/button";
+import { Card, CardContent } from "~/components/ui/card";
+import {
+    Dialog,
+    DialogBody,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "~/components/ui/dialog";
+import { CharacterCounter, Form, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
 import { useNavigate } from "~/components/ui/link";
+import { toast } from "~/components/ui/sonner";
+import { LoadingSpinner } from "~/components/ui/spinner";
+import { Textarea } from "~/components/ui/textarea";
+import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { useOrgData } from "~/hooks/org";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";

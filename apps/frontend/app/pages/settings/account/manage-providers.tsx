@@ -1,6 +1,12 @@
-import RefreshPage from "@app/components/misc/refresh-page";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@app/components/ui/accordion";
-import { Button } from "@app/components/ui/button";
+import { getAuthProviderFromString } from "@app/utils/convertors";
+import { Capitalize } from "@app/utils/string";
+import { AuthActionIntent, type AuthProvider, type LinkedProvidersListData } from "@app/utils/types";
+import { Link2Icon, SettingsIcon, Trash2Icon } from "lucide-react";
+import { useState } from "react";
+import { useLocation } from "react-router";
+import RefreshPage from "~/components/misc/refresh-page";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
+import { Button } from "~/components/ui/button";
 import {
     Dialog,
     DialogBody,
@@ -9,17 +15,11 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@app/components/ui/dialog";
-import { toast } from "@app/components/ui/sonner";
-import { LoadingSpinner } from "@app/components/ui/spinner";
-import { VisuallyHidden } from "@app/components/ui/visually-hidden";
-import { getAuthProviderFromString } from "@app/utils/convertors";
-import { Capitalize } from "@app/utils/string";
-import { AuthActionIntent, type AuthProvider, type LinkedProvidersListData } from "@app/utils/types";
-import { Link2Icon, SettingsIcon, Trash2Icon } from "lucide-react";
-import { useState } from "react";
-import { useLocation } from "react-router";
+} from "~/components/ui/dialog";
 import { useNavigate } from "~/components/ui/link";
+import { toast } from "~/components/ui/sonner";
+import { LoadingSpinner } from "~/components/ui/spinner";
+import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { useTranslation } from "~/locales/provider";
 import { authProvidersList, setReturnUrl } from "~/pages/auth/oauth-providers";
 import clientFetch from "~/utils/client-fetch";

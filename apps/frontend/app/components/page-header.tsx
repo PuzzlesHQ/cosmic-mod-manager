@@ -1,4 +1,4 @@
-import { PageHeader as DefaultPageHeader } from "@app/components/misc/page-header";
+import { PageHeader as DefaultPageHeader } from "~/components/misc/page-header";
 import { useRootData } from "~/hooks/root-data";
 
 type Props = Omit<React.ComponentProps<typeof DefaultPageHeader>, "viewTransitions">;

@@ -1,5 +1,5 @@
-import { SuspenseFallback } from "@app/components/ui/spinner";
 import { useLoaderData } from "react-router";
+import { SuspenseFallback } from "~/components/ui/spinner";
 import { useTranslation } from "~/locales/provider";
 import NotificationsHistoryPage from "~/pages/dashboard/notification/history";
 import Config from "~/utils/config";

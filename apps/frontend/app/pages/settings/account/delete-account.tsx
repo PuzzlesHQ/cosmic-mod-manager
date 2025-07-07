@@ -1,7 +1,7 @@
-import { Button } from "@app/components/ui/button";
-import { toast } from "@app/components/ui/sonner";
 import { Trash2Icon } from "lucide-react";
 import ConfirmDialog from "~/components/confirm-dialog";
+import { Button } from "~/components/ui/button";
+import { toast } from "~/components/ui/sonner";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 

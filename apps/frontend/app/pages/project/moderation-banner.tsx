@@ -1,9 +1,9 @@
-import { Button } from "@app/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@app/components/ui/card";
-import { Popover, PopoverContent, PopoverTrigger } from "@app/components/ui/popover";
 import { MODERATOR_ROLES } from "@app/utils/src/constants/roles";
 import { ProjectPublishingStatus } from "@app/utils/types";
 import { MoreVerticalIcon, XIcon } from "lucide-react";
+import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";

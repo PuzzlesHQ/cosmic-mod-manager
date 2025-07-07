@@ -1,5 +1,5 @@
-import { ThemeOptions, type UseThemeProps } from "@app/components/types";
 import React, { useContext, useEffect } from "react";
+import { ThemeOptions, type UseThemeProps } from "~/components/types";
 import { setUserConfig, useUserConfig } from "./user-config";
 
 const MEDIA = "(prefers-color-scheme: dark)";

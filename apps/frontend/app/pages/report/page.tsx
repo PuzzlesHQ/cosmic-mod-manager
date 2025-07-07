@@ -1,9 +1,3 @@
-import { Button } from "@app/components/ui/button";
-import { Input } from "@app/components/ui/input";
-import { Label } from "@app/components/ui/label";
-import { ButtonStyleRadioGroup, RadioGroup } from "@app/components/ui/radio-group";
-import { toast } from "@app/components/ui/sonner";
-import { LoadingSpinner } from "@app/components/ui/spinner";
 import type { z } from "@app/utils/schemas";
 import type { newReportFormSchema } from "@app/utils/schemas/report";
 import type { ProjectDetailsData, ProjectVersionData } from "@app/utils/types/api";
@@ -20,8 +14,14 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useSearchParams } from "react-router";
-import MarkdownEditor from "~/components/md-editor";
+import MarkdownEditor from "~/components/md-editor/editor";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
 import Link, { TextLink, useNavigate, VariantButtonLink } from "~/components/ui/link";
+import { ButtonStyleRadioGroup, RadioGroup } from "~/components/ui/radio-group";
+import { toast } from "~/components/ui/sonner";
+import { LoadingSpinner } from "~/components/ui/spinner";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";
