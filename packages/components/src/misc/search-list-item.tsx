@@ -88,6 +88,7 @@ function BaseView(props: SearchListItemProps) {
     const vtStyle = viewTransitionStyleObj(`${props.pageId}-search-item-${props.vtId}`, props.viewTransitions);
 
     return (
+        // biome-ignore lint/a11y/useSemanticElements: idk, <li> doesn't make sense here
         <article
             role="listitem"
             itemProp={MicrodataItemProps.works}

@@ -38,15 +38,6 @@
     @apply font-bold;
 }
 
-.markdown-body.bright-heading h1,
-.markdown-body.bright-heading h2,
-.markdown-body.bright-heading h3,
-.markdown-body.bright-heading h4,
-.markdown-body.bright-heading h5,
-.markdown-body.bright-heading h6 {
-    @apply text-foreground;
-}
-
 .markdown-body h1,
 .markdown-body h2,
 .markdown-body h3,
@@ -58,6 +49,15 @@
     position: relative;
     word-wrap: break-word;
     overflow-wrap: anywhere !important;
+}
+
+.markdown-body.bright-heading h1,
+.markdown-body.bright-heading h2,
+.markdown-body.bright-heading h3,
+.markdown-body.bright-heading h4,
+.markdown-body.bright-heading h5,
+.markdown-body.bright-heading h6 {
+    @apply text-foreground;
 }
 
 .markdown-body ul,
@@ -248,14 +248,14 @@ html:is(.dark).markdown-body img[src$="#gh-light-mode-only"] {
 
 /* CODE BLOCK THEME */
 
+code.hljs {
+    padding: 3px 5px;
+}
+
 pre code.hljs {
     display: block;
     overflow-x: auto;
     padding: 1em;
-}
-
-code.hljs {
-    padding: 3px 5px;
 }
 
 /*
@@ -354,14 +354,14 @@ code.hljs {
 
 /* * DARK THEME */
 
+.dark code.hljs {
+    padding: 3px 5px;
+}
+
 .dark pre code.hljs {
     display: block;
     overflow-x: auto;
     padding: 1em;
-}
-
-.dark code.hljs {
-    padding: 3px 5px;
 }
 
 /*
