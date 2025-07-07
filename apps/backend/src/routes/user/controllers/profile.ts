@@ -6,7 +6,7 @@ import { FileType, type GlobalUserRole } from "@app/utils/types";
 import type { UserProfileData } from "@app/utils/types/api/user";
 import type { z } from "zod/v4";
 import { CreateFile, DeleteFile_ByID } from "~/db/file_item";
-import { GetUser_ByIdOrUsername, GetUser_Unique, Get_UserProjects, UpdateUser } from "~/db/user_item";
+import { Get_UserProjects, GetUser_ByIdOrUsername, GetUser_Unique, UpdateUser } from "~/db/user_item";
 import { getManyProjects } from "~/routes/project/controllers";
 import { UpdateProjects_SearchIndex } from "~/routes/search/search-db";
 import { deleteUserFile, saveUserFile } from "~/services/storage";

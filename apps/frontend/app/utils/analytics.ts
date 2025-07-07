@@ -1,4 +1,4 @@
-import { DateFromStr, ISO_DateStr, getTimeRange } from "@app/utils/date";
+import { DateFromStr, getTimeRange, ISO_DateStr } from "@app/utils/date";
 import { encodeArrayIntoStr } from "@app/utils/string";
 import { TimelineOptions } from "@app/utils/types";
 import type { ProjectDownloads_Analytics } from "@app/utils/types/api/stats";

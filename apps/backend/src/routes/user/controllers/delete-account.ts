@@ -11,7 +11,7 @@ import { deleteCollectionDirectory, deleteUserDirectory } from "~/services/stora
 import { FILE_STORAGE_SERVICE } from "~/types";
 import { isConfirmationCodeValid } from "~/utils";
 import env from "~/utils/env";
-import { invalidReqestResponseData, HTTP_STATUS, serverErrorResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidReqestResponseData, serverErrorResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 
 export async function confirmUserAccountDeletion(token: string) {

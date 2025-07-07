@@ -1,6 +1,6 @@
 import { type Loader, loaders } from "@app/utils/constants/loaders";
 import { getFileType } from "@app/utils/convertors";
-import { type PartialTeamMember, combineProjectMembers, sortVersionsWithReference } from "@app/utils/project";
+import { combineProjectMembers, type PartialTeamMember, sortVersionsWithReference } from "@app/utils/project";
 import { gameVersionsList } from "@app/utils/src/constants/game-versions";
 import { isModerator } from "@app/utils/src/constants/roles";
 import { type GlobalUserRole, ProjectPublishingStatus, ProjectVisibility } from "@app/utils/types";

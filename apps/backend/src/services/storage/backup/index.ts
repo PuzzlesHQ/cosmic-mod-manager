@@ -1,5 +1,5 @@
-import { $ } from "bun";
 import path from "node:path/posix";
+import { $ } from "bun";
 import { LOCAL_BASE_STORAGE_PATH, LogWithTimestamp } from "../utils";
 import { BackupToBackblaze } from "./backblaze";
 

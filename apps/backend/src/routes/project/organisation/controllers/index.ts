@@ -4,7 +4,7 @@ import type { OrganisationPermission, ProjectPermission } from "@app/utils/types
 import type { Organisation } from "@app/utils/types/api";
 import type { z } from "zod/v4";
 import { CreateOrganization, GetManyOrganizations_ById, GetOrganization_BySlugOrId } from "~/db/organization_item";
-import { GetUser_ByIdOrUsername, Get_UserOrganizations } from "~/db/user_item";
+import { Get_UserOrganizations, GetUser_ByIdOrUsername } from "~/db/user_item";
 import type { ContextUserData } from "~/types";
 import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";

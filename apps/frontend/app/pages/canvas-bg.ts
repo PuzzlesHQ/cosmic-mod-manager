@@ -1,4 +1,5 @@
 import { MersenneTwister } from "@app/utils/random";
+
 const m = new MersenneTwister();
 
 let stars: Star[] = [];

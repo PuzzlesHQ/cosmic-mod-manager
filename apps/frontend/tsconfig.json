@@ -1,23 +1,9 @@
 {
-    "include": [
-        ".",
-        "./.react-router/types",
-        "./../../packages/components"
-    ],
-    "exclude": [
-        "node_modules",
-        "build",
-        "pm2.config.cjs"
-    ],
+    "include": [".", "./.react-router/types", "./../../packages/components"],
+    "exclude": ["node_modules", "build", "pm2.config.cjs"],
     "compilerOptions": {
-        "lib": [
-            "ESNext",
-            "DOM.Iterable",
-            "DOM"
-        ],
-        "types": [
-            "vite/client"
-        ],
+        "lib": ["ESNext", "DOM.Iterable", "DOM"],
+        "types": ["vite/client"],
         "composite": true,
         "target": "ESNext",
         "module": "ESNext",
@@ -36,20 +22,11 @@
         "noUnusedLocals": false,
         "noUnusedParameters": false,
         "noPropertyAccessFromIndexSignature": false,
-        "rootDirs": [
-            ".",
-            "./.react-router/types"
-        ],
+        "rootDirs": [".", "./.react-router/types"],
         "paths": {
-            "~/*": [
-                "./app/*"
-            ],
-            "@/*": [
-                "./*"
-            ],
-            "@app/utils/*": [
-                "./../../packages/utils/src/*"
-            ]
+            "~/*": ["./app/*"],
+            "@/*": ["./*"],
+            "@app/utils/*": ["./../../packages/utils/src/*"]
         }
     },
     "references": [

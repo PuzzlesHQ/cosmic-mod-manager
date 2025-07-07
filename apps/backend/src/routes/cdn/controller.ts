@@ -1,5 +1,6 @@
 import { getMimeFromType } from "@app/utils/file-signature";
 import type { Context } from "hono";
+import { GetCollection } from "~/db/collection_item";
 import { GetFile, type GetFile_ReturnType, GetManyFiles_ByID } from "~/db/file_item";
 import { GetOrganization_BySlugOrId } from "~/db/organization_item";
 import { GetProject_Details, GetProject_ListItem } from "~/db/project_item";
@@ -19,7 +20,6 @@ import type { ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
 import { HTTP_STATUS, notFoundResponse } from "~/utils/http";
 import { collectionIconUrl, orgIconUrl, projectGalleryFileUrl, projectIconUrl, userIconUrl, versionFileUrl } from "~/utils/urls";
 import { addToDownloadsQueue } from "./downloads-counter";
-import { GetCollection } from "~/db/collection_item";
 
 export async function serveVersionFile(
     ctx: Context,

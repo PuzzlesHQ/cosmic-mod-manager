@@ -1,6 +1,6 @@
 import { isUrl } from "@app/utils/url";
 import { FILE_STORAGE_SERVICE } from "~/types";
-import { type WritableFile, deleteFromLocalStorage, getFileFromLocalStorage, saveFileToLocalStorage } from "./local";
+import { deleteFromLocalStorage, getFileFromLocalStorage, saveFileToLocalStorage, type WritableFile } from "./local";
 import { collectionDir, orgDir, projectGalleryDir, projectsDir, userDir, versionsDir } from "./utils";
 
 export async function getFile(storageService: FILE_STORAGE_SERVICE, path: string) {

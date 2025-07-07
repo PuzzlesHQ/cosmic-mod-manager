@@ -89,7 +89,7 @@ export async function unlinkAuthProvider(ctx: Context, userSession: ContextUserD
     }
 
     const providerName = getAuthProviderFromString(authProvider);
-    let deletedAuthAccount: number | undefined ;
+    let deletedAuthAccount: number | undefined;
 
     try {
         deletedAuthAccount = (

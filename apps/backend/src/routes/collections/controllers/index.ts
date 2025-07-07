@@ -1,3 +1,6 @@
+import { FOLLOWS_COLLECTIONS_ID, ICON_WIDTH } from "@app/utils/constants";
+import { getFileType } from "@app/utils/convertors";
+import { date } from "@app/utils/date";
 import type { z } from "@app/utils/schemas";
 import type { createCollectionFormSchema, updateCollectionFormSchema } from "@app/utils/schemas/collections";
 import { CollectionVisibility, FileType } from "@app/utils/types";
@@ -10,24 +13,21 @@ import {
     GetManyCollections_ById,
     UpdateCollection,
 } from "~/db/collection_item";
+import { CreateFile, DeleteFile_ByID } from "~/db/file_item";
 import { GetManyProjects_ListItem } from "~/db/project_item";
 import { GetUser_ByIdOrUsername } from "~/db/user_item";
+import { getManyProjects } from "~/routes/project/controllers";
+import { addProjectsToUserFollows, removeProjectsFromUserFollows } from "~/routes/project/controllers/follows";
+import { deleteCollectionDirectory, deleteCollectionFile, saveCollectionFile } from "~/services/storage";
 import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
 import { HTTP_STATUS, notFoundResponseData, serverErrorResponseData, unauthorizedReqResponseData } from "~/utils/http";
+import { resizeImageToWebp } from "~/utils/images";
 import { generateDbId } from "~/utils/str";
 import { collectionIconUrl, userIconUrl } from "~/utils/urls";
 import { CanEditCollection, CollectionAccessible } from "../utils";
-import { CreateFile, DeleteFile_ByID } from "~/db/file_item";
-import { deleteCollectionDirectory, deleteCollectionFile, saveCollectionFile } from "~/services/storage";
-import { FOLLOWS_COLLECTIONS_ID, ICON_WIDTH } from "@app/utils/constants";
-import { getFileType } from "@app/utils/convertors";
-import { resizeImageToWebp } from "~/utils/images";
-import { date } from "@app/utils/date";
-import { getManyProjects } from "~/routes/project/controllers";
-import { addProjectsToUserFollows, removeProjectsFromUserFollows } from "~/routes/project/controllers/follows";
 
 export async function GetUserCollections(userSlug: string, userSession: ContextUserData | undefined) {
-    let userId: string | undefined ;
+    let userId: string | undefined;
     if (userSession?.userName === userSlug || userSession?.id === userSlug) userId = userSession.id;
     else {
         const targetUser = await GetUser_ByIdOrUsername(userSlug, userSlug);
