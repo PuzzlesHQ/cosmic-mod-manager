@@ -28,8 +28,6 @@ export default function ThemeSwitch({
     const { theme, setTheme } = useTheme();
 
     async function switchTheme() {
-        document.documentElement.setAttribute("data-view-transition", "theme-switch");
-
         if (theme === ThemeOptions.DARK) {
             setTheme(ThemeOptions.LIGHT);
         } else {
@@ -38,17 +36,19 @@ export default function ThemeSwitch({
     }
 
     async function transitionTheme(e: React.MouseEvent<HTMLButtonElement>) {
-        if (!document.startViewTransition) return switchTheme();
+        document.documentElement.setAttribute("data-view-transition", "theme-switch");
+        if (!document.startViewTransition) switchTheme();
+        else {
+            const x = e.clientX;
+            const y = e.clientY;
 
-        const x = e.clientX;
-        const y = e.clientY;
+            document.documentElement.style.setProperty("--click-x", `${x}px`);
+            document.documentElement.style.setProperty("--click-y", `${y}px`);
 
-        document.documentElement.style.setProperty("--click-x", `${x}px`);
-        document.documentElement.style.setProperty("--click-y", `${y}px`);
+            const transition = document.startViewTransition(switchTheme);
 
-        const transition = document.startViewTransition(switchTheme);
-
-        await transition.finished;
+            await transition.finished;
+        }
         document.documentElement.removeAttribute("data-view-transition");
     }
 

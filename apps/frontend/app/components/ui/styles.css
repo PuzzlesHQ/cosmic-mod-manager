@@ -79,3 +79,11 @@
         clip-path: circle(135% at var(--click-x, 81.8%) var(--click-y, 1.85rem));
     }
 }
+
+.view-transition-item {
+    view-transition-name: var(--vt-id);
+}
+
+[data-view-transition="theme-switch"] .view-transition-item {
+    view-transition-name: unset;
+}

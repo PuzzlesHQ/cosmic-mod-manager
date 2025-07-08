@@ -10,6 +10,7 @@ import { TagIcon } from "~/components/icons/tag-icons";
 import { itemType, MicrodataItemProps, MicrodataItemType } from "~/components/microdata";
 import { ImgWrapper } from "~/components/ui/avatar";
 import Chip from "~/components/ui/chip";
+import { FormattedCount } from "~/components/ui/count";
 import { FormattedDate, TimePassedSince } from "~/components/ui/date";
 import Link from "~/components/ui/link";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
@@ -18,7 +19,6 @@ import { viewTransitionStyleObj } from "~/components/view-transitions";
 import { useTranslation } from "~/locales/provider";
 import ProjectSupportedEnv from "~/pages/project/supported-env";
 import { OrgPagePath, ProjectPagePath, UserProfilePath } from "~/utils/urls";
-import { FormattedCount } from "../ui/count";
 
 export enum ViewType {
     GALLERY = "gallery",
@@ -86,7 +86,7 @@ function BaseView(props: SearchListItemProps) {
             itemScope
             itemType={itemType(MicrodataItemType.CreativeWork)}
             className={cn(
-                "search-list-item grid h-full gap-x-3 gap-y-2 rounded-lg bg-card-background text-muted-foreground",
+                "search-list-item view-transition-item grid h-full gap-x-3 gap-y-2 rounded-lg bg-card-background text-muted-foreground",
                 listViewType && "p-card-surround",
                 galleryViewType && "pb-4",
                 props.viewType,

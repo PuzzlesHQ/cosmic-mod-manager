@@ -36,7 +36,7 @@ export function ImgWrapper({ vtId, src, alt, className, loading, fallback, ...pr
             loading={loading}
             alt={alt}
             className={cn(
-                "h-24 w-24 shrink-0 rounded border border-shallow-background bg-shallow-background object-cover shadow shadow-background/50",
+                "view-transition-item h-24 w-24 shrink-0 rounded border border-shallow-background bg-shallow-background object-cover shadow shadow-background/50",
                 className,
             )}
             style={style}

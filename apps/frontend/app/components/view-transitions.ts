@@ -1,5 +1,7 @@
+import type { CSSProperties } from "react";
+
 export function viewTransitionStyleObj(vtId: string | undefined) {
-    return vtId ? { viewTransitionName: removeNumbers(vtId) } : {};
+    return vtId ? ({ "--vt-id": removeNumbers(vtId) } as CSSProperties) : {};
 }
 
 function removeNumbers(str: string) {
