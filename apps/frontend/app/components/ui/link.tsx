@@ -123,11 +123,12 @@ export function VariantButtonLink({
 
 export function useNavigate(escapeUrlWrapper?: boolean, initOptions?: NavigateOptions) {
     const navigate = __useNavigate();
+    const viewTransitions = useRootData()?.userConfig.viewTransitions === true;
 
     function __navigate(to: string, options?: NavigateOptions): void {
         const toUrl = escapeUrlWrapper === true ? to : FormatUrl_WithHintLocale(to);
 
-        navigate(toUrl, { viewTransition: true, ...initOptions, ...options });
+        navigate(toUrl, { viewTransition: viewTransitions, ...initOptions, ...options });
     }
 
     return __navigate as NavigateFunction;
