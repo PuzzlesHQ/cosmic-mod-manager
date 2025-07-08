@@ -150,7 +150,7 @@ function ProjectVersionsListTable({
         return (
             <div
                 className={cn(
-                    "col-[1/-1] grid grid-cols-subgrid items-center gap-x-4 gap-y-2 border-background border-b px-4 py-4 last:border-none hover:bg-background/25 md:px-8",
+                    "col-[1/-1] grid grid-cols-subgrid items-center gap-x-4 border-background border-b px-4 py-4 last:border-none first-of-type:pt-5 hover:bg-background/25 md:px-8",
                     className,
                 )}
                 {...props}
@@ -166,10 +166,10 @@ function ProjectVersionsListTable({
                 <div
                     className={cn(
                         "grid max-w-full overflow-x-auto rounded-lg bg-card-background",
-                        "grid-cols-[min-content_1fr] sm:grid-cols-[min-content_2fr_min-content] md:grid-cols-[min-content_2fr_2fr_min-content_1fr_min-content]",
+                        "grid-cols-[min-content_2fr_2fr_1fr_min-content]",
                     )}
                 >
-                    <Row>
+                    <Row className="hidden sm:grid">
                         <span> </span>
                         <span className="font-bold">{t.form.name}</span>
                         <span className="font-bold">{t.project.compatibility}</span>
@@ -201,12 +201,12 @@ function ProjectVersionsListTable({
                                 <ProjectLoaders versionLoaders={version.loaders} />
                             </div>
 
-                            <div className="lex min-w-max flex-wrap items-start justify-start gap-3">
+                            <div className="grid w-fit min-w-max gap-1.5 leading-none">
                                 <DownloadsCount downloads={version.downloads} />
                                 <DatePublished dateStr={version.datePublished} />
                             </div>
 
-                            <div className="flex w-full items-center justify-end gap-1">
+                            <div className="flex items-center justify-end gap-1">
                                 <Tooltip>
                                     <TooltipTrigger asChild>
                                         <VariantButtonLink
@@ -307,8 +307,8 @@ function ProjectLoaders({ versionLoaders }: { versionLoaders: string[] }) {
 function DatePublished({ dateStr, iconVisible = true }: { dateStr: string | Date; iconVisible?: boolean }) {
     return (
         <TooltipTemplate content={<FormattedDate date={dateStr} />}>
-            <span className="flex cursor-help items-center justify-start gap-1.5 whitespace-nowrap font-medium text-extra-muted-foreground">
-                {iconVisible === true ? <CalendarIcon aria-hidden className="h-3.5 w-3.5" /> : null}
+            <span className="flex cursor-help items-center justify-start gap-1.5 font-medium text-extra-muted-foreground text-sm">
+                {iconVisible === true ? <CalendarIcon aria-hidden className="h-3 w-3" /> : null}
                 <TimePassedSince date={dateStr} capitalize />
             </span>
         </TooltipTemplate>
@@ -319,12 +319,12 @@ function DownloadsCount({ downloads }: { downloads: number }) {
     const { t } = useTranslation();
 
     return (
-        <span className="flex items-center justify-start gap-1.5 font-medium text-extra-muted-foreground">
-            <DownloadIcon aria-hidden className="h-3.5 w-3.5" strokeWidth={2.5} />
+        <span className="flex items-center justify-start gap-1.5 font-medium text-muted-foreground text-sm">
+            <DownloadIcon aria-hidden className="h-3 w-3" strokeWidth={2.5} />
             <span>
                 {t.count.downloads(
                     downloads,
-                    <em className="font-extrabold text-md not-italic" key="downloads">
+                    <em className="font-extrabold text-base not-italic" key="downloads">
                         <FormattedCount count={downloads} />
                     </em>,
                 )}
