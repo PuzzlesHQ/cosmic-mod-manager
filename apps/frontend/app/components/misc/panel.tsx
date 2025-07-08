@@ -82,7 +82,7 @@ interface SidePanelProps {
 
 export function SidePanel(props: SidePanelProps) {
     return (
-        <aside className={cn("grid w-full gap-1 bg-card-background p-card-surround lg:w-sidebar", props.className)}>
+        <aside className={cn("grid w-full gap-1 rounded-lg bg-card-background p-card-surround lg:w-sidebar", props.className)}>
             {props.children}
             <h2 className="mb-2 font-semibold text-xl leading-none tracking-tight">{props.header}</h2>
 
