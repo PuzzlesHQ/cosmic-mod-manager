@@ -2,11 +2,9 @@ import { MODERATOR_ROLES } from "@app/utils/src/constants/roles";
 import type { GlobalUserRole } from "@app/utils/types";
 import { BarChart2Icon, FlagIcon, LayoutDashboardIcon, ScaleIcon } from "lucide-react";
 import { Outlet } from "react-router";
-import { Panel, PanelAside, PanelAsideNavCard, PanelContent } from "~/components/misc/panel";
-import { ButtonLink } from "~/components/ui/link";
+import { Panel, PanelContent, SidePanel } from "~/components/misc/panel";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
-import { FormatUrl_WithHintLocale } from "~/utils/urls";
 
 export default function ModerationPagesLayout() {
     const session = useSession();
@@ -21,51 +19,41 @@ export default function ModerationPagesLayout() {
         );
     }
 
-    const links = [
-        {
-            name: t.dashboard.overview,
-            href: "/moderation",
-            icon: <LayoutDashboardIcon aria-hidden className="h-4 w-4" />,
-        },
-        {
-            name: t.dashboard.analytics,
-            href: "/moderation/analytics",
-            icon: <BarChart2Icon aria-hidden className="h-4 w-4" />,
-        },
-        {
-            name: mod.review,
-            href: "/moderation/review",
-            icon: <ScaleIcon aria-hidden className="h-4 w-4" />,
-        },
-        {
-            name: mod.reports,
-            href: "/moderation/reports",
-            icon: <FlagIcon aria-hidden className="h-4 w-4" />,
-        },
-    ];
-
     return (
         <Panel className="pb-12">
-            <PanelAside aside>
-                <PanelAsideNavCard label={mod.moderation}>
-                    {links.map((link) => (
-                        <ButtonLink
-                            url={FormatUrl_WithHintLocale(link.href)}
-                            key={link.href}
-                            className="relative"
-                            preventScrollReset
-                        >
-                            {link.icon}
-                            <span className="text-wrap leading-tight">{link.name}</span>
-                        </ButtonLink>
-                    ))}
-                </PanelAsideNavCard>
-            </PanelAside>
+            <SidePanel
+                header={mod.moderation}
+                sections={[
+                    {
+                        items: [
+                            {
+                                label: t.dashboard.overview,
+                                href: "/moderation",
+                                icon: <LayoutDashboardIcon aria-hidden className="h-4 w-4" />,
+                            },
+                            {
+                                label: t.dashboard.analytics,
+                                href: "/moderation/analytics",
+                                icon: <BarChart2Icon aria-hidden className="h-4 w-4" />,
+                            },
+                            {
+                                label: mod.review,
+                                href: "/moderation/review",
+                                icon: <ScaleIcon aria-hidden className="h-4 w-4" />,
+                            },
+                            {
+                                label: mod.reports,
+                                href: "/moderation/reports",
+                                icon: <FlagIcon aria-hidden className="h-4 w-4" />,
+                            },
+                        ],
+                    },
+                ]}
+            />
+
             <PanelContent main>
                 <Outlet />
             </PanelContent>
         </Panel>
     );
 }
-
-export const descriptionSuffix = "an open source modding platform focused on Cosmic Reach";

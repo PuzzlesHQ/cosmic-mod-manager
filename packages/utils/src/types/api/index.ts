@@ -212,3 +212,8 @@ export interface CollectionOwner {
     userName: string;
     avatar: string | null;
 }
+
+export interface GenericErrorResponse {
+    success: false;
+    message: string;
+}

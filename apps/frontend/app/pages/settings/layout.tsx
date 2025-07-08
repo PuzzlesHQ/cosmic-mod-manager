@@ -1,42 +1,60 @@
 import { MonitorSmartphoneIcon, PaintbrushIcon, ShieldIcon, UserIcon } from "lucide-react";
+import { useMemo } from "react";
 import { Outlet } from "react-router";
-import { Panel, PanelAside, PanelAsideNavCard, PanelContent } from "~/components/misc/panel";
-import { ButtonLink, Prefetch } from "~/components/ui/link";
+import { Panel, PanelContent, SidePanel, type SidePanelSection } from "~/components/misc/panel";
+import { LinkPrefetchStrategy } from "~/components/ui/link";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 
 export default function SettingsPageLayout() {
     const session = useSession();
-    const { t } = useTranslation();
+    const { t, formattedLocaleName } = useTranslation();
+
+    const sidePanelSections = useMemo(() => {
+        const sections: SidePanelSection[] = [
+            {
+                items: [
+                    {
+                        label: t.settings.preferences,
+                        href: "/settings",
+                        icon: <PaintbrushIcon aria-hidden className="size-4" />,
+                        prefetch: LinkPrefetchStrategy.Render,
+                    },
+                ],
+            },
+        ];
+
+        if (!session?.id) return sections;
+
+        sections.push({
+            name: t.settings.account,
+            items: [
+                {
+                    label: t.settings.publicProfile,
+                    href: "/settings/profile",
+                    icon: <UserIcon aria-hidden className="size-4" />,
+                    prefetch: LinkPrefetchStrategy.Render,
+                },
+                {
+                    label: t.settings.accountAndSecurity,
+                    href: "/settings/account",
+                    icon: <ShieldIcon aria-hidden className="size-4" />,
+                },
+                {
+                    label: t.settings.sessions,
+                    href: "/settings/sessions",
+                    icon: <MonitorSmartphoneIcon aria-hidden className="size-4" />,
+                },
+            ],
+        });
+        return sections;
+    }, [session?.id, formattedLocaleName]);
 
     return (
         <main className="w-full">
             <Panel>
-                <PanelAside className="gap-2" aside>
-                    <PanelAsideNavCard label={t.common.settings}>
-                        <ButtonLink url="/settings" prefetch={Prefetch.Render} preventScrollReset>
-                            <PaintbrushIcon aria-hidden className="size-4" />
-                            {t.settings.preferences}
-                        </ButtonLink>
-                        {session?.id ? (
-                            <>
-                                <span className="mt-3 font-semibold text-lg">{t.settings.account}</span>
-                                <ButtonLink url="/settings/profile" prefetch={Prefetch.Render} preventScrollReset>
-                                    <UserIcon aria-hidden className="size-4" />
-                                    {t.settings.publicProfile}
-                                </ButtonLink>
-                                <ButtonLink url="/settings/account" preventScrollReset>
-                                    <ShieldIcon aria-hidden className="size-4" />
-                                    {t.settings.accountAndSecurity}
-                                </ButtonLink>
-                                <ButtonLink url="/settings/sessions" preventScrollReset>
-                                    <MonitorSmartphoneIcon aria-hidden className="size-4" />
-                                    {t.settings.sessions}
-                                </ButtonLink>
-                            </>
-                        ) : null}
-                    </PanelAsideNavCard>
-                </PanelAside>
+                <SidePanel header={t.common.settings} sections={sidePanelSections} />
+
                 <PanelContent>
                     <Outlet />
                 </PanelContent>

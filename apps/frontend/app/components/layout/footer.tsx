@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { type LinkProps, useLocation } from "react-router";
 import { BrandIcon } from "~/components/icons";
 import { buttonVariants } from "~/components/ui/button";
-import Link, { Prefetch, useNavigate, VariantButtonLink } from "~/components/ui/link";
+import Link, { LinkPrefetchStrategy, useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { DotSeparator } from "~/components/ui/separator";
 import ThemeSwitch from "~/components/ui/theme-switcher";
@@ -100,7 +100,12 @@ export default function Footer() {
                         className="gap-0 rounded-full px-1"
                     />
 
-                    <VariantButtonLink prefetch={Prefetch.Render} url="/settings" variant="outline" className="rounded-full">
+                    <VariantButtonLink
+                        prefetch={LinkPrefetchStrategy.Render}
+                        to="/settings"
+                        variant="outline"
+                        className="rounded-full"
+                    >
                         <Settings2Icon aria-hidden className="h-btn-icon-md w-btn-icon-md" aria-label={t.common.settings} />
                         {t.common.settings}
                     </VariantButtonLink>
@@ -153,7 +158,7 @@ function FooterLink({ children, ...props }: LinkProps) {
     return (
         <Link
             {...props}
-            prefetch={Prefetch.Viewport}
+            prefetch={LinkPrefetchStrategy.Viewport}
             className="flex w-fit items-center justify-center gap-1 text-muted-foreground leading-none hover:text-foreground hover:underline lg:justify-start"
         >
             {children}

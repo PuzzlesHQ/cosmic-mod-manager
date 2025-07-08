@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 import { BrandIcon, fallbackProjectIcon } from "~/components/icons";
 import { MicrodataItemProps } from "~/components/microdata";
 import { ImgWrapper } from "~/components/ui/avatar";
-import Link, { Prefetch, VariantButtonLink } from "~/components/ui/link";
+import Link, { LinkPrefetchStrategy, VariantButtonLink } from "~/components/ui/link";
 import { cn } from "~/components/utils";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
@@ -107,7 +107,7 @@ export default function HomePage({ projects }: Props) {
                     </div>
 
                     <div className="mt-6 flex flex-wrap items-center justify-center gap-4 md:gap-8">
-                        <VariantButtonLink size="lg" variant="default" url="/mods" className="px-6">
+                        <VariantButtonLink size="lg" variant="default" to="/mods" className="px-6">
                             <CompassIcon
                                 aria-hidden
                                 className="h-btn-icon-lg w-btn-icon-lg"
@@ -118,16 +118,16 @@ export default function HomePage({ projects }: Props) {
 
                         {!session?.id ? (
                             <VariantButtonLink
-                                url="/signup"
+                                to="/signup"
                                 size="lg"
                                 className="bg-card-background px-6 hover:bg-card-background/90 dark:bg-shallow-background dark:hover:bg-shallow-background/90"
-                                prefetch={Prefetch.Render}
+                                prefetch={LinkPrefetchStrategy.Render}
                             >
                                 <LogInIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" aria-label={t.form.signup} />
                                 {t.form.signup}
                             </VariantButtonLink>
                         ) : (
-                            <VariantButtonLink url="/dashboard/projects" size="lg" className="px-6" variant="secondary-inverted">
+                            <VariantButtonLink to="/dashboard/projects" size="lg" className="px-6" variant="secondary-inverted">
                                 <LayoutDashboardIcon
                                     aria-hidden
                                     className="h-btn-icon-md w-btn-icon-md"
@@ -139,7 +139,7 @@ export default function HomePage({ projects }: Props) {
                     </div>
                 </section>
 
-                <ShowCase projects={projects} />
+                <ShowCase projects={projects || []} />
             </main>
         </>
     );

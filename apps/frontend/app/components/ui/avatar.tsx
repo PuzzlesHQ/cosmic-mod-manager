@@ -1,7 +1,7 @@
 import type React from "react";
+import { useMemo } from "react";
 import { cn } from "~/components/utils";
 import { viewTransitionStyleObj } from "~/components/view-transitions";
-import { useRootData } from "~/hooks/root-data";
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
     src: string | React.ReactNode;
@@ -13,7 +13,7 @@ interface Props extends React.HTMLAttributes<HTMLElement> {
 }
 
 export function ImgWrapper({ vtId, src, alt, className, loading, fallback, ...props }: Props) {
-    const viewTransitions = useRootData()?.userConfig.viewTransitions !== false;
+    const style = useMemo(() => viewTransitionStyleObj(vtId), [vtId]);
 
     if (!src || typeof src !== "string") {
         return (
@@ -28,8 +28,6 @@ export function ImgWrapper({ vtId, src, alt, className, loading, fallback, ...pr
             </div>
         );
     }
-
-    const style = viewTransitionStyleObj(vtId, viewTransitions);
 
     return (
         <img

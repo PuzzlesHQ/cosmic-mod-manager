@@ -16,7 +16,7 @@ import { Form, FormField, FormItem, FormLabel, FormMessage } from "~/components/
 import { FormErrorMessage } from "~/components/ui/form-message";
 import HorizontalSeparator from "~/components/ui/hr-separator";
 import { Input } from "~/components/ui/input";
-import { Prefetch, TextLink, useNavigate } from "~/components/ui/link";
+import { LinkPrefetchStrategy, TextLink, useNavigate } from "~/components/ui/link";
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
@@ -157,7 +157,12 @@ export function LoginPageCard(props: LoginPageCardProps) {
                 <div className="mt-4 flex w-full flex-col items-center justify-center text-muted-foreground">
                     <div className="text-center">
                         {t.auth.dontHaveAccount(
-                            <TextLink key="signup-link" prefetch={Prefetch.Render} to="/signup" aria-label={t.form.signup}>
+                            <TextLink
+                                key="signup-link"
+                                prefetch={LinkPrefetchStrategy.Render}
+                                to="/signup"
+                                aria-label={t.form.signup}
+                            >
                                 {t.form.signup}
                             </TextLink>,
                         )}
@@ -166,7 +171,7 @@ export function LoginPageCard(props: LoginPageCardProps) {
                         {t.auth.forgotPassword(
                             <TextLink
                                 key="change-password-link"
-                                prefetch={Prefetch.Render}
+                                prefetch={LinkPrefetchStrategy.Render}
                                 to="/change-password"
                                 aria-label={t.auth.changePassword}
                             >

@@ -6,10 +6,6 @@
     @apply text-muted-foreground text-base;
 }
 
-.markdown-body h1:first-child {
-    @apply mt-0;
-}
-
 .markdown-body blockquote,
 .markdown-body details,
 .markdown-body dl,
@@ -30,6 +26,11 @@
 .markdown-body h1,
 .markdown-body h2 {
     @apply pt-2.5 pb-1 border-b border-shallower-background;
+}
+
+.markdown-body h1:first-child,
+.markdown-body h2:first-child {
+    @apply pt-0;
 }
 
 .markdown-body h1,

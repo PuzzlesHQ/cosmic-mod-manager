@@ -9,11 +9,11 @@ import {
 } from "react-router";
 import type { VariantProps } from "~/components/types";
 import { cn } from "~/components/utils";
+import { useRootData } from "~/hooks/root-data";
 import { FormatUrl_WithHintLocale, isCurrLinkActive } from "~/utils/urls";
 import { buttonVariants } from "./button";
 
-export type PrefetchBehavior = "intent" | "render" | "none" | "viewport";
-export enum Prefetch {
+export enum LinkPrefetchStrategy {
     Intent = "intent",
     Render = "render",
     None = "none",
@@ -28,8 +28,9 @@ interface CustomLinkProps extends LinkProps {
 export default function Link({ ref, escapeUrlWrapper, ...props }: CustomLinkProps) {
     let to = props.to;
     if (escapeUrlWrapper !== true) to = FormatUrl_WithHintLocale(to.toString());
+    const viewTransitions = useRootData()?.userConfig.viewTransitions !== false;
 
-    return <RemixLink ref={ref} {...props} to={props.to} viewTransition={props.viewTransition !== false} />;
+    return <RemixLink ref={ref} {...props} to={props.to} viewTransition={viewTransitions} />;
 }
 
 export function TextLink(props: React.ComponentProps<typeof Link>) {
@@ -86,14 +87,13 @@ export function ButtonLink({
 
 export interface VariantLinkProps extends VariantProps<typeof buttonVariants> {
     children: React.ReactNode;
-    url: string;
+    to: string;
     className?: string;
     label?: string;
     target?: string;
     onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void | Promise<void>;
     tabIndex?: number;
     preventScrollReset?: boolean;
-    prefetch?: PrefetchBehavior;
     viewTransition?: boolean;
     ref?: React.ComponentProps<"a">["ref"];
 }
@@ -101,16 +101,16 @@ export interface VariantLinkProps extends VariantProps<typeof buttonVariants> {
 export function VariantButtonLink({
     ref,
     children,
-    url,
+    to,
     className,
     label,
     variant = "secondary",
     size = "default",
     ...props
-}: VariantLinkProps & Omit<CustomLinkProps, "to">) {
+}: VariantLinkProps & CustomLinkProps) {
     return (
         <Link
-            to={url}
+            to={to}
             ref={ref}
             className={cn("flex items-center justify-center gap-2 font-medium", buttonVariants({ variant, size }), className)}
             aria-label={label}

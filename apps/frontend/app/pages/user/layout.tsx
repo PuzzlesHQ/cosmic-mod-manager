@@ -16,7 +16,7 @@ import { ImgWrapper } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import Chip from "~/components/ui/chip";
 import { TimePassedSince } from "~/components/ui/date";
-import Link, { Prefetch, useNavigate, VariantButtonLink } from "~/components/ui/link";
+import Link, { LinkPrefetchStrategy, useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { PopoverClose } from "~/components/ui/popover";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
@@ -227,7 +227,7 @@ function ProfilePageHeader({ userData, totalProjects, totalDownloads }: ProfileP
             }
             actionBtns={
                 userData.id === session?.id ? (
-                    <VariantButtonLink variant="secondary-inverted" url="/settings/profile" prefetch={Prefetch.Render}>
+                    <VariantButtonLink variant="secondary-inverted" to="/settings/profile" prefetch={LinkPrefetchStrategy.Render}>
                         <EditIcon aria-hidden className="h-btn-icon w-btn-icon" />
                         {t.form.edit}
                     </VariantButtonLink>

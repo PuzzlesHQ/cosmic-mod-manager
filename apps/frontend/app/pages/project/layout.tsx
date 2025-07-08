@@ -41,7 +41,7 @@ import { Card } from "~/components/ui/card";
 import Chip from "~/components/ui/chip";
 import { FormattedCount } from "~/components/ui/count";
 import { FormattedDate, TimePassedSince } from "~/components/ui/date";
-import Link, { ButtonLink, Prefetch, useNavigate, VariantButtonLink } from "~/components/ui/link";
+import Link, { ButtonLink, LinkPrefetchStrategy, useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { PopoverClose } from "~/components/ui/popover";
 import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { ReleaseChannelBadge } from "~/components/ui/release-channel-pill";
@@ -294,7 +294,7 @@ export default function ProjectPageLayout() {
                                     </div>
                                     <div className="flex h-full w-fit grow select-text flex-col">
                                         <Link
-                                            prefetch={Prefetch.Render}
+                                            prefetch={LinkPrefetchStrategy.Render}
                                             to={VersionPagePath(ctx.projectType, projectData.slug, version.slug)}
                                             className="noClickRedirect w-fit"
                                         >
@@ -494,11 +494,11 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
 
                         {currUsersMembership?.id || isModerator(session?.role) ? (
                             <VariantButtonLink
-                                url={ProjectPagePath(projectType, projectData.slug, "settings")}
+                                to={ProjectPagePath(projectType, projectData.slug, "settings")}
                                 variant="secondary-inverted"
                                 className="h-11 w-11 rounded-full p-0"
                                 label="project settings"
-                                prefetch={Prefetch.Render}
+                                prefetch={LinkPrefetchStrategy.Render}
                             >
                                 <SettingsIcon aria-hidden className="h-btn-icon-lg w-btn-icon-lg" />
                             </VariantButtonLink>

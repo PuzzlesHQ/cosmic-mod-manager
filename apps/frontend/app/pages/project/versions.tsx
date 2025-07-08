@@ -27,7 +27,7 @@ import Chip from "~/components/ui/chip";
 import { copyTextToClipboard } from "~/components/ui/copy-btn";
 import { FormattedCount } from "~/components/ui/count";
 import { FormattedDate, TimePassedSince } from "~/components/ui/date";
-import Link, { Prefetch, useNavigate, VariantButtonLink } from "~/components/ui/link";
+import Link, { LinkPrefetchStrategy, useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { ReleaseChannelBadge } from "~/components/ui/release-channel-pill";
 import { Separator } from "~/components/ui/separator";
@@ -89,7 +89,7 @@ function UploadVersionLinkCard({ uploadPageUrl }: { uploadPageUrl: string }) {
 
     return (
         <Card className="flex flex-row flex-wrap items-center justify-start gap-x-4 gap-y-2 p-card-surround">
-            <VariantButtonLink url={uploadPageUrl} variant="default" prefetch={Prefetch.Render}>
+            <VariantButtonLink to={uploadPageUrl} variant="default" prefetch={LinkPrefetchStrategy.Render}>
                 <UploadIcon aria-hidden className="h-btn-icon w-btn-icon" />
                 {t.project.uploadVersion}
             </VariantButtonLink>
@@ -210,7 +210,7 @@ function ProjectVersionsListTable({
                                 <Tooltip>
                                     <TooltipTrigger asChild>
                                         <VariantButtonLink
-                                            url={version.primaryFile?.url || ""}
+                                            to={version.primaryFile?.url || ""}
                                             variant="outline"
                                             size="icon"
                                             className="noClickRedirect !w-10 !h-10 shrink-0 rounded-full"
@@ -244,7 +244,11 @@ function ProjectVersionsListTable({
 function VersionName({ title, number, url }: { title: string; number: string; url: string }) {
     return (
         <div className="flex min-w-[16ch] max-w-[24ch] flex-col items-start justify-center overflow-hidden lg:max-w-[32ch]">
-            <Link prefetch={Prefetch.Render} to={url} className="noClickRedirect font-bold text-foreground leading-tight">
+            <Link
+                prefetch={LinkPrefetchStrategy.Render}
+                to={url}
+                className="noClickRedirect font-bold text-foreground leading-tight"
+            >
                 {number}
             </Link>
             <span className="font-medium text-[0.77rem] text-muted-foreground/85 leading-snug">{title}</span>
@@ -348,7 +352,7 @@ function ThreeDotMenu({ versionPageUrl, canEditVersion }: { versionPageUrl: stri
             <PopoverContent align="end" className="noClickRedirect min-w-fit gap-1 p-1">
                 <VariantButtonLink
                     className="justify-start"
-                    url={versionPageUrl}
+                    to={versionPageUrl}
                     variant="ghost-no-shadow"
                     size="sm"
                     target="_blank"
@@ -377,7 +381,7 @@ function ThreeDotMenu({ versionPageUrl, canEditVersion }: { versionPageUrl: stri
                     <>
                         <Separator />
                         <VariantButtonLink
-                            url={`${versionPageUrl}/edit`}
+                            to={`${versionPageUrl}/edit`}
                             variant="ghost-no-shadow"
                             className="justify-start"
                             size="sm"

@@ -1,23 +1,9 @@
-import { GetManyProjects_ListItem, GetProject_ListItem, UpdateManyProjects } from "~/db/project_item";
+import { GetManyProjects_ListItem, UpdateManyProjects } from "~/db/project_item";
 import { GetUser_ByIdOrUsername, UpdateUser } from "~/db/user_item";
 import { UpdateProjects_SearchIndex } from "~/routes/search/search-db";
 import type { ContextUserData } from "~/types";
 import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData } from "~/utils/http";
 import { isProjectPublic } from "../utils";
-
-export async function addProjectFollower(slug: string, userSession: ContextUserData) {
-    const project = await GetProject_ListItem(slug, slug);
-    if (!project?.id) return notFoundResponseData("Project not found!");
-
-    return await addProjectsToUserFollows([project.id], userSession);
-}
-
-export async function removeProjectFollower(slug: string, userSession: ContextUserData) {
-    const project = await GetProject_ListItem(slug, slug);
-    if (!project?.id) return notFoundResponseData("Project not found!");
-
-    return await removeProjectsFromUserFollows([project.id], userSession);
-}
 
 // Bulk actions
 export async function addProjectsToUserFollows(projectIds: string[], userSession: ContextUserData) {

@@ -27,7 +27,7 @@ export default function NotFoundPage({ className, title, description, linkHref, 
                 {description || t.error.pageNotFoundDesc}
             </p>
 
-            <VariantButtonLink variant="link" url={linkHref || "/"} label={linkLabel || t.common.home} className="mt-4 text-lg">
+            <VariantButtonLink variant="link" to={linkHref || "/"} label={linkLabel || t.common.home} className="mt-4 text-lg">
                 {linkLabel || t.common.home}
             </VariantButtonLink>
         </div>

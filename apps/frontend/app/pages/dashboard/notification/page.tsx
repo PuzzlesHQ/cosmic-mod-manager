@@ -58,7 +58,7 @@ export default function NotificationsPage({ notifications, relatedProjects, rela
 
                 {(notifications?.length || 0) > 0 && (
                     <div className="flex flex-wrap items-center justify-start gap-x-2 gap-y-1">
-                        <VariantButtonLink url="/dashboard/notifications/history" className="w-fit">
+                        <VariantButtonLink to="/dashboard/notifications/history" className="w-fit">
                             <HistoryIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                             {t.dashboard.viewHistory}
                         </VariantButtonLink>

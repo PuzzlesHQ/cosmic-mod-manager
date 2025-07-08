@@ -15,7 +15,8 @@ export default function () {
 
 export async function loader(props: Route.LoaderArgs): Promise<ProjectListItem[]> {
     const res = await serverFetch(props.request, "/api/projects/home-page-carousel");
-    const projects = (await resJson(res)) as ProjectListItem[];
+    if (!res.ok) return [];
+    const projects = await resJson<ProjectListItem[]>(res);
 
     return projects || [];
 }

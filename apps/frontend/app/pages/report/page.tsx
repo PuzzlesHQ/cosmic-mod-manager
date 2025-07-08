@@ -91,13 +91,13 @@ export default function ReportPage({ data }: { data: LoaderData }) {
                     <p className="text-muted-foreground">{t.report.alreadyReportedDesc(reportingItemType || t.report.content)}</p>
                     <div className="flex items-center justify-end gap-3">
                         {reportingItem_link && reportingItemType ? (
-                            <VariantButtonLink url={reportingItem_link} variant="secondary">
+                            <VariantButtonLink to={reportingItem_link} variant="secondary">
                                 <ArrowLeftIcon className="h-btn-icon-md w-btn-icon-md" />
                                 {t.report.backToContent(reportingItemType)}
                             </VariantButtonLink>
                         ) : null}
 
-                        <VariantButtonLink url={ReportPagePath(data.existingReport.id)} variant="default">
+                        <VariantButtonLink to={ReportPagePath(data.existingReport.id)} variant="default">
                             {t.report.goToReport}
                             <ArrowRightIcon className="h-btn-icon-md w-btn-icon-md" />
                         </VariantButtonLink>

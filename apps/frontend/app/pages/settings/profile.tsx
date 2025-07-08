@@ -177,7 +177,7 @@ export function ProfileSettingsPage({ session }: Props) {
                                 {t.form.saveChanges}
                             </Button>
 
-                            <VariantButtonLink url={UserProfilePath(session.userName)}>
+                            <VariantButtonLink to={UserProfilePath(session.userName)}>
                                 <UserIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                 {t.settings.visitYourProfile}
                             </VariantButtonLink>

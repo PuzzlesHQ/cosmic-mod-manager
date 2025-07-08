@@ -9,7 +9,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "~/componen
 import { Form, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import HorizontalSeparator from "~/components/ui/hr-separator";
 import { Input } from "~/components/ui/input";
-import { Prefetch, TextLink } from "~/components/ui/link";
+import { LinkPrefetchStrategy, TextLink } from "~/components/ui/link";
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
 import { useTranslation } from "~/locales/provider";
@@ -88,7 +88,7 @@ export default function ChangePasswordPage() {
                         <CardFooter className="flex w-full flex-col items-center justify-center gap-1">
                             <HorizontalSeparator />
 
-                            <TextLink prefetch={Prefetch.Render} to="/login">
+                            <TextLink prefetch={LinkPrefetchStrategy.Render} to="/login">
                                 {t.form.login}
                             </TextLink>
                         </CardFooter>

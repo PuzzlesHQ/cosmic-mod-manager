@@ -27,7 +27,7 @@ import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } 
 import CopyBtn, { copyTextToClipboard } from "~/components/ui/copy-btn";
 import { FormattedCount } from "~/components/ui/count";
 import { FormattedDate } from "~/components/ui/date";
-import Link, { Prefetch, VariantButtonLink } from "~/components/ui/link";
+import Link, { LinkPrefetchStrategy, VariantButtonLink } from "~/components/ui/link";
 import ReleaseChannelChip from "~/components/ui/release-channel-pill";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
@@ -91,7 +91,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                             <TooltipTrigger asChild>
                                 <VariantButtonLink
                                     variant="default"
-                                    url={versionData.primaryFile?.url ? versionData.primaryFile?.url : ""}
+                                    to={versionData.primaryFile?.url ? versionData.primaryFile?.url : ""}
                                     onClick={showDownloadAnimation}
                                     rel="nofollow noindex"
                                 >
@@ -116,8 +116,8 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                         session?.role,
                     ) ? (
                         <VariantButtonLink
-                            url={VersionPagePath(ctx.projectType, ctx.projectData.slug, versionData.slug, "edit")}
-                            prefetch={Prefetch.Render}
+                            to={VersionPagePath(ctx.projectType, ctx.projectData.slug, versionData.slug, "edit")}
+                            prefetch={LinkPrefetchStrategy.Render}
                         >
                             <Edit3Icon aria-hidden className="h-btn-icon w-btn-icon" />
                             {t.form.edit}
@@ -363,7 +363,7 @@ function FileDetailsItem({
 
                     <VariantButtonLink
                         variant={isPrimary ? "secondary-dark" : "ghost"}
-                        url={downloadLink}
+                        to={downloadLink}
                         className={cn(!isPrimary && "hover:bg-transparent hover:text-foreground dark:hover:bg-transparent")}
                         onClick={showDownloadAnimation}
                         rel="nofollow noindex"

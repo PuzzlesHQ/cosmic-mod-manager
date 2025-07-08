@@ -144,7 +144,7 @@ function FilterSidebar({ type, showFilters, searchParams }: Props) {
                 />
 
                 <VariantButtonLink
-                    url={clearFilters()}
+                    to={clearFilters()}
                     variant="secondary"
                     className="!w-10 !h-10 shrink-0"
                     title={t.search.clearFilters}

@@ -320,7 +320,7 @@ function AvailableVersionsList({ selectedGameVersion, selectedLoader }: Availabl
                         </div>
 
                         <VariantButtonLink
-                            url={version.primaryFile?.url || ""}
+                            to={version.primaryFile?.url || ""}
                             size="icon"
                             variant="default"
                             className={cn("shrink-0", isDownloadAnimationVisible && "pointer-events-none")}

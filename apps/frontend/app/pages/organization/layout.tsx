@@ -12,7 +12,7 @@ import { PageHeader } from "~/components/misc/page-header";
 import RefreshPage from "~/components/misc/refresh-page";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { Prefetch, useNavigate, VariantButtonLink } from "~/components/ui/link";
+import { LinkPrefetchStrategy, useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { PopoverClose } from "~/components/ui/popover";
 import { Separator } from "~/components/ui/separator";
 import { useOrgData } from "~/hooks/org";
@@ -160,8 +160,8 @@ function OrgInfoHeader({
                             <>
                                 <VariantButtonLink
                                     variant="ghost"
-                                    url={OrgPagePath(orgData.slug, "settings/projects")}
-                                    prefetch={Prefetch.Render}
+                                    to={OrgPagePath(orgData.slug, "settings/projects")}
+                                    prefetch={LinkPrefetchStrategy.Render}
                                     size="sm"
                                 >
                                     <CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
@@ -189,7 +189,7 @@ function OrgInfoHeader({
                 }
                 actionBtns={
                     currUsersMembership?.id || isModerator(session?.role) ? (
-                        <VariantButtonLink variant="secondary-inverted" url={OrgPagePath(orgData.slug, "settings")}>
+                        <VariantButtonLink variant="secondary-inverted" to={OrgPagePath(orgData.slug, "settings")}>
                             <SettingsIcon aria-hidden className="h-btn-icon w-btn-icon" />
                             {t.dashboard.manage}
                         </VariantButtonLink>

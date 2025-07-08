@@ -11,9 +11,10 @@ import {
     TextIcon,
     UsersIcon,
 } from "lucide-react";
+import { useMemo } from "react";
 import { Outlet } from "react-router";
 import { fallbackProjectIcon } from "~/components/icons";
-import { ContentCardTemplate, Panel, PanelAside, PanelContent } from "~/components/misc/panel";
+import { Panel, PanelContent, SidePanel, type SidePanelSection } from "~/components/misc/panel";
 import { ImgWrapper } from "~/components/ui/avatar";
 import {
     Breadcrumb,
@@ -23,16 +24,17 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "~/components/ui/breadcrumb";
-import { ButtonLink, Prefetch } from "~/components/ui/link";
+import { LinkPrefetchStrategy } from "~/components/ui/link";
 import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { useProjectData } from "~/hooks/project";
 import { useTranslation } from "~/locales/provider";
+import type { Locale } from "~/locales/types";
 import { appendPathInUrl, FormatUrl_WithHintLocale, OrgPagePath, ProjectPagePath } from "~/utils/urls";
 import ModerationBanner from "../moderation-banner";
 import { PublishingChecklist } from "../publishing-checklist";
 
 export default function ProjectSettingsLayout() {
-    const { t } = useTranslation();
+    const { t, formattedLocaleName } = useTranslation();
     const ctx = useProjectData();
     const projectData = ctx.projectData;
 
@@ -43,10 +45,12 @@ export default function ProjectSettingsLayout() {
         projectsPageUrl = OrgPagePath(projectData.organisation?.slug, "settings/projects");
     }
 
+    const sidePanelSections = useMemo(() => links(t, baseUrl), [formattedLocaleName, baseUrl]);
+
     return (
         <Panel className="pb-12">
-            <PanelAside aside className="flex flex-col gap-panel-cards lg:w-80">
-                <ContentCardTemplate className="gap-3">
+            <SidePanel header={t.projectSettings.settings} sections={sidePanelSections}>
+                <div className="mb-3 grid gap-3">
                     <Breadcrumb>
                         <BreadcrumbList>
                             <BreadcrumbItem>
@@ -79,55 +83,8 @@ export default function ProjectSettingsLayout() {
                             <ProjectStatusBadge status={projectData.status} t={t} />
                         </div>
                     </div>
-
-                    <div className="flex w-full flex-col gap-1">
-                        <span className="mt-1 mb-0.5 font-semibold text-xl">{t.projectSettings.settings}</span>
-                        {links().sidePanel.map((link) => (
-                            <ButtonLink
-                                prefetch={link.prefetch !== false ? "render" : undefined}
-                                key={link.href}
-                                url={appendPathInUrl(baseUrl, link.href)}
-                                preventScrollReset
-                            >
-                                {link.icon}
-                                {link.name}
-                            </ButtonLink>
-                        ))}
-
-                        <span className="mt-2 font-semibold text-lg">{t.projectSettings.view}</span>
-                        {links().viewPages.map((link) => (
-                            <ButtonLink
-                                prefetch={Prefetch.Render}
-                                key={link.href}
-                                url={appendPathInUrl(baseUrl, link.href)}
-                                className="justify-between"
-                            >
-                                <div className="flex items-center justify-center gap-2">
-                                    {link.icon}
-                                    {link.name}
-                                </div>
-                                <ChevronRightIcon aria-hidden className="h-btn-icon w-btn-icon text-muted-foreground" />
-                            </ButtonLink>
-                        ))}
-
-                        <span className="mt-2 font-semibold text-lg">{t.projectSettings.upload}</span>
-                        {links().uploadPages.map((link) => (
-                            <ButtonLink
-                                prefetch={Prefetch.Render}
-                                key={link.href}
-                                url={appendPathInUrl(baseUrl, link.href)}
-                                className="justify-between"
-                            >
-                                <div className="flex items-center justify-center gap-2">
-                                    {link.icon}
-                                    {link.name}
-                                </div>
-                                <ChevronRightIcon aria-hidden className="h-btn-icon w-btn-icon text-muted-foreground" />
-                            </ButtonLink>
-                        ))}
-                    </div>
-                </ContentCardTemplate>
-            </PanelAside>
+                </div>
+            </SidePanel>
 
             <PanelContent main>
                 <PublishingChecklist />
@@ -138,63 +95,76 @@ export default function ProjectSettingsLayout() {
         </Panel>
     );
 }
-function links() {
-    const { t } = useTranslation();
-
-    return {
-        sidePanel: [
-            {
-                name: t.projectSettings.general,
-                href: "settings",
-                icon: <SettingsIcon aria-hidden className="h-btn-icon w-btn-icon" />,
-            },
-            {
-                name: t.projectSettings.tags,
-                href: "settings/tags",
-                icon: <TagsIcon aria-hidden className="h-btn-icon w-btn-icon" />,
-            },
-            {
-                name: t.form.description,
-                href: "settings/description",
-                icon: <TextIcon aria-hidden className="h-btn-icon w-btn-icon" />,
-            },
-            {
-                name: t.search.license,
-                href: "settings/license",
-                icon: <CopyrightIcon aria-hidden className="h-btn-icon w-btn-icon" />,
-            },
-            {
-                name: t.projectSettings.links,
-                href: "settings/links",
-                icon: <LinkIcon aria-hidden className="h-btn-icon w-btn-icon" />,
-            },
-            {
-                name: t.projectSettings.members,
-                href: "settings/members",
-                icon: <UsersIcon aria-hidden className="h-btn-icon w-btn-icon" />,
-                prefetch: false,
-            },
-        ],
-
-        viewPages: [
-            {
-                name: t.dashboard.analytics,
-                href: "settings/analytics",
-                icon: <BarChart2Icon aria-hidden className="h-btn-icon w-btn-icon" />,
-            },
-        ],
-
-        uploadPages: [
-            {
-                name: t.project.gallery,
-                href: "gallery",
-                icon: <ImageIcon aria-hidden className="h-btn-icon w-btn-icon" />,
-            },
-            {
-                name: t.project.versions,
-                href: "versions",
-                icon: <GitCommitHorizontalIcon aria-hidden className="h-btn-icon w-btn-icon" />,
-            },
-        ],
-    };
+function links(t: Locale, base: string): SidePanelSection[] {
+    return [
+        {
+            items: [
+                {
+                    label: t.projectSettings.general,
+                    href: appendPathInUrl(base, "settings"),
+                    icon: <SettingsIcon aria-hidden className="h-btn-icon w-btn-icon" />,
+                    prefetch: LinkPrefetchStrategy.Render,
+                },
+                {
+                    label: t.projectSettings.tags,
+                    href: appendPathInUrl(base, "settings/tags"),
+                    icon: <TagsIcon aria-hidden className="h-btn-icon w-btn-icon" />,
+                    prefetch: LinkPrefetchStrategy.Render,
+                },
+                {
+                    label: t.form.description,
+                    href: appendPathInUrl(base, "settings/description"),
+                    icon: <TextIcon aria-hidden className="h-btn-icon w-btn-icon" />,
+                    prefetch: LinkPrefetchStrategy.Render,
+                },
+                {
+                    label: t.search.license,
+                    href: appendPathInUrl(base, "settings/license"),
+                    icon: <CopyrightIcon aria-hidden className="h-btn-icon w-btn-icon" />,
+                    prefetch: LinkPrefetchStrategy.Render,
+                },
+                {
+                    label: t.projectSettings.links,
+                    href: appendPathInUrl(base, "settings/links"),
+                    icon: <LinkIcon aria-hidden className="h-btn-icon w-btn-icon" />,
+                    prefetch: LinkPrefetchStrategy.Render,
+                },
+                {
+                    label: t.projectSettings.members,
+                    href: appendPathInUrl(base, "settings/members"),
+                    icon: <UsersIcon aria-hidden className="h-btn-icon w-btn-icon" />,
+                },
+            ],
+        },
+        {
+            name: t.projectSettings.view,
+            items: [
+                {
+                    label: t.dashboard.analytics,
+                    href: appendPathInUrl(base, "settings/analytics"),
+                    icon: <BarChart2Icon aria-hidden className="h-btn-icon w-btn-icon" />,
+                    prefetch: LinkPrefetchStrategy.Render,
+                },
+            ],
+        },
+        {
+            name: t.projectSettings.upload,
+            items: [
+                {
+                    label: t.project.gallery,
+                    href: appendPathInUrl(base, "gallery"),
+                    icon: <ImageIcon aria-hidden className="h-btn-icon w-btn-icon" />,
+                    prefetch: LinkPrefetchStrategy.Render,
+                    icon_2: <ChevronRightIcon aria-hidden className="ms-auto h-btn-icon w-btn-icon text-muted-foreground" />,
+                },
+                {
+                    label: t.project.versions,
+                    href: appendPathInUrl(base, "versions"),
+                    icon: <GitCommitHorizontalIcon aria-hidden className="h-btn-icon w-btn-icon" />,
+                    prefetch: LinkPrefetchStrategy.Render,
+                    icon_2: <ChevronRightIcon aria-hidden className="ms-auto h-btn-icon w-btn-icon text-muted-foreground" />,
+                },
+            ],
+        },
+    ];
 }

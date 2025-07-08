@@ -4,6 +4,7 @@ import { CapitalizeAndFormatString } from "@app/utils/string";
 import { type EnvironmentSupport, ProjectType, ProjectVisibility } from "@app/utils/types";
 import { imageUrl } from "@app/utils/url";
 import { Building2Icon, CalendarIcon, DownloadIcon, HeartIcon, RefreshCcwIcon } from "lucide-react";
+import { useMemo } from "react";
 import { fallbackProjectIcon } from "~/components/icons";
 import { TagIcon } from "~/components/icons/tag-icons";
 import { itemType, MicrodataItemProps, MicrodataItemType } from "~/components/microdata";
@@ -14,7 +15,6 @@ import Link from "~/components/ui/link";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
 import { viewTransitionStyleObj } from "~/components/view-transitions";
-import { useRootData } from "~/hooks/root-data";
 import { useTranslation } from "~/locales/provider";
 import ProjectSupportedEnv from "~/pages/project/supported-env";
 import { OrgPagePath, ProjectPagePath, UserProfilePath } from "~/utils/urls";
@@ -63,7 +63,6 @@ export default function ProjectCardItem(props: SearchListItemProps) {
 }
 
 function BaseView(props: SearchListItemProps) {
-    const viewTransitions = useRootData()?.userConfig.viewTransitions !== false;
     const { t } = useTranslation();
 
     const projectCategoriesData = getProjectCategoriesDataFromNames(props.featuredCategories);
@@ -77,7 +76,7 @@ function BaseView(props: SearchListItemProps) {
     const galleryViewType = props.viewType === ViewType.GALLERY;
     const listViewType = props.viewType === ViewType.LIST;
 
-    const vtStyle = viewTransitionStyleObj(`${props.pageId}-search-item-${props.vtId}`, viewTransitions);
+    const vtStyle = useMemo(() => viewTransitionStyleObj(`${props.pageId}-search-item-${props.vtId}`), [props.vtId]);
 
     return (
         // biome-ignore lint/a11y/useSemanticElements: idk, <li> doesn't make sense here

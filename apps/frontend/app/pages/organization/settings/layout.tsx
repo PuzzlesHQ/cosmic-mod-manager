@@ -1,8 +1,9 @@
 import { imageUrl } from "@app/utils/url";
 import { BarChart2Icon, SettingsIcon, UsersIcon } from "lucide-react";
+import { useMemo } from "react";
 import { Outlet } from "react-router";
 import { CubeIcon, fallbackOrgIcon } from "~/components/icons";
-import { ContentCardTemplate, Panel, PanelAside, PanelContent } from "~/components/misc/panel";
+import { Panel, PanelContent, SidePanel } from "~/components/misc/panel";
 import { ImgWrapper } from "~/components/ui/avatar";
 import {
     Breadcrumb,
@@ -12,22 +13,55 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "~/components/ui/breadcrumb";
-import { ButtonLink, Prefetch } from "~/components/ui/link";
+import { LinkPrefetchStrategy } from "~/components/ui/link";
 import { useOrgData } from "~/hooks/org";
 import { useTranslation } from "~/locales/provider";
 import { appendPathInUrl, FormatUrl_WithHintLocale, OrgPagePath } from "~/utils/urls";
 
 export default function OrgSettingsLayout() {
-    const { t } = useTranslation();
+    const { t, formattedLocaleName } = useTranslation();
     const ctx = useOrgData();
     const orgData = ctx.orgData;
     const projects = ctx.orgProjects;
 
     const baseUrl = OrgPagePath(orgData.slug);
+    const sidePanelSections = useMemo(() => {
+        return [
+            {
+                items: [
+                    {
+                        label: t.dashboard.overview,
+                        href: appendPathInUrl(baseUrl, "settings"),
+                        icon: <SettingsIcon aria-hidden className="h-btn-icon w-btn-icon" />,
+                        prefetch: LinkPrefetchStrategy.Render,
+                    },
+                    {
+                        label: t.projectSettings.members,
+                        href: appendPathInUrl(baseUrl, "settings/members"),
+                        icon: <UsersIcon aria-hidden className="h-btn-icon w-btn-icon" />,
+                        prefetch: LinkPrefetchStrategy.Render,
+                    },
+                    {
+                        label: t.dashboard.projects,
+                        href: appendPathInUrl(baseUrl, "settings/projects"),
+                        icon: <CubeIcon aria-hidden className="h-btn-icon w-btn-icon" />,
+                        prefetch: LinkPrefetchStrategy.Render,
+                    },
+                    {
+                        label: t.dashboard.analytics,
+                        href: appendPathInUrl(baseUrl, "settings/analytics"),
+                        icon: <BarChart2Icon aria-hidden className="h-btn-icon w-btn-icon" />,
+                        prefetch: LinkPrefetchStrategy.Render,
+                    },
+                ],
+            },
+        ];
+    }, [baseUrl, formattedLocaleName]);
+
     return (
         <Panel className="pb-12">
-            <PanelAside aside className="flex flex-col gap-panel-cards lg:w-80">
-                <ContentCardTemplate className="gap-3">
+            <SidePanel header={t.organization.orgSettings} sections={sidePanelSections}>
+                <div className="mb-2 grid gap-3">
                     <Breadcrumb>
                         <BreadcrumbList>
                             <BreadcrumbItem>
@@ -64,46 +98,8 @@ export default function OrgSettingsLayout() {
                             </span>
                         </div>
                     </div>
-
-                    <div className="flex w-full flex-col gap-1">
-                        <span className="mt-1 mb-0.5 font-semibold text-muted-foreground text-xl">
-                            {t.organization.orgSettings}
-                        </span>
-                        {[
-                            {
-                                name: t.dashboard.overview,
-                                href: "settings",
-                                icon: <SettingsIcon aria-hidden className="h-btn-icon w-btn-icon" />,
-                            },
-                            {
-                                name: t.projectSettings.members,
-                                href: "settings/members",
-                                icon: <UsersIcon aria-hidden className="h-btn-icon w-btn-icon" />,
-                            },
-                            {
-                                name: t.dashboard.projects,
-                                href: "settings/projects",
-                                icon: <CubeIcon aria-hidden className="h-btn-icon w-btn-icon" />,
-                            },
-                            {
-                                name: t.dashboard.analytics,
-                                href: "settings/analytics",
-                                icon: <BarChart2Icon aria-hidden className="h-btn-icon w-btn-icon" />,
-                            },
-                        ].map((link) => (
-                            <ButtonLink
-                                prefetch={Prefetch.Render}
-                                key={link.href}
-                                url={appendPathInUrl(baseUrl, link.href)}
-                                preventScrollReset
-                            >
-                                {link.icon}
-                                {link.name}
-                            </ButtonLink>
-                        ))}
-                    </div>
-                </ContentCardTemplate>
-            </PanelAside>
+                </div>
+            </SidePanel>
 
             <PanelContent main>
                 <Outlet />

@@ -54,14 +54,14 @@ export async function resetConfig() {
 }
 
 function validateConfig(config?: Partial<UserConfig>) {
-    try {
-        const defaultConf = {
-            theme: ThemeOptions.DARK,
-            viewPrefs: DefaultViewPrefs,
-            viewTransitions: false,
-            locale: formatLocaleCode(DefaultLocale),
-        };
+    const defaultConf = {
+        theme: ThemeOptions.DARK,
+        viewPrefs: DefaultViewPrefs,
+        viewTransitions: false,
+        locale: formatLocaleCode(DefaultLocale),
+    };
 
+    try {
         if (!config) return defaultConf;
 
         // Validate theme
@@ -85,7 +85,13 @@ function validateConfig(config?: Partial<UserConfig>) {
         if (config.locale) defaultConf.locale = config.locale;
 
         return defaultConf;
-    } catch {
+    } catch (err) {
+        if (!config) {
+            console.error(err);
+            return defaultConf;
+        }
+
+        // If config is invalid, reset to default
         return validateConfig();
     }
 }

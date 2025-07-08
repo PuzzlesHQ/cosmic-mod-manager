@@ -20,7 +20,7 @@ import { getUserFromCtx } from "~/utils/router";
 import { getAllVisibleProjects } from "../user/controllers/profile";
 import { checkProjectSlugValidity, getProjectData } from "./controllers";
 import { getProjectDependencies } from "./controllers/dependency";
-import { addProjectFollower, removeProjectFollower } from "./controllers/follows";
+import { addProjectsToUserFollows, removeProjectsFromUserFollows } from "./controllers/follows";
 import { addNewGalleryImage, removeGalleryImage, updateGalleryImage } from "./controllers/gallery";
 import { QueueProjectForApproval } from "./controllers/moderation";
 import { createNewProject } from "./controllers/new-project";
@@ -41,8 +41,8 @@ const projectRouter = new Hono()
     .get("/:slug/dependencies", getReqRateLimiter, projectDependencies_get)
     .get("/:slug/check", getReqRateLimiter, projectCheck_get)
 
-    .post("/:slug/follow", getReqRateLimiter, LoginProtectedRoute, projectFollow_post)
-    .delete("/:slug/follow", critModifyReqRateLimiter, LoginProtectedRoute, projectFollow_delete)
+    .post("/:projectId/follow", getReqRateLimiter, LoginProtectedRoute, projectFollow_post)
+    .delete("/:projectId/follow", critModifyReqRateLimiter, LoginProtectedRoute, projectFollow_delete)
 
     .post("/", critModifyReqRateLimiter, LoginProtectedRoute, project_post)
     .patch("/:slug", critModifyReqRateLimiter, LoginProtectedRoute, project_patch)
@@ -143,11 +143,11 @@ async function projectCheck_get(ctx: Context) {
 
 async function projectFollow_post(ctx: Context) {
     try {
-        const slug = ctx.req.param("slug");
+        const projectId = ctx.req.param("projectId");
         const user = getUserFromCtx(ctx);
-        if (!slug || !user?.id) return invalidReqestResponse(ctx);
+        if (!projectId || !user?.id) return invalidReqestResponse(ctx);
 
-        const res = await addProjectFollower(slug, user);
+        const res = await addProjectsToUserFollows([projectId], user);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -157,11 +157,11 @@ async function projectFollow_post(ctx: Context) {
 
 async function projectFollow_delete(ctx: Context) {
     try {
-        const slug = ctx.req.param("slug");
+        const projectId = ctx.req.param("projectId");
         const user = getUserFromCtx(ctx);
-        if (!slug || !user?.id) return invalidReqestResponse(ctx);
+        if (!projectId || !user?.id) return invalidReqestResponse(ctx);
 
-        const res = await removeProjectFollower(slug, user);
+        const res = await removeProjectsFromUserFollows([projectId], user);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);

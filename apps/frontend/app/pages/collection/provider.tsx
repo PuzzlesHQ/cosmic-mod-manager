@@ -1,9 +1,10 @@
 import { disableInteractions, enableInteractions } from "@app/utils/dom";
-import type { Collection } from "@app/utils/types/api";
+import type { Collection, GenericErrorResponse } from "@app/utils/types/api";
 import { createContext, use, useEffect, useState } from "react";
 import { toast } from "~/components/ui/sonner";
 import { useSession } from "~/hooks/session";
 import clientFetch from "~/utils/client-fetch";
+import { resJson } from "~/utils/server-fetch";
 
 interface CollectionsContext {
     collections: Collection[];
@@ -80,7 +81,13 @@ export function CollectionsProvider(props: { children: React.ReactNode }) {
             method: action === "add" ? "POST" : "DELETE",
         });
         if (!res.ok) {
-            toast.error(action === "add" ? "Failed to follow project" : "Failed to unfollow project");
+            const err = await resJson<GenericErrorResponse>(res);
+            if (action === "add") {
+                toast.error(err?.message || "Failed to follow project");
+            } else {
+                toast.error(err?.message || "Failed to unfollow project");
+            }
+
             enableInteractions();
             return;
         }

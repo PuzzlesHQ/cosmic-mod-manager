@@ -124,7 +124,7 @@ function ModerationItem({ project }: { project: ModerationProjectItem }) {
                 </span>
             </div>
 
-            <VariantButtonLink url={ProjectPagePath(project.type[0], project.slug)} size="sm">
+            <VariantButtonLink to={ProjectPagePath(project.type[0], project.slug)} size="sm">
                 <EyeIcon aria-hidden className="h-btn-icon w-btn-icon" /> {t.moderation.viewProject}
             </VariantButtonLink>
         </div>

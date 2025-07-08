@@ -40,7 +40,7 @@ export default function OAuthProvidersWidget({ actionIntent = AuthActionIntent.S
                 return (
                     <React.Fragment key={provider.name}>
                         <VariantButtonLink
-                            url={url}
+                            to={url}
                             aria-label={`Continue using ${provider.name}`}
                             className="w-full font-medium capitalize"
                             variant="secondary"
