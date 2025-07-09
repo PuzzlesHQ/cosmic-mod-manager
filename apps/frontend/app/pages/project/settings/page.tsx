@@ -85,7 +85,7 @@ export default function GeneralSettingsPage() {
             formData.append("serverSide", values.serverSide);
             formData.append("summary", values.summary);
 
-            const response = await clientFetch(`/api/project/${projectData?.slug}`, {
+            const response = await clientFetch(`/api/project/${projectData.id}`, {
                 method: "PATCH",
                 body: formData,
             });
@@ -165,7 +165,7 @@ export default function GeneralSettingsPage() {
                                             autoComplete="off"
                                         />
                                         <span className="px-1 text-muted-foreground text-sm lg:text-base">
-                                            {Config.FRONTEND_URL}/{form.getValues().type?.[0] || "project"}/
+                                            {Config.FRONTEND_URL}/{form.getValues().type?.[0] || ctx.projectType}/
                                             <em className="font-[500] text-foreground not-italic">{form.getValues().slug}</em>
                                         </span>
                                     </div>
@@ -433,7 +433,7 @@ export default function GeneralSettingsPage() {
 
             <DeleteProjectDialog
                 name={projectData.name}
-                slug={projectData.slug}
+                projectId={projectData.id}
                 returnUrl={
                     projectData.organisation?.id
                         ? OrgPagePath(projectData.organisation?.slug, "settings/projects")
@@ -444,7 +444,7 @@ export default function GeneralSettingsPage() {
     );
 }
 
-function DeleteProjectDialog({ name, slug, returnUrl }: { name: string; slug: string; returnUrl: string }) {
+function DeleteProjectDialog({ name, projectId, returnUrl }: { name: string; projectId: string; returnUrl: string }) {
     const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const [submittable, setSubmittable] = useState(false);
@@ -455,7 +455,7 @@ function DeleteProjectDialog({ name, slug, returnUrl }: { name: string; slug: st
         setIsLoading(true);
 
         try {
-            const res = await clientFetch(`/api/project/${slug}`, {
+            const res = await clientFetch(`/api/project/${projectId}`, {
                 method: "DELETE",
             });
             const data = await res.json();

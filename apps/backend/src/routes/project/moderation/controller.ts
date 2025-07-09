@@ -83,7 +83,7 @@ export async function getModerationProjects() {
 }
 
 export async function updateModerationProject(id: string, status: string, userSession: ContextUserData) {
-    const project = await GetProject_Details(undefined, id);
+    const project = await GetProject_Details(id);
     if (!project) return notFoundResponseData("Project not found");
 
     // let projectOwner

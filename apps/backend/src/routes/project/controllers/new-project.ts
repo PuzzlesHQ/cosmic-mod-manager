@@ -4,7 +4,7 @@ import type { z } from "@app/utils/schemas";
 import type { newProjectFormSchema } from "@app/utils/schemas/project";
 import { OrganisationPermission, ProjectPublishingStatus } from "@app/utils/types";
 import { ThreadType } from "@app/utils/types/api/thread";
-import { GetOrganization_BySlugOrId } from "~/db/organization_item";
+import { GetOrganization_Data } from "~/db/organization_item";
 import { CreateProject, GetProject_ListItem } from "~/db/project_item";
 import { CreateTeamMember } from "~/db/team-member_item";
 import prisma from "~/services/prisma";
@@ -13,12 +13,12 @@ import { HTTP_STATUS, invalidReqestResponseData, unauthorizedReqResponseData } f
 import { generateDbId } from "~/utils/str";
 
 export async function createNewProject(userSession: ContextUserData, formData: z.infer<typeof newProjectFormSchema>) {
-    const existingProjectWithSameUrl = await GetProject_ListItem(formData.slug);
+    const existingProjectWithSameUrl = await GetProject_ListItem(formData.slug, formData.slug);
     if (existingProjectWithSameUrl?.id) return invalidReqestResponseData("Url slug already taken");
 
     let orgId: string | null = null;
     if (formData.orgId) {
-        const org = await GetOrganization_BySlugOrId(undefined, formData.orgId);
+        const org = await GetOrganization_Data(formData.orgId);
         if (!org) return invalidReqestResponseData("Organisation not found");
         orgId = org.id;
 

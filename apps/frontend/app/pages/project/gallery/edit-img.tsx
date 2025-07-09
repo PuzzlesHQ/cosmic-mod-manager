@@ -59,7 +59,7 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
         setIsLoading(true);
 
         try {
-            const response = await clientFetch(`/api/project/${projectData?.slug}/gallery/${galleryItem.id}`, {
+            const response = await clientFetch(`/api/project/${projectData.id}/gallery/${galleryItem.id}`, {
                 method: "PATCH",
                 body: JSON.stringify(values),
             });

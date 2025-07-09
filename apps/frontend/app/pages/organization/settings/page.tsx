@@ -77,7 +77,7 @@ export default function GeneralOrgSettings() {
             formData.append("slug", values.slug);
             formData.append("description", values.description);
 
-            const response = await clientFetch(`/api/organization/${orgData?.slug}`, {
+            const response = await clientFetch(`/api/organization/${orgData.id}`, {
                 method: "PATCH",
                 body: formData,
             });
@@ -87,7 +87,7 @@ export default function GeneralOrgSettings() {
                 return toast.error(result?.message || t.common.error);
             }
 
-            const newPathname = OrgPagePath(result?.slug || orgData?.slug, "settings");
+            const newPathname = OrgPagePath(result?.slug || orgData.slug, "settings");
             RefreshPage(navigate, newPathname);
             toast.success(result?.message || t.common.success);
         } finally {

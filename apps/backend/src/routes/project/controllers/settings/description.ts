@@ -7,11 +7,11 @@ import type { ContextUserData } from "~/types";
 import { HTTP_STATUS, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
 
 export async function updateProjectDescription(
-    slug: string,
+    projectId: string,
     userSession: ContextUserData,
     form: z.infer<typeof updateDescriptionFormSchema>,
 ) {
-    const project = await GetProject_ListItem(slug, slug);
+    const project = await GetProject_ListItem(projectId);
     if (!project?.id) return notFoundResponseData();
 
     const memberObj = getCurrMember(userSession.id, project.team?.members || [], project.organisation?.team.members || []);

@@ -10,7 +10,7 @@ import { CreateFile, DeleteFile_ByID } from "~/db/file_item";
 import {
     Delete_OrganizationCache_All,
     DeleteOrganization,
-    GetOrganization_BySlugOrId,
+    GetOrganization_Data,
     UpdateOrganization,
 } from "~/db/organization_item";
 import { GetManyProjects_ListItem, GetProject_ListItem, UpdateManyProjects, UpdateProject } from "~/db/project_item";
@@ -32,10 +32,10 @@ import { generateDbId } from "~/utils/str";
 export async function updateOrg(
     ctx: Context,
     userSession: ContextUserData,
-    slug: string,
+    orgId: string,
     formData: z.infer<typeof orgSettingsFormSchema>,
 ) {
-    const org = await GetOrganization_BySlugOrId(slug.toLowerCase(), slug);
+    const org = await GetOrganization_Data(orgId);
     if (!org) return notFoundResponseData();
 
     // Permission check
@@ -53,7 +53,7 @@ export async function updateOrg(
 
     // Check slug validity if it's being updated
     if (formData.slug !== org.slug) {
-        const existingOrg = await GetOrganization_BySlugOrId(formData.slug);
+        const existingOrg = await GetOrganization_Data(formData.slug, formData.slug);
         if (existingOrg?.id) return invalidReqestResponseData(`The slug "${formData.slug}" is already taken`);
     }
 
@@ -66,7 +66,7 @@ export async function updateOrg(
 
     // Update the org icon
     if (formData.icon instanceof File) {
-        const UpdateIconRes = await updateOrgIcon(ctx, userSession, slug, formData.icon);
+        const UpdateIconRes = await updateOrgIcon(ctx, userSession, orgId, formData.icon);
         if ("newIcon" in UpdateIconRes.data) {
             icon = UpdateIconRes.data.newIcon || null;
         }
@@ -90,8 +90,14 @@ export async function updateOrg(
     return { data: { success: true, message: "Organization updated", slug: updatedOrg.slug }, status: HTTP_STATUS.OK };
 }
 
-export async function updateOrgIcon(ctx: Context, userSession: ContextUserData, slug: string, icon: File, dontUpdateOrg = false) {
-    const org = await GetOrganization_BySlugOrId(slug.toLowerCase(), slug);
+export async function updateOrgIcon(
+    ctx: Context,
+    userSession: ContextUserData,
+    orgId: string,
+    icon: File,
+    dontUpdateOrg = false,
+) {
+    const org = await GetOrganization_Data(orgId);
     if (!org) return notFoundResponseData("Organization not found");
 
     const currMember = org.team.members?.[0];
@@ -153,8 +159,8 @@ export async function updateOrgIcon(ctx: Context, userSession: ContextUserData, 
     };
 }
 
-export async function deleteOrgIcon(ctx: Context, userSession: ContextUserData, slug: string) {
-    const org = await GetOrganization_BySlugOrId(slug.toLowerCase(), slug);
+export async function deleteOrgIcon(ctx: Context, userSession: ContextUserData, orgId: string) {
+    const org = await GetOrganization_Data(orgId);
     if (!org) return notFoundResponseData("Organization not found");
     if (!org.iconFileId) return invalidReqestResponseData("Org does not have any icon");
 
@@ -185,8 +191,8 @@ export async function deleteOrgIcon(ctx: Context, userSession: ContextUserData, 
     return { data: { success: true, message: "Organization icon deleted" }, status: HTTP_STATUS.OK };
 }
 
-export async function deleteOrg(ctx: Context, userSession: ContextUserData, slug: string) {
-    const org = await GetOrganization_BySlugOrId(slug.toLowerCase(), slug);
+export async function deleteOrg(ctx: Context, userSession: ContextUserData, orgId: string) {
+    const org = await GetOrganization_Data(orgId);
     if (!org?.id) return notFoundResponseData();
 
     // Check if the member has the required permission to delete the org
@@ -284,7 +290,7 @@ export async function deleteOrg(ctx: Context, userSession: ContextUserData, slug
 }
 
 export async function addProjectToOrganisation(userSession: ContextUserData, orgId: string, projectId: string) {
-    const org = await GetOrganization_BySlugOrId(undefined, orgId);
+    const org = await GetOrganization_Data(orgId);
     if (!org) return notFoundResponseData("Organization not found");
 
     const currMember = getCurrMember(userSession.id, [], org.team.members);
@@ -296,7 +302,7 @@ export async function addProjectToOrganisation(userSession: ContextUserData, org
     );
     if (!canAddProjects) return unauthorizedReqResponseData("You don't have the permission to add projects to the organization");
 
-    const Project = await GetProject_ListItem(undefined, projectId);
+    const Project = await GetProject_ListItem(projectId);
     if (!Project) return notFoundResponseData("Project not found");
     if (Project.organisationId) return invalidReqestResponseData("Project is already part of an organization");
 
@@ -335,7 +341,7 @@ export async function addProjectToOrganisation(userSession: ContextUserData, org
 }
 
 export async function removeProjectFromOrg(ctx: Context, userSession: ContextUserData, orgId: string, projectId: string) {
-    const org = await GetOrganization_BySlugOrId(undefined, orgId);
+    const org = await GetOrganization_Data(orgId);
     if (!org) return notFoundResponseData("Organization not found");
 
     const currMember = getCurrMember(userSession.id, [], org.team.members);
@@ -353,7 +359,7 @@ export async function removeProjectFromOrg(ctx: Context, userSession: ContextUse
     const _Org_projectId = org.projects.find((project) => project.id === projectId)?.id;
     if (!_Org_projectId) return notFoundResponseData("Project not found");
 
-    const OrgProject = await GetProject_ListItem(undefined, _Org_projectId);
+    const OrgProject = await GetProject_ListItem(_Org_projectId);
     if (!OrgProject || OrgProject.organisationId !== org.id) return notFoundResponseData("Project not found");
 
     const memberUserIds = OrgProject.team.members.map((member) => member.userId);

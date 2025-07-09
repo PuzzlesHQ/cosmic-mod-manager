@@ -6,7 +6,7 @@ import prisma from "~/services/prisma";
 import valkey from "~/services/redis";
 import { PROJECT_DETAILS_CACHE_KEY, PROJECT_LIST_ITEM_CACHE_KEY } from "~/types/namespaces";
 import { GetData_FromCache, PROJECT_CACHE_EXPIRY_seconds, SetCache } from "./_cache";
-import { Delete_OrganizationCache_All, GetManyOrganizations_ById, GetOrganization_BySlugOrId } from "./organization_item";
+import { Delete_OrganizationCache_All, GetManyOrganizations_ById, GetOrganization_Data } from "./organization_item";
 import { GetManyTeams_ById, GetTeam } from "./team_item";
 
 // ? Select fields
@@ -102,7 +102,7 @@ function PROJECT_LIST_ITEM_SELECT_FIELDS() {
 
 // ? Get project functions
 export type GetProject_Details_FromDb_ReturnType = Awaited<ReturnType<typeof GetProject_Details_FromDb>>;
-async function GetProject_Details_FromDb(slug?: string, id?: string) {
+async function GetProject_Details_FromDb(id?: string, slug?: string) {
     if (!slug && !id) throw new Error("Either the project id or slug is required!");
 
     let data = null;
@@ -134,22 +134,22 @@ async function GetProject_Details_FromDb(slug?: string, id?: string) {
 }
 
 export type GetProject_Details_ReturnType = Awaited<ReturnType<typeof GetProject_Details>>;
-export async function GetProject_Details(slug?: string, id?: string) {
+export async function GetProject_Details(id?: string, slug?: string) {
     if (!slug && !id) throw new Error("Either the project id or slug is required!");
 
-    let Project = await GetData_FromCache<GetProject_Details_FromDb_ReturnType>(PROJECT_DETAILS_CACHE_KEY, slug || id);
-    if (!Project) Project = await GetProject_Details_FromDb(slug, id);
-    if (!Project) return null;
+    let project = await GetData_FromCache<GetProject_Details_FromDb_ReturnType>(PROJECT_DETAILS_CACHE_KEY, id || slug);
+    if (!project) project = await GetProject_Details_FromDb(id, slug);
+    if (!project) return null;
 
-    await Set_ProjectCache(PROJECT_DETAILS_CACHE_KEY, Project);
+    await Set_ProjectCache(PROJECT_DETAILS_CACHE_KEY, project);
 
-    const [Org, ProjectTeam] = await Promise.all([
-        Project.organisationId ? GetOrganization_BySlugOrId(undefined, Project.organisationId) : null,
-        GetTeam(Project.teamId),
+    const [org, projectTeam] = await Promise.all([
+        project.organisationId ? GetOrganization_Data(project.organisationId) : null,
+        GetTeam(project.teamId),
     ]);
-    if (!ProjectTeam) return null;
+    if (!projectTeam) return null;
 
-    return Object.assign(Project, { organisation: Org || null, team: ProjectTeam });
+    return Object.assign(project, { organisation: org || null, team: projectTeam });
 }
 
 export type GetManyProjects_Details_ReturnType = Awaited<ReturnType<typeof GetManyProjects_Details>>;
@@ -231,7 +231,7 @@ export async function GetManyProjects_Details(_ProjectIds: string[]) {
 }
 
 export type GetProject_ListItem_ReturnType = Awaited<ReturnType<typeof GetProject_ListItem_FromDb>>;
-async function GetProject_ListItem_FromDb(slug?: string, id?: string) {
+async function GetProject_ListItem_FromDb(id?: string, slug?: string) {
     if (!slug && !id) throw new Error("Either the project id or slug is required!");
 
     let data = null;
@@ -263,17 +263,17 @@ async function GetProject_ListItem_FromDb(slug?: string, id?: string) {
     return data;
 }
 
-export async function GetProject_ListItem(slug?: string, id?: string) {
+export async function GetProject_ListItem(id?: string, slug?: string) {
     if (!slug && !id) throw new Error("Either the project id or slug is required!");
 
-    let Project = await GetData_FromCache<GetProject_ListItem_ReturnType>(PROJECT_LIST_ITEM_CACHE_KEY, slug || id);
-    if (!Project) Project = await GetProject_ListItem_FromDb(slug, id);
+    let Project = await GetData_FromCache<GetProject_ListItem_ReturnType>(PROJECT_LIST_ITEM_CACHE_KEY, id || slug);
+    if (!Project) Project = await GetProject_ListItem_FromDb(id, slug);
     if (!Project) return null;
 
     await Set_ProjectCache(PROJECT_LIST_ITEM_CACHE_KEY, Project);
 
     const [Org, ProjectTeam] = await Promise.all([
-        Project.organisationId ? GetOrganization_BySlugOrId(undefined, Project.organisationId) : null,
+        Project.organisationId ? GetOrganization_Data(Project.organisationId) : null,
         GetTeam(Project.teamId),
     ]);
     if (!ProjectTeam) return null;

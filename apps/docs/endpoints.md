@@ -43,17 +43,17 @@ NOTE:- `/cdn` urls are not under the base `/api`
 | GET    | [`/project/{ID\|slug}/dependencies`](/apps/backend/src/routes/project/router.ts#L32) |
 | GET    | [`/project/{ID\|slug}/check`](/apps/backend/src/routes/project/router.ts#L32) |
 | POST   | [`/project`](/apps/backend/src/routes/project/router.ts#L32) |
-| PATCH  | [`/project/{ID\|slug}`](/apps/backend/src/routes/project/router.ts#L32) |
-| DELETE | [`/project/{ID\|slug}`](/apps/backend/src/routes/project/router.ts#L32) |
-| PATCH  | [`/project/{ID\|slug}/icon`](/apps/backend/src/routes/project/router.ts#L32) |
-| DELETE | [`/project/{ID\|slug}/icon`](/apps/backend/src/routes/project/router.ts#L32) |
-| PATCH  | [`/project/{ID\|slug}/description`](/apps/backend/src/routes/project/router.ts#L32) |
-| PATCH  | [`/project/{ID\|slug}/tags`](/apps/backend/src/routes/project/router.ts#L32) |
-| PATCH  | [`/project/{ID\|slug}/external-links`](/apps/backend/src/routes/project/router.ts#L32) |
-| PATCH  | [`/project/{ID\|slug}/license`](/apps/backend/src/routes/project/router.ts#L32) |
-| POST   | [`/project/{ID\|slug}/gallery`](/apps/backend/src/routes/project/router.ts#L32) |
-| PATCH  | [`/project/{ID\|slug}/gallery/{ID}`](/apps/backend/src/routes/project/router.ts#L32) |
-| DELETE | [`/project/{ID\|slug}/gallery/{ID}`](/apps/backend/src/routes/project/router.ts#L32) |
+| PATCH  | [`/project/{ID}`](/apps/backend/src/routes/project/router.ts#L32) |
+| DELETE | [`/project/{ID}`](/apps/backend/src/routes/project/router.ts#L32) |
+| PATCH  | [`/project/{ID}/icon`](/apps/backend/src/routes/project/router.ts#L32) |
+| DELETE | [`/project/{ID}/icon`](/apps/backend/src/routes/project/router.ts#L32) |
+| PATCH  | [`/project/{ID}/description`](/apps/backend/src/routes/project/router.ts#L32) |
+| PATCH  | [`/project/{ID}/tags`](/apps/backend/src/routes/project/router.ts#L32) |
+| PATCH  | [`/project/{ID}/external-links`](/apps/backend/src/routes/project/router.ts#L32) |
+| PATCH  | [`/project/{ID}/license`](/apps/backend/src/routes/project/router.ts#L32) |
+| POST   | [`/project/{ID}/gallery`](/apps/backend/src/routes/project/router.ts#L32) |
+| PATCH  | [`/project/{ID}/gallery/{ID}`](/apps/backend/src/routes/project/router.ts#L32) |
+| DELETE | [`/project/{ID}/gallery/{ID}`](/apps/backend/src/routes/project/router.ts#L32) |
 
 ### Version Endpoints
 | Type   | Endpoint  |
@@ -63,9 +63,9 @@ NOTE:- `/cdn` urls are not under the base `/api`
 | GET    | [`/project/{ID\|slug}/version/latest`](/apps/backend/src/routes/project/version/router.ts#L14) |
 | GET    | [`/project/{ID\|slug}/version/{ID\|slug}/primary-file`](/apps/backend/src/routes/project/version/router.ts#L14) |
 | GET    | [`/project/{ID\|slug}/version/latest/primary-file`](/apps/backend/src/routes/project/version/router.ts#L14) |
-| POST   | [`/project/{ID\|slug}/version`](/apps/backend/src/routes/project/version/router.ts#L14) |
-| PATCH  | [`/project/{ID\|slug}/version/{ID\|slug}`](/apps/backend/src/routes/project/version/router.ts#L14) |
-| DELETE | [`/project/{ID\|slug}/version/{ID\|slug}`](/apps/backend/src/routes/project/version/router.ts#L14) |
+| POST   | [`/project/{ID}/version`](/apps/backend/src/routes/project/version/router.ts#L14) |
+| PATCH  | [`/project/{ID}/version/{ID\|slug}`](/apps/backend/src/routes/project/version/router.ts#L14) |
+| DELETE | [`/project/{ID}/version/{ID\|slug}`](/apps/backend/src/routes/project/version/router.ts#L14) |
 
 ### Version File Endpoints
 | Type   | Endpoint  |

@@ -47,7 +47,7 @@ export default function LicenseSettingsPage() {
             return;
         }
 
-        const res = await clientFetch(`/api/project/${projectData?.slug}/license`, {
+        const res = await clientFetch(`/api/project/${projectData.id}/license`, {
             method: "PATCH",
             body: JSON.stringify(values),
         });

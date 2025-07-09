@@ -19,7 +19,7 @@ export default function RemoveGalleryImage({ children, id, projectData }: Props)
     const location = useLocation();
 
     async function deleteImage() {
-        const response = await clientFetch(`/api/project/${projectData?.slug}/gallery/${id}`, {
+        const response = await clientFetch(`/api/project/${projectData.id}/gallery/${id}`, {
             method: "DELETE",
         });
 

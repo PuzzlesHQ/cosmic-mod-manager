@@ -38,7 +38,7 @@ export default function DescriptionSettings() {
         setIsLoading(true);
 
         try {
-            const response = await clientFetch(`/api/project/${ctx.projectData.slug}/description`, {
+            const response = await clientFetch(`/api/project/${ctx.projectData.id}/description`, {
                 method: "PATCH",
                 body: JSON.stringify(values),
             });

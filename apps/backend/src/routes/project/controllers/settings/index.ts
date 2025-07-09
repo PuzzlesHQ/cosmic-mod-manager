@@ -28,12 +28,12 @@ import { getAverageColor, resizeImageToWebp } from "~/utils/images";
 import { generateDbId } from "~/utils/str";
 import { isProjectIndexable } from "../../utils";
 
-export async function updateProject(
-    slug: string,
+export async function updateGeneralProjectData(
+    projectId: string,
     userSession: ContextUserData,
     formData: z.infer<typeof generalProjectSettingsFormSchema>,
 ) {
-    const project = await GetProject_ListItem(slug, slug);
+    const project = await GetProject_ListItem(projectId);
     if (!project?.id) return { data: { success: false }, status: HTTP_STATUS.NOT_FOUND };
 
     const currMember = getCurrMember(userSession.id, project.team?.members || [], project.organisation?.team.members || []);
@@ -105,8 +105,8 @@ export async function updateProject(
     };
 }
 
-export async function deleteProject(userSession: ContextUserData, slug: string) {
-    const project = await GetProject_Details(slug, slug);
+export async function deleteProject(userSession: ContextUserData, projectId: string) {
+    const project = await GetProject_Details(projectId);
     if (!project?.id) return notFoundResponseData("Project not found");
 
     // Check if the user has the permission to delete the project
@@ -120,7 +120,7 @@ export async function deleteProject(userSession: ContextUserData, slug: string) 
     if (!hasDeleteAccess) return unauthorizedReqResponseData("You don't have the permission to delete the project");
 
     // Get all the project versions
-    const Versions = (await GetVersions(project.slug, project.id))?.versions || [];
+    const Versions = (await GetVersions(project.id))?.versions || [];
     const versionIds = Versions.map((version) => version.id);
     const dbFileIds = Versions.flatMap((version) => version.files.map((file) => file.fileId));
     const galleryFileIds = project.gallery.map((file) => file.imageFileId);
@@ -203,8 +203,8 @@ export async function deleteVersionsData(projectId: string, ids: string[], fileI
     await Promise.all(ids.map((versionId) => deleteProjectVersionDirectory(FILE_STORAGE_SERVICE.LOCAL, projectId, versionId)));
 }
 
-export async function updateProjectIcon(userSession: ContextUserData, slug: string, icon: File) {
-    const Project = await GetProject_ListItem(slug, slug);
+export async function updateProjectIcon(userSession: ContextUserData, projectId: string, icon: File) {
+    const Project = await GetProject_ListItem(projectId);
     if (!Project) return { data: { success: false, message: "Project not found" }, status: HTTP_STATUS.NOT_FOUND };
 
     const memberObj = getCurrMember(userSession.id, Project.team?.members || [], Project.organisation?.team.members || []);
@@ -266,12 +266,12 @@ export async function updateProjectIcon(userSession: ContextUserData, slug: stri
     return { data: { success: true, message: "Project icon updated" }, status: HTTP_STATUS.OK };
 }
 
-export async function deleteProjectIcon(userSession: ContextUserData, slug: string) {
-    const Project = await GetProject_ListItem(slug, slug);
-    if (!Project) return notFoundResponseData("Project not found");
-    if (!Project.iconFileId) return invalidReqestResponseData("Project does not have any icon");
+export async function deleteProjectIcon(userSession: ContextUserData, projectId: string) {
+    const project = await GetProject_ListItem(projectId);
+    if (!project) return notFoundResponseData("Project not found");
+    if (!project.iconFileId) return invalidReqestResponseData("Project does not have any icon");
 
-    const memberObj = getCurrMember(userSession.id, Project.team?.members || [], Project.organisation?.team.members || []);
+    const memberObj = getCurrMember(userSession.id, project.team?.members || [], project.organisation?.team.members || []);
     const hasEditAccess = doesMemberHaveAccess(
         ProjectPermission.EDIT_DETAILS,
         memberObj?.permissions as ProjectPermission[],
@@ -280,13 +280,13 @@ export async function deleteProjectIcon(userSession: ContextUserData, slug: stri
     );
     if (!hasEditAccess) return unauthorizedReqResponseData("You don't have the permission to delete project icon");
 
-    const deletedDbFile = await DeleteFile_ByID(Project.iconFileId);
+    const deletedDbFile = await DeleteFile_ByID(project.iconFileId);
     await Promise.all([
-        deleteProjectFile(deletedDbFile.storageService as FILE_STORAGE_SERVICE, Project.id, deletedDbFile.name),
+        deleteProjectFile(deletedDbFile.storageService as FILE_STORAGE_SERVICE, project.id, deletedDbFile.name),
 
         UpdateProject({
             where: {
-                id: Project.id,
+                id: project.id,
             },
             data: {
                 iconFileId: null,
@@ -296,7 +296,7 @@ export async function deleteProjectIcon(userSession: ContextUserData, slug: stri
     ]);
 
     // Update the project in the search index
-    isProjectIndexable(Project.visibility, Project.status) ? UpdateProjects_SearchIndex([Project.id]) : null;
+    isProjectIndexable(project.visibility, project.status) ? UpdateProjects_SearchIndex([project.id]) : null;
 
     return { data: { success: true, message: "Project icon deleted" }, status: HTTP_STATUS.OK };
 }

@@ -45,7 +45,7 @@ export const VERSION_SELECT = {
 } satisfies Prisma.VersionSelect;
 
 export type GetVersions_ReturnType = Awaited<ReturnType<typeof GetVersions_FromDb>>;
-async function GetVersions_FromDb(projectSlug?: string, projectId?: string) {
+async function GetVersions_FromDb(projectId?: string, projectSlug?: string) {
     if (!projectSlug && !projectId) throw new Error("Either the project id or slug is required!");
 
     let data = null;
@@ -98,16 +98,16 @@ async function GetVersions_FromDb(projectSlug?: string, projectId?: string) {
     return data;
 }
 
-export async function GetVersions(projectSlug?: string, projectId?: string) {
+export async function GetVersions(projectId?: string, projectSlug?: string) {
     if (!projectSlug && !projectId) throw new Error("Either the project id or slug is required!");
 
     const cachedData = await GetData_FromCache<GetVersions_ReturnType>(
         PROJECT_VERSIONS_CACHE_KEY,
-        projectSlug?.toLowerCase() || projectId,
+        projectId || projectSlug?.toLowerCase(),
     );
     if (cachedData) return cachedData;
 
-    const data = await GetVersions_FromDb(projectSlug, projectId);
+    const data = await GetVersions_FromDb(projectId, projectSlug);
     if (data) await Set_VersionsCache(PROJECT_VERSIONS_CACHE_KEY, data);
 
     return data;

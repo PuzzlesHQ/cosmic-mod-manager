@@ -88,8 +88,8 @@ async function version_get(ctx: Context, download = false) {
 async function version_post(ctx: Context) {
     try {
         const userSession = getUserFromCtx(ctx);
-        const projectSlug = ctx.req.param("projectSlug");
-        if (!userSession || !projectSlug) return invalidReqestResponse(ctx);
+        const projectId = ctx.req.param("projectSlug");
+        if (!userSession || !projectId) return invalidReqestResponse(ctx);
 
         const formData = ctx.get(REQ_BODY_NAMESPACE);
         if (!formData) {
@@ -119,7 +119,7 @@ async function version_post(ctx: Context) {
         const { data, error } = await parseInput(newVersionFormSchema, schemaObj);
         if (error || !data) return invalidReqestResponse(ctx, error);
 
-        const res = await createNewVersion(ctx, userSession, projectSlug, data);
+        const res = await createNewVersion(ctx, userSession, projectId, data);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.trace(error);
@@ -130,8 +130,9 @@ async function version_post(ctx: Context) {
 async function version_patch(ctx: Context) {
     try {
         const userSession = getUserFromCtx(ctx);
-        const { projectSlug, versionId } = ctx.req.param();
-        if (!userSession || !projectSlug || !versionId) return invalidReqestResponse(ctx);
+        const projectId = ctx.req.param("projectSlug");
+        const versionId = ctx.req.param("versionId");
+        if (!userSession || !projectId || !versionId) return invalidReqestResponse(ctx);
 
         const formData = ctx.get(REQ_BODY_NAMESPACE);
         const dependencies = formData.get("dependencies");
@@ -157,7 +158,7 @@ async function version_patch(ctx: Context) {
         const { data, error } = await parseInput(updateVersionFormSchema, schemaObj);
         if (error || !data) return invalidReqestResponse(ctx, error);
 
-        const res = await updateVersionData(ctx, projectSlug, versionId, userSession, data);
+        const res = await updateVersionData(ctx, projectId, versionId, userSession, data);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.trace(error);
@@ -168,10 +169,11 @@ async function version_patch(ctx: Context) {
 async function version_delete(ctx: Context) {
     try {
         const userSession = getUserFromCtx(ctx);
-        const { projectSlug, versionId } = ctx.req.param();
-        if (!userSession || !projectSlug || !versionId) return invalidReqestResponse(ctx);
+        const projectId = ctx.req.param("projectSlug");
+        const versionId = ctx.req.param("versionId");
+        if (!userSession || !projectId || !versionId) return invalidReqestResponse(ctx);
 
-        const res = await deleteProjectVersion(ctx, projectSlug, versionId, userSession);
+        const res = await deleteProjectVersion(ctx, projectId, versionId, userSession);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.trace(error);

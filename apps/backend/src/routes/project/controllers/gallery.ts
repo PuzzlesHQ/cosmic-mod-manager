@@ -20,11 +20,11 @@ import { ConvertToWebp, resizeImageToWebp } from "~/utils/images";
 import { generateDbId } from "~/utils/str";
 
 export async function addNewGalleryImage(
-    slug: string,
+    projectId: string,
     userSession: ContextUserData,
     formData: z.infer<typeof addNewGalleryImageFormSchema>,
 ) {
-    const project = await GetProject_Details(slug, slug);
+    const project = await GetProject_Details(projectId);
     if (!project?.id) return notFoundResponseData();
     if (project.gallery.length >= MAX_PROJECT_GALLERY_IMAGES_COUNT)
         return invalidReqestResponseData(`Maximum of ${MAX_PROJECT_GALLERY_IMAGES_COUNT} gallery images allowed!`);
@@ -113,8 +113,8 @@ export async function addNewGalleryImage(
     return { data: { success: true, message: "Added the new gallery image" }, status: HTTP_STATUS.OK };
 }
 
-export async function removeGalleryImage(slug: string, userSession: ContextUserData, galleryItemId: string) {
-    const project = await GetProject_Details(slug, slug);
+export async function removeGalleryImage(projectId: string, userSession: ContextUserData, galleryItemId: string) {
+    const project = await GetProject_Details(projectId);
     if (!project?.id) return notFoundResponseData();
 
     const galleryItem = project.gallery.find((item) => item.id === galleryItemId);
@@ -152,12 +152,12 @@ export async function removeGalleryImage(slug: string, userSession: ContextUserD
 }
 
 export async function updateGalleryImage(
-    slug: string,
+    projectId: string,
     userSession: ContextUserData,
     galleryItemId: string,
     formData: z.infer<typeof updateGalleryImageFormSchema>,
 ) {
-    const project = await GetProject_Details(slug, slug);
+    const project = await GetProject_Details(projectId);
     if (!project?.id) return notFoundResponseData();
 
     // Check if the order index is not already occupied

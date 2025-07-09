@@ -2,7 +2,7 @@ import { getMimeFromType } from "@app/utils/file-signature";
 import type { Context } from "hono";
 import { GetCollection } from "~/db/collection_item";
 import { GetFile, type GetFile_ReturnType, GetManyFiles_ByID } from "~/db/file_item";
-import { GetOrganization_BySlugOrId } from "~/db/organization_item";
+import { GetOrganization_Data } from "~/db/organization_item";
 import { GetProject_Details, GetProject_ListItem } from "~/db/project_item";
 import { GetUser_ByIdOrUsername } from "~/db/user_item";
 import { GetVersions } from "~/db/version_item";
@@ -29,10 +29,7 @@ export async function serveVersionFile(
     userSession: ContextUserData | undefined,
     isCdnRequest = true,
 ) {
-    const [project, _projectVersions] = await Promise.all([
-        GetProject_ListItem(undefined, projectId),
-        GetVersions(undefined, projectId),
-    ]);
+    const [project, _projectVersions] = await Promise.all([GetProject_ListItem(projectId), GetVersions(projectId)]);
 
     const targetVersion = (_projectVersions?.versions || []).find((version) => version.id === versionId);
     if (!project?.id || !targetVersion?.files?.[0]?.fileId) {
@@ -105,7 +102,7 @@ export async function serveVersionFile(
 }
 
 export async function serveProjectIconFile(ctx: Context, projectId: string, isCdnRequest: boolean) {
-    const project = await GetProject_ListItem(undefined, projectId);
+    const project = await GetProject_ListItem(projectId);
     if (!project?.iconFileId) return ctx.json({}, HTTP_STATUS.NOT_FOUND);
 
     const iconFileData = await GetFile(project.iconFileId);
@@ -128,7 +125,7 @@ export async function serveProjectIconFile(ctx: Context, projectId: string, isCd
 }
 
 export async function serveProjectGalleryImage(ctx: Context, projectId: string, imgFileId: string, isCdnRequest: boolean) {
-    const project = await GetProject_Details(undefined, projectId);
+    const project = await GetProject_Details(projectId);
     if (!project || !project?.gallery?.[0]?.id) return notFoundResponse(ctx);
 
     const targetGalleryItem = project.gallery.find(
@@ -159,7 +156,7 @@ export async function serveProjectGalleryImage(ctx: Context, projectId: string, 
 }
 
 export async function serveOrgIconFile(ctx: Context, orgId: string, isCdnRequest: boolean) {
-    const org = await GetOrganization_BySlugOrId(undefined, orgId);
+    const org = await GetOrganization_Data(orgId);
     if (!org?.iconFileId) return notFoundResponse(ctx);
 
     const iconFileData = await GetFile(org.iconFileId);

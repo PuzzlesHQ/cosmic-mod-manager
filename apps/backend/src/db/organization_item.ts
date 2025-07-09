@@ -22,7 +22,7 @@ const ORGANIZATION_SELECT_FIELDS = {
 } satisfies Prisma.OrganisationSelect;
 
 export type GetOrganization_ReturnType = Awaited<ReturnType<typeof GetOrganization_FromDb>>;
-async function GetOrganization_FromDb(slug?: string, id?: string) {
+async function GetOrganization_FromDb(id?: string, slug?: string) {
     if (!slug && !id) throw new Error("Either slug or id is required!");
 
     let org = null;
@@ -54,12 +54,12 @@ async function GetOrganization_FromDb(slug?: string, id?: string) {
     return org;
 }
 
-export async function GetOrganization_BySlugOrId(_slug?: string, id?: string) {
+export async function GetOrganization_Data(id?: string, _slug?: string) {
     if (!_slug && !id) throw new Error("Either slug or id is required!");
     const slug = _slug?.toLowerCase();
 
-    let OrgData = await GetData_FromCache<GetOrganization_ReturnType>(ORGANIZATION_DATA_CACHE_KEY, slug || id);
-    if (!OrgData) OrgData = await GetOrganization_FromDb(slug, id);
+    let OrgData = await GetData_FromCache<GetOrganization_ReturnType>(ORGANIZATION_DATA_CACHE_KEY, id || slug);
+    if (!OrgData) OrgData = await GetOrganization_FromDb(id, slug);
     if (!OrgData) return null;
 
     await Set_OrganizationCache(ORGANIZATION_DATA_CACHE_KEY, OrgData);

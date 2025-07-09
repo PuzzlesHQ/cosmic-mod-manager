@@ -132,9 +132,9 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                     ) ? (
                         <Suspense>
                             <DeleteVersionDialog
-                                projectData={ctx.projectData}
-                                projectSlug={ctx.projectData.slug}
-                                versionSlug={versionData.slug}
+                                projectId={ctx.projectData.id}
+                                versionId={versionData.id}
+                                versionsPageUrl={ProjectPagePath(ctx.projectType, projectSlug, "versions")}
                             />
                         </Suspense>
                     ) : null}

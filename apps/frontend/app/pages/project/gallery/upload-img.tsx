@@ -67,7 +67,7 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
             formData.append("orderIndex", (values.orderIndex || 0).toString());
             formData.append("featured", values.featured.toString());
 
-            const response = await clientFetch(`/api/project/${projectData?.slug}/gallery`, {
+            const response = await clientFetch(`/api/project/${projectData.id}/gallery`, {
                 method: "POST",
                 body: formData,
             });

@@ -10,11 +10,11 @@ import type { ContextUserData } from "~/types";
 import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData } from "~/utils/http";
 
 export async function updateProjectTags(
-    slug: string,
+    projectId: string,
     userSession: ContextUserData,
     formData: z.infer<typeof updateProjectTagsFormSchema>,
 ) {
-    const project = await GetProject_ListItem(slug, slug);
+    const project = await GetProject_ListItem(projectId);
     if (!project?.id) return notFoundResponseData();
 
     const memberObj = getCurrMember(userSession.id, project.team?.members || [], project.organisation?.team.members || []);
@@ -48,10 +48,10 @@ export async function updateProjectTags(
 
 export async function updateProjectExternalLinks(
     userSession: ContextUserData,
-    slug: string,
+    projectId: string,
     formData: z.infer<typeof updateExternalLinksFormSchema>,
 ) {
-    const project = await GetProject_ListItem(slug, slug);
+    const project = await GetProject_ListItem(projectId);
     if (!project?.id) return notFoundResponseData();
 
     const memberObj = getCurrMember(userSession.id, project.team?.members || [], project.organisation?.team.members || []);
@@ -83,10 +83,10 @@ export async function updateProjectExternalLinks(
 
 export async function updateProjectLicense(
     userSession: ContextUserData,
-    slug: string,
+    projectId: string,
     formData: z.infer<typeof updateProjectLicenseFormSchema>,
 ) {
-    const project = await GetProject_ListItem(slug, slug);
+    const project = await GetProject_ListItem(projectId);
     if (!project?.id) return notFoundResponseData();
 
     const memberObj = getCurrMember(userSession.id, project.team?.members || [], project.organisation?.team.members || []);

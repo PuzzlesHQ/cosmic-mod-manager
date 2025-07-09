@@ -24,7 +24,7 @@ import { addProjectsToUserFollows, removeProjectsFromUserFollows } from "./contr
 import { addNewGalleryImage, removeGalleryImage, updateGalleryImage } from "./controllers/gallery";
 import { QueueProjectForApproval } from "./controllers/moderation";
 import { createNewProject } from "./controllers/new-project";
-import { deleteProject, deleteProjectIcon, updateProject, updateProjectIcon } from "./controllers/settings";
+import { deleteProject, deleteProjectIcon, updateGeneralProjectData, updateProjectIcon } from "./controllers/settings";
 import { updateProjectDescription } from "./controllers/settings/description";
 import { updateProjectExternalLinks, updateProjectLicense, updateProjectTags } from "./controllers/settings/general";
 import { getAllProjectVersions } from "./version/controllers";
@@ -45,19 +45,19 @@ const projectRouter = new Hono()
     .delete("/:projectId/follow", critModifyReqRateLimiter, LoginProtectedRoute, projectFollow_delete)
 
     .post("/", critModifyReqRateLimiter, LoginProtectedRoute, project_post)
-    .patch("/:slug", critModifyReqRateLimiter, LoginProtectedRoute, project_patch)
-    .delete("/:slug", critModifyReqRateLimiter, LoginProtectedRoute, project_delete)
+    .patch("/:id", critModifyReqRateLimiter, LoginProtectedRoute, project_patch)
+    .delete("/:id", critModifyReqRateLimiter, LoginProtectedRoute, project_delete)
     .post("/:id/submit-for-review", critModifyReqRateLimiter, LoginProtectedRoute, project_queueForApproval_post)
-    .patch("/:slug/icon", critModifyReqRateLimiter, LoginProtectedRoute, projectIcon_patch)
-    .delete("/:slug/icon", critModifyReqRateLimiter, LoginProtectedRoute, projectIcon_delete)
-    .patch("/:slug/description", critModifyReqRateLimiter, LoginProtectedRoute, description_patch)
-    .patch("/:slug/tags", critModifyReqRateLimiter, LoginProtectedRoute, tags_patch)
-    .patch("/:slug/external-links", critModifyReqRateLimiter, LoginProtectedRoute, externalLinks_patch)
-    .patch("/:slug/license", critModifyReqRateLimiter, LoginProtectedRoute, license_patch)
+    .patch("/:id/icon", critModifyReqRateLimiter, LoginProtectedRoute, projectIcon_patch)
+    .delete("/:id/icon", critModifyReqRateLimiter, LoginProtectedRoute, projectIcon_delete)
+    .patch("/:id/description", critModifyReqRateLimiter, LoginProtectedRoute, description_patch)
+    .patch("/:id/tags", critModifyReqRateLimiter, LoginProtectedRoute, tags_patch)
+    .patch("/:id/external-links", critModifyReqRateLimiter, LoginProtectedRoute, externalLinks_patch)
+    .patch("/:id/license", critModifyReqRateLimiter, LoginProtectedRoute, license_patch)
 
-    .post("/:slug/gallery", critModifyReqRateLimiter, LoginProtectedRoute, gallery_post)
-    .patch("/:slug/gallery/:galleryId", modifyReqRateLimiter, LoginProtectedRoute, galleryItem_patch)
-    .delete("/:slug/gallery/:galleryId", critModifyReqRateLimiter, LoginProtectedRoute, galleryItem_delete)
+    .post("/:id/gallery", critModifyReqRateLimiter, LoginProtectedRoute, gallery_post)
+    .patch("/:id/gallery/:galleryId", modifyReqRateLimiter, LoginProtectedRoute, galleryItem_patch)
+    .delete("/:id/gallery/:galleryId", critModifyReqRateLimiter, LoginProtectedRoute, galleryItem_delete)
 
     .route("/:projectSlug/version", versionRouter);
 
@@ -187,8 +187,8 @@ async function project_post(ctx: Context) {
 
 async function project_patch(ctx: Context) {
     try {
-        const slug = ctx.req.param("slug");
-        if (!slug) return invalidReqestResponse(ctx);
+        const projectId = ctx.req.param("id");
+        if (!projectId) return invalidReqestResponse(ctx);
 
         const userSession = getUserFromCtx(ctx);
         if (!userSession) return invalidReqestResponse(ctx);
@@ -207,7 +207,7 @@ async function project_patch(ctx: Context) {
         const { data, error } = await parseInput(generalProjectSettingsFormSchema, obj);
         if (error || !data) return invalidReqestResponse(ctx, error);
 
-        const res = await updateProject(slug, userSession, data);
+        const res = await updateGeneralProjectData(projectId, userSession, data);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -217,11 +217,11 @@ async function project_patch(ctx: Context) {
 
 async function project_delete(ctx: Context) {
     try {
-        const slug = ctx.req.param("slug");
+        const projectId = ctx.req.param("id");
         const userSession = getUserFromCtx(ctx);
-        if (!userSession || !slug) return invalidReqestResponse(ctx);
+        if (!userSession || !projectId) return invalidReqestResponse(ctx);
 
-        const res = await deleteProject(userSession, slug);
+        const res = await deleteProject(userSession, projectId);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -231,11 +231,11 @@ async function project_delete(ctx: Context) {
 
 async function project_queueForApproval_post(ctx: Context) {
     try {
-        const id = ctx.req.param("id");
+        const projectId = ctx.req.param("id");
         const userSession = getUserFromCtx(ctx);
-        if (!userSession || !id) return invalidReqestResponse(ctx);
+        if (!userSession || !projectId) return invalidReqestResponse(ctx);
 
-        const res = await QueueProjectForApproval(id, userSession);
+        const res = await QueueProjectForApproval(projectId, userSession);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -246,18 +246,18 @@ async function project_queueForApproval_post(ctx: Context) {
 async function projectIcon_patch(ctx: Context) {
     try {
         const userSession = getUserFromCtx(ctx);
-        const slug = ctx.req.param("slug");
+        const projectId = ctx.req.param("id");
         const formData = ctx.get(REQ_BODY_NAMESPACE);
         const icon = formData.get("icon");
 
-        if (!userSession || !slug || !icon || !(icon instanceof File)) return invalidReqestResponse(ctx, "Invalid data");
+        if (!userSession || !projectId || !icon || !(icon instanceof File)) return invalidReqestResponse(ctx, "Invalid data");
 
         const { data, error } = await parseInput(iconFieldSchema, icon);
         if (error || !data) {
             return invalidReqestResponse(ctx, error as string);
         }
 
-        const res = await updateProjectIcon(userSession, slug, data);
+        const res = await updateProjectIcon(userSession, projectId, data);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -268,10 +268,10 @@ async function projectIcon_patch(ctx: Context) {
 async function projectIcon_delete(ctx: Context) {
     try {
         const userSession = getUserFromCtx(ctx);
-        const slug = ctx.req.param("slug");
+        const projectId = ctx.req.param("id");
 
-        if (!userSession || !slug) return invalidReqestResponse(ctx, "Invalid data");
-        const res = await deleteProjectIcon(userSession, slug);
+        if (!userSession || !projectId) return invalidReqestResponse(ctx, "Invalid data");
+        const res = await deleteProjectIcon(userSession, projectId);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -281,8 +281,8 @@ async function projectIcon_delete(ctx: Context) {
 
 async function description_patch(ctx: Context) {
     try {
-        const slug = ctx.req.param("slug");
-        if (!slug) return invalidReqestResponse(ctx);
+        const projectId = ctx.req.param("id");
+        if (!projectId) return invalidReqestResponse(ctx);
 
         const userSession = getUserFromCtx(ctx);
         if (!userSession) return invalidReqestResponse(ctx);
@@ -290,7 +290,7 @@ async function description_patch(ctx: Context) {
         const { data, error } = await parseInput(updateDescriptionFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidReqestResponse(ctx, error);
 
-        const res = await updateProjectDescription(slug, userSession, data);
+        const res = await updateProjectDescription(projectId, userSession, data);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -300,14 +300,14 @@ async function description_patch(ctx: Context) {
 
 async function tags_patch(ctx: Context) {
     try {
-        const slug = ctx.req.param("slug");
+        const projectId = ctx.req.param("id");
         const userSession = getUserFromCtx(ctx);
-        if (!slug || !userSession?.id) return invalidReqestResponse(ctx);
+        if (!projectId || !userSession?.id) return invalidReqestResponse(ctx);
 
         const { data, error } = await parseInput(updateProjectTagsFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidReqestResponse(ctx, error);
 
-        const res = await updateProjectTags(slug, userSession, data);
+        const res = await updateProjectTags(projectId, userSession, data);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -317,14 +317,14 @@ async function tags_patch(ctx: Context) {
 
 async function externalLinks_patch(ctx: Context) {
     try {
-        const slug = ctx.req.param("slug");
+        const projectId = ctx.req.param("id");
         const userSession = getUserFromCtx(ctx);
-        if (!slug || !userSession?.id) return invalidReqestResponse(ctx);
+        if (!projectId || !userSession?.id) return invalidReqestResponse(ctx);
 
         const { data, error } = await parseInput(updateExternalLinksFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidReqestResponse(ctx, error);
 
-        const res = await updateProjectExternalLinks(userSession, slug, data);
+        const res = await updateProjectExternalLinks(userSession, projectId, data);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -334,14 +334,14 @@ async function externalLinks_patch(ctx: Context) {
 
 async function license_patch(ctx: Context) {
     try {
-        const slug = ctx.req.param("slug");
+        const projectId = ctx.req.param("id");
         const userSession = getUserFromCtx(ctx);
-        if (!slug || !userSession?.id) return invalidReqestResponse(ctx);
+        if (!projectId || !userSession?.id) return invalidReqestResponse(ctx);
 
         const { data, error } = await parseInput(updateProjectLicenseFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidReqestResponse(ctx, error);
 
-        const res = await updateProjectLicense(userSession, slug, data);
+        const res = await updateProjectLicense(userSession, projectId, data);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -351,8 +351,8 @@ async function license_patch(ctx: Context) {
 
 async function gallery_post(ctx: Context) {
     try {
-        const slug = ctx.req.param("slug");
-        if (!slug) return invalidReqestResponse(ctx);
+        const projectId = ctx.req.param("id");
+        if (!projectId) return invalidReqestResponse(ctx);
 
         const userSession = getUserFromCtx(ctx);
         if (!userSession) return invalidReqestResponse(ctx);
@@ -369,7 +369,7 @@ async function gallery_post(ctx: Context) {
         const { data, error } = await parseInput(addNewGalleryImageFormSchema, obj);
         if (error || !data) return invalidReqestResponse(ctx, error);
 
-        const res = await addNewGalleryImage(slug, userSession, data);
+        const res = await addNewGalleryImage(projectId, userSession, data);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -379,14 +379,15 @@ async function gallery_post(ctx: Context) {
 
 async function galleryItem_patch(ctx: Context) {
     try {
-        const { slug, galleryId } = ctx.req.param();
+        const galleryId = ctx.req.param("galleryId");
+        const projectId = ctx.req.param("id");
         const userSession = getUserFromCtx(ctx);
-        if (!slug || !galleryId || !userSession) return invalidReqestResponse(ctx);
+        if (!projectId || !galleryId || !userSession) return invalidReqestResponse(ctx);
 
         const { data, error } = await parseInput(updateGalleryImageFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidReqestResponse(ctx, error);
 
-        const res = await updateGalleryImage(slug, userSession, galleryId, data);
+        const res = await updateGalleryImage(projectId, userSession, galleryId, data);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -396,11 +397,12 @@ async function galleryItem_patch(ctx: Context) {
 
 async function galleryItem_delete(ctx: Context) {
     try {
-        const { slug, galleryId } = ctx.req.param();
+        const galleryId = ctx.req.param("galleryId");
+        const projectId = ctx.req.param("id");
         const userSession = getUserFromCtx(ctx);
-        if (!slug || !userSession || !galleryId) return invalidReqestResponse(ctx);
+        if (!projectId || !userSession || !galleryId) return invalidReqestResponse(ctx);
 
-        const res = await removeGalleryImage(slug, userSession, galleryId);
+        const res = await removeGalleryImage(projectId, userSession, galleryId);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);

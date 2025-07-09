@@ -47,7 +47,7 @@ export default function TagsSettingsPage() {
         if (isLoading) return;
         setIsLoading(true);
         try {
-            const res = await clientFetch(`/api/project/${projectData?.slug}/tags`, {
+            const res = await clientFetch(`/api/project/${projectData.id}/tags`, {
                 method: "PATCH",
                 body: JSON.stringify(values),
             });

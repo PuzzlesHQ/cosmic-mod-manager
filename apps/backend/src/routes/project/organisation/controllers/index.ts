@@ -3,7 +3,7 @@ import type { createOrganisationFormSchema } from "@app/utils/schemas/organisati
 import type { OrganisationPermission, ProjectPermission } from "@app/utils/types";
 import type { Organisation } from "@app/utils/types/api";
 import type { z } from "zod/v4";
-import { CreateOrganization, GetManyOrganizations_ById, GetOrganization_BySlugOrId } from "~/db/organization_item";
+import { CreateOrganization, GetManyOrganizations_ById, GetOrganization_Data } from "~/db/organization_item";
 import { Get_UserOrganizations, GetUser_ByIdOrUsername } from "~/db/user_item";
 import type { ContextUserData } from "~/types";
 import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData } from "~/utils/http";
@@ -12,7 +12,7 @@ import { orgIconUrl, userIconUrl } from "~/utils/urls";
 import { getManyProjects } from "../../controllers";
 
 export async function getOrganisationById(userSession: ContextUserData | undefined, slug: string) {
-    const organisation = await GetOrganization_BySlugOrId(slug.toLowerCase(), slug);
+    const organisation = await GetOrganization_Data(slug, slug);
     if (!organisation) {
         return notFoundResponseData("Organisation not found");
     }
@@ -91,8 +91,8 @@ export async function getUserOrganisations(userSession: ContextUserData | undefi
 }
 
 export async function createOrganisation(userSession: ContextUserData, formData: z.infer<typeof createOrganisationFormSchema>) {
-    const possiblyExistingOrgWithSameSlug = await GetOrganization_BySlugOrId(formData.slug.toLowerCase());
-    if (possiblyExistingOrgWithSameSlug) {
+    const existingOrgWithSameSlug = await GetOrganization_Data(formData.slug, formData.slug);
+    if (existingOrgWithSameSlug) {
         return invalidReqestResponseData("Organisation with the same slug already exists");
     }
 
@@ -128,7 +128,7 @@ export async function createOrganisation(userSession: ContextUserData, formData:
 }
 
 export async function getOrganisationProjects(userSession: ContextUserData | undefined, slug: string, listedOnly = false) {
-    const Org = await GetOrganization_BySlugOrId(slug.toLowerCase(), slug);
+    const Org = await GetOrganization_Data(slug, slug);
     if (!Org) return notFoundResponseData("Organisation not found");
     if (!Org.projects) return { data: [], status: HTTP_STATUS.OK };
 

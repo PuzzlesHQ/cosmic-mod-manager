@@ -1,4 +1,3 @@
-import type { ProjectDetailsData } from "@app/utils/types/api";
 import { Trash2Icon } from "lucide-react";
 import ConfirmDialog from "~/components/confirm-dialog";
 import RefreshPage from "~/components/misc/refresh-page";
@@ -9,17 +8,17 @@ import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 
 interface Props {
-    projectData: ProjectDetailsData;
-    projectSlug: string;
-    versionSlug: string;
+    projectId: string;
+    versionId: string;
+    versionsPageUrl: string;
 }
 
-export default function DeleteVersionDialog({ projectData, projectSlug, versionSlug }: Props) {
+export default function DeleteVersionDialog(props: Props) {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
     async function deleteVersion() {
-        const response = await clientFetch(`/api/project/${projectSlug}/version/${versionSlug}`, {
+        const response = await clientFetch(`/api/project/${props.projectId}/version/${props.versionId}`, {
             method: "DELETE",
         });
         const result = await response.json();
@@ -28,7 +27,7 @@ export default function DeleteVersionDialog({ projectData, projectSlug, versionS
             return toast.error(result?.message || t.common.error);
         }
 
-        RefreshPage(navigate, `/${projectData?.type[0]}/${projectSlug}/versions`);
+        RefreshPage(navigate, props.versionsPageUrl);
         return toast.success(result?.message || t.common.success);
     }
 

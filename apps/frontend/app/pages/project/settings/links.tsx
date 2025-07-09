@@ -35,7 +35,7 @@ export default function ExternalLinksSettingsPage() {
     form.watch();
 
     async function updateLinks(values: z.infer<typeof updateExternalLinksFormSchema>) {
-        const res = await clientFetch(`/api/project/${projectData?.slug}/external-links`, {
+        const res = await clientFetch(`/api/project/${projectData.id}/external-links`, {
             method: "PATCH",
             body: JSON.stringify(values),
         });

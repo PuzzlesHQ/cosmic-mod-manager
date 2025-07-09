@@ -213,7 +213,7 @@ async function canUserAccessThread(user: ContextUserData, thread: DB_Thread) {
 
     switch (thread.type) {
         case ThreadType.PROJECT: {
-            const project = await GetProject_Details(undefined, thread.relatedEntity);
+            const project = await GetProject_Details(thread.relatedEntity);
             if (!project?.id) return false;
             if (project.team.members.some((m) => m.userId === user.id)) return true;
 

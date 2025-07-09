@@ -66,7 +66,7 @@ export default function UserPageLayout(props: Props) {
         if (props.projectsList.length === 0 && props.collections.length > 0) {
             navigate(UserProfilePath(props.userData.userName, "collections"));
         }
-    }, []);
+    }, [props.userData.id]);
 
     // Using JSX syntax returns an Element object which is not easy to check if it's null or not, so using the function syntax
     const sidebar = PageSidebar({

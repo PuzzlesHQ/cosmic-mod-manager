@@ -79,7 +79,7 @@ export default function EditVersionPage() {
     form.watch();
 
     async function handleSubmit(values: z.infer<typeof updateVersionFormSchema>) {
-        if (isLoading || !projectData) return;
+        if (isLoading || !projectData || !versionData) return;
         setIsLoading(true);
         disableInteractions();
 
@@ -101,7 +101,7 @@ export default function EditVersionPage() {
                 }
             }
 
-            const res = await clientFetch(`/api/project/${projectData.slug}/version/${versionSlug}`, {
+            const res = await clientFetch(`/api/project/${projectData.id}/version/${versionData.id}`, {
                 method: "PATCH",
                 body: formData,
             });
@@ -120,7 +120,7 @@ export default function EditVersionPage() {
 
     if (!projectData || !versionData?.id) return null;
     const versionsPageUrl = ProjectPagePath(ctx.projectType, projectData.slug, "versions");
-    const currVersionPageUrl = ProjectPagePath(ctx.projectType, projectData.slug, `version/${versionData.slug}`);
+    const currVersionPageUrl = VersionPagePath(ctx.projectType, projectData.slug, versionData.slug);
 
     return (
         <Form {...form}>

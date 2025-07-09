@@ -140,7 +140,7 @@ function formatProjectMember<T extends FormatMemberProps>(member: T, currMember?
 }
 
 export async function checkProjectSlugValidity(slug: string) {
-    const project = await GetProject_ListItem(slug);
+    const project = await GetProject_ListItem(slug, slug);
 
     if (!project) {
         return { data: { success: false, message: "Project not found" }, status: HTTP_STATUS.NOT_FOUND };

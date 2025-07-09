@@ -152,17 +152,17 @@ async function organisationProjects_get(ctx: Context) {
 async function organisationIcon_patch(ctx: Context) {
     try {
         const userSession = getUserFromCtx(ctx);
-        const orgSlug = ctx.req.param("orgId");
+        const orgId = ctx.req.param("orgId");
 
         const formData = ctx.get(REQ_BODY_NAMESPACE);
         const icon = formData.get("icon");
 
-        if (!userSession || !orgSlug || !icon || !(icon instanceof File)) return invalidReqestResponse(ctx, "Invalid data");
+        if (!userSession || !orgId || !icon || !(icon instanceof File)) return invalidReqestResponse(ctx, "Invalid data");
 
         const { data, error } = await parseInput(iconFieldSchema, icon);
         if (error || !data) return invalidReqestResponse(ctx, error);
 
-        const res = await updateOrgIcon(ctx, userSession, orgSlug, data);
+        const res = await updateOrgIcon(ctx, userSession, orgId, data);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -173,10 +173,10 @@ async function organisationIcon_patch(ctx: Context) {
 async function organisationIcon_delete(ctx: Context) {
     try {
         const userSession = getUserFromCtx(ctx);
-        const orgSlug = ctx.req.param("orgId");
+        const orgId = ctx.req.param("orgId");
 
-        if (!userSession || !orgSlug) return invalidReqestResponse(ctx, "Invalid data");
-        const res = await deleteOrgIcon(ctx, userSession, orgSlug);
+        if (!userSession || !orgId) return invalidReqestResponse(ctx, "Invalid data");
+        const res = await deleteOrgIcon(ctx, userSession, orgId);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);

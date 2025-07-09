@@ -133,7 +133,7 @@ export async function getExistingReport(itemType: ReportItemType, itemId: string
 async function getReportEntityData(itemType: ReportItemType, itemId: string) {
     switch (itemType) {
         case ReportItemType.PROJECT: {
-            const project = await GetProject_ListItem(undefined, itemId);
+            const project = await GetProject_ListItem(itemId);
             if (!project?.id) return null;
             return {
                 itemType: ReportItemType.PROJECT,

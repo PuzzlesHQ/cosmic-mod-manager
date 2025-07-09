@@ -27,17 +27,14 @@ import { deleteVersionsData } from "../../controllers/settings";
 export async function createNewVersion(
     ctx: Context,
     userSession: ContextUserData,
-    projectSlug: string,
+    projectId: string,
     formData: z.infer<typeof newVersionFormSchema>,
 ) {
     if (!formData?.primaryFile?.name || !(formData.primaryFile instanceof File)) {
         return invalidReqestResponseData("Primary version file is required");
     }
 
-    const [project, _projectVersions] = await Promise.all([
-        GetProject_ListItem(projectSlug, projectSlug),
-        GetVersions(projectSlug, projectSlug),
-    ]);
+    const [project, _projectVersions] = await Promise.all([GetProject_ListItem(projectId), GetVersions(projectId)]);
     if (!project?.id) return notFoundResponseData("Project not found");
 
     if (project.visibility === ProjectVisibility.ARCHIVED)
