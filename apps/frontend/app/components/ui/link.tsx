@@ -26,11 +26,11 @@ interface CustomLinkProps extends LinkProps {
 }
 
 export default function Link({ ref, escapeUrlWrapper, ...props }: CustomLinkProps) {
-    let to = props.to;
-    if (escapeUrlWrapper !== true) to = FormatUrl_WithHintLocale(to.toString());
+    let to = props.to.toString();
+    if (escapeUrlWrapper !== true) to = FormatUrl_WithHintLocale(to);
     const viewTransitions = useRootData()?.userConfig.viewTransitions !== false;
 
-    return <RemixLink ref={ref} {...props} to={props.to} viewTransition={viewTransitions} />;
+    return <RemixLink ref={ref} {...props} to={to} viewTransition={viewTransitions} />;
 }
 
 export function TextLink(props: React.ComponentProps<typeof Link>) {
