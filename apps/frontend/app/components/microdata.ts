@@ -2,6 +2,7 @@
 export enum MicrodataItemType {
     Thing = "Thing",
     CreativeWork = "CreativeWork",
+    SoftwareApplication = "SoftwareApplication",
     Person = "Person",
     Organization = "Organization",
     ImageObject = "ImageObject",

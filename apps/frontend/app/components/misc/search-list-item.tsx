@@ -82,9 +82,8 @@ function BaseView(props: SearchListItemProps) {
         // biome-ignore lint/a11y/useSemanticElements: idk, <li> doesn't make sense here
         <article
             role="listitem"
-            itemProp={MicrodataItemProps.works}
             itemScope
-            itemType={itemType(MicrodataItemType.CreativeWork)}
+            itemType={itemType(MicrodataItemType.SoftwareApplication)}
             className={cn(
                 "search-list-item view-transition-item grid h-full gap-x-3 gap-y-2 rounded-lg bg-card-background text-muted-foreground",
                 listViewType && "p-card-surround",
