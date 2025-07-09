@@ -66,7 +66,7 @@ export default {
             borderRadius: {
                 sm: "0.33rem",
                 md: "0.5rem",
-                DEFAULT: "0.72rem",
+                DEFAULT: "0.67rem",
                 lg: "1em",
                 xl: "1.3rem",
                 "2xl": "1.77rem",

@@ -182,20 +182,16 @@ export const MultiSelect = ({
                             {options.map((option) => {
                                 const isSelected = selectedValues.includes(option.value);
                                 return (
-                                    <CommandItem
-                                        key={option.value}
-                                        onSelect={() => toggleOption(option.value)}
-                                        className="cursor-pointer pe-6"
-                                    >
+                                    <CommandItem key={option.value} onSelect={() => toggleOption(option.value)} className="pe-6">
                                         <div
                                             className={cn(
                                                 "me-3 flex h-4 w-4 items-center justify-center rounded-sm border border-extra-muted-foreground/75",
                                                 isSelected
-                                                    ? "border-transparent bg-muted-foreground text-background"
+                                                    ? "border-transparent bg-extra-muted-foreground text-background"
                                                     : "opacity-50 [&_svg]:invisible",
                                             )}
                                         >
-                                            <CheckIcon aria-hidden className="h-3.5 w-3.5" strokeWidth={2.3} />
+                                            <CheckIcon aria-hidden className="h-3.5 w-3.5" strokeWidth={2.7} />
                                         </div>
 
                                         {option.icon && (
