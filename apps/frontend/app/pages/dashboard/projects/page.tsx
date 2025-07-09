@@ -41,7 +41,7 @@ export default function ProjectsPage({ projects }: Props) {
 
 export function ProjectsListTable({ projects }: { projects: ProjectListItem[] }) {
     const { t } = useTranslation();
-    const customNavigate = useNavigate();
+    const navigate = useNavigate();
 
     return (
         <div className="mt-2 w-full">
@@ -78,7 +78,7 @@ export function ProjectsListTable({ projects }: { projects: ProjectListItem[] })
                                 onClick={(e) => {
                                     //@ts-expect-error
                                     if (!e.target.closest(".noClickRedirect")) {
-                                        customNavigate(ProjectPagePath(project.type[0], project.slug));
+                                        navigate(ProjectPagePath(project.type[0], project.slug));
                                     }
                                 }}
                             >
