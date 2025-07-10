@@ -2,12 +2,10 @@ import { ArrowUpRightIcon, LanguagesIcon, LinkIcon, Settings2Icon } from "lucide
 import { useEffect, useState } from "react";
 import { type LinkProps, useLocation } from "react-router";
 import { BrandIcon } from "~/components/icons";
-import { buttonVariants } from "~/components/ui/button";
 import Link, { LinkPrefetchStrategy, useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { DotSeparator } from "~/components/ui/separator";
 import ThemeSwitch from "~/components/ui/theme-switcher";
-import { cn } from "~/components/utils";
 import { setUserConfig } from "~/hooks/user-config";
 import { formatLocaleCode, parseLocale } from "~/locales";
 import { SupportedLocalesList } from "~/locales/meta";
@@ -198,9 +196,9 @@ export function LangSwitcher() {
             value={currLang}
         >
             <SelectTrigger
-                noDefaultStyles
                 aria-label={currLocaleLabel}
-                className={cn(buttonVariants({ variant: "outline" }), "rounded-full")}
+                className="rounded-full"
+                variant="outline"
                 style={{
                     minWidth: `calc(${currLocaleLabel.length}ch + 1.3rem)`,
                 }}

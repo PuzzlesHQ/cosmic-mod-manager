@@ -1,6 +1,7 @@
 import { CheckIcon, ChevronDown, ChevronUp } from "lucide-react";
 import { Select as SelectPrimitive } from "radix-ui";
 import { cn } from "~/components/utils";
+import { type ButtonVariants_T, buttonVariants } from "./button";
 
 const Select = SelectPrimitive.Root;
 
@@ -12,17 +13,16 @@ function SelectTrigger({
     ref,
     className,
     children,
-    noDefaultStyles,
+    variant,
+    size,
     ...props
-}: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
-    noDefaultStyles?: boolean;
-}) {
+}: React.ComponentProps<typeof SelectPrimitive.Trigger> & ButtonVariants_T) {
     return (
         <SelectPrimitive.Trigger
             ref={ref}
             className={cn(
-                noDefaultStyles !== true && "input_box_styles w-full justify-between gap-2 [&>span]:line-clamp-1",
-                "[&_.indicator]:data-[state=open]:rotate-180",
+                buttonVariants({ variant: variant || "secondary", size: size }),
+                "w-full justify-between px-3 [&>span]:line-clamp-1 [&_.indicator]:data-[state=open]:rotate-180",
                 className,
             )}
             {...props}
@@ -31,7 +31,7 @@ function SelectTrigger({
             {children}
 
             <SelectPrimitive.Icon asChild>
-                <ChevronDown className="indicator h-btn-icon w-btn-icon text-muted-foreground transition-transform" />
+                <ChevronDown className="indicator h-btn-icon w-btn-icon shrink-0 transition-transform" />
             </SelectPrimitive.Icon>
         </SelectPrimitive.Trigger>
     );
