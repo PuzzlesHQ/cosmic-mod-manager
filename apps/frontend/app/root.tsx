@@ -128,7 +128,7 @@ export default function App() {
             <div id="hero_section_bg_portal" className="absolute top-0 left-0" aria-hidden />
 
             <div className="relative grid min-h-[100vh] w-full grid-rows-[auto_1fr_auto]">
-                <Navbar session={data.session} notifications={[]} />
+                <Navbar session={data.session} />
 
                 <PageBreadCrumbs />
 

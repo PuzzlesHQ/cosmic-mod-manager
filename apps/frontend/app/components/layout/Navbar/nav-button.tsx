@@ -1,7 +1,6 @@
 import { disableInteractions } from "@app/utils/dom";
 import { MODERATOR_ROLES } from "@app/utils/src/constants/roles";
 import type { LoggedInUserData } from "@app/utils/types";
-import type { Notification } from "@app/utils/types/api/notification";
 import { imageUrl } from "@app/utils/url";
 import {
     BellIcon,
@@ -19,7 +18,6 @@ import { useLocation } from "react-router";
 import { fallbackUserIcon } from "~/components/icons";
 import RefreshPage from "~/components/misc/refresh-page";
 import { ImgWrapper } from "~/components/ui/avatar";
-import { NotificationBadge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { ButtonLink, useNavigate } from "~/components/ui/link";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
@@ -31,12 +29,12 @@ import { LoginDialog } from "~/pages/auth/login/login-card";
 import clientFetch from "~/utils/client-fetch";
 import { UserProfilePath } from "~/utils/urls";
 
-export function LoginButton({ className }: { className?: string }) {
+export function LoginButton({ className, disabled }: { className?: string; disabled?: boolean }) {
     const { t } = useTranslation();
 
     return (
         <LoginDialog>
-            <Button className={className} variant="secondary-inverted" aria-label={t.form.login_withSpace}>
+            <Button className={className} disabled={disabled} variant="secondary-inverted" aria-label={t.form.login_withSpace}>
                 <LogInIcon aria-hidden className="h-btn-icon w-btn-icon" aria-label={t.form.login_withSpace} />
                 {t.form.login_withSpace}
             </Button>
@@ -46,22 +44,13 @@ export function LoginButton({ className }: { className?: string }) {
 
 interface NavbuttonProps {
     session: LoggedInUserData | null;
-    notifications: Notification[] | null;
 }
 
-export default function NavButton({ session, notifications }: NavbuttonProps) {
+export default function NavButton({ session }: NavbuttonProps) {
     const { t } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
 
-    if (session === undefined) {
-        return <LoadingSpinner size="sm" />;
-    }
-
-    const undreadNotifications = (notifications || [])?.filter((n) => !n.read).length;
-
-    if (!session?.id) {
-        return <LoginButton />;
-    }
+    if (!session?.id) return <LoginButton />;
 
     return (
         <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -73,7 +62,6 @@ export default function NavButton({ session, notifications }: NavbuttonProps) {
                         fallback={fallbackUserIcon}
                         className="h-nav-item w-nav-item rounded-full border-none bg-shallower-background p-0.5 dark:bg-shallow-background"
                     />
-                    {undreadNotifications > 0 ? <NotificationBadge className="min-h-1.5 min-w-1.5" /> : null}
                 </Button>
             </PopoverTrigger>
             <PopoverContent align="end" className="flex min-w-52 flex-col gap-1 p-1.5">
@@ -89,7 +77,6 @@ export default function NavButton({ session, notifications }: NavbuttonProps) {
                         label: t.dashboard.notifications,
                         url: "/dashboard/notifications",
                         matchExactUrl: false,
-                        notificationBadge: undreadNotifications,
                     },
                     {
                         icon: <Settings2Icon aria-hidden className="h-btn-icon w-btn-icon" aria-label={t.common.settings} />,
@@ -102,8 +89,6 @@ export default function NavButton({ session, notifications }: NavbuttonProps) {
                         <ButtonLink key={item.url} url={item.url} exactTailMatch={false} className="relative">
                             {item.icon}
                             {item.label}
-
-                            {item.notificationBadge ? <NotificationBadge /> : null}
                         </ButtonLink>
                     );
                 })}

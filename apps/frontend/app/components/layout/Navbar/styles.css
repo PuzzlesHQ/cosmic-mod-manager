@@ -1,19 +1,12 @@
-.mobile_navmenu {
+.nav_items_container {
     display: grid;
-    grid-template-rows: 0fr;
-    transition-property: grid-template-rows;
-    transition-timing-function: ease;
+    max-height: 0;
+    transition: max-height 300ms ease;
     overflow: hidden;
-    visibility: hidden;
 }
 
-.menu_open {
-    visibility: visible;
-    grid-template-rows: 1fr;
-}
-
-.navlink_list_wrapper {
-    scrollbar-gutter: stable;
+.nav_items_container.nav_open {
+    max-height: 100vh;
 }
 
 .ham_menu_icon {

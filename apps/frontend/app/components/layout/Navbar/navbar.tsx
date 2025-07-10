@@ -1,12 +1,10 @@
 import { projectTypes } from "@app/utils/config/project";
 import { Capitalize } from "@app/utils/string";
 import type { LoggedInUserData } from "@app/utils/types";
-import type { Notification } from "@app/utils/types/api/notification";
 import { Building2Icon, ChevronDownIcon, LibraryIcon, PlusIcon } from "lucide-react";
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";
-import { useNavigation } from "react-router";
-import ClientOnly from "~/components/client-only";
+import { useLocation, useNavigation } from "react-router";
 import { BrandIcon, CubeIcon } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import Link, { ButtonLink } from "~/components/ui/link";
@@ -24,12 +22,16 @@ import NavButton from "./nav-button";
 
 interface NavbarProps {
     session: LoggedInUserData | null;
-    notifications: Notification[];
 }
 
 let closeOtherLinksPopup_timeout: number | undefined;
 
 export default function Navbar(props: NavbarProps) {
+    const navigation = useNavigation();
+    const curr_location = useLocation();
+
+    const location = navigation.location || curr_location;
+
     const [isNavMenuOpen, setIsNavMenuOpen] = useState<boolean>(false);
     const [otherLinksPopoverOpen, setOtherLinksPopoverOpen] = useState(false);
     const { t } = useTranslation();
@@ -82,113 +84,97 @@ export default function Navbar(props: NavbarProps) {
         }
     }, [isNavMenuOpen]);
 
+    // Close the nav menu when the user navigates to a new page
+    useEffect(() => {
+        if (!isNavMenuOpen) return;
+        toggleNavMenu(false);
+    }, [location.pathname, location.search, location.hash]);
+
     const MemoizedThemeSwitch = useMemo(() => <ThemeSwitch />, []);
 
     return (
-        <header className="relative flex w-full items-start justify-start">
-            <div
-                className={cn(
-                    "nav_bg z-50 flex w-full items-center justify-center bg-transparent transition-colors delay-300 duration-0",
-                    isNavMenuOpen && "bg-background delay-0",
-                )}
-            >
-                <nav className="container flex flex-wrap items-center justify-between px-4 py-3 sm:px-8">
-                    <div className="flex items-center justify-center gap-8">
-                        <Link
-                            to="/"
-                            className="flex h-nav-item items-center justify-center gap-1 bg-background"
-                            aria-label="CRMM Home page"
-                            onClick={() => {
-                                toggleNavMenu(false);
-                            }}
-                        >
-                            <BrandIcon size="1.75rem" strokeWidth={26} />
-                            <span className="flex items-end justify-center rounded-lg bg-accent-bg bg-cover bg-gradient-to-b from-rose-200 via-accent-background to-accent-background bg-clip-text px-1 font-bold text-lg text-transparent drop-shadow-2xl">
-                                {Config.SITE_NAME_SHORT}
-                            </span>
-                        </Link>
+        <header className="relative w-full">
+            <nav className="container relative z-50 flex flex-wrap items-center justify-between px-4 py-3 sm:px-8">
+                <div className="flex items-center justify-center gap-8">
+                    <Link
+                        to="/"
+                        className="flex h-nav-item items-center justify-center gap-1"
+                        aria-label="CRMM Home page"
+                        onClick={() => {
+                            toggleNavMenu(false);
+                        }}
+                    >
+                        <BrandIcon size="1.75rem" strokeWidth={26} />
+                        <span className="flex items-end justify-center rounded-lg bg-accent-bg bg-cover bg-gradient-to-b from-rose-200 via-accent-background to-accent-background bg-clip-text px-1 font-bold text-lg text-transparent drop-shadow-2xl">
+                            {Config.SITE_NAME_SHORT}
+                        </span>
+                    </Link>
 
-                        <ul className="hidden items-center justify-center gap-1 lg:flex">
-                            {Important_NavLinks.map((link) => {
-                                return (
-                                    <li key={link.href} className="flex items-center justify-center">
-                                        <Navlink href={link.href} label={link.label}>
-                                            {link.label}
-                                        </Navlink>
-                                    </li>
-                                );
-                            })}
+                    <ul className="hidden items-center justify-center gap-1 lg:flex">
+                        {Important_NavLinks.map((link) => {
+                            return (
+                                <li key={link.href}>
+                                    <Navlink href={link.href} label={link.label}>
+                                        {link.label}
+                                    </Navlink>
+                                </li>
+                            );
+                        })}
 
-                            <li className="flex items-center justify-center">
-                                <Popover open={otherLinksPopoverOpen}>
-                                    <PopoverTrigger
-                                        asChild
-                                        onMouseEnter={OpenOtherLinksPopup}
-                                        onMouseLeave={() => CloseOtherLinksPopup()}
-                                        onKeyUp={(e) => {
-                                            if (e.code === "Space" || e.code === "Enter") {
-                                                return OpenOtherLinksPopup();
-                                            }
-                                        }}
-                                    >
-                                        <Button variant="ghost" className="text-extra-muted-foreground">
-                                            {t.common.more} <ChevronDownIcon className="h-btn-icon w-btn-icon" />
-                                        </Button>
-                                    </PopoverTrigger>
+                        <li className="flex items-center justify-center">
+                            <Popover open={otherLinksPopoverOpen}>
+                                <PopoverTrigger
+                                    asChild
+                                    onMouseEnter={OpenOtherLinksPopup}
+                                    onMouseLeave={() => CloseOtherLinksPopup()}
+                                    onKeyUp={(e) => {
+                                        if (e.code === "Space" || e.code === "Enter") {
+                                            return OpenOtherLinksPopup();
+                                        }
+                                    }}
+                                >
+                                    <Button variant="ghost" className="text-extra-muted-foreground">
+                                        {t.common.more} <ChevronDownIcon className="h-btn-icon w-btn-icon" />
+                                    </Button>
+                                </PopoverTrigger>
 
-                                    <PopoverContent
-                                        className="min-w-0 p-1"
-                                        onMouseEnter={OpenOtherLinksPopup}
-                                        onMouseLeave={() => CloseOtherLinksPopup()}
-                                        onClick={() => CloseOtherLinksPopup(true)}
-                                        onKeyUp={(e) => {
-                                            if (e.code === "Escape") CloseOtherLinksPopup(true);
-                                        }}
-                                    >
-                                        {Other_NavLinks.map((link) => {
-                                            return (
-                                                <NavMenuLink
-                                                    key={link.href}
-                                                    href={link.href}
-                                                    label={link.label}
-                                                    toggleNavMenu={toggleNavMenu}
-                                                >
-                                                    {link.label}
-                                                </NavMenuLink>
-                                            );
-                                        })}
-                                    </PopoverContent>
-                                </Popover>
-                            </li>
-                        </ul>
+                                <PopoverContent
+                                    className="min-w-0 p-1"
+                                    onMouseEnter={OpenOtherLinksPopup}
+                                    onMouseLeave={() => CloseOtherLinksPopup()}
+                                    onClick={() => CloseOtherLinksPopup(true)}
+                                    onKeyUp={(e) => {
+                                        if (e.code === "Escape") CloseOtherLinksPopup(true);
+                                    }}
+                                >
+                                    {Other_NavLinks.map((link) => {
+                                        return (
+                                            <NavMenuLink key={link.href} href={link.href} label={link.label}>
+                                                {link.label}
+                                            </NavMenuLink>
+                                        );
+                                    })}
+                                </PopoverContent>
+                            </Popover>
+                        </li>
+                    </ul>
+                </div>
+                <div className="flex items-center gap-4">
+                    <div className="hidden lg:flex">{props.session?.id ? <CreateThingsPopup /> : MemoizedThemeSwitch}</div>
+
+                    <div className="flex lg:hidden">{MemoizedThemeSwitch}</div>
+
+                    <div className="hidden lg:flex">
+                        <NavButton session={props.session} />
                     </div>
-                    <div className="flex items-center gap-4">
-                        <div className="hidden lg:flex">{props.session?.id ? <CreateThingsPopup /> : MemoizedThemeSwitch}</div>
 
-                        <div className="flex lg:hidden">{MemoizedThemeSwitch}</div>
-
-                        <div className="hidden lg:flex">
-                            <NavButton session={props.session} notifications={props.notifications} />
-                        </div>
-
-                        <div className="flex justify-center align-center lg:hidden">
-                            <HamMenu isNavMenuOpen={isNavMenuOpen} toggleNavMenu={toggleNavMenu} />
-                        </div>
+                    <div className="flex justify-center align-center lg:hidden">
+                        <HamMenu isNavMenuOpen={isNavMenuOpen} toggleNavMenu={toggleNavMenu} />
                     </div>
-                </nav>
-            </div>
+                </div>
+            </nav>
 
-            <ClientOnly
-                Element={() => (
-                    <MobileNav
-                        session={props.session}
-                        notifications={props.notifications}
-                        isNavMenuOpen={isNavMenuOpen}
-                        NavLinks={NavLinks}
-                        toggleNavMenu={toggleNavMenu}
-                    />
-                )}
-            />
+            <MobileNav session={props.session} isNavMenuOpen={isNavMenuOpen} NavLinks={NavLinks} />
         </header>
     );
 }
@@ -198,9 +184,7 @@ type NavlinkProps = {
     label?: string;
     isDisabled?: boolean;
     tabIndex?: number;
-    closeNavMenuOnLinkClick?: boolean;
     className?: string;
-    toggleNavMenu?: (newState?: boolean) => void;
     children?: React.ReactNode;
 };
 
@@ -208,10 +192,7 @@ export function Navlink({ href, label, children, className }: NavlinkProps) {
     return (
         <ButtonLink
             url={href}
-            className={cn(
-                "bg-background font-semibold hover:bg-card-background/70 dark:hover:bg-shallow-background/75",
-                className,
-            )}
+            className={cn("font-semibold hover:bg-card-background/70 dark:hover:bg-shallow-background/75", className)}
             activeClassName="bg-card-background dark:bg-shallow-background"
         >
             {children ? children : label}
@@ -219,27 +200,13 @@ export function Navlink({ href, label, children, className }: NavlinkProps) {
     );
 }
 
-export function NavMenuLink({
-    href,
-    label,
-    isDisabled = false,
-    tabIndex,
-    className,
-    closeNavMenuOnLinkClick = true,
-    toggleNavMenu,
-    children,
-}: NavlinkProps) {
+export function NavMenuLink({ href, label, isDisabled = false, tabIndex, className, children }: NavlinkProps) {
     return (
         <ButtonLink
             url={href}
-            className={cn("w-full", className)}
-            activeClassName="bg-shallower-background dark:bg-shallow-background"
+            className={cn("w-full hover:bg-card-background/75 dark:hover:bg-shallow-background", className)}
+            activeClassName="bg-card-background"
             tabIndex={isDisabled ? -1 : tabIndex}
-            onClick={() => {
-                if (closeNavMenuOnLinkClick === true) {
-                    toggleNavMenu?.(false);
-                }
-            }}
         >
             {children ? children : label}
         </ButtonLink>
