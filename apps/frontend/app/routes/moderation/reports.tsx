@@ -1,5 +1,5 @@
 import type { Report } from "@app/utils/types/api/report";
-import { useLoaderData } from "react-router";
+import { type ShouldRevalidateFunctionArgs, useLoaderData } from "react-router";
 import { ReportsDataLoader } from "~/components/layout/report/_additional-data-loader";
 import { SoftRedirect } from "~/components/ui/redirect";
 import { useSession } from "~/hooks/session";
@@ -25,4 +25,13 @@ export async function loader(props: Route.LoaderArgs) {
     const reports = await resJson<Report[]>(res);
 
     return ReportsDataLoader(props.request, reports);
+}
+
+export function shouldRevalidate(props: ShouldRevalidateFunctionArgs) {
+    const revalidate = props.nextUrl.searchParams.get("revalidate") === "true";
+    if (revalidate) return true;
+
+    if (props.currentUrl.href === props.nextUrl.href) return false;
+
+    return props.defaultShouldRevalidate;
 }

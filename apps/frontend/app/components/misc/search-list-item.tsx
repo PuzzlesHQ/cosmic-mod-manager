@@ -199,6 +199,7 @@ function BaseView(props: SearchListItemProps) {
                 className={cn(
                     "flex flex-wrap items-center justify-start gap-x-4 gap-y-0 text-extra-muted-foreground",
                     galleryViewType && "mx-card-surround",
+                    listViewType && "xl:pe-4",
                 )}
                 style={{ gridArea: "tags" }}
             >

@@ -7,7 +7,6 @@ import {
     sortByParamNamespace,
 } from "@app/utils/config/search";
 import { getProjectTypeFromName } from "@app/utils/convertors";
-import { isNumber } from "@app/utils/number";
 import type { ProjectType, SearchResultSortMethod } from "@app/utils/types";
 import type { SearchResult } from "@app/utils/types/api";
 import { createContext, use, useEffect, useState } from "react";
@@ -25,10 +24,7 @@ interface SearchContext {
     projectType: ProjectType | "project";
     projectType_Coerced: ProjectType;
     sortBy: SearchResultSortMethod | undefined;
-
-    projectsPerPage: number;
-    pageOffset: number;
-    pagesCount: number;
+    numProjectsLimit_Param: number;
 
     isLoading: boolean;
     isFetching: boolean;
@@ -85,13 +81,8 @@ export function SearchProvider(props: SearchProviderProps) {
         setQuery({ isLoading: false, isFetching: false, data: res });
     }
 
-    const searchResults = query.data;
-    const projectsPerPage = Number.parseInt(pageSize || "0") || defaultSearchLimit;
-
-    const pagesCount = Math.ceil((searchResults?.estimatedTotalHits || 0) / projectsPerPage);
-    const pageOffsetParamValue = searchParams.get(pageOffsetParamNamespace);
-    let activePage = pageOffsetParamValue ? Number.parseInt(pageOffsetParamValue || "1") : 1;
-    if (!isNumber(activePage)) activePage = 1;
+    const searchResult = query.data;
+    const numProjectsLimit_Param = Number.parseInt(pageSize || "0") || defaultSearchLimit;
 
     function updateSearchTerm_Param(q: string) {
         const newSearchParams = updateSearchParam({
@@ -147,12 +138,11 @@ export function SearchProvider(props: SearchProviderProps) {
                 projectType: projectType,
                 projectType_Coerced: projectType_Coerced,
                 sortBy: sortBy as SearchResultSortMethod,
-                projectsPerPage: projectsPerPage,
-                pageOffset: activePage,
-                pagesCount: pagesCount,
+                numProjectsLimit_Param: numProjectsLimit_Param,
+
                 isLoading: query.isLoading,
                 isFetching: query.isFetching,
-                result: searchResults || ({} as SearchResult),
+                result: searchResult || ({} as SearchResult),
             }}
         >
             {props.children}

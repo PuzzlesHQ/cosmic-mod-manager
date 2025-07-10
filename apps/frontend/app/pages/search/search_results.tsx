@@ -1,4 +1,5 @@
 import { pageOffsetParamNamespace } from "@app/utils/config/search";
+import { isNumber } from "@app/utils/number";
 import { type ProjectType, SearchResultSortMethod } from "@app/utils/types";
 import type { ProjectListItem } from "@app/utils/types/api";
 import PaginatedNavigation from "~/components/misc/pagination-nav";
@@ -9,20 +10,18 @@ import { useSearchContext } from "./provider";
 
 export function SearchResults(props: { viewType: ViewType }) {
     const { t } = useTranslation();
-    const {
-        result: searchResult,
-        sortBy,
-        projectsPerPage,
-        pageOffset,
-        pagesCount,
-        isLoading,
-        isFetching,
-        projectType,
-    } = useSearchContext();
+    const { result, sortBy, params, isLoading, isFetching, projectType } = useSearchContext();
+
+    const pageLimit = result.limit;
+    const totalPages = Math.ceil((result?.estimatedTotalHits || 0) / pageLimit);
+
+    const pageOffsetParamValue = params.get(pageOffsetParamNamespace);
+    let activePage = pageOffsetParamValue ? Number.parseInt(pageOffsetParamValue || "1") : 1;
+    if (!isNumber(activePage)) activePage = 1;
 
     const pagination =
-        (searchResult?.estimatedTotalHits || 0) > projectsPerPage ? (
-            <PaginatedNavigation pagesCount={pagesCount} activePage={pageOffset} searchParamKey={pageOffsetParamNamespace} />
+        (result?.estimatedTotalHits || 0) > pageLimit ? (
+            <PaginatedNavigation pagesCount={totalPages} activePage={activePage} searchParamKey={pageOffsetParamNamespace} />
         ) : null;
 
     return (
@@ -38,7 +37,7 @@ export function SearchResults(props: { viewType: ViewType }) {
                 role="list"
                 aria-label="Search Results"
             >
-                {searchResult?.hits?.map((project: ProjectListItem) => (
+                {result?.hits?.map((project: ProjectListItem) => (
                     <ProjectCardItem
                         pageId="search-page"
                         projectType={project.type[0] as ProjectType}
@@ -68,13 +67,13 @@ export function SearchResults(props: { viewType: ViewType }) {
                 ))}
             </section>
 
-            {!searchResult?.hits?.length && !isLoading && !isFetching && (
+            {!result?.hits?.length && !isLoading && !isFetching && (
                 <div className="flex w-full items-center justify-center py-8">
                     <span className="text-extra-muted-foreground text-xl italic">{t.common.noResults}</span>
                 </div>
             )}
 
-            {!searchResult?.hits?.length && isFetching && <div className="flex w-full items-center justify-center py-8">...</div>}
+            {!result?.hits?.length && isFetching && <div className="flex w-full items-center justify-center py-8">...</div>}
 
             {pagination}
         </>

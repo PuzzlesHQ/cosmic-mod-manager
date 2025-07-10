@@ -36,7 +36,7 @@ export default function SearchPage() {
         searchTerm,
         setSearchTerm,
         sortBy,
-        projectsPerPage,
+        numProjectsLimit_Param,
 
         projectType,
         projectType_Coerced,
@@ -125,7 +125,7 @@ export default function SearchPage() {
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
-                                <SelectLabel className="font-bold text-foreground">{t.search.sortBy}</SelectLabel>
+                                <SelectLabel className="font-bold text-extra-muted-foreground">{t.search.sortBy}</SelectLabel>
                                 {[
                                     SearchResultSortMethod.RELEVANCE,
                                     SearchResultSortMethod.TRENDING,
@@ -145,7 +145,7 @@ export default function SearchPage() {
                     </Select>
 
                     <Select
-                        value={projectsPerPage.toString()}
+                        value={numProjectsLimit_Param.toString()}
                         onValueChange={(val) => {
                             const updatedParams = updateSearchParam({
                                 key: searchLimitParamNamespace,
