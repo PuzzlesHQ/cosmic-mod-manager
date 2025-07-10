@@ -57,7 +57,7 @@ export default function CollectionProjectsList() {
                         visibility={project.visibility}
                     />
                 );
-                if (ctx.collection.userId !== session?.id) return projectItem;
+                // if (ctx.collection.userId !== session?.id) return projectItem;
 
                 const isChecked = ctx.markedProjects.includes(project.id);
                 return (
@@ -67,9 +67,9 @@ export default function CollectionProjectsList() {
                         <label
                             htmlFor={project.slug}
                             className={cn(
-                                "invisible absolute end-0 bottom-0 flex h-full w-12 cursor-pointer items-center justify-center rounded-r-lg bg-card-background shadow-background shadow-xl",
-                                "group-focus-within/search-item:visible group-hover/search-item:visible",
-                                isChecked && "visible",
+                                "absolute end-0 bottom-0 flex h-full w-12 translate-x-[100%] cursor-pointer items-center justify-center rounded-r-lg bg-card-background shadow-background shadow-xl transition-transform",
+                                "group-focus-within/search-item:translate-x-0 group-hover/search-item:translate-x-0",
+                                isChecked && "translate-x-0",
                             )}
                         >
                             <Checkbox
