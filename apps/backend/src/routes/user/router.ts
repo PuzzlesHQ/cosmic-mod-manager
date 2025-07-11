@@ -30,7 +30,13 @@ import {
     updateUserProfile,
 } from "~/routes/user/controllers/profile";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
-import { HTTP_STATUS, invalidReqestResponse, serverErrorResponse, unauthorizedReqResponse } from "~/utils/http";
+import {
+    HTTP_STATUS,
+    invalidReqestResponse,
+    serverErrorResponse,
+    unauthenticatedReqResponse,
+    unauthorizedReqResponse,
+} from "~/utils/http";
 import { getUserFromCtx } from "~/utils/router";
 import { confirmUserAccountDeletion } from "./controllers/delete-account";
 
@@ -77,6 +83,8 @@ async function user_get(ctx: Context) {
 async function userFollows_get(ctx: Context) {
     try {
         const userSession = getUserFromCtx(ctx);
+        if (!userSession) return unauthenticatedReqResponse(ctx);
+
         const slug = ctx.req.param("slug") || userSession?.id;
         if (!slug) return invalidReqestResponse(ctx);
 

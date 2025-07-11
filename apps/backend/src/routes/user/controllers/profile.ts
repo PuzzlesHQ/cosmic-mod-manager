@@ -1,3 +1,4 @@
+import { isModerator } from "@app/utils/constants/roles";
 import { getFileType } from "@app/utils/convertors";
 import type { profileUpdateFormSchema } from "@app/utils/schemas/settings";
 import { ICON_WIDTH } from "@app/utils/src/constants";
@@ -11,7 +12,7 @@ import { getManyProjects } from "~/routes/project/controllers";
 import { UpdateProjects_SearchIndex } from "~/routes/search/search-db";
 import { deleteUserFile, saveUserFile } from "~/services/storage";
 import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
-import { HTTP_STATUS, notFoundResponseData } from "~/utils/http";
+import { HTTP_STATUS, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
 import { resizeImageToWebp } from "~/utils/images";
 import { generateDbId } from "~/utils/str";
 import { userIconUrl } from "~/utils/urls";
@@ -34,10 +35,16 @@ export async function getUserProfileData(slug: string) {
 }
 
 export async function getUserFollowedProjects(userSlug: string, userSession: ContextUserData | undefined, idsOnly = true) {
+    // If it's the current user's profile, return their following projects directly
     if (userSession && (userSlug === userSession.userName || userSlug === userSession.id)) {
         if (idsOnly) return { data: userSession.followingProjects, status: HTTP_STATUS.OK };
 
         return getManyProjects(userSession, userSession.followingProjects);
+    }
+
+    // regular users can't view other users' following projects
+    if (!isModerator(userSession?.role)) {
+        return unauthorizedReqResponseData("You are not allowed to view other users' following projects");
     }
 
     const userData = await GetUser_ByIdOrUsername(userSlug, userSlug);

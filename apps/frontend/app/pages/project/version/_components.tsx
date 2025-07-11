@@ -110,7 +110,7 @@ export function UploadVersionPageTopCard({
     const { t } = useTranslation();
 
     return (
-        <Card className="flex w-full flex-col items-start justify-start gap-3 p-card-surround">
+        <Card className="flex w-full flex-col items-start justify-start gap-2.5 p-card-surround">
             <Breadcrumb>
                 <BreadcrumbList>
                     <BreadcrumbItem>
