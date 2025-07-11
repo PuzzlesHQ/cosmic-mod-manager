@@ -3,13 +3,11 @@ import autoprefixer from "autoprefixer";
 import tailwindcss from "tailwindcss";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { ASSETS_URL } from "./app/utils/server-config";
 
 export default defineConfig({
     server: {
         port: 3000,
     },
-    base: ASSETS_URL,
     build: {
         rollupOptions: {
             output: {
