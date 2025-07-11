@@ -3,7 +3,7 @@ import autoprefixer from "autoprefixer";
 import tailwindcss from "tailwindcss";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { ASSETS_SERVER_URL } from "~/utils/env";
+import { ASSETS_SERVER_URL } from "./app/utils/env";
 
 export default defineConfig({
     server: {
