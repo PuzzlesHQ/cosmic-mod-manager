@@ -1,9 +1,10 @@
 import { DownloadIcon } from "lucide-react";
 import { createContext, useContext, useState } from "react";
+import { toast } from "sonner";
 import { cn } from "~/components/utils";
 
 export function DownloadRipple() {
-    const { isAnimationPlaying, isVisible } = useContext(DownloadAnimationContext);
+    const { isAnimationPlaying, isVisible } = useContext(FileDownloader);
 
     return (
         <div
@@ -34,13 +35,13 @@ function RippleCircle({ children, className }: { children?: React.ReactNode; cla
 }
 
 interface DownloadAnimationContext {
-    show: () => void;
+    downloadFile: (fileUrl: string | undefined) => void;
     isAnimationPlaying: boolean;
     isVisible: boolean;
 }
 
-export const DownloadAnimationContext = createContext<DownloadAnimationContext>({
-    show: () => {},
+export const FileDownloader = createContext<DownloadAnimationContext>({
+    downloadFile: (_fileUrl: string | undefined) => {},
     isAnimationPlaying: false,
     isVisible: false,
 });
@@ -52,7 +53,7 @@ export function DownloadAnimationProvider({ children }: { children: React.ReactN
     const [isAnimationPlaying, setIsAnimationPlaying] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
 
-    function showAnimation() {
+    function downloadFile(fileUrl: string | undefined) {
         if (animationTimeoutRef) window.clearTimeout(animationTimeoutRef);
         if (visibilityTimeoutRef) window.clearTimeout(visibilityTimeoutRef);
 
@@ -66,17 +67,24 @@ export function DownloadAnimationProvider({ children }: { children: React.ReactN
                 setIsVisible(false);
             }, 600);
         }, 600);
+
+        if (!fileUrl) {
+            toast.error("Empty file download url provided.");
+        } else {
+            // Trigger the download
+            window.location.href = fileUrl;
+        }
     }
 
     return (
-        <DownloadAnimationContext.Provider
+        <FileDownloader.Provider
             value={{
-                show: showAnimation,
+                downloadFile: downloadFile,
                 isAnimationPlaying: isAnimationPlaying,
                 isVisible: isVisible,
             }}
         >
             {children}
-        </DownloadAnimationContext.Provider>
+        </FileDownloader.Provider>
     );
 }

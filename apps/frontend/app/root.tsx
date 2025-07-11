@@ -8,7 +8,7 @@ import { Links, Meta, Outlet, Scripts, ScrollRestoration, type ShouldRevalidateF
 import ClientOnly from "~/components/client-only";
 import Footer from "~/components/layout/footer";
 import Navbar from "~/components/layout/Navbar/navbar";
-import { DownloadRipple } from "~/components/misc/download-animation";
+import { DownloadRipple } from "~/components/misc/file-downloader";
 import LoaderBar from "~/components/misc/loader-bar";
 import ToastAnnouncer from "~/components/toast-announcer";
 import { useNavigate } from "~/components/ui/link";

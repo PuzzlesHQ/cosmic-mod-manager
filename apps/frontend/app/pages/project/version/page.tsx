@@ -10,7 +10,7 @@ import { ChevronRightIcon, CopyIcon, DownloadIcon, Edit3Icon, FileIcon, LinkIcon
 import { lazy, Suspense, useContext } from "react";
 import { fallbackProjectIcon, fallbackUserIcon } from "~/components/icons";
 import MarkdownRenderBox from "~/components/md-editor/md-renderer";
-import { DownloadAnimationContext } from "~/components/misc/download-animation";
+import { FileDownloader } from "~/components/misc/file-downloader";
 import { ContentCardTemplate } from "~/components/misc/panel";
 import { ImgWrapper } from "~/components/ui/avatar";
 import {
@@ -21,6 +21,7 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "~/components/ui/breadcrumb";
+import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import Chip from "~/components/ui/chip";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "~/components/ui/context-menu";
@@ -48,7 +49,7 @@ interface Props {
 
 export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
     const { t } = useTranslation();
-    const { show: showDownloadAnimation } = useContext(DownloadAnimationContext);
+    const { downloadFile } = useContext(FileDownloader);
 
     const session = useSession();
     const currUsersMembership = ctx.currUsersMembership;
@@ -89,15 +90,14 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <VariantButtonLink
+                                <Button
                                     variant="default"
-                                    to={versionData.primaryFile?.url ? versionData.primaryFile?.url : ""}
-                                    onClick={showDownloadAnimation}
+                                    onClick={() => downloadFile(versionData.primaryFile?.url ? versionData.primaryFile?.url : "")}
                                     rel="nofollow noindex"
                                 >
                                     <DownloadIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                     {t.common.download}
-                                </VariantButtonLink>
+                                </Button>
                             </TooltipTrigger>
                             <TooltipContent>
                                 {versionData.primaryFile?.name} ({parseFileSize(versionData.primaryFile?.size || 0)})
@@ -208,7 +208,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                                 downloadLink={versionData.primaryFile.url}
                                 sha1_hash={versionData.primaryFile.sha1_hash}
                                 sha512_hash={versionData.primaryFile.sha512_hash}
-                                showDownloadAnimation={showDownloadAnimation}
+                                downloadFile={downloadFile}
                             />
                         ) : null}
 
@@ -224,7 +224,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                                           downloadLink={file.url}
                                           sha1_hash={file.sha1_hash}
                                           sha512_hash={file.sha512_hash}
-                                          showDownloadAnimation={showDownloadAnimation}
+                                          downloadFile={downloadFile}
                                       />
                                   );
                               })
@@ -322,7 +322,7 @@ interface FileDetailsItemProps {
     downloadLink: string;
     sha1_hash: string | null;
     sha512_hash: string | null;
-    showDownloadAnimation?: () => void;
+    downloadFile: (fileUrl: string | undefined) => void;
 }
 
 function FileDetailsItem({
@@ -332,7 +332,7 @@ function FileDetailsItem({
     downloadLink,
     sha1_hash,
     sha512_hash,
-    showDownloadAnimation,
+    downloadFile,
 }: FileDetailsItemProps) {
     const { t } = useTranslation();
 
@@ -361,16 +361,14 @@ function FileDetailsItem({
                         </span>
                     </div>
 
-                    <VariantButtonLink
+                    <Button
                         variant={isPrimary ? "secondary-dark" : "ghost"}
-                        to={downloadLink}
                         className={cn(!isPrimary && "hover:bg-transparent hover:text-foreground dark:hover:bg-transparent")}
-                        onClick={showDownloadAnimation}
-                        rel="nofollow noindex"
+                        onClick={() => downloadFile(downloadLink)}
                     >
                         <DownloadIcon aria-hidden className="h-btn-icon w-btn-icon" />
                         {t.common.download}
-                    </VariantButtonLink>
+                    </Button>
                 </div>
             </ContextMenuTrigger>
             <ContextMenuContent>

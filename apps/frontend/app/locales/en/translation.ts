@@ -304,7 +304,7 @@ export default {
         doesNotSupport: (project: string, version: string, loader: string) => {
             return `${project} does not support ${version} for ${loader}`;
         },
-        downloadProject: (project: string) => `Download ${project}`,
+        downloadItem: (project: string) => `Download ${project}`,
         gameVersion: (version: React.ReactNode) => ["Game version: ", version],
         selectGameVersion: "Select game version",
         platform: (loader: React.ReactNode) => ["Platform: ", loader],

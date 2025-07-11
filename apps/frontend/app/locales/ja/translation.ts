@@ -271,7 +271,7 @@ export default {
         doesNotSupport: (project: string, version: string, loader: string) => {
             return `${project}の${version}は${loader}をサポートしていません`;
         },
-        downloadProject: (project: string) => `${project}をダウンロード`,
+        downloadItem: (project: string) => `${project}をダウンロード`,
         gameVersion: (version) => ["ゲームのバージョン：", version],
         selectGameVersion: "ゲームのバージョンを選択",
         platform: (loader) => ["プラットフォーム：", loader],

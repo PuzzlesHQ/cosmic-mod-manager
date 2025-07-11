@@ -277,7 +277,7 @@ export default {
         doesNotSupport: (project: string, version: string, loader: string) => {
             return `${project} no es compatible con la versión ${version} de ${loader}`;
         },
-        downloadProject: (project: string) => `Descargar ${project}`,
+        downloadItem: (project: string) => `Descargar ${project}`,
         gameVersion: (version) => ["Versión del juego: ", version],
         selectGameVersion: "Seleccionar versión del juego",
         platform: (loader) => ["Plataforma: ", loader],

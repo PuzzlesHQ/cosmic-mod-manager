@@ -19,7 +19,7 @@ import {
 import { useContext, useState } from "react";
 import { useSearchParams } from "react-router";
 import loaderIcons from "~/components/icons/tag-icons";
-import { DownloadAnimationContext } from "~/components/misc/download-animation";
+import { FileDownloader } from "~/components/misc/file-downloader";
 import PaginatedNavigation from "~/components/misc/pagination-nav";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
@@ -127,7 +127,7 @@ function ProjectVersionsListTable({
     const activePage = Number.parseInt(page) <= pagesCount ? Number.parseInt(page) : 1;
 
     const customNavigate = useNavigate();
-    const { show: showDownloadAnimation } = useContext(DownloadAnimationContext);
+    const { downloadFile } = useContext(FileDownloader);
 
     function versionPagePathname(versionSlug: string) {
         return VersionPagePath(projectType, projectData.slug, versionSlug);
@@ -209,17 +209,15 @@ function ProjectVersionsListTable({
                             <div className="flex items-center justify-end gap-1">
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <VariantButtonLink
-                                            to={version.primaryFile?.url || ""}
+                                        <Button
                                             variant="outline"
                                             size="icon"
                                             className="noClickRedirect !w-10 !h-10 shrink-0 rounded-full"
-                                            aria-label={`Download ${version.title}`}
-                                            onClick={showDownloadAnimation}
-                                            rel="nofollow noindex"
+                                            aria-label={t.project.downloadItem(version.primaryFile?.name || "")}
+                                            onClick={() => downloadFile(version.primaryFile?.url)}
                                         >
                                             <DownloadIcon aria-hidden className="h-btn-icon w-btn-icon" strokeWidth={2.2} />
-                                        </VariantButtonLink>
+                                        </Button>
                                     </TooltipTrigger>
                                     <TooltipContent>
                                         {version.primaryFile?.name} ({parseFileSize(version.primaryFile?.size || 0)})

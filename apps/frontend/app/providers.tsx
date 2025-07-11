@@ -1,4 +1,4 @@
-import { DownloadAnimationProvider } from "~/components/misc/download-animation";
+import { DownloadAnimationProvider } from "~/components/misc/file-downloader";
 import type { ThemeOptions } from "~/components/types";
 import { Toaster } from "~/components/ui/sonner";
 import { ThemeProvider } from "~/hooks/theme";

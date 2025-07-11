@@ -4,9 +4,9 @@ import { DownloadIcon, FlaskConicalIcon } from "lucide-react";
 import { useContext } from "react";
 import { useSearchParams } from "react-router";
 import MarkdownRenderBox from "~/components/md-editor/md-renderer";
-import { DownloadAnimationContext } from "~/components/misc/download-animation";
+import { FileDownloader } from "~/components/misc/file-downloader";
 import PaginatedNavigation from "~/components/misc/pagination-nav";
-import { buttonVariants } from "~/components/ui/button";
+import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { FormattedDate } from "~/components/ui/date";
 import Link from "~/components/ui/link";
@@ -28,7 +28,7 @@ export default function VersionChangelogs() {
     const pagesCount = Math.ceil((ctx.allProjectVersions?.length || 0) / ITEMS_PER_PAGE);
     const activePage = ParseInt(page) <= pagesCount ? ParseInt(page) : 1;
 
-    const { show: showDownloadAnimation } = useContext(DownloadAnimationContext);
+    const { downloadFile } = useContext(FileDownloader);
 
     const filter = VersionFilters({
         allProjectVersions: ctx.allProjectVersions,
@@ -55,6 +55,8 @@ export default function VersionChangelogs() {
                         nextVersion.changelog.length > 0 &&
                         nextVersion?.changelog === version.changelog &&
                         version.releaseChannel === nextVersion.releaseChannel;
+
+                    const primaryFile = version.primaryFile;
 
                     return (
                         <div key={version.id} className="relative mb-4 w-full ps-7 dark:text-muted-foreground">
@@ -100,16 +102,11 @@ export default function VersionChangelogs() {
                                     )}
                                 </div>
 
-                                {version.primaryFile?.url ? (
-                                    <a
-                                        href={version.primaryFile.url}
-                                        className={cn(buttonVariants({ variant: "secondary", size: "sm" }))}
-                                        onClick={showDownloadAnimation}
-                                        rel="nofollow noindex"
-                                    >
+                                {primaryFile?.url ? (
+                                    <Button variant="secondary" size="sm" onClick={() => downloadFile(primaryFile.url)}>
                                         <DownloadIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                         {t.common.download}
-                                    </a>
+                                    </Button>
                                 ) : null}
                             </div>
 

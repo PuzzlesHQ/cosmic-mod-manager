@@ -31,12 +31,12 @@ import { Outlet, useLocation } from "react-router";
 import { DiscordIcon, fallbackOrgIcon, fallbackProjectIcon, fallbackUserIcon } from "~/components/icons";
 import tagIcons from "~/components/icons/tag-icons";
 import { itemType, MicrodataItemProps, MicrodataItemType } from "~/components/microdata";
-import { DownloadAnimationContext } from "~/components/misc/download-animation";
+import { FileDownloader } from "~/components/misc/file-downloader";
 import { PageHeader } from "~/components/misc/page-header";
 import RefreshPage from "~/components/misc/refresh-page";
 import { TextSpacer } from "~/components/misc/text";
 import { ImgWrapper } from "~/components/ui/avatar";
-import { Button, buttonVariants } from "~/components/ui/button";
+import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import Chip from "~/components/ui/chip";
 import { FormattedCount } from "~/components/ui/count";
@@ -67,7 +67,7 @@ import UpdateProjectStatusDialog from "./update-project-status";
 export default function ProjectPageLayout() {
     const { t } = useTranslation();
     const { theme } = useTheme();
-    const { show: showDownloadAnimation } = useContext(DownloadAnimationContext);
+    const { downloadFile } = useContext(FileDownloader);
 
     const session = useSession();
     const ctx = useProjectData();
@@ -263,29 +263,19 @@ export default function ProjectPageLayout() {
                                                 asChild
                                                 className="hidden group-focus-within/card:flex group-hover/card:flex"
                                             >
-                                                <a
-                                                    href={version.primaryFile?.url}
-                                                    className={cn(
-                                                        "noClickRedirect flex-shrink-0",
-                                                        isVersionDetailsPage
-                                                            ? buttonVariants({
-                                                                  variant: "secondary-inverted",
-                                                                  size: "icon",
-                                                              })
-                                                            : buttonVariants({ variant: "default", size: "icon" }),
-                                                        "!w-10 !h-10 rounded-full",
-                                                    )}
-                                                    aria-label={`download ${version.title}`}
-                                                    download={version.primaryFile?.name}
-                                                    onClick={showDownloadAnimation}
-                                                    rel="nofollow noindex"
+                                                <Button
+                                                    className="noClickRedirect !w-10 !h-10 flex-shrink-0 rounded-full"
+                                                    variant={isVersionDetailsPage ? "secondary-inverted" : "default"}
+                                                    size="icon"
+                                                    aria-label={t.project.downloadItem(version.primaryFile?.name || "")}
+                                                    onClick={() => downloadFile(version.primaryFile?.url)}
                                                 >
                                                     <DownloadIcon
                                                         aria-hidden
                                                         className="h-[1.07rem] w-[1.07rem]"
                                                         strokeWidth={2.2}
                                                     />
-                                                </a>
+                                                </Button>
                                             </TooltipTrigger>
                                             <TooltipContent className="hidden group-focus-within/card:flex group-hover/card:flex">
                                                 {version?.primaryFile?.name} ({parseFileSize(version.primaryFile?.size || 0)})

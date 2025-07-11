@@ -11,7 +11,7 @@ import { ChevronsUpDownIcon, DownloadIcon, Gamepad2Icon, WrenchIcon } from "luci
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router";
 import { fallbackProjectIcon } from "~/components/icons";
-import { DownloadAnimationContext } from "~/components/misc/download-animation";
+import { FileDownloader } from "~/components/misc/file-downloader";
 import { ImgWrapper } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { LabelledCheckbox } from "~/components/ui/checkbox";
@@ -27,7 +27,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "~/components/ui/dialog";
-import Link, { VariantButtonLink } from "~/components/ui/link";
+import Link from "~/components/ui/link";
 import { ReleaseChannelBadge } from "~/components/ui/release-channel-pill";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { cn } from "~/components/utils";
@@ -143,9 +143,9 @@ export default function InteractiveDownloadPopup() {
                         className="h-9 w-9 rounded-md"
                         fallback={fallbackProjectIcon}
                     />
-                    <DialogTitle>{t.project.downloadProject(projectData.name)}</DialogTitle>
+                    <DialogTitle>{t.project.downloadItem(projectData.name)}</DialogTitle>
                     <VisuallyHidden>
-                        <DialogDescription>{t.project.downloadProject(projectData.name)}</DialogDescription>
+                        <DialogDescription>{t.project.downloadItem(projectData.name)}</DialogDescription>
                     </VisuallyHidden>
                 </DialogHeader>
                 <DialogBody className="flex flex-col items-center justify-center gap-3">
@@ -263,8 +263,9 @@ function AvailableVersionsList({ selectedGameVersion, selectedLoader }: Availabl
     const ctx = useProjectData();
     const projectdata = ctx.projectData;
     const allProjectVersions = ctx.allProjectVersions;
+    const { t } = useTranslation();
 
-    const { show: showDownloadAnimation, isVisible: isDownloadAnimationVisible } = useContext(DownloadAnimationContext);
+    const { downloadFile, isVisible: isDownloadAnimationVisible } = useContext(FileDownloader);
 
     const versionsList = useMemo(() => {
         if (!projectdata || !allProjectVersions) return [];
@@ -319,17 +320,15 @@ function AvailableVersionsList({ selectedGameVersion, selectedLoader }: Availabl
                             </div>
                         </div>
 
-                        <VariantButtonLink
-                            to={version.primaryFile?.url || ""}
+                        <Button
                             size="icon"
                             variant="default"
                             className={cn("shrink-0", isDownloadAnimationVisible && "pointer-events-none")}
-                            label={`download ${version.title}`}
-                            onClick={showDownloadAnimation}
-                            rel="nofollow noindex"
+                            title={t.project.downloadItem(version.primaryFile?.name || "")}
+                            onClick={() => downloadFile(version.primaryFile?.url)}
                         >
                             <DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                        </VariantButtonLink>
+                        </Button>
                     </div>
                 );
             })}
