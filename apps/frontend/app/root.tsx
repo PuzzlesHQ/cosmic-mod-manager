@@ -3,7 +3,7 @@ import "./index.css";
 import { getCookie } from "@app/utils/cookie";
 import type { LoggedInUserData } from "@app/utils/types";
 import { useEffect } from "react";
-import type { LinkDescriptor, LinksFunction } from "react-router";
+import type { LinkDescriptor } from "react-router";
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, type ShouldRevalidateFunctionArgs, useLoaderData } from "react-router";
 import ClientOnly from "~/components/client-only";
 import Footer from "~/components/layout/footer";
@@ -27,6 +27,7 @@ import { formatLocaleCode, parseLocale } from "./locales";
 import { useTranslation } from "./locales/provider";
 import { LoginDialog } from "./pages/auth/login/login-card";
 import Config from "./utils/config";
+import { ASSETS_SERVER_URL } from "./utils/env";
 
 export interface RootOutletData {
     userConfig: UserConfig;
@@ -54,7 +55,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Links />
                 <script
                     defer
-                    src="/telemetry.js"
+                    src={`${ASSETS_SERVER_URL || "/"}telemetry.js`}
                     data-website-id="1bbb8989-cc84-4b4c-bfca-51e53779f587"
                     data-exclude-search="true"
                     data-exclude-hash="true"
@@ -191,21 +192,7 @@ export function shouldRevalidate({ nextUrl }: ShouldRevalidateFunctionArgs) {
     return false;
 }
 
-const fontPreloads: LinkDescriptor[] = [
-    "https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7SUc.woff2",
-    "https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
-].map((url) => ({
-    rel: "preload",
-    as: "font",
-    href: url,
-    crossOrigin: "anonymous",
-}));
-
-const headLinks = [
-    {
-        rel: "preconnect",
-        href: "https://cdn.crmm.tech",
-    },
+const headLinks: LinkDescriptor[] = [
     {
         rel: "icon",
         type: "image/png",
@@ -217,11 +204,30 @@ const headLinks = [
         sizes: "180*180",
         href: "/icon.png",
     },
-    ...fontPreloads,
+    {
+        rel: "preload",
+        as: "font",
+        href: "https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7SUc.woff2",
+        crossOrigin: "anonymous",
+    },
+    {
+        rel: "preload",
+        as: "font",
+        href: "https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
+        crossOrigin: "anonymous",
+    },
 ];
-export const links: LinksFunction = () => {
+
+if (ASSETS_SERVER_URL) {
+    headLinks.push({
+        rel: "preconnect",
+        href: ASSETS_SERVER_URL,
+    });
+}
+
+export function links(): LinkDescriptor[] {
     return headLinks;
-};
+}
 
 export function meta() {
     const { t } = useTranslation();
