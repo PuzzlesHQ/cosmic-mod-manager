@@ -51,6 +51,8 @@ const ThemeClasses = {
 const allThemesClasses = Object.values(ThemeClasses).flat();
 
 export function getThemeClasses(theme: ThemePreferences, prefersOLED: boolean, e?: MediaMatchEvent) {
+    if (!theme) return ThemeClasses[ThemePreferences.DARK];
+
     const effectiveTheme = getEffectiveTheme(theme, prefersOLED, e);
     return ThemeClasses[effectiveTheme] || ThemeClasses[ThemePreferences.DARK];
 }
