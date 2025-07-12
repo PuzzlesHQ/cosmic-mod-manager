@@ -12,13 +12,13 @@ export function interactionsDisabled() {
 export function disableInteractions() {
     document.documentElement.setAttribute("inert", "");
     document.documentElement.classList.add("disable-interactions");
-    document.addEventListener("keydown", disablePathNavigations);
+    document.documentElement.addEventListener("keydown", disablePathNavigations);
 }
 
 export function enableInteractions() {
     document.documentElement.removeAttribute("inert");
     document.documentElement.classList.remove("disable-interactions");
-    document.removeEventListener("keydown", disablePathNavigations);
+    document.documentElement.removeEventListener("keydown", disablePathNavigations);
 }
 
 export function scrollElementIntoView(element: HTMLElement | null, options?: ScrollIntoViewOptions) {

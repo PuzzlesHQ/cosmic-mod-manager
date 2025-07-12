@@ -4,7 +4,7 @@ import { ChevronRightIcon, HistoryIcon } from "lucide-react";
 import { fallbackUserIcon } from "~/components/icons";
 import { ContentCardTemplate, PanelContent_AsideCardLayout } from "~/components/misc/panel";
 import { ImgWrapper } from "~/components/ui/avatar";
-import { CardContent, CardHeader, CardTitle, SectionCard } from "~/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import Link, { ButtonLink } from "~/components/ui/link";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
@@ -49,7 +49,7 @@ export default function OverviewPage({ userProjects, notifications, relatedProje
             </ContentCardTemplate>
 
             <PanelContent_AsideCardLayout>
-                <SectionCard className="w-full">
+                <Card useSectionTag className="w-full">
                     <CardHeader className="flex w-full flex-row items-center justify-between gap-x-6 gap-y-2">
                         <CardTitle className="w-fit">{t.dashboard.notifications}</CardTitle>
                         {(unreadNotifications?.length || 0) > 0 ? (
@@ -80,7 +80,7 @@ export default function OverviewPage({ userProjects, notifications, relatedProje
                             </div>
                         )}
                     </CardContent>
-                </SectionCard>
+                </Card>
 
                 <ContentCardTemplate
                     sectionTag

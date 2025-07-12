@@ -2,7 +2,7 @@ import { doesOrgMemberHaveAccess } from "@app/utils/project";
 import { OrganisationPermission } from "@app/utils/types";
 import { useLocation } from "react-router";
 import RefreshPage from "~/components/misc/refresh-page";
-import { CardTitle, SectionCard } from "~/components/ui/card";
+import { Card, CardTitle } from "~/components/ui/card";
 import { useNavigate } from "~/components/ui/link";
 import { useOrgData } from "~/hooks/org";
 import { useSession } from "~/hooks/session";
@@ -40,7 +40,7 @@ export default function OrgMemberSettings() {
         <>
             <title>{`Members - ${orgData.name}`}</title>
 
-            <SectionCard className="flex w-full flex-col gap-4 p-card-surround">
+            <Card useSectionTag className="flex w-full flex-col gap-4 p-card-surround">
                 <CardTitle>{t.projectSettings.manageMembers}</CardTitle>
                 <InviteMemberForm
                     teamId={orgData.teamId}
@@ -54,7 +54,7 @@ export default function OrgMemberSettings() {
                     refreshData={RedirectToOrgPage}
                     isOrgTeam
                 />
-            </SectionCard>
+            </Card>
 
             {orgData.members.map((member) => {
                 return (

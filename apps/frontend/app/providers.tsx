@@ -1,24 +1,24 @@
 import { DownloadAnimationProvider } from "~/components/misc/file-downloader";
-import type { ThemeOptions } from "~/components/types";
 import { Toaster } from "~/components/ui/sonner";
-import { ThemeProvider } from "~/hooks/theme";
-import { BreadcrumbsContextProvider } from "./hooks/breadcrumb";
-import { CollectionsProvider } from "./pages/collection/provider";
+import { BreadcrumbsContextProvider } from "~/hooks/breadcrumb";
+import type { UserPreferences } from "~/hooks/preferences/types";
+import { CollectionsProvider } from "~/pages/collection/provider";
+import { UserPreferencesProvider } from "./hooks/preferences";
 
 interface ContextProvidersProps {
     children: React.ReactNode;
-    theme: ThemeOptions;
+    init_userConfig: UserPreferences;
 }
 
-export default function ContextProviders({ children, theme }: ContextProvidersProps) {
+export default function ContextProviders({ children, init_userConfig }: ContextProvidersProps) {
     return (
-        <BreadcrumbsContextProvider>
-            <ThemeProvider initTheme={theme}>
+        <UserPreferencesProvider init={init_userConfig}>
+            <BreadcrumbsContextProvider>
                 <DownloadAnimationProvider>
                     <CollectionsProvider>{children}</CollectionsProvider>
-                    <Toaster initTheme={theme} />
+                    <Toaster />
                 </DownloadAnimationProvider>
-            </ThemeProvider>
-        </BreadcrumbsContextProvider>
+            </BreadcrumbsContextProvider>
+        </UserPreferencesProvider>
     );
 }

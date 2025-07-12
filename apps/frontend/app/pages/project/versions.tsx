@@ -33,9 +33,9 @@ import { ReleaseChannelBadge } from "~/components/ui/release-channel-pill";
 import { Separator } from "~/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTemplate, TooltipTrigger } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
+import { usePreferences } from "~/hooks/preferences";
 import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
-import useTheme from "~/hooks/theme";
 import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
 import { VersionPagePath } from "~/utils/urls";
@@ -271,7 +271,7 @@ function GameVersions({ gameVersions, verbose }: { gameVersions: string[]; verbo
 }
 
 function ProjectLoaders({ versionLoaders }: { versionLoaders: string[] }) {
-    const { theme } = useTheme();
+    const { isActiveThemeDark } = usePreferences();
 
     return (
         <>
@@ -287,7 +287,7 @@ function ProjectLoaders({ versionLoaders }: { versionLoaders: string[] }) {
                         key={loaderData.name}
                         style={{
                             color: accentForeground
-                                ? theme === "dark"
+                                ? isActiveThemeDark
                                     ? accentForeground?.dark
                                     : accentForeground?.light
                                 : "hsla(var(--muted-foreground))",

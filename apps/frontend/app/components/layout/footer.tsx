@@ -1,24 +1,22 @@
 import { ArrowUpRightIcon, LanguagesIcon, LinkIcon, Settings2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
-import { type LinkProps, useLocation } from "react-router";
+import type { LinkProps } from "react-router";
 import { BrandIcon } from "~/components/icons";
 import Link, { LinkPrefetchStrategy, useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { DotSeparator } from "~/components/ui/separator";
 import ThemeSwitch from "~/components/ui/theme-switcher";
-import { setUserConfig } from "~/hooks/user-config";
+import { usePreferences } from "~/hooks/preferences";
 import { formatLocaleCode, parseLocale } from "~/locales";
 import { SupportedLocalesList } from "~/locales/meta";
 import { alterUrlHintLocale, useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
 
 export default function Footer() {
+    const { updatePreferences } = usePreferences();
     const { t, changeLocale } = useTranslation();
     const footer = t.footer;
     const legal = t.legal;
-
-    // Just to trigger a re-render when the url changes to keep the locale in sync
-    useLocation();
 
     return (
         <footer className="mx-auto mt-24 w-full bg-card-background pt-20 pb-8 dark:bg-card-background/35">
@@ -135,7 +133,7 @@ export default function Footer() {
                             preventScrollReset
                             escapeUrlWrapper
                             onClick={() => {
-                                setLocaleConfig(formattedCode);
+                                updatePreferences({ locale: formattedCode });
                                 changeLocale(formattedCode);
                             }}
                         >
@@ -177,6 +175,7 @@ function LinksColumn({ children, area }: { area: string; children: React.ReactNo
 }
 
 export function LangSwitcher() {
+    const { updatePreferences } = usePreferences();
     const { locale, changeLocale } = useTranslation();
     const [currLang, setCurrLang] = useState(formatLocaleCode(locale));
     const navigate = useNavigate(true);
@@ -190,7 +189,7 @@ export function LangSwitcher() {
     return (
         <Select
             onValueChange={(value: string) => {
-                setLocaleConfig(parseLocale(value));
+                updatePreferences({ locale: parseLocale(value) });
                 changeLocale(value, navigate);
             }}
             value={currLang}
@@ -231,8 +230,4 @@ export function LangSwitcher() {
             </SelectContent>
         </Select>
     );
-}
-
-function setLocaleConfig(locale: string) {
-    setUserConfig({ locale: locale });
 }

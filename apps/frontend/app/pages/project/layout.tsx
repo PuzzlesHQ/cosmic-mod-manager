@@ -48,9 +48,9 @@ import { ReleaseChannelBadge } from "~/components/ui/release-channel-pill";
 import { Separator } from "~/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
+import { usePreferences } from "~/hooks/preferences";
 import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
-import useTheme from "~/hooks/theme";
 import { useTranslation } from "~/locales/provider";
 import ReportButton from "~/pages/report/report-btn";
 import { isCurrLinkActive, OrgPagePath, ProjectPagePath, UserProfilePath, VersionPagePath } from "~/utils/urls";
@@ -66,7 +66,7 @@ import UpdateProjectStatusDialog from "./update-project-status";
 
 export default function ProjectPageLayout() {
     const { t } = useTranslation();
-    const { theme } = useTheme();
+    const { isActiveThemeDark } = usePreferences();
     const { downloadFile } = useContext(FileDownloader);
 
     const session = useSession();
@@ -157,7 +157,7 @@ export default function ProjectPageLayout() {
                                                 key={loader.name}
                                                 style={{
                                                     color: accentForeground
-                                                        ? theme === "dark"
+                                                        ? isActiveThemeDark
                                                             ? accentForeground?.dark
                                                             : accentForeground?.light
                                                         : "hsla(var(--muted-foreground))",

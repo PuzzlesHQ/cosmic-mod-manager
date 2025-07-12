@@ -1,15 +1,15 @@
 import type React from "react";
 import { cn } from "~/components/utils";
 
-function Card({ ref, className, ...props }: React.ComponentProps<"div">) {
-    return <div ref={ref} className={cn("rounded-lg bg-card-background text-foreground shadow-sm", className)} {...props} />;
+interface CardProps extends React.ComponentProps<"div"> {
+    useSectionTag?: boolean;
+}
+
+function Card({ ref, className, useSectionTag, ...props }: CardProps) {
+    const Tag = useSectionTag ? "section" : "div";
+    return <Tag ref={ref} className={cn("rounded-lg bg-card-background text-foreground shadow-sm", className)} {...props} />;
 }
 Card.displayName = "Card";
-
-function SectionCard({ ref, className, ...props }: React.ComponentProps<"div">) {
-    return <section ref={ref} className={cn("rounded-lg bg-card-background text-foreground shadow-sm", className)} {...props} />;
-}
-SectionCard.displayName = "Card";
 
 function CardHeader({ ref, className, ...props }: React.ComponentProps<"div">) {
     return <div ref={ref} className={cn("flex flex-col gap-y-1.5 p-card-surround", className)} {...props} />;
@@ -27,13 +27,7 @@ function CardDescription({ ref, className, ...props }: React.ComponentProps<"p">
 CardDescription.displayName = "CardDescription";
 
 function CardContent({ ref, className, ...props }: React.ComponentProps<"div">) {
-    return (
-        <div
-            ref={ref}
-            className={cn("flex w-full flex-col items-start justify-start p-card-surround pt-0", className)}
-            {...props}
-        />
-    );
+    return <div ref={ref} className={cn("p-card-surround pt-0", className)} {...props} />;
 }
 CardContent.displayName = "CardContent";
 
@@ -42,4 +36,4 @@ function CardFooter({ ref, className, ...props }: React.ComponentProps<"div">) {
 }
 CardFooter.displayName = "CardFooter";
 
-export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, SectionCard };
+export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle };

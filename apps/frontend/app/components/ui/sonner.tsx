@@ -1,16 +1,11 @@
 import { Toaster as Sonner } from "sonner";
-import type { ThemeOptions } from "~/components/types";
 
 export { toast } from "sonner";
 
-interface ToasterProps extends React.ComponentProps<typeof Sonner> {
-    initTheme: ThemeOptions;
-}
-
-export function Toaster({ initTheme, ...props }: ToasterProps) {
+export function Toaster(props: React.ComponentProps<typeof Sonner>) {
     return (
         <Sonner
-            theme={initTheme as ToasterProps["theme"]}
+            theme={undefined}
             className="toaster group"
             toastOptions={{
                 classNames: {

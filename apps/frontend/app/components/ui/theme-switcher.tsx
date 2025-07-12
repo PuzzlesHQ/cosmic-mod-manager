@@ -1,9 +1,10 @@
 import type { VariantProps } from "class-variance-authority";
 import { MoonIcon, SunIcon } from "~/components/icons";
-import { ThemeOptions } from "~/components/types";
 import { Button, type buttonVariants } from "~/components/ui/button";
 import { cn } from "~/components/utils";
-import useTheme from "~/hooks/theme";
+import { usePreferences } from "~/hooks/preferences";
+import { applyTheme } from "~/hooks/preferences/theme";
+import { ThemePreferences } from "~/hooks/preferences/types";
 
 type variant = VariantProps<typeof buttonVariants>["variant"];
 
@@ -25,19 +26,17 @@ export default function ThemeSwitch({
     noDefaultStyle,
     variant = "ghost",
 }: ThemeSwitchProps) {
-    const { theme, setTheme } = useTheme();
+    const ctx = usePreferences();
 
-    async function switchTheme() {
-        if (theme === ThemeOptions.DARK) {
-            setTheme(ThemeOptions.LIGHT);
-        } else {
-            setTheme(ThemeOptions.DARK);
-        }
+    function setNewTheme(theme: ThemePreferences) {
+        ctx.updatePreferences({ theme: theme });
     }
 
     async function transitionTheme(e: React.MouseEvent<HTMLButtonElement>) {
+        const newTheme = ctx.toggleTheme();
+
         document.documentElement.setAttribute("data-view-transition", "theme-switch");
-        if (!document.startViewTransition) switchTheme();
+        if (!document.startViewTransition) setNewTheme(newTheme);
         else {
             const x = e.clientX;
             const y = e.clientY;
@@ -45,9 +44,11 @@ export default function ThemeSwitch({
             document.documentElement.style.setProperty("--click-x", `${x}px`);
             document.documentElement.style.setProperty("--click-y", `${y}px`);
 
-            const transition = document.startViewTransition(switchTheme);
-
+            const transition = document.startViewTransition(() =>
+                applyTheme(newTheme, ctx.prefersOLED, document.documentElement),
+            );
             await transition.finished;
+            setNewTheme(newTheme);
         }
         document.documentElement.removeAttribute("data-view-transition");
     }
@@ -70,7 +71,7 @@ export default function ThemeSwitch({
                     iconWrapperClassName,
                 )}
             >
-                {theme === ThemeOptions.DARK ? (
+                {ctx.activeTheme === ThemePreferences.DARK || ctx.activeTheme === ThemePreferences.OLED ? (
                     <SunIcon size={iconSize} className={iconClassName} />
                 ) : (
                     <MoonIcon size={iconSize} className={iconClassName} />

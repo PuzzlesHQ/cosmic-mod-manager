@@ -18,7 +18,7 @@ import { ChipButton } from "~/components/ui/chip";
 import { CommandSeparator } from "~/components/ui/command";
 import { MultiSelect } from "~/components/ui/multi-select";
 import { releaseChannelTextColor } from "~/components/ui/release-channel-pill";
-import useTheme from "~/hooks/theme";
+import { usePreferences } from "~/hooks/preferences";
 import { useTranslation } from "~/locales/provider";
 
 const LOADER_KEY = "l";
@@ -40,7 +40,7 @@ interface VersionFiltersProps {
 
 export default function VersionFilters(props: VersionFiltersProps) {
     const { t } = useTranslation();
-    const { theme } = useTheme();
+    const { isActiveThemeDark } = usePreferences();
     const [searchParams, setSearchParams] = useSearchParams();
 
     const [showExperimentalGameVersions, setShowExperimentalGameVersions] = useState(false);
@@ -225,8 +225,9 @@ export default function VersionFilters(props: VersionFiltersProps) {
                         if (!loaderData) return null;
                         const accentForeground = loaderData.metadata?.foreground;
                         let color = "hsla(var(--muted-foreground))";
+
                         if (accentForeground) {
-                            color = theme === "dark" ? accentForeground.dark : accentForeground.light;
+                            color = isActiveThemeDark ? accentForeground.dark : accentForeground.light;
                         }
 
                         return (

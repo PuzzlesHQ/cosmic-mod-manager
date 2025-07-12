@@ -1,6 +1,6 @@
 import type React from "react";
 import { Fragment } from "react";
-import { Card, CardContent, CardHeader, CardTitle, SectionCard } from "~/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { ButtonLink, type LinkPrefetchStrategy } from "~/components/ui/link";
 import { cn } from "~/components/utils";
 
@@ -40,17 +40,15 @@ export function ContentCardTemplate({
     titleClassName?: string;
     sectionTag?: boolean;
 }) {
-    const Slot = sectionTag === true ? SectionCard : Card;
-
     return (
-        <Slot className={cn("w-full", !title && "pt-5", cardClassname)}>
+        <Card useSectionTag={sectionTag} className={cn("w-full", !title && "pt-5", cardClassname)}>
             {!!title && (
                 <CardHeader className={headerClassName}>
                     <CardTitle className={titleClassName}>{title}</CardTitle>
                 </CardHeader>
             )}
             <CardContent className={className}>{children}</CardContent>
-        </Slot>
+        </Card>
     );
 }
 

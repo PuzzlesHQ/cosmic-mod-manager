@@ -1,15 +1,3 @@
-export enum ThemeOptions {
-    LIGHT = "light",
-    DARK = "dark",
-    SYSTEM = "system",
-}
-
-export interface UseThemeProps {
-    themes?: string[];
-    setTheme: (value: string | ((theme: string | undefined) => string)) => void;
-    theme?: ThemeOptions | string;
-}
-
 export enum AuthProvider {
     GITHUB = "github",
     GITLAB = "gitlab",

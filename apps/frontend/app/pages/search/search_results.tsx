@@ -3,12 +3,12 @@ import { isNumber } from "@app/utils/number";
 import { type ProjectType, SearchResultSortMethod } from "@app/utils/types";
 import type { ProjectListItem } from "@app/utils/types/api";
 import PaginatedNavigation from "~/components/misc/pagination-nav";
-import ProjectCardItem, { ViewType } from "~/components/misc/search-list-item";
+import ProjectCardItem, { ListViewType } from "~/components/misc/search-list-item";
 import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import { useSearchContext } from "./provider";
 
-export function SearchResults(props: { viewType: ViewType }) {
+export function SearchResults(props: { viewType: ListViewType }) {
     const { t } = useTranslation();
     const { result, sortBy, params, isLoading, isFetching, projectType } = useSearchContext();
 
@@ -32,7 +32,7 @@ export function SearchResults(props: { viewType: ViewType }) {
             <section
                 className={cn(
                     "grid h-fit w-full grid-cols-1 gap-panel-cards",
-                    props.viewType === ViewType.GALLERY && "sm:grid-cols-2",
+                    props.viewType === ListViewType.GALLERY && "sm:grid-cols-2",
                 )}
                 role="list"
                 aria-label="Search Results"

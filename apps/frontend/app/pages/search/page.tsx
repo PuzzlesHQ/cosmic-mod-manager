@@ -12,14 +12,14 @@ import { FilterIcon, ImageIcon, LayoutListIcon, SearchIcon } from "lucide-react"
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useSpinnerCtx } from "~/components/global-spinner";
-import { ViewType } from "~/components/misc/search-list-item";
+import { ListViewType } from "~/components/misc/search-list-item";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { TooltipProvider, TooltipTemplate } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
-import { setUserConfig, type UserConfig, useUserConfig } from "~/hooks/user-config";
+import { usePreferences } from "~/hooks/preferences";
 import { useTranslation } from "~/locales/provider";
 import { removePageOffsetSearchParam, updateSearchParam, useSearchContext } from "./provider";
 import { SearchResults } from "./search_results";
@@ -41,9 +41,8 @@ export default function SearchPage() {
         projectType,
         projectType_Coerced,
     } = useSearchContext();
-
-    const viewType = getSearchDisplayPreference(projectType_Coerced);
-    const [_, reRender] = useState("0");
+    const ctx = usePreferences();
+    const viewType = ctx.viewPrefs[projectType_Coerced];
 
     // Search box focus
     function handleSearchInputFocus(e: KeyboardEvent) {
@@ -184,7 +183,7 @@ export default function SearchPage() {
                         {t.search.filters}
                     </Button>
 
-                    <ViewTypeToggle projectType={projectType_Coerced} viewType={viewType} reRender={reRender} />
+                    <ViewTypeToggle projectType={projectType_Coerced} viewType={viewType} />
                 </Card>
 
                 <SearchResults viewType={viewType} />
@@ -221,28 +220,24 @@ function Spinner({ className }: { className?: string }) {
     );
 }
 
-function ViewTypeToggle({
-    projectType,
-    viewType,
-    reRender,
-}: {
-    projectType: ProjectType;
-    viewType: ViewType;
-    reRender: (str: string) => void;
-}) {
-    const userConfig = useUserConfig();
+function ViewTypeToggle({ projectType, viewType }: { projectType: ProjectType; viewType: ListViewType }) {
+    const ctx = usePreferences();
     const { t } = useTranslation();
 
     function toggleViewType() {
         let newDisplayType = viewType;
-        if (viewType === ViewType.LIST) {
-            newDisplayType = ViewType.GALLERY;
-        } else if (viewType === ViewType.GALLERY) {
-            newDisplayType = ViewType.LIST;
+        if (viewType === ListViewType.LIST) {
+            newDisplayType = ListViewType.GALLERY;
+        } else if (viewType === ListViewType.GALLERY) {
+            newDisplayType = ListViewType.LIST;
         }
 
-        reRender(Math.random().toString());
-        saveSearchDisplayPreference(projectType, newDisplayType, userConfig);
+        ctx.updatePreferences({
+            viewPrefs: {
+                [projectType]: newDisplayType,
+                ...ctx.viewPrefs,
+            },
+        });
     }
 
     return (
@@ -255,7 +250,7 @@ function ViewTypeToggle({
                     aria-label="Toggle View Type"
                     className="h-nav-item w-nav-item"
                 >
-                    {viewType === ViewType.GALLERY ? (
+                    {viewType === ListViewType.GALLERY ? (
                         <ImageIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     ) : (
                         <LayoutListIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
@@ -264,13 +259,4 @@ function ViewTypeToggle({
             </TooltipTemplate>
         </TooltipProvider>
     );
-}
-
-function saveSearchDisplayPreference(projectType: ProjectType, viewType: ViewType, userConfig: UserConfig) {
-    userConfig.viewPrefs[projectType] = viewType;
-    setUserConfig(userConfig);
-}
-
-function getSearchDisplayPreference(projectType: ProjectType) {
-    return useUserConfig().viewPrefs[projectType];
 }

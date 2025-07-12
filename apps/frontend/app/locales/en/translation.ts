@@ -157,6 +157,10 @@ export default {
         sessionCreatedUsing: (providerName: string) => `Session created using ${providerName}`,
         currSession: "Current session",
         revokeSession: "Revoke session",
+
+        // Preferences
+        colorTheme: "Color theme",
+        colorThemeDesc: "Select your preferred color theme.",
     },
 
     dashboard: {

@@ -20,7 +20,7 @@ import { useTranslation } from "~/locales/provider";
 import ProjectSupportedEnv from "~/pages/project/supported-env";
 import { OrgPagePath, ProjectPagePath, UserProfilePath } from "~/utils/urls";
 
-export enum ViewType {
+export enum ListViewType {
     GALLERY = "gallery",
     LIST = "list",
 }
@@ -47,7 +47,7 @@ interface SearchListItemProps {
     dateUpdated: Date;
     datePublished: Date;
     showDatePublished?: boolean;
-    viewType?: ViewType;
+    viewType?: ListViewType;
     isOrgOwned?: boolean;
     visibility: ProjectVisibility;
     vtId: string; // View Transition ID
@@ -59,7 +59,7 @@ interface SearchListItemProps {
 const HideEnvSupportFor = [ProjectType.RESOURCE_PACK, ProjectType.SHADER, ProjectType.PLUGIN, ProjectType.WORLD];
 
 export default function ProjectCardItem(props: SearchListItemProps) {
-    return <BaseView {...props} viewType={props.viewType || ViewType.LIST} />;
+    return <BaseView {...props} viewType={props.viewType || ListViewType.LIST} />;
 }
 
 function BaseView(props: SearchListItemProps) {
@@ -73,8 +73,8 @@ function BaseView(props: SearchListItemProps) {
     const projectPageUrl = ProjectPagePath(effectiveProjectType, props.projectSlug);
 
     // View Types
-    const galleryViewType = props.viewType === ViewType.GALLERY;
-    const listViewType = props.viewType === ViewType.LIST;
+    const galleryViewType = props.viewType === ListViewType.GALLERY;
+    const listViewType = props.viewType === ListViewType.LIST;
 
     const vtStyle = useMemo(() => viewTransitionStyleObj(`${props.pageId}-search-item-${props.vtId}`), [props.vtId]);
 

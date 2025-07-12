@@ -1,4 +1,4 @@
-import "./index.css";
+import "~/index.css";
 
 import { getCookie } from "@app/utils/cookie";
 import type { LoggedInUserData } from "@app/utils/types";
@@ -12,25 +12,28 @@ import { DownloadRipple } from "~/components/misc/file-downloader";
 import LoaderBar from "~/components/misc/loader-bar";
 import ToastAnnouncer from "~/components/toast-announcer";
 import { useNavigate } from "~/components/ui/link";
-import { getUserConfig, type UserConfig } from "~/hooks/user-config";
+import { cn } from "~/components/utils";
+import { PageBreadCrumbs } from "~/hooks/breadcrumb";
+import { getUserConfig } from "~/hooks/preferences/helpers";
+import { getThemeClasses } from "~/hooks/preferences/theme";
+import type { UserPreferences } from "~/hooks/preferences/types";
+import { formatLocaleCode, parseLocale } from "~/locales";
 import SupportedLocales, { DefaultLocale, GetLocaleMetadata } from "~/locales/meta";
+import { useTranslation } from "~/locales/provider";
 import type { LocaleMetaData } from "~/locales/types";
+import { LoginDialog } from "~/pages/auth/login/login-card";
 import ContextProviders from "~/providers";
 import ErrorView from "~/routes/error-view";
 import clientFetch from "~/utils/client-fetch";
+import Config from "~/utils/config";
+import { ASSETS_SERVER_URL } from "~/utils/env";
 import { MetaTags } from "~/utils/meta";
 import { resJson, serverFetch } from "~/utils/server-fetch";
 import { FormatUrl_WithHintLocale, getHintLocale } from "~/utils/urls";
 import type { Route } from "./+types/root";
-import { PageBreadCrumbs } from "./hooks/breadcrumb";
-import { formatLocaleCode, parseLocale } from "./locales";
-import { useTranslation } from "./locales/provider";
-import { LoginDialog } from "./pages/auth/login/login-card";
-import Config from "./utils/config";
-import { ASSETS_SERVER_URL } from "./utils/env";
 
 export interface RootOutletData {
-    userConfig: UserConfig;
+    userConfig: UserPreferences;
     session: LoggedInUserData | null;
     locale: LocaleMetaData;
     supportedLocales: LocaleMetaData[];
@@ -39,9 +42,10 @@ export interface RootOutletData {
 
 export function Layout({ children }: { children: React.ReactNode }) {
     const data = useLoaderData() as RootOutletData;
+    const classes = getThemeClasses(data.userConfig.theme, data.userConfig.prefersOLED);
 
     return (
-        <html lang={formatLocaleCode(data.locale)} className={data?.userConfig.theme} dir={data.locale.dir || "ltr"}>
+        <html lang={formatLocaleCode(data.locale)} className={cn(...classes)} dir={data.locale.dir || "ltr"}>
             <head>
                 <meta charSet="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -119,7 +123,7 @@ export default function App() {
     }, []);
 
     return (
-        <ContextProviders theme={data.userConfig.theme}>
+        <ContextProviders init_userConfig={data.userConfig}>
             {!data.session?.id && <LoginDialog isMainDialog />}
             <ValidateClientSession />
             <ClientOnly Element={ToastAnnouncer} />
@@ -158,7 +162,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<RootOutletD
     }
 
     // Preferences
-    const userConfig = await getUserConfig(cookie);
+    const userConfig = getUserConfig(cookie);
 
     const hintLocale = getHintLocale(reqUrl.searchParams);
     // The locale obtained from the request url

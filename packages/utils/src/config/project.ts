@@ -16,7 +16,7 @@ export const authProvidersList: AuthProvider[] = [
 ];
 
 // It's explicitly listed so that the items are in correct order
-export const projectTypes: ProjectType[] = [
+export const projectTypes_const = [
     ProjectType.MOD,
     ProjectType.DATAMOD,
     ProjectType.RESOURCE_PACK,
@@ -24,7 +24,9 @@ export const projectTypes: ProjectType[] = [
     ProjectType.MODPACK,
     ProjectType.PLUGIN,
     ProjectType.WORLD,
-];
+] as const satisfies ProjectType[];
+
+export const projectTypes = projectTypes_const as ProjectType[];
 
 export const ProjectPermissionsList = Object.values(ProjectPermission);
 export const OrgPermissionsList = Object.values(OrganisationPermission);

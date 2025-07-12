@@ -1,5 +1,5 @@
 import type { LinkedProvidersListData, LoggedInUserData } from "@app/utils/types";
-import { CardContent, CardHeader, CardTitle, SectionCard } from "~/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { useTranslation } from "~/locales/provider";
@@ -17,7 +17,7 @@ export default function AccountSettingsPage({ session, linkedAuthProviders }: Pr
 
     return (
         <>
-            <SectionCard className="w-full">
+            <Card useSectionTag className="w-full">
                 <CardHeader>
                     <CardTitle>{t.settings.accountSecurity}</CardTitle>
                 </CardHeader>
@@ -49,9 +49,9 @@ export default function AccountSettingsPage({ session, linkedAuthProviders }: Pr
                         <ManageAuthProviders linkedAuthProviders={linkedAuthProviders || []} />
                     </div>
                 </CardContent>
-            </SectionCard>
+            </Card>
 
-            <SectionCard className="w-full">
+            <Card useSectionTag className="w-full">
                 <CardHeader>
                     <CardTitle>{t.auth.deleteAccount}</CardTitle>
                 </CardHeader>
@@ -61,7 +61,7 @@ export default function AccountSettingsPage({ session, linkedAuthProviders }: Pr
                         <DeleteAccountDialog />
                     </div>
                 </CardContent>
-            </SectionCard>
+            </Card>
         </>
     );
 }
