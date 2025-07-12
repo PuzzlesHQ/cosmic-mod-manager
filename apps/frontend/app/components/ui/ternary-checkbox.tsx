@@ -37,13 +37,13 @@ export function TernaryCheckbox(props: ThreeStateCheckboxProps) {
             className={cn(
                 "flex h-4 w-4 cursor-pointer items-center justify-center rounded-sm text-background",
                 props.state === TernaryStates.UNCHECKED && "bg-shallower-background/85",
-                props.state === TernaryStates.INCLUDED && "bg-[hsla(var(--accent-background-dark))]",
+                props.state === TernaryStates.INCLUDED && "bg-accent-background",
                 props.state === TernaryStates.EXCLUDED && "bg-danger-background",
                 props.className,
             )}
         >
             {props.state === TernaryStates.INCLUDED ? (
-                <CheckIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" strokeWidth="2.5" />
+                <CheckIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" strokeWidth="2.7" />
             ) : null}
             {props.state === TernaryStates.EXCLUDED ? (
                 <MinusIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" strokeWidth="2.5" />

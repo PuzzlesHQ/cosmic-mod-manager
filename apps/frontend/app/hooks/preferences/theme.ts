@@ -1,7 +1,7 @@
 import { ThemePreferences } from "./types";
 
-export function applyTheme(theme: ThemePreferences, prefersOLED: boolean, doc: HTMLElement) {
-    const classes = getThemeClasses(theme, prefersOLED);
+export function applyTheme(theme: ThemePreferences, prefersOLED: boolean, doc: HTMLElement, e?: MediaMatchEvent) {
+    const classes = getThemeClasses(theme, prefersOLED, e || true);
     applyThemeClasses(classes, doc);
 }
 
@@ -45,12 +45,13 @@ const ThemeClasses = {
     [ThemePreferences.DARK]: ["dark"],
     [ThemePreferences.LIGHT]: ["light"],
     [ThemePreferences.OLED]: ["dark", "oled"],
+    [ThemePreferences.CATPPUCCIN_MOCHA]: ["catppuccin-mocha"],
 };
 
 const allThemesClasses = Object.values(ThemeClasses).flat();
 
-export function getThemeClasses(theme: ThemePreferences, prefersOLED: boolean) {
-    const effectiveTheme = getEffectiveTheme(theme, prefersOLED);
+export function getThemeClasses(theme: ThemePreferences, prefersOLED: boolean, e?: MediaMatchEvent) {
+    const effectiveTheme = getEffectiveTheme(theme, prefersOLED, e);
     return ThemeClasses[effectiveTheme] || ThemeClasses[ThemePreferences.DARK];
 }
 

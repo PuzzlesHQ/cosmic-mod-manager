@@ -5,7 +5,6 @@ import { BrandIcon } from "~/components/icons";
 import Link, { LinkPrefetchStrategy, useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { DotSeparator } from "~/components/ui/separator";
-import ThemeSwitch from "~/components/ui/theme-switcher";
 import { usePreferences } from "~/hooks/preferences";
 import { formatLocaleCode, parseLocale } from "~/locales";
 import { SupportedLocalesList } from "~/locales/meta";
@@ -89,13 +88,6 @@ export default function Footer() {
                     style={{ gridArea: "buttons" }}
                     className="grid h-fit grid-cols-1 place-items-center gap-2 lg:place-items-start"
                 >
-                    <ThemeSwitch
-                        label={t.footer.changeTheme}
-                        noDefaultStyle
-                        variant="outline"
-                        className="gap-0 rounded-full px-1"
-                    />
-
                     <VariantButtonLink
                         prefetch={LinkPrefetchStrategy.Render}
                         to="/settings"

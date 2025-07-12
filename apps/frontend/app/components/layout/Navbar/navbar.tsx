@@ -1,16 +1,15 @@
 import { projectTypes } from "@app/utils/config/project";
 import { Capitalize } from "@app/utils/string";
 import type { LoggedInUserData } from "@app/utils/types";
-import { Building2Icon, ChevronDownIcon, LibraryIcon, PlusIcon } from "lucide-react";
+import { Building2Icon, ChevronDownIcon, LibraryIcon, PlusIcon, SettingsIcon } from "lucide-react";
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigation } from "react-router";
 import { BrandIcon, CubeIcon } from "~/components/icons";
 import { Button } from "~/components/ui/button";
-import Link, { ButtonLink } from "~/components/ui/link";
+import Link, { ButtonLink, VariantButtonLink } from "~/components/ui/link";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { Separator } from "~/components/ui/separator";
-import ThemeSwitch from "~/components/ui/theme-switcher";
 import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import CreateNewCollection_Dialog from "~/pages/dashboard/collections/new-collection";
@@ -90,7 +89,13 @@ export default function Navbar(props: NavbarProps) {
         toggleNavMenu(false);
     }, [location.pathname, location.search, location.hash]);
 
-    const MemoizedThemeSwitch = useMemo(() => <ThemeSwitch />, []);
+    const SettingsButton = useMemo(() => {
+        return (
+            <VariantButtonLink to="/settings" variant="secondary" size="icon" className="rounded-full">
+                <SettingsIcon className="h-btn-icon-md w-btn-icon-md" />
+            </VariantButtonLink>
+        );
+    }, []);
 
     return (
         <header className="relative w-full">
@@ -105,7 +110,7 @@ export default function Navbar(props: NavbarProps) {
                         }}
                     >
                         <BrandIcon size="1.75rem" strokeWidth={26} />
-                        <span className="flex items-end justify-center rounded-lg bg-accent-bg bg-cover bg-gradient-to-b from-rose-200 via-accent-background to-accent-background bg-clip-text px-1 font-bold text-lg text-transparent drop-shadow-2xl">
+                        <span className="flex items-end justify-center rounded-lg bg-accent-bg bg-cover bg-gradient-to-b from-accent-background/90 via-accent-background to-accent-background bg-clip-text px-1 font-bold text-lg text-transparent drop-shadow-2xl">
                             {Config.SITE_NAME_SHORT}
                         </span>
                     </Link>
@@ -160,9 +165,9 @@ export default function Navbar(props: NavbarProps) {
                     </ul>
                 </div>
                 <div className="flex items-center gap-4">
-                    <div className="hidden lg:flex">{props.session?.id ? <CreateThingsPopup /> : MemoizedThemeSwitch}</div>
+                    <div className="hidden lg:flex">{props.session?.id ? <CreateThingsPopup /> : SettingsButton}</div>
 
-                    <div className="flex lg:hidden">{MemoizedThemeSwitch}</div>
+                    <div className="flex lg:hidden">{SettingsButton}</div>
 
                     <div className="hidden lg:flex">
                         <NavButton session={props.session} />
@@ -192,8 +197,8 @@ export function Navlink({ href, label, children, className }: NavlinkProps) {
     return (
         <ButtonLink
             url={href}
-            className={cn("font-semibold hover:bg-card-background/70 dark:hover:bg-shallow-background/75", className)}
-            activeClassName="bg-card-background dark:bg-shallow-background"
+            className={cn("font-semibold hover:bg-shallow-background", className)}
+            activeClassName="bg-card-background"
         >
             {children ? children : label}
         </ButtonLink>
@@ -204,7 +209,7 @@ export function NavMenuLink({ href, label, isDisabled = false, tabIndex, classNa
     return (
         <ButtonLink
             url={href}
-            className={cn("w-full hover:bg-card-background/75 dark:hover:bg-shallow-background", className)}
+            className={cn("w-full hover:bg-shallow-background", className)}
             activeClassName="bg-card-background"
             tabIndex={isDisabled ? -1 : tabIndex}
         >

@@ -272,14 +272,17 @@ function ImageDialog({
                         setLoaded={() => {}}
                     />
 
-                    <div className="group absolute bottom-[0.5rem] left-[50%] z-20 flex w-fit max-w-full translate-x-[-50%] flex-col items-center justify-center rounded p-16 pt-24 pb-4">
-                        <div className="flex w-max max-w-full translate-y-[1rem] scale-75 flex-col items-center justify-center text-[hsla(var(--foreground-dark))] opacity-0 transition-all duration-300 group-hover:translate-y-[-1rem] group-hover:scale-100 group-hover:opacity-100">
-                            <span className="rounded-[0.1rem] bg-black/80 px-1 text-center font-bold text-lg">
+                    <div className="group absolute bottom-[0.5rem] left-[50%] z-20 flex w-fit max-w-full translate-x-[-50%] flex-col items-center justify-center gap-4 rounded p-16 pt-24 pb-4">
+                        <div className="flex w-max max-w-full translate-y-[2rem] scale-50 flex-col items-center justify-center text-foreground opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100">
+                            <span className="rounded-[0.1rem] bg-card-background px-1 py-0.5 text-center font-bold text-lg">
                                 {galleryItem.name}
                             </span>
-                            <span className="max-w-[80ch] text-pretty rounded-[0.1rem] bg-black/80 px-1 text-center">
-                                {galleryItem.description}
-                            </span>
+
+                            {!!galleryItem.description?.length && (
+                                <span className="max-w-[80ch] text-pretty rounded-[0.1rem] bg-card-background px-1 py-0.5 text-center">
+                                    {galleryItem.description}
+                                </span>
+                            )}
                         </div>
 
                         <div className="flex origin-bottom scale-90 items-center justify-start gap-2 rounded-xl bg-card-background p-2.5 px-3 opacity-45 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">

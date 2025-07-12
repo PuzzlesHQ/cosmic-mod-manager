@@ -122,7 +122,7 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="aspect-[2/1] w-full overflow-hidden rounded rounded-t-none bg-[hsla(var(--background-dark))]">
+                                <div className="aspect-[2/1] w-full overflow-hidden rounded rounded-t-none bg-zinc-900">
                                     <img src={imageUrl(galleryItem.image)} alt="img" className="h-full w-full object-contain" />
                                 </div>
                             </div>

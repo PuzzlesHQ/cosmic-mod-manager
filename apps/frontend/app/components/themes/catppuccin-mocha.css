@@ -1,0 +1,26 @@
+.catppuccin-mocha {
+    --accent-foreground: 267deg, 84%, 81%;
+    --accent-background: 267deg, 86%, 72%;
+
+    --foreground-bright: 226deg, 67%, 98%;
+    --foreground: 226deg, 64%, 92%;
+    --muted-foreground: 227deg, 35%, 81%;
+    --extra-muted-foreground: 228deg, 24%, 67%;
+
+    --background: 240deg, 20%, 9%;
+    --card-background: 240deg, 21%, 15%;
+    --shallow-background: 237deg, 16%, 23%;
+    --shallower-background: 234deg, 13%, 31%;
+
+    --danger-background: 343deg, 78%, 68%;
+    --danger-foreground: 343deg, 84%, 81%;
+    --warning-background: 23deg, 92%, 75%;
+    --warning-foreground: 23deg, 92%, 75%;
+    --success-background: 115deg, 62%, 76%;
+    --success-foreground: 115deg, 70%, 76%;
+    --link-foreground: 217deg, 92%, 76%;
+    --link-hover-foreground: 217deg, 86%, 70%;
+    --chart-1: 267deg, 84%, 81%;
+
+    color-scheme: dark;
+}

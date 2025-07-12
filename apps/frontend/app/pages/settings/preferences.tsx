@@ -1,8 +1,12 @@
+import { CatIcon, MonitorIcon, MoonIcon, MoonStarIcon } from "lucide-react";
+import type React from "react";
+import { SunIcon } from "~/components/icons";
+import { ImgWrapper } from "~/components/ui/avatar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
 import { Switch } from "~/components/ui/switch";
 import { cn } from "~/components/utils";
 import { usePreferences } from "~/hooks/preferences";
-import { getThemeClasses } from "~/hooks/preferences/theme";
+import { applyTheme, getEffectiveTheme, getThemeClasses } from "~/hooks/preferences/theme";
 import { ThemePreferences } from "~/hooks/preferences/types";
 import { useTranslation } from "~/locales/provider";
 
@@ -15,14 +19,42 @@ export default function PreferencesPage() {
         ctx.updatePreferences({ viewTransitions: checked });
     }
 
-    function updateThemePreference(theme: ThemePreferences) {
+    async function updateThemePreference(e: React.MouseEvent<HTMLButtonElement>, theme: ThemePreferences) {
+        let newTheme = theme;
+        let prefersOLED = ctx.prefersOLED;
+
         if (theme === ThemePreferences.OLED) {
-            ctx.updatePreferences({ theme: ThemePreferences.OLED, prefersOLED: true });
+            newTheme = ThemePreferences.OLED;
+            prefersOLED = true;
         } else if (theme === ThemePreferences.DARK) {
-            ctx.updatePreferences({ theme: ThemePreferences.DARK, prefersOLED: false });
+            newTheme = ThemePreferences.DARK;
+            prefersOLED = false;
         } else {
-            ctx.updatePreferences({ theme: theme });
+            newTheme = theme;
         }
+
+        const prevTheme = getEffectiveTheme(ctx.theme, ctx.prefersOLED, true);
+        const newEffectiveTheme = getEffectiveTheme(newTheme, prefersOLED, true);
+
+        const isUpdatedThemeDifferent = prevTheme !== newEffectiveTheme;
+
+        document.documentElement.setAttribute("data-view-transition", "theme-switch");
+        if (!document.startViewTransition || !isUpdatedThemeDifferent) {
+            ctx.updatePreferences({ theme: newTheme, prefersOLED });
+        } else {
+            const x = e.clientX;
+            const y = e.clientY;
+
+            document.documentElement.style.setProperty("--click-x", `${x}px`);
+            document.documentElement.style.setProperty("--click-y", `${y}px`);
+
+            const transition = document.startViewTransition(() => {
+                applyTheme(newTheme, ctx.prefersOLED, document.documentElement, true);
+            });
+            await transition.finished;
+            ctx.updatePreferences({ theme: newTheme, prefersOLED });
+        }
+        document.documentElement.removeAttribute("data-view-transition");
     }
 
     return (
@@ -32,18 +64,18 @@ export default function PreferencesPage() {
                     <CardTitle>{t.settings.colorTheme}</CardTitle>
                     <CardDescription>{t.settings.colorThemeDesc}</CardDescription>
                 </CardHeader>
-                <CardContent className="grid grid-cols-[repeat(auto-fit,_minmax(12rem,1fr))] gap-panel-cards">
-                    {Object.values(ThemePreferences).map((option) => {
-                        const theme = option === ThemePreferences.SYSTEM ? ctx.systemTheme : option;
+                <CardContent className="grid grid-cols-[repeat(auto-fit,_minmax(14rem,1fr))] gap-panel-cards">
+                    {Object.values(ThemePreferences).map((theme) => {
+                        const resolvedTheme = theme === ThemePreferences.SYSTEM ? ctx.systemTheme : theme;
 
                         return (
                             <RadioBtnSelector
-                                key={option}
-                                label={option}
-                                checked={selectedThemeOption === option}
-                                onClick={() => updateThemePreference(option)}
+                                key={theme}
+                                label={t.settings.themes[theme]}
+                                checked={selectedThemeOption === theme}
+                                onClick={(e) => updateThemePreference(e, theme)}
                             >
-                                <ThemePreview theme={theme} />
+                                <ThemePreview theme={resolvedTheme} />
                             </RadioBtnSelector>
                         );
                     })}
@@ -71,7 +103,7 @@ export default function PreferencesPage() {
 
 interface RadioBtnSelectorProps {
     checked: boolean;
-    onClick: () => void;
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
     label: string;
     icon?: React.ReactNode;
     children: React.ReactNode;
@@ -105,13 +137,25 @@ function RadioBtnSelector(props: RadioBtnSelectorProps) {
     );
 }
 
+const THEME_ICONS = {
+    [ThemePreferences.DARK]: <MoonIcon className="h-5 w-5 text-accent-background" />,
+    [ThemePreferences.OLED]: <MoonStarIcon className="h-5 w-5 text-accent-background" />,
+    [ThemePreferences.LIGHT]: <SunIcon className="h-4 w-4 text-accent-background" />,
+    [ThemePreferences.SYSTEM]: <MonitorIcon className="h-5 w-5 text-accent-background" />,
+    [ThemePreferences.CATPPUCCIN_MOCHA]: <CatIcon className="h-5 w-5 text-accent-background" />,
+};
+
 function ThemePreview({ theme }: { theme: ThemePreferences }) {
     const classNames = getThemeClasses(theme, false);
+
+    const Icon = THEME_ICONS[theme] || CatIcon;
 
     return (
         <div className={cn("rounded-t bg-background p-8", ...classNames)}>
             <div className="grid grid-cols-[min-content_1fr] gap-panel-cards rounded bg-card-background p-card-surround">
-                <div className="size-8 rounded bg-shallower-background" />
+                {/* <div className="flex size-8 items-center justify-center rounded bg-shallower-background">{Icon}</div> */}
+                <ImgWrapper src={null} alt={theme} fallback={Icon} className="h-8 w-8" />
+
                 <div className="grid grid-cols-1 gap-panel-cards">
                     <div className="h-2 rounded-lg bg-foreground-bright" />
                     <div className="h-2 w-[60%] rounded-lg bg-extra-muted-foreground" />

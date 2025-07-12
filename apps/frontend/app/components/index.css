@@ -1,10 +1,12 @@
+@import "./themes/dark.css";
+@import "./themes/light.css";
+@import "./themes/catppuccin-mocha.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-    color-scheme: dark;
-
     /* FONT SIZES */
     --font-super-tiny: 0.67rem;
     --font-tiny: 0.75rem;
@@ -16,49 +18,6 @@
     --font-xl: 1.5rem;
     --font-xl-plus: 1.85rem;
     --font-2xl: 2.17rem;
-
-    /* DARK THEME */
-    --accent-foreground-dark: var(--accent-color-hue), 85%, 70%;
-    --foreground-bright-dark: var(--text-tint-hue), var(--body-text-saturation), 98%;
-    --foreground-dark: var(--text-tint-hue), var(--body-text-saturation), 92%;
-    --muted-foreground-dark: var(--text-tint-hue), var(--body-text-saturation), 81%;
-    --extra-muted-foreground-dark: var(--text-tint-hue), var(--body-text-saturation), 67%;
-    --background-dark: var(--bg-tint-hue), var(--bg-saturation), 8%;
-    --card-background-dark: var(--bg-tint-hue), var(--bg-saturation), 15%;
-    --accent-background-dark: var(--accent-color-hue), 85%, 62%;
-    --shallow-background-dark: var(--bg-tint-hue), var(--bg-saturation), 24%;
-    --shallower-background-dark: var(--bg-tint-hue), var(--bg-saturation), 32%;
-    --danger-background-dark: 0, 92%, 65%;
-    --danger-foreground-dark: 0, 96%, 70%;
-    --warning-background-dark: 35, 78%, 48%;
-    --warning-foreground-dark: 33, 94%, 64%;
-    --success-background-dark: 154, 94%, 42%;
-    --success-foreground-dark: 148, 78%, 52%;
-    --link-foreground-dark: 213, 94%, 74%;
-    --link-hover-foreground-dark: 210, 80%, 87%;
-    --chart-1-dark: 213, 94%, 68%;
-
-    /* LIGHT THEME */
-    --accent-foreground-light: var(--accent-color-hue), 85%, 42%;
-    --foreground-bright-light: var(--text-tint-hue), var(--body-text-saturation), 8%;
-    --foreground-light: var(--text-tint-hue), var(--body-text-saturation), 15%;
-    --muted-foreground-light: var(--text-tint-hue), var(--body-text-saturation), 24%;
-    --extra-muted-foreground-light: var(--text-tint-hue), var(--body-text-saturation), 36%;
-    --background-light: var(--bg-tint-hue), var(--bg-saturation), 92%;
-    --card-background-light: var(--bg-tint-hue), var(--bg-saturation), 100%;
-    --accent-background-light: var(--accent-color-hue), 80%, 54%;
-    --shallow-background-light: var(--bg-tint-hue), var(--bg-saturation), 92%;
-    --shallower-background-light: var(--bg-tint-hue), var(--bg-saturation), 82%;
-
-    --danger-background-light: 0, 75%, 46%;
-    --danger-foreground-light: 0, 65%, 52%;
-    --warning-background-light: 36, 86%, 44%;
-    --warning-foreground-light: 36, 90%, 42%;
-    --success-background-light: 160, 90%, 30%;
-    --success-foreground-light: 158, 94%, 28%;
-    --link-foreground-light: 208, 88%, 36%;
-    --link-hover-foreground-light: 205, 80%, 20%;
-    --chart-1-light: 217, 91%, 60%;
 }
 
 html,
@@ -77,67 +36,6 @@ body {
 
 html body[data-scroll-locked] {
     margin: 0 !important;
-}
-
-/* Dark is the default theme */
-.dark {
-    --accent-color-hue: 345;
-    --bg-tint-hue: 215;
-    --bg-saturation: 12%;
-    --text-tint-hue: 208;
-    --body-text-saturation: 16%;
-
-    --foreground: var(--foreground-dark);
-    --foreground-bright: var(--foreground-bright-dark);
-    --accent-foreground: var(--accent-foreground-dark);
-    --muted-foreground: var(--muted-foreground-dark);
-    --extra-muted-foreground: var(--extra-muted-foreground-dark);
-    --background: var(--background-dark);
-    --card-background: var(--card-background-dark);
-    --accent-background: var(--accent-background-dark);
-    --shallow-background: var(--shallow-background-dark);
-    --shallower-background: var(--shallower-background-dark);
-    --danger-background: var(--danger-background-dark);
-    --danger-foreground: var(--danger-foreground-dark);
-    --warning-background: var(--warning-background-dark);
-    --warning-foreground: var(--warning-foreground-dark);
-    --success-background: var(--success-background-dark);
-    --success-foreground: var(--success-foreground-dark);
-    --link-foreground: var(--link-foreground-dark);
-    --link-hover-foreground: var(--link-hover-foreground-dark);
-    --chart-1: var(--chart-1-dark);
-
-    color-scheme: dark;
-}
-
-.light {
-    --accent-color-hue: 343;
-    --bg-tint-hue: 215;
-    --bg-saturation: 13%;
-    --text-tint-hue: 208;
-    --body-text-saturation: 16%;
-
-    --foreground: var(--foreground-light);
-    --foreground-bright: var(--foreground-bright-light);
-    --accent-foreground: var(--accent-foreground-light);
-    --muted-foreground: var(--muted-foreground-light);
-    --extra-muted-foreground: var(--extra-muted-foreground-light);
-    --background: var(--background-light);
-    --card-background: var(--card-background-light);
-    --accent-background: var(--accent-background-light);
-    --shallow-background: var(--shallow-background-light);
-    --shallower-background: var(--shallower-background-light);
-    --danger-background: var(--danger-background-light);
-    --danger-foreground: var(--danger-foreground-light);
-    --warning-background: var(--warning-background-light);
-    --warning-foreground: var(--warning-foreground-light);
-    --success-background: var(--success-background-light);
-    --success-foreground: var(--success-foreground-light);
-    --link-foreground: var(--link-foreground-light);
-    --link-hover-foreground: var(--link-hover-foreground-light);
-    --chart-1: var(--chart-1-light);
-
-    color-scheme: light;
 }
 
 * {

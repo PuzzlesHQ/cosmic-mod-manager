@@ -1,0 +1,34 @@
+/* LIGHT THEME */
+
+.light {
+    --accent-color-hue: 343;
+    --bg-tint-hue: 215;
+    --bg-saturation: 13%;
+    --text-tint-hue: 208;
+    --body-text-saturation: 16%;
+
+    --accent-foreground: var(--accent-color-hue), 85%, 42%;
+    --accent-background: var(--accent-color-hue), 80%, 54%;
+
+    --foreground-bright: var(--text-tint-hue), var(--body-text-saturation), 8%;
+    --foreground: var(--text-tint-hue), var(--body-text-saturation), 15%;
+    --muted-foreground: var(--text-tint-hue), var(--body-text-saturation), 24%;
+    --extra-muted-foreground: var(--text-tint-hue), var(--body-text-saturation), 36%;
+
+    --background: var(--bg-tint-hue), var(--bg-saturation), 92%;
+    --card-background: var(--bg-tint-hue), var(--bg-saturation), 100%;
+    --shallow-background: var(--bg-tint-hue), var(--bg-saturation), 92%;
+    --shallower-background: var(--bg-tint-hue), var(--bg-saturation), 82%;
+
+    --danger-background: 0, 75%, 46%;
+    --danger-foreground: 0, 65%, 52%;
+    --warning-background: 36, 86%, 44%;
+    --warning-foreground: 36, 90%, 42%;
+    --success-background: 160, 90%, 30%;
+    --success-foreground: 158, 94%, 28%;
+    --link-foreground: 208, 88%, 36%;
+    --link-hover-foreground: 205, 80%, 20%;
+    --chart-1: 217, 91%, 60%;
+
+    color-scheme: light;
+}

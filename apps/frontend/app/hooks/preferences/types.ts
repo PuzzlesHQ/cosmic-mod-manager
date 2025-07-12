@@ -17,6 +17,7 @@ export enum ThemePreferences {
     DARK = "dark",
     LIGHT = "light",
     OLED = "oled",
+    CATPPUCCIN_MOCHA = "catppuccin_mocha",
 }
 
 type ListViewPreferences = typeof DEFAULT_LIST_VIEW_PREFS;

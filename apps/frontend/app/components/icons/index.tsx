@@ -73,16 +73,8 @@ export const BrandIcon: React.FC<IconSvgProps> = ({ size, width, height, strokeW
                     href="#a"
                 />
                 <linearGradient id="a">
-                    <stop
-                        className="text-[hsl(var(--accent-color-hue),_77%,_58%)] dark:text-[hsla(var(--accent-color-hue),_95%,_64%)]"
-                        stopColor="currentColor"
-                        offset="0"
-                    />
-                    <stop
-                        className="text-[hsl(var(--accent-color-hue),_83%,_50%)] dark:text-[hsl(var(--accent-color-hue),_77%,_46%)]"
-                        stopColor="currentColor"
-                        offset="1"
-                    />
+                    <stop className="text-accent-background" stopColor="currentColor" offset="0" />
+                    <stop className="text-accent-background" stopColor="currentColor" offset="1" />
                 </linearGradient>
                 <linearGradient
                     id="c"

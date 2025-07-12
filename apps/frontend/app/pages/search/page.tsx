@@ -234,8 +234,8 @@ function ViewTypeToggle({ projectType, viewType }: { projectType: ProjectType; v
 
         ctx.updatePreferences({
             viewPrefs: {
-                [projectType]: newDisplayType,
                 ...ctx.viewPrefs,
+                [projectType]: newDisplayType,
             },
         });
     }

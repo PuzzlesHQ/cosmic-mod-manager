@@ -8,7 +8,7 @@ function Checkbox({ ref, className, name, ...props }: React.ComponentProps<typeo
         <CheckboxPrimitive.Root
             ref={ref}
             className={cn(
-                "peer relative h-4 w-4 shrink-0 rounded-sm bg-shallower-background/85 transition-opacity disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-[hsla(var(--accent-background-dark))] data-[state=checked]:text-background",
+                "peer relative h-4 w-4 shrink-0 rounded-sm bg-shallower-background/85 transition-opacity disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-accent-background data-[state=checked]:text-background",
                 className,
             )}
             name={name}
@@ -24,7 +24,7 @@ function Checkbox({ ref, className, name, ...props }: React.ComponentProps<typeo
 Checkbox.displayName = CheckboxPrimitive.Root.displayName;
 
 interface LabelledCheckboxProps {
-    checked: boolean;
+    checked: boolean | undefined;
     className?: string;
     checkBoxClassname?: string;
     onCheckedChange?: (e: CheckboxPrimitive.CheckedState) => void;

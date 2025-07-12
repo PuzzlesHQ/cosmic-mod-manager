@@ -10,7 +10,6 @@ interface UserPrefsContext extends UserPreferences {
     systemTheme: ThemePreferences;
     isActiveThemeDark: boolean;
     updatePreferences: (updated: Partial<UserPreferences>) => void;
-    toggleTheme: () => ThemePreferences;
 }
 
 const UserPrefsCtx = createContext<UserPrefsContext | null>(null);
@@ -38,13 +37,12 @@ export function UserPreferencesProvider({ init, children }: { init: UserPreferen
         setConfig_State(validConfig);
     }
 
-    function toggleTheme() {
-        if (config.theme === ThemePreferences.DARK || config.theme === ThemePreferences.OLED) {
-            return ThemePreferences.LIGHT;
-        } else if (config.theme === ThemePreferences.LIGHT && config.prefersOLED) {
-            return ThemePreferences.OLED;
-        } else {
-            return ThemePreferences.DARK;
+    function handleMediaQuery(e: MediaQueryList | MediaQueryListEvent) {
+        const systemTheme = getSystemTheme(config.prefersOLED, e);
+        setSystemTheme(systemTheme);
+
+        if (config.theme === ThemePreferences.SYSTEM) {
+            setActiveTheme(systemTheme);
         }
     }
 
@@ -54,25 +52,17 @@ export function UserPreferencesProvider({ init, children }: { init: UserPreferen
 
     useEffect(() => {
         if (config.theme !== ThemePreferences.SYSTEM) {
-            setActiveTheme(getEffectiveTheme(config.theme, config.prefersOLED));
-        }
-
-        function handleMediaQuery(e: MediaQueryList | MediaQueryListEvent) {
-            const systemTheme = getSystemTheme(config.prefersOLED, e);
-            setSystemTheme(systemTheme);
-
-            if (config.theme === ThemePreferences.SYSTEM) {
-                setActiveTheme(systemTheme);
-            }
+            setActiveTheme(getEffectiveTheme(config.theme, config.prefersOLED, true));
         }
 
         const media = window.matchMedia(MEDIA_PREFERS_LIGHT_THEME);
-
         // Intentionally use deprecated listener methods to support iOS & old browsers
         media.addEventListener("change", handleMediaQuery);
         handleMediaQuery(media);
 
-        return () => media.removeEventListener("change", handleMediaQuery);
+        return () => {
+            media.removeEventListener("change", handleMediaQuery);
+        };
     }, [config.theme, config.prefersOLED]);
 
     return (
@@ -83,7 +73,6 @@ export function UserPreferencesProvider({ init, children }: { init: UserPreferen
                 systemTheme: systemTheme,
                 isActiveThemeDark: activeTheme === ThemePreferences.DARK || activeTheme === ThemePreferences.OLED,
                 updatePreferences: updatePreferences,
-                toggleTheme: toggleTheme,
             }}
         >
             {children}

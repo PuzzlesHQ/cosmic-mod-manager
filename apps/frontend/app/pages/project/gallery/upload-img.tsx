@@ -185,7 +185,7 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
                                                 </InteractiveLabel>
                                             </div>
                                             {field.value ? (
-                                                <div className="aspect-[2/1] w-full overflow-hidden rounded rounded-t-none bg-[hsla(var(--background-dark))]">
+                                                <div className="aspect-[2/1] w-full overflow-hidden rounded rounded-t-none bg-zinc-900">
                                                     <img
                                                         src={URL.createObjectURL(field.value)}
                                                         alt="img"

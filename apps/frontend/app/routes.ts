@@ -175,6 +175,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
 
         // Miscellaneous pages
         route("md-editor", path("editor/page.tsx"), { id: "md-editor" });
+        route("theme-test", path("theme-test.tsx"), { id: "theme-test" });
 
         // Sitemap
         route("/:sitemap.xml", path("sitemap.tsx"), { id: "sitemaps" });
