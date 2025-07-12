@@ -35,7 +35,7 @@
 
 .oled {
     --background: 0, 0%, 0%;
-    --card-background: var(--bg-tint-hue), var(--bg-saturation), 6%;
-    --shallow-background: var(--bg-tint-hue), var(--bg-saturation), 12%;
-    --shallower-background: var(--bg-tint-hue), var(--bg-saturation), 18%;
+    --card-background: var(--bg-tint-hue), var(--bg-saturation), 7%;
+    --shallow-background: var(--bg-tint-hue), var(--bg-saturation), 14%;
+    --shallower-background: var(--bg-tint-hue), var(--bg-saturation), 22%;
 }

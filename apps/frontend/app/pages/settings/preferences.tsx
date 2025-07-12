@@ -1,12 +1,11 @@
-import { CatIcon, MonitorIcon, MoonIcon, MoonStarIcon } from "lucide-react";
+import { CatIcon, MonitorIcon, MoonIcon, MoonStarIcon, SunIcon } from "lucide-react";
 import type React from "react";
-import { SunIcon } from "~/components/icons";
 import { ImgWrapper } from "~/components/ui/avatar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
 import { Switch } from "~/components/ui/switch";
 import { cn } from "~/components/utils";
 import { usePreferences } from "~/hooks/preferences";
-import { applyTheme, getEffectiveTheme, getThemeClasses } from "~/hooks/preferences/theme";
+import { getEffectiveTheme, getThemeClasses } from "~/hooks/preferences/theme";
 import { ThemePreferences } from "~/hooks/preferences/types";
 import { useTranslation } from "~/locales/provider";
 
@@ -49,10 +48,9 @@ export default function PreferencesPage() {
             document.documentElement.style.setProperty("--click-y", `${y}px`);
 
             const transition = document.startViewTransition(() => {
-                applyTheme(newTheme, ctx.prefersOLED, document.documentElement, true);
+                ctx.updatePreferences({ theme: newTheme, prefersOLED });
             });
             await transition.finished;
-            ctx.updatePreferences({ theme: newTheme, prefersOLED });
         }
         document.documentElement.removeAttribute("data-view-transition");
     }
@@ -75,7 +73,7 @@ export default function PreferencesPage() {
                                 checked={selectedThemeOption === theme}
                                 onClick={(e) => updateThemePreference(e, theme)}
                             >
-                                <ThemePreview theme={resolvedTheme} />
+                                <ThemePreview theme={resolvedTheme} isActive={theme === ctx.theme} />
                             </RadioBtnSelector>
                         );
                     })}
@@ -129,7 +127,7 @@ function RadioBtnSelector(props: RadioBtnSelectorProps) {
                     {props.checked && <circle cx="12" cy="12" r="5.5" stroke="none" fill="currentColor"></circle>}
                 </svg>
 
-                <span className={cn("font-semibold text-muted-foreground", props.checked && "text-foreground")}>
+                <span className={cn("font-semibold text-muted-foreground", props.checked && "text-foreground-bright")}>
                     {props.label} {props.icon}
                 </span>
             </div>
@@ -138,23 +136,30 @@ function RadioBtnSelector(props: RadioBtnSelectorProps) {
 }
 
 const THEME_ICONS = {
-    [ThemePreferences.DARK]: <MoonIcon className="h-5 w-5 text-accent-background" />,
-    [ThemePreferences.OLED]: <MoonStarIcon className="h-5 w-5 text-accent-background" />,
-    [ThemePreferences.LIGHT]: <SunIcon className="h-4 w-4 text-accent-background" />,
-    [ThemePreferences.SYSTEM]: <MonitorIcon className="h-5 w-5 text-accent-background" />,
-    [ThemePreferences.CATPPUCCIN_MOCHA]: <CatIcon className="h-5 w-5 text-accent-background" />,
+    [ThemePreferences.DARK]: <MoonIcon className="h-5 w-5 text-current" />,
+    [ThemePreferences.OLED]: <MoonStarIcon className="h-5 w-5 text-current" />,
+    [ThemePreferences.LIGHT]: <SunIcon className="h-5 w-5 text-current" />,
+    [ThemePreferences.SYSTEM]: <MonitorIcon className="h-5 w-5 text-current" />,
+    [ThemePreferences.CATPPUCCIN_MOCHA]: <CatIcon className="h-5 w-5 text-current" />,
 };
 
-function ThemePreview({ theme }: { theme: ThemePreferences }) {
+function ThemePreview({ theme, isActive }: { theme: ThemePreferences; isActive: boolean }) {
     const classNames = getThemeClasses(theme, false);
-
     const Icon = THEME_ICONS[theme] || CatIcon;
 
     return (
         <div className={cn("rounded-t bg-background p-8", ...classNames)}>
             <div className="grid grid-cols-[min-content_1fr] gap-panel-cards rounded bg-card-background p-card-surround">
-                {/* <div className="flex size-8 items-center justify-center rounded bg-shallower-background">{Icon}</div> */}
-                <ImgWrapper src={null} alt={theme} fallback={Icon} className="h-8 w-8" />
+                <ImgWrapper
+                    src={null}
+                    alt={theme}
+                    fallback={Icon}
+                    className={cn(
+                        "h-8 w-8",
+
+                        isActive ? "bg-accent-background text-foreground-bright" : "text-accent-background",
+                    )}
+                />
 
                 <div className="grid grid-cols-1 gap-panel-cards">
                     <div className="h-2 rounded-lg bg-foreground-bright" />
