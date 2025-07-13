@@ -41,11 +41,13 @@ export function isDark(theme: ThemePreferences) {
     }
 }
 
+// even though 'catppuccin-mocha' doesn't need .dark styles,
+// it's there so that tailwind can detect it's a dark type theme
 const ThemeClasses = {
     [ThemePreferences.DARK]: ["dark"],
     [ThemePreferences.LIGHT]: ["light"],
     [ThemePreferences.OLED]: ["dark", "oled"],
-    [ThemePreferences.CATPPUCCIN_MOCHA]: ["catppuccin-mocha"],
+    [ThemePreferences.CATPPUCCIN_MOCHA]: ["dark", "catppuccin-mocha"],
 };
 
 const allThemesClasses = Object.values(ThemeClasses).flat();

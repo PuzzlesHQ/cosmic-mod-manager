@@ -49,7 +49,7 @@ export function PageHeader({
                     vtId={vtId}
                     src={icon || ""}
                     alt={`Icon image of ${title}`}
-                    className={cn("bg-card-background shadow shadow-white dark:shadow-black ", iconClassName)}
+                    className={cn("bg-card-background shadow shadow-card-background", iconClassName)}
                     fallback={fallbackIcon}
                     loading="eager"
                 />

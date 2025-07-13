@@ -33,7 +33,7 @@
     color-scheme: dark;
 }
 
-.oled {
+.dark.oled {
     --background: 0, 0%, 0%;
     --card-background: var(--bg-tint-hue), var(--bg-saturation), 7%;
     --shallow-background: var(--bg-tint-hue), var(--bg-saturation), 14%;
