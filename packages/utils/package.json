@@ -3,13 +3,12 @@
     "module": "src/index.ts",
     "type": "module",
     "dependencies": {
-        "ua-parser-js": "^2.0.0",
-        "zod": "^3.25.67"
+        "ua-parser-js": "^2.0.4"
     },
     "devDependencies": {
         "@types/ua-parser-js": "^0.7.39"
     },
     "peerDependencies": {
-        "typescript": "^5.0.0"
+        "typescript": "^5.7.3"
     }
 }

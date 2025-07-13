@@ -4,11 +4,8 @@ import { twMerge } from "tailwind-merge";
 const properties = ["p", "px", "py", "pt", "pb", "ps", "pe"];
 
 export function cn(...inputs: ClassValue[]) {
-    const reversedInputs = inputs
-        .filter((i) => typeof i === "string")
-        .flatMap((str) => str.split(" "))
-        .reverse();
-    const modifiedInputs: ClassValue[] = [];
+    const reversedInputs = clsx(inputs).split(" ").reverse();
+    const modifiedInputs: string[] = [];
     const seenProperties: string[] = [];
 
     outer: for (const classVal of reversedInputs) {
@@ -23,5 +20,5 @@ export function cn(...inputs: ClassValue[]) {
     }
     modifiedInputs.reverse();
 
-    return twMerge(clsx(modifiedInputs));
+    return twMerge(modifiedInputs);
 }
