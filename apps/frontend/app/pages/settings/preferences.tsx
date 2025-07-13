@@ -155,13 +155,13 @@ function ThemePreview({ theme, isActive }: { theme: ThemePreferences; isActive: 
                     alt={theme}
                     fallback={Icon}
                     className={cn(
-                        "h-8 w-8",
+                        "h-9 w-9",
 
                         isActive ? "bg-accent-background text-foreground-bright" : "text-accent-background",
                     )}
                 />
 
-                <div className="grid grid-cols-1 gap-panel-cards">
+                <div className="grid grid-cols-1 content-start gap-panel-cards">
                     <div className="h-2 rounded-lg bg-foreground-bright" />
                     <div className="h-2 w-[60%] rounded-lg bg-extra-muted-foreground" />
                 </div>
