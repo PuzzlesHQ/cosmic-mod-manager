@@ -448,7 +448,7 @@ function ThreadMessage(props: ThreadMessageProps) {
                 msgText = <p>{t.chatThread.projectSubmittedForReview}</p>;
             } else {
                 msgText = (
-                    <p className="flex items-center justify-start gap-space">
+                    <p className="flex flex-wrap items-center justify-start gap-space">
                         {t.chatThread.changedProjectStatus(
                             <ProjectStatusBadge key="prev-status" status={msg.body.prev_status} t={t} />,
                             <ProjectStatusBadge key="new-status" status={msg.body.new_status} t={t} />,

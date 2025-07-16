@@ -51,4 +51,8 @@
     --card-background: 215, 12%, 7%;
     --raised-background: 215, 12%, 13%;
     --hover-background: 215, 12%, 21%;
+
+    --shadow: 215, 12%, 3%;
+    --border: 215, 12%, 13%;
+    --separator: 215, 12%, 12%;
 }
