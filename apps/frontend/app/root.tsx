@@ -66,7 +66,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 />
             </head>
             <body className="antialiased">
-                {children}
+                <ContextProviders init_userConfig={data.userConfig}>{children}</ContextProviders>
 
                 <ScrollRestoration />
                 <Scripts />
@@ -123,7 +123,7 @@ export default function App() {
     }, []);
 
     return (
-        <ContextProviders init_userConfig={data.userConfig}>
+        <>
             {!data.session?.id && <LoginDialog isMainDialog />}
             <ValidateClientSession />
             <ClientOnly Element={ToastAnnouncer} />
@@ -145,7 +145,7 @@ export default function App() {
             </div>
 
             <DownloadRipple />
-        </ContextProviders>
+        </>
     );
 }
 
