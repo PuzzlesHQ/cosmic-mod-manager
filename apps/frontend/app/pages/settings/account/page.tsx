@@ -31,9 +31,9 @@ export default function AccountSettingsPage({ session, linkedAuthProviders }: Pr
                         <div className="flex flex-shrink-0 flex-col items-start justify-start gap-1.5">
                             <Label>{t.auth.password}</Label>
                             {session.hasAPassword ? (
-                                <p className="text-muted-foreground">{t.settings.changePassTitle}</p>
+                                <p className="text-foreground-muted">{t.settings.changePassTitle}</p>
                             ) : (
-                                <p className="text-muted-foreground">{t.settings.addPassDesc}</p>
+                                <p className="text-foreground-muted">{t.settings.addPassDesc}</p>
                             )}
                         </div>
 
@@ -43,7 +43,7 @@ export default function AccountSettingsPage({ session, linkedAuthProviders }: Pr
                     <div className="flex w-full flex-wrap items-end justify-between gap-2 gap-x-8">
                         <div className="flex flex-col items-start justify-start gap-1.5">
                             <Label>{t.settings.manageAuthProviders}</Label>
-                            <p className="text-muted-foreground">{t.settings.manageProvidersDesc}</p>
+                            <p className="text-foreground-muted">{t.settings.manageProvidersDesc}</p>
                         </div>
 
                         <ManageAuthProviders linkedAuthProviders={linkedAuthProviders || []} />
@@ -57,7 +57,7 @@ export default function AccountSettingsPage({ session, linkedAuthProviders }: Pr
                 </CardHeader>
                 <CardContent>
                     <div className="flex w-full flex-wrap items-center justify-between gap-x-12 gap-y-4">
-                        <p className="max-w-[60ch] text-muted-foreground">{t.auth.deleteAccountDesc}</p>
+                        <p className="max-w-[60ch] text-foreground-muted">{t.auth.deleteAccountDesc}</p>
                         <DeleteAccountDialog />
                     </div>
                 </CardContent>

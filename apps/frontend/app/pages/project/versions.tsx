@@ -33,7 +33,6 @@ import { ReleaseChannelBadge } from "~/components/ui/release-channel-pill";
 import { Separator } from "~/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTemplate, TooltipTrigger } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
-import { usePreferences } from "~/hooks/preferences";
 import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
@@ -94,7 +93,7 @@ function UploadVersionLinkCard({ uploadPageUrl }: { uploadPageUrl: string }) {
                 {t.project.uploadVersion}
             </VariantButtonLink>
 
-            <div className="flex items-center justify-center gap-2 text-muted-foreground">
+            <div className="flex items-center justify-center gap-2 text-foreground-muted">
                 <InfoIcon aria-hidden className="h-btn-icon w-btn-icon" />
                 {t.project.uploadNewVersion}
             </div>
@@ -141,7 +140,7 @@ function ProjectVersionsListTable({
     if (!allProjectVersions.length) {
         return (
             <div className="flex items-center justify-center py-6">
-                <span className="text-extra-muted-foreground text-lg italic">{t.project.noProjectVersions}</span>
+                <span className="text-foreground-extra-muted text-lg italic">{t.project.noProjectVersions}</span>
             </div>
         );
     }
@@ -249,7 +248,7 @@ function VersionName({ title, number, url }: { title: string; number: string; ur
             >
                 {number}
             </Link>
-            <span className="font-medium text-[0.77rem] text-muted-foreground/85 leading-snug">{title}</span>
+            <span className="font-medium text-[0.77rem] text-foreground-muted/85 leading-snug">{title}</span>
         </div>
     );
 }
@@ -257,28 +256,25 @@ function VersionName({ title, number, url }: { title: string; number: string; ur
 function GameVersions({ gameVersions, verbose }: { gameVersions: string[]; verbose: boolean }) {
     if (verbose) {
         return formatVersionsForDisplay_noOmit(gameVersions).map((version) => (
-            <Chip key={version} className="text-muted-foreground">
+            <Chip key={version} className="text-foreground-muted">
                 {version}
             </Chip>
         ));
     }
 
     return formatVersionsForDisplay(gameVersions).map((version) => (
-        <Chip key={version} className="text-muted-foreground">
+        <Chip key={version} className="text-foreground-muted">
             {version}
         </Chip>
     ));
 }
 
 function ProjectLoaders({ versionLoaders }: { versionLoaders: string[] }) {
-    const { isActiveThemeDark } = usePreferences();
-
     return (
         <>
             {versionLoaders.map((loader) => {
                 const loaderData = getLoaderFromString(loader);
                 if (!loaderData) return null;
-                const accentForeground = loaderData?.metadata?.foreground;
                 // @ts-ignore
                 const loaderIcon: ReactNode = loaderIcons[loaderData.name];
 
@@ -286,11 +282,7 @@ function ProjectLoaders({ versionLoaders }: { versionLoaders: string[] }) {
                     <Chip
                         key={loaderData.name}
                         style={{
-                            color: accentForeground
-                                ? isActiveThemeDark
-                                    ? accentForeground?.dark
-                                    : accentForeground?.light
-                                : "hsla(var(--muted-foreground))",
+                            color: `hsla(var(--loader-fg-${loaderData.name}, --foreground-muted))`,
                         }}
                     >
                         {loaderIcon ? loaderIcon : null}
@@ -305,7 +297,7 @@ function ProjectLoaders({ versionLoaders }: { versionLoaders: string[] }) {
 function DatePublished({ dateStr, iconVisible = true }: { dateStr: string | Date; iconVisible?: boolean }) {
     return (
         <TooltipTemplate content={<FormattedDate date={dateStr} />}>
-            <span className="flex cursor-help items-center justify-start gap-1.5 font-medium text-extra-muted-foreground text-sm">
+            <span className="flex cursor-help items-center justify-start gap-1.5 font-medium text-foreground-extra-muted text-sm">
                 {iconVisible === true ? <CalendarIcon aria-hidden className="h-3 w-3" /> : null}
                 <TimePassedSince date={dateStr} capitalize />
             </span>
@@ -317,7 +309,7 @@ function DownloadsCount({ downloads }: { downloads: number }) {
     const { t } = useTranslation();
 
     return (
-        <span className="flex items-center justify-start gap-1.5 font-medium text-muted-foreground text-sm">
+        <span className="flex items-center justify-start gap-1.5 font-medium text-foreground-muted text-sm">
             <DownloadIcon aria-hidden className="h-3 w-3" strokeWidth={2.5} />
             <span>
                 {t.count.downloads(
@@ -339,7 +331,7 @@ function ThreeDotMenu({ versionPageUrl, canEditVersion }: { versionPageUrl: stri
         <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
             <PopoverTrigger asChild>
                 <Button
-                    variant="ghost-no-shadow"
+                    variant="ghost"
                     size="icon"
                     className="noClickRedirect !w-10 !h-10 shrink-0 rounded-full"
                     aria-label="more options"
@@ -351,19 +343,19 @@ function ThreeDotMenu({ versionPageUrl, canEditVersion }: { versionPageUrl: stri
                 <VariantButtonLink
                     className="justify-start"
                     to={versionPageUrl}
-                    variant="ghost-no-shadow"
+                    variant="ghost"
                     size="sm"
                     target="_blank"
                     onClick={() => {
                         setPopoverOpen(false);
                     }}
                 >
-                    <SquareArrowOutUpRightIcon aria-hidden className="h-btn-icon w-btn-icon text-muted-foreground" />
+                    <SquareArrowOutUpRightIcon aria-hidden className="h-btn-icon w-btn-icon text-foreground-muted" />
                     {t.project.openInNewTab}
                 </VariantButtonLink>
 
                 <Button
-                    variant="ghost-no-shadow"
+                    variant="ghost"
                     size="sm"
                     className="justify-start"
                     onClick={() => {
@@ -371,7 +363,7 @@ function ThreeDotMenu({ versionPageUrl, canEditVersion }: { versionPageUrl: stri
                         setPopoverOpen(false);
                     }}
                 >
-                    <LinkIcon aria-hidden className="h-btn-icon w-btn-icon text-muted-foreground" />
+                    <LinkIcon aria-hidden className="h-btn-icon w-btn-icon text-foreground-muted" />
                     {t.project.copyLink}
                 </Button>
 
@@ -380,14 +372,14 @@ function ThreeDotMenu({ versionPageUrl, canEditVersion }: { versionPageUrl: stri
                         <Separator />
                         <VariantButtonLink
                             to={`${versionPageUrl}/edit`}
-                            variant="ghost-no-shadow"
+                            variant="ghost"
                             className="justify-start"
                             size="sm"
                             onClick={() => {
                                 setPopoverOpen(false);
                             }}
                         >
-                            <EditIcon aria-hidden className="h-btn-icon w-btn-icon text-muted-foreground" />
+                            <EditIcon aria-hidden className="h-btn-icon w-btn-icon text-foreground-muted" />
                             {t.form.edit}
                         </VariantButtonLink>
                     </>

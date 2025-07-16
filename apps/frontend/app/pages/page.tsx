@@ -18,8 +18,8 @@ interface Props {
 }
 
 export default function HomePage({ projects }: Props) {
-    const session = useSession();
     const { t } = useTranslation();
+    const session = useSession();
     const nav = t.navbar;
 
     const [gridBgPortal, setGridBgPortal] = useState<Element | null>(null);
@@ -65,7 +65,7 @@ export default function HomePage({ projects }: Props) {
             <main className="hero_section w-full">
                 <section className="flex w-full flex-col items-center justify-center py-28">
                     <div className="p-6">
-                        <BrandIcon aria-hidden className="text-accent-foreground" size="15rem" />
+                        <BrandIcon aria-hidden className="text-accent-text" size="15rem" />
                     </div>
 
                     <div className="flex w-full max-w-4xl flex-col items-center justify-center gap-4">
@@ -81,7 +81,7 @@ export default function HomePage({ projects }: Props) {
                                                 key={`${item}${index}`}
                                                 className={cn(
                                                     "flex h-12 items-center justify-center whitespace-nowrap text-nowrap bg-clip-text font-bold text-4xl leading-loose lg:h-[4.5rem] lg:text-6xl",
-                                                    "bg-accent-background bg-cover bg-gradient-to-b from-rose-200 via-accent-background to-accent-background text-transparent",
+                                                    "bg-accent-bg bg-cover bg-gradient-to-b from-foreground-bright via-accent-bg to-accent-bg text-transparent",
                                                 )}
                                                 // @ts-ignore
                                                 style={{ "--index": index + 1 }}
@@ -99,7 +99,7 @@ export default function HomePage({ projects }: Props) {
                         <div className="flex w-full max-w-2xl flex-col items-center justify-center">
                             <h2
                                 itemProp={MicrodataItemProps.description}
-                                className="w-full text-center text-lg text-muted-foreground/95 leading-snug lg:text-xl"
+                                className="w-full text-center text-foreground-muted text-lg leading-snug lg:text-xl"
                             >
                                 {t.homePage.desc}
                             </h2>
@@ -120,14 +120,15 @@ export default function HomePage({ projects }: Props) {
                             <VariantButtonLink
                                 to="/signup"
                                 size="lg"
-                                className="bg-card-background px-6 hover:bg-card-background/90 dark:bg-shallow-background dark:hover:bg-shallow-background/90"
+                                variant="secondary"
+                                className="px-6"
                                 prefetch={LinkPrefetchStrategy.Render}
                             >
                                 <LogInIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" aria-label={t.form.signup} />
                                 {t.form.signup}
                             </VariantButtonLink>
                         ) : (
-                            <VariantButtonLink to="/dashboard/projects" size="lg" className="px-6" variant="secondary-inverted">
+                            <VariantButtonLink to="/dashboard/projects" size="lg" className="px-6" variant="secondary">
                                 <LayoutDashboardIcon
                                     aria-hidden
                                     className="h-btn-icon-md w-btn-icon-md"
@@ -233,7 +234,7 @@ function ShowcaseItem({ className, item, ...props }: { className?: string; item:
                 <span className="max-w-52 overflow-hidden text-ellipsis whitespace-nowrap font-bold text-lg leading-tight">
                     {item.name}
                 </span>
-                <span className="line-clamp-2 max-w-52 text-pretty text-[0.87rem] text-muted-foreground leading-tight">
+                <span className="line-clamp-2 max-w-52 text-pretty text-[0.87rem] text-foreground-muted leading-tight">
                     {item.summary}
                 </span>
             </div>

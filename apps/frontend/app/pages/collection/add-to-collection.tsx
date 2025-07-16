@@ -70,7 +70,7 @@ export function AddToCollection_Popup({ projectId }: { projectId: string }) {
 
                                 <Link
                                     to={`/collection/${collection.id}`}
-                                    className="text-extra-muted-foreground opacity-0 transition-none hover:text-muted-foreground group-focus-within/collection-wrapper:opacity-100 group-hover/collection-wrapper:opacity-100 group-hover/collection-wrapper:transition-all"
+                                    className="text-foreground-extra-muted opacity-0 transition-none hover:text-foreground-muted group-focus-within/collection-wrapper:opacity-100 group-hover/collection-wrapper:opacity-100 group-hover/collection-wrapper:transition-all"
                                     target="_blank"
                                 >
                                     <SquareArrowOutUpRightIcon className="h-btn-icon w-btn-icon" />
@@ -101,7 +101,7 @@ function AddToCollection_PopupTrigger(props: TriggerProps) {
     return (
         <Button
             ref={props.ref}
-            variant="secondary-inverted"
+            variant="secondary"
             className="h-11 w-11 rounded-full p-0"
             aria-label="Add to collection"
             onClick={props.onClick}

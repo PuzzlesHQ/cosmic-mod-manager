@@ -79,7 +79,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                 <div className="flex w-full flex-wrap items-center justify-start gap-x-4">
                     <h1 className="font-[700] text-2xl text-foreground leading-tight">{versionData.title}</h1>
                     {versionData.featured ? (
-                        <span className="flex items-center justify-center gap-1 text-extra-muted-foreground italic">
+                        <span className="flex items-center justify-center gap-1 text-foreground-extra-muted italic">
                             <StarIcon aria-hidden className="h-btn-icon w-btn-icon" />
                             {t.version.featured}
                         </span>
@@ -150,7 +150,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                     ) : null}
 
                     {versionData.dependencies.length ? (
-                        <ContentCardTemplate title={t.version.dependencies} className="gap-2">
+                        <ContentCardTemplate title={t.version.dependencies} className="grid gap-2">
                             {versionData.dependencies.map((dependency) => {
                                 const dependencyProject = projectDependencies.projects.find(
                                     (project) => project.id === dependency.projectId,
@@ -174,7 +174,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                                     <Link
                                         to={redirectUrl}
                                         key={`${dependencyProject.id}-${dependencyVersion?.id}`}
-                                        className="bg_hover_stagger flex w-full cursor-pointer items-center justify-start gap-3 rounded-lg p-2 text-muted-foreground hover:bg-background/75 "
+                                        className="bg_hover_stagger flex w-full cursor-pointer items-center justify-start gap-3 rounded-lg p-2 text-foreground-muted hover:bg-background/75 "
                                     >
                                         <ImgWrapper
                                             vtId={dependencyProject.id}
@@ -185,7 +185,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                                         />
                                         <div className="flex flex-col items-start justify-center">
                                             <span className="font-bold">{dependencyProject.name}</span>
-                                            <span className="text-muted-foreground/85">
+                                            <span className="text-foreground-muted/85">
                                                 {dependencyVersion
                                                     ? t.version.depencency[`${dependency.dependencyType}_desc`](
                                                           dependencyVersion.versionNumber,
@@ -199,7 +199,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                         </ContentCardTemplate>
                     ) : null}
 
-                    <ContentCardTemplate title={t.version.files} className="gap-2">
+                    <ContentCardTemplate title={t.version.files} className="grid gap-1">
                         {versionData.primaryFile?.id ? (
                             <FileDetailsItem
                                 fileName={versionData.primaryFile.name}
@@ -232,7 +232,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                     </ContentCardTemplate>
                 </div>
 
-                <Card className="grid w-full grid-cols-1 gap-3 p-card-surround text-muted-foreground sm:min-w-[19rem]">
+                <Card className="grid w-full grid-cols-1 gap-3 p-card-surround text-foreground-muted sm:min-w-[19rem]">
                     <h3 className="font-bold text-foreground text-lg">{t.version.metadata}</h3>
                     <div className="grid grid-cols-1 gap-5">
                         {[
@@ -258,7 +258,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                                     <span className="flex flex-wrap items-center gap-1">
                                         {formatVersionsForDisplay_noOmit(versionData.gameVersions).map((ver) => {
                                             return (
-                                                <Chip key={ver} className="text-muted-foreground">
+                                                <Chip key={ver} className="text-foreground-muted">
                                                     {ver}
                                                 </Chip>
                                             );
@@ -339,51 +339,40 @@ function FileDetailsItem({
     return (
         <ContextMenu>
             <ContextMenuTrigger asChild>
-                <div
-                    className={cn(
-                        "flex w-full cursor-context-menu flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded px-4 py-2.5 pe-3 sm:flex-nowrap",
-                        isPrimary ? "bg-shallow-background" : "bg-shallow-background/70",
-                    )}
-                >
+                <div className="flex w-full cursor-context-menu flex-wrap items-center justify-between gap-x-4 gap-y-2 border border-border bg-background/50 px-4 py-4 pe-3 first:rounded-t last:rounded-b sm:flex-nowrap">
                     <div>
                         <FileIcon
                             aria-hidden
                             className={cn(
-                                "me-1.5 inline h-btn-icon w-btn-icon flex-shrink-0 text-muted-foreground",
-                                !isPrimary && "text-extra-muted-foreground",
+                                "me-1.5 inline h-btn-icon w-btn-icon flex-shrink-0 text-foreground-muted",
+                                !isPrimary && "text-foreground-extra-muted",
                             )}
                         />
 
-                        <span className={!isPrimary ? "text-muted-foreground" : ""}>
-                            <strong className="font-semibold">{fileName}</strong>{" "}
+                        <span className={!isPrimary ? "text-foreground-muted" : ""}>
+                            {/* <strong className="font-semibold">{fileName}</strong>{" "} */}
+                            <Button className="h-fit px-1 py-0" variant="link" onClick={() => downloadFile(downloadLink)}>
+                                {fileName}
+                            </Button>
                             <span className="ms-0.5 whitespace-nowrap">({parseFileSize(fileSize)})</span>{" "}
-                            {isPrimary ? <span className="ms-1 text-muted-foreground italic">{t.version.primary}</span> : null}
+                            {isPrimary ? <span className="ms-1 text-foreground-muted italic">{t.version.primary}</span> : null}
                         </span>
                     </div>
-
-                    <Button
-                        variant={isPrimary ? "secondary-dark" : "ghost"}
-                        className={cn(!isPrimary && "hover:bg-transparent hover:text-foreground dark:hover:bg-transparent")}
-                        onClick={() => downloadFile(downloadLink)}
-                    >
-                        <DownloadIcon aria-hidden className="h-btn-icon w-btn-icon" />
-                        {t.common.download}
-                    </Button>
                 </div>
             </ContextMenuTrigger>
             <ContextMenuContent>
                 <ContextMenuItem className="flex gap-2" onClick={() => copyTextToClipboard(sha1_hash)}>
-                    <CopyIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm text-extra-muted-foreground" />
+                    <CopyIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm text-foreground-extra-muted" />
                     {t.version.copySha1}
                 </ContextMenuItem>
 
                 <ContextMenuItem className="flex gap-2" onClick={() => copyTextToClipboard(sha512_hash)}>
-                    <CopyIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm text-extra-muted-foreground" />
+                    <CopyIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm text-foreground-extra-muted" />
                     {t.version.copySha512}
                 </ContextMenuItem>
 
                 <ContextMenuItem className="flex gap-2" onClick={() => copyTextToClipboard(downloadLink)}>
-                    <LinkIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm text-extra-muted-foreground" />
+                    <LinkIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm text-foreground-extra-muted" />
                     {t.version.copyFileUrl}
                 </ContextMenuItem>
             </ContextMenuContent>

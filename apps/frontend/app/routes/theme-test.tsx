@@ -1,8 +1,13 @@
+import { type LoaderNames, loaders } from "@app/utils/constants/loaders";
+import { CapitalizeAndFormatString } from "@app/utils/string";
 import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
+import tagIcons from "~/components/icons/tag-icons";
+import { Badge } from "~/components/ui/badge";
 import { Button, CancelButton } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { LabelledCheckbox } from "~/components/ui/checkbox";
+import Chip from "~/components/ui/chip";
 import {
     Dialog,
     DialogBody,
@@ -24,9 +29,10 @@ import {
 import { FormErrorMessage, FormSuccessMessage, FormWarningMessage } from "~/components/ui/form-message";
 import { TextLink } from "~/components/ui/link";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { Switch } from "~/components/ui/switch";
 import { LabelledTernaryCheckbox, TernaryStates } from "~/components/ui/ternary-checkbox";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 
 export default function () {
     const [ternaryState, setTernaryState] = useState<TernaryStates>(TernaryStates.EXCLUDED);
@@ -35,10 +41,10 @@ export default function () {
         <div className="grid gap-4">
             <h1 className="font-bold text-foreground-bright text-xl">TEXT</h1>
             <div className="flex flex-wrap gap-x-6 gap-y-4">
-                <p className="text-accent-foreground">text-accent-foreground</p>
+                <p className="text-accent-text">text-accent-text</p>
                 <p className="text-foreground">text-foreground</p>
-                <p className="text-muted-foreground">text-muted-foreground</p>
-                <p className="text-extra-muted-foreground">text-extra-muted-foreground</p>
+                <p className="text-foreground-muted">text-foreground-muted</p>
+                <p className="text-foreground-extra-muted">text-foreground-extra-muted</p>
                 <TextLink to="#">Text link</TextLink>
             </div>
 
@@ -85,7 +91,8 @@ export default function () {
                     <Button variant="link">Link</Button>
                     <Button variant="destructive">Destructive</Button>
                     <Button variant="secondary-destructive">Secondary Destructive</Button>
-                    <Button variant="moderation-submit">Moderation</Button>
+                    <Button variant="ghost-destructive">Ghost Destructive</Button>
+                    <Button variant="moderation">Moderation</Button>
                 </CardContent>
             </Card>
 
@@ -146,10 +153,51 @@ export default function () {
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="item_1">Item 1</SelectItem>
+                            <SelectSeparator />
                             <SelectItem value="item_2">Item 2</SelectItem>
                             <SelectItem value="item_3">Item 3</SelectItem>
                         </SelectContent>
                     </Select>
+
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button variant="ghost">Hover for Tooltip</Button>
+                            </TooltipTrigger>
+                            <TooltipContent>This is a tooltip message.</TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Loaders</CardTitle>
+                </CardHeader>
+                <CardContent className="flex flex-wrap gap-4">
+                    {loaders.map((loader) => {
+                        const loaderIcon: React.ReactNode = tagIcons[loader.name as LoaderNames];
+
+                        return (
+                            <Chip
+                                key={loader.name}
+                                style={{
+                                    color: `hsla(var(--loader-fg-${loader.name}, --foreground-muted))`,
+                                }}
+                            >
+                                {loaderIcon ? loaderIcon : null}
+                                {CapitalizeAndFormatString(loader.name)}
+                            </Chip>
+                        );
+                    })}
+
+                    <div className="flex w-full gap-4">
+                        <Badge variant="default">default</Badge>
+                        <Badge variant="secondary">secondary</Badge>
+                        <Badge variant="destructive">destructive</Badge>
+                        <Badge variant="warning">warning</Badge>
+                        <Badge variant="outline">outline</Badge>
+                    </div>
                 </CardContent>
             </Card>
         </div>

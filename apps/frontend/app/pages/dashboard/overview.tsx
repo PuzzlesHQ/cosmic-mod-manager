@@ -5,7 +5,7 @@ import { fallbackUserIcon } from "~/components/icons";
 import { ContentCardTemplate, PanelContent_AsideCardLayout } from "~/components/misc/panel";
 import { ImgWrapper } from "~/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import Link, { ButtonLink } from "~/components/ui/link";
+import { TextLink, VariantButtonLink } from "~/components/ui/link";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import { UserProfilePath } from "~/utils/urls";
@@ -40,10 +40,10 @@ export default function OverviewPage({ userProjects, notifications, relatedProje
 
                     <div className="flex flex-col items-start justify-center">
                         <span className="font-semibold text-xl">{session.userName}</span>
-                        <Link to={UserProfilePath(session.userName)} className="link_blue flex items-center justify-center gap-1">
+                        <TextLink to={UserProfilePath(session.userName)} className="flex items-center justify-center gap-1">
                             {t.settings.visitYourProfile}
                             <ChevronRightIcon aria-hidden className="h-btn-icon w-btn-icon" />
-                        </Link>
+                        </TextLink>
                     </div>
                 </div>
             </ContentCardTemplate>
@@ -53,10 +53,10 @@ export default function OverviewPage({ userProjects, notifications, relatedProje
                     <CardHeader className="flex w-full flex-row items-center justify-between gap-x-6 gap-y-2">
                         <CardTitle className="w-fit">{t.dashboard.notifications}</CardTitle>
                         {(unreadNotifications?.length || 0) > 0 ? (
-                            <Link to="/dashboard/notifications" className="link_blue flex items-center justify-center">
+                            <TextLink to="/dashboard/notifications" className="flex items-center justify-center">
                                 {t.dashboard.seeAll}
                                 <ChevronRightIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                            </Link>
+                            </TextLink>
                         ) : null}
                     </CardHeader>
                     <CardContent>
@@ -70,13 +70,13 @@ export default function OverviewPage({ userProjects, notifications, relatedProje
                         />
 
                         {!unreadNotifications?.length && (
-                            <div>
-                                <span className="text-muted-foreground">{t.dashboard.noUnreadNotifs}</span>
+                            <div className="grid gap-4">
+                                <span className="text-foreground-muted">{t.dashboard.noUnreadNotifs}</span>
 
-                                <ButtonLink url="/dashboard/notifications/history" className="w-fit bg-shallow-background">
+                                <VariantButtonLink to="/dashboard/notifications/history" className="w-fit" variant="secondary">
                                     <HistoryIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                     {t.dashboard.viewNotifHistory}
-                                </ButtonLink>
+                                </VariantButtonLink>
                             </div>
                         )}
                     </CardContent>
@@ -88,14 +88,14 @@ export default function OverviewPage({ userProjects, notifications, relatedProje
                     className="flex w-full flex-row flex-wrap items-start justify-start gap-panel-cards"
                 >
                     <div className="flex w-[14rem] flex-col items-start justify-center rounded bg-background p-4">
-                        <span className="mb-1 font-semibold text-lg text-muted-foreground">{t.dashboard.totalDownloads}</span>
+                        <span className="mb-1 font-semibold text-foreground-muted text-lg">{t.dashboard.totalDownloads}</span>
                         <span className="font-semibold text-2xl">{totalDownloads}</span>
-                        <span className="text-muted-foreground">{t.dashboard.fromProjects(totalProjects)}</span>
+                        <span className="text-foreground-muted">{t.dashboard.fromProjects(totalProjects)}</span>
                     </div>
                     <div className="flex w-[14rem] flex-col items-start justify-center rounded bg-background p-4">
-                        <span className="mb-1 font-semibold text-lg text-muted-foreground">{t.dashboard.totalFollowers}</span>
+                        <span className="mb-1 font-semibold text-foreground-muted text-lg">{t.dashboard.totalFollowers}</span>
                         <span className="font-semibold text-2xl">{totalFollowers}</span>
-                        <span className="text-muted-foreground">{t.dashboard.fromProjects(totalProjects)}</span>
+                        <span className="text-foreground-muted">{t.dashboard.fromProjects(totalProjects)}</span>
                     </div>
                 </ContentCardTemplate>
             </PanelContent_AsideCardLayout>

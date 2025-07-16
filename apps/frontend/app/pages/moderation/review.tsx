@@ -49,16 +49,16 @@ export default function ReviewProjects({ projects }: { projects: ModerationProje
             <CardHeader>
                 <CardTitle>{t.moderation.review}</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-1 text-muted-foreground">
+            <CardContent className="grid grid-cols-1 text-foreground-muted">
                 <span>{t.moderation.projectsInQueue(projects.length)}</span>
                 {projectsOver24Hours.length > 0 ? (
-                    <span className="font-medium text-warning-foreground">
+                    <span className="font-medium text-warning-fg">
                         <TriangleAlertIcon aria-hidden className="inline h-3.5 w-3.5" />{" "}
                         {t.moderation.projectsQueuedFor(projectsOver24Hours.length, 24)}
                     </span>
                 ) : null}
                 {projectsOver48Hours.length > 0 ? (
-                    <span className="font-bold text-danger-foreground">
+                    <span className="font-bold text-danger-fg">
                         <TriangleAlertIcon aria-hidden className="inline h-4 w-4" />{" "}
                         {t.moderation.projectsQueuedFor(projectsOver48Hours.length, 48)}
                     </span>
@@ -115,8 +115,8 @@ function ModerationItem({ project }: { project: ModerationProjectItem }) {
                 <span
                     className={cn(
                         "flex items-center justify-start gap-x-1.5",
-                        isOver24Hrs && "text-warning-foreground",
-                        isOver48Hrs && "text-danger-foreground",
+                        isOver24Hrs && "text-warning-fg",
+                        isOver48Hrs && "text-danger-fg",
                     )}
                 >
                     {isOver24Hrs || (isOver48Hrs && <AlertTriangleIcon aria-hidden className="inline h-4 w-4" />)}

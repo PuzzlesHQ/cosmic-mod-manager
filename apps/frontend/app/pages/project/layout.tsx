@@ -41,14 +41,13 @@ import { Card } from "~/components/ui/card";
 import Chip from "~/components/ui/chip";
 import { FormattedCount } from "~/components/ui/count";
 import { FormattedDate, TimePassedSince } from "~/components/ui/date";
-import Link, { ButtonLink, LinkPrefetchStrategy, useNavigate, VariantButtonLink } from "~/components/ui/link";
+import Link, { ButtonLink, LinkPrefetchStrategy, TextLink, useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { PopoverClose } from "~/components/ui/popover";
 import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { ReleaseChannelBadge } from "~/components/ui/release-channel-pill";
 import { Separator } from "~/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
-import { usePreferences } from "~/hooks/preferences";
 import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
@@ -66,7 +65,6 @@ import UpdateProjectStatusDialog from "./update-project-status";
 
 export default function ProjectPageLayout() {
     const { t } = useTranslation();
-    const { isActiveThemeDark } = usePreferences();
     const { downloadFile } = useContext(FileDownloader);
 
     const session = useSession();
@@ -134,10 +132,10 @@ export default function ProjectPageLayout() {
                     <Card className="grid h-fit w-full grid-cols-1 gap-3 p-card-surround">
                         <h2 className="font-extrabold text-lg">{t.project.compatibility}</h2>
                         <section>
-                            <h3 className="flex pb-1 font-bold text-muted-foreground">{t.search.gameVersions}</h3>
+                            <h3 className="flex pb-1 font-bold text-foreground-muted">{t.search.gameVersions}</h3>
                             <div className="flex w-full flex-wrap gap-1">
                                 {formatVersionsForDisplay(projectData.gameVersions).map((version) => (
-                                    <Chip key={version} className="text-muted-foreground">
+                                    <Chip key={version} className="text-foreground-muted">
                                         {version}
                                     </Chip>
                                 ))}
@@ -146,21 +144,16 @@ export default function ProjectPageLayout() {
 
                         {listedLoaders.length ? (
                             <section>
-                                <h3 className="flex pb-1 font-bold text-muted-foreground">{t.search.loaders}</h3>
+                                <h3 className="flex pb-1 font-bold text-foreground-muted">{t.search.loaders}</h3>
                                 <div className="flex w-full flex-wrap gap-1">
                                     {listedLoaders.map((loader) => {
-                                        const accentForeground = loader?.metadata?.foreground;
                                         const loaderIcon: React.ReactNode = tagIcons[loader.name as LoaderNames];
 
                                         return (
                                             <Chip
                                                 key={loader.name}
                                                 style={{
-                                                    color: accentForeground
-                                                        ? isActiveThemeDark
-                                                            ? accentForeground?.dark
-                                                            : accentForeground?.light
-                                                        : "hsla(var(--muted-foreground))",
+                                                    color: `hsla(var(--loader-fg-${loader.name}, --foreground-muted))`,
                                                 }}
                                             >
                                                 {loaderIcon ? loaderIcon : null}
@@ -175,7 +168,7 @@ export default function ProjectPageLayout() {
                         {projectEnvironments?.length ? (
                             <section className="flex flex-wrap items-start justify-start gap-1">
                                 <h3
-                                    className="block w-full font-bold text-muted-foreground"
+                                    className="block w-full font-bold text-foreground-muted"
                                     title="Environment(s) the mod is made for"
                                 >
                                     {t.project.environments}
@@ -240,7 +233,7 @@ export default function ProjectPageLayout() {
                                 // biome-ignore lint/a11y/noStaticElementInteractions: --
                                 <div
                                     key={version.id}
-                                    className="bg_hover_stagger group/card flex w-full cursor-pointer items-start justify-start gap-2 rounded p-2 pb-2.5 text-muted-foreground hover:bg-background/75"
+                                    className="bg_hover_stagger group/card flex w-full cursor-pointer items-start justify-start gap-2 rounded p-2 pb-2.5 text-foreground-muted hover:bg-background/75"
                                     onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
                                         if (
                                             // @ts-expect-error
@@ -265,7 +258,7 @@ export default function ProjectPageLayout() {
                                             >
                                                 <Button
                                                     className="noClickRedirect !w-10 !h-10 flex-shrink-0 rounded-full"
-                                                    variant={isVersionDetailsPage ? "secondary-inverted" : "default"}
+                                                    variant={isVersionDetailsPage ? "secondary" : "default"}
                                                     size="icon"
                                                     aria-label={t.project.downloadItem(version.primaryFile?.name || "")}
                                                     onClick={() => downloadFile(version.primaryFile?.url)}
@@ -340,20 +333,20 @@ export default function ProjectPageLayout() {
                     <h2 className="pb-2 font-bold text-lg">{t.project.details}</h2>
 
                     {projectLicenseData?.id || projectLicenseData?.name ? (
-                        <div className="flex items-center justify-start gap-2 text-muted-foreground">
+                        <div className="flex items-center justify-start gap-2 text-foreground-muted">
                             <BookTextIcon aria-hidden className="h-btn-icon w-btn-icon shrink-0" />
                             <p>
                                 <TextSpacer text={licensed_str[0]} />
                                 {projectLicenseData.url ? (
-                                    <a
+                                    <TextLink
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        href={projectLicenseData.url}
-                                        className="link_blue font-bold hover:underline"
+                                        to={projectLicenseData.url}
+                                        className="font-bold"
                                         title={projectLicenseData.url}
                                     >
                                         {licensed_str[1]}
-                                    </a>
+                                    </TextLink>
                                 ) : (
                                     <span className="font-bold" title={projectLicenseData.text}>
                                         {licensed_str[1]}
@@ -367,7 +360,7 @@ export default function ProjectPageLayout() {
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild className="cursor-text">
-                                <p className="flex w-fit max-w-full items-center justify-start gap-2 text-muted-foreground">
+                                <p className="flex w-fit max-w-full items-center justify-start gap-2 text-foreground-muted">
                                     <CalendarIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                     {t.settings.created(TimePassedSince({ date: projectData.datePublished }))}
                                 </p>
@@ -380,7 +373,7 @@ export default function ProjectPageLayout() {
                         {ctx.allProjectVersions.length > 0 ? (
                             <Tooltip>
                                 <TooltipTrigger asChild className="cursor-text">
-                                    <p className="flex w-fit max-w-full items-center justify-start gap-2 text-muted-foreground">
+                                    <p className="flex w-fit max-w-full items-center justify-start gap-2 text-foreground-muted">
                                         <GitCommitHorizontalIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                         {t.project.updatedAt(TimePassedSince({ date: projectData.dateUpdated }))}
                                     </p>
@@ -485,7 +478,7 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
                         {currUsersMembership?.id || isModerator(session?.role) ? (
                             <VariantButtonLink
                                 to={ProjectPagePath(projectType, projectData.slug, "settings")}
-                                variant="secondary-inverted"
+                                variant="secondary"
                                 className="h-11 w-11 rounded-full p-0"
                                 label="project settings"
                                 prefetch={LinkPrefetchStrategy.Render}
@@ -557,18 +550,13 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
                     </>
                 }
             >
-                <div className="flex items-center gap-3 border-0 border-card-background border-e pe-4 dark:border-shallow-background">
+                <div className="flex items-center gap-3">
                     <DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     <span className="font-semibold">
                         <FormattedCount count={projectData.downloads} />
                     </span>
                 </div>
-                <div
-                    className={cn(
-                        "flex items-center gap-3 border-0 pe-4 dark:border-shallow-background",
-                        !!projectData.featuredCategories?.length && "border-card-background border-e",
-                    )}
-                >
+                <div className="flex items-center gap-3">
                     <HeartIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     <span className="font-semibold">
                         <FormattedCount count={projectData.followers} />
@@ -576,11 +564,11 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
                 </div>
 
                 {(projectData.featuredCategories?.length || 0) > 0 ? (
-                    <div className="hidden items-center gap-3 pe-4 md:flex">
+                    <div className="hidden items-center gap-3 md:flex">
                         <TagsIcon aria-hidden className="h-btn-icon-lg w-btn-icon-lg" />
                         <div className="flex items-center gap-2">
                             {projectData.featuredCategories.map((category) => (
-                                <Chip key={category} className="bg-card-background dark:bg-shallow-background/75">
+                                <Chip key={category} className="bg-card-background">
                                     {/* @ts-ignore */}
                                     {t.search.tags[category] || Capitalize(category)}
                                 </Chip>
@@ -591,7 +579,7 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
             </PageHeader>
 
             {projectData.visibility === ProjectVisibility.ARCHIVED ? (
-                <div className="rounded-lg rounded-l-none border-warning-background border-s-2 bg-card-background px-5 py-3 font-medium text-warning-foreground dark:bg-warning-background/15">
+                <div className="rounded-lg rounded-l-none border-warning-fg border-s-2 bg-warning-bg px-5 py-3 font-medium text-warning-fg">
                     {t.project.archivedMessage(projectData.name)}
                 </div>
             ) : null}
@@ -665,7 +653,7 @@ export function TeamMember_Card({
                         />
                     )}
                 </div>
-                <span className="font-medium text-muted-foreground/75 text-sm leading-tight">{roleName}</span>
+                <span className="font-medium text-foreground-muted/75 text-sm leading-tight">{roleName}</span>
             </div>
         </ButtonLink>
     );
@@ -675,14 +663,14 @@ function ExternalLink({ url, label, icon }: { url: string; icon: React.ReactNode
     return (
         <Link
             to={url}
-            className="flex w-fit items-center justify-start gap-2 p-0 text-muted-foreground hover:underline"
+            className="flex w-fit items-center justify-start gap-2 p-0 text-foreground-muted hover:underline"
             target="_blank"
             rel="noopener noreferrer"
         >
             {icon}
             <span>
                 {label}
-                <ArrowUpRightIcon aria-hidden className="ms-1 inline h-4 w-4 text-extra-muted-foreground" />
+                <ArrowUpRightIcon aria-hidden className="ms-1 inline h-4 w-4 text-foreground-extra-muted" />
             </span>
         </Link>
     );

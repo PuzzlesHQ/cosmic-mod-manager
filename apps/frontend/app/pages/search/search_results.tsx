@@ -69,7 +69,7 @@ export function SearchResults(props: { viewType: ListViewType }) {
 
             {!result?.hits?.length && !isLoading && !isFetching && (
                 <div className="flex w-full items-center justify-center py-8">
-                    <span className="text-extra-muted-foreground text-xl italic">{t.common.noResults}</span>
+                    <span className="text-foreground-extra-muted text-xl italic">{t.common.noResults}</span>
                 </div>
             )}
 

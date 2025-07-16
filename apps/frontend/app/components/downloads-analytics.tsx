@@ -98,7 +98,7 @@ export default function DownloadsAnalyticsChart(props: DownloadsAnalyticsProps) 
                 <div>
                     <h1 className="font-semibold text-foreground text-xl leading-none">{t.project.downloads}</h1>
 
-                    <span className="font-semibold text-extra-muted-foreground text-sm leading-none">
+                    <span className="font-semibold text-foreground-extra-muted text-sm leading-none">
                         <FormattedDate
                             includeTime={false}
                             shortMonthNames
@@ -147,9 +147,9 @@ export default function DownloadsAnalyticsChart(props: DownloadsAnalyticsProps) 
                             right: 12,
                         }}
                     >
-                        <CartesianGrid vertical={false} stroke="currentColor" className="text-shallow-background" />
+                        <CartesianGrid vertical={false} stroke="currentColor" className="text-raised-background" />
                         <XAxis
-                            className="text-shallow-background"
+                            className="text-raised-background"
                             stroke="currentColor"
                             dataKey="date"
                             tickMargin={8}
@@ -166,7 +166,7 @@ export default function DownloadsAnalyticsChart(props: DownloadsAnalyticsProps) 
                             }}
                         />
                         <YAxis
-                            className="text-shallow-background"
+                            className="text-raised-background"
                             stroke="currentColor"
                             dataKey="downloads"
                             width={48}
@@ -176,7 +176,7 @@ export default function DownloadsAnalyticsChart(props: DownloadsAnalyticsProps) 
                         <ChartTooltip
                             cursor={{
                                 stroke: "currentColor",
-                                className: "text-shallow-background",
+                                className: "text-raised-background",
                             }}
                             content={
                                 <ChartTooltipContent
@@ -212,7 +212,7 @@ export default function DownloadsAnalyticsChart(props: DownloadsAnalyticsProps) 
                         {analyticsData.loading ? (
                             <WanderingCubesSpinner />
                         ) : (
-                            <span className="text-center font-mono text-extra-muted-foreground text-md">
+                            <span className="text-center font-mono text-foreground-extra-muted text-md">
                                 {t.graph.noDataAvailable}
                             </span>
                         )}
@@ -221,12 +221,12 @@ export default function DownloadsAnalyticsChart(props: DownloadsAnalyticsProps) 
             </ChartContainer>
 
             <div className="flex items-center justify-center gap-4 ps-card-surround">
-                <span className="font-medium text-extra-muted-foreground text-sm leading-none">
+                <span className="font-medium text-foreground-extra-muted text-sm leading-none">
                     {t.project.downloads}: <strong>{total}</strong>
                 </span>
 
                 {projectsCount > 1 ? (
-                    <span className="font-medium text-extra-muted-foreground text-sm leading-none">
+                    <span className="font-medium text-foreground-extra-muted text-sm leading-none">
                         {t.dashboard.projects}: <strong>{projectsCount}</strong>
                     </span>
                 ) : null}

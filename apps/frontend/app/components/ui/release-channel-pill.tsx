@@ -19,7 +19,7 @@ export default function ReleaseChannelChip({ releaseChannel, labelClassName, cla
             )}
         >
             <div className="h-2 w-2 rounded-full bg-current" />
-            <span className={cn("font-semibold text-muted-foreground/90 leading-none", labelClassName)}>
+            <span className={cn("font-semibold text-foreground-muted/90 leading-none", labelClassName)}>
                 {CapitalizeAndFormatString(releaseChannel)}
             </span>
         </div>
@@ -67,11 +67,11 @@ export function releaseChannelTextColor(releaseChannel: VersionReleaseChannel) {
             return "!text-blue-500 dark:!text-blue-400";
 
         case VersionReleaseChannel.BETA:
-            return "!text-orange-600 dark:!text-orange-400";
+            return "!text-warning-fg";
 
         case VersionReleaseChannel.ALPHA:
         case VersionReleaseChannel.DEV:
-            return "!text-danger-foreground";
+            return "!text-error-fg";
 
         default:
             return "";
@@ -84,11 +84,11 @@ export function releaseChannelBackgroundColor(releaseChannel: VersionReleaseChan
             return "!bg-blue-500/15 dark:!bg-blue-400/15";
 
         case VersionReleaseChannel.BETA:
-            return "!bg-orange-600/15 dark:!bg-orange-400/15";
+            return "!bg-warning-bg";
 
         case VersionReleaseChannel.ALPHA:
         case VersionReleaseChannel.DEV:
-            return "!bg-danger-foreground/15";
+            return "!bg-error-bg";
 
         default:
             return "";

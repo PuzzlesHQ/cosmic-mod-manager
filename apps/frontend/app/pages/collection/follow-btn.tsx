@@ -20,7 +20,7 @@ export function FollowProject_Btn(props: { projectId: string }) {
     if (!session?.id) {
         return (
             <LoginDialog>
-                <Button variant="secondary-inverted" className="h-11 w-11 rounded-full p-0">
+                <Button variant="secondary" className="h-11 w-11 rounded-full p-0">
                     <HeartIcon aria-hidden className="h-btn-icon-lg w-btn-icon-lg" fill={isFollowing ? "currentColor" : "none"} />
                 </Button>
             </LoginDialog>
@@ -28,7 +28,7 @@ export function FollowProject_Btn(props: { projectId: string }) {
     }
 
     return (
-        <Button variant="secondary-inverted" className="h-11 w-11 rounded-full p-0" onClick={toggleFollow}>
+        <Button variant="secondary" className="h-11 w-11 rounded-full p-0" onClick={toggleFollow}>
             <HeartIcon aria-hidden className="h-btn-icon-lg w-btn-icon-lg" fill={isFollowing ? "currentColor" : "none"} />
         </Button>
     );

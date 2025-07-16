@@ -7,7 +7,7 @@ export default function ProjectPage() {
     const ctx = useProjectData();
 
     if (!ctx.projectData.description) {
-        return <span className="text-center text-muted-foreground italic">{t.project.noProjectDesc}</span>;
+        return <span className="text-center text-foreground-muted italic">{t.project.noProjectDesc}</span>;
     }
 
     return (

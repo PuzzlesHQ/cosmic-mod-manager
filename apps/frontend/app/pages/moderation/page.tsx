@@ -29,7 +29,7 @@ interface StatCardProps {
 function StatCard({ label, value }: StatCardProps) {
     return (
         <div className="flex flex-col gap-2 rounded bg-background p-card-surround">
-            <span className="font-bold text-muted-foreground">{label}</span>
+            <span className="font-bold text-foreground-muted">{label}</span>
             <span className="font-bold text-4xl">{value}</span>
         </div>
     );

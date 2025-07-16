@@ -9,12 +9,11 @@ export function Toaster(props: React.ComponentProps<typeof Sonner>) {
             className="toaster group"
             toastOptions={{
                 classNames: {
-                    toast: "text-base group toast group-[.toaster]:bg-card-background group-[.toaster]:text-foreground-bright group-[.toaster]:border group-[.toaster]:border-shallow-background",
+                    toast: "text-base group toast group-[.toaster]:bg-card-background group-[.toaster]:text-foreground-bright group-[.toaster]:border group-[.toaster]:border-border",
                     title: "leading-tight",
-                    description: "text-sm group-[.toast]:text-muted-foreground",
-                    actionButton:
-                        "group-[.toast]:bg-accent-background group-[.toast]:text-white dark:group-[.toast]:text-zinc-900",
-                    cancelButton: "group-[.toast]:bg-shallow-background group-[.toast]:text-muted-foreground",
+                    description: "text-sm group-[.toast]:text-foreground-muted",
+                    actionButton: "group-[.toast]:bg-accent-bg group-[.toast]:text-accent-bg-foreground",
+                    cancelButton: "group-[.toast]:bg-raised-background group-[.toast]:text-foreground-muted",
                 },
                 duration: 10000,
             }}

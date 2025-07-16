@@ -151,7 +151,7 @@ export default function GeneralOrgSettings() {
                                             id="org-slug-input"
                                             autoComplete="off"
                                         />
-                                        <span className="px-1 text-muted-foreground text-sm lg:text-base">
+                                        <span className="px-1 text-foreground-muted text-sm lg:text-base">
                                             {Config.FRONTEND_URL}/organization/
                                             <em className="font-[500] text-foreground not-italic">{form.getValues().slug}</em>
                                         </span>
@@ -244,7 +244,7 @@ function DeleteOrgDialog({ name, slug }: { name: string; slug: string }) {
 
     return (
         <ContentCardTemplate title={t.organization.deleteOrg} className="flex w-full flex-row flex-wrap justify-between gap-4">
-            <p className="max-w-[65ch] text-muted-foreground">{t.organization.deleteOrgDesc}</p>
+            <p className="max-w-[65ch] text-foreground-muted">{t.organization.deleteOrgDesc}</p>
 
             <Dialog>
                 <DialogTrigger asChild>
@@ -260,7 +260,7 @@ function DeleteOrgDialog({ name, slug }: { name: string; slug: string }) {
                             <DialogDescription>{t.organization.deleteOrgNamed(name)}</DialogDescription>
                         </VisuallyHidden>
                     </DialogHeader>
-                    <DialogBody className="flex flex-col gap-4 text-muted-foreground">
+                    <DialogBody className="flex flex-col gap-4 text-foreground-muted">
                         <p className="leading-snug">{t.organization.deletionWarning}</p>
 
                         <div className="flex w-full flex-col gap-1">

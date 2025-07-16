@@ -174,7 +174,7 @@ export default function UploadVersionPage() {
                             />
                         </ContentCardTemplate>
 
-                        <ContentCardTemplate title={t.version.files} className="gap-form-elements">
+                        <ContentCardTemplate title={t.version.files} className="grid gap-form-elements">
                             <FormField
                                 control={form.control}
                                 name="primaryFile"

@@ -186,7 +186,7 @@ function FilterSidebar({ type, showFilters, searchParams }: Props) {
                         onCheckedChange={(checked) => {
                             setShowAllVersions(checked === true);
                         }}
-                        className="ms-0.5 mt-3 text-extra-muted-foreground"
+                        className="ms-0.5 mt-3 text-foreground-extra-muted"
                     >
                         {t.form.showAllVersions}
                     </LabelledCheckbox>
@@ -343,7 +343,7 @@ function FilterCategory({
                     <button
                         type="button"
                         onClick={toggleVisibility}
-                        className="text-extra-muted-foreground"
+                        className="text-foreground-extra-muted"
                         aria-label="Toggle visibility"
                     >
                         {isOpen ? (

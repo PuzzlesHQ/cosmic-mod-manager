@@ -85,7 +85,7 @@ function BaseView(props: SearchListItemProps) {
             itemScope
             itemType={itemType(MicrodataItemType.SoftwareApplication)}
             className={cn(
-                "search-list-item view-transition-item grid h-full gap-x-3 gap-y-2 rounded-lg bg-card-background text-muted-foreground",
+                "search-list-item view-transition-item grid h-full gap-x-3 gap-y-2 rounded-lg bg-card-background text-foreground-muted",
                 listViewType && "p-card-surround",
                 galleryViewType && "pb-4",
                 props.viewType,
@@ -101,7 +101,7 @@ function BaseView(props: SearchListItemProps) {
                     tabIndex={-1}
                     style={{
                         gridArea: "gallery",
-                        backgroundColor: props.color ? props.color : "hsla(var(--foreground), 0.15)",
+                        backgroundColor: props.color ? props.color : "hsla(var(--raised-background))",
                     }}
                 >
                     {props.featuredGallery && (
@@ -174,7 +174,7 @@ function BaseView(props: SearchListItemProps) {
                 {props.visibility === ProjectVisibility.ARCHIVED && (
                     <>
                         {" "}
-                        <Chip className="ms-1 inline bg-warning-background/15 font-medium text-sm text-warning-foreground leading-none">
+                        <Chip className="ms-1 inline bg-warning-bg font-medium text-sm text-warning-fg leading-none">
                             {t.projectSettings.archived}
                         </Chip>
                     </>
@@ -197,7 +197,7 @@ function BaseView(props: SearchListItemProps) {
                 itemScope
                 itemType={itemType(MicrodataItemType.Thing)}
                 className={cn(
-                    "flex flex-wrap items-center justify-start gap-x-4 gap-y-0 text-extra-muted-foreground",
+                    "flex flex-wrap items-center justify-start gap-x-4 gap-y-0 text-foreground-extra-muted",
                     galleryViewType && "mx-card-surround",
                     listViewType && "xl:pe-4",
                 )}
@@ -207,7 +207,7 @@ function BaseView(props: SearchListItemProps) {
                     <ProjectSupportedEnv
                         clientSide={props.clientSide}
                         serverSide={props.serverSide}
-                        className="text-extra-muted-foreground"
+                        className="text-foreground-extra-muted"
                     />
                 )}
 
@@ -251,7 +251,7 @@ function BaseView(props: SearchListItemProps) {
             >
                 <div className={cn("flex flex-row flex-wrap gap-x-5 lg:flex-col", galleryViewType && "lg:flex-row")}>
                     <div className="flex h-fit items-center justify-end gap-x-1.5">
-                        <DownloadIcon aria-hidden className="inline h-[1.17rem] w-[1.17rem] text-extra-muted-foreground" />{" "}
+                        <DownloadIcon aria-hidden className="inline h-[1.17rem] w-[1.17rem] text-foreground-extra-muted" />{" "}
                         <p className="text-nowrap">
                             <span
                                 key="downloads-count"
@@ -272,7 +272,7 @@ function BaseView(props: SearchListItemProps) {
                     </div>
 
                     <div className="flex h-fit items-center justify-end gap-x-1.5">
-                        <HeartIcon aria-hidden className="inline h-[1.07rem] w-[1.07rem] text-extra-muted-foreground" />{" "}
+                        <HeartIcon aria-hidden className="inline h-[1.07rem] w-[1.07rem] text-foreground-extra-muted" />{" "}
                         <p className="text-nowrap">
                             <span
                                 key="downloads-count"
@@ -303,7 +303,7 @@ function BaseView(props: SearchListItemProps) {
                     <TooltipProvider>
                         {props.showDatePublished === true ? (
                             <Tooltip>
-                                <CalendarIcon aria-hidden className="h-[1.1rem] w-[1.1rem] text-extra-muted-foreground" />
+                                <CalendarIcon aria-hidden className="h-[1.1rem] w-[1.1rem] text-foreground-extra-muted" />
                                 <TooltipTrigger asChild>
                                     <p className="flex items-baseline justify-center gap-1 text-nowrap">
                                         {t.project.publishedAt(TimePassedSince({ date: props.datePublished }))}
@@ -315,7 +315,7 @@ function BaseView(props: SearchListItemProps) {
                             </Tooltip>
                         ) : (
                             <Tooltip>
-                                <RefreshCcwIcon aria-hidden className="h-[1.1rem] w-[1.1rem] text-extra-muted-foreground" />
+                                <RefreshCcwIcon aria-hidden className="h-[1.1rem] w-[1.1rem] text-foreground-extra-muted" />
                                 <TooltipTrigger asChild>
                                     <p className="flex items-baseline justify-center gap-1 text-nowrap">
                                         {t.project.updatedAt(TimePassedSince({ date: props.dateUpdated }))}

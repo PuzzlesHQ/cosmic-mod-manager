@@ -27,11 +27,7 @@ export function DownloadRipple() {
 }
 
 function RippleCircle({ children, className }: { children?: React.ReactNode; className?: string }) {
-    return (
-        <div className={cn(" rounded-full border-[0.2rem] border-accent-background bg-accent-background/25", className)}>
-            {children}
-        </div>
-    );
+    return <div className={cn("rounded-full border-[0.2rem] border-accent-bg bg-accent-bg/25", className)}>{children}</div>;
 }
 
 interface DownloadAnimationContext {

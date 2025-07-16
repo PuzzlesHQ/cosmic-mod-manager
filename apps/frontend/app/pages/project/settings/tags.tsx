@@ -99,7 +99,7 @@ export default function TagsSettingsPage() {
                 <Card className="flex w-full flex-col gap-4 p-card-surround">
                     <div className="flex w-full flex-col items-start justify-start gap-1">
                         <CardTitle>{t.projectSettings.tags}</CardTitle>
-                        <span className="text-muted-foreground">{t.projectSettings.tagsDesc(projectType.toLowerCase())}</span>
+                        <span className="text-foreground-muted">{t.projectSettings.tagsDesc(projectType.toLowerCase())}</span>
                     </div>
 
                     {availableTags.map(([type, tags]) => {
@@ -157,10 +157,10 @@ export default function TagsSettingsPage() {
 
                     <div className="flex w-full flex-col items-start justify-start">
                         <span className="flex items-center justify-center gap-2 font-bold text-lg">
-                            <StarIcon aria-hidden className="h-btn-icon w-btn-icon text-muted-foreground" />
+                            <StarIcon aria-hidden className="h-btn-icon w-btn-icon text-foreground-muted" />
                             {t.projectSettings.featuredCategories}
                         </span>
-                        <span className="text-muted-foreground">
+                        <span className="text-foreground-muted">
                             {t.projectSettings.featuredCategoriesDesc(MAX_FEATURED_PROJECT_TAGS)}
                         </span>
                         <FormField
@@ -202,7 +202,7 @@ export default function TagsSettingsPage() {
                         />
 
                         {!form.getValues().categories?.length ? (
-                            <span className="text-muted-foreground">{t.projectSettings.selectAtLeastOneCategory}</span>
+                            <span className="text-foreground-muted">{t.projectSettings.selectAtLeastOneCategory}</span>
                         ) : null}
                     </div>
 

@@ -2,7 +2,7 @@ import { ArrowUpRightIcon, LanguagesIcon, LinkIcon, Settings2Icon } from "lucide
 import { useEffect, useState } from "react";
 import type { LinkProps } from "react-router";
 import { BrandIcon } from "~/components/icons";
-import Link, { LinkPrefetchStrategy, useNavigate, VariantButtonLink } from "~/components/ui/link";
+import Link, { LinkPrefetchStrategy, TextLink, useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { DotSeparator } from "~/components/ui/separator";
 import { usePreferences } from "~/hooks/preferences";
@@ -18,7 +18,7 @@ export default function Footer() {
     const legal = t.legal;
 
     return (
-        <footer className="mx-auto mt-24 w-full bg-card-background pt-20 pb-8 dark:bg-card-background/35">
+        <footer className="mx-auto mt-24 w-full bg-card-background/50 pt-20 pb-8">
             <div className="footer-grid container gap-y-5 pb-16">
                 <LinksColumn area="logo">
                     <span
@@ -68,7 +68,7 @@ export default function Footer() {
                 <LinksColumn area="links-3">
                     <Link to="/legal" className="flex items-center gap-2 hover:underline">
                         <Title>{legal.legal}</Title>
-                        <LinkIcon className="h-3.5 w-3.5 text-muted-foreground" />
+                        <LinkIcon className="h-3.5 w-3.5 text-foreground-muted" />
                     </Link>
 
                     <FooterLink to="/legal/terms" aria-label={legal.termsTitle}>
@@ -116,10 +116,9 @@ export default function Footer() {
                     const url = alterUrlHintLocale(locale);
 
                     return (
-                        <Link
+                        <TextLink
                             key={url.href}
                             to={url.href.replace(url.origin, "")}
-                            className="link_blue hover:underline"
                             aria-label={title}
                             title={title}
                             preventScrollReset
@@ -130,7 +129,7 @@ export default function Footer() {
                             }}
                         >
                             {label}
-                        </Link>
+                        </TextLink>
                     );
                 })}
             </div>
@@ -147,7 +146,7 @@ function FooterLink({ children, ...props }: LinkProps) {
         <Link
             {...props}
             prefetch={LinkPrefetchStrategy.Viewport}
-            className="flex w-fit items-center justify-center gap-1 text-muted-foreground leading-none hover:text-foreground hover:underline lg:justify-start"
+            className="flex w-fit items-center justify-center gap-1 text-foreground-muted leading-none hover:text-foreground hover:underline lg:justify-start"
         >
             {children}
         </Link>
@@ -155,7 +154,7 @@ function FooterLink({ children, ...props }: LinkProps) {
 }
 
 function OpenInNewTab_Icon() {
-    return <ArrowUpRightIcon aria-hidden aria-label="Open in new tab" className="inline h-4 w-4 text-extra-muted-foreground" />;
+    return <ArrowUpRightIcon aria-hidden aria-label="Open in new tab" className="inline h-4 w-4 text-foreground-extra-muted" />;
 }
 
 function LinksColumn({ children, area }: { area: string; children: React.ReactNode }) {
@@ -194,7 +193,7 @@ export function LangSwitcher() {
                     minWidth: `calc(${currLocaleLabel.length}ch + 1.3rem)`,
                 }}
             >
-                <LanguagesIcon aria-hidden size="1.15rem" className="text-muted-foreground" aria-label="Language switcher" />
+                <LanguagesIcon aria-hidden size="1.15rem" className="text-foreground-muted" aria-label="Language switcher" />
                 <SelectValue className="flex items-center justify-start" placeholder={<p>{currLang}</p>} />
             </SelectTrigger>
 
@@ -210,8 +209,8 @@ export function LangSwitcher() {
                                     <span className="flex items-end justify-center align-bottom">{locale.nativeName}</span>
                                     {region ? (
                                         <>
-                                            <DotSeparator className="bg-extra-muted-foreground" />
-                                            <span className="text-muted-foreground/85 text-sm">{region.displayName}</span>
+                                            <DotSeparator className="bg-foreground-extra-muted" />
+                                            <span className="text-foreground-muted/85 text-sm">{region.displayName}</span>
                                         </>
                                     ) : null}
                                 </div>

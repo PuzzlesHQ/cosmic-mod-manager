@@ -19,7 +19,7 @@ export default function Redirect({ to }: { to: string }) {
 
     return (
         <div className="grid w-full place-items-center gap-4 py-8">
-            <span className="text-muted-foreground">{t.common.redirecting}</span>
+            <span className="text-foreground-muted">{t.common.redirecting}</span>
         </div>
     );
 }
@@ -34,7 +34,7 @@ export function SoftRedirect({ to }: { to: string }) {
 
     return (
         <div className="grid w-full place-items-center gap-4 py-8">
-            <span className="text-muted-foreground">{t.common.redirecting}</span>
+            <span className="text-foreground-muted">{t.common.redirecting}</span>
         </div>
     );
 }

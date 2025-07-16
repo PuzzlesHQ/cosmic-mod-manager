@@ -110,11 +110,11 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
                             className="flex w-full flex-col items-start justify-start gap-form-elements"
                         >
                             <div className="flex w-full flex-col items-center justify-center">
-                                <div className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded rounded-b-none bg-shallow-background px-4 py-3 sm:flex-nowrap">
+                                <div className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded rounded-b-none bg-raised-background px-4 py-3 sm:flex-nowrap">
                                     <div className="flex w-full items-center justify-start gap-1.5">
                                         <FileIcon
                                             aria-hidden
-                                            className="h-btn-icon w-btn-icon flex-shrink-0 text-muted-foreground"
+                                            className="h-btn-icon w-btn-icon flex-shrink-0 text-foreground-muted"
                                         />
 
                                         <div className="flex flex-wrap items-center justify-start gap-x-2">

@@ -134,7 +134,7 @@ export function LeaveTeam({ currUsersMembership, teamId, refreshData, isOrgTeam 
         >
             <div>
                 <h2 className="font-semibold text-lg">{leaveTeamMsg}</h2>
-                <p className="text-muted-foreground">{leaveTeamDesc}</p>
+                <p className="text-foreground-muted">{leaveTeamDesc}</p>
             </div>
 
             <ConfirmDialog

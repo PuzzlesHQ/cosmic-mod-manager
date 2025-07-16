@@ -34,7 +34,7 @@ export function LoginButton({ className, disabled }: { className?: string; disab
 
     return (
         <LoginDialog>
-            <Button className={className} disabled={disabled} variant="secondary-inverted" aria-label={t.form.login_withSpace}>
+            <Button className={className} disabled={disabled} variant="secondary" aria-label={t.form.login_withSpace}>
                 <LogInIcon aria-hidden className="h-btn-icon w-btn-icon" aria-label={t.form.login_withSpace} />
                 {t.form.login_withSpace}
             </Button>
@@ -60,7 +60,7 @@ export default function NavButton({ session }: NavbuttonProps) {
                         src={imageUrl(session.avatar)}
                         alt={`Profile picture of ${session?.userName}`}
                         fallback={fallbackUserIcon}
-                        className="h-nav-item w-nav-item rounded-full border-none bg-shallower-background p-0.5 dark:bg-shallow-background"
+                        className="h-nav-item w-nav-item rounded-full border-none bg-raised-background p-0.5"
                     />
                 </Button>
             </PopoverTrigger>

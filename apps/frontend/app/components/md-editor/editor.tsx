@@ -370,8 +370,7 @@ export default function MarkdownEditor({ editorValue, setEditorValue, placeholde
                             name="markdown-textarea"
                             placeholder={placeholder}
                             className={cn(
-                                "focus-within:!bg-shallow-background/10 h-[32rem] min-h-[16rem] w-full resize-y rounded-lg font-mono text-base",
-                                "text-muted-foreground focus-within:text-black dark:text-muted-foreground dark:focus-within:text-white",
+                                "focus-within:!bg-transparent h-[32rem] min-h-[16rem] w-full resize-y rounded-lg font-mono text-base text-foreground-muted focus-within:text-foreground-bright",
                                 wordWrap === true ? "overflow-x-auto whitespace-nowrap" : "break-words",
                                 textAreaClassName,
                             )}
@@ -413,7 +412,7 @@ export default function MarkdownEditor({ editorValue, setEditorValue, placeholde
                         />
 
                         {showInfoRow !== false && (
-                            <div className="flex w-full flex-wrap items-center justify-between gap-x-6 gap-y-2 text-muted-foreground text-sm">
+                            <div className="flex w-full flex-wrap items-center justify-between gap-x-6 gap-y-2 text-foreground-muted text-sm">
                                 <div className="flex items-center justify-start gap-2">
                                     <InfoIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                     <MarkdownRenderBox text={t.editor.supportsMarkdown("/md-editor")} />
@@ -426,10 +425,10 @@ export default function MarkdownEditor({ editorValue, setEditorValue, placeholde
                                     <div className="hidden cursor-pointer items-center justify-center gap-2 font-mono lg:flex">
                                         <span>{t.editor.keyboardShortcuts}</span>
                                         <div className="flex items-center justify-center gap-1 font-mono">
-                                            <span className="flex items-center justify-center rounded-sm bg-shallow-background px-1">
+                                            <span className="flex items-center justify-center rounded-sm bg-raised-background px-1">
                                                 ctrl
                                             </span>
-                                            <span className="flex items-center justify-center rounded-sm bg-shallow-background px-1">
+                                            <span className="flex items-center justify-center rounded-sm bg-raised-background px-1">
                                                 /
                                             </span>
                                         </div>
@@ -442,7 +441,7 @@ export default function MarkdownEditor({ editorValue, setEditorValue, placeholde
                     {previewOpen && (
                         <div
                             className={cn(
-                                "flex w-full items-center justify-center overflow-auto rounded border-2 border-shallow-background p-4",
+                                "flex w-full items-center justify-center overflow-auto rounded border-2 border-border p-4",
                                 !editorValue && "min-h-24",
                             )}
                         >
@@ -472,7 +471,7 @@ function IconButton({ children, tooltipContent, disabled, onClick, ...props }: I
                     variant="secondary"
                     tabIndex={disabled ? -1 : 0}
                     disabled={disabled}
-                    className="h-8 w-8 text-muted-foreground"
+                    className="h-8 w-8 text-foreground-muted"
                     onClick={onClick}
                     {...props}
                 >
@@ -485,7 +484,7 @@ function IconButton({ children, tooltipContent, disabled, onClick, ...props }: I
 }
 
 function Separator() {
-    return <span className="hidden h-10 w-[0.1rem] bg-shallow-background lg:flex" />;
+    return <span className="hidden h-10 w-[0.1rem] bg-border lg:flex" />;
 }
 
 function BtnGroup({ children }: { children: React.ReactNode }) {
@@ -653,9 +652,7 @@ function LinkInsertionModal({
                 <div className="flex w-full flex-col items-start justify-center gap-1.5">
                     <Label htmlFor="markdown-editor-link-label-input" className="flex items-center justify-center">
                         {altTextInputLabel}{" "}
-                        {isAltTextRequired && (
-                            <span className="flex h-full items-start justify-center text-accent-foreground">*</span>
-                        )}
+                        {isAltTextRequired && <span className="flex h-full items-start justify-center text-accent-text">*</span>}
                     </Label>
                     <Input
                         type="text"
@@ -671,7 +668,7 @@ function LinkInsertionModal({
             )}
             <div className="flex w-full flex-col items-start justify-center gap-1.5">
                 <Label htmlFor="markdown-editor-link-url-input" className="flex items-center justify-center">
-                    {urlInputLabel} <span className="flex h-full items-start justify-center text-accent-foreground">*</span>
+                    {urlInputLabel} <span className="flex h-full items-start justify-center text-accent-text">*</span>
                 </Label>
                 <Input
                     id="markdown-editor-link-url-input"
@@ -696,9 +693,7 @@ function LinkInsertionModal({
                 <Label>{t.editor.preview}</Label>
                 <div
                     tabIndex={-1}
-                    className={cn(
-                        "flex min-h-24 w-full items-start justify-start rounded border-2 border-shallow-background bg-shallow-background/25 px-4 py-3 dark:border",
-                    )}
+                    className={cn("flex min-h-24 w-full items-start justify-start rounded border border-border px-4 py-3")}
                 >
                     {url && !urlValidationError ? (
                         <MarkdownRenderBox text={getMarkdownString(url, urlAltText, true).split(textSeparatorChar).join("")} />

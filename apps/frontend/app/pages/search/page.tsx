@@ -99,7 +99,7 @@ export default function SearchPage() {
                                 aria-label={searchLabel}
                             />
 
-                            <kbd className="-translate-y-1/2 absolute end-3 top-1/2 rounded-[0.3rem] border border-shallower-background/85 bg-shallower-background/50 px-1">
+                            <kbd className="-translate-y-1/2 absolute end-3 top-1/2 rounded-[0.3rem] border border-hover-background bg-raised-background px-1">
                                 /
                             </kbd>
                         </label>
@@ -124,7 +124,7 @@ export default function SearchPage() {
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
-                                <SelectLabel className="font-bold text-extra-muted-foreground">{t.search.sortBy}</SelectLabel>
+                                <SelectLabel className="font-bold text-foreground-extra-muted">{t.search.sortBy}</SelectLabel>
                                 {[
                                     SearchResultSortMethod.RELEVANCE,
                                     SearchResultSortMethod.TRENDING,
@@ -175,7 +175,7 @@ export default function SearchPage() {
                     </Select>
 
                     <Button
-                        className={cn("flex lg:hidden", showFilters && "!ring-[0.13rem] ring-accent-background/75")}
+                        className={cn("flex lg:hidden", showFilters && "!ring-[0.13rem] ring-accent-bg")}
                         variant="secondary"
                         onClick={() => setShowFilters((prev) => !prev)}
                     >
@@ -201,7 +201,7 @@ function SearchBarIcon() {
             <SearchIcon
                 aria-hidden
                 className={cn(
-                    "col-span-full row-span-full h-btn-icon-md w-btn-icon-md text-extra-muted-foreground opacity-100 transition-opacity duration-500",
+                    "col-span-full row-span-full h-btn-icon-md w-btn-icon-md text-foreground-extra-muted opacity-100 transition-opacity duration-500",
                     showSpinner && "opacity-0",
                 )}
             />
@@ -213,7 +213,7 @@ function Spinner({ className }: { className?: string }) {
     return (
         <div
             className={cn(
-                "h-[1.17rem] w-[1.17rem] animate-spin rounded-full border-[0.17rem] border-accent-background border-t-transparent transition-opacity duration-500",
+                "h-[1.17rem] w-[1.17rem] animate-spin rounded-full border-[0.17rem] border-accent-bg border-t-transparent transition-opacity duration-500",
                 className,
             )}
         />

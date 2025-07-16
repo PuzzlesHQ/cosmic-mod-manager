@@ -66,7 +66,7 @@ export default function LoaderBar(props?: Props) {
     return (
         <LoadingBar
             ref={ref}
-            className="!bg-gradient-to-r !from-accent-foreground !via-accent-background/85 !to-accent-background/85"
+            className="!bg-gradient-to-r !from-accent-text !via-accent-bg/85 !to-accent-bg"
             loaderSpeed={1500}
             shadow={false}
             height={props.height || 2.5}

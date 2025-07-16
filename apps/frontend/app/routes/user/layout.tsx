@@ -24,7 +24,7 @@ export default function () {
 
     if (data.userSlug === "deleted_user") {
         return (
-            <div className="full_page flex flex-col items-center justify-center py-12 text-extra-muted-foreground">
+            <div className="full_page flex flex-col items-center justify-center py-12 text-foreground-extra-muted">
                 <UserXIcon className="h-20 w-20" />
                 <h2 className="font-semibold text-2xl">{t.user.accountDeleted}</h2>
             </div>
@@ -97,7 +97,8 @@ export async function loader(props: Route.LoaderArgs): Promise<LoaderData> {
 
 export function meta(props: Route.MetaArgs): MetaDescriptor[] {
     const { t } = useTranslation();
-    const { userData, userSlug } = props.data;
+    const userSlug = props.params.userName;
+    const userData = props.data?.userData;
 
     if (!userData?.id) {
         return MetaTags({

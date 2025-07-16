@@ -27,7 +27,7 @@ function DropdownMenuSubTrigger({
         <DropdownMenuPrimitive.SubTrigger
             ref={ref}
             className={cn(
-                "flex cursor-default select-none items-center rounded-sm bg-shallow-background px-2 py-1.5 text-sm outline-none data-[state=open]:bg-shallow-background",
+                "flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-raised-background data-[state=open]:bg-raised-background",
                 inset && "ps-8",
                 className,
             )}
@@ -45,7 +45,7 @@ function DropdownMenuSubContent({ ref, className, ...props }: React.ComponentPro
         <DropdownMenuPrimitive.SubContent
             ref={ref}
             className={cn(
-                "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 min-w-[8rem] overflow-hidden rounded-md border border-shallow-background bg-card-background p-1 text-foreground shadow-lg data-[state=closed]:animate-out data-[state=open]:animate-in",
+                "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-card-background p-1 text-foreground shadow-lg data-[state=closed]:animate-out data-[state=open]:animate-in",
                 className,
             )}
             {...props}
@@ -66,7 +66,7 @@ function DropdownMenuContent({
                 ref={ref}
                 sideOffset={sideOffset}
                 className={cn(
-                    "z-50 flex min-w-[8rem] flex-col gap-1 overflow-hidden rounded border border-shallow-background bg-card-background p-1 text-foreground shadow-md",
+                    "z-50 flex min-w-[8rem] flex-col gap-1 overflow-hidden rounded border border-border bg-card-background p-1 text-foreground shadow-md",
                     "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=open]:animate-in",
                     className,
                 )}
@@ -89,7 +89,7 @@ function DropdownMenuItem({
         <DropdownMenuPrimitive.Item
             ref={ref}
             className={cn(
-                "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-shallow-background focus:text-foreground-bright data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+                "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-raised-background focus:text-foreground-bright data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
                 inset && "ps-8",
                 className,
             )}
@@ -110,7 +110,7 @@ function DropdownMenuCheckboxItem({
         <DropdownMenuPrimitive.CheckboxItem
             ref={ref}
             className={cn(
-                "relative flex cursor-default select-none items-center rounded-sm py-1.5 ps-8 pe-2 text-sm outline-none transition-colors focus:bg-shallow-background focus:text-foreground-bright data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+                "relative flex cursor-default select-none items-center rounded-sm py-1.5 ps-8 pe-2 text-sm outline-none transition-colors focus:bg-raised-background focus:text-foreground-bright data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
                 className,
             )}
             checked={checked}
@@ -137,7 +137,7 @@ function DropdownMenuRadioItem({
         <DropdownMenuPrimitive.RadioItem
             ref={ref}
             className={cn(
-                "relative flex cursor-default select-none items-center rounded-sm py-1.5 ps-8 pe-2 text-sm outline-none transition-colors focus:bg-shallow-background focus:text-foreground-bright data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+                "relative flex cursor-default select-none items-center rounded-sm py-1.5 ps-8 pe-2 text-sm outline-none transition-colors focus:bg-raised-background focus:text-foreground-bright data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
                 className,
             )}
             {...props}
@@ -173,11 +173,7 @@ DropdownMenuLabel.displayName = DropdownMenuPrimitive.Label.displayName;
 
 function DropdownMenuSeparator({ ref, className, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
     return (
-        <DropdownMenuPrimitive.Separator
-            ref={ref}
-            className={cn("-mx-1 my-1 h-px bg-shallow-background", className)}
-            {...props}
-        />
+        <DropdownMenuPrimitive.Separator ref={ref} className={cn("-mx-1 my-1 h-px bg-raised-background", className)} {...props} />
     );
 }
 DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName;

@@ -12,10 +12,7 @@ type Props = {
 export function FormErrorMessage({ text, className, labelClassName, children }: Props) {
     return (
         <div
-            className={cn(
-                "flex w-full items-center justify-start gap-2 rounded bg-danger-background/15 px-4 py-2 text-danger-foreground",
-                className,
-            )}
+            className={cn("flex w-full items-center justify-start gap-2 rounded bg-error-bg px-4 py-2 text-error-fg", className)}
         >
             <TriangleAlertIcon aria-hidden className="h-btn-icon w-btn-icon shrink-0" />
             {children ? children : <p className={cn("leading-snug", labelClassName)}>{text}</p>}
@@ -27,7 +24,7 @@ export function FormSuccessMessage({ text, className, labelClassName, children }
     return (
         <div
             className={cn(
-                "flex w-full items-center justify-start gap-2 rounded bg-success-background/15 px-4 py-2 text-success-foreground",
+                "flex w-full items-center justify-start gap-2 rounded bg-success-bg px-4 py-2 text-success-fg",
                 className,
             )}
         >
@@ -41,7 +38,7 @@ export function FormWarningMessage({ text, className, labelClassName, children }
     return (
         <div
             className={cn(
-                "flex w-full items-center justify-start gap-2 rounded bg-warning-background/15 px-4 py-2 text-warning-foreground",
+                "flex w-full items-center justify-start gap-2 rounded bg-warning-bg px-4 py-2 text-warning-fg",
                 className,
             )}
         >

@@ -23,7 +23,7 @@ export default function OrgProjectsSettings() {
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <BadgeInfoIcon aria-hidden className="h-btn-icon-md w-btn-icon-md text-muted-foreground" />
+                                    <BadgeInfoIcon aria-hidden className="h-btn-icon-md w-btn-icon-md text-foreground-muted" />
                                 </TooltipTrigger>
                                 <TooltipContent className="max-w-md">{t.organization.transferProjectsTip}</TooltipContent>
                             </Tooltip>

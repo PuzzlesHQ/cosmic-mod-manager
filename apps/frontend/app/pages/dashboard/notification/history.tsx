@@ -41,7 +41,7 @@ export default function NotificationsHistoryPage({
             </CardHeader>
 
             <CardContent className="flex flex-col gap-panel-cards">
-                {!notifications?.length && <span className="text-muted-foreground">{t.dashboard.noUnreadNotifs}</span>}
+                {!notifications?.length && <span className="text-foreground-muted">{t.dashboard.noUnreadNotifs}</span>}
 
                 <NotificationsList
                     notifications={notifications}

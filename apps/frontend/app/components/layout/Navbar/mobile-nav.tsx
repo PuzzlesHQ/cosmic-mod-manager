@@ -48,7 +48,7 @@ export function MobileNav({ session, isNavMenuOpen, NavLinks }: MobileNavProps) 
                     })}
                     {!!session?.id && (
                         <>
-                            <li className="my-2 h-px w-full bg-shallower-background dark:bg-shallow-background"> </li>
+                            <li className="my-2 h-px w-full bg-raised-background"> </li>
 
                             <li className="mb-2 flex w-full flex-col items-center justify-center gap-1">
                                 <div className="flex w-full items-center justify-center gap-2">
@@ -122,10 +122,7 @@ export function MobileNav({ session, isNavMenuOpen, NavLinks }: MobileNavProps) 
                             ) : null}
 
                             <li className="w-full">
-                                <SignOutBtn
-                                    disabled={!isNavMenuOpen}
-                                    className="justify-center hover:bg-shallower-background dark:hover:bg-shallow-background"
-                                />
+                                <SignOutBtn disabled={!isNavMenuOpen} className="justify-center bg-raised-background" />
                             </li>
                         </>
                     )}
@@ -153,7 +150,7 @@ export function HamMenu({ isNavMenuOpen, toggleNavMenu }: HamMenuProps) {
     return (
         <button
             type="button"
-            className="navItemHeight flex w-10 cursor-pointer items-center justify-center rounded text-foreground hover:bg-card-background dark:hover:bg-shallow-background"
+            className="navItemHeight flex w-10 cursor-pointer items-center justify-center rounded text-foreground hover:bg-raised-background"
             onClick={handleHamMenuClick}
             aria-label="Menu"
         >

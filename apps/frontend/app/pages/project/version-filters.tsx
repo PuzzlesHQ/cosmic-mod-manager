@@ -18,7 +18,6 @@ import { ChipButton } from "~/components/ui/chip";
 import { CommandSeparator } from "~/components/ui/command";
 import { MultiSelect } from "~/components/ui/multi-select";
 import { releaseChannelTextColor } from "~/components/ui/release-channel-pill";
-import { usePreferences } from "~/hooks/preferences";
 import { useTranslation } from "~/locales/provider";
 
 const LOADER_KEY = "l";
@@ -40,7 +39,6 @@ interface VersionFiltersProps {
 
 export default function VersionFilters(props: VersionFiltersProps) {
     const { t } = useTranslation();
-    const { isActiveThemeDark } = usePreferences();
     const [searchParams, setSearchParams] = useSearchParams();
 
     const [showExperimentalGameVersions, setShowExperimentalGameVersions] = useState(false);
@@ -75,7 +73,7 @@ export default function VersionFilters(props: VersionFiltersProps) {
     const hasDevVersions = props.allProjectVersions.some((ver) => ver.releaseChannel === VersionReleaseChannel.DEV);
 
     const DownArrowIcon = (
-        <ChevronDownIcon aria-hidden className="indicator h-btn-icon-md w-btn-icon-md text-extra-muted-foreground" />
+        <ChevronDownIcon aria-hidden className="indicator h-btn-icon-md w-btn-icon-md text-foreground-extra-muted" />
     );
 
     const filterComponent = (
@@ -95,7 +93,7 @@ export default function VersionFilters(props: VersionFiltersProps) {
                             searchBox={false}
                             defaultMinWidth={false}
                             customTrigger={
-                                <Button variant="secondary-inverted">
+                                <Button variant="secondary">
                                     <FilterIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                     Loaders
                                     {DownArrowIcon}
@@ -116,7 +114,7 @@ export default function VersionFilters(props: VersionFiltersProps) {
                             }}
                             defaultMinWidth={false}
                             customTrigger={
-                                <Button variant="secondary-inverted">
+                                <Button variant="secondary">
                                     <FilterIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                     {t.search.gameVersions}
                                     {DownArrowIcon}
@@ -129,7 +127,7 @@ export default function VersionFilters(props: VersionFiltersProps) {
                                         <LabelledCheckbox
                                             checked={showExperimentalGameVersions}
                                             onCheckedChange={(checked) => setShowExperimentalGameVersions(checked === true)}
-                                            className="my-1 ps-3.5 pe-2 text-extra-muted-foreground"
+                                            className="my-1 ps-3.5 pe-2 text-foreground-extra-muted"
                                         >
                                             {t.form.showAllVersions}
                                         </LabelledCheckbox>
@@ -154,7 +152,7 @@ export default function VersionFilters(props: VersionFiltersProps) {
                                 setFilters({ ...filters, releaseChannels: values });
                             }}
                             customTrigger={
-                                <Button variant="secondary-inverted">
+                                <Button variant="secondary">
                                     <FilterIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                     {t.search.channels}
                                     {DownArrowIcon}
@@ -223,12 +221,6 @@ export default function VersionFilters(props: VersionFiltersProps) {
                     {filters.loaders.map((loader) => {
                         const loaderData = getLoaderFromString(loader);
                         if (!loaderData) return null;
-                        const accentForeground = loaderData.metadata?.foreground;
-                        let color = "hsla(var(--muted-foreground))";
-
-                        if (accentForeground) {
-                            color = isActiveThemeDark ? accentForeground.dark : accentForeground.light;
-                        }
 
                         return (
                             <ChipButton
@@ -240,7 +232,7 @@ export default function VersionFilters(props: VersionFiltersProps) {
                                     });
                                 }}
                                 style={{
-                                    color: color,
+                                    color: `hsla(var(--loader-fg-${loaderData.name}, --foreground-muted))`,
                                 }}
                             >
                                 {CapitalizeAndFormatString(loader)}

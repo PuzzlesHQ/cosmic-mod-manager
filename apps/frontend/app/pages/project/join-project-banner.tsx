@@ -59,8 +59,8 @@ export default function TeamInvitationBanner({ teamId, role, className, refreshD
 
     return (
         <Card className={cn("flex w-full flex-col gap-4 p-card-surround", className)}>
-            <CardTitle className="text-muted-foreground">{t.project.teamInvitationTitle(teamType)}</CardTitle>
-            <span className="ProjectDetailsData text-muted-foreground">{t.project.teamInviteDesc(teamType, role)}</span>
+            <CardTitle className="text-foreground-muted">{t.project.teamInvitationTitle(teamType)}</CardTitle>
+            <span className="ProjectDetailsData text-foreground-muted">{t.project.teamInviteDesc(teamType, role)}</span>
             <div className="flex flex-wrap items-center justify-start gap-3">
                 <Button className="" size="sm" onClick={handleAcceptInvite} disabled={isLoading.value}>
                     {isLoading.value === true && isLoading.action === "accept" ? (

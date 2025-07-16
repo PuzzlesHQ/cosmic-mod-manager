@@ -129,7 +129,7 @@ export default function InteractiveDownloadPopup() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant={isVersionDetailsPage ? "secondary-inverted" : "default"}>
+                <Button variant={isVersionDetailsPage ? "secondary" : "default"}>
                     <DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     {t.common.download}
                 </Button>
@@ -162,7 +162,7 @@ export default function InteractiveDownloadPopup() {
                                     <LabelledCheckbox
                                         checked={showAllVersions}
                                         onCheckedChange={(checked) => setShowAllVersions(checked === true)}
-                                        className="ms-2 mt-1 px-2 pb-2 text-extra-muted-foreground"
+                                        className="ms-2 mt-1 px-2 pb-2 text-foreground-extra-muted"
                                     >
                                         {t.form.showAllVersions}
                                     </LabelledCheckbox>
@@ -174,12 +174,12 @@ export default function InteractiveDownloadPopup() {
                         <Button
                             variant="outline"
                             role="combobox"
-                            className="w-full justify-between text-extra-muted-foreground"
+                            className="w-full justify-between text-foreground-extra-muted"
                             disabled={projectData.gameVersions.length < 2}
                         >
                             <span className="flex items-center justify-start gap-2 font-medium">
                                 <Gamepad2Icon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                                <span className="text-muted-foreground">
+                                <span className="text-foreground-muted">
                                     {selectedGameVersion
                                         ? t.project.gameVersion(
                                               <em key="download-game-version" className="text-foreground/90 not-italic">
@@ -205,11 +205,11 @@ export default function InteractiveDownloadPopup() {
                             <Button
                                 variant="outline"
                                 role="combobox"
-                                className="w-full justify-between text-extra-muted-foreground"
+                                className="w-full justify-between text-foreground-extra-muted"
                             >
                                 <span className="flex items-center justify-start gap-2 font-medium">
                                     <WrenchIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                                    <span className="text-muted-foreground">
+                                    <span className="text-foreground-muted">
                                         {selectedLoader
                                             ? t.project.platform(
                                                   <em key="download-version-loader" className="text-foreground/90 not-italic">
@@ -291,7 +291,7 @@ function AvailableVersionsList({ selectedGameVersion, selectedLoader }: Availabl
 
     if (!versionsList.length)
         return (
-            <span className="flex w-full items-center justify-start px-1 py-3 text-extra-muted-foreground italic">
+            <span className="flex w-full items-center justify-start px-1 py-3 text-foreground-extra-muted italic">
                 No versions available for {getGameVersionFromValue(selectedGameVersion)?.label} on{" "}
                 {CapitalizeAndFormatString(selectedLoader)}
             </span>
@@ -316,7 +316,7 @@ function AvailableVersionsList({ selectedGameVersion, selectedLoader }: Availabl
                                         {version.versionNumber}
                                     </Link>
                                 </DialogClose>
-                                <span className="font-medium text-muted-foreground/85 text-sm leading-none">{version.title}</span>
+                                <span className="font-medium text-foreground-muted/85 text-sm leading-none">{version.title}</span>
                             </div>
                         </div>
 

@@ -81,7 +81,7 @@ export default function OrgPageLayout() {
                     <Outlet />
                 ) : (
                     <div className="flex w-full items-center justify-center py-12">
-                        <p className="text-center text-lg text-muted-foreground italic">{t.organization.orgDoesntHaveProjects}</p>
+                        <p className="text-center text-lg text-foreground-muted italic">{t.organization.orgDoesntHaveProjects}</p>
                     </div>
                 )}
             </div>
@@ -149,7 +149,7 @@ function OrgInfoHeader({
                 title={orgData.name}
                 description={orgData.description || ""}
                 titleBadge={
-                    <div className="ms-2 flex items-center justify-center gap-1.5 font-bold text-extra-muted-foreground">
+                    <div className="ms-2 flex items-center justify-center gap-1.5 font-bold text-foreground-extra-muted">
                         <Building2Icon aria-hidden className="h-btn-icon w-btn-icon" />
                         {t.project.organization}
                     </div>
@@ -189,24 +189,24 @@ function OrgInfoHeader({
                 }
                 actionBtns={
                     currUsersMembership?.id || isModerator(session?.role) ? (
-                        <VariantButtonLink variant="secondary-inverted" to={OrgPagePath(orgData.slug, "settings")}>
+                        <VariantButtonLink variant="secondary" to={OrgPagePath(orgData.slug, "settings")}>
                             <SettingsIcon aria-hidden className="h-btn-icon w-btn-icon" />
                             {t.dashboard.manage}
                         </VariantButtonLink>
                     ) : null
                 }
             >
-                <div className="flex items-center gap-2 border-0 border-card-background border-e pe-4 dark:border-shallow-background">
+                <div className="flex items-center gap-2">
                     <UsersIcon aria-hidden className="h-[1.1rem] w-[1.1rem]" />
                     <span className="font-semibold">
                         {t.count.members(orgData.members.length, FormatCount(orgData.members.length, formattedLocaleName))}
                     </span>
                 </div>
-                <div className="flex items-center gap-2 border-0 border-card-background border-e pe-4 dark:border-shallow-background">
+                <div className="flex items-center gap-2">
                     <CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     <span className="font-semibold">{t.count.projects(totalProjects, totalProjects)}</span>
                 </div>
-                <div className="flex items-center gap-2 pe-4">
+                <div className="flex items-center gap-2">
                     <DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     <span className="font-semibold">
                         {t.count.downloads(totalDownloads, FormatCount(totalDownloads, formattedLocaleName))}

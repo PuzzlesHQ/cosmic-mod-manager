@@ -62,7 +62,7 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
                 <div className="flex items-center justify-between gap-x-6 gap-y-2">
                     <CardTitle>{t.settings.sessions}</CardTitle>
                     <label
-                        className="flex items-center justify-center gap-2 text-muted-foreground text-sm"
+                        className="flex items-center justify-center gap-2 text-foreground-muted text-sm"
                         htmlFor="show-ip-addresses"
                     >
                         {t.settings.showIpAddr}
@@ -89,7 +89,7 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
                                             {showIp ? (
                                                 <span>{session.ip}</span>
                                             ) : (
-                                                <span className="text-extra-muted-foreground" title={session.ip || ""}>
+                                                <span className="text-foreground-extra-muted" title={session.ip || ""}>
                                                     [{t.settings.ipHidden}]
                                                 </span>
                                             )}
@@ -97,7 +97,7 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
                                         </div>
                                     </div>
 
-                                    <div className="flex w-full flex-wrap items-center justify-start gap-x-2 text-muted-foreground">
+                                    <div className="flex w-full flex-wrap items-center justify-start gap-x-2 text-foreground-muted">
                                         {session.city || session.country ? (
                                             <>
                                                 <span>
@@ -115,7 +115,7 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
                                                     {t.settings.lastAccessed(TimePassedSince({ date: session.dateLastActive }))}
                                                 </span>
                                             </TooltipTrigger>
-                                            <TooltipContent className="bg-shallower-background dark:bg-shallow-background">
+                                            <TooltipContent>
                                                 <FormattedDate date={session.dateLastActive} />
                                             </TooltipContent>
                                         </Tooltip>
@@ -126,7 +126,7 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
                                             <TooltipTrigger className="cursor-text">
                                                 <span>{t.settings.created(TimePassedSince({ date: session.dateCreated }))}</span>
                                             </TooltipTrigger>
-                                            <TooltipContent className="bg-shallower-background dark:bg-shallow-background">
+                                            <TooltipContent>
                                                 <FormattedDate date={session.dateCreated} />
                                             </TooltipContent>
                                         </Tooltip>
@@ -134,7 +134,7 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
 
                                     <div className="mt-1 flex items-center justify-start">
                                         <Tooltip>
-                                            <TooltipTrigger className="flex cursor-default items-center justify-start gap-2 text-muted-foreground">
+                                            <TooltipTrigger className="flex cursor-default items-center justify-start gap-2 text-foreground-muted">
                                                 {session?.providerName !== AuthProvider.CREDENTIAL ? (
                                                     authProvidersList?.map((authProvider) => {
                                                         if (authProvider?.name.toLowerCase() === session?.providerName) {
@@ -151,7 +151,7 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
                                                 )}
                                                 <span className="capitalize">{session?.providerName}</span>
                                             </TooltipTrigger>
-                                            <TooltipContent className="bg-shallower-background dark:bg-shallow-background">
+                                            <TooltipContent>
                                                 {t.settings.sessionCreatedUsing(Capitalize(session?.providerName))}
                                             </TooltipContent>
                                         </Tooltip>
@@ -159,10 +159,10 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
                                 </div>
                                 <div>
                                     {session.id === currSession?.sessionId ? (
-                                        <span className="text-muted-foreground italic">{t.settings.currSession}</span>
+                                        <span className="text-foreground-muted italic">{t.settings.currSession}</span>
                                     ) : (
                                         <Button
-                                            variant="secondary-inverted"
+                                            variant="secondary"
                                             disabled={isLoading.value}
                                             onClick={() => {
                                                 revokeSession(session.id);

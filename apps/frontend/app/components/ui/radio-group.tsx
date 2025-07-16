@@ -12,8 +12,8 @@ export function RadioGroupItem({ className, ...props }: React.ComponentProps<typ
         <RadioGroupPrimitive.Item
             data-slot="radio-group-item"
             className={cn(
-                "aspect-square size-4 shrink-0 rounded-full border-[0.14rem] border-extra-muted-foreground text-primary shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:bg-input/30 dark:aria-invalid:ring-destructive/40",
-                "data-[state='checked']:border-accent-background",
+                "aspect-square size-4 shrink-0 rounded-full border-[0.14rem] border-foreground-extra-muted text-primary shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:bg-input/30 dark:aria-invalid:ring-destructive/40",
+                "data-[state='checked']:border-accent-bg",
                 className,
             )}
             {...props}
@@ -22,7 +22,7 @@ export function RadioGroupItem({ className, ...props }: React.ComponentProps<typ
                 data-slot="radio-group-indicator"
                 className="relative flex items-center justify-center"
             >
-                <CircleIcon className="-translate-x-1/2 -translate-y-1/2 absolute start-1/2 top-1/2 size-2 fill-current stroke-current text-accent-background" />
+                <CircleIcon className="-translate-x-1/2 -translate-y-1/2 absolute start-1/2 top-1/2 size-2 fill-current stroke-current text-accent-bg" />
             </RadioGroupPrimitive.Indicator>
         </RadioGroupPrimitive.Item>
     );
@@ -50,7 +50,7 @@ export function ButtonStyleRadioGroup(props: ButtonStyleRadioGroup_Props) {
                         variant: "ghost",
                         size: "sm",
                     }),
-                    props.currvalue === item.value && "bg-shallow-background text-foreground-bright",
+                    props.currvalue === item.value && "bg-raised-background text-foreground-bright",
                 )}
             >
                 <RadioGroupItem value={item.value} id={id} />

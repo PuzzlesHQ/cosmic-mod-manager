@@ -51,7 +51,7 @@ function ComboBox(props: ComboBoxProps) {
                     }}
                     className={cn(
                         option?.disabled === true &&
-                            "text-danger-foreground data-[selected=true]:bg-shallow-background/50 data-[selected=true]:text-danger-foreground",
+                            "text-danger-fg data-[selected=true]:bg-raised-background data-[selected=true]:text-danger-fg",
                     )}
                 >
                     <Check className={cn("me-2 h-4 w-4", props.value === option.value ? "opacity-100" : "opacity-0")} />
@@ -73,8 +73,8 @@ function ComboBox(props: ComboBoxProps) {
     return (
         <Popover open={open} onOpenChange={setOpen} modal={true}>
             <PopoverTrigger asChild>{props.children}</PopoverTrigger>
-            <PopoverContent className="border-none p-0 sm:min-w-[28rem]">
-                <Command className="border border-shallow-background">
+            <PopoverContent align="end" className="border-none p-0 sm:min-w-[28rem]">
+                <Command className="border border-border">
                     {props.inputBox === false ? null : (
                         <CommandInput
                             value={searchVal}

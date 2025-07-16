@@ -53,7 +53,7 @@ export function VersionTitleInput({ name, value, disabled, inputRef, onChange }:
     return (
         <Input
             placeholder={t.version.enterVersionTitle}
-            className="!h-12 !py-1 !px-4 !text-muted-foreground font-semibold text-xl"
+            className="!h-12 !py-1 !px-4 !text-foreground-muted font-semibold text-xl"
             name={name}
             value={value}
             disabled={disabled}
@@ -169,13 +169,10 @@ export function MetadataInputCard({ projectType, formControl }: MetadataInputCar
 
                                 {field.value === VersionReleaseChannel.DEV ? (
                                     <TooltipProvider>
-                                        <TooltipTemplate
-                                            className="max-w-sm bg-shallow-background text-start text-foreground-bright"
-                                            content={t.version.devReleasesNote}
-                                        >
+                                        <TooltipTemplate className="max-w-sm text-start" content={t.version.devReleasesNote}>
                                             <CircleAlertIcon
                                                 aria-hidden
-                                                className="ms-auto h-btn-icon w-btn-icon cursor-help text-warning-foreground"
+                                                className="ms-auto h-btn-icon w-btn-icon cursor-help text-warning-fg"
                                             />
                                         </TooltipTemplate>
                                     </TooltipProvider>
@@ -265,7 +262,7 @@ export function MetadataInputCard({ projectType, formControl }: MetadataInputCar
                                     <LabelledCheckbox
                                         checked={showAllVersions}
                                         onCheckedChange={(checked) => setShowAllVersions(checked === true)}
-                                        className="mt-1 ps-3.5 text-extra-muted-foreground"
+                                        className="mt-1 ps-3.5 text-foreground-extra-muted"
                                     >
                                         {t.form.showAllVersions}
                                     </LabelledCheckbox>
@@ -445,7 +442,7 @@ export function AddDependencies({ dependencies, setDependencies, currProjectId, 
             ) : null}
 
             <div className="flex w-full flex-col gap-1">
-                <span className="font-semibold text-muted-foreground">{t.version.addDep}</span>
+                <span className="font-semibold text-foreground-muted">{t.version.addDep}</span>
 
                 <div className="flex w-full flex-col items-start justify-center gap-2">
                     <Select
@@ -532,7 +529,7 @@ function DependencyItem({ dependencyData, versionId, projectId, dependencyType, 
     if (!dependencyProject?.id) return null;
 
     return (
-        <div className="flex w-full items-center justify-between gap-x-4 gap-y-1 text-muted-foreground">
+        <div className="flex w-full items-center justify-between gap-x-4 gap-y-1 text-foreground-muted">
             <div className="flex items-center justify-start gap-2">
                 <ImgWrapper src={imageUrl(dependencyProject.icon)} alt={dependencyProject.name} className="h-12 w-12 rounded" />
                 <div className="flex flex-col items-start justify-start">
@@ -563,19 +560,19 @@ export function SelectPrimaryFileInput({ children, selectedFile, inputId }: Prim
     const { t } = useTranslation();
 
     return (
-        <div className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded bg-shallow-background/85 px-4 py-2 sm:flex-nowrap">
+        <div className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded bg-raised-background px-4 py-2 sm:flex-nowrap">
             {children}
 
             <div>
-                <FileIcon aria-hidden className="me-1.5 inline h-btn-icon w-btn-icon flex-shrink-0 text-muted-foreground" />
+                <FileIcon aria-hidden className="me-1.5 inline h-btn-icon w-btn-icon flex-shrink-0 text-foreground-muted" />
                 {selectedFile ? (
                     <span className="inline-flex flex-wrap items-center justify-start gap-x-2">
                         <strong className="font-semibold">{selectedFile.name}</strong>{" "}
                         <span className="ms-0.5 whitespace-nowrap">({parseFileSize(selectedFile.size)})</span>{" "}
-                        <span className="ms-1 text-muted-foreground italic">{t.version.primary}</span>
+                        <span className="ms-1 text-foreground-muted italic">{t.version.primary}</span>
                     </span>
                 ) : (
-                    <span className="text-muted-foreground italic">{t.version.noPrimaryFile}</span>
+                    <span className="text-foreground-muted italic">{t.version.noPrimaryFile}</span>
                 )}
             </div>
 
@@ -657,17 +654,10 @@ function AdditionalFiles({
             <div className="flex w-full flex-wrap items-center justify-between gap-x-6">
                 <div className="flex flex-col">
                     <span className="font-semibold">{t.version.uploadExtraFiles}</span>
-                    <span className="mb-1 text-muted-foreground text-sm">{t.version.uploadExtraFilesDesc}</span>
+                    <span className="mb-1 text-foreground-muted text-sm">{t.version.uploadExtraFilesDesc}</span>
                 </div>
 
-                <InteractiveLabel
-                    htmlFor={inputId}
-                    className={cn(
-                        "flex cursor-pointer items-center justify-center gap-2 rounded px-4 py-2",
-                        "cursor-pointer border border-shallow-background text-muted-foreground hover:bg-shallow-background/70",
-                        "focus-visible:keyboard_focus_ring focus-visible:outline-none",
-                    )}
-                >
+                <InteractiveLabel htmlFor={inputId} className={cn(buttonVariants({ variant: "outline" }), "cursor-pointer")}>
                     <UploadIcon aria-hidden className="h-btn-icon w-btn-icon" />
                     {t.version.selectFiles}
                 </InteractiveLabel>
@@ -678,11 +668,11 @@ function AdditionalFiles({
                     {selectedFiles?.map((file, index) => (
                         <div
                             key={`${file.name}-${index}`}
-                            className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded bg-shallow-background/75 px-4 py-2 sm:flex-nowrap"
+                            className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded bg-raised-background px-4 py-2 sm:flex-nowrap"
                         >
-                            <div className="text-muted-foreground">
+                            <div className="text-foreground-muted">
                                 {children}
-                                <FileIcon aria-hidden className="me-1.5 inline h-btn-icon w-btn-icon text-muted-foreground" />
+                                <FileIcon aria-hidden className="me-1.5 inline h-btn-icon w-btn-icon text-foreground-muted" />
                                 <strong className="text-wrap font-semibold">{file.name}</strong>{" "}
                                 <span className="ms-0.5 whitespace-nowrap">({parseFileSize(file.size)})</span>
                             </div>

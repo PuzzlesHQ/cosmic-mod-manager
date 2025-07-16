@@ -164,7 +164,7 @@ export default function GeneralSettingsPage() {
                                             id="project-slug-input"
                                             autoComplete="off"
                                         />
-                                        <span className="px-1 text-muted-foreground text-sm lg:text-base">
+                                        <span className="px-1 text-foreground-muted text-sm lg:text-base">
                                             {Config.FRONTEND_URL}/{form.getValues().type?.[0] || ctx.projectType}/
                                             <em className="font-[500] text-foreground not-italic">{form.getValues().slug}</em>
                                         </span>
@@ -200,10 +200,10 @@ export default function GeneralSettingsPage() {
                             control={form.control}
                             name="type"
                             render={({ field }) => (
-                                <FormItem className="flex w-full flex-row flex-wrap items-end justify-between">
+                                <FormItem className="flex w-full flex-row flex-wrap items-center justify-between">
                                     <div className="flex flex-col items-start justify-center gap-y-1.5">
                                         <FormLabel className="font-bold">{t.form.projectType}</FormLabel>
-                                        <span className="text-muted-foreground">{t.dashboard.projectTypeDesc}</span>
+                                        <span className="text-foreground-muted">{t.dashboard.projectTypeDesc}</span>
                                     </div>
 
                                     <MultiSelect
@@ -237,7 +237,7 @@ export default function GeneralSettingsPage() {
                                         <FormItem className="flex w-full flex-row flex-wrap items-end justify-between">
                                             <div className="flex flex-col items-start justify-center gap-y-1.5">
                                                 <FormLabel className="font-bold">{t.projectSettings.clientSide}</FormLabel>
-                                                <span className="text-muted-foreground">
+                                                <span className="text-foreground-muted">
                                                     {t.projectSettings.clientSideDesc(t.navbar[projectData.type[0]])}
                                                 </span>
                                             </div>
@@ -271,7 +271,7 @@ export default function GeneralSettingsPage() {
                                         <FormItem className="flex w-full flex-row flex-wrap items-end justify-between">
                                             <div className="flex flex-col items-start justify-center gap-y-1.5">
                                                 <FormLabel className="font-bold">{t.projectSettings.serverSide}</FormLabel>
-                                                <span className="text-muted-foreground">
+                                                <span className="text-foreground-muted">
                                                     {t.projectSettings.serverSideDesc(t.navbar[projectData.type[0]])}
                                                 </span>
                                             </div>
@@ -306,7 +306,7 @@ export default function GeneralSettingsPage() {
                                 <FormItem className="flex w-full flex-row flex-wrap items-center justify-between gap-x-6">
                                     <div className="flex flex-col items-start justify-center gap-y-1.5">
                                         <FormLabel className="font-bold">{t.form.visibility}</FormLabel>
-                                        <div className="flex max-w-[68ch] flex-col items-start justify-start gap-1.5 text-muted-foreground">
+                                        <div className="flex max-w-[68ch] flex-col items-start justify-start gap-1.5 text-foreground-muted">
                                             <p className="leading-tight">{t.projectSettings.visibilityDesc}</p>
 
                                             {projectData.status !== ProjectPublishingStatus.APPROVED ? (
@@ -319,13 +319,10 @@ export default function GeneralSettingsPage() {
                                                     field.value === ProjectVisibility.ARCHIVED ? (
                                                         <CheckIcon
                                                             aria-hidden
-                                                            className="h-btn-icon w-btn-icon text-success-foreground"
+                                                            className="h-btn-icon w-btn-icon text-success-fg"
                                                         />
                                                     ) : (
-                                                        <XIcon
-                                                            aria-hidden
-                                                            className="h-btn-icon w-btn-icon text-danger-foreground"
-                                                        />
+                                                        <XIcon aria-hidden className="h-btn-icon w-btn-icon text-error-fg" />
                                                     )}
                                                     {t.projectSettings.visibleInSearch}
                                                 </span>
@@ -334,13 +331,10 @@ export default function GeneralSettingsPage() {
                                                     field.value === ProjectVisibility.ARCHIVED ? (
                                                         <CheckIcon
                                                             aria-hidden
-                                                            className="h-btn-icon w-btn-icon text-success-foreground"
+                                                            className="h-btn-icon w-btn-icon text-success-fg"
                                                         />
                                                     ) : (
-                                                        <XIcon
-                                                            aria-hidden
-                                                            className="h-btn-icon w-btn-icon text-danger-foreground"
-                                                        />
+                                                        <XIcon aria-hidden className="h-btn-icon w-btn-icon text-error-fg" />
                                                     )}
                                                     {t.projectSettings.visibleOnProfile}
                                                 </span>
@@ -352,7 +346,7 @@ export default function GeneralSettingsPage() {
                                                                     <span>
                                                                         <TriangleAlertIcon
                                                                             aria-hidden
-                                                                            className="h-btn-icon w-btn-icon text-orange-600 dark:text-orange-400"
+                                                                            className="h-btn-icon w-btn-icon text-warning-fg"
                                                                         />
                                                                     </span>
                                                                 </TooltipTrigger>
@@ -364,7 +358,7 @@ export default function GeneralSettingsPage() {
                                                     ) : (
                                                         <CheckIcon
                                                             aria-hidden
-                                                            className="h-btn-icon w-btn-icon text-success-foreground"
+                                                            className="h-btn-icon w-btn-icon text-success-fg"
                                                         />
                                                     )}
                                                     {t.projectSettings.visibleViaUrl}
@@ -476,7 +470,7 @@ function DeleteProjectDialog({ name, projectId, returnUrl }: { name: string; pro
             title={t.projectSettings.deleteProject}
             className="flex w-full flex-row flex-wrap justify-between gap-4"
         >
-            <p className="max-w-[65ch] text-muted-foreground">{t.projectSettings.deleteProjectDesc(Config.SITE_NAME_SHORT)}</p>
+            <p className="max-w-[65ch] text-foreground-muted">{t.projectSettings.deleteProjectDesc(Config.SITE_NAME_SHORT)}</p>
 
             <Dialog>
                 <DialogTrigger asChild>
@@ -492,7 +486,7 @@ function DeleteProjectDialog({ name, projectId, returnUrl }: { name: string; pro
                             <DialogDescription>{t.projectSettings.deleteProject}</DialogDescription>
                         </VisuallyHidden>
                     </DialogHeader>
-                    <DialogBody className="flex flex-col gap-4 text-muted-foreground">
+                    <DialogBody className="flex flex-col gap-4 text-foreground-muted">
                         <p className="leading-snug">{t.projectSettings.deleteProjectDesc2}</p>
 
                         <div className="flex w-full flex-col gap-1">

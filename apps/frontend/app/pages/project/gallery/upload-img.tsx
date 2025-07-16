@@ -138,7 +138,7 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
                                         <div className="grid w-full grid-cols-1">
                                             <div
                                                 className={cn(
-                                                    "flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded bg-shallow-background px-4 py-3 sm:flex-nowrap",
+                                                    "flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded bg-raised-background px-4 py-3 sm:flex-nowrap",
                                                     field.value && "rounded-b-none",
                                                 )}
                                             >
@@ -159,7 +159,7 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
                                                     />
                                                     <FileIcon
                                                         aria-hidden
-                                                        className="h-btn-icon w-btn-icon flex-shrink-0 text-muted-foreground"
+                                                        className="h-btn-icon w-btn-icon flex-shrink-0 text-foreground-muted"
                                                     />
                                                     {field.value ? (
                                                         <div className="flex flex-wrap items-center justify-start gap-x-2">
@@ -168,7 +168,7 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
                                                             </span>
                                                         </div>
                                                     ) : (
-                                                        <span className="text-muted-foreground italic">
+                                                        <span className="text-foreground-muted italic">
                                                             {t.form.noFileChosen}
                                                         </span>
                                                     )}

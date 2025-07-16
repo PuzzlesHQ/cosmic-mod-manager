@@ -1,6 +1,6 @@
 import { createContext, use, useEffect, useState } from "react";
 import { getUserConfig, saveUserConfig, validateConfig } from "./helpers";
-import { applyTheme, getEffectiveTheme, getSystemTheme, MEDIA_PREFERS_LIGHT_THEME } from "./theme";
+import { applyTheme, getEffectiveTheme, getSystemTheme, getThemeClasses, MEDIA_PREFERS_LIGHT_THEME } from "./theme";
 import { ThemePreferences, type UserPreferences } from "./types";
 
 export const USER_PREFERENCES_NAMESPACE = "user-prefs";
@@ -71,7 +71,7 @@ export function UserPreferencesProvider({ init, children }: { init: UserPreferen
                 ...config,
                 activeTheme: activeTheme,
                 systemTheme: systemTheme,
-                isActiveThemeDark: activeTheme === ThemePreferences.DARK || activeTheme === ThemePreferences.OLED,
+                isActiveThemeDark: getThemeClasses(activeTheme, config.prefersOLED).includes("dark"),
                 updatePreferences: updatePreferences,
             }}
         >
@@ -82,7 +82,7 @@ export function UserPreferencesProvider({ init, children }: { init: UserPreferen
 
 export function usePreferences() {
     const ctx = use(UserPrefsCtx);
-    if (!ctx) throw new Error("usePreferences must be used inside a <UserPreferencesProvider>");
+    if (ctx === null) throw new Error("usePreferences must be used inside a <UserPreferencesProvider>");
 
     return ctx;
 }

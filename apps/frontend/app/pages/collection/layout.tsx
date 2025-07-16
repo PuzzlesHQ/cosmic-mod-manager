@@ -82,7 +82,7 @@ export default function CollectionPageLayout(props: Props) {
     const isFollowsCollection = props.collection.id === FOLLOWS_COLLECTIONS_ID;
     const icon =
         props.collection.id === FOLLOWS_COLLECTIONS_ID ? (
-            <HeartIcon aria-hidden className="h-[65%] w-[65%] fill-current text-accent-background" />
+            <HeartIcon aria-hidden className="h-[65%] w-[65%] fill-current text-accent-bg" />
         ) : (
             imageUrl(props.collection.icon)
         );
@@ -96,18 +96,14 @@ export default function CollectionPageLayout(props: Props) {
                 fallbackIcon={fallbackProjectIcon}
                 description={props.collection.description || ""}
                 titleBadge={
-                    <div className="ms-2 flex items-center justify-center gap-1.5 font-bold text-extra-muted-foreground">
+                    <div className="ms-2 flex items-center justify-center gap-1.5 font-bold text-foreground-extra-muted">
                         <CubeIcon aria-hidden className="h-btn-icon w-btn-icon" />
                         {t.dashboard.collection}
                     </div>
                 }
                 actionBtns={
                     markedProjects.length > 0 ? (
-                        <Button
-                            variant="secondary-destructive-inverted"
-                            onClick={RemoveCollectionProjects}
-                            disabled={removingProjects}
-                        >
+                        <Button variant="secondary-destructive" onClick={RemoveCollectionProjects} disabled={removingProjects}>
                             {removingProjects ? <LoadingSpinner size="xs" /> : <Trash2Icon className="h-btn-icon w-btn-icon" />}
                             {t.form.remove}
                         </Button>
@@ -155,14 +151,14 @@ export default function CollectionPageLayout(props: Props) {
                     </>
                 }
             >
-                <div className="flex items-center gap-2 border-0 border-card-background border-e pe-4 dark:border-shallow-background">
+                <div className="flex items-center gap-2">
                     <CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     <span className="font-semibold">
                         {t.count.projects(props.collection.projects.length, props.collection.projects.length)}
                     </span>
                 </div>
 
-                <div className="flex items-center gap-2 border-0 border-card-background border-e pe-4 dark:border-shallow-background">
+                <div className="flex items-center gap-2">
                     {props.collection.visibility === CollectionVisibility.PRIVATE ? (
                         <LockIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     ) : (

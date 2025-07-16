@@ -115,7 +115,7 @@ FormControl.displayName = "FormControl";
 function FormDescription({ ref, className, ...props }: React.ComponentProps<"p">) {
     const { formDescriptionId } = useFormField();
 
-    return <p ref={ref} id={formDescriptionId} className={cn("text-[0.87rem] text-muted-foreground", className)} {...props} />;
+    return <p ref={ref} id={formDescriptionId} className={cn("text-[0.87rem] text-foreground-muted", className)} {...props} />;
 }
 FormDescription.displayName = "FormDescription";
 
@@ -131,7 +131,7 @@ function FormMessage({ ref, className, children, ...props }: React.ComponentProp
         <p
             ref={ref}
             id={formMessageId}
-            className={cn("ps-0.5 font-medium text-danger-foreground text-sm leading-tight", className)}
+            className={cn("ps-0.5 font-medium text-danger-fg text-sm leading-tight", className)}
             {...props}
         >
             {body}
@@ -158,8 +158,8 @@ function CharacterCounter({ ref, currVal, max, visibleAfter, className, ...props
         <span
             ref={ref}
             className={cn(
-                "self-center pe-0.5 font-normal text-extra-muted-foreground text-xs leading-none",
-                curr > max && "text-danger-foreground",
+                "self-center pe-0.5 font-normal text-foreground-extra-muted text-xs leading-none",
+                curr > max && "text-danger-fg",
                 className,
             )}
             {...props}

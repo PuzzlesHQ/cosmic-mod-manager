@@ -1,4 +1,4 @@
-import Link from "~/components/ui/link";
+import { TextLink } from "~/components/ui/link";
 import { useTranslation } from "~/locales/provider";
 
 export default function SessionsPageLink() {
@@ -7,9 +7,7 @@ export default function SessionsPageLink() {
     return (
         <div className="flex w-full items-center justify-start gap-1 text-sm">
             {t.auth.didntRequest}
-            <Link to="/settings/sessions" className="text_link">
-                {t.auth.checkSessions}
-            </Link>
+            <TextLink to="/settings/sessions">{t.auth.checkSessions}</TextLink>
         </div>
     );
 }

@@ -61,7 +61,7 @@ export default function InviteMemberForm({ teamId, canInviteMembers, dataRefetch
             <form onSubmit={form.handleSubmit(inviteMember)} className="flex w-full flex-col gap-2">
                 <div className="flex w-full flex-col gap-1.5">
                     <h3 className="font-bold text-lg leading-none">{t.projectSettings.inviteMember}</h3>
-                    <span className="text-muted-foreground leading-none">{inviteDesc}</span>
+                    <span className="text-foreground-muted leading-none">{inviteDesc}</span>
                 </div>
 
                 <FormField

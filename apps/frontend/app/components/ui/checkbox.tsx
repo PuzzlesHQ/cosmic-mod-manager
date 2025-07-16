@@ -8,7 +8,7 @@ function Checkbox({ ref, className, name, ...props }: React.ComponentProps<typeo
         <CheckboxPrimitive.Root
             ref={ref}
             className={cn(
-                "peer relative h-4 w-4 shrink-0 rounded-sm bg-shallower-background/85 transition-opacity disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-accent-background data-[state=checked]:text-background",
+                "peer relative h-4 w-4 shrink-0 rounded-sm bg-raised-background transition-opacity disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-accent-bg data-[state=checked]:text-accent-bg-foreground",
                 className,
             )}
             name={name}
@@ -48,7 +48,7 @@ function LabelledCheckbox({
     return (
         <Label
             className={cn(
-                "flex cursor-not-allowed items-center justify-start gap-x-2.5 py-1 font-normal text-base text-muted-foreground leading-tight opacity-75 transition",
+                "flex cursor-not-allowed items-center justify-start gap-x-2.5 py-1 font-normal text-base text-foreground-muted leading-tight opacity-75 transition",
                 !disabled && "cursor-pointer opacity-100 hover:brightness-[85%]",
                 className,
             )}

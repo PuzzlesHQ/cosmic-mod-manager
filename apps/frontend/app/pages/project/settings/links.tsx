@@ -69,7 +69,7 @@ export default function ExternalLinksSettingsPage() {
                                 <FormLabel htmlFor="issue-tracker-url-input">
                                     <span className="flex flex-col items-start justify-start gap-1">
                                         <span className="font-bold">{t.projectSettings.issueTracker}</span>
-                                        <FormDescription className="font-normal text-base text-muted-foreground">
+                                        <FormDescription className="font-normal text-base text-foreground-muted">
                                             {t.projectSettings.issueTrackerDesc}
                                         </FormDescription>
                                     </span>
@@ -97,7 +97,7 @@ export default function ExternalLinksSettingsPage() {
                                 <FormLabel htmlFor="source-code-url-input">
                                     <span className="flex flex-col items-start justify-start gap-1">
                                         <span className="font-bold">{t.projectSettings.sourceCode}</span>
-                                        <FormDescription className="font-normal text-base text-muted-foreground">
+                                        <FormDescription className="font-normal text-base text-foreground-muted">
                                             {t.projectSettings.sourceCodeDesc}
                                         </FormDescription>
                                     </span>
@@ -125,7 +125,7 @@ export default function ExternalLinksSettingsPage() {
                                 <FormLabel htmlFor="wiki-page-url-input">
                                     <span className="flex flex-col items-start justify-start gap-1">
                                         <span className="font-bold">{t.projectSettings.wikiPage}</span>
-                                        <FormDescription className="font-normal text-base text-muted-foreground">
+                                        <FormDescription className="font-normal text-base text-foreground-muted">
                                             {t.projectSettings.wikiPageDesc}
                                         </FormDescription>
                                     </span>
@@ -153,7 +153,7 @@ export default function ExternalLinksSettingsPage() {
                                 <FormLabel htmlFor="discord-invite-url-input">
                                     <span className="flex flex-col items-start justify-start gap-1">
                                         <span className="font-bold">{t.projectSettings.discordInvite}</span>
-                                        <FormDescription className="font-normal text-base text-muted-foreground">
+                                        <FormDescription className="font-normal text-base text-foreground-muted">
                                             {t.projectSettings.discordInviteDesc}
                                         </FormDescription>
                                     </span>

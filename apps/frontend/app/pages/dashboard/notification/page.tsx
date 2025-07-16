@@ -78,7 +78,7 @@ export default function NotificationsPage({ notifications, relatedProjects, rela
             </CardHeader>
 
             <CardContent className="flex flex-col gap-panel-cards">
-                {!unreadNotifications?.length && <span className="text-muted-foreground">{t.dashboard.noUnreadNotifs}</span>}
+                {!unreadNotifications?.length && <span className="text-foreground-muted">{t.dashboard.noUnreadNotifs}</span>}
 
                 <NotificationsList
                     notifications={unreadNotifications}

@@ -110,7 +110,7 @@ export default function Navbar(props: NavbarProps) {
                         }}
                     >
                         <BrandIcon size="1.75rem" strokeWidth={26} />
-                        <span className="flex items-end justify-center rounded-lg bg-accent-bg bg-cover bg-gradient-to-b from-accent-background/90 via-accent-background to-accent-background bg-clip-text px-1 font-bold text-lg text-transparent drop-shadow-2xl">
+                        <span className="flex items-end justify-center rounded-lg bg-accent-bg bg-cover bg-gradient-to-b from-foreground-bright via-accent-bg to-accent-bg bg-clip-text px-1 font-bold text-lg text-transparent drop-shadow-2xl">
                             {Config.SITE_NAME_SHORT}
                         </span>
                     </Link>
@@ -138,7 +138,7 @@ export default function Navbar(props: NavbarProps) {
                                         }
                                     }}
                                 >
-                                    <Button variant="ghost" className="text-extra-muted-foreground">
+                                    <Button variant="ghost" className="text-foreground-extra-muted">
                                         {t.common.more} <ChevronDownIcon className="h-btn-icon w-btn-icon" />
                                     </Button>
                                 </PopoverTrigger>
@@ -197,7 +197,7 @@ export function Navlink({ href, label, children, className }: NavlinkProps) {
     return (
         <ButtonLink
             url={href}
-            className={cn("font-semibold hover:bg-shallow-background", className)}
+            className={cn("font-semibold hover:bg-raised-background", className)}
             activeClassName="bg-card-background"
         >
             {children ? children : label}
@@ -209,7 +209,7 @@ export function NavMenuLink({ href, label, isDisabled = false, tabIndex, classNa
     return (
         <ButtonLink
             url={href}
-            className={cn("w-full hover:bg-shallow-background", className)}
+            className={cn("w-full hover:bg-raised-background", className)}
             activeClassName="bg-card-background"
             tabIndex={isDisabled ? -1 : tabIndex}
         >
@@ -230,16 +230,11 @@ function CreateThingsPopup() {
     return (
         <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
             <PopoverTrigger asChild>
-                <Button
-                    variant="ghost-inverted"
-                    size="sm"
-                    aria-label="Create new project or organization"
-                    className="bg-background"
-                >
+                <Button variant="ghost" size="sm" aria-label="Create new project or organization" className="bg-background">
                     <PlusIcon aria-hidden className="h-5 w-5" />
                     <ChevronDownIcon
                         aria-hidden
-                        className={cn("h-5 w-5 text-extra-muted-foreground transition-all", popoverOpen && "rotate-180")}
+                        className={cn("h-5 w-5 text-foreground-extra-muted transition-all", popoverOpen && "rotate-180")}
                     />
                 </Button>
             </PopoverTrigger>

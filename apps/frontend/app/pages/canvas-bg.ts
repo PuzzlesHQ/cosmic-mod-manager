@@ -11,13 +11,11 @@ export function drawBackground(options?: DrawOptions) {
 }
 
 interface DrawOptions {
-    theme?: string;
     recreate?: boolean;
 }
 
 function draw(options?: DrawOptions) {
     if (!options) options = {};
-    const theme = options.theme || getTheme();
     const recreate = options.recreate || false;
 
     return new Promise<void>((resolve) => {
@@ -35,7 +33,7 @@ function draw(options?: DrawOptions) {
         const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
         if (!ctx) return;
 
-        const themeCtx = getThemeColor(theme);
+        const themeCtx = getCurrThemeColors();
         const width = Math.round(window.innerWidth || 0);
         canvas.width = width;
         canvas.height = height;
@@ -51,7 +49,7 @@ function draw(options?: DrawOptions) {
         if (recreate || stars.length === 0) {
             stars = [];
             // Create the stars and meteors
-            const baseRadius = themeCtx.theme === "light" ? 3.5 : 3;
+            const baseRadius = 3.2;
             for (let i = 0; i < starsCount; i++) {
                 stars.push(createStar(width, height, baseRadius));
             }
@@ -110,7 +108,7 @@ function createStar(width: number, height: number, baseRadius = 2): Star {
 
 function drawStar(ctx: CanvasRenderingContext2D, star: Star, theme: ThemeColor) {
     ctx.globalAlpha = star.alpha;
-    ctx.fillStyle = theme.bg;
+    ctx.fillStyle = `hsl(${theme.fg_hsl})`;
     ctx.roundRect(star.position.x, star.position.y, star.radius, star.radius, 50);
 
     ctx.globalAlpha = 1;
@@ -153,7 +151,6 @@ function drawMeteor(ctx: CanvasRenderingContext2D, meteor: Meteor, theme: ThemeC
     ctx.lineTo(endX, endY);
 
     // Gradient for fading tail
-    const rgb = theme.bg_rgb.join(", ");
     const linearGradient = ctx.createLinearGradient(meteor.position.x, meteor.position.y, endX, endY);
     {
         const stepSize = 0.17;
@@ -161,10 +158,10 @@ function drawMeteor(ctx: CanvasRenderingContext2D, meteor: Meteor, theme: ThemeC
         const k = 1.75;
         let currentAlpha = initialAlpha;
         for (let i = 0; i < 1; i += stepSize) {
-            linearGradient.addColorStop(i, `rgba(${rgb}, ${calculateExponentialAlpha(currentAlpha, k, i)})`);
+            linearGradient.addColorStop(i, `hsla(${theme.fg_hsl}, ${calculateExponentialAlpha(currentAlpha, k, i)})`);
             currentAlpha = calculateExponentialAlpha(initialAlpha, k, i);
         }
-        linearGradient.addColorStop(1, `rgba(${rgb}, ${calculateExponentialAlpha(currentAlpha, k, 1)})`);
+        linearGradient.addColorStop(1, `hsla(${theme.fg_hsl}, ${calculateExponentialAlpha(currentAlpha, k, 1)})`);
     }
 
     ctx.strokeStyle = linearGradient;
@@ -186,7 +183,6 @@ function drawMeteor(ctx: CanvasRenderingContext2D, meteor: Meteor, theme: ThemeC
 }
 
 function meteorHeadGradient(ctx: CanvasRenderingContext2D, position: Vector2D, headRadius: number, theme: ThemeColor) {
-    const rgb = theme.bg_rgb.join(", ");
     const radialGradient = ctx.createRadialGradient(position.x, position.y, 0, position.x, position.y, headRadius);
 
     {
@@ -195,40 +191,26 @@ function meteorHeadGradient(ctx: CanvasRenderingContext2D, position: Vector2D, h
         const k = 2.75;
         let currentAlpha = initialAlpha;
         for (let i = 0; i < 1; i += stepSize) {
-            radialGradient.addColorStop(i, `rgba(${rgb}, ${calculateExponentialAlpha(currentAlpha, k, i)})`);
+            radialGradient.addColorStop(i, `hsla(${theme.fg_hsl}, ${calculateExponentialAlpha(currentAlpha, k, i)})`);
             currentAlpha = calculateExponentialAlpha(initialAlpha, k, i);
         }
-        radialGradient.addColorStop(1, `rgba(${rgb}, 0)`);
+        radialGradient.addColorStop(1, `hsla(${theme.fg_hsl}, 0)`);
     }
 
     return radialGradient;
 }
 
 interface ThemeColor {
-    theme: string;
-    bg: string;
-    bg_rgb: [number, number, number];
+    fg_hsl: string;
 }
 
-function getThemeColor(theme = getTheme()): ThemeColor {
-    if (theme === "light") {
-        return {
-            theme: "light",
-            bg: "#313439",
-            bg_rgb: [49, 52, 57],
-        };
-    }
+function getCurrThemeColors(): ThemeColor {
+    // Get HSL values from CSS variables
+    const fg_hsl = getComputedStyle(document.documentElement).getPropertyValue("--foreground-bright").trim();
 
     return {
-        theme: "dark",
-        bg: "#E1E4E9",
-        bg_rgb: [225, 228, 233],
+        fg_hsl: fg_hsl || "0, 0%, 100%",
     };
-}
-
-function getTheme() {
-    if (document.documentElement.classList.contains("light")) return "light";
-    return "dark";
 }
 
 function random(num: number) {

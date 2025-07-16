@@ -22,7 +22,7 @@ function CardTitle({ ref, className, ...props }: React.ComponentProps<"h2">) {
 CardTitle.displayName = "CardTitle";
 
 function CardDescription({ ref, className, ...props }: React.ComponentProps<"p">) {
-    return <p ref={ref} className={cn("text-base text-muted-foreground", className)} {...props} />;
+    return <p ref={ref} className={cn("text-base text-foreground-muted", className)} {...props} />;
 }
 CardDescription.displayName = "CardDescription";
 

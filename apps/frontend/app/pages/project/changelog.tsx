@@ -9,7 +9,7 @@ import PaginatedNavigation from "~/components/misc/pagination-nav";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { FormattedDate } from "~/components/ui/date";
-import Link from "~/components/ui/link";
+import Link, { TextLink } from "~/components/ui/link";
 import { TooltipProvider, TooltipTemplate } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
 import { useProjectData } from "~/hooks/project";
@@ -59,7 +59,7 @@ export default function VersionChangelogs() {
                     const primaryFile = version.primaryFile;
 
                     return (
-                        <div key={version.id} className="relative mb-4 w-full ps-7 dark:text-muted-foreground">
+                        <div key={version.id} className="relative mb-4 w-full ps-7 dark:text-foreground-muted">
                             <div className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-1">
                                 <div className="flex flex-wrap items-baseline justify-start gap-x-1.5">
                                     <ChangelogBar releaseChannel={version.releaseChannel} isDuplicate={isDuplicate === true} />
@@ -69,7 +69,7 @@ export default function VersionChangelogs() {
                                             <TooltipTemplate content="Dev release!" className="font-normal">
                                                 <FlaskConicalIcon
                                                     aria-hidden
-                                                    className="h-btn-icon-md w-btn-icon-md cursor-help text-danger-foreground"
+                                                    className="h-btn-icon-md w-btn-icon-md cursor-help text-danger-fg"
                                                 />
                                             </TooltipTemplate>
                                         </TooltipProvider>
@@ -85,13 +85,9 @@ export default function VersionChangelogs() {
                                             </Link>
                                         </h2>,
 
-                                        <Link
-                                            key="version-author"
-                                            to={UserProfilePath(version.author.userName)}
-                                            className="link_blue hover:underline"
-                                        >
+                                        <TextLink key="version-author" to={UserProfilePath(version.author.userName)}>
                                             {version.author.userName}
-                                        </Link>,
+                                        </TextLink>,
 
                                         <FormattedDate
                                             key="date-published"
@@ -131,9 +127,9 @@ function ChangelogBar({ releaseChannel, isDuplicate }: { releaseChannel: Version
                 releaseChannel === VersionReleaseChannel.RELEASE
                     ? "text-blue-500 dark:text-blue-400"
                     : releaseChannel === VersionReleaseChannel.BETA
-                      ? "text-orange-500 dark:text-orange-400"
+                      ? "text-warning-fg"
                       : releaseChannel === VersionReleaseChannel.ALPHA || releaseChannel === VersionReleaseChannel.DEV
-                        ? "text-danger-background"
+                        ? "text-error-fg"
                         : "",
 
                 isDuplicate && "duplicate",

@@ -102,8 +102,7 @@ export default function LicenseSettingsPage() {
             options.push({
                 label: license.name,
                 value: license.licenseId,
-                onlyVisibleWhenSearching:
-                    FEATURED_LICENSE_INDICES.includes(index) || currLicenseId === license.licenseId ? undefined : true,
+                onlyVisibleWhenSearching: !FEATURED_LICENSE_INDICES.includes(index) && currLicenseId !== license.licenseId,
             });
         }
 

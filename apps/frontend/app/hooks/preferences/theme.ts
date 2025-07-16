@@ -43,6 +43,8 @@ export function isDark(theme: ThemePreferences) {
 
 // even though 'catppuccin-mocha' doesn't need .dark styles,
 // it's there so that tailwind can detect it's a dark type theme
+// TODO: Don't rely on tailwind's dark directive to fix theme issues
+// Instead have proper colors for each theme and use filters for hover effects
 const ThemeClasses = {
     [ThemePreferences.DARK]: ["dark"],
     [ThemePreferences.LIGHT]: ["light"],

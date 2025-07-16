@@ -201,11 +201,11 @@ export default function EditVersionPage() {
                             />
                         </ContentCardTemplate>
 
-                        <ContentCardTemplate title={t.version.files} className="gap-form-elements">
+                        <ContentCardTemplate title={t.version.files} className="grid gap-form-elements">
                             {/* PRIMARY FILE */}
-                            <div className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded bg-shallow-background px-4 py-2 sm:flex-nowrap">
+                            <div className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded bg-raised-background px-4 py-2 sm:flex-nowrap">
                                 <div className="flex items-center justify-start gap-1.5">
-                                    <FileIcon aria-hidden className="h-btn-icon w-btn-icon flex-shrink-0 text-muted-foreground" />
+                                    <FileIcon aria-hidden className="h-btn-icon w-btn-icon flex-shrink-0 text-foreground-muted" />
 
                                     <div className="flex flex-wrap items-center justify-start gap-x-2">
                                         <span>
@@ -213,7 +213,7 @@ export default function EditVersionPage() {
                                             <span className="ms-0.5 whitespace-nowrap">
                                                 ({parseFileSize(versionData?.primaryFile?.size || 0)})
                                             </span>{" "}
-                                            <span className="ms-1 text-muted-foreground italic">{t.version.primary}</span>
+                                            <span className="ms-1 text-foreground-muted italic">{t.version.primary}</span>
                                         </span>
                                     </div>
                                 </div>

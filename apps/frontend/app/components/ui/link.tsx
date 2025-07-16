@@ -35,7 +35,7 @@ export default function Link({ ref, escapeUrlWrapper, ...props }: CustomLinkProp
 
 export function TextLink(props: React.ComponentProps<typeof Link>) {
     return (
-        <Link {...props} className={cn(props.className, "link_blue hover:underline")}>
+        <Link {...props} className={cn(props.className, "text-foreground-link hover:underline hover:brightness-110")}>
             {props.children}
         </Link>
     );
@@ -72,10 +72,10 @@ export function ButtonLink({
             to={url}
             ref={ref}
             className={cn(
-                "bg_hover_stagger flex min-h-10 w-full items-center justify-start gap-2 whitespace-nowrap px-4 py-2 font-medium text-muted-foreground hover:bg-shallow-background/60",
+                "bg_hover_stagger flex min-h-10 w-full items-center justify-start gap-2 whitespace-nowrap px-4 py-2 font-medium text-foreground-muted hover:bg-hover-background",
                 isCurrLinkActive(url, location.pathname, exactTailMatch) &&
                     activityIndicator &&
-                    "bg-shallow-background/70 text-foreground",
+                    "bg-raised-background text-foreground-bright",
                 isCurrLinkActive(url, location.pathname, exactTailMatch) && `active ${activeClassName}`,
                 className,
             )}

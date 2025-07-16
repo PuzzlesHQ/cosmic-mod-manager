@@ -120,7 +120,7 @@ export default function Reports_ModerationPage(props: Props) {
                         </DialogHeader>
 
                         <DialogBody className="grid grid-cols-[2fr_3fr] items-center gap-x-4 gap-y-2">
-                            <span className="px-0.5 font-medium text-muted-foreground" id="report-status-label">
+                            <span className="px-0.5 font-medium text-foreground-muted" id="report-status-label">
                                 {t.report.status("")}
                             </span>
                             <Select
@@ -141,7 +141,7 @@ export default function Reports_ModerationPage(props: Props) {
                                 </SelectContent>
                             </Select>
 
-                            <span className="px-0.5 font-medium text-muted-foreground">{t.report.reportedItem("")}</span>
+                            <span className="px-0.5 font-medium text-foreground-muted">{t.report.reportedItem("")}</span>
                             <Select
                                 value={filters.itemType}
                                 onValueChange={(val) => updateFilters({ itemType: val as ReportItemType | "all" })}
@@ -167,7 +167,7 @@ export default function Reports_ModerationPage(props: Props) {
 
                             {filters.itemType !== "all" && (
                                 <>
-                                    <span className="px-0.5 font-medium text-muted-foreground" id="report-status-label">
+                                    <span className="px-0.5 font-medium text-foreground-muted" id="report-status-label">
                                         {itemId_label}
                                     </span>
                                     <Input
@@ -178,7 +178,7 @@ export default function Reports_ModerationPage(props: Props) {
                                 </>
                             )}
 
-                            <span className="px-0.5 font-medium text-muted-foreground">{t.report.ruleViolated("")}</span>
+                            <span className="px-0.5 font-medium text-foreground-muted">{t.report.ruleViolated("")}</span>
 
                             <MultiSelect
                                 searchBox={false}
@@ -199,7 +199,7 @@ export default function Reports_ModerationPage(props: Props) {
                                 inputPlaceholder={t.common.search}
                             />
 
-                            <span className="px-0.5 font-medium text-muted-foreground" id="report-status-label">
+                            <span className="px-0.5 font-medium text-foreground-muted" id="report-status-label">
                                 {t.report.reportedBy(":")}
                             </span>
                             <Input
@@ -228,7 +228,7 @@ export default function Reports_ModerationPage(props: Props) {
                 {!data?.reports?.length ? (
                     anyChangedFilter ? (
                         <div className="grid gap-3">
-                            <p className="text-extra-muted-foreground text-md italic">{t.common.noResults}</p>
+                            <p className="text-foreground-extra-muted text-md italic">{t.common.noResults}</p>
 
                             <Button variant="secondary" onClick={() => applyFilters(reportFilters_defaults)}>
                                 <RotateCcwIcon className="h-btn-icon w-btn-icon" />

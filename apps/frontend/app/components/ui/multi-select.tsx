@@ -156,9 +156,9 @@ export const MultiSelect = ({
                                 </div>
                             </div>
                         ) : (
-                            <span className="ms-1 me-auto text-muted-foreground">{placeholder}</span>
+                            <span className="ms-1 me-auto text-foreground-muted">{placeholder}</span>
                         )}
-                        <ChevronDownIcon aria-hidden className="h-4 cursor-pointer text-muted-foreground" />
+                        <ChevronDownIcon aria-hidden className="h-4 cursor-pointer text-foreground-muted" />
                     </Button>
                 )}
             </PopoverTrigger>
@@ -167,7 +167,7 @@ export const MultiSelect = ({
                 align="start"
                 onEscapeKeyDown={() => handleTogglePopover(false)}
             >
-                <Command className="border border-shallow-background">
+                <Command className="border border-border">
                     <CommandInput
                         placeholder={inputPlaceholder || "Search..."}
                         onKeyDown={handleInputKeyDown}
@@ -185,9 +185,9 @@ export const MultiSelect = ({
                                     <CommandItem key={option.value} onSelect={() => toggleOption(option.value)} className="pe-6">
                                         <div
                                             className={cn(
-                                                "me-3 flex h-4 w-4 items-center justify-center rounded-sm border border-extra-muted-foreground/75",
+                                                "me-3 flex h-4 w-4 items-center justify-center rounded-sm border border-foreground-extra-muted",
                                                 isSelected
-                                                    ? "border-transparent bg-extra-muted-foreground text-background"
+                                                    ? "border-transparent bg-foreground-extra-muted text-background"
                                                     : "opacity-50 [&_svg]:invisible",
                                             )}
                                         >
@@ -197,7 +197,7 @@ export const MultiSelect = ({
                                         {option.icon && (
                                             <option.icon
                                                 className={cn(
-                                                    "me-2 h-4 w-4 text-muted-foreground",
+                                                    "me-2 h-4 w-4 text-foreground-muted",
                                                     isSelected && "text-foreground",
                                                 )}
                                             />

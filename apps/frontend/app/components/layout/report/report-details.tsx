@@ -52,7 +52,7 @@ export function ReportDetails(props: Props) {
                         <span className="px-1 font-bold text-lg">{t.form.description}</span>
                         <MarkdownRenderBox
                             text={props.data.body}
-                            className="rounded-lg border-2 p-card-surround dark:border-shallow-background"
+                            className="rounded-lg border-2 p-card-surround dark:border-border"
                         />
                     </div>
                 </CardContent>

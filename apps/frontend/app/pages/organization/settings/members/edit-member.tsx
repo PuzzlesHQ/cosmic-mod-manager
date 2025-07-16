@@ -102,7 +102,7 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
             {/* Head */}
             <div className="flex w-full flex-wrap items-center justify-between">
                 {/* Member profile details */}
-                <div className="flex items-center justify-center gap-2 text-muted-foreground">
+                <div className="flex items-center justify-center gap-2 text-foreground-muted">
                     <ImgWrapper
                         vtId={member.userId}
                         src={imageUrl(member.avatar)}
@@ -122,7 +122,7 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                                 </span>
                             )}
                         </Link>
-                        <span className="text-[0.93rem] text-muted-foreground/80 leading-none">{member.role}</span>
+                        <span className="text-[0.93rem] text-foreground-muted/80 leading-none">{member.role}</span>
                     </div>
                 </div>
 
@@ -164,7 +164,7 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                                             {t.projectSettings.role}
                                             <FormMessage />
                                         </FormLabel>
-                                        <span className="text-muted-foreground/90 leading-tight">
+                                        <span className="text-foreground-muted/90 leading-tight">
                                             {t.projectSettings.roleDesc}
                                         </span>
                                     </div>

@@ -5,39 +5,23 @@ import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 
 export const buttonVariants = cva(
-    "inline-flex gap-2 items-center justify-center whitespace-nowrap rounded font-[500] transition-colors focus-visible:outline-none focus-visible:keyboard_focus_ring disabled:pointer-events-none disabled:opacity-50",
+    "inline-flex gap-2 items-center justify-center whitespace-nowrap rounded font-[500] focus-visible:outline-none focus-visible:keyboard_focus_ring disabled:pointer-events-none disabled:opacity-50",
     {
         variants: {
             variant: {
-                default:
-                    "font-[600] bg-accent-background text-card-background dark:text-background hover:bg-accent-background/90 [--shadow-alpha:0.25]",
-                destructive:
-                    "font-[600] bg-danger-background text-card-background dark:text-background hover:bg-danger-background/90 [--shadow-alpha:1]",
+                default: "font-[600] bg-primary-btn-bg text-primary-btn-fg hover:brightness-90",
+                destructive: "font-[600] bg-danger-btn-bg text-danger-btn-fg hover:brightness-90",
 
-                outline: "border border-shallow-background hover:bg-shallow-background/70 hover:dark:bg-shallow-background",
+                outline: "border border-border text-foreground-muted hover:bg-raised-background hover:brightness-95",
 
-                secondary:
-                    "bg-shallow-background dark:bg-shallow-background/70 text-muted-foreground hover:bg-shallow-background/70 hover:dark:bg-shallow-background",
-                "secondary-no-shadow":
-                    "bg-shallow-background dark:bg-shallow-background/70 text-muted-foreground hover:bg-shallow-background/70 hover:dark:bg-shallow-background",
-                "secondary-inverted":
-                    "text-muted-foreground bg-card-background dark:bg-shallow-background/70 hover:bg-card-background/70 dark:hover:bg-shallow-background",
-                "secondary-destructive":
-                    "text-danger-foreground bg-shallow-background dark:bg-shallow-background/70 hover:bg-shallow-background/70 hover:dark:bg-shallow-background",
-                "secondary-destructive-inverted":
-                    "text-danger-foreground bg-card-background dark:bg-shallow-background/70 hover:bg-card-background/70 dark:hover:bg-shallow-background",
-                "secondary-dark":
-                    "text-muted-foreground bg-card-background dark:bg-card-background/70 hover:bg-card-background/70 hover:dark:bg-card-background",
+                secondary: "bg-raised-background text-foreground-muted hover:brightness-95",
+                "secondary-destructive": "font-[600] text-error-fg bg-error-bg hover:brightness-90",
+                "secondary-dark": "text-foreground-muted bg-card-background hover:brightness-95",
 
-                ghost: "text-muted-foreground hover:bg-shallow-background hover:dark:bg-shallow-background/75",
-                "ghost-no-shadow": "text-muted-foreground hover:bg-shallow-background hover:dark:bg-shallow-background/75",
-                "ghost-inverted": "text-muted-foreground hover:bg-card-background dark:hover:bg-shallow-background/75",
-                "ghost-destructive": "text-danger-foreground hover:bg-shallow-background dark:hover:bg-shallow-background/75",
-
-                "moderation-submit":
-                    "font-medium text-card-background dark:text-background bg-[#e08325] hover:bg-[#ffa347] dark:bg-[#ffa347] dark:hover:bg-[#e08325]",
-
-                link: "text-foreground underline-offset-4 hover:underline",
+                ghost: "text-foreground-muted hover:bg-raised-background hover:brightness-95",
+                "ghost-destructive": "text-error-fg hover:bg-error-bg hover:brightness-95",
+                moderation: "font-[600] bg-moderation-btn-bg text-moderation-btn-fg hover:brightness-90",
+                link: "text-foreground-link underline-offset-4 hover:underline hover:brightness-95",
             },
             size: {
                 default: "h-10 px-4 py-1.5",

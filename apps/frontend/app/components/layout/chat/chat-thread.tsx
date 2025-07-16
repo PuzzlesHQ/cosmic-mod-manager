@@ -205,14 +205,14 @@ export function ChatThread(props: ChatThreadProps) {
                     })}
 
                     {!thread.messages.length && (
-                        <span className="py-8 text-center text-extra-muted-foreground">{t.chatThread.noMessages}</span>
+                        <span className="py-8 text-center text-foreground-extra-muted">{t.chatThread.noMessages}</span>
                     )}
                 </div>
 
                 <div className="grid gap-3 rounded-t-lg bg-card-background p-card-surround">
                     {!!replyingTo && (
-                        <div className="flex items-center justify-between border-shallow-background border-b px-1 pb-2">
-                            <span className="text-muted-foreground text-sm leading-none">
+                        <div className="flex items-center justify-between border-border border-b px-1 pb-2">
+                            <span className="text-foreground-muted text-sm leading-none">
                                 {t.chatThread.replyingTo(
                                     <Button
                                         key="replying-to-user"
@@ -238,15 +238,15 @@ export function ChatThread(props: ChatThreadProps) {
                         </div>
                     )}
                     {!isThreadOpen ? (
-                        <p className="text-muted-foreground">{t.chatThread.threadClosedDesc}</p>
+                        <p className="text-foreground-muted">{t.chatThread.threadClosedDesc}</p>
                     ) : (
                         <div className="grid grid-cols-[1fr_auto] gap-2">
                             <div className="autoresizing-textarea" data-editor-value={editorText}>
                                 <textarea
                                     className={cn(
                                         "resize-none overflow-y-auto rounded",
-                                        "bg-background/50 focus-within:bg-background/10 dark:bg-shallow-background/50 dark:focus-within:bg-shallow-background/10",
-                                        "ring-shallow-background focus-visible:outline-none focus-visible:ring-2",
+                                        "bg-raised-background focus:bg-transparent",
+                                        "ring-raised-background focus-visible:outline-none focus-visible:ring-2",
                                     )}
                                     rows={1}
                                     placeholder={t.chatThread.messagePlaceholder}
@@ -311,15 +311,15 @@ export function ChatThread(props: ChatThreadProps) {
                                                     {t.moderation.resubmitDesc._1(ctx.projectData.name)}
                                                 </span>
                                                 <span className="block">{t.moderation.resubmitDesc._2}</span>
-                                                <span className="block font-medium text-danger-foreground">
+                                                <span className="block font-medium text-danger-fg">
                                                     {t.moderation.resubmitDesc.warning}
                                                 </span>
                                             </>
                                         }
                                         confirmIcon={<ScaleIcon className="h-btn-icon w-btn-icon" />}
-                                        variant="moderation-submit"
+                                        variant="moderation"
                                     >
-                                        <Button variant="moderation-submit">
+                                        <Button variant="moderation">
                                             <ScaleIcon className="h-btn-icon w-btn-icon" />
                                             {t.project.publishingChecklist.resubmitForReview}
                                         </Button>
@@ -432,12 +432,12 @@ function ThreadMessage(props: ThreadMessageProps) {
     let msgText: React.ReactNode = null;
     switch (msg.type) {
         case MessageType.TEXT:
-            msgText = <MarkdownRenderBox text={msg.body.text} className="chat-msg text-muted-foreground" />;
+            msgText = <MarkdownRenderBox text={msg.body.text} className="chat-msg text-foreground-muted" />;
             break;
 
         case MessageType.DELETED:
             msgText = (
-                <div className="gap-1 text-danger-foreground text-sm">
+                <div className="gap-1 text-danger-fg text-sm">
                     <BanIcon className="mb-[0.25ch] inline h-btn-icon-sm w-btn-icon-sm" /> {t.chatThread.messageDeleted}
                 </div>
             );
@@ -461,7 +461,7 @@ function ThreadMessage(props: ThreadMessageProps) {
 
         case MessageType.THREAD_CLOSURE:
             msgText = (
-                <p className="text-extra-muted-foreground">
+                <p className="text-foreground-extra-muted">
                     <LockIcon aria-hidden="true" className="inline h-4 w-4" /> {t.chatThread.closedTheThread}
                 </p>
             );
@@ -469,7 +469,7 @@ function ThreadMessage(props: ThreadMessageProps) {
 
         case MessageType.THREAD_REOPEN:
             msgText = (
-                <p className="text-extra-muted-foreground ">
+                <p className="text-foreground-extra-muted ">
                     <CheckCircleIcon aria-hidden="true" className="inline h-4 w-4" /> {t.chatThread.reopenedTheThread}
                 </p>
             );
@@ -479,7 +479,7 @@ function ThreadMessage(props: ThreadMessageProps) {
     const showFullDate = now.getDate() !== createdAt?.getDate() && !isContinuationMessage;
     const fullDate = FormatDate_ToLocaleString(props.message.createdAt, { shortMonthNames: true });
 
-    const timestamp_class = "text-muted-foreground text-xs leading-none cursor-default";
+    const timestamp_class = "text-foreground-muted text-xs leading-none cursor-default";
     const timestamp = showFullDate ? (
         <span className={timestamp_class}>{fullDate}</span>
     ) : (
@@ -536,7 +536,7 @@ function ThreadMessage(props: ThreadMessageProps) {
                 senderTitle += ` (${t.user.admin})`;
                 break;
             default:
-                userNameColor = "text-muted-foreground";
+                userNameColor = "text-foreground-muted";
         }
     }
 
@@ -577,7 +577,7 @@ function ThreadMessage(props: ThreadMessageProps) {
                 // biome-ignore lint/a11y/useKeyWithClickEvents: --
                 <div
                     style={{ gridArea: "reply" }}
-                    className="group/replied-msg-preview flex cursor-pointer items-center justify-start gap-space pb-2 text-extra-muted-foreground text-xs hover:text-muted-foreground"
+                    className="group/replied-msg-preview flex cursor-pointer items-center justify-start gap-space pb-2 text-foreground-extra-muted text-xs hover:text-foreground-muted"
                     onClick={() => {
                         const msgId = props.inResponseTo?.msg?.id;
                         if (!msgId) return;
@@ -590,7 +590,7 @@ function ThreadMessage(props: ThreadMessageProps) {
                         <div
                             className={cn(
                                 "absolute start-[1.25rem] end-0 top-[50%] bottom-[-0.2rem] rounded-ss-sm border-s-[0.1rem] border-t-[0.1rem]",
-                                "border-shallower-background group-hover/replied-msg-preview:border-extra-muted-foreground/75",
+                                "border-hover-background-strong group-hover/replied-msg-preview:border-foreground-extra-muted",
                             )}
                         />
                     </div>
@@ -640,13 +640,13 @@ function ThreadMessage(props: ThreadMessageProps) {
                 </div>
             )}
 
-            <div style={{ gridArea: "body" }} className="text-muted-foreground">
+            <div style={{ gridArea: "body" }} className="text-foreground-muted">
                 {msgText}
             </div>
 
             {props.message.type === MessageType.TEXT && (
                 <Popover>
-                    <PopoverTrigger className="invisible absolute end-0 top-0 ms-auto translate-y-[-25%] rounded-md bg-shallow-background px-1 py-0.5 group-focus-within/chat-msg:visible group-hover/chat-msg:visible">
+                    <PopoverTrigger className="invisible absolute end-0 top-0 ms-auto translate-y-[-25%] rounded-md bg-raised-background px-1 py-0.5 group-focus-within/chat-msg:visible group-hover/chat-msg:visible">
                         <MoreHorizontalIcon className="h-btn-icon-lg w-btn-icon-lg" />
                     </PopoverTrigger>
                     <PopoverContent className="min-w-0 p-1" align="end">

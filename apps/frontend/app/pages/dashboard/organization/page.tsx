@@ -31,7 +31,7 @@ export default function OrganisationDashboardPage({ organisations }: Props) {
                 </CreateNewOrg_Dialog>
             </CardHeader>
             <CardContent>
-                {!organisations?.length && <p className="text-muted-foreground">{t.common.noResults}</p>}
+                {!organisations?.length && <p className="text-foreground-muted">{t.common.noResults}</p>}
                 {organisations === undefined ? (
                     <FullWidthSpinner />
                 ) : (

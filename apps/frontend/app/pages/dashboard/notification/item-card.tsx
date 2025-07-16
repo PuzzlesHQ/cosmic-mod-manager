@@ -106,7 +106,7 @@ export function TeamInviteNotification({
                     <Link to={pageUrl} className="me-1.5" aria-label={title}>
                         <ImgWrapper src={icon || ""} alt={title} fallback={fallbackIcon} className="h-11 w-11" />
                     </Link>
-                    <div className="flex flex-wrap items-center justify-start gap-x-space text-muted-foreground">
+                    <div className="flex flex-wrap items-center justify-start gap-x-space text-foreground-muted">
                         {t.dashboard.invitedToJoin(
                             <Link
                                 key="invited-by"
@@ -139,8 +139,8 @@ export function TeamInviteNotification({
                                     <TooltipTrigger asChild>
                                         <Button
                                             size="icon"
-                                            variant="ghost-inverted"
-                                            className="text-success-foreground"
+                                            variant="ghost"
+                                            className="text-success-fg"
                                             disabled={!!isLoading}
                                             onClick={acceptInvite}
                                         >
@@ -161,9 +161,8 @@ export function TeamInviteNotification({
                                 <Tooltip>
                                     <TooltipTrigger asChild>
                                         <Button
-                                            variant="ghost-inverted"
+                                            variant="ghost-destructive"
                                             size="icon"
-                                            className="text-danger-foreground"
                                             disabled={!!isLoading}
                                             onClick={declineInvite}
                                         >
@@ -206,7 +205,7 @@ export function TeamInviteNotification({
                         {t.common.accept}
                     </Button>
 
-                    <Button variant="secondary-destructive-inverted" size="sm" disabled={!!isLoading} onClick={declineInvite}>
+                    <Button variant="secondary-destructive" size="sm" disabled={!!isLoading} onClick={declineInvite}>
                         {isLoading === "decline" ? (
                             <LoadingSpinner size="xs" />
                         ) : (
@@ -255,7 +254,7 @@ export function StatusChangeNotif_Item({ notification, project, ...props }: Stat
                             className="h-11 w-11"
                         />
                     </Link>
-                    <div className="flex flex-wrap items-center justify-start gap-x-1 text-muted-foreground">
+                    <div className="flex flex-wrap items-center justify-start gap-x-1 text-foreground-muted">
                         {t.dashboard.projectStatusUpdated(
                             <Link key="project" to={projectPageUrl} className="font-semibold text-foreground hover:underline">
                                 {projectName}
@@ -299,7 +298,7 @@ interface NotifReceivedDateProps {
 
 function NotifReceivedDate(props: NotifReceivedDateProps) {
     return (
-        <div className="flex w-fit items-center justify-center gap-1.5 text-extra-muted-foreground">
+        <div className="flex w-fit items-center justify-center gap-1.5 text-foreground-extra-muted">
             <CalendarIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />
 
             <TooltipProvider>
@@ -330,8 +329,8 @@ function MarkReadNotif(props: MarkReadProps) {
             <TooltipTrigger asChild>
                 <Button
                     size="icon"
-                    variant="ghost-inverted"
-                    className="text-extra-muted-foreground"
+                    variant="ghost"
+                    className="text-foreground-extra-muted"
                     disabled={props.disabled}
                     onClick={props.markNotificationAsRead}
                 >
@@ -353,13 +352,7 @@ function DeleteNotif(props: DeleteNotifProps) {
     return (
         <Tooltip>
             <TooltipTrigger asChild>
-                <Button
-                    size="icon"
-                    variant="ghost-inverted"
-                    className="text-danger-foreground"
-                    disabled={props.disabled}
-                    onClick={props.deleteNotification}
-                >
+                <Button size="icon" variant="ghost-destructive" disabled={props.disabled} onClick={props.deleteNotification}>
                     <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
                 </Button>
             </TooltipTrigger>

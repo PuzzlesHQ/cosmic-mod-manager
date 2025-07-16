@@ -22,7 +22,7 @@ export default function CollectionProjectsList() {
     if (!filteredProjects.length) {
         return (
             <div className="flex w-full items-center justify-center py-12">
-                <p className="text-center text-lg text-muted-foreground italic">{t.common.noResults}</p>
+                <p className="text-center text-lg text-foreground-muted italic">{t.common.noResults}</p>
             </div>
         );
     }

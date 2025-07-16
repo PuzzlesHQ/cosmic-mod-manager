@@ -109,7 +109,7 @@ export function ProjectTeamMember({
             {/* Head */}
             <div className="flex w-full flex-wrap items-center justify-between">
                 {/* Member profile details */}
-                <div className="flex items-center justify-center gap-2 text-muted-foreground">
+                <div className="flex items-center justify-center gap-2 text-foreground-muted">
                     <ImgWrapper
                         vtId={member.userId}
                         src={imageUrl(member.avatar)}
@@ -129,7 +129,7 @@ export function ProjectTeamMember({
                                 </span>
                             )}
                         </Link>
-                        <span className="text-[0.93rem] text-muted-foreground/80 leading-none">{member.role}</span>
+                        <span className="text-[0.93rem] text-foreground-muted/80 leading-none">{member.role}</span>
                     </div>
                 </div>
 
@@ -169,7 +169,7 @@ export function ProjectTeamMember({
                                         <FormLabel className="font-bold" htmlFor={`member-role-input_${member.id}`}>
                                             {t.projectSettings.role}
                                         </FormLabel>
-                                        <span className="text-muted-foreground/90">{t.projectSettings.roleDesc}</span>
+                                        <span className="text-foreground-muted/90">{t.projectSettings.roleDesc}</span>
                                     </div>
                                     <Input
                                         {...field}
@@ -397,7 +397,7 @@ export function OrgTeamMember({ session, project, orgMember, fetchProjectData, c
             {/* Head */}
             <div className="flex w-full flex-wrap items-center justify-between">
                 {/* Member profile details */}
-                <div className="flex items-center justify-center gap-2 text-muted-foreground">
+                <div className="flex items-center justify-center gap-2 text-foreground-muted">
                     <ImgWrapper
                         vtId={effectiveMembership.userId}
                         src={imageUrl(effectiveMembership.avatar)}
@@ -417,7 +417,7 @@ export function OrgTeamMember({ session, project, orgMember, fetchProjectData, c
                                 </span>
                             )}
                         </Link>
-                        <span className="text-[0.93rem] text-muted-foreground/80 leading-none">{effectiveMembership.role}</span>
+                        <span className="text-[0.93rem] text-foreground-muted/80 leading-none">{effectiveMembership.role}</span>
                     </div>
                 </div>
 
@@ -454,7 +454,7 @@ export function OrgTeamMember({ session, project, orgMember, fetchProjectData, c
                                     {t.projectSettings.overrideValues}
                                     <FormMessage />
                                 </FormLabel>
-                                <span className="text-muted-foreground/90 leading-tight">
+                                <span className="text-foreground-muted/90 leading-tight">
                                     {t.projectSettings.overrideValuesDesc}
                                 </span>
                             </div>
@@ -477,7 +477,7 @@ export function OrgTeamMember({ session, project, orgMember, fetchProjectData, c
                                             {t.projectSettings.role}
                                             <FormMessage />
                                         </FormLabel>
-                                        <span className="text-muted-foreground/90 leading-tight">
+                                        <span className="text-foreground-muted/90 leading-tight">
                                             {t.projectSettings.roleDesc}
                                         </span>
                                     </div>

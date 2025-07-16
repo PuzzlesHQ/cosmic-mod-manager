@@ -93,7 +93,7 @@ export function FollowsCollectionItem(props: { followingProjects: number; classN
             vtId={FOLLOWS_COLLECTIONS_ID}
             title={t.collection.followedProjects}
             url={CollectionPagePath(FOLLOWS_COLLECTIONS_ID)}
-            icon={<HeartIcon aria-hidden className="h-[60%] w-[60%] fill-current text-accent-background" />}
+            icon={<HeartIcon aria-hidden className="h-[60%] w-[60%] fill-current text-accent-bg" />}
             description={t.collection.followedProjectsDesc}
             projects={props.followingProjects}
             className={props.className}

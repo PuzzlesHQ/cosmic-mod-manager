@@ -23,7 +23,7 @@ export default function NotFoundPage({ className, title, description, linkHref, 
                     {title || t.error.pageNotFound}
                 </h1>
             </div>
-            <p className="flex max-w-xl items-center justify-center text-center text-lg dark:text-muted-foreground">
+            <p className="flex max-w-xl items-center justify-center text-center text-lg dark:text-foreground-muted">
                 {description || t.error.pageNotFoundDesc}
             </p>
 

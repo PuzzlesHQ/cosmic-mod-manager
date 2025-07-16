@@ -60,6 +60,10 @@ export function meta(props: Route.MetaArgs) {
     const url = getCurrLocation();
     const version = filterGameVersion(ctx.versions, versionSlug, new URLSearchParams(url.search));
 
+    if (!project?.id) {
+        return null;
+    }
+
     if (!version?.id) {
         return MetaTags({
             title: t.meta.addContext(t.error.versionNotFound, project.name),

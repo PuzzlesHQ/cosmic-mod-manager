@@ -89,7 +89,7 @@ export default function PreferencesPage() {
                     <div className="flex w-full items-center justify-between gap-x-6 gap-y-1">
                         <label htmlFor="view-transitions" className="shrink-[2] grow basis-[min-content]">
                             <span className="my-0 block font-bold text-foreground text-lg">{t.settings.viewTransitions}</span>
-                            <span className="my-0 block text-muted-foreground">{t.settings.viewTransitionsDesc}</span>
+                            <span className="my-0 block text-foreground-muted">{t.settings.viewTransitionsDesc}</span>
                         </label>
                         <Switch id="view-transitions" checked={ctx.viewTransitions} onCheckedChange={toggleViewTransitions} />
                     </div>
@@ -109,17 +109,17 @@ interface RadioBtnSelectorProps {
 
 function RadioBtnSelector(props: RadioBtnSelectorProps) {
     return (
-        <button type="button" className="grid appearance-none rounded border border-shallow-background" onClick={props.onClick}>
+        <button type="button" className="grid appearance-none rounded border border-border" onClick={props.onClick}>
             {props.children}
 
-            <div className="flex items-center gap-2 rounded-b bg-shallow-background px-4 py-2">
+            <div className="flex items-center gap-2 rounded-b bg-raised-background px-4 py-2">
                 <svg
                     viewBox="0 0 24 24"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     className={cn(
-                        "lucide lucide-circle-dot h-btn-icon w-btn-icon text-muted-foreground",
-                        props.checked && "text-accent-background",
+                        "lucide lucide-circle-dot h-btn-icon w-btn-icon text-foreground-muted",
+                        props.checked && "text-accent-bg",
                     )}
                     aria-hidden="true"
                 >
@@ -127,7 +127,7 @@ function RadioBtnSelector(props: RadioBtnSelectorProps) {
                     {props.checked && <circle cx="12" cy="12" r="5.5" stroke="none" fill="currentColor"></circle>}
                 </svg>
 
-                <span className={cn("font-semibold text-muted-foreground", props.checked && "text-foreground-bright")}>
+                <span className={cn("font-semibold text-foreground-muted", props.checked && "text-foreground-bright")}>
                     {props.label} {props.icon}
                 </span>
             </div>
@@ -154,16 +154,12 @@ function ThemePreview({ theme, isActive }: { theme: ThemePreferences; isActive: 
                     src={null}
                     alt={theme}
                     fallback={Icon}
-                    className={cn(
-                        "h-9 w-9",
-
-                        isActive ? "bg-accent-background text-foreground-bright" : "text-accent-background",
-                    )}
+                    className={cn("h-9 w-9", isActive ? "bg-accent-bg text-accent-bg-foreground" : "text-accent-bg")}
                 />
 
                 <div className="grid grid-cols-1 content-start gap-panel-cards">
                     <div className="h-2 rounded-lg bg-foreground-bright" />
-                    <div className="h-2 w-[60%] rounded-lg bg-extra-muted-foreground" />
+                    <div className="h-2 w-[60%] rounded-lg bg-foreground-extra-muted" />
                 </div>
             </div>
         </div>

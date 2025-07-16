@@ -8,7 +8,7 @@ import { useLocation } from "react-router";
 import RefreshPage from "~/components/misc/refresh-page";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import Link, { useNavigate } from "~/components/ui/link";
+import { TextLink, useNavigate } from "~/components/ui/link";
 import { toast } from "~/components/ui/sonner";
 import { TooltipProvider, TooltipTemplate } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
@@ -45,7 +45,7 @@ export function PublishingChecklist() {
     const RequiredIcon = <AsteriskIcon aria-hidden className="inline h-4 w-4 text-[#cb2245] dark:text-[#ff496e]" />;
     const SuggestionIcon = <LightbulbIcon aria-hidden className="inline h-4 w-4 text-purple-600 dark:text-purple-400" />;
     const SubmitIcon = <ScaleIcon aria-hidden className="inline h-[1.1rem] w-[1.1rem] text-[#e08325] dark:text-[#ffa347]" />;
-    const TickIcon = <CheckIcon aria-hidden className="inline h-4 w-4 text-muted-foreground" />;
+    const TickIcon = <CheckIcon aria-hidden className="inline h-4 w-4 text-foreground-muted" />;
 
     function StatusIcon({ status }: { status: string }) {
         let icon = null;
@@ -206,11 +206,11 @@ export function PublishingChecklist() {
         <Card>
             <CardHeader className="flex flex-row items-center justify-between gap-x-4">
                 <div className="flex grow flex-wrap items-center justify-between gap-x-4 gap-y-2">
-                    <CardTitle className="text-muted-foreground/85">{pubChecklist.title}</CardTitle>
+                    <CardTitle className="text-foreground-muted/85">{pubChecklist.title}</CardTitle>
 
                     <div className="flex flex-wrap items-center gap-1">
                         <TooltipProvider delayDuration={200}>
-                            <span className="me-2 font-bold text-muted-foreground/85">{pubChecklist.progress}</span>
+                            <span className="me-2 font-bold text-foreground-muted/85">{pubChecklist.progress}</span>
 
                             {steps.map((step) => {
                                 if (step.hide) return;
@@ -265,7 +265,7 @@ export function PublishingChecklist() {
                                     {step.action ? (
                                         <>
                                             {!readyToSubmit && (
-                                                <span className="text-muted-foreground leading-tight">
+                                                <span className="text-foreground-muted leading-tight">
                                                     {pubChecklist.requiredStepsDesc}
                                                 </span>
                                             )}
@@ -274,7 +274,7 @@ export function PublishingChecklist() {
                                                 disabled={!readyToSubmit}
                                                 onClick={step.action.onClick}
                                                 className="w-fit"
-                                                variant="moderation-submit"
+                                                variant="moderation"
                                                 size="sm"
                                             >
                                                 <SendIcon aria-hidden className="h-btn-icon w-iconh-btn-icon" />{" "}
@@ -323,20 +323,17 @@ interface ChecklistCardProps {
 function ChecklistCard(props: ChecklistCardProps) {
     return (
         <div className="grid grid-cols-1 grid-rows-[auto_1fr_auto] gap-3 self-stretch rounded-lg bg-background p-card-surround">
-            <span className="flex items-center justify-start gap-1 font-semibold text-muted-foreground">
+            <span className="flex items-center justify-start gap-1 font-semibold text-foreground-muted">
                 {props.icon}
                 {props.label}
             </span>
-            <span className="text-pretty text-muted-foreground/85">{props.desc}</span>
+            <span className="text-pretty text-foreground-muted/85">{props.desc}</span>
             {props.children}
 
             {!props.children && props.link && (
-                <Link
-                    className={cn("link_blue mt-auto w-fit brightness-100 hover:underline", props.link.hidden && "invisible")}
-                    to={props.link.href}
-                >
+                <TextLink className={cn("mt-auto w-fit", props.link.hidden && "invisible")} to={props.link.href}>
                     {props.link.label} <ChevronRightIcon aria-hidden className="inline h-4 w-4" />
-                </Link>
+                </TextLink>
             )}
         </div>
     );

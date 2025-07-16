@@ -45,16 +45,16 @@ function CopyBtn({ id, text, label, className, labelClassName, iconClassName, ma
             onClick={copyText}
         >
             {label ? (
-                <span className={cn("font-mono text-foreground text-sm leading-none dark:text-muted-foreground", labelClassName)}>
+                <span className={cn("font-mono text-foreground text-sm leading-none dark:text-foreground-muted", labelClassName)}>
                     {label.slice(0, maxLabelChars || label.length)}
                     {maxLabelChars && label.length > maxLabelChars ? "…" : ""}
                 </span>
             ) : null}
             <div className="flex h-btn-icon w-btn-icon items-center justify-center">
                 {showTickIcon ? (
-                    <CheckIcon aria-hidden className={cn("h-btn-icon w-btn-icon text-success-foreground", iconClassName)} />
+                    <CheckIcon aria-hidden className={cn("h-btn-icon w-btn-icon text-success-fg", iconClassName)} />
                 ) : (
-                    <CopyIcon aria-hidden className={cn("h-3 w-3 text-extra-muted-foreground", iconClassName)} />
+                    <CopyIcon aria-hidden className={cn("h-3 w-3 text-foreground-extra-muted", iconClassName)} />
                 )}
             </div>
         </Button>

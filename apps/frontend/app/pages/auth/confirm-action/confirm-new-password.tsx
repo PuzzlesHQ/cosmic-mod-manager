@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button, CancelButton } from "~/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
 import { FormSuccessMessage } from "~/components/ui/form-message";
-import Link from "~/components/ui/link";
+import { TextLink } from "~/components/ui/link";
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
 import { useTranslation } from "~/locales/provider";
@@ -73,9 +73,7 @@ export default function ConfirmNewPasswordCard({ code }: { code: string }) {
                 {successMessage ? (
                     <CardContent className="items-center justify-center gap-2">
                         <FormSuccessMessage text={successMessage} />
-                        <Link to="/" className="link_blue">
-                            {t.common.home}
-                        </Link>
+                        <TextLink to="/">{t.common.home}</TextLink>
                     </CardContent>
                 ) : (
                     <>

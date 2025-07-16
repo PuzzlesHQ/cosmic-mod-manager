@@ -39,7 +39,7 @@ export function PageHeader({
         <div
             {...props}
             className={cn(
-                "page-header mt-4 mb-1 grid w-full max-w-full grid-cols-1 gap-x-8 gap-y-6 border-0 border-card-background border-b pb-5 lg:grid-cols-[1fr_auto] dark:border-shallow-background",
+                "page-header mt-4 mb-1 grid w-full max-w-full grid-cols-1 gap-x-8 gap-y-6 border-raised-background border-b pb-5 lg:grid-cols-[1fr_auto]",
                 className,
             )}
         >
@@ -65,11 +65,18 @@ export function PageHeader({
                     </div>
                     <p
                         itemProp={MicrodataItemProps.description}
-                        className="max-w-[80ch] text-pretty text-muted-foreground leading-tight"
+                        className="max-w-[80ch] text-pretty text-foreground-muted leading-tight"
                     >
                         {AllowWordBreaks(description, ["/", "-", "_"])}
                     </p>
-                    <div className="mt-auto flex flex-wrap gap-x-4 pt-2 text-muted-foreground">{children}</div>
+                    <div
+                        className={cn(
+                            "mt-auto flex flex-wrap gap-x-4 pt-2 text-foreground-muted",
+                            "[&>*:last-child]:border-0 [&>*]:border-raised-background [&>*]:border-e [&>*]:pe-4",
+                        )}
+                    >
+                        {children}
+                    </div>
                 </div>
             </div>
 
@@ -80,7 +87,7 @@ export function PageHeader({
                     {threeDotMenu ? (
                         <Popover>
                             <PopoverTrigger asChild>
-                                <Button variant="ghost-inverted" className="h-11 w-11 rounded-full p-0" aria-label="More options">
+                                <Button variant="ghost" className="h-11 w-11 rounded-full p-0" aria-label="More options">
                                     <MoreVerticalIcon aria-hidden className="h-btn-icon-lg w-btn-icon-lg" />
                                 </Button>
                             </PopoverTrigger>

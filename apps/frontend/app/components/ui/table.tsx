@@ -23,7 +23,7 @@ function TableFooter({ ref, className, ...props }: React.ComponentProps<"tfoot">
     return (
         <tfoot
             ref={ref}
-            className={cn("border-background border-t bg-shallow-background/50 font-medium [&>tr]:last:border-b-0", className)}
+            className={cn("border-background border-t bg-raised-background/50 font-medium [&>tr]:last:border-b-0", className)}
             {...props}
         />
     );
@@ -70,7 +70,7 @@ function TableCell({ ref, className, ...props }: React.ComponentProps<"td">) {
 TableCell.displayName = "TableCell";
 
 function TableCaption({ ref, className, ...props }: React.ComponentProps<"caption">) {
-    return <caption ref={ref} className={cn("mt-4 text-muted-foreground text-sm", className)} {...props} />;
+    return <caption ref={ref} className={cn("mt-4 text-foreground-muted text-sm", className)} {...props} />;
 }
 TableCaption.displayName = "TableCaption";
 

@@ -53,7 +53,7 @@ export default function ProjectGallery() {
                     <Suspense>
                         <UploadGalleryImageForm projectData={projectData} />
                     </Suspense>
-                    <div className="flex items-center justify-center gap-2 text-muted-foreground">
+                    <div className="flex items-center justify-center gap-2 text-foreground-muted">
                         <InfoIcon aria-hidden className="h-btn-icon w-btn-icon" />
                         {t.project.uploadNewImg}
                     </div>
@@ -129,7 +129,7 @@ function GalleryItemCard({
         >
             <button
                 type="button"
-                className="flex aspect-video items-center justify-center overflow-hidden rounded-lg bg-[hsla(var(--background))]"
+                className="flex aspect-video items-center justify-center overflow-hidden rounded-lg bg-background"
                 onClick={() => {
                     setActiveIndex(index);
                     setdialogOpen(true);
@@ -151,15 +151,15 @@ function GalleryItemCard({
                     <span itemProp={MicrodataItemProps.name} className="flex items-center justify-start gap-2 font-bold text-lg">
                         {galleryItem.name}
                         {galleryItem.featured === true ? (
-                            <StarIcon aria-hidden className="h-btn-icon w-btn-icon fill-current text-extra-muted-foreground" />
+                            <StarIcon aria-hidden className="h-btn-icon w-btn-icon fill-current text-foreground-extra-muted" />
                         ) : null}
                     </span>
-                    <figcaption itemProp={MicrodataItemProps.description} className="text-muted-foreground leading-tight">
+                    <figcaption itemProp={MicrodataItemProps.description} className="text-foreground-muted leading-tight">
                         {galleryItem.description}
                     </figcaption>
                 </div>
                 <div className="mt-1 flex w-full flex-col items-start justify-start gap-1.5">
-                    <p className="flex items-center justify-center gap-1.5 text-muted-foreground">
+                    <p className="flex items-center justify-center gap-1.5 text-foreground-muted">
                         <CalendarIcon aria-hidden className="h-btn-icon w-btn-icon" />
                         <FormattedDate date={galleryItem.dateCreated} includeTime={false} />
                     </p>

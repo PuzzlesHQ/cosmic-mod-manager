@@ -94,7 +94,7 @@ export default function UserPageLayout(props: Props) {
 
                 {navLinks.length < 1 ? (
                     <div className="flex w-full items-center justify-center py-12">
-                        <p className="text-center text-lg text-muted-foreground italic">
+                        <p className="text-center text-lg text-foreground-muted italic">
                             {t.user.doesntHaveProjects(props.userData.name)}
                         </p>
                     </div>
@@ -156,7 +156,7 @@ function PageSidebar({ userId, orgsList }: { displayName: string; userId: string
             {
                 // TODO:
                 /* <ContentCardTemplate title="Badges" titleClassName="text-lg">
-                    <span className="text-muted-foreground italic">List of badges the user has earned</span>
+                    <span className="text-foreground-muted italic">List of badges the user has earned</span>
                 </ContentCardTemplate> */
             }
         </div>
@@ -227,18 +227,18 @@ function ProfilePageHeader({ userData, totalProjects, totalDownloads }: ProfileP
             }
             actionBtns={
                 userData.id === session?.id ? (
-                    <VariantButtonLink variant="secondary-inverted" to="/settings/profile" prefetch={LinkPrefetchStrategy.Render}>
+                    <VariantButtonLink variant="secondary" to="/settings/profile" prefetch={LinkPrefetchStrategy.Render}>
                         <EditIcon aria-hidden className="h-btn-icon w-btn-icon" />
                         {t.form.edit}
                     </VariantButtonLink>
                 ) : null
             }
         >
-            <div className="flex items-center gap-2 border-0 border-card-background border-e pe-4 dark:border-shallow-background">
+            <div className="flex items-center gap-2">
                 <CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                 <span className="font-semibold">{t.count.projects(totalProjects, totalProjects)}</span>
             </div>
-            <div className="flex items-center gap-2 border-0 border-card-background border-e pe-4 dark:border-shallow-background">
+            <div className="flex items-center gap-2">
                 <DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                 <span className="font-semibold">
                     {t.count.downloads(totalDownloads, FormatCount(totalDownloads, formattedLocaleName))}

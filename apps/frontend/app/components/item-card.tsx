@@ -32,13 +32,13 @@ export function ListItemCard(props: ListItemCardProps) {
                 src={props.icon || ""}
                 alt={props.title}
                 fallback={props.fallbackIcon}
-                className="h-20 w-20 rounded-xl border-shallower-background sm:h-24 sm:w-24 dark:border-shallow-background"
+                className="h-20 w-20 rounded-xl border-border sm:h-24 sm:w-24"
             />
 
             <div className="flex flex-col items-start justify-start">
                 <div className="w-full font-bold text-foreground-bright text-md">{props.title}</div>
-                <span className="w-full text-muted-foreground/75 text-sm leading-tight">{props.description}</span>
-                <div className="mt-auto flex w-full flex-wrap items-start justify-start gap-x-3 text-extra-muted-foreground">
+                <span className="w-full text-foreground-muted/75 text-sm leading-tight">{props.description}</span>
+                <div className="mt-auto flex w-full flex-wrap items-start justify-start gap-x-3 text-foreground-extra-muted">
                     {props.children}
                 </div>
             </div>
@@ -56,7 +56,7 @@ export function OrgListItemCard({ members, ...props }: OrgListItemCard) {
     return (
         <ListItemCard {...props} fallbackIcon={fallbackOrgIcon}>
             <div className="flex items-center justify-center gap-1 whitespace-nowrap">
-                <UsersIcon aria-hidden className="h-btn-icon w-btn-icon font-medium text-extra-muted-foreground" />
+                <UsersIcon aria-hidden className="h-btn-icon w-btn-icon font-medium text-foreground-extra-muted" />
                 {t.count.members(members, members)}
             </div>
         </ListItemCard>

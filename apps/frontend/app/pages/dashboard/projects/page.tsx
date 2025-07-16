@@ -6,7 +6,7 @@ import { fallbackProjectIcon } from "~/components/icons";
 import { ImgWrapper } from "~/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import CopyBtn from "~/components/ui/copy-btn";
-import Link, { useNavigate } from "~/components/ui/link";
+import Link, { useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import { useTranslation } from "~/locales/provider";
@@ -74,7 +74,7 @@ export function ProjectsListTable({ projects }: { projects: ProjectListItem[] })
                         return (
                             <TableRow
                                 key={project.id}
-                                className="cursor-pointer text-muted-foreground"
+                                className="cursor-pointer text-foreground-muted"
                                 onClick={(e) => {
                                     //@ts-expect-error
                                     if (!e.target.closest(".noClickRedirect")) {
@@ -118,7 +118,7 @@ export function ProjectsListTable({ projects }: { projects: ProjectListItem[] })
                                             text={project.id}
                                             label={project.id}
                                             // maxLabelChars={12}
-                                            className="noClickRedirect bg-shallow-background/50 px-2 py-1"
+                                            className="noClickRedirect bg-raised-background/50 px-2 py-1"
                                             iconClassName="w-3 h-3"
                                         />
                                     </div>
@@ -158,13 +158,14 @@ export function ProjectsListTable({ projects }: { projects: ProjectListItem[] })
 
                                 {/* SETTINGS PAGE LINK */}
                                 <TableCell className="pe-table-side-pad-sm sm:pe-table-side-pad">
-                                    <Link
+                                    <VariantButtonLink
+                                        variant="ghost"
                                         to={ProjectPagePath(project.type[0], project.slug, "settings")}
-                                        className="noClickRedirect flex h-full w-fit items-center justify-center rounded p-2 hover:bg-shallow-background"
+                                        className="noClickRedirect h-full w-fit justify-center rounded p-2"
                                         aria-label="project settings"
                                     >
                                         <SettingsIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                                    </Link>
+                                    </VariantButtonLink>
                                 </TableCell>
                             </TableRow>
                         );

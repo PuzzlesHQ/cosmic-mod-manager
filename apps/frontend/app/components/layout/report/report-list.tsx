@@ -47,7 +47,7 @@ export function ReportInfo(props: ReportInfoProps) {
     const reporter = props.report.reporterUser;
 
     return (
-        <div className="group/report-item grid w-full gap-2 rounded-lg bg-background p-card-surround text-muted-foreground">
+        <div className="group/report-item grid w-full gap-2 rounded-lg bg-background p-card-surround text-foreground-muted">
             <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
                 <ReportedItem report={props.report} />
 
@@ -95,7 +95,7 @@ export function ReportInfo(props: ReportInfoProps) {
 
                 <TooltipProvider>
                     <TooltipTemplate content={<FormattedDate date={props.report.createdAt} />}>
-                        <span className="cursor-help text-extra-muted-foreground">
+                        <span className="cursor-help text-foreground-extra-muted">
                             <TimePassedSince date={props.report.createdAt} />
                         </span>
                     </TooltipTemplate>
@@ -159,7 +159,7 @@ function ReportedItem({ report }: { report: DetailedReport }) {
                     url={VersionPagePath("project", version.projectId, version.id)}
                     imgAlt={version.title}
                     icon={null}
-                    fallback={<GitCommitHorizontalIcon className="h-[100%] w-[100%] text-extra-muted-foreground" />}
+                    fallback={<GitCommitHorizontalIcon className="h-[100%] w-[100%] text-foreground-extra-muted" />}
                     itemTitle={version.title}
                     itemType={report.itemType}
                     itemType_translated={t.version.version}
@@ -217,7 +217,7 @@ function ReportedItem_Comp(props: ReportedItem_CompProps) {
 
             <Badge
                 variant="outline"
-                className="text-extra-muted-foreground"
+                className="text-foreground-extra-muted"
                 title={t.report.reportedItem(props.itemType_translated).join("")}
             >
                 {props.itemType_translated}

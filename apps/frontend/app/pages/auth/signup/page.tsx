@@ -22,7 +22,7 @@ export default function SignUpPage() {
                         </div>
                     </div>
 
-                    <p className="text-muted-foreground">
+                    <p className="text-foreground-muted">
                         {t.auth.agreement(
                             <TextLink key="terms-link" to="/legal/terms">
                                 {t.legal.termsTitle}
@@ -35,7 +35,7 @@ export default function SignUpPage() {
 
                     <Separator />
 
-                    <div className="flex w-full flex-col items-center justify-center gap-1 text-muted-foreground">
+                    <div className="flex w-full flex-col items-center justify-center gap-1 text-foreground-muted">
                         <p className="text-center">
                             {t.auth.alreadyHaveAccount(
                                 <TextLink key="login-link" to="/login" aria-label={t.form.login}>

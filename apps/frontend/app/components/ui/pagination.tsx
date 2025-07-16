@@ -34,8 +34,7 @@ function PaginationLink({ className, isActive, size = "icon", ...props }: Pagina
                     size,
                 }),
                 "h-9 transition-none",
-                !isActive &&
-                    "bg-card-background hover:bg-card-background/70 dark:bg-shallow-background dark:hover:bg-shallow-background/85",
+                !isActive && "bg-raised-background hover:bg-hover-background",
                 className,
             )}
             viewTransition={false}
@@ -101,7 +100,7 @@ function PaginationEllipsis({ className, ...props }: React.ComponentProps<"span"
             className={cn("flex h-iconified-btn w-iconified-btn items-center justify-center", className)}
             {...props}
         >
-            <MoreHorizontalIcon aria-hidden className="h-btn-icon w-btn-icon text-extra-muted-foreground" />
+            <MoreHorizontalIcon aria-hidden className="h-btn-icon w-btn-icon text-foreground-extra-muted" />
             <span className="sr-only">More pages</span>
         </span>
     );

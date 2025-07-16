@@ -35,10 +35,10 @@ export function TernaryCheckbox(props: ThreeStateCheckboxProps) {
             aria-checked={props.state !== TernaryStates.UNCHECKED}
             onClick={handleClick}
             className={cn(
-                "flex h-4 w-4 cursor-pointer items-center justify-center rounded-sm text-background",
-                props.state === TernaryStates.UNCHECKED && "bg-shallower-background/85",
-                props.state === TernaryStates.INCLUDED && "bg-accent-background",
-                props.state === TernaryStates.EXCLUDED && "bg-danger-background",
+                "flex h-4 w-4 cursor-pointer items-center justify-center rounded-sm",
+                props.state === TernaryStates.UNCHECKED && "bg-raised-background",
+                props.state === TernaryStates.INCLUDED && "bg-accent-bg text-accent-bg-foreground",
+                props.state === TernaryStates.EXCLUDED && "bg-danger-btn-bg text-danger-btn-fg",
                 props.className,
             )}
         >
@@ -63,9 +63,9 @@ export function LabelledTernaryCheckbox(props: LabelledCheckboxProps) {
     return (
         <Label
             className={cn(
-                "flex cursor-not-allowed items-center justify-start gap-x-2.5 py-1 font-normal text-base text-muted-foreground leading-tight opacity-75 transition",
+                "flex cursor-not-allowed items-center justify-start gap-x-2.5 py-1 font-normal text-base text-foreground-muted leading-tight opacity-75 transition",
                 !props.disabled && "cursor-pointer opacity-100 hover:brightness-[85%]",
-                props.state === TernaryStates.EXCLUDED && "text-danger-foreground",
+                props.state === TernaryStates.EXCLUDED && "text-error-fg",
                 props.className,
             )}
             title={props.title}

@@ -10,7 +10,7 @@ function ClientSide({ className }: Props) {
     const { t } = useTranslation();
     return (
         <span
-            className={cn("flex cursor-help items-center justify-start gap-x-1 font-semibold text-muted-foreground", className)}
+            className={cn("flex cursor-help items-center justify-start gap-x-1 font-semibold text-foreground-muted", className)}
             title="Needs to be installed on the game client"
         >
             <MonitorIcon aria-hidden className="h-btn-icon w-btn-icon" />
@@ -23,7 +23,7 @@ function ServerSide({ className }: Props) {
     const { t } = useTranslation();
     return (
         <span
-            className={cn("flex cursor-help items-center justify-start gap-x-1 font-semibold text-muted-foreground", className)}
+            className={cn("flex cursor-help items-center justify-start gap-x-1 font-semibold text-foreground-muted", className)}
             title="Needs to be installed on the game server"
         >
             <HardDriveIcon aria-hidden className="h-btn-icon w-btn-icon" />
@@ -36,7 +36,7 @@ function ClientOrServerSide({ className }: Props) {
     const { t } = useTranslation();
     return (
         <span
-            className={cn("flex cursor-help items-center justify-start gap-x-1 font-semibold text-muted-foreground", className)}
+            className={cn("flex cursor-help items-center justify-start gap-x-1 font-semibold text-foreground-muted", className)}
             title="Needs to be installed on either the game client or the server"
         >
             <GlobeIcon aria-hidden className="h-btn-icon w-btn-icon" />
@@ -49,7 +49,7 @@ function ClientAndServerSide({ className }: Props) {
     const { t } = useTranslation();
     return (
         <span
-            className={cn("flex cursor-help items-center justify-start gap-x-1 font-semibold text-muted-foreground", className)}
+            className={cn("flex cursor-help items-center justify-start gap-x-1 font-semibold text-foreground-muted", className)}
             title="Needs to be installed on both the game client and the server"
         >
             <GlobeIcon aria-hidden className="h-btn-icon w-btn-icon" />
@@ -61,7 +61,7 @@ function ClientAndServerSide({ className }: Props) {
 function Unsupported({ className }: Props) {
     const { t } = useTranslation();
     return (
-        <span className={cn("flex items-center justify-start gap-x-1 font-semibold text-muted-foreground", className)}>
+        <span className={cn("flex items-center justify-start gap-x-1 font-semibold text-foreground-muted", className)}>
             <GlobeIcon aria-hidden className="h-btn-icon w-btn-icon" />
             {t.projectSettings.unsupported}
         </span>

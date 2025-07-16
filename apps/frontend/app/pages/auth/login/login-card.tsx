@@ -154,7 +154,7 @@ export function LoginPageCard(props: LoginPageCardProps) {
                     </div>
                 </div>
 
-                <div className="mt-4 flex w-full flex-col items-center justify-center text-muted-foreground">
+                <div className="mt-4 flex w-full flex-col items-center justify-center text-foreground-muted">
                     <div className="text-center">
                         {t.auth.dontHaveAccount(
                             <TextLink

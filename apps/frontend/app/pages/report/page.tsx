@@ -18,7 +18,7 @@ import MarkdownEditor from "~/components/md-editor/editor";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import Link, { TextLink, useNavigate, VariantButtonLink } from "~/components/ui/link";
+import { TextLink, useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { ButtonStyleRadioGroup, RadioGroup } from "~/components/ui/radio-group";
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
@@ -70,13 +70,13 @@ export default function ReportPage({ data }: { data: LoaderData }) {
         return (
             <main className="mx-auto grid w-full max-w-4xl gap-4 p-card-surround">
                 <div className="grid text-center">
-                    <ScaleIcon className="h-12 w-full text-warning-foreground" />
+                    <ScaleIcon className="h-12 w-full text-moderation-btn-bg" />
                     <h1 className="font-bold text-foreground-bright text-xl-plus leading-loose">
                         {data?.existingReport?.id
                             ? t.report.alreadyReported(reportingItem || t.report.content)
                             : t.report.reportToMods(reportingItem || t.report.content)}
                     </h1>
-                    <div className="h-[1px] bg-gradient-to-l from-warning-foreground/5 via-warning-foreground to-warning-foreground/5" />
+                    <div className="h-[1px] bg-gradient-to-l from-moderation-btn-bg/5 via-moderation-btn-bg to-moderation-btn-bg/5" />
                 </div>
 
                 {props.children}
@@ -88,7 +88,7 @@ export default function ReportPage({ data }: { data: LoaderData }) {
         return (
             <Main>
                 <div className="grid gap-3">
-                    <p className="text-muted-foreground">{t.report.alreadyReportedDesc(reportingItemType || t.report.content)}</p>
+                    <p className="text-foreground-muted">{t.report.alreadyReportedDesc(reportingItemType || t.report.content)}</p>
                     <div className="flex items-center justify-end gap-3">
                         {reportingItem_link && reportingItemType ? (
                             <VariantButtonLink to={reportingItem_link} variant="secondary">
@@ -152,9 +152,9 @@ export default function ReportPage({ data }: { data: LoaderData }) {
                 ].map((section) => {
                     const icon =
                         section.icon === "positive" ? (
-                            <CheckCircle2Icon className="size-8 text-success-background" />
+                            <CheckCircle2Icon className="size-8 text-success-fg" />
                         ) : (
-                            <XCircleIcon className="size-8 text-danger-background" />
+                            <XCircleIcon className="size-8 text-error-fg" />
                         );
 
                     return (
@@ -167,7 +167,7 @@ export default function ReportPage({ data }: { data: LoaderData }) {
                                         <div className="grid">
                                             <span className="font-semibold text-base text-foreground-bright">{item.title}</span>
                                             {!!item.desc && (
-                                                <span className="text-extra-muted-foreground text-sm leading-tight">
+                                                <span className="text-foreground-extra-muted text-sm leading-tight">
                                                     {item.desc}
                                                 </span>
                                             )}
@@ -253,8 +253,8 @@ function ReportSelectedItem(props: { itemId: string; itemType: ReportItemType; i
             </div>
 
             {(violationType === RuleViolationType.REUPLOADED_WORK || RuleViolationType.MALICIOUS === violationType) && (
-                <div className="grid grid-cols-[min-content,_1fr] gap-2 rounded border-2 border-warning-foreground bg-warning-background/20 p-card-surround text-foreground-bright">
-                    <AlertTriangleIcon className="mt-[0.15em] h-btn-icon-lg w-btn-icon-lg text-warning-foreground" />
+                <div className="grid grid-cols-[min-content,_1fr] gap-2 rounded border-2 border-warning-fg bg-warning-bg p-card-surround text-foreground-bright">
+                    <AlertTriangleIcon className="mt-[0.15em] h-btn-icon-lg w-btn-icon-lg text-warning-fg" />
 
                     <div className="grid gap-2">
                         {violationType === RuleViolationType.MALICIOUS && (
@@ -268,9 +268,9 @@ function ReportSelectedItem(props: { itemId: string; itemType: ReportItemType; i
                                 <p className="leading-snug">{t.report.violationType.reuploaded_work_desc._1}</p>
                                 <p className="leading-snug">
                                     {t.report.violationType.reuploaded_work_desc._2(
-                                        <Link key="copyright-policy" to="/legal/copyright" className="link_blue hover:underline">
+                                        <TextLink key="copyright-policy" to="/legal/copyright">
                                             {t.legal.copyrightPolicyTitle}
-                                        </Link>,
+                                        </TextLink>,
                                     )}
                                 </p>
                             </>
@@ -284,7 +284,7 @@ function ReportSelectedItem(props: { itemId: string; itemType: ReportItemType; i
                     <div className="grid gap-2">
                         <div className="grid gap-1">
                             <Label>{t.report.provideAdditionalContext}</Label>
-                            <p className="text-extra-muted-foreground">{t.report.additionalContextDesc}</p>
+                            <p className="text-foreground-extra-muted">{t.report.additionalContextDesc}</p>
                         </div>
                         <MarkdownEditor editorValue={reportBody} setEditorValue={setReportBody} />
                     </div>

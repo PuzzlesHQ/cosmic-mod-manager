@@ -73,8 +73,8 @@ export const BrandIcon: React.FC<IconSvgProps> = ({ size, width, height, strokeW
                     href="#a"
                 />
                 <linearGradient id="a">
-                    <stop className="text-accent-background" stopColor="currentColor" offset="0" />
-                    <stop className="text-accent-background" stopColor="currentColor" offset="1" />
+                    <stop className="text-accent-bg" stopColor="currentColor" offset="0" />
+                    <stop className="text-accent-bg" stopColor="currentColor" offset="1" />
                 </linearGradient>
                 <linearGradient
                     id="c"
@@ -251,9 +251,9 @@ export const CubeIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props
 
 export const CancelButtonIcon = XIcon;
 
-export const fallbackProjectIcon = <CubeIcon aria-hidden className="h-3/4 w-3/4 text-extra-muted-foreground" />;
-export const fallbackOrgIcon = <Building2Icon aria-hidden className="h-[65%] w-[65%] text-extra-muted-foreground" />;
-export const fallbackUserIcon = <UserIcon aria-hidden className="h-[65%] w-[65%] text-extra-muted-foreground" />;
+export const fallbackProjectIcon = <CubeIcon aria-hidden className="h-3/4 w-3/4 text-foreground-extra-muted" />;
+export const fallbackOrgIcon = <Building2Icon aria-hidden className="h-[65%] w-[65%] text-foreground-extra-muted" />;
+export const fallbackUserIcon = <UserIcon aria-hidden className="h-[65%] w-[65%] text-foreground-extra-muted" />;
 
 export const PROJECT_STATUS_ICONS = {
     [ProjectPublishingStatus.DRAFT]: (className?: string) => (

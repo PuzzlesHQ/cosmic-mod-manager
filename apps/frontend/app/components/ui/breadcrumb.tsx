@@ -18,7 +18,7 @@ function BreadcrumbList({ ref, className, ...props }: React.ComponentProps<"ol">
     return (
         <ol
             ref={ref}
-            className={cn("flex flex-wrap items-center gap-x-1 break-words text-base text-muted-foreground", className)}
+            className={cn("flex flex-wrap items-center gap-x-1 break-words text-base text-foreground-muted", className)}
             {...props}
         />
     );
@@ -41,13 +41,7 @@ function BreadcrumbLink({
 }) {
     const Comp = asChild ? Slot.Slot : Link;
 
-    return (
-        <Comp
-            to={href || ""}
-            className={cn("text-accent-foreground transition-colors hover:text-accent-foreground/90", className)}
-            {...props}
-        />
-    );
+    return <Comp to={href || ""} className={cn("text-accent-text transition-all hover:brightness-110", className)} {...props} />;
 }
 BreadcrumbLink.displayName = "BreadcrumbLink";
 
@@ -69,7 +63,7 @@ function BreadcrumbSeparator({ children, className, ...props }: React.ComponentP
         <li
             role="presentation"
             aria-hidden="true"
-            className={cn("text-muted-foreground [&>svg]:h-btn-icon [&>svg]:w-btn-icon", className)}
+            className={cn("text-foreground-muted [&>svg]:h-btn-icon [&>svg]:w-btn-icon", className)}
             {...props}
         >
             {children ?? <ChevronRightIcon aria-hidden />}

@@ -91,7 +91,7 @@ export default function ManageAuthProviders({ linkedAuthProviders }: { linkedAut
                                         </div>
                                     </AccordionTrigger>
                                     <AccordionContent className="flex w-full items-center justify-between">
-                                        <p className="text-muted-foreground">
+                                        <p className="text-foreground-muted">
                                             {additionalProviderDetails ? (
                                                 <span className="font-medium text-foreground">
                                                     {additionalProviderDetails.providerAccountEmail}
