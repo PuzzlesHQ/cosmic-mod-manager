@@ -1,26 +1,40 @@
 .catppuccin-mocha {
-    --accent-foreground: 267deg, 84%, 81%;
-    --accent-background: 267deg, 86%, 72%;
-
-    --foreground-bright: 226deg, 67%, 98%;
-    --foreground: 226deg, 64%, 92%;
-    --muted-foreground: 227deg, 35%, 81%;
-    --extra-muted-foreground: 228deg, 24%, 67%;
-
-    --background: 240deg, 20%, 9%;
-    --card-background: 240deg, 21%, 15%;
-    --shallow-background: 237deg, 16%, 23%;
-    --shallower-background: 234deg, 13%, 31%;
-
-    --danger-background: 343deg, 78%, 68%;
-    --danger-foreground: 343deg, 84%, 81%;
-    --warning-background: 23deg, 92%, 75%;
-    --warning-foreground: 23deg, 92%, 75%;
-    --success-background: 115deg, 62%, 76%;
-    --success-foreground: 115deg, 70%, 76%;
-    --link-foreground: 217deg, 92%, 76%;
-    --link-hover-foreground: 217deg, 86%, 70%;
-    --chart-1: 267deg, 84%, 81%;
-
     color-scheme: dark;
+
+    --foreground-bright: 226, 67%, 98%;
+    --foreground: 226, 64%, 92%;
+    --foreground-muted: 227, 35%, 81%;
+    --foreground-extra-muted: 228, 24%, 67%;
+    --foreground-link: 217, 92%, 76%;
+
+    --background: 240, 18%, 8%;
+    --card-background: 240, 17%, 15%;
+    --raised-background: 237, 16%, 22%;
+    --hover-background: 234, 15%, 25%;
+
+    --accent-text: 267, 84%, 81%;
+    --accent-bg: 267, 86%, 72%;
+    --accent-bg-foreground: 226, 67%, 8%;
+
+    --error-fg: 343, 98%, 82%;
+    --error-bg: 343, 78%, 68%, 0.12;
+    --warning-fg: 23, 92%, 75%;
+    --warning-bg: 23, 92%, 75%, 0.1;
+    --success-fg: 115, 70%, 76%;
+    --success-bg: 115, 62%, 76%, 0.1;
+
+    --primary-btn-bg: 267, 86%, 72%;
+    --primary-btn-fg: 226, 67%, 8%;
+    --secondary-btn-bg: var(--raised-background);
+    --secondary-btn-fg: var(--foreground);
+    --danger-btn-bg: 343, 78%, 68%;
+    --danger-btn-fg: 343, 84%, 6%;
+    --moderation-btn-bg: 23, 92%, 75%;
+    --moderation-btn-fg: 23, 92%, 4%;
+
+    --shadow: 240, 20%, 8%;
+    --border: 240, 18%, 22%;
+    --separator: 237, 16%, 23%;
+
+    --chart-1: 267, 84%, 81%;
 }

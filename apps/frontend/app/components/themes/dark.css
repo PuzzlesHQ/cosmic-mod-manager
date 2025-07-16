@@ -1,41 +1,54 @@
 /* DARK THEME */
 
 .dark {
-    --accent-color-hue: 345;
-    --bg-tint-hue: 215;
-    --bg-saturation: 12%;
-    --text-tint-hue: 208;
-    --body-text-saturation: 16%;
+    color-scheme: dark;
 
-    --accent-foreground: var(--accent-color-hue), 85%, 70%;
-    --accent-background: var(--accent-color-hue), 85%, 62%;
+    --foreground-bright: 208, 16%, 98%;
+    --foreground: 208, 16%, 92%;
+    --foreground-muted: 208, 16%, 81%;
+    --foreground-extra-muted: 208, 16%, 67%;
+    --foreground-link: 213, 94%, 74%;
 
-    --foreground-bright: var(--text-tint-hue), var(--body-text-saturation), 98%;
-    --foreground: var(--text-tint-hue), var(--body-text-saturation), 92%;
-    --muted-foreground: var(--text-tint-hue), var(--body-text-saturation), 81%;
-    --extra-muted-foreground: var(--text-tint-hue), var(--body-text-saturation), 67%;
+    --background: 215, 12%, 8%;
+    --card-background: 215, 12%, 15%;
+    --raised-background: 215, 12%, 22%;
+    --hover-background: 215, 12%, 26%;
 
-    --background: var(--bg-tint-hue), var(--bg-saturation), 8%;
-    --card-background: var(--bg-tint-hue), var(--bg-saturation), 15%;
-    --shallow-background: var(--bg-tint-hue), var(--bg-saturation), 24%;
-    --shallower-background: var(--bg-tint-hue), var(--bg-saturation), 32%;
+    --accent-text: 345, 85%, 70%;
+    --accent-bg: 345, 85%, 62%;
+    --accent-bg-foreground: 345, 16%, 98%;
 
-    --danger-background: 0, 92%, 65%;
-    --danger-foreground: 0, 96%, 70%;
-    --warning-background: 35, 78%, 48%;
-    --warning-foreground: 33, 94%, 64%;
-    --success-background: 154, 94%, 42%;
-    --success-foreground: 148, 78%, 52%;
-    --link-foreground: 213, 94%, 74%;
-    --link-hover-foreground: 210, 80%, 87%;
+    --error-fg: 0, 91%, 71%;
+    --error-bg: 352, 74%, 64%, 0.15;
+    --warning-fg: 33, 98%, 66%;
+    --warning-bg: 35, 74%, 62%, 0.15;
+    --success-fg: 148, 78%, 52%;
+    --success-bg: 154, 74%, 44%, 0.15;
+
+    --primary-btn-bg: 345, 85%, 62%;
+    --primary-btn-fg: 345, 16%, 6%;
+    --secondary-btn-bg: var(--raised-background);
+    --secondary-btn-fg: var(--foreground);
+    --danger-btn-bg: 358, 92%, 65%;
+    --danger-btn-fg: 358, 16%, 6%;
+    --moderation-btn-bg: 30, 100%, 64%;
+    --moderation-btn-fg: 30, 16%, 6%;
+
+    --shadow: 215, 12%, 10%;
+    --border: 215, 12%, 22%;
+    --separator: 215, 12%, 20%;
+
     --chart-1: 213, 94%, 68%;
 
-    color-scheme: dark;
+    --loader-fg-quilt: 270, 89%, 78%;
+    --loader-fg-puzzle_loader: 101, 62%, 71%;
+    --loader-fg-paradox: 101, 62%, 71%;
+    --loader-fg-simply_shaders: 194, 77%, 73%;
 }
 
 .dark.oled {
-    --background: 0, 0%, 0%;
-    --card-background: var(--bg-tint-hue), var(--bg-saturation), 7%;
-    --shallow-background: var(--bg-tint-hue), var(--bg-saturation), 14%;
-    --shallower-background: var(--bg-tint-hue), var(--bg-saturation), 22%;
+    --background: 215, 12%, 0%;
+    --card-background: 215, 12%, 7%;
+    --raised-background: 215, 12%, 13%;
+    --hover-background: 215, 12%, 21%;
 }

@@ -16,7 +16,7 @@
 }
 
 .filterCategory {
-    @apply pb-3 border-b border-shallow-background;
+    @apply pb-3 border-b border-border;
 }
 
 .filterCategory:last-child {

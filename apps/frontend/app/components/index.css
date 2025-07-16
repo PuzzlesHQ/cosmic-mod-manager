@@ -22,7 +22,7 @@
 
 html,
 body {
-    color: hsla(var(--foreground));
+    color: hsla(var(--foreground-muted));
     background-color: hsla(var(--background));
     font-size: var(--font-base);
     font-weight: 400;
@@ -40,7 +40,7 @@ html body[data-scroll-locked] {
 
 * {
     scrollbar-width: thin;
-    scrollbar-color: hsla(var(--extra-muted-foreground)) hsla(var(--card-background));
+    scrollbar-color: hsla(var(--foreground-extra-muted)) hsla(var(--card-background));
 }
 
 body.navmenu-open,
@@ -57,7 +57,7 @@ body.no-scrollbar {
         --surround-width: 0.17rem;
         box-shadow:
             inset 0px -1px 2px transparent,
-            0 0 0 var(--surround-width) hsla(var(--accent-background));
+            0 0 0 var(--surround-width) hsla(var(--accent-bg));
         transition-property: background-color, box-shadow, color;
         transition-duration: 150ms;
         transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -67,16 +67,12 @@ body.no-scrollbar {
         --surround-width: 0.17rem;
         box-shadow:
             inset 0px -1px 2px transparent,
-            0 0 0 var(--surround-width) hsla(var(--accent-background));
+            0 0 0 var(--surround-width) hsla(var(--accent-bg));
     }
 
     .input_box_styles:not(.no_input_box_styles) {
-        @apply h-10 rounded flex items-center bg-shallow-background dark:bg-shallow-background/70 text-foreground px-3 py-2 placeholder:text-extra-muted-foreground disabled:cursor-not-allowed disabled:opacity-50;
-        @apply focus-visible:outline-none focus-visible:focus_ring focus-visible:bg-shallow-background/25;
-    }
-
-    .navLinkText {
-        @apply font-semibold text-foreground hover:text-muted-foreground;
+        @apply h-10 rounded flex items-center bg-raised-background text-foreground px-3 py-2 placeholder:text-foreground-extra-muted disabled:cursor-not-allowed disabled:opacity-50;
+        @apply focus-visible:outline-none focus-visible:focus_ring focus-visible:bg-transparent;
     }
 
     .full_page:not(.no_full_page) {
@@ -88,14 +84,6 @@ body.no-scrollbar {
     .bg_hover_stagger:not(.no_bg_hover_stagger) {
         transition: background-color 300ms ease;
         @apply hover:duration-0 group-hover:duration-0;
-    }
-
-    .link_blue {
-        @apply text-link-foreground;
-    }
-
-    .text_link {
-        @apply link_blue hover:underline hover:brightness-110;
     }
 
     .absolute-center {
@@ -113,8 +101,7 @@ a {
 a,
 button,
 input[type="checkbox"] {
-    transition: font-size 150ms ease;
-    @apply focus-visible:outline-none focus-visible:keyboard_focus_ring rounded;
+    @apply focus-visible:outline-none focus-visible:keyboard_focus_ring rounded transition-[filter];
 }
 
 .lucide-arrow-up-right {

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .markdown-body {
-    @apply text-muted-foreground text-base;
+    @apply text-foreground-muted text-base;
 }
 
 .markdown-body blockquote,
@@ -20,12 +20,12 @@
 
 .markdown-body li,
 .markdown-body p {
-    @apply p-0 leading-normal text-muted-foreground;
+    @apply p-0 leading-normal text-foreground-muted;
 }
 
 .markdown-body h1,
 .markdown-body h2 {
-    @apply pt-2.5 pb-1 border-b border-shallower-background;
+    @apply pt-2.5 pb-1 border-b border-border;
 }
 
 .markdown-body h1:first-child,
@@ -118,7 +118,7 @@ li ol li:last-child {
 }
 
 .markdown-body blockquote {
-    @apply ms-6 px-4 border-s-[0.25rem] border-shallower-background;
+    @apply ms-6 px-4 border-s-[0.25rem] border-border;
 }
 
 .markdown-body.chat-msg blockquote {
@@ -126,11 +126,11 @@ li ol li:last-child {
 }
 
 .markdown-body blockquote blockquote {
-    @apply ms-4 px-4 border-s-[0.25rem] border-shallower-background;
+    @apply ms-4 px-4 border-s-[0.25rem] border-border;
 }
 
 .markdown-body a {
-    @apply text-link-foreground cursor-pointer transition-[filter] w-auto h-auto box-border inline-block;
+    @apply text-foreground-link cursor-pointer transition-[filter] w-auto h-auto box-border inline-block;
 }
 
 .markdown-body a:focus-visible,
@@ -151,7 +151,7 @@ html:is(.dark).markdown-body img[src$="#gh-light-mode-only"] {
 }
 
 .markdown-body pre {
-    @apply mt-3 py-4 px-5 w-full inline-block text-foreground bg-shallow-background dark:bg-shallow-background/60 rounded overflow-x-auto;
+    @apply mt-3 py-4 px-5 w-full inline-block text-foreground bg-raised-background rounded overflow-x-auto;
 }
 
 .markdown-body pre code {
@@ -159,15 +159,15 @@ html:is(.dark).markdown-body img[src$="#gh-light-mode-only"] {
 }
 
 .markdown-body code {
-    @apply max-w-full py-0.5 px-2 text-[90%] rounded-md bg-shallow-background dark:bg-shallow-background/60 font-mono;
+    @apply max-w-full py-0.5 px-2 text-[90%] rounded-md bg-raised-background font-mono;
 }
 
 .markdown-body hr {
-    @apply my-5 border-muted-foreground;
+    @apply my-5 border-foreground-muted;
 }
 
 .markdown-body table {
-    @apply block w-max max-w-full overflow-auto border-separate border-spacing-0 leading-normal border-[0.1rem] border-shallow-background rounded;
+    @apply block w-max max-w-full overflow-auto border-separate border-spacing-0 leading-normal border-[0.1rem] border-border rounded;
 }
 
 .markdown-body table th {
@@ -185,24 +185,24 @@ html:is(.dark).markdown-body img[src$="#gh-light-mode-only"] {
 
 .markdown-body table td:not(:last-of-type),
 .markdown-body table th:not(:last-of-type) {
-    @apply border-e-[0.1rem] border-shallow-background;
+    @apply border-e-[0.1rem] border-border;
 }
 
 .markdown-body table tr:not(:last-of-type) td,
 .markdown-body table th {
-    @apply border-b-[0.1rem] border-shallow-background;
+    @apply border-b-[0.1rem] border-border;
 }
 
 .markdown-body kbd {
-    @apply bg-shallow-background rounded-md text-foreground px-2 pt-1 pb-0.5 leading-none text-sm;
+    @apply bg-raised-background rounded-md text-foreground px-2 pt-1 pb-0.5 leading-none text-sm;
 }
 
 .markdown-body details {
-    @apply border-[0.2rem] border-shallow-background rounded p-2 pb-0 open:pb-2;
+    @apply border-[0.2rem] border-border rounded p-2 pb-0 open:pb-2;
 }
 
 .markdown-body details > summary {
-    @apply font-bold bg-shallow-background m-[-0.5rem] mb-0 py-2 px-3 cursor-pointer rounded-md hover:bg-shallow-background/75;
+    @apply font-bold bg-raised-background m-[-0.5rem] mb-0 py-2 px-3 cursor-pointer rounded-md hover:bg-hover-background;
 }
 
 .markdown-body details[open] > summary {
@@ -233,7 +233,7 @@ html:is(.dark).markdown-body img[src$="#gh-light-mode-only"] {
     font-weight: 400;
     margin-inline-start: 0.5ch;
     user-select: none;
-    @apply text-accent-background;
+    @apply text-accent-text;
 }
 
 .markdown-body h1:hover .anchor,

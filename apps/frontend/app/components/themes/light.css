@@ -1,34 +1,48 @@
 /* LIGHT THEME */
 
 .light {
-    --accent-color-hue: 343;
-    --bg-tint-hue: 215;
-    --bg-saturation: 13%;
-    --text-tint-hue: 208;
-    --body-text-saturation: 16%;
+    color-scheme: light;
 
-    --accent-foreground: var(--accent-color-hue), 85%, 42%;
-    --accent-background: var(--accent-color-hue), 80%, 54%;
+    --foreground-bright: 208, 16%, 8%;
+    --foreground: 208, 16%, 15%;
+    --foreground-muted: 208, 16%, 24%;
+    --foreground-extra-muted: 208, 16%, 36%;
+    --foreground-link: 208, 88%, 36%;
 
-    --foreground-bright: var(--text-tint-hue), var(--body-text-saturation), 8%;
-    --foreground: var(--text-tint-hue), var(--body-text-saturation), 15%;
-    --muted-foreground: var(--text-tint-hue), var(--body-text-saturation), 24%;
-    --extra-muted-foreground: var(--text-tint-hue), var(--body-text-saturation), 36%;
+    --background: 215, 14%, 94%;
+    --card-background: 215, 14%, 100%;
+    --raised-background: 215, 14%, 91%;
+    --hover-background: 215, 14%, 88%;
 
-    --background: var(--bg-tint-hue), var(--bg-saturation), 92%;
-    --card-background: var(--bg-tint-hue), var(--bg-saturation), 100%;
-    --shallow-background: var(--bg-tint-hue), var(--bg-saturation), 92%;
-    --shallower-background: var(--bg-tint-hue), var(--bg-saturation), 82%;
+    --accent-text: 343, 85%, 42%;
+    --accent-bg: 343, 80%, 54%;
+    --accent-bg-foreground: 345, 16%, 98%;
 
-    --danger-background: 0, 75%, 46%;
-    --danger-foreground: 0, 65%, 52%;
-    --warning-background: 36, 86%, 44%;
-    --warning-foreground: 36, 90%, 42%;
-    --success-background: 160, 90%, 30%;
-    --success-foreground: 158, 94%, 28%;
-    --link-foreground: 208, 88%, 36%;
-    --link-hover-foreground: 205, 80%, 20%;
+    --error-fg: 0, 75%, 42%;
+    --error-bg: 0, 65%, 52%, 0.1;
+    --warning-fg: 36, 68%, 34%;
+    --warning-bg: 36, 80%, 42%, 0.1;
+    --success-fg: 160, 90%, 24%;
+    --success-bg: 158, 94%, 28%, 0.1;
+
+    --primary-btn-bg: 343, 80%, 54%;
+    --primary-btn-fg: 345, 16%, 98%;
+    --secondary-btn-bg: var(--raised-background);
+    --secondary-btn-fg: var(--foreground);
+    --danger-btn-bg: 0, 75%, 46%;
+    --danger-btn-fg: 345, 16%, 98%;
+    --moderation-btn-bg: 30, 75%, 51%;
+    --moderation-btn-fg: 30, 16%, 98%;
+
+    --shadow: 215, 14%, 12%, 0.2;
+    --border: 215, 14%, 91%;
+    --separator: 215, 14%, 91%;
+
     --chart-1: 217, 91%, 60%;
 
-    color-scheme: light;
+    /* Loader Colors */
+    --loader-fg-quilt: 270, 36%, 54%;
+    --loader-fg-puzzle_loader: 112, 41%, 42%;
+    --loader-fg-paradox: 112, 41%, 42%;
+    --loader-fg-simply_shaders: 194, 40%, 49%;
 }
