@@ -49,8 +49,8 @@
 .dark.oled {
     --background: 215, 12%, 0%;
     --card-background: 215, 12%, 7%;
-    --raised-background: 215, 12%, 13%;
-    --hover-background: 215, 12%, 21%;
+    --raised-background: 215, 12%, 12%;
+    --hover-background: 215, 12%, 16%;
 
     --shadow: 215, 12%, 3%;
     --border: 215, 12%, 13%;

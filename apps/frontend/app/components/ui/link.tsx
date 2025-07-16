@@ -9,7 +9,7 @@ import {
 } from "react-router";
 import type { VariantProps } from "~/components/types";
 import { cn } from "~/components/utils";
-import { useRootData } from "~/hooks/root-data";
+import { usePreferences } from "~/hooks/preferences";
 import { FormatUrl_WithHintLocale, isCurrLinkActive } from "~/utils/urls";
 import { buttonVariants } from "./button";
 
@@ -28,9 +28,9 @@ interface CustomLinkProps extends LinkProps {
 export default function Link({ ref, escapeUrlWrapper, ...props }: CustomLinkProps) {
     let to = props.to.toString();
     if (escapeUrlWrapper !== true) to = FormatUrl_WithHintLocale(to);
-    const viewTransitions = useRootData()?.userConfig.viewTransitions !== false;
+    const { viewTransitions } = usePreferences();
 
-    return <RemixLink ref={ref} {...props} to={to} viewTransition={viewTransitions} />;
+    return <RemixLink ref={ref} {...props} to={to} viewTransition={viewTransitions !== false} />;
 }
 
 export function TextLink(props: React.ComponentProps<typeof Link>) {
@@ -123,12 +123,12 @@ export function VariantButtonLink({
 
 export function useNavigate(escapeUrlWrapper?: boolean, initOptions?: NavigateOptions) {
     const navigate = __useNavigate();
-    const viewTransitions = useRootData()?.userConfig.viewTransitions === true;
+    const { viewTransitions } = usePreferences();
 
     function __navigate(to: string, options?: NavigateOptions): void {
         const toUrl = escapeUrlWrapper === true ? to : FormatUrl_WithHintLocale(to);
 
-        navigate(toUrl, { viewTransition: viewTransitions, ...initOptions, ...options });
+        navigate(toUrl, { viewTransition: viewTransitions !== false, ...initOptions, ...options });
     }
 
     return __navigate as NavigateFunction;

@@ -1,5 +1,6 @@
-import { useRootData } from "./root-data";
+import { useRouteLoaderData } from "react-router";
+import type { RootOutletData } from "~/root";
 
 export function useSession() {
-    return useRootData().session;
+    return (useRouteLoaderData("root") as RootOutletData)?.session;
 }
