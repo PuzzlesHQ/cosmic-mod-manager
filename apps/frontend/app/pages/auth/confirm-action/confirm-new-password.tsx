@@ -71,7 +71,7 @@ export default function ConfirmNewPasswordCard({ code }: { code: string }) {
                     <CardTitle>{t.auth.confirmNewPass}</CardTitle>
                 </CardHeader>
                 {successMessage ? (
-                    <CardContent className="items-center justify-center gap-2">
+                    <CardContent className="grid justify-center gap-2">
                         <FormSuccessMessage text={successMessage} />
                         <TextLink to="/">{t.common.home}</TextLink>
                     </CardContent>

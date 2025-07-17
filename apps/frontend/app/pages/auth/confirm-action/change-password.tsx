@@ -92,7 +92,7 @@ export default function ChangePasswordCard({ code }: { code: string }) {
                     <CardHeader>
                         <CardTitle>{t.auth.changePassword}</CardTitle>
                     </CardHeader>
-                    <CardContent className="flex w-full flex-col items-start justify-start gap-form-elements">
+                    <CardContent className="grid gap-form-elements">
                         <FormField
                             control={form.control}
                             name="newPassword"

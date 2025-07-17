@@ -29,7 +29,7 @@ export default function CollectionsDashboardPage(props: Props) {
                 <CardTitle>{t.dashboard.collections}</CardTitle>
             </CardHeader>
 
-            <CardContent className="gap-4">
+            <CardContent className="grid gap-panel-cards">
                 <div className="flex w-full flex-wrap items-center justify-between gap-3 sm:flex-nowrap">
                     <Input
                         value={search}

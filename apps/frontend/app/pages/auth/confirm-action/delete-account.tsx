@@ -7,7 +7,6 @@ import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
-import Config from "~/utils/config";
 import SessionsPageLink from "./help-link";
 
 export default function DeleteAccountConfirmationCard({ code }: { code: string }) {
@@ -61,48 +60,43 @@ export default function DeleteAccountConfirmationCard({ code }: { code: string }
     }
 
     return (
-        <>
-            <title>{`${t.auth.deleteAccount} - ${Config.SITE_NAME_SHORT}`}</title>
-            <meta name="description" content={`Confirm to delete your ${Config.SITE_NAME_SHORT} account`} />
+        <Card className="max-w-md">
+            <CardHeader>
+                <CardTitle>{t.auth.deleteAccount}</CardTitle>
+            </CardHeader>
+            {successMessage ? (
+                <CardContent className="grid justify-center gap-2">
+                    <FormSuccessMessage text={successMessage} />
+                    <a href="/" className="font-semibold underline-offset-2 hover:underline">
+                        {t.common.home}
+                    </a>
+                </CardContent>
+            ) : (
+                <>
+                    <CardContent>
+                        <CardDescription>{t.auth.deleteAccountDesc}</CardDescription>
+                        <div className="mt-3 flex w-full items-center justify-end gap-panel-cards">
+                            <CancelButton
+                                icon={isLoading.action === "cancelling" ? <LoadingSpinner size="xs" /> : null}
+                                onClick={cancelAccountDeletion}
+                                disabled={isLoading.value}
+                            />
 
-            <Card className="max-w-md">
-                <CardHeader>
-                    <CardTitle>{t.auth.deleteAccount}</CardTitle>
-                </CardHeader>
-                {successMessage ? (
-                    <CardContent className="items-center justify-center gap-2">
-                        <FormSuccessMessage text={successMessage} />
-                        <a href="/" className="font-semibold underline-offset-2 hover:underline">
-                            {t.common.home}
-                        </a>
+                            <Button variant="destructive" onClick={confirmAccountDeletion} disabled={isLoading.value}>
+                                {isLoading.action === "confirming" ? (
+                                    <LoadingSpinner size="xs" />
+                                ) : (
+                                    <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
+                                )}
+                                {t.form.delete}
+                            </Button>
+                        </div>
                     </CardContent>
-                ) : (
-                    <>
-                        <CardContent>
-                            <CardDescription>{t.auth.deleteAccountDesc}</CardDescription>
-                            <div className="mt-3 flex w-full items-center justify-end gap-panel-cards">
-                                <CancelButton
-                                    icon={isLoading.action === "cancelling" ? <LoadingSpinner size="xs" /> : null}
-                                    onClick={cancelAccountDeletion}
-                                    disabled={isLoading.value}
-                                />
-
-                                <Button variant="destructive" onClick={confirmAccountDeletion} disabled={isLoading.value}>
-                                    {isLoading.action === "confirming" ? (
-                                        <LoadingSpinner size="xs" />
-                                    ) : (
-                                        <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
-                                    )}
-                                    {t.form.delete}
-                                </Button>
-                            </div>
-                        </CardContent>
-                        <CardFooter>
-                            <SessionsPageLink />
-                        </CardFooter>
-                    </>
-                )}
-            </Card>
-        </>
+                    <CardFooter>
+                        <SessionsPageLink />
+                    </CardFooter>
+                </>
+            )}
+        </Card>
     );
 }

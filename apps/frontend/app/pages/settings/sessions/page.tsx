@@ -71,10 +71,10 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
                 </div>
                 <CardDescription>{t.settings.sessionsDesc}</CardDescription>
             </CardHeader>
-            <CardContent className="relative flex min-h-24 w-full flex-col items-center justify-center gap-form-elements">
-                {loggedInSessions.map((session) => {
-                    return (
-                        <TooltipProvider key={session.id}>
+            <CardContent className="relative grid min-h-24 gap-form-elements">
+                <TooltipProvider>
+                    {loggedInSessions.map((session) => {
+                        return (
                             <div
                                 key={session.id}
                                 className="flex w-full flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded bg-background px-4 py-3"
@@ -178,9 +178,9 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
                                     )}
                                 </div>
                             </div>
-                        </TooltipProvider>
-                    );
-                })}
+                        );
+                    })}
+                </TooltipProvider>
             </CardContent>
         </Card>
     );

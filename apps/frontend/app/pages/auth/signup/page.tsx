@@ -14,8 +14,8 @@ export default function SignUpPage() {
                 <CardHeader className="mb-1">
                     <CardTitle>{t.form.signup}</CardTitle>
                 </CardHeader>
-                <CardContent className="flex w-full flex-col items-start justify-start gap-4">
-                    <div className="flex w-full flex-col items-start justify-start gap-2">
+                <CardContent className="grid gap-4">
+                    <div className="grid gap-2">
                         <p>{t.auth.signupWithProviders}</p>
                         <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
                             <OAuthProvidersWidget actionIntent={AuthActionIntent.SIGN_UP} />

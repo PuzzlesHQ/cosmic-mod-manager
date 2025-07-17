@@ -99,7 +99,7 @@ function PageSidebar({ members }: { members: TeamMember[] }) {
                 <CardHeader className="pb-2">
                     <CardTitle className="text-lg ">{t.projectSettings.members}</CardTitle>
                 </CardHeader>
-                <CardContent className="flex flex-col gap-1">
+                <CardContent className="grid gap-1">
                     {members.map((member) => {
                         if (!member.accepted) return null;
 

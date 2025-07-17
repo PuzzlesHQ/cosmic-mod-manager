@@ -40,7 +40,7 @@ export default function NotificationsHistoryPage({
                 <CardTitle className="w-fit">{t.dashboard.notifHistory}</CardTitle>
             </CardHeader>
 
-            <CardContent className="flex flex-col gap-panel-cards">
+            <CardContent className="grid gap-panel-cards">
                 {!notifications?.length && <span className="text-foreground-muted">{t.dashboard.noUnreadNotifs}</span>}
 
                 <NotificationsList

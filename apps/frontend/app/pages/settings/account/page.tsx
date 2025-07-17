@@ -21,7 +21,7 @@ export default function AccountSettingsPage({ session, linkedAuthProviders }: Pr
                 <CardHeader>
                     <CardTitle>{t.settings.accountSecurity}</CardTitle>
                 </CardHeader>
-                <CardContent className="gap-6">
+                <CardContent className="grid gap-6">
                     <div className="flex w-full max-w-md flex-col items-start justify-center gap-1.5">
                         <Label className="">{t.auth.email}</Label>
                         <Input readOnly value={session?.email} />

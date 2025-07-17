@@ -55,7 +55,7 @@ export default function ChangePasswordPage() {
                         <CardHeader>
                             <CardTitle>{t.auth.changePassword}</CardTitle>
                         </CardHeader>
-                        <CardContent className="flex flex-col gap-form-elements">
+                        <CardContent className="grid gap-form-elements">
                             <FormField
                                 control={form.control}
                                 name="email"

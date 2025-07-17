@@ -77,7 +77,7 @@ export default function NotificationsPage({ notifications, relatedProjects, rela
                 )}
             </CardHeader>
 
-            <CardContent className="flex flex-col gap-panel-cards">
+            <CardContent className="grid gap-panel-cards">
                 {!unreadNotifications?.length && <span className="text-foreground-muted">{t.dashboard.noUnreadNotifs}</span>}
 
                 <NotificationsList

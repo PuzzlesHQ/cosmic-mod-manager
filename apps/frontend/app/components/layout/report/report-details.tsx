@@ -45,7 +45,7 @@ export function ReportDetails(props: Props) {
                     </Breadcrumb>
                 </CardHeader>
 
-                <CardContent className="gap-panel-cards">
+                <CardContent className="grid gap-panel-cards">
                     <ReportInfo report={props.data} viewReportBtn={false} />
 
                     <div className="grid w-full gap-2">

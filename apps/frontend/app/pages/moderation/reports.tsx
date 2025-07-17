@@ -224,7 +224,7 @@ export default function Reports_ModerationPage(props: Props) {
                 </Dialog>
             </CardHeader>
 
-            <CardContent className="gap-3">
+            <CardContent className="grid gap-3">
                 {!data?.reports?.length ? (
                     anyChangedFilter ? (
                         <div className="grid gap-3">

@@ -73,7 +73,7 @@ export function LoginPageCard(props: LoginPageCardProps) {
             <CardHeader className="mb-1">
                 <CardTitle>{t.form.login_withSpace}</CardTitle>
             </CardHeader>
-            <CardContent className="flex w-full flex-col items-start justify-start gap-4">
+            <CardContent className="grid gap-4">
                 <Form {...loginForm}>
                     <form
                         onSubmit={loginForm.handleSubmit(handleCredentialLogin)}
@@ -147,14 +147,14 @@ export function LoginPageCard(props: LoginPageCardProps) {
 
                 <HorizontalSeparator />
 
-                <div className="flex w-full flex-col items-start justify-start gap-2">
+                <div className="grid gap-2">
                     <p>{t.auth.loginUsing}</p>
                     <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
                         <OAuthProvidersWidget actionIntent={AuthActionIntent.SIGN_IN} />
                     </div>
                 </div>
 
-                <div className="mt-4 flex w-full flex-col items-center justify-center text-foreground-muted">
+                <div className="mt-4 text-foreground-muted">
                     <div className="text-center">
                         {t.auth.dontHaveAccount(
                             <TextLink
