@@ -1,41 +1,39 @@
 import { getCookie, setCookie } from "@app/utils/cookie";
 import type { ProjectType } from "@app/utils/types";
 import { ListViewType } from "~/components/misc/search-list-item";
+import { findTheme } from "~/components/themes/config";
 import { USER_PREFERENCES_NAMESPACE } from ".";
-import { DEFAULT_LIST_VIEW_PREFS, DEFAULT_USER_CONF, ThemePreferences, type UserPreferences } from "./types";
+import { DEFAULT_LIST_VIEW_PREFS, DEFAULT_USER_CONF, type UserPreferences } from "./types";
 
 export function validateConfig(config?: Partial<UserPreferences>) {
-    const defaultConf = {
+    const conf = {
         ...DEFAULT_USER_CONF,
         viewPrefs: { ...DEFAULT_LIST_VIEW_PREFS },
     };
 
     try {
-        if (!config) return defaultConf;
+        if (!config) return conf;
 
         // Validate theme
-        if (config.theme && Object.values(ThemePreferences).includes(config.theme)) {
-            defaultConf.theme = config.theme;
-        }
-        defaultConf.prefersOLED = config.prefersOLED === true;
+        conf.theme = findTheme(config.theme).name;
+        conf.prefersOLED = config.prefersOLED === true;
 
         // Validate viewTransitions
-        defaultConf.viewTransitions = config.viewTransitions === true;
+        conf.viewTransitions = config.viewTransitions === true;
 
         // Validate viewPrefs
         if (config.viewPrefs) {
             for (const key of Object.keys(config.viewPrefs)) {
                 const projectType = key as ProjectType;
 
-                if (isValidViewType(config.viewPrefs[projectType]))
-                    defaultConf.viewPrefs[projectType] = config.viewPrefs[projectType];
+                if (isValidViewType(config.viewPrefs[projectType])) conf.viewPrefs[projectType] = config.viewPrefs[projectType];
             }
         }
 
         // Validate locale
-        if (config.locale) defaultConf.locale = config.locale;
+        if (config.locale) conf.locale = config.locale;
 
-        return defaultConf;
+        return conf;
     } catch (err) {
         console.error(err);
         return DEFAULT_USER_CONF;

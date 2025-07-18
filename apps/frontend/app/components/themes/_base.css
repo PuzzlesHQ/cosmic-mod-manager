@@ -1,72 +1,76 @@
+@tailwind utilities;
+
 /* Dark is the default theme */
 
-.base-theme {
-    --foreground-bright: 208, 16%, 98%;
-    --foreground: 208, 16%, 92%;
-    --foreground-muted: 208, 16%, 81%;
-    --foreground-extra-muted: 208, 16%, 67%;
-    --foreground-link: 213, 94%, 74%;
+@layer utilities {
+    .base-theme {
+        --foreground-bright: 208, 16%, 98%;
+        --foreground: 208, 16%, 92%;
+        --foreground-muted: 208, 16%, 81%;
+        --foreground-extra-muted: 208, 16%, 67%;
+        --foreground-link: 213, 94%, 74%;
 
-    --background: 215, 12%, 8%;
-    --card-background: 215, 12%, 15%;
-    --raised-background: 215, 12%, 22%;
-    --hover-background: 215, 12%, 26%;
+        --background: 215, 12%, 8%;
+        --card-background: 215, 12%, 15%;
+        --raised-background: 215, 12%, 22%;
+        --hover-background: 215, 12%, 26%;
 
-    --accent-text: 345, 85%, 70%;
-    --accent-bg: 345, 85%, 62%;
-    --accent-bg-foreground: 345, 16%, 98%;
+        --accent-text: 345, 85%, 70%;
+        --accent-bg: 345, 85%, 62%;
+        --accent-bg-foreground: 345, 16%, 98%;
 
-    --error-fg: 0, 91%, 71%;
-    --error-bg: 352, 74%, 64%, 0.15;
-    --warning-fg: 33, 98%, 66%;
-    --warning-bg: 35, 74%, 62%, 0.15;
-    --success-fg: 148, 78%, 52%;
-    --success-bg: 154, 74%, 44%, 0.15;
+        --error-fg: 0, 91%, 71%;
+        --error-bg: 352, 74%, 64%, 0.15;
+        --warning-fg: 33, 98%, 66%;
+        --warning-bg: 35, 74%, 62%, 0.15;
+        --success-fg: 148, 78%, 52%;
+        --success-bg: 154, 74%, 44%, 0.15;
 
-    --primary-btn-bg: 345, 85%, 62%;
-    --primary-btn-fg: 345, 16%, 6%;
-    --secondary-btn-bg: var(--raised-background);
-    --secondary-btn-fg: var(--foreground);
-    --danger-btn-bg: 358, 92%, 65%;
-    --danger-btn-fg: 358, 16%, 6%;
-    --moderation-btn-bg: 30, 100%, 64%;
-    --moderation-btn-fg: 30, 16%, 6%;
+        --primary-btn-bg: 345, 85%, 62%;
+        --primary-btn-fg: 345, 16%, 6%;
+        --secondary-btn-bg: var(--raised-background);
+        --secondary-btn-fg: var(--foreground);
+        --danger-btn-bg: 358, 92%, 65%;
+        --danger-btn-fg: 358, 16%, 6%;
+        --moderation-btn-bg: 30, 100%, 64%;
+        --moderation-btn-fg: 30, 16%, 6%;
 
-    --shadow: 215, 12%, 10%;
-    --border: 215, 12%, 22%;
-    --separator: 215, 12%, 20%;
+        --shadow: 215, 12%, 10%;
+        --border: 215, 12%, 22%;
+        --separator: 215, 12%, 20%;
 
-    --chart-1: 213, 94%, 68%;
+        --chart-1: 213, 94%, 68%;
 
-    /* Loaders */
-    --loader-fg-quilt: 270, 89%, 78%;
-    --loader-fg-puzzle_loader: 101, 62%, 71%;
-    --loader-fg-paradox: 101, 62%, 71%;
-    --loader-fg-simply_shaders: 194, 77%, 73%;
+        /* Loaders */
+        --loader-fg-quilt: 270, 89%, 78%;
+        --loader-fg-puzzle_loader: 101, 62%, 71%;
+        --loader-fg-paradox: 101, 62%, 71%;
+        --loader-fg-simply_shaders: 194, 77%, 73%;
 
-    /* User role colors */
-    --role-moderator-fg: 213 93% 67%;
-    --role-admin-fg: 270 95% 75%;
+        /* User role colors */
+        --role-moderator-fg: 213 93% 67%;
+        --role-admin-fg: 270 95% 75%;
 
-    /* Border Radius */
-    --radius-sm: 0.33rem;
-    --radius-md: 0.5rem;
-    --radius-DEFAULT: 0.67rem;
-    --radius-lg: 1rem;
-    --radius-xl: 1.3rem;
-    --radius-2xl: 1.77rem;
-    --radius-3xl: 2.5rem;
-    --radius-full: 9999px;
+        /* Border Radius */
+        --radius-sm: 0.33rem;
+        --radius-md: 0.5rem;
+        --radius-DEFAULT: 0.67rem;
+        --radius-lg: 1rem;
+        --radius-xl: 1.3rem;
+        --radius-2xl: 1.77rem;
+        --radius-3xl: 2.5rem;
+        --radius-full: 9999px;
 
-    /* FONT SIZES */
-    --font-super-tiny: 0.67rem;
-    --font-tiny: 0.75rem;
-    --font-sm: 0.87rem;
-    --font-base: 1rem;
-    --font-md: 1.125rem;
-    --font-lg: 1.17rem;
-    --font-lg-plus: 1.25rem;
-    --font-xl: 1.5rem;
-    --font-xl-plus: 1.85rem;
-    --font-2xl: 2.17rem;
+        /* FONT SIZES */
+        --font-super-tiny: 0.67rem;
+        --font-tiny: 0.75rem;
+        --font-sm: 0.87rem;
+        --font-base: 1rem;
+        --font-md: 1.125rem;
+        --font-lg: 1.17rem;
+        --font-lg-plus: 1.25rem;
+        --font-xl: 1.5rem;
+        --font-xl-plus: 1.85rem;
+        --font-2xl: 2.17rem;
+    }
 }

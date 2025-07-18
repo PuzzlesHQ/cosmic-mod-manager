@@ -1,11 +1,14 @@
 /* DARK THEME */
 
 /* Mofify _base.css to tweak dark theme colors */
+
 .dark {
     color-scheme: dark;
+    @apply base-theme;
 }
 
 .oled {
+    @apply base-theme;
     color-scheme: dark;
 
     --foreground-bright: 208, 20%, 89%;

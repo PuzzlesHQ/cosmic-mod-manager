@@ -1,4 +1,5 @@
 .catppuccin-mocha {
+    @apply base-theme;
     color-scheme: dark;
 
     --foreground-bright: 226, 67%, 98%;

@@ -161,13 +161,7 @@ export default {
         // Preferences
         colorTheme: "Color theme",
         colorThemeDesc: "Select your preferred color theme.",
-        themes: {
-            system: "System",
-            dark: "Dark",
-            light: "Light",
-            oled: "OLED",
-            catppuccin_mocha: "Catppuccin Mocha",
-        },
+        system: "System",
     },
 
     dashboard: {

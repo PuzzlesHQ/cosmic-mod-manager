@@ -15,7 +15,7 @@ import { useNavigate } from "~/components/ui/link";
 import { cn } from "~/components/utils";
 import { PageBreadCrumbs } from "~/hooks/breadcrumb";
 import { getUserConfig } from "~/hooks/preferences/helpers";
-import { getThemeClasses } from "~/hooks/preferences/theme";
+import { getThemeClassName } from "~/hooks/preferences/theme";
 import type { UserPreferences } from "~/hooks/preferences/types";
 import { formatLocaleCode, parseLocale } from "~/locales";
 import SupportedLocales, { DefaultLocale, GetLocaleMetadata } from "~/locales/meta";
@@ -42,7 +42,7 @@ export interface RootOutletData {
 
 export function Layout({ children }: { children: React.ReactNode }) {
     const data = useLoaderData() as RootOutletData;
-    const classes = getThemeClasses(data.userConfig.theme, data.userConfig.prefersOLED);
+    const classes = getThemeClassName(data.userConfig.theme, data.userConfig.prefersOLED);
 
     return (
         <html lang={formatLocaleCode(data.locale)} className={cn(classes)} dir={data.locale.dir || "ltr"}>

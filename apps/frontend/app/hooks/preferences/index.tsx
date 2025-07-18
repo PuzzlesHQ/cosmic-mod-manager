@@ -1,14 +1,14 @@
 import { createContext, use, useEffect, useState } from "react";
+import { ThemePreference } from "~/components/themes/config";
 import { getUserConfig, saveUserConfig, validateConfig } from "./helpers";
-import { applyTheme, getEffectiveTheme, getSystemTheme, getThemeClasses, MEDIA_PREFERS_LIGHT_THEME } from "./theme";
-import { ThemePreferences, type UserPreferences } from "./types";
+import { applyTheme, MEDIA_PREFERS_LIGHT_THEME, resolveThemePreference } from "./theme";
+import type { UserPreferences } from "./types";
 
 export const USER_PREFERENCES_NAMESPACE = "user-prefs";
 
 interface UserPrefsContext extends UserPreferences {
-    activeTheme: ReturnType<typeof getEffectiveTheme>;
-    systemTheme: ThemePreferences;
-    isActiveThemeDark: boolean;
+    resolvedTheme: ReturnType<typeof resolveThemePreference>;
+    systemTheme: ThemePreference;
     updatePreferences: (updated: Partial<UserPreferences>) => void;
 }
 
@@ -16,10 +16,10 @@ const UserPrefsCtx = createContext<UserPrefsContext | null>(null);
 
 export function UserPreferencesProvider({ init, children }: { init: UserPreferences; children: React.ReactNode }) {
     const [config, setConfig_State] = useState<UserPreferences>(init);
-    const [systemTheme, setSystemTheme] = useState<ThemePreferences>(getSystemTheme(init.prefersOLED));
-    const [activeTheme, setActiveTheme] = useState<UserPrefsContext["activeTheme"]>(
-        getEffectiveTheme(init.theme, init.prefersOLED),
+    const [systemTheme, setSystemTheme] = useState<ThemePreference>(
+        resolveThemePreference(ThemePreference.SYSTEM, init.prefersOLED),
     );
+    const resolvedTheme = resolveThemePreference(config.theme, config.prefersOLED, true);
 
     function updatePreferences(updated: Partial<UserPreferences>) {
         const currConfig = getUserConfig();
@@ -38,40 +38,30 @@ export function UserPreferencesProvider({ init, children }: { init: UserPreferen
     }
 
     function handleMediaQuery(e: MediaQueryList | MediaQueryListEvent) {
-        const systemTheme = getSystemTheme(config.prefersOLED, e);
+        const systemTheme = resolveThemePreference(ThemePreference.SYSTEM, config.prefersOLED, e);
         setSystemTheme(systemTheme);
-
-        if (config.theme === ThemePreferences.SYSTEM) {
-            setActiveTheme(systemTheme);
-        }
     }
 
     useEffect(() => {
-        applyTheme(activeTheme, config.prefersOLED, document.documentElement);
-    }, [activeTheme]);
-
-    useEffect(() => {
-        if (config.theme !== ThemePreferences.SYSTEM) {
-            setActiveTheme(getEffectiveTheme(config.theme, config.prefersOLED, true));
-        }
-
         const media = window.matchMedia(MEDIA_PREFERS_LIGHT_THEME);
-        // Intentionally use deprecated listener methods to support iOS & old browsers
         media.addEventListener("change", handleMediaQuery);
         handleMediaQuery(media);
 
         return () => {
             media.removeEventListener("change", handleMediaQuery);
         };
-    }, [config.theme, config.prefersOLED]);
+    }, [config.theme]);
+
+    useEffect(() => {
+        applyTheme(resolvedTheme, config.prefersOLED, document.documentElement);
+    }, [resolvedTheme]);
 
     return (
         <UserPrefsCtx
             value={{
                 ...config,
-                activeTheme: activeTheme,
+                resolvedTheme: resolvedTheme,
                 systemTheme: systemTheme,
-                isActiveThemeDark: getThemeClasses(activeTheme, config.prefersOLED).includes("dark"),
                 updatePreferences: updatePreferences,
             }}
         >

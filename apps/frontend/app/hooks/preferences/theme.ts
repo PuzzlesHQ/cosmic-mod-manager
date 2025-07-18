@@ -1,65 +1,37 @@
-import { ThemePreferences } from "./types";
-
-export function applyTheme(theme: ThemePreferences, prefersOLED: boolean, doc: HTMLElement, e?: MediaMatchEvent) {
-    const classes = getThemeClasses(theme, prefersOLED, e || true);
-    applyThemeClasses(classes, doc);
-}
+import { findTheme, ThemePreference, ThemeVariant } from "~/components/themes/config";
 
 type MediaMatchEvent = MediaQueryList | MediaQueryListEvent | true;
-
-export function getEffectiveTheme(themePreference: ThemePreferences, prefersOLED: boolean, e?: MediaMatchEvent) {
-    if (themePreference === ThemePreferences.SYSTEM) return getSystemTheme(prefersOLED, e);
-    return themePreference;
-}
-
 export const MEDIA_PREFERS_LIGHT_THEME = "(prefers-color-scheme: light)";
 
-export function getSystemTheme(prefersOLED: boolean, e?: MediaMatchEvent) {
-    let isLight = false;
+export function resolveThemePreference(prefersTheme: ThemePreference, prefersOLED: boolean, e?: MediaMatchEvent) {
+    if (prefersTheme !== ThemePreference.SYSTEM) return prefersTheme;
 
+    let isLight = false;
     // window is undefined during SSR
     if (globalThis?.window && e) {
         const event = e === true ? window.matchMedia(MEDIA_PREFERS_LIGHT_THEME) : e;
-        if (e) isLight = event.matches;
+        if (event) isLight = event.matches;
     }
 
-    if (isLight) return ThemePreferences.LIGHT;
-
-    if (prefersOLED) return ThemePreferences.OLED;
-    else return ThemePreferences.DARK;
+    if (isLight) return ThemePreference.LIGHT;
+    else if (prefersOLED) return ThemePreference.OLED;
+    else return ThemePreference.DARK;
 }
 
-export function isDark(theme: ThemePreferences) {
-    if (theme === ThemePreferences.SYSTEM) {
-        return isDark(getSystemTheme(false));
-    }
-
-    if (theme === ThemePreferences.DARK || theme === ThemePreferences.OLED) {
-        return true;
-    } else if (theme === ThemePreferences.LIGHT) {
-        return false;
-    }
+export function applyTheme(theme: ThemePreference, prefersOLED: boolean, doc: HTMLElement, e?: MediaMatchEvent) {
+    const classes = getThemeClassName(theme, prefersOLED, e || true);
+    applyThemeClasses(classes, doc);
 }
 
-// even though 'catppuccin-mocha' doesn't need .dark styles,
-// it's there so that tailwind can detect it's a dark type theme
-// TODO: Don't rely on tailwind's dark directive to fix theme issues
-// Instead have proper colors for each theme and use filters for hover effects
-const ThemeClasses = {
-    [ThemePreferences.DARK]: ["base-theme", "dark"],
-    [ThemePreferences.LIGHT]: ["base-theme", "light"],
-    [ThemePreferences.OLED]: ["base-theme", "dark", "oled"],
-    [ThemePreferences.CATPPUCCIN_MOCHA]: ["base-theme", "dark", "catppuccin-mocha"],
-};
+export function getThemeClassName(theme: ThemePreference, prefersOLED: boolean, e?: MediaMatchEvent) {
+    const effectiveTheme = resolveThemePreference(theme, prefersOLED, e);
+    const themeObj = findTheme(effectiveTheme);
 
-const allThemesClasses = Object.values(ThemeClasses).flat();
-
-export function getThemeClasses(theme: ThemePreferences, prefersOLED: boolean, e?: MediaMatchEvent) {
-    if (!theme) return ThemeClasses[ThemePreferences.DARK];
-
-    const effectiveTheme = getEffectiveTheme(theme, prefersOLED, e);
-    return ThemeClasses[effectiveTheme] || ThemeClasses[ThemePreferences.DARK];
+    if (!themeObj.variant) return [themeObj.name];
+    return [themeObj.variant, themeObj.name];
 }
+
+const allThemesClasses = [...Object.values(ThemeVariant), ...Object.values(ThemePreference)];
 
 function applyThemeClasses(classes: string[], doc: HTMLElement) {
     if (!doc) throw new Error("Document element is required to apply themes");

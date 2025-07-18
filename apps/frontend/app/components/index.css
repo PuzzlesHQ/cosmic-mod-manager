@@ -1,7 +1,4 @@
-@import "./themes/_base.css";
-@import "./themes/dark.css";
-@import "./themes/light.css";
-@import "./themes/catppuccin-mocha.css";
+@import "./themes/index.css";
 
 @tailwind base;
 @tailwind components;

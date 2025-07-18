@@ -1,6 +1,7 @@
 /* LIGHT THEME */
 
 .light {
+    @apply base-theme;
     color-scheme: light;
 
     --foreground-bright: 208, 16%, 8%;

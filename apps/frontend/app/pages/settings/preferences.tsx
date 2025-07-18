@@ -1,12 +1,12 @@
-import { CatIcon, MonitorIcon, MoonIcon, MoonStarIcon, SunIcon } from "lucide-react";
+import { CapitalizeAndFormatString } from "@app/utils/string";
 import type React from "react";
+import { ThemePreference, Themes } from "~/components/themes/config";
 import { ImgWrapper } from "~/components/ui/avatar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
 import { Switch } from "~/components/ui/switch";
 import { cn } from "~/components/utils";
 import { usePreferences } from "~/hooks/preferences";
-import { getEffectiveTheme, getThemeClasses } from "~/hooks/preferences/theme";
-import { ThemePreferences } from "~/hooks/preferences/types";
+import { getThemeClassName, resolveThemePreference } from "~/hooks/preferences/theme";
 import { useTranslation } from "~/locales/provider";
 
 export default function PreferencesPage() {
@@ -18,22 +18,22 @@ export default function PreferencesPage() {
         ctx.updatePreferences({ viewTransitions: checked });
     }
 
-    async function updateThemePreference(e: React.MouseEvent<HTMLButtonElement>, theme: ThemePreferences) {
+    async function updateThemePreference(e: React.MouseEvent<HTMLButtonElement>, theme: ThemePreference) {
         let newTheme = theme;
         let prefersOLED = ctx.prefersOLED;
 
-        if (theme === ThemePreferences.OLED) {
-            newTheme = ThemePreferences.OLED;
+        if (theme === ThemePreference.OLED) {
+            newTheme = ThemePreference.OLED;
             prefersOLED = true;
-        } else if (theme === ThemePreferences.DARK) {
-            newTheme = ThemePreferences.DARK;
+        } else if (theme === ThemePreference.DARK) {
+            newTheme = ThemePreference.DARK;
             prefersOLED = false;
         } else {
             newTheme = theme;
         }
 
-        const prevTheme = getEffectiveTheme(ctx.theme, ctx.prefersOLED, true);
-        const newEffectiveTheme = getEffectiveTheme(newTheme, prefersOLED, true);
+        const prevTheme = resolveThemePreference(ctx.theme, ctx.prefersOLED, true);
+        const newEffectiveTheme = resolveThemePreference(newTheme, prefersOLED, true);
 
         const isUpdatedThemeDifferent = prevTheme !== newEffectiveTheme;
 
@@ -63,17 +63,19 @@ export default function PreferencesPage() {
                     <CardDescription>{t.settings.colorThemeDesc}</CardDescription>
                 </CardHeader>
                 <CardContent className="grid grid-cols-[repeat(auto-fit,_minmax(14rem,1fr))] gap-panel-cards">
-                    {Object.values(ThemePreferences).map((theme) => {
-                        const resolvedTheme = theme === ThemePreferences.SYSTEM ? ctx.systemTheme : theme;
+                    {Themes.map((theme) => {
+                        const resolvedTheme = theme.name === ThemePreference.SYSTEM ? ctx.systemTheme : theme.name;
+                        const label =
+                            theme.name === ThemePreference.SYSTEM ? t.settings.system : CapitalizeAndFormatString(theme.name);
 
                         return (
                             <RadioBtnSelector
-                                key={theme}
-                                label={t.settings.themes[theme]}
-                                checked={selectedThemeOption === theme}
-                                onClick={(e) => updateThemePreference(e, theme)}
+                                key={theme.name}
+                                label={theme.label || label}
+                                checked={selectedThemeOption === theme.name}
+                                onClick={(e) => updateThemePreference(e, theme.name)}
                             >
-                                <ThemePreview theme={resolvedTheme} isActive={theme === ctx.theme} />
+                                <ThemePreview isActive={theme.name === ctx.theme} resolvedTheme={resolvedTheme} />
                             </RadioBtnSelector>
                         );
                     })}
@@ -139,25 +141,19 @@ function RadioBtnSelector(props: RadioBtnSelectorProps) {
     );
 }
 
-const THEME_ICONS = {
-    [ThemePreferences.DARK]: <MoonIcon className="h-5 w-5 text-current" />,
-    [ThemePreferences.OLED]: <MoonStarIcon className="h-5 w-5 text-current" />,
-    [ThemePreferences.LIGHT]: <SunIcon className="h-5 w-5 text-current" />,
-    [ThemePreferences.SYSTEM]: <MonitorIcon className="h-5 w-5 text-current" />,
-    [ThemePreferences.CATPPUCCIN_MOCHA]: <CatIcon className="h-5 w-5 text-current" />,
-};
+function ThemePreview({ isActive, resolvedTheme }: { isActive: boolean; resolvedTheme: ThemePreference }) {
+    const classNames = getThemeClassName(resolvedTheme, false);
+    const themeObj = Themes.find((t) => t.name === resolvedTheme);
 
-function ThemePreview({ theme, isActive }: { theme: ThemePreferences; isActive: boolean }) {
-    const classNames = getThemeClasses(theme, false);
-    const Icon = THEME_ICONS[theme] || CatIcon;
+    if (!themeObj) return null;
 
     return (
         <div className={cn("bg-background p-8", ...classNames)}>
             <div className="grid grid-cols-[min-content_1fr] gap-panel-cards rounded bg-card-background p-card-surround">
                 <ImgWrapper
                     src={null}
-                    alt={theme}
-                    fallback={Icon}
+                    alt={themeObj.label || themeObj.name}
+                    fallback={themeObj.icon}
                     className={cn("h-9 w-9", isActive ? "bg-accent-bg text-accent-bg-foreground" : "text-accent-bg")}
                 />
 

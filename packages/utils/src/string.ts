@@ -24,7 +24,7 @@ export function FormatString(str: string) {
 
 export function CapitalizeAndFormatString<T extends string | null | undefined>(str: T): T {
     if (!str) return str;
-    return Capitalize(FormatString(str.toLowerCase())) as T;
+    return Capitalize(FormatString(str)) as T;
 }
 
 export function createURLSafeSlug(slug: string, additionalAllowedChars?: string) {
