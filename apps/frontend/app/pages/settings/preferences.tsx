@@ -12,11 +12,38 @@ import { useTranslation } from "~/locales/provider";
 export default function PreferencesPage() {
     const { t } = useTranslation();
     const ctx = usePreferences();
-    const selectedThemeOption = ctx.theme;
 
     function toggleViewTransitions(checked: boolean) {
         ctx.updatePreferences({ viewTransitions: checked });
     }
+
+    return (
+        <>
+            <ThemeSwitcher />
+
+            <Card useSectionTag>
+                <CardHeader>
+                    <CardTitle>{t.settings.toggleFeatures}</CardTitle>
+                    <CardDescription>{t.settings.enableOrDisableFeatures}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex w-full items-center justify-between gap-x-6 gap-y-1">
+                        <label htmlFor="view-transitions" className="shrink-[2] grow basis-[min-content]">
+                            <span className="my-0 block font-bold text-foreground text-lg">{t.settings.viewTransitions}</span>
+                            <span className="my-0 block text-foreground-muted">{t.settings.viewTransitionsDesc}</span>
+                        </label>
+                        <Switch id="view-transitions" checked={ctx.viewTransitions} onCheckedChange={toggleViewTransitions} />
+                    </div>
+                </CardContent>
+            </Card>
+        </>
+    );
+}
+
+export function ThemeSwitcher() {
+    const { t } = useTranslation();
+    const ctx = usePreferences();
+    const selectedThemeOption = ctx.theme;
 
     async function updateThemePreference(e: React.MouseEvent<HTMLButtonElement>, theme: ThemePreference) {
         let newTheme = theme;
@@ -56,48 +83,30 @@ export default function PreferencesPage() {
     }
 
     return (
-        <>
-            <Card useSectionTag className="w-full">
-                <CardHeader>
-                    <CardTitle>{t.settings.colorTheme}</CardTitle>
-                    <CardDescription>{t.settings.colorThemeDesc}</CardDescription>
-                </CardHeader>
-                <CardContent className="grid grid-cols-[repeat(auto-fit,_minmax(14rem,1fr))] gap-panel-cards">
-                    {Themes.map((theme) => {
-                        const resolvedTheme = theme.name === ThemePreference.SYSTEM ? ctx.systemTheme : theme.name;
-                        const label =
-                            theme.name === ThemePreference.SYSTEM ? t.settings.system : CapitalizeAndFormatString(theme.name);
+        <Card useSectionTag>
+            <CardHeader>
+                <CardTitle>{t.settings.colorTheme}</CardTitle>
+                <CardDescription>{t.settings.colorThemeDesc}</CardDescription>
+            </CardHeader>
+            <CardContent className="grid grid-cols-[repeat(auto-fit,_minmax(14rem,1fr))] gap-panel-cards">
+                {Themes.map((theme) => {
+                    const resolvedTheme = theme.name === ThemePreference.SYSTEM ? ctx.systemTheme : theme.name;
+                    const label =
+                        theme.name === ThemePreference.SYSTEM ? t.settings.system : CapitalizeAndFormatString(theme.name);
 
-                        return (
-                            <RadioBtnSelector
-                                key={theme.name}
-                                label={theme.label || label}
-                                checked={selectedThemeOption === theme.name}
-                                onClick={(e) => updateThemePreference(e, theme.name)}
-                            >
-                                <ThemePreview isActive={theme.name === ctx.theme} resolvedTheme={resolvedTheme} />
-                            </RadioBtnSelector>
-                        );
-                    })}
-                </CardContent>
-            </Card>
-
-            <Card useSectionTag>
-                <CardHeader>
-                    <CardTitle>{t.settings.toggleFeatures}</CardTitle>
-                    <CardDescription>{t.settings.enableOrDisableFeatures}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="flex w-full items-center justify-between gap-x-6 gap-y-1">
-                        <label htmlFor="view-transitions" className="shrink-[2] grow basis-[min-content]">
-                            <span className="my-0 block font-bold text-foreground text-lg">{t.settings.viewTransitions}</span>
-                            <span className="my-0 block text-foreground-muted">{t.settings.viewTransitionsDesc}</span>
-                        </label>
-                        <Switch id="view-transitions" checked={ctx.viewTransitions} onCheckedChange={toggleViewTransitions} />
-                    </div>
-                </CardContent>
-            </Card>
-        </>
+                    return (
+                        <RadioBtnSelector
+                            key={theme.name}
+                            label={theme.label || label}
+                            checked={selectedThemeOption === theme.name}
+                            onClick={(e) => updateThemePreference(e, theme.name)}
+                        >
+                            <ThemePreview isActive={theme.name === ctx.theme} resolvedTheme={resolvedTheme} />
+                        </RadioBtnSelector>
+                    );
+                })}
+            </CardContent>
+        </Card>
     );
 }
 

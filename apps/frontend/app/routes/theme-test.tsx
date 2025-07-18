@@ -33,6 +33,7 @@ import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, Sele
 import { Switch } from "~/components/ui/switch";
 import { LabelledTernaryCheckbox, TernaryStates } from "~/components/ui/ternary-checkbox";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { ThemeSwitcher } from "~/pages/settings/preferences";
 
 export default function () {
     const [ternaryState, setTernaryState] = useState<TernaryStates>(TernaryStates.EXCLUDED);
@@ -200,6 +201,8 @@ export default function () {
                     </div>
                 </CardContent>
             </Card>
+
+            <ThemeSwitcher />
         </div>
     );
 }
