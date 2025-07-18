@@ -266,8 +266,8 @@ function ImageDialog({
                         thumbnailSrc={imageUrl(galleryItem.imageThumbnail)}
                         className="z-10 h-full w-full rounded-lg border-none object-contain ring-0"
                         wrapperClassName={cn(
-                            "max-w-[calc(100vw_-_2rem)] sm:max-w-[calc(100vw_-_6rem)] max-h-[calc(100vh_-_4rem)]",
-                            isFullWidth && "w-full h-full",
+                            "max-h-[calc(100vh_-_4rem)] max-w-[calc(100vw_-_2rem)] sm:max-w-[calc(100vw_-_6rem)]",
+                            isFullWidth && "h-full w-full",
                         )}
                         setLoaded={() => {}}
                     />

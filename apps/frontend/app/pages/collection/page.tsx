@@ -22,7 +22,7 @@ export default function CollectionProjectsList() {
     if (!filteredProjects.length) {
         return (
             <div className="flex w-full items-center justify-center py-12">
-                <p className="text-center text-lg text-foreground-muted italic">{t.common.noResults}</p>
+                <p className="text-center text-foreground-muted text-lg italic">{t.common.noResults}</p>
             </div>
         );
     }
@@ -57,7 +57,7 @@ export default function CollectionProjectsList() {
                         visibility={project.visibility}
                     />
                 );
-                // if (ctx.collection.userId !== session?.id) return projectItem;
+                if (ctx.collection.userId !== session?.id) return projectItem;
 
                 const isChecked = ctx.markedProjects.includes(project.id);
                 return (

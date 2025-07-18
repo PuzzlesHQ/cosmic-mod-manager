@@ -81,7 +81,7 @@ export default function OrgPageLayout() {
                     <Outlet />
                 ) : (
                     <div className="flex w-full items-center justify-center py-12">
-                        <p className="text-center text-lg text-foreground-muted italic">{t.organization.orgDoesntHaveProjects}</p>
+                        <p className="text-center text-foreground-muted text-lg italic">{t.organization.orgDoesntHaveProjects}</p>
                     </div>
                 )}
             </div>

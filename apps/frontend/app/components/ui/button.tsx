@@ -5,24 +5,24 @@ import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 
 export const buttonVariants = cva(
-    "inline-flex gap-2 items-center justify-center whitespace-nowrap rounded font-[500] focus-visible:outline-none focus-visible:keyboard_focus_ring disabled:pointer-events-none disabled:opacity-50 transition-[color,filter,background-color]",
+    "focus-visible:keyboard_focus_ring inline-flex items-center justify-center gap-2 whitespace-nowrap rounded font-[500] transition-[color,filter,background-color] focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
     {
         variants: {
             variant: {
-                default: "font-[600] bg-primary-btn-bg text-primary-btn-fg hover:brightness-90 dark:hover:brightness-115",
-                destructive: "font-[600] bg-danger-btn-bg text-danger-btn-fg hover:brightness-90 dark:hover:brightness-115",
+                default: "bg-primary-btn-bg font-[600] text-primary-btn-fg hover:brightness-90 dark:hover:brightness-115",
+                destructive: "bg-danger-btn-bg font-[600] text-danger-btn-fg hover:brightness-90 dark:hover:brightness-115",
 
-                outline: "border border-border text-foreground-muted hover:text-foreground hover:bg-raised-background",
+                outline: "border border-border text-foreground-muted hover:bg-raised-background hover:text-foreground",
 
                 secondary: "bg-raised-background text-foreground-muted hover:brightness-95 dark:hover:brightness-115",
-                "secondary-destructive": "font-[600] text-error-fg bg-error-bg hover:brightness-90 dark:hover:brightness-115",
-                "secondary-dark": "text-foreground-muted bg-card-background hover:brightness-95 dark:hover:brightness-115",
+                "secondary-destructive": "bg-error-bg font-[600] text-error-fg hover:brightness-90 dark:hover:brightness-115",
+                "secondary-dark": "bg-card-background text-foreground-muted hover:brightness-95 dark:hover:brightness-115",
 
-                ghost: "text-foreground-muted hover:text-foreground hover:bg-raised-background",
+                ghost: "text-foreground-muted hover:bg-raised-background hover:text-foreground",
                 "ghost-destructive": "text-error-fg hover:bg-error-bg",
                 moderation:
-                    "font-[600] bg-moderation-btn-bg text-moderation-btn-fg hover:brightness-90 dark:hover:brightness-115",
-                link: "text-foreground-link underline-offset-2 hover:underline hover:brightness-110 whitespace-normal text-wrap",
+                    "bg-moderation-btn-bg font-[600] text-moderation-btn-fg hover:brightness-90 dark:hover:brightness-115",
+                link: "whitespace-normal text-wrap text-foreground-link underline-offset-2 hover:underline hover:brightness-110",
             },
             size: {
                 default: "h-10 px-4 py-1.5",

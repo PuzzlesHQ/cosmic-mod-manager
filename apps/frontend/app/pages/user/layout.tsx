@@ -94,7 +94,7 @@ export default function UserPageLayout(props: Props) {
 
                 {navLinks.length < 1 ? (
                     <div className="flex w-full items-center justify-center py-12">
-                        <p className="text-center text-lg text-foreground-muted italic">
+                        <p className="text-center text-foreground-muted text-lg italic">
                             {t.user.doesntHaveProjects(props.userData.name)}
                         </p>
                     </div>

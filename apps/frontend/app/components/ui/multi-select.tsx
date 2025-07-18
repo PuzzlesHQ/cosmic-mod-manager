@@ -173,7 +173,7 @@ export const MultiSelect = ({
                         onKeyDown={handleInputKeyDown}
                         size={1}
                         className="w-full"
-                        wrapperClassName={cn(searchBox === false && "w-0 h-0 overflow-hidden opacity-0")}
+                        wrapperClassName={cn(searchBox === false && "h-0 w-0 overflow-hidden opacity-0")}
                         {...(searchBox === false ? { readOnly: true } : {})}
                     />
                     <CommandList>

@@ -83,7 +83,7 @@ export default function SearchPage() {
 
     return (
         <div className="search-page-grid-layout grid w-full gap-panel-cards pb-16">
-            <aside className="page-sidebar relative hidden h-fit p-card-surround gap-panel-cards rounded-lg bg-card-background lg:grid">
+            <aside className="page-sidebar relative hidden h-fit gap-panel-cards rounded-lg bg-card-background p-card-surround lg:grid">
                 {filtersComponent}
             </aside>
 

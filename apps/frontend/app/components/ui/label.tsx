@@ -3,7 +3,7 @@ import { Label as LabelPrimitive } from "radix-ui";
 import { cn } from "~/components/utils";
 
 const labelVariants = cva(
-    "text-md font-semibold text-foreground leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+    "font-semibold text-foreground text-md leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
 );
 
 export function Label({
