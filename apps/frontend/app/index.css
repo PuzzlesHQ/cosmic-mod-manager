@@ -1,8 +1,8 @@
+@import "./fonts/index.css";
 @import "./components/ui/styles.css";
 @import "./components/misc/styles.css";
 @import "./components/layout/Navbar/styles.css";
 @import "./components/layout/styles.css";
 @import "./components/md-editor/highlightjs.css";
 @import "./components/index.css";
-@import "./font.css";
 @import "./pages/layouts.css";

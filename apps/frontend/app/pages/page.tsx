@@ -17,6 +17,8 @@ interface Props {
     projects: ProjectListItem[];
 }
 
+let recreateBg_TimeoutId: number | undefined;
+
 export default function HomePage({ projects }: Props) {
     const { t } = useTranslation();
     const session = useSession();
@@ -32,10 +34,14 @@ export default function HomePage({ projects }: Props) {
     }, []);
 
     function recreateBackground() {
-        if (gridBgPortal) drawBackground({ recreate: true });
+        if (recreateBg_TimeoutId) window.clearTimeout(recreateBg_TimeoutId);
+        recreateBg_TimeoutId = window.setTimeout(() => {
+            drawBackground({ recreate: true });
+        }, 250);
     }
 
     useEffect(() => {
+        if (!gridBgPortal) return;
         drawBackground();
 
         window.addEventListener("resize", recreateBackground);
