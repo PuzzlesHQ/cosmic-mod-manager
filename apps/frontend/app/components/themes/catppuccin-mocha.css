@@ -37,4 +37,14 @@
     --separator: 237, 16%, 24%;
 
     --chart-1: 267, 84%, 81%;
+
+    /* Border Radius */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.33rem;
+    --radius-DEFAULT: 0.45rem;
+    --radius-lg: 0.67rem;
+    --radius-xl: 1rem;
+    --radius-2xl: 1.17rem;
+    --radius-3xl: 1.7rem;
+    --radius-full: 9999px;
 }

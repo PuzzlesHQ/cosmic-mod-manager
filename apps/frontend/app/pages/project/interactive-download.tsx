@@ -303,7 +303,7 @@ function AvailableVersionsList({ selectedGameVersion, selectedLoader }: Availabl
                 return (
                     <div
                         key={version.id}
-                        className="flex w-full items-center justify-between gap-x-4 gap-y-2 rounded-lg bg-background p-2"
+                        className="flex w-full items-center justify-between gap-x-4 gap-y-2 rounded-lg bg-raised-background p-2"
                     >
                         <div className="flex items-center justify-start gap-3">
                             <ReleaseChannelBadge releaseChannel={version.releaseChannel} />

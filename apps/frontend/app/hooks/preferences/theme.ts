@@ -46,10 +46,10 @@ export function isDark(theme: ThemePreferences) {
 // TODO: Don't rely on tailwind's dark directive to fix theme issues
 // Instead have proper colors for each theme and use filters for hover effects
 const ThemeClasses = {
-    [ThemePreferences.DARK]: ["dark"],
-    [ThemePreferences.LIGHT]: ["light"],
-    [ThemePreferences.OLED]: ["dark", "oled"],
-    [ThemePreferences.CATPPUCCIN_MOCHA]: ["dark", "catppuccin-mocha"],
+    [ThemePreferences.DARK]: ["base-theme", "dark"],
+    [ThemePreferences.LIGHT]: ["base-theme", "light"],
+    [ThemePreferences.OLED]: ["base-theme", "dark", "oled"],
+    [ThemePreferences.CATPPUCCIN_MOCHA]: ["base-theme", "dark", "catppuccin-mocha"],
 };
 
 const allThemesClasses = Object.values(ThemeClasses).flat();

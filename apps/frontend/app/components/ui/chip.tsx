@@ -29,7 +29,7 @@ export function ChipButton({ ref, variant = "secondary", className, children, id
             type="button"
             className={cn(
                 buttonVariants({ variant }),
-                "h-fit w-fit cursor-pointer border-foreground/25 font-semibold text-[0.85rem] text-foreground",
+                "h-fit w-fit cursor-pointer rounded-full border-foreground/25 font-semibold text-[0.85rem] text-foreground underline-offset-2 hover:underline",
                 "gap-x-1.5 px-2 py-0.5",
                 variant === "outline" && "py-[calc(0.125rem_-_1px)] pe-1",
                 className,

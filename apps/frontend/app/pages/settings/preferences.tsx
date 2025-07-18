@@ -109,7 +109,11 @@ interface RadioBtnSelectorProps {
 
 function RadioBtnSelector(props: RadioBtnSelectorProps) {
     return (
-        <button type="button" className="grid appearance-none rounded border border-border" onClick={props.onClick}>
+        <button
+            type="button"
+            className="grid appearance-none overflow-clip rounded border-2 border-border"
+            onClick={props.onClick}
+        >
             {props.children}
 
             <div className="flex items-center gap-2 rounded-b bg-raised-background px-4 py-2">
@@ -148,7 +152,7 @@ function ThemePreview({ theme, isActive }: { theme: ThemePreferences; isActive: 
     const Icon = THEME_ICONS[theme] || CatIcon;
 
     return (
-        <div className={cn("rounded-t bg-background p-8", ...classNames)}>
+        <div className={cn("bg-background p-8", ...classNames)}>
             <div className="grid grid-cols-[min-content_1fr] gap-panel-cards rounded bg-card-background p-card-surround">
                 <ImgWrapper
                     src={null}

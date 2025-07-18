@@ -2,57 +2,22 @@
 
 .dark {
     color-scheme: dark;
-
-    --foreground-bright: 208, 16%, 98%;
-    --foreground: 208, 16%, 92%;
-    --foreground-muted: 208, 16%, 81%;
-    --foreground-extra-muted: 208, 16%, 67%;
-    --foreground-link: 213, 94%, 74%;
-
-    --background: 215, 12%, 8%;
-    --card-background: 215, 12%, 15%;
-    --raised-background: 215, 12%, 22%;
-    --hover-background: 215, 12%, 26%;
-
-    --accent-text: 345, 85%, 70%;
-    --accent-bg: 345, 85%, 62%;
-    --accent-bg-foreground: 345, 16%, 98%;
-
-    --error-fg: 0, 91%, 71%;
-    --error-bg: 352, 74%, 64%, 0.15;
-    --warning-fg: 33, 98%, 66%;
-    --warning-bg: 35, 74%, 62%, 0.15;
-    --success-fg: 148, 78%, 52%;
-    --success-bg: 154, 74%, 44%, 0.15;
-
-    --primary-btn-bg: 345, 85%, 62%;
-    --primary-btn-fg: 345, 16%, 6%;
-    --secondary-btn-bg: var(--raised-background);
-    --secondary-btn-fg: var(--foreground);
-    --danger-btn-bg: 358, 92%, 65%;
-    --danger-btn-fg: 358, 16%, 6%;
-    --moderation-btn-bg: 30, 100%, 64%;
-    --moderation-btn-fg: 30, 16%, 6%;
-
-    --shadow: 215, 12%, 10%;
-    --border: 215, 12%, 22%;
-    --separator: 215, 12%, 20%;
-
-    --chart-1: 213, 94%, 68%;
-
-    --loader-fg-quilt: 270, 89%, 78%;
-    --loader-fg-puzzle_loader: 101, 62%, 71%;
-    --loader-fg-paradox: 101, 62%, 71%;
-    --loader-fg-simply_shaders: 194, 77%, 73%;
 }
 
-.dark.oled {
-    --background: 215, 12%, 0%;
-    --card-background: 215, 12%, 7%;
-    --raised-background: 215, 12%, 12%;
-    --hover-background: 215, 12%, 16%;
+.oled {
+    color-scheme: dark;
 
-    --shadow: 215, 12%, 3%;
-    --border: 215, 12%, 13%;
-    --separator: 215, 12%, 12%;
+    --foreground-bright: 208, 20%, 89%;
+    --foreground: 208, 20%, 81%;
+    --foreground-muted: 208, 16%, 74%;
+    --foreground-extra-muted: 208, 14%, 60%;
+
+    --background: 0, 0%, 0%;
+    --card-background: 215, 16%, 7%;
+    --raised-background: 215, 16%, 12%;
+    --hover-background: 215, 15%, 16%;
+
+    --shadow: 215, 20%, 3%;
+    --border: 215, 16%, 13%;
+    --separator: 215, 16%, 12%;
 }

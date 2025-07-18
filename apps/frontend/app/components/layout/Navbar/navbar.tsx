@@ -138,7 +138,7 @@ export default function Navbar(props: NavbarProps) {
                                         }
                                     }}
                                 >
-                                    <Button variant="ghost" className="text-foreground-extra-muted">
+                                    <Button variant="ghost" className="bg_hover_stagger text-foreground-extra-muted">
                                         {t.common.more} <ChevronDownIcon className="h-btn-icon w-btn-icon" />
                                     </Button>
                                 </PopoverTrigger>
@@ -195,11 +195,7 @@ type NavlinkProps = {
 
 export function Navlink({ href, label, children, className }: NavlinkProps) {
     return (
-        <ButtonLink
-            url={href}
-            className={cn("font-semibold hover:bg-raised-background", className)}
-            activeClassName="bg-card-background"
-        >
+        <ButtonLink url={href} className={cn("font-semibold", className)} activeClassName="bg-card-background">
             {children ? children : label}
         </ButtonLink>
     );
@@ -209,7 +205,7 @@ export function NavMenuLink({ href, label, isDisabled = false, tabIndex, classNa
     return (
         <ButtonLink
             url={href}
-            className={cn("w-full hover:bg-raised-background", className)}
+            className={cn("w-full", className)}
             activeClassName="bg-card-background"
             tabIndex={isDisabled ? -1 : tabIndex}
         >

@@ -34,7 +34,6 @@ function PaginationLink({ className, isActive, size = "icon", ...props }: Pagina
                     size,
                 }),
                 "h-9 transition-none",
-                !isActive && "bg-raised-background hover:bg-hover-background",
                 className,
             )}
             viewTransition={false}

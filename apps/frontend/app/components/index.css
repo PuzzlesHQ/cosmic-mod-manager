@@ -1,3 +1,4 @@
+@import "./themes/_base.css";
 @import "./themes/dark.css";
 @import "./themes/light.css";
 @import "./themes/catppuccin-mocha.css";
@@ -5,20 +6,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-    /* FONT SIZES */
-    --font-super-tiny: 0.67rem;
-    --font-tiny: 0.75rem;
-    --font-sm: 0.87rem;
-    --font-base: 1rem;
-    --font-md: 1.125rem;
-    --font-lg: 1.17rem;
-    --font-lg-plus: 1.25rem;
-    --font-xl: 1.5rem;
-    --font-xl-plus: 1.85rem;
-    --font-2xl: 2.17rem;
-}
 
 html,
 body {
@@ -82,7 +69,7 @@ body.no-scrollbar {
     }
 
     .bg_hover_stagger:not(.no_bg_hover_stagger) {
-        transition: background-color 300ms ease;
+        transition-property: filter, color, background-color;
         @apply hover:duration-0 group-hover:duration-0;
     }
 

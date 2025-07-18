@@ -41,7 +41,7 @@ import { Card } from "~/components/ui/card";
 import Chip from "~/components/ui/chip";
 import { FormattedCount } from "~/components/ui/count";
 import { FormattedDate, TimePassedSince } from "~/components/ui/date";
-import Link, { ButtonLink, LinkPrefetchStrategy, TextLink, useNavigate, VariantButtonLink } from "~/components/ui/link";
+import Link, { LinkPrefetchStrategy, TextLink, useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { PopoverClose } from "~/components/ui/popover";
 import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { ReleaseChannelBadge } from "~/components/ui/release-channel-pill";
@@ -233,7 +233,7 @@ export default function ProjectPageLayout() {
                                 // biome-ignore lint/a11y/noStaticElementInteractions: --
                                 <div
                                     key={version.id}
-                                    className="bg_hover_stagger group/card flex w-full cursor-pointer items-start justify-start gap-2 rounded p-2 pb-2.5 text-foreground-muted hover:bg-background/75"
+                                    className="bg_hover_stagger group/card flex w-full cursor-pointer items-start justify-start gap-2 rounded p-2 pb-2.5 text-foreground-muted hover:bg-raised-background"
                                     onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
                                         if (
                                             // @ts-expect-error
@@ -258,7 +258,7 @@ export default function ProjectPageLayout() {
                                             >
                                                 <Button
                                                     className="noClickRedirect !w-10 !h-10 flex-shrink-0 rounded-full"
-                                                    variant={isVersionDetailsPage ? "secondary" : "default"}
+                                                    variant={isVersionDetailsPage ? "secondary-dark" : "default"}
                                                     size="icon"
                                                     aria-label={t.project.downloadItem(version.primaryFile?.name || "")}
                                                     onClick={() => downloadFile(version.primaryFile?.url)}
@@ -622,13 +622,14 @@ export function TeamMember_Card({
     const isOrg = roleName.toLowerCase() === "organization" && url !== undefined;
 
     return (
-        <ButtonLink
+        <VariantButtonLink
             itemScope
             itemType={itemType(isOrg ? MicrodataItemType.Organization : MicrodataItemType.Person)}
             itemProp={MicrodataItemProps.member}
             aria-label={userName}
-            url={url || UserProfilePath(userName)}
-            className={cn("h-fit items-start gap-3 px-2 py-1.5 font-normal hover:bg-background/75", className)}
+            to={url || UserProfilePath(userName)}
+            variant="ghost"
+            className={cn("bg_hover_stagger h-fit w-full items-start gap-3 px-2 py-1.5 font-normal", className)}
         >
             <link itemProp={MicrodataItemProps.url} href={url || UserProfilePath(userName)} />
 
@@ -655,7 +656,7 @@ export function TeamMember_Card({
                 </div>
                 <span className="font-medium text-foreground-muted/75 text-sm leading-tight">{roleName}</span>
             </div>
-        </ButtonLink>
+        </VariantButtonLink>
     );
 }
 

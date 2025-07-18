@@ -59,7 +59,7 @@ export default function VersionChangelogs() {
                     const primaryFile = version.primaryFile;
 
                     return (
-                        <div key={version.id} className="relative mb-4 w-full ps-7 dark:text-foreground-muted">
+                        <div key={version.id} className="relative mb-4 w-full ps-7 text-foreground-muted">
                             <div className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-1">
                                 <div className="flex flex-wrap items-baseline justify-start gap-x-1.5">
                                     <ChangelogBar releaseChannel={version.releaseChannel} isDuplicate={isDuplicate === true} />

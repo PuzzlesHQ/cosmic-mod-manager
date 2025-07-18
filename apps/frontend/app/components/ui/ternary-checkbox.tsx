@@ -37,7 +37,7 @@ export function TernaryCheckbox(props: ThreeStateCheckboxProps) {
             className={cn(
                 "flex h-4 w-4 cursor-pointer items-center justify-center rounded-sm",
                 props.state === TernaryStates.UNCHECKED && "bg-raised-background",
-                props.state === TernaryStates.INCLUDED && "bg-accent-bg text-accent-bg-foreground",
+                props.state === TernaryStates.INCLUDED && "bg-primary-btn-bg text-primary-btn-fg",
                 props.state === TernaryStates.EXCLUDED && "bg-danger-btn-bg text-danger-btn-fg",
                 props.className,
             )}

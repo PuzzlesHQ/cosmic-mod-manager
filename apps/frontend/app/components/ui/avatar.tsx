@@ -20,7 +20,7 @@ export function ImgWrapper({ vtId, src, alt, className, loading, fallback, ...pr
             <div
                 {...props}
                 className={cn(
-                    "flex h-24 w-24 shrink-0 items-center justify-center rounded border border-border bg-raised-background",
+                    "flex h-24 w-24 shrink-0 items-center justify-center rounded border border-border bg-raised-background shadow shadow-shadow",
                     className,
                 )}
             >

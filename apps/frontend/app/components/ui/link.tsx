@@ -26,7 +26,7 @@ interface CustomLinkProps extends LinkProps {
 }
 
 export default function Link({ ref, escapeUrlWrapper, ...props }: CustomLinkProps) {
-    let to = props.to.toString();
+    let to = props.to?.toString() || "#";
     if (escapeUrlWrapper !== true) to = FormatUrl_WithHintLocale(to);
     const { viewTransitions } = usePreferences();
 
@@ -35,7 +35,10 @@ export default function Link({ ref, escapeUrlWrapper, ...props }: CustomLinkProp
 
 export function TextLink(props: React.ComponentProps<typeof Link>) {
     return (
-        <Link {...props} className={cn(props.className, "text-foreground-link hover:underline hover:brightness-110")}>
+        <Link
+            {...props}
+            className={cn(props.className, "text-foreground-link underline-offset-3 hover:underline hover:brightness-110")}
+        >
             {props.children}
         </Link>
     );
@@ -66,17 +69,18 @@ export function ButtonLink({
 }: ButtonLinkProps) {
     const location = useLocation();
 
+    const isActive = isCurrLinkActive(url, location.pathname, exactTailMatch);
+
     return (
         <Link
             {...props}
             to={url}
             ref={ref}
             className={cn(
-                "bg_hover_stagger flex min-h-10 w-full items-center justify-start gap-2 whitespace-nowrap px-4 py-2 font-medium text-foreground-muted hover:bg-hover-background",
-                isCurrLinkActive(url, location.pathname, exactTailMatch) &&
-                    activityIndicator &&
-                    "bg-raised-background text-foreground-bright",
-                isCurrLinkActive(url, location.pathname, exactTailMatch) && `active ${activeClassName}`,
+                buttonVariants({ variant: "ghost" }),
+                "bg_hover_stagger justify-start",
+                isActive && activityIndicator && "bg-raised-background hover:brightness-95 dark:hover:brightness-110",
+                isActive && `active ${activeClassName}`,
                 className,
             )}
         >

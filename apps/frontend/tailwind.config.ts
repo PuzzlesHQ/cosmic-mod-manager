@@ -30,6 +30,10 @@ export default {
                 "accordion-down": "accordion-down 0.2s ease-out",
                 "accordion-up": "accordion-up 0.2s ease-out",
             },
+            brightness: {
+                115: "1.15",
+                85: "0.85",
+            },
             colors: {
                 "foreground-bright": "hsla(var(--foreground-bright))",
                 foreground: "hsla(var(--foreground))",
@@ -83,13 +87,14 @@ export default {
                 "2xl": "var(--font-2xl)",
             },
             borderRadius: {
-                sm: "0.33rem",
-                md: "0.5rem",
-                DEFAULT: "0.67rem",
-                lg: "1em",
-                xl: "1.3rem",
-                "2xl": "1.77rem",
-                "3xl": "2.5rem",
+                sm: "var(--radius-sm)",
+                md: "var(--radius-md)",
+                DEFAULT: "var(--radius-DEFAULT)",
+                lg: "var(--radius-lg)",
+                xl: "var(--radius-xl)",
+                "2xl": "var(--radius-2xl)",
+                "3xl": "var(--radius-3xl)",
+                full: "var(--radius-full)",
             },
             gap: {
                 space: "0.6ch",

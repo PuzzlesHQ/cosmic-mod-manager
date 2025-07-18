@@ -31,7 +31,6 @@ import { FormattedDate } from "~/components/ui/date";
 import Link, { LinkPrefetchStrategy, VariantButtonLink } from "~/components/ui/link";
 import ReleaseChannelChip from "~/components/ui/release-channel-pill";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
-import { cn } from "~/components/utils";
 import type { ProjectContextData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
@@ -79,9 +78,8 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                 <div className="flex w-full flex-wrap items-center justify-start gap-x-4">
                     <h1 className="font-[700] text-2xl text-foreground leading-tight">{versionData.title}</h1>
                     {versionData.featured ? (
-                        <span className="flex items-center justify-center gap-1 text-foreground-extra-muted italic">
-                            <StarIcon aria-hidden className="h-btn-icon w-btn-icon" />
-                            {t.version.featured}
+                        <span className="text-foreground-extra-muted italic">
+                            <StarIcon aria-hidden className="-mt-[0.4ch] inline h-btn-icon w-btn-icon" /> {t.version.featured}
                         </span>
                     ) : null}
                 </div>
@@ -339,27 +337,20 @@ function FileDetailsItem({
     return (
         <ContextMenu>
             <ContextMenuTrigger asChild>
-                <div className="flex w-full cursor-context-menu flex-wrap items-center justify-between gap-x-4 gap-y-2 border border-border bg-background/50 px-4 py-4 pe-3 first:rounded-t last:rounded-b sm:flex-nowrap">
-                    <div>
-                        <FileIcon
-                            aria-hidden
-                            className={cn(
-                                "me-1.5 inline h-btn-icon w-btn-icon flex-shrink-0 text-foreground-muted",
-                                !isPrimary && "text-foreground-extra-muted",
-                            )}
-                        />
-
-                        <span className={!isPrimary ? "text-foreground-muted" : ""}>
-                            {/* <strong className="font-semibold">{fileName}</strong>{" "} */}
-                            <Button className="h-fit px-1 py-0" variant="link" onClick={() => downloadFile(downloadLink)}>
-                                {fileName}
-                            </Button>
-                            <span className="ms-0.5 whitespace-nowrap">({parseFileSize(fileSize)})</span>{" "}
-                            {isPrimary ? <span className="ms-1 text-foreground-muted italic">{t.version.primary}</span> : null}
-                        </span>
-                    </div>
+                <div className="cursor-context-menu border border-border bg-background/50 px-4 py-4 pe-3 text-foreground-muted first:rounded-t last:rounded-b">
+                    <FileIcon aria-hidden className="inline h-btn-icon w-btn-icon" />{" "}
+                    <Button
+                        className="inline h-fit px-1 py-0 text-start"
+                        variant="link"
+                        onClick={() => downloadFile(downloadLink)}
+                    >
+                        {fileName}
+                    </Button>{" "}
+                    <span className="whitespace-nowrap font-mono">({parseFileSize(fileSize)})</span>{" "}
+                    {isPrimary ? <span className="text-foreground-extra-muted">{t.version.primary}</span> : null}
                 </div>
             </ContextMenuTrigger>
+
             <ContextMenuContent>
                 <ContextMenuItem className="flex gap-2" onClick={() => copyTextToClipboard(sha1_hash)}>
                     <CopyIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm text-foreground-extra-muted" />
