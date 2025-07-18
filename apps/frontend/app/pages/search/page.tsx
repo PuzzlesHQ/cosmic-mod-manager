@@ -15,15 +15,25 @@ import { useSpinnerCtx } from "~/components/global-spinner";
 import { ListViewType } from "~/components/misc/search-list-item";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
+import {
+    Dialog,
+    DialogBody,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { TooltipProvider, TooltipTemplate } from "~/components/ui/tooltip";
+import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { cn } from "~/components/utils";
 import { usePreferences } from "~/hooks/preferences";
 import { useTranslation } from "~/locales/provider";
 import { removePageOffsetSearchParam, updateSearchParam, useSearchContext } from "./provider";
 import { SearchResults } from "./search_results";
-import FilterSidebar from "./sidebar";
+import SearchFilters from "./sidebar";
 
 export default function SearchPage() {
     const { t } = useTranslation();
@@ -62,17 +72,20 @@ export default function SearchPage() {
 
     const searchLabel = t.search[projectType];
 
+    const filtersComponent = useMemo(() => {
+        return (
+            <SearchFilters
+                type={projectType_Coerced === projectType ? [projectType_Coerced] : projectTypes}
+                searchParams={searchParams}
+            />
+        );
+    }, [projectType, showFilters, searchParams.toString()]);
+
     return (
         <div className="search-page-grid-layout grid w-full gap-panel-cards pb-16">
-            {useMemo(() => {
-                return (
-                    <FilterSidebar
-                        type={projectType_Coerced === projectType ? [projectType_Coerced] : projectTypes}
-                        showFilters={showFilters}
-                        searchParams={searchParams}
-                    />
-                );
-            }, [projectType, showFilters, searchParams.toString()])}
+            <aside className="page-sidebar relative hidden h-fit p-card-surround gap-panel-cards rounded-lg bg-card-background lg:grid">
+                {filtersComponent}
+            </aside>
 
             <main id="main" className="page-content grid h-fit grid-cols-1 gap-panel-cards">
                 <Card className="flex h-fit flex-wrap items-center justify-start gap-2 p-card-surround">
@@ -174,14 +187,28 @@ export default function SearchPage() {
                         </SelectContent>
                     </Select>
 
-                    <Button
-                        className={cn("flex lg:hidden", showFilters && "!ring-[0.13rem] ring-accent-bg")}
-                        variant="secondary"
-                        onClick={() => setShowFilters((prev) => !prev)}
-                    >
-                        <FilterIcon aria-hidden className="h-btn-icon w-btn-icon" />
-                        {t.search.filters}
-                    </Button>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button
+                                className="flex lg:hidden"
+                                variant="secondary"
+                                onClick={() => setShowFilters((prev) => !prev)}
+                            >
+                                <FilterIcon aria-hidden className="h-btn-icon w-btn-icon" />
+                                {t.search.filters}
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>{t.search.filters}</DialogTitle>
+                                <VisuallyHidden>
+                                    <DialogDescription>{t.search.filters}</DialogDescription>
+                                </VisuallyHidden>
+                            </DialogHeader>
+
+                            <DialogBody className="grid gap-panel-cards">{filtersComponent}</DialogBody>
+                        </DialogContent>
+                    </Dialog>
 
                     <ViewTypeToggle projectType={projectType_Coerced} viewType={viewType} />
                 </Card>

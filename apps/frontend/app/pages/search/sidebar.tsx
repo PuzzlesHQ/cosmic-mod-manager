@@ -28,7 +28,6 @@ const SHOW_ENV_FILTER_FOR_TYPES = [ProjectType.MOD, ProjectType.MODPACK /*, Proj
 
 interface Props {
     type: ProjectType[];
-    showFilters: boolean;
     searchParams: URLSearchParams;
 }
 
@@ -61,7 +60,7 @@ function clearFilters() {
     return currUrl.href.replace(currUrl.origin, "");
 }
 
-function FilterSidebar({ type, showFilters, searchParams }: Props) {
+function SearchFilters({ type, searchParams }: Props) {
     const { t } = useTranslation();
     const [showAllVersions, setShowAllVersions] = useState(false);
     const [query, setQuery] = useState("");
@@ -126,12 +125,7 @@ function FilterSidebar({ type, showFilters, searchParams }: Props) {
     const defaultOpenAdditionalFilters = !isUniversalSearchPage;
 
     return (
-        <aside
-            className={cn(
-                "page-sidebar relative flex h-fit flex-col gap-3 rounded-lg bg-card-background p-card-surround",
-                !showFilters && "hidden lg:flex",
-            )}
-        >
+        <>
             <SkipNav />
 
             <div className="flex items-center justify-center gap-2">
@@ -281,11 +275,11 @@ function FilterSidebar({ type, showFilters, searchParams }: Props) {
                 }}
                 defaultOpen={defaultOpenAdditionalFilters}
             />
-        </aside>
+        </>
     );
 }
 
-export default FilterSidebar;
+export default SearchFilters;
 
 interface FilterItem {
     value: string;

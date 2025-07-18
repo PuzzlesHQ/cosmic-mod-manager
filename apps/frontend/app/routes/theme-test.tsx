@@ -30,6 +30,7 @@ import { FormErrorMessage, FormSuccessMessage, FormWarningMessage } from "~/comp
 import { TextLink } from "~/components/ui/link";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from "~/components/ui/select";
+import { Separator } from "~/components/ui/separator";
 import { Switch } from "~/components/ui/switch";
 import { LabelledTernaryCheckbox, TernaryStates } from "~/components/ui/ternary-checkbox";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
@@ -40,6 +41,10 @@ export default function () {
 
     return (
         <div className="grid gap-4">
+            <ThemeSwitcher />
+
+            <Separator className="my-2" />
+
             <h1 className="font-bold text-foreground-bright text-xl">TEXT</h1>
             <div className="flex flex-wrap gap-x-6 gap-y-4">
                 <p className="text-accent-text">text-accent-text</p>
@@ -201,8 +206,6 @@ export default function () {
                     </div>
                 </CardContent>
             </Card>
-
-            <ThemeSwitcher />
         </div>
     );
 }
