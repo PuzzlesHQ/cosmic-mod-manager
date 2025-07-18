@@ -197,7 +197,7 @@ export default function () {
                         );
                     })}
 
-                    <div className="flex w-full gap-4">
+                    <div className="flex w-full gap-4 flex-wrap">
                         <Badge variant="default">default</Badge>
                         <Badge variant="secondary">secondary</Badge>
                         <Badge variant="destructive">destructive</Badge>

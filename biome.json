@@ -31,7 +31,13 @@
             "nursery": {
                 "noTsIgnore": "off",
                 "useUniqueElementIds": "off",
-                "useSortedClasses": "info"
+                "useSortedClasses": {
+                    "level": "info",
+                    "options": {
+                        "attributes": ["classList"],
+                        "functions": ["cn", "cva", "tw", "tw.*"]
+                    }
+                }
             },
             "a11y": {
                 "useSemanticElements": "info",
