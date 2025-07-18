@@ -71,6 +71,9 @@ export default {
                 border: "hsla(var(--border))",
                 separator: "hsla(var(--separator))",
 
+                "role-moderator-fg": "hsla(var(--role-moderator-fg))",
+                "role-admin-fg": "hsla(var(--role-admin-fg))",
+
                 //  ----------
                 "chart-1": "hsla(var(--chart-1))",
             },

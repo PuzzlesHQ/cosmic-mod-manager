@@ -38,10 +38,15 @@
 
     --chart-1: 213, 94%, 68%;
 
+    /* Loaders */
     --loader-fg-quilt: 270, 89%, 78%;
     --loader-fg-puzzle_loader: 101, 62%, 71%;
     --loader-fg-paradox: 101, 62%, 71%;
     --loader-fg-simply_shaders: 194, 77%, 73%;
+
+    /* User role colors */
+    --role-moderator-fg: 213 93% 67%;
+    --role-admin-fg: 270 95% 75%;
 
     /* Border Radius */
     --radius-sm: 0.33rem;

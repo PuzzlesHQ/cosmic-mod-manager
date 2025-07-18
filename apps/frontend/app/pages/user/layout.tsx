@@ -172,12 +172,16 @@ interface ProfilePageHeaderProps {
 function ProfilePageHeader({ userData, totalProjects, totalDownloads }: ProfilePageHeaderProps) {
     const { t, formattedLocaleName } = useTranslation();
     const session = useSession();
+
     let title = null;
+    let roleColor: undefined | string;
 
     if (GlobalUserRole.ADMIN === userData.role) {
         title = t.user[GlobalUserRole.ADMIN];
+        roleColor = "text-role-admin-fg";
     } else if (GlobalUserRole.MODERATOR === userData.role) {
         title = t.user[GlobalUserRole.MODERATOR];
+        roleColor = "text-role-moderator-fg";
     }
 
     return (
@@ -190,9 +194,7 @@ function ProfilePageHeader({ userData, totalProjects, totalDownloads }: ProfileP
             description={userData.bio || ""}
             titleBadge={
                 title ? (
-                    <Chip className="!text-tiny bg-card-background font-semibold text-purple-600 uppercase dark:text-purple-400">
-                        {title}
-                    </Chip>
+                    <Chip className={cn("!text-tiny bg-card-background font-semibold uppercase", roleColor)}>{title}</Chip>
                 ) : null
             }
             threeDotMenu={

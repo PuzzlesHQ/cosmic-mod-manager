@@ -8,6 +8,7 @@ All the Colors must be hsl values without the wrapping `hsl()` function. \
 Example: `--color: h, s%, l%, a;` \
 where: `h` is hue (0-360), `s` is saturation (%), `l` is lightness (%) and `a` is alpha/opacity (optional)
 
+You can also reference the [base theme](/apps/frontend/app/components/themes/_base.css).
 
 | Variable Name | Description |
 |:-- | :-- |

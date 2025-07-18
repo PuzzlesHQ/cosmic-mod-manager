@@ -45,4 +45,8 @@
     --loader-fg-puzzle_loader: 112, 41%, 42%;
     --loader-fg-paradox: 112, 41%, 42%;
     --loader-fg-simply_shaders: 194, 40%, 49%;
+
+    /* User role colors */
+    --role-moderator-fg: 217 91% 59%;
+    --role-admin-fg: 271 81% 55%;
 }

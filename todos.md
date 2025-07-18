@@ -2,7 +2,7 @@
 - [x] Shadow
 - [x] Text or things on accented background
 - [x] Loaders
-- [\_] User roles
+- [x] User roles
 
 ### Fix
 - [x] Shadow color

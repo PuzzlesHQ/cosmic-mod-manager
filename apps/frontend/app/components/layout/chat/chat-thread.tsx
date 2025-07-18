@@ -528,11 +528,11 @@ function ThreadMessage(props: ThreadMessageProps) {
     if (author?.role) {
         switch (author.role) {
             case GlobalUserRole.MODERATOR:
-                userNameColor = "text-blue-500 dark:text-blue-400";
+                userNameColor = "text-role-moderator-fg";
                 senderTitle += ` (${t.user.moderator})`;
                 break;
             case GlobalUserRole.ADMIN:
-                userNameColor = "text-purple-600 dark:text-purple-400";
+                userNameColor = "text-role-admin-fg";
                 senderTitle += ` (${t.user.admin})`;
                 break;
             default:
@@ -544,7 +544,7 @@ function ThreadMessage(props: ThreadMessageProps) {
         <div
             className={cn(
                 "group/chat-msg relative mt-3 grid w-full gap-x-panel-cards border-transparent border-s-2 px-card-surround py-1.5 first:mt-0",
-                !isReplyToAMsg && !isSelectedMsgForReply && "hover:bg-card-background dark:hover:bg-card-background/35",
+                !isReplyToAMsg && !isSelectedMsgForReply && "hover:bg-card-background",
                 isContinuationMessage && "mt-0",
                 isReplyToAMsg &&
                     !isSelectedMsgForReply &&
