@@ -1,8 +1,6 @@
 import { DateFromStr, getTimeRange, ISO_DateStr } from "@app/utils/date";
-import { encodeArrayIntoStr } from "@app/utils/string";
 import { TimelineOptions } from "@app/utils/types";
 import type { ProjectDownloads_Analytics } from "@app/utils/types/api/stats";
-import clientFetch from "./client-fetch";
 
 export function getValidTimeline(timeline: string | null) {
     if (!timeline) return TimelineOptions.PREVIOUS_30_DAYS;
@@ -12,30 +10,6 @@ export function getValidTimeline(timeline: string | null) {
     }
 
     return TimelineOptions.PREVIOUS_30_DAYS;
-}
-
-export type CustomAnalyticsUrl_Func = (searchParams: URLSearchParams, projectIds: string[]) => string;
-
-export async function getProjectDownload_AnalyticsData(
-    projectIds: string[],
-    timeline: TimelineOptions,
-    customUrlFunc?: CustomAnalyticsUrl_Func,
-) {
-    const timeRange = getTimeRange(timeline);
-    const searchParams = new URLSearchParams();
-    searchParams.set("projectIds", encodeArrayIntoStr(projectIds));
-    searchParams.set("startDate", ISO_DateStr(timeRange[0]));
-    searchParams.set("endDate", ISO_DateStr(timeRange[1]));
-
-    const url = customUrlFunc ? customUrlFunc(searchParams, projectIds) : `/api/analytics/downloads?${searchParams.toString()}`;
-    const res = await clientFetch(url);
-    if (!res.ok) {
-        console.error("Failed to fetch project download analytics data");
-        return null;
-    }
-
-    const data = await res.json();
-    return data as ProjectDownloads_Analytics;
 }
 
 export function formatDownloadAnalyticsData(

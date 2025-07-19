@@ -3,9 +3,9 @@
     color-scheme: dark;
 
     --foreground-bright: 226, 67%, 98%;
-    --foreground: 226, 64%, 92%;
-    --foreground-muted: 227, 35%, 81%;
-    --foreground-extra-muted: 228, 24%, 67%;
+    --foreground: 226, 54%, 92%;
+    --foreground-muted: 227, 28%, 81%;
+    --foreground-extra-muted: 228, 20%, 67%;
     --foreground-link: 217, 92%, 76%;
 
     --background: 240, 18%, 8%;

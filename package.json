@@ -1,5 +1,6 @@
 {
     "name": "cosmic-mod-manager",
+    "type": "module",
     "module": "index.ts",
     "dependencies": {
         "zod": "^4.0.5"
@@ -15,7 +16,6 @@
         "lint": "biome lint",
         "test": "bun test"
     },
-    "type": "module",
     "workspaces": [
         "packages/utils",
         "apps/backend",

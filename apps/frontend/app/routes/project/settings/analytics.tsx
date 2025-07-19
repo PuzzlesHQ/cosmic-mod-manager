@@ -1,12 +1,32 @@
+import { useLoaderData } from "react-router";
+import DownloadsAnalyticsChart from "~/components/downloads-analytics";
 import { useTranslation } from "~/locales/provider";
-import ProjectAnalyticsPage from "~/pages/project/settings/analytics";
+import { AnalyticsRoute_ShouldRevalidate, projectAnalyticsLoader } from "~/routes/_loaders/analytics";
 import { getProjectLoaderData } from "~/routes/project/utils";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
+import { resJson, serverFetch } from "~/utils/server-fetch";
 import { ProjectPagePath } from "~/utils/urls";
 import type { Route } from "./+types/analytics";
 
-export default ProjectAnalyticsPage;
+export default function () {
+    const data = useLoaderData<typeof loader>();
+    if (!data) return null;
+
+    return <DownloadsAnalyticsChart data={data} />;
+}
+
+export async function loader(props: Route.LoaderArgs) {
+    const res = await serverFetch(props.request, `/api/project/${props.params.projectSlug}/check`);
+    if (!res.ok) return null;
+
+    const projectId = (await resJson<{ id: string }>(res))?.id;
+    if (!projectId) return null;
+
+    return await projectAnalyticsLoader(props, [projectId]);
+}
+
+export const ShouldRevalidate = AnalyticsRoute_ShouldRevalidate;
 
 export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();

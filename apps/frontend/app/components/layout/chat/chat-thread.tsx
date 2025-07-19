@@ -479,7 +479,7 @@ function ThreadMessage(props: ThreadMessageProps) {
     const showFullDate = now.getDate() !== createdAt?.getDate() && !isContinuationMessage;
     const fullDate = FormatDate_ToLocaleString(props.message.createdAt, { shortMonthNames: true });
 
-    const timestamp_class = "text-foreground-muted text-xs leading-none cursor-default";
+    const timestamp_class = "text-foreground-muted text-xs leading-none cursor-default whitespace-nowrap";
     const timestamp = showFullDate ? (
         <span className={timestamp_class}>{fullDate}</span>
     ) : (
@@ -613,7 +613,7 @@ function ThreadMessage(props: ThreadMessageProps) {
             )}
 
             {!isContinuationMessage && (
-                <div className="mb-1 flex items-center justify-start gap-3" style={{ gridArea: "info" }}>
+                <div className="mb-1 flex flex-wrap items-center justify-start gap-3" style={{ gridArea: "info" }}>
                     <div className="flex items-center justify-center gap-1.5">
                         {profileUrl ? (
                             <Link

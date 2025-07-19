@@ -3,11 +3,19 @@ import autoprefixer from "autoprefixer";
 import tailwindcss from "tailwindcss";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
+import Config from "./app/utils/config";
 import { ASSETS_SERVER_URL } from "./app/utils/env";
 
 export default defineConfig({
     server: {
         port: 3000,
+        proxy: {
+            "/api": {
+                target: Config.BACKEND_URL_PUBLIC,
+                changeOrigin: true,
+                secure: true,
+            },
+        },
     },
     base: ASSETS_SERVER_URL,
     build: {

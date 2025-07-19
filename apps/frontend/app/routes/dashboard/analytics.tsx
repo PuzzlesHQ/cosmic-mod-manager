@@ -1,7 +1,8 @@
 import type { ProjectListItem } from "@app/utils/types/api";
 import { useLoaderData } from "react-router";
+import DownloadsAnalyticsChart from "~/components/downloads-analytics";
 import { useTranslation } from "~/locales/provider";
-import DashboardAnalyticsPage from "~/pages/dashboard/analytics";
+import { AnalyticsRoute_ShouldRevalidate, projectAnalyticsLoader } from "~/routes/_loaders/analytics";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
 import { resJson, serverFetch } from "~/utils/server-fetch";
@@ -9,21 +10,22 @@ import type { Route } from "./+types/analytics";
 
 export default function () {
     const data = useLoaderData<typeof loader>();
-    const userProjectIds = data.map((p) => p.id);
+    if (!data) return null;
 
-    return <DashboardAnalyticsPage userProjects={userProjectIds} />;
+    return <DownloadsAnalyticsChart data={data} />;
 }
 
 export async function loader(props: Route.LoaderArgs) {
     const res = await serverFetch(props.request, "/api/project");
-    if (!res.ok) return [];
+    if (!res.ok) return null;
 
-    return (await resJson<ProjectListItem[]>(res)) || [];
+    const projects = (await resJson<ProjectListItem[]>(res)) || [];
+    const userProjectIds = projects.map((p) => p.id);
+
+    return await projectAnalyticsLoader(props, userProjectIds);
 }
 
-export function shouldRevalidate() {
-    return false;
-}
+export const shouldRevalidate = AnalyticsRoute_ShouldRevalidate;
 
 export function meta() {
     const { t } = useTranslation();

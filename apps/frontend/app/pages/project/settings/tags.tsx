@@ -105,7 +105,7 @@ export default function TagsSettingsPage() {
                     {availableTags.map(([type, tags]) => {
                         return (
                             <div key={type} className="flex w-full flex-col items-start justify-start">
-                                <span className="font-bold text-lg">{t.search[type]}</span>
+                                <span className="font-bold text-foreground-muted text-lg">{t.search[type]}</span>
                                 <FormField
                                     control={form.control}
                                     name="categories"

@@ -37,7 +37,7 @@ export function TextLink(props: React.ComponentProps<typeof Link>) {
     return (
         <Link
             {...props}
-            className={cn(props.className, "text-foreground-link underline-offset-3 hover:underline hover:brightness-110")}
+            className={cn("text-foreground-link underline-offset-3 hover:underline hover:brightness-110", props.className)}
         >
             {props.children}
         </Link>

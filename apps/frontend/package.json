@@ -12,8 +12,8 @@
     "dependencies": {
         "@app/utils": "workspace:*",
         "@hookform/resolvers": "^5.1.1",
-        "@react-router/node": "^7.6.3",
-        "@react-router/serve": "^7.6.3",
+        "@react-router/node": "^7.7.0",
+        "@react-router/serve": "^7.7.0",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "cmdk": "1.0.4",
@@ -25,15 +25,15 @@
         "react": "^19.1.0",
         "react-dom": "^19.1.0",
         "react-hook-form": "^7.60.0",
-        "react-router": "^7.6.3",
+        "react-router": "^7.7.0",
         "recharts": "^2.15.4",
         "sonner": "^1.7.4",
         "tailwind-merge": "^2.6.0",
         "xss": "^1.0.15"
     },
     "devDependencies": {
-        "@react-router/dev": "^7.6.3",
-        "@react-router/remix-routes-option-adapter": "^7.6.3",
+        "@react-router/dev": "^7.7.0",
+        "@react-router/remix-routes-option-adapter": "^7.7.0",
         "@types/markdown-it": "^14.1.2",
         "@types/react": "^19.1.8",
         "@types/react-dom": "^19.1.6",
@@ -45,7 +45,7 @@
         "tailwindcss": "^3.4.17",
         "tailwindcss-animate": "^1.0.7",
         "typescript": "^5.8.3",
-        "vite": "^7.0.4",
+        "vite": "^7.0.5",
         "vite-tsconfig-paths": "^5.1.4"
     },
     "peerDependencies": {

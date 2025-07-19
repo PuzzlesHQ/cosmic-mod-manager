@@ -28,9 +28,7 @@ export default async function clientFetch(pathname: string, init?: RequestInit):
 
 // Not prefixing non-localhost URLs so that vite can proxy them to the defined proxy in vite.config.ts (Only for development)
 function fetchUrl(path: string) {
-    const origin = window?.location?.origin;
-
-    if (Config?.proxy === true && origin.includes("localhost")) {
+    if (Config?.proxy === true) {
         return path;
     }
 
