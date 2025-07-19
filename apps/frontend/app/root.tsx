@@ -66,7 +66,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 />
             </head>
             <body className="antialiased">
-                <ContextProviders init_userConfig={data.userConfig}>{children}</ContextProviders>
+                {children}
 
                 <ScrollRestoration />
                 <Scripts />
@@ -77,6 +77,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
     const data = useLoaderData() as RootOutletData;
+
+    return (
+        <ContextProviders init_userConfig={data.userConfig}>
+            <AppSetup data={data} />
+        </ContextProviders>
+    );
+}
+
+function AppSetup(props: { data: RootOutletData }) {
+    const data = props.data;
 
     // HANDLE SAME SITE NAVIGATIONS FROM MARKDOWN RENDERED LINKS
     const navigate = useNavigate();
