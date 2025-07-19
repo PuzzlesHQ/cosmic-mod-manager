@@ -1,5 +1,5 @@
 {
-    "include": [".", "./.react-router/types", "./../../packages/components"],
+    "include": [".", "./.react-router/types"],
     "exclude": ["node_modules", "build", "pm2.config.cjs"],
     "compilerOptions": {
         "lib": ["ESNext", "DOM.Iterable", "DOM"],

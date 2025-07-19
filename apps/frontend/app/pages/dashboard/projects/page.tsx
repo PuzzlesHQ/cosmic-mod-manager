@@ -114,7 +114,6 @@ export function ProjectsListTable({ projects }: { projects: ProjectListItem[] })
 
                                         <span className="leading-none">{FormatProjectTypes(project.type)}</span>
                                         <CopyBtn
-                                            id={`${project.slug}-${project.id}`}
                                             text={project.id}
                                             label={project.id}
                                             // maxLabelChars={12}
@@ -137,7 +136,6 @@ export function ProjectsListTable({ projects }: { projects: ProjectListItem[] })
                                 <TableCell className="hidden md:table-cell">
                                     <div className="noClickRedirect flex w-fit items-center justify-start font-mono text-sm">
                                         <CopyBtn
-                                            id={`${project.slug}-${project.id}`}
                                             text={project.id}
                                             label={project.id}
                                             maxLabelChars={10}

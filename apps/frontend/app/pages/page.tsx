@@ -1,7 +1,7 @@
 import type { ProjectListItem } from "@app/utils/types/api";
 import { imageUrl } from "@app/utils/url";
 import { CompassIcon, LayoutDashboardIcon, LogInIcon } from "lucide-react";
-import { type CSSProperties, useEffect, useMemo, useState } from "react";
+import { type CSSProperties, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { BrandIcon, fallbackProjectIcon } from "~/components/icons";
 import { MicrodataItemProps } from "~/components/microdata";
@@ -17,14 +17,13 @@ interface Props {
     projects: ProjectListItem[];
 }
 
-let recreateBg_TimeoutId: number | undefined;
-
 export default function HomePage({ projects }: Props) {
     const { t } = useTranslation();
-    const session = useSession();
-    const nav = t.navbar;
-
     const [gridBgPortal, setGridBgPortal] = useState<Element | null>(null);
+    const timeoutRef = useRef<number | undefined>(undefined);
+    const session = useSession();
+
+    const nav = t.navbar;
 
     // The animation keyframes in "@/app/styles.css" need to be updated according to the number of items in the list
     const showcaseItems = [nav.mods, nav.plugins, nav["resource-packs"], nav.modpacks, nav.shaders, nav.mods];
@@ -34,8 +33,8 @@ export default function HomePage({ projects }: Props) {
     }, []);
 
     function recreateBackground() {
-        if (recreateBg_TimeoutId) window.clearTimeout(recreateBg_TimeoutId);
-        recreateBg_TimeoutId = window.setTimeout(() => {
+        if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+        timeoutRef.current = window.setTimeout(() => {
             drawBackground({ recreate: true });
         }, 250);
     }

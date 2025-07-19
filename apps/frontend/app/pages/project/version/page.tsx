@@ -294,7 +294,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                             },
                             {
                                 label: t.version.versionID,
-                                content: <CopyBtn text={versionData.id} id="version-page-version-id" label={versionData.id} />,
+                                content: <CopyBtn text={versionData.id} label={versionData.id} />,
                             },
                         ].map((item) => {
                             if (!item.content) return null;

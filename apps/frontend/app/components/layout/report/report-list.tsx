@@ -121,7 +121,7 @@ function ReportedItem({ report }: { report: DetailedReport }) {
     function NotFoundMsg({ msg }: { msg: string }) {
         return (
             <span className="flex w-fit items-center justify-center gap-2">
-                {msg}: <CopyBtn id={report.itemId} text={report.itemId} label={report.itemId} />
+                {msg}: <CopyBtn text={report.itemId} label={report.itemId} />
             </span>
         );
     }

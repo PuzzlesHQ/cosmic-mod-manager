@@ -93,7 +93,7 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
                                                     [{t.settings.ipHidden}]
                                                 </span>
                                             )}
-                                            <CopyBtn text={session.ip || ""} id={`session-ip-${session.id}`} />
+                                            <CopyBtn text={session.ip || ""} />
                                         </div>
                                     </div>
 
