@@ -91,7 +91,7 @@ export default function Navbar(props: NavbarProps) {
 
     const SettingsButton = useMemo(() => {
         return (
-            <VariantButtonLink to="/settings" variant="secondary" size="icon" className="rounded-full">
+            <VariantButtonLink to="/settings" variant="secondary" className="aspect-square rounded-full p-0">
                 <SettingsIcon className="h-btn-icon-md w-btn-icon-md" />
             </VariantButtonLink>
         );
@@ -154,7 +154,12 @@ export default function Navbar(props: NavbarProps) {
                                 >
                                     {Other_NavLinks.map((link) => {
                                         return (
-                                            <NavMenuLink key={link.href} href={link.href} label={link.label}>
+                                            <NavMenuLink
+                                                key={link.href}
+                                                href={link.href}
+                                                label={link.label}
+                                                activeClassName="bg-hover-background"
+                                            >
                                                 {link.label}
                                             </NavMenuLink>
                                         );
@@ -190,23 +195,28 @@ type NavlinkProps = {
     isDisabled?: boolean;
     tabIndex?: number;
     className?: string;
+    activeClassName?: string;
     children?: React.ReactNode;
 };
 
-export function Navlink({ href, label, children, className }: NavlinkProps) {
+export function Navlink({ href, label, children, className, activeClassName }: NavlinkProps) {
     return (
-        <ButtonLink url={href} className={cn("font-semibold", className)} activeClassName="bg-card-background">
+        <ButtonLink
+            url={href}
+            className={cn("font-semibold", className)}
+            activeClassName={activeClassName || "bg-card-background"}
+        >
             {children ? children : label}
         </ButtonLink>
     );
 }
 
-export function NavMenuLink({ href, label, isDisabled = false, tabIndex, className, children }: NavlinkProps) {
+export function NavMenuLink({ href, label, isDisabled = false, tabIndex, className, children, activeClassName }: NavlinkProps) {
     return (
         <ButtonLink
             url={href}
             className={cn("w-full", className)}
-            activeClassName="bg-card-background"
+            activeClassName={activeClassName || "bg-card-background"}
             tabIndex={isDisabled ? -1 : tabIndex}
         >
             {children ? children : label}
