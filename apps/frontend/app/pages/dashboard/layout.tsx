@@ -19,22 +19,22 @@ export default function DashboardLayout() {
         {
             label: t.dashboard.overview,
             href: "/dashboard",
-            icon: <LayoutDashboardIcon aria-hidden size="1rem" />,
+            icon: <LayoutDashboardIcon aria-hidden className="aspect-square h-[65%]" />,
         },
         {
             label: t.dashboard.notifications,
             href: "/dashboard/notifications",
-            icon: <BellIcon aria-hidden size="1rem" />,
+            icon: <BellIcon aria-hidden className="aspect-square h-[65%]" />,
         },
         {
             label: t.dashboard.activeReports,
             href: "/dashboard/reports",
-            icon: <FlagIcon aria-hidden size="1rem" />,
+            icon: <FlagIcon aria-hidden className="aspect-square h-[65%]" />,
         },
         {
             label: t.dashboard.analytics,
             href: "/dashboard/analytics",
-            icon: <BarChart2Icon size="1rem" />,
+            icon: <BarChart2Icon className="aspect-square h-[65%]" />,
         },
     ];
 
@@ -42,22 +42,22 @@ export default function DashboardLayout() {
         {
             label: t.dashboard.projects,
             href: "/dashboard/projects",
-            icon: <LayoutListIcon aria-hidden size="1rem" />,
+            icon: <LayoutListIcon aria-hidden className="aspect-square h-[65%]" />,
         },
         {
             label: t.dashboard.organizations,
             href: "/dashboard/organizations",
-            icon: <Building2Icon size="1rem" />,
+            icon: <Building2Icon className="aspect-square h-[65%]" />,
         },
         {
             label: t.dashboard.collections,
             href: "/dashboard/collections",
-            icon: <LibraryIcon aria-hidden size="1rem" />,
+            icon: <LibraryIcon aria-hidden className="aspect-square h-[65%]" />,
         },
         {
             label: t.dashboard.revenue,
             href: "/dashboard/revenue",
-            icon: <DollarSignIcon aria-hidden size="1rem" />,
+            icon: <DollarSignIcon aria-hidden className="aspect-square h-[65%]" />,
         },
     ];
 

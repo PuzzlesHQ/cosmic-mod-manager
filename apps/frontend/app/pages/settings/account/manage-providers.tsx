@@ -90,7 +90,7 @@ export default function ManageAuthProviders({ linkedAuthProviders }: { linkedAut
                                         <span className="font-bold leading-none">{Capitalize(authProvider.name)}</span>
 
                                         {!!additionalProviderDetails && (
-                                            <div className="flex items-center gap-2 text-foreground-muted leading-none min-h-5">
+                                            <div className="flex min-h-5 items-center gap-2 text-foreground-muted leading-none">
                                                 <span className="text-sm">{additionalProviderDetails.providerAccountEmail}</span>
 
                                                 <LinkToProviderProfile

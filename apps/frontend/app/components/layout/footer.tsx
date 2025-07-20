@@ -25,7 +25,7 @@ export default function Footer() {
                         className="flex items-center justify-center gap-2 font-bold text-[1.72rem] leading-none"
                         title={Config.SITE_NAME_LONG}
                     >
-                        <BrandIcon size="2.75rem" aria-label="Logo" />
+                        <BrandIcon aria-label="Logo" className="h-11 w-11" />
                         {Config.SITE_NAME_SHORT}
                     </span>
                 </LinksColumn>
@@ -187,13 +187,17 @@ export function LangSwitcher() {
         >
             <SelectTrigger
                 aria-label={currLocaleLabel}
-                className="rounded-full"
+                className="rounded-full ps-4"
                 variant="outline"
                 style={{
                     minWidth: `calc(${currLocaleLabel.length}ch + 1.3rem)`,
                 }}
             >
-                <LanguagesIcon aria-hidden size="1.15rem" className="text-foreground-muted" aria-label="Language switcher" />
+                <LanguagesIcon
+                    aria-hidden
+                    className="h-btn-icon-md w-btn-icon-md text-foreground-muted"
+                    aria-label="Language switcher"
+                />
                 <SelectValue className="flex items-center justify-start" placeholder={<p>{currLang}</p>} />
             </SelectTrigger>
 

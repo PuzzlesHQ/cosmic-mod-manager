@@ -1,8 +1,8 @@
 import { Capitalize } from "@app/utils/string";
-import { AuthProvider, type LoggedInUserData } from "@app/utils/types";
+import type { LoggedInUserData } from "@app/utils/types";
 import type { SessionListData } from "@app/utils/types/api";
 import { KeyRoundIcon, XIcon } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useLocation } from "react-router";
 import RefreshPage from "~/components/misc/refresh-page";
 import { Button } from "~/components/ui/button";
@@ -74,6 +74,10 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
             <CardContent className="relative grid min-h-24 gap-form-elements">
                 <TooltipProvider>
                     {loggedInSessions.map((session) => {
+                        const sessionProvider_Icon = authProvidersList.find(
+                            (provider) => provider.name.toLowerCase() === session.providerName,
+                        )?.icon;
+
                         return (
                             <div
                                 key={session.id}
@@ -135,17 +139,10 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
                                     <div className="mt-1 flex items-center justify-start">
                                         <Tooltip>
                                             <TooltipTrigger className="flex cursor-default items-center justify-start gap-2 text-foreground-muted">
-                                                {session?.providerName !== AuthProvider.CREDENTIAL ? (
-                                                    authProvidersList?.map((authProvider) => {
-                                                        if (authProvider?.name.toLowerCase() === session?.providerName) {
-                                                            return (
-                                                                <React.Fragment key={authProvider.name}>
-                                                                    {authProvider?.icon}
-                                                                </React.Fragment>
-                                                            );
-                                                        }
-                                                        return <React.Fragment key={authProvider.name}>{null}</React.Fragment>;
-                                                    })
+                                                {sessionProvider_Icon ? (
+                                                    <i className="flex h-btn-icon-lg w-btn-icon-lg items-center justify-center">
+                                                        {sessionProvider_Icon}
+                                                    </i>
                                                 ) : (
                                                     <KeyRoundIcon aria-hidden className="h-4 w-4" />
                                                 )}

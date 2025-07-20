@@ -70,7 +70,7 @@ export default function HomePage({ projects }: Props) {
             <main className="hero_section w-full">
                 <section className="flex w-full flex-col items-center justify-center py-28">
                     <div className="p-6">
-                        <BrandIcon aria-hidden className="text-accent-text" size="15rem" />
+                        <BrandIcon aria-hidden className="aspect-square h-60 text-accent-text" />
                     </div>
 
                     <div className="flex w-full max-w-4xl flex-col items-center justify-center gap-4">

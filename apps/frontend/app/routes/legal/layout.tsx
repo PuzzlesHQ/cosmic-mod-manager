@@ -17,27 +17,27 @@ export default function () {
                             {
                                 label: legal.termsTitle,
                                 href: "/legal/terms",
-                                icon: <HeartHandshakeIcon aria-hidden size="1rem" />,
+                                icon: <HeartHandshakeIcon aria-hidden className="aspect-square h-[65%]" />,
                             },
                             {
                                 label: legal.rulesTitle,
                                 href: "/legal/rules",
-                                icon: <ScaleIcon aria-hidden size="1rem" />,
+                                icon: <ScaleIcon aria-hidden className="aspect-square h-[65%]" />,
                             },
                             {
                                 label: legal.copyrightPolicyTitle,
                                 href: "/legal/copyright",
-                                icon: <CopyrightIcon aria-hidden size="1rem" />,
+                                icon: <CopyrightIcon aria-hidden className="aspect-square h-[65%]" />,
                             },
                             {
                                 label: legal.securityNoticeTitle,
                                 href: "/legal/security",
-                                icon: <ShieldIcon aria-hidden size="1rem" />,
+                                icon: <ShieldIcon aria-hidden className="aspect-square h-[65%]" />,
                             },
                             {
                                 label: legal.privacyPolicyTitle,
                                 href: "/legal/privacy",
-                                icon: <LockIcon aria-hidden size="1rem" />,
+                                icon: <LockIcon aria-hidden className="aspect-square h-[65%]" />,
                             },
                         ],
                     },

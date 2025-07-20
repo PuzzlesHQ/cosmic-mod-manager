@@ -59,9 +59,9 @@ import {
     ZapIcon,
 } from "lucide-react";
 import type { JSX } from "react";
-import type { IconSvgProps } from "~/components/types";
 import { CubeIcon } from "./index";
-export const PuzzleIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props }) => {
+
+export function PuzzleIcon(props: React.ComponentProps<"svg">) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -71,34 +71,33 @@ export const PuzzleIcon: React.FC<IconSvgProps> = ({ size, width, height, ...pro
             fill="none"
             strokeLinecap="round"
             strokeLinejoin="round"
-            width={width || size}
-            height={height || size}
+            aria-hidden="true"
             {...props}
         >
-            <title>Puzzle Loader</title>
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
             <path d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1" />
         </svg>
     );
-};
+}
 
-export const SimplyShadersIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props }) => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} {...props}>
-        <title>Simply shaders</title>
-        <path
-            d="m22.59 12.013-3.01 3.126v4.405l.005.019-4.251-.005-2.994 3.115h-.003l-3.003-3.132H5.1l-.018.005.005-4.424-2.994-3.116-.003-.023L5.1 8.858V4.452l-.005-.019 4.252.005 2.993-3.115h.003l3.003 3.132h4.234l.018-.005-.005 4.425 2.994 3.115"
-            style={{}}
-            transform="translate(-.344)"
-        />
-        <path
-            d="m17.229 12.005-1.436 1.491v2.101l.003.009-2.028-.002-1.428 1.486h-.001l-1.433-1.494H8.887l-.008.002.002-2.11-1.428-1.486-.001-.011L8.887 10.5V8.399l-.002-.009 2.027.002 1.428-1.485h.002l1.432 1.494h2.019l.009-.003-.003 2.11 1.428 1.486"
-            style={{}}
-            transform="translate(-.344)"
-        />
-    </svg>
-);
+export function SimplyShadersIcon(props: React.ComponentProps<"svg">) {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true" {...props}>
+            <path
+                d="m22.59 12.013-3.01 3.126v4.405l.005.019-4.251-.005-2.994 3.115h-.003l-3.003-3.132H5.1l-.018.005.005-4.424-2.994-3.116-.003-.023L5.1 8.858V4.452l-.005-.019 4.252.005 2.993-3.115h.003l3.003 3.132h4.234l.018-.005-.005 4.425 2.994 3.115"
+                style={{}}
+                transform="translate(-.344)"
+            />
+            <path
+                d="m17.229 12.005-1.436 1.491v2.101l.003.009-2.028-.002-1.428 1.486h-.001l-1.433-1.494H8.887l-.008.002.002-2.11-1.428-1.486-.001-.011L8.887 10.5V8.399l-.002-.009 2.027.002 1.428-1.485h.002l1.432 1.494h2.019l.009-.003-.003 2.11 1.428 1.486"
+                style={{}}
+                transform="translate(-.344)"
+            />
+        </svg>
+    );
+}
 
-export const QuiltIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props }) => {
+export function QuiltIcon(props: React.ComponentProps<"svg">) {
     return (
         <svg
             xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -109,11 +108,9 @@ export const QuiltIcon: React.FC<IconSvgProps> = ({ size, width, height, ...prop
             strokeMiterlimit="2"
             clipRule="evenodd"
             viewBox="0 0 24 24"
-            width={width || size}
-            height={height || size}
+            aria-hidden="true"
             {...props}
         >
-            <title>Quilt Loader</title>
             <defs>
                 <path
                     id="quilt"
@@ -136,9 +133,9 @@ export const QuiltIcon: React.FC<IconSvgProps> = ({ size, width, height, ...prop
             />
         </svg>
     );
-};
+}
 
-export const MobIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props }) => {
+export function MobIcon(props: React.ComponentProps<"svg">) {
     return (
         <svg
             aria-hidden="true"
@@ -148,8 +145,6 @@ export const MobIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props 
             strokeMiterlimit="1.5"
             clipRule="evenodd"
             viewBox="0 0 24 24"
-            width={width || size}
-            height={height || size}
             {...props}
         >
             <path fill="none" d="M0 0h24v24H0z" />
@@ -157,11 +152,11 @@ export const MobIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props 
             <path stroke="currentColor" fill="currentColor" d="M6 6h4v4H6zm8 0h4v4h-4zm-4 4h4v2h2v6h-2v-2h-4v2H8v-6h2v-2Z" />
         </svg>
     );
-};
+}
 
-export const KitchenSinkIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props }) => {
+export function KitchenSinkIcon(props: React.ComponentProps<"svg">) {
     return (
-        <svg aria-hidden="true" viewBox="0 0 24 24" xmlSpace="preserve" width={width || size} height={height || size} {...props}>
+        <svg aria-hidden="true" viewBox="0 0 24 24" xmlSpace="preserve" {...props}>
             <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="m19.9 14-1.4 4.9c-.3 1-1.1 1.7-2.1 1.7H7.6c-.9 0-1.8-.7-2.1-1.7L4.1 14h15.8zM12 10V4.5M12 4.5c0-1.2.9-2.1 2.1-2.1M14.1 2.4c1.2 0 2.1.9 2.1 2.1M22.2 12c0 .6-.2 1.1-.6 1.4-.4.4-.9.6-1.4.6H3.8c-1.1 0-2-.9-2-2 0-.6.2-1.1.6-1.4.4-.4.9-.6 1.4-.6h16.4c1.1 0 2 .9 2 2z" />
             </g>
@@ -175,38 +170,21 @@ export const KitchenSinkIcon: React.FC<IconSvgProps> = ({ size, width, height, .
             />
         </svg>
     );
-};
+}
 
-export const RayReflectingIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props }) => {
+export function RayReflectingIcon(props: React.ComponentProps<"svg">) {
     return (
-        <svg
-            aria-hidden="true"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            width={width || size}
-            height={height || size}
-            {...props}
-        >
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...props}>
             <path d="M2.977 19.17h16.222" transform="translate(-.189 -.328) scale(1.09932)" />
             <path d="M3.889 3.259 12 19.17l5.749-11.277" transform="translate(-1.192 -.328) scale(1.09932)" />
             <path d="M9.865 6.192h4.623v4.623" transform="scale(1.09931) rotate(-18 20.008 .02)" />
         </svg>
     );
-};
+}
 
-export const PotatoIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props }) => {
+export function PotatoIcon(props: React.ComponentProps<"svg">) {
     return (
-        <svg
-            aria-hidden="true"
-            viewBox="0 0 512 512"
-            fill="currentColor"
-            stroke="currentColor"
-            width={width || size}
-            height={height || size}
-            {...props}
-        >
+        <svg aria-hidden="true" viewBox="0 0 512 512" fill="currentColor" stroke="currentColor" {...props}>
             <g>
                 <g>
                     <path d="M218.913,116.8c-6.4-6.4-16-6.4-22.4,0c-3.2,3.2-4.8,6.4-4.8,11.2s1.6,8,4.8,11.2c3.2,3.2,8,4.8,11.2,4.8    c4.8,0,8-1.6,11.2-4.8c3.2-3.2,4.8-6.4,4.8-11.2S222.113,120,218.913,116.8z" />
@@ -244,9 +222,9 @@ export const PotatoIcon: React.FC<IconSvgProps> = ({ size, width, height, ...pro
             </g>
         </svg>
     );
-};
+}
 
-export const PumpkinIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props }) => {
+export function PumpkinIcon(props: React.ComponentProps<"svg">) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -256,8 +234,6 @@ export const PumpkinIcon: React.FC<IconSvgProps> = ({ size, width, height, ...pr
             fill="none"
             strokeLinecap="round"
             strokeLinejoin="round"
-            width={width || size}
-            height={height || size}
             aria-hidden="true"
             {...props}
         >
@@ -269,18 +245,11 @@ export const PumpkinIcon: React.FC<IconSvgProps> = ({ size, width, height, ...pr
             <path d="M12 6c0 -1.226 .693 -2.346 1.789 -2.894l.211 -.106" />
         </svg>
     );
-};
+}
 
-export const ParkourIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props }) => {
+export function ParkourIcon(props: React.ComponentProps<"svg">) {
     return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 256 256"
-            width={width || size}
-            height={height || size}
-            aria-hidden="true"
-            {...props}
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" aria-hidden="true" {...props}>
             <rect width="256" height="256" fill="none" />
             <circle
                 cx="152"
@@ -318,9 +287,9 @@ export const ParkourIcon: React.FC<IconSvgProps> = ({ size, width, height, ...pr
             />
         </svg>
     );
-};
+}
 
-export const ChristmasTreeIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props }) => {
+export function ChristmasTreeIcon(props: React.ComponentProps<"svg">) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -330,8 +299,6 @@ export const ChristmasTreeIcon: React.FC<IconSvgProps> = ({ size, width, height,
             fill="none"
             strokeLinecap="round"
             strokeLinejoin="round"
-            width={width || size}
-            height={height || size}
             aria-hidden="true"
             {...props}
         >
@@ -340,25 +307,17 @@ export const ChristmasTreeIcon: React.FC<IconSvgProps> = ({ size, width, height,
             <path d="M14 17v3a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1v-3" />
         </svg>
     );
-};
+}
 
-export const PixelArtIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props }) => {
+export function PixelArtIcon(props: React.ComponentProps<"svg">) {
     return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width={width || size}
-            height={height || size}
-            aria-hidden="true"
-            fill="currentColor"
-            {...props}
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor" {...props}>
             <path d="M14 10V14H10V10H14ZM16 10H21V14H16V10ZM14 21H10V16H14V21ZM16 21V16H21V20C21 20.5523 20.5523 21 20 21H16ZM14 3V8H10V3H14ZM16 3H20C20.5523 3 21 3.44772 21 4V8H16V3ZM8 10V14H3V10H8ZM8 21H4C3.44772 21 3 20.5523 3 20V16H8V21ZM8 3V8H3V4C3 3.44772 3.44772 3 4 3H8Z" />
         </svg>
     );
-};
+}
 
-export const MazeIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props }) => {
+export function MazeIcon(props: React.ComponentProps<"svg">) {
     return (
         <svg
             xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -366,8 +325,6 @@ export const MazeIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props
             viewBox="-33 -33 396.00 396.00"
             xmlSpace="preserve"
             transform="matrix(1, 0, 0, 1, 0, 0)rotate(0)"
-            width={width || size}
-            height={height || size}
             aria-hidden="true"
             fill="currentColor"
             {...props}
@@ -382,17 +339,15 @@ export const MazeIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props
             </g>
         </svg>
     );
-};
+}
 
-export const IslandIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props }) => {
+export function IslandIcon(props: React.ComponentProps<"svg">) {
     return (
         <svg
             xmlnsXlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 511.998 511.998"
             xmlSpace="preserve"
             xmlns="http://www.w3.org/2000/svg"
-            width={width || size}
-            height={height || size}
             aria-hidden="true"
             fill="currentColor"
             {...props}
@@ -408,9 +363,9 @@ export const IslandIcon: React.FC<IconSvgProps> = ({ size, width, height, ...pro
             </g>
         </svg>
     );
-};
+}
 
-export const DoorClosedLockedIcon: React.FC<IconSvgProps> = ({ size, width, height, ...props }) => {
+export function DoorClosedLockedIcon(props: React.ComponentProps<"svg">) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -421,8 +376,6 @@ export const DoorClosedLockedIcon: React.FC<IconSvgProps> = ({ size, width, heig
             strokeLinecap="round"
             strokeLinejoin="round"
             aria-hidden="true"
-            width={width || size}
-            height={height || size}
             {...props}
         >
             <path d="M10 12h.01" />
@@ -432,7 +385,7 @@ export const DoorClosedLockedIcon: React.FC<IconSvgProps> = ({ size, width, heig
             <rect x="14" y="17" width="8" height="5" rx="1" />
         </svg>
     );
-};
+}
 
 const defaultIconClass = "inline w-4 leading-none aspect-square";
 
