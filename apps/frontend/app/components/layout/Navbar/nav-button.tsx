@@ -81,7 +81,7 @@ export default function NavButton({ session }: NavbuttonProps) {
                     {
                         icon: <Settings2Icon aria-hidden className="h-btn-icon w-btn-icon" aria-label={t.common.settings} />,
                         label: t.common.settings,
-                        url: "/settings/profile",
+                        url: "/settings",
                         matchExactUrl: false,
                     },
                 ].map((item) => {
