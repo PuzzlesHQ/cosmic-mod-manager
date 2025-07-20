@@ -114,7 +114,7 @@ export type ProjectAnalyticsLoader_Data = Awaited<ReturnType<typeof projectAnaly
 export function AnalyticsRoute_ShouldRevalidate(props: ShouldRevalidateFunctionArgs) {
     const curr_timeline = props.currentUrl.searchParams.get(timelineKey);
     const next_timeline = props.nextUrl.searchParams.get(timelineKey);
-    if (!curr_timeline || !next_timeline || curr_timeline === next_timeline) return false;
+    if (curr_timeline === next_timeline) return false;
 
     return props.defaultShouldRevalidate;
 }
