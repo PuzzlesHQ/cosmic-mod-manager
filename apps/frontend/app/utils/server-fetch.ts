@@ -1,6 +1,5 @@
 import { getSessionIp } from "@app/utils/headers";
 import Config from "./config";
-import { env } from "./env";
 
 const reset = "\x1b[0m";
 const cyan = "\x1b[36m";
@@ -44,7 +43,7 @@ export async function serverFetch(clientReq: Request, pathname: string, init?: R
 
         const clientIp = getSessionIp(getHeader, {
             fallbackIp: "::1",
-            cloudflareSecret: env.CLOUDFLARE_SECRET || "",
+            cloudflareSecret: process.env.CLOUDFLARE_SECRET || "",
         });
 
         console.log(`${green}${pathname} ${magenta}${Date.now() - startTime}ms ${gray}| ${cyan}${clientIp}${reset}`);
