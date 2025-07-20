@@ -11,7 +11,7 @@ export default defineConfig({
     lastUpdated: true,
 
     themeConfig: {
-        logo: { src: "https://assets-cdn.crmm.tech/icon.svg", width: 24, height: 24 },
+        logo: { src: "https://cdn.crmm.tech/icon.svg", width: 24, height: 24 },
 
         editLink: {
             pattern: (data) => {
@@ -75,16 +75,14 @@ export default defineConfig({
 
                         token.attrs.push(["target", "_blank"]);
 
-                        // Prefix all relative links with the GitHub URL
-                        if (attr[1].startsWith("/apps/") || attr[1].startsWith("/packages/")) {
-                            attr[1] = `https://github.com/PuzzlesHQ/cosmic-mod-manager/blob/main${attr[1]}`;
-                            break;
-                        }
-
                         // Prefix all /api links with the api url
                         if (attr[1].startsWith("/api/")) {
                             attr[1] = `https://api.crmm.tech${attr[1]}`;
-                            break;
+                        }
+
+                        // Prefix all relative links with the GitHub URL
+                        else if (attr[1].startsWith("/apps/") || attr[1].startsWith("/packages/")) {
+                            attr[1] = `https://github.com/PuzzlesHQ/cosmic-mod-manager/blob/main${attr[1]}`;
                         }
                     }
 
