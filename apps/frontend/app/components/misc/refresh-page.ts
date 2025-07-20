@@ -12,5 +12,5 @@ export default function RefreshPage(navigate: NavigateFunction, location: Locati
     _url.searchParams.set("revalidate", "true");
     const navigatePath = _url.toString().replace(_url.origin, "");
 
-    navigate(navigatePath, { replace: true });
+    navigate(navigatePath, { replace: true, viewTransition: false, preventScrollReset: true });
 }

@@ -25,114 +25,113 @@ export function MobileNav({ session, isNavMenuOpen, NavLinks }: MobileNavProps) 
     return (
         <div
             className={cn(
-                "nav_items_container fixed top-0 z-30 h-screen w-full overflow-y-hidden bg-background opacity-[0.97]",
+                "nav_items_container fixed top-0 z-30 grid h-[100vh] w-full grid-rows-[4rem_1fr] overflow-y-hidden bg-background opacity-[0.97]",
                 isNavMenuOpen && "nav_open",
             )}
             aria-hidden={!isNavMenuOpen}
         >
-            <div className="h-screen overflow-y-auto" style={{ scrollbarGutter: "stable" }}>
-                <ul className="container flex flex-col gap-1 px-6 py-20">
-                    {NavLinks.map((link) => {
-                        return (
-                            <li key={`${link.href}`} className="group w-full">
-                                <NavMenuLink
-                                    href={link.href}
-                                    label={link.label}
-                                    isDisabled={!isNavMenuOpen}
-                                    className="justify-center"
-                                >
-                                    {link.label}
-                                </NavMenuLink>
-                            </li>
-                        );
-                    })}
-                    {!!session?.id && (
-                        <>
-                            <li className="my-2 h-px w-full bg-raised-background"> </li>
+            {/* dummy */}
+            <div className="border-border border-b" />
 
-                            <li className="mb-2 flex w-full flex-col items-center justify-center gap-1">
-                                <div className="flex w-full items-center justify-center gap-2">
-                                    <ImgWrapper
-                                        src={imageUrl(session?.avatar)}
-                                        alt={`Profile picture of ${session?.userName}`}
-                                        className="h-10 w-10 rounded-full"
-                                        fallback={fallbackUserIcon}
-                                    />
+            <ul className="container flex flex-col gap-1 overflow-y-auto p-6" style={{ scrollbarGutter: "stable" }}>
+                {NavLinks.map((link) => {
+                    return (
+                        <li key={`${link.href}`} className="group w-full">
+                            <NavMenuLink
+                                href={link.href}
+                                label={link.label}
+                                isDisabled={!isNavMenuOpen}
+                                className="justify-center"
+                            >
+                                {link.label}
+                            </NavMenuLink>
+                        </li>
+                    );
+                })}
+                {!!session?.id && (
+                    <>
+                        <li className="my-2 h-px w-full bg-raised-background"> </li>
 
-                                    <span className="font-semibold text-foreground/90 text-lg leading-none">
-                                        {session?.userName}
-                                    </span>
-                                </div>
-                            </li>
+                        <li className="mb-2 flex w-full flex-col items-center justify-center gap-1">
+                            <div className="flex w-full items-center justify-center gap-2">
+                                <ImgWrapper
+                                    src={imageUrl(session?.avatar)}
+                                    alt={`Profile picture of ${session?.userName}`}
+                                    className="h-10 w-10 rounded-full"
+                                    fallback={fallbackUserIcon}
+                                />
 
-                            {[
-                                {
-                                    icon: <UserIcon aria-hidden className="h-btn-icon w-btn-icon" />,
-                                    label: t.navbar.profile,
-                                    url: UserProfilePath(session.userName),
-                                },
-                                {
-                                    icon: <BellIcon aria-hidden className="h-btn-icon w-btn-icon" />,
-                                    label: t.dashboard.notifications,
-                                    url: "/dashboard/notifications",
-                                },
-                                {
-                                    icon: <Settings2Icon aria-hidden className="h-btn-icon w-btn-icon" />,
-                                    label: t.common.settings,
-                                    url: "/settings/profile",
-                                },
-                                {
-                                    icon: <LayoutListIcon aria-hidden className="h-btn-icon w-btn-icon" />,
-                                    label: t.dashboard.projects,
-                                    url: "/dashboard/projects",
-                                },
-                                {
-                                    icon: <Building2Icon aria-hidden className="h-btn-icon w-btn-icon" />,
-                                    label: t.dashboard.organizations,
-                                    url: "/dashboard/organizations",
-                                },
-                            ]?.map((link) => {
-                                return (
-                                    <li key={`${link.url}`} className="group relative flex w-full items-center justify-center">
-                                        <NavMenuLink
-                                            href={link.url}
-                                            label={link.label}
-                                            isDisabled={!isNavMenuOpen}
-                                            className="justify-center"
-                                        >
-                                            {link?.icon || null}
-                                            {link.label}
-                                        </NavMenuLink>
-                                    </li>
-                                );
-                            })}
+                                <span className="font-semibold text-foreground/90 text-lg leading-none">{session?.userName}</span>
+                            </div>
+                        </li>
 
-                            {isModerator(session.role) ? (
-                                <li className="group relative flex w-full items-center justify-center">
+                        {[
+                            {
+                                icon: <UserIcon aria-hidden className="h-btn-icon w-btn-icon" />,
+                                label: t.navbar.profile,
+                                url: UserProfilePath(session.userName),
+                            },
+                            {
+                                icon: <BellIcon aria-hidden className="h-btn-icon w-btn-icon" />,
+                                label: t.dashboard.notifications,
+                                url: "/dashboard/notifications",
+                            },
+                            {
+                                icon: <Settings2Icon aria-hidden className="h-btn-icon w-btn-icon" />,
+                                label: t.common.settings,
+                                url: "/settings/profile",
+                            },
+                            {
+                                icon: <LayoutListIcon aria-hidden className="h-btn-icon w-btn-icon" />,
+                                label: t.dashboard.projects,
+                                url: "/dashboard/projects",
+                            },
+                            {
+                                icon: <Building2Icon aria-hidden className="h-btn-icon w-btn-icon" />,
+                                label: t.dashboard.organizations,
+                                url: "/dashboard/organizations",
+                            },
+                        ]?.map((link) => {
+                            return (
+                                <li key={`${link.url}`} className="group relative flex w-full items-center justify-center">
                                     <NavMenuLink
-                                        href="/moderation/review"
-                                        label={t.moderation.moderation}
+                                        href={link.url}
+                                        label={link.label}
                                         isDisabled={!isNavMenuOpen}
                                         className="justify-center"
                                     >
-                                        <ScaleIcon aria-hidden className="h-btn-icon w-btn-icon" />
-                                        {t.moderation.moderation}
+                                        {link?.icon || null}
+                                        {link.label}
                                     </NavMenuLink>
                                 </li>
-                            ) : null}
+                            );
+                        })}
 
-                            <li className="w-full">
-                                <SignOutBtn disabled={!isNavMenuOpen} className="justify-center bg-raised-background" />
+                        {isModerator(session.role) ? (
+                            <li className="group relative flex w-full items-center justify-center">
+                                <NavMenuLink
+                                    href="/moderation/review"
+                                    label={t.moderation.moderation}
+                                    isDisabled={!isNavMenuOpen}
+                                    className="justify-center"
+                                >
+                                    <ScaleIcon aria-hidden className="h-btn-icon w-btn-icon" />
+                                    {t.moderation.moderation}
+                                </NavMenuLink>
                             </li>
-                        </>
-                    )}
-                    {!session?.id && (
-                        <li className="group flex w-full">
-                            <LoginButton className="w-full" disabled={!isNavMenuOpen} />
+                        ) : null}
+
+                        <li className="w-full">
+                            <SignOutBtn disabled={!isNavMenuOpen} className="justify-center" />
                         </li>
-                    )}
-                </ul>
-            </div>
+                    </>
+                )}
+                {!session?.id && (
+                    <li className="group flex w-full">
+                        <LoginButton className="w-full" disabled={!isNavMenuOpen} />
+                    </li>
+                )}
+            </ul>
         </div>
     );
 }
