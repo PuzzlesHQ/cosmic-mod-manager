@@ -38,12 +38,12 @@ model Session {
     id               String   @id @db.VarChar(32)
     tokenHash        String   @unique @db.VarChar(256)
     userId           String   @db.VarChar(32)
+    providerName     String   @db.VarChar(32)
+    status           String   @db.VarChar(32)
+    revokeAccessCode String   @unique @db.VarChar(256)
     dateCreated      DateTime @default(now())
     dateExpires      DateTime
     dateLastActive   DateTime @default(now())
-    providerName     String?  @db.VarChar(32)
-    status           String   @db.VarChar(32)
-    revokeAccessCode String   @unique @db.VarChar(256)
 
     // Session device info
     os        String? @db.VarChar(64)
@@ -62,7 +62,6 @@ model AuthAccount {
     providerName         String  @db.VarChar(32)
     providerAccountId    String  @db.VarChar(64)
     providerAccountEmail String  @db.VarChar(128)
-    avatarUrl            String? @db.VarChar(2048)
     tokenType            String? @db.VarChar(32)
     accessToken          String  @db.VarChar(256)
     refreshToken         String? @db.VarChar(256)

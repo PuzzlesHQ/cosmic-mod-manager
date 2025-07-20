@@ -1,5 +1,5 @@
 import { AuthProvider } from "@app/utils/types";
-import type { OAuthProfile } from "~/types/oAuth";
+import type { OAuthData } from "~/types/oAuth";
 import env from "~/utils/env";
 
 async function fetchUserData(access_token: string) {
@@ -58,7 +58,7 @@ export async function getGithubUserProfileData(tokenExchangeCode: string) {
 
     const profile = {
         name: userData?.name || null,
-        email: userEmailData?.email || "",
+        email: userEmailData?.email?.toLowerCase() || null,
         emailVerified: userEmailData?.verified === true,
         providerName: AuthProvider.GITHUB,
         providerAccountId: userData?.id?.toString() || null,
@@ -68,7 +68,7 @@ export async function getGithubUserProfileData(tokenExchangeCode: string) {
         tokenType: tokenData?.token_type || null,
         scope: tokenData?.scope || null,
         avatarImage: userData?.avatar_url || null,
-    } satisfies OAuthProfile;
+    } satisfies OAuthData;
 
     return profile;
 }

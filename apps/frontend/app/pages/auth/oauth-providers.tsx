@@ -11,19 +11,19 @@ export const ConfiguredAuthProviders = [AuthProvider.GITHUB, AuthProvider.DISCOR
 export const authProvidersList = [
     {
         name: AuthProvider.GITHUB,
-        icon: <GithubIcon size="1.3rem" className="text-foreground" />,
+        icon: <GithubIcon className="aspect-square h-[80%] w-[80%] text-foreground" />,
     },
     {
         name: AuthProvider.DISCORD,
-        icon: <DiscordIcon size="1.4rem" className="text-foreground" />,
+        icon: <DiscordIcon className="aspect-square h-[75%] w-[75%]" />,
     },
     {
         name: AuthProvider.GOOGLE,
-        icon: <GoogleIcon size="1.4rem" className="text-foreground" />,
+        icon: <GoogleIcon className="aspect-square h-[100%] w-[100%]" />,
     },
     {
         name: AuthProvider.GITLAB,
-        icon: <GitlabIcon size="1.5rem" className="text-foreground" />,
+        icon: <GitlabIcon className="aspect-square h-[95%] w-[95%]" />,
     },
 ];
 

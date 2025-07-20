@@ -1,4 +1,6 @@
 import { getAuthProviderFromString } from "@app/utils/convertors";
+import { OAuthProfileDataSchema } from "@app/utils/schemas/auth";
+import { zodParse } from "@app/utils/schemas/utils";
 import { Capitalize } from "@app/utils/string";
 import type { LinkedProvidersListData } from "@app/utils/types";
 import type { Context } from "hono";
@@ -15,23 +17,29 @@ export async function linkAuthProviderHandler(
     authProvider: string,
     tokenExchangeCode: string,
 ) {
-    const profileData = await getAuthProviderProfileData(authProvider, tokenExchangeCode);
+    const { data: oAuthData, error } = await zodParse(
+        OAuthProfileDataSchema,
+        await getAuthProviderProfileData(authProvider, tokenExchangeCode),
+    );
 
-    if (!profileData || !profileData?.email || !profileData?.providerName || !profileData?.providerAccountId) {
+    if (!oAuthData || error) {
+        let msg = "Invalid profile data received from the auth provider, most likely the code provided was invalid.";
+        if (error) msg += `\nERROR: ${error}`;
+
         return {
             data: {
-                message: "Invalid profile data received from the auth provider, most likely the code provided was invalid",
+                message: msg,
                 success: false,
             },
             status: HTTP_STATUS.BAD_REQUEST,
         };
     }
 
-    if (!profileData.emailVerified) {
+    if (!oAuthData.emailVerified) {
         return {
             data: {
                 success: false,
-                message: `The email associated with the ${Capitalize(profileData.providerName)} account is not verified`,
+                message: `The email associated with the ${Capitalize(oAuthData.providerName)} account is not verified`,
             },
             status: HTTP_STATUS.BAD_REQUEST,
         };
@@ -40,15 +48,15 @@ export async function linkAuthProviderHandler(
     // Return if an auth account already exists with the same provider
     const possiblyAlreadyExistingAuthAccount = await prisma.authAccount.findFirst({
         where: {
-            providerName: profileData.providerName,
-            OR: [{ providerAccountId: `${profileData.providerAccountId}` }, { providerAccountEmail: profileData.email }],
+            providerName: oAuthData.providerName,
+            OR: [{ providerAccountId: `${oAuthData.providerAccountId}` }, { providerAccountEmail: oAuthData.email }],
         },
     });
     if (possiblyAlreadyExistingAuthAccount?.id) {
         return {
             data: {
                 success: false,
-                message: `The ${Capitalize(profileData.providerName)} account is already linked to a user account`,
+                message: `The ${Capitalize(oAuthData.providerName)} account is already linked to a user account`,
             },
             status: HTTP_STATUS.BAD_REQUEST,
         };
@@ -58,7 +66,7 @@ export async function linkAuthProviderHandler(
     const existingSameProvider = await prisma.authAccount.findFirst({
         where: {
             userId: userSession.id,
-            providerName: profileData.providerName,
+            providerName: oAuthData.providerName,
         },
     });
     if (existingSameProvider?.id) {
@@ -66,12 +74,12 @@ export async function linkAuthProviderHandler(
         return invalidReqestResponseData();
     }
 
-    await createNewAuthAccount(userSession.id, profileData);
+    await createNewAuthAccount(userSession.id, oAuthData);
 
     return {
         data: {
             success: true,
-            message: `Successfully linked ${Capitalize(profileData.providerName)} to your account`,
+            message: `Successfully linked ${Capitalize(oAuthData.providerName)} to your account`,
         },
         status: HTTP_STATUS.OK,
     };

@@ -8,23 +8,31 @@ import { matchPassword } from "~/routes/auth/helpers";
 import { createUserSession, setSessionCookie } from "~/routes/auth/helpers/session";
 import { HTTP_STATUS } from "~/utils/http";
 
+const RESPONSE_DELAY_ms = 2000;
+
 async function credentialSignIn(ctx: Context, formData: z.infer<typeof LoginFormSchema>) {
     const wrongCredsMsg = "Incorrect email or password";
 
     const user = await GetUser_Unique({
         where: {
-            email: formData.email,
+            email: formData.email.toLowerCase(),
         },
     });
 
     if (!user?.id || !user?.password) {
         await addInvalidAuthAttempt(ctx);
+        await new Promise((resolve) => setTimeout(resolve, RESPONSE_DELAY_ms));
+
         return {
             data: { success: false, message: wrongCredsMsg },
             status: HTTP_STATUS.BAD_REQUEST,
         };
     }
-    const isCorrectPassword = await matchPassword(formData.password, user.password);
+
+    const [isCorrectPassword] = await Promise.all([
+        matchPassword(formData.password, user.password),
+        new Promise((resolve) => setTimeout(resolve, RESPONSE_DELAY_ms)),
+    ]);
 
     if (!isCorrectPassword) {
         await addInvalidAuthAttempt(ctx);

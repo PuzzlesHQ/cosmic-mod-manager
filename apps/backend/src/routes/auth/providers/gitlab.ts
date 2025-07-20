@@ -1,5 +1,5 @@
 import { AuthProvider } from "@app/utils/types";
-import type { OAuthProfile } from "~/types/oAuth";
+import type { OAuthData } from "~/types/oAuth";
 import env from "~/utils/env";
 
 export async function getGitlabUserProfileData(tokenExchangeCode: string) {
@@ -32,7 +32,7 @@ export async function getGitlabUserProfileData(tokenExchangeCode: string) {
 
     const profile = {
         name: userProfile?.name || null,
-        email: userProfile?.email || null,
+        email: userProfile?.email?.toLowerCase() || null,
         emailVerified: userProfile?.bot === false && userProfile?.locked === false && userProfile?.can_create_project === true,
         providerName: AuthProvider.GITLAB,
         providerAccountId: userProfile?.id?.toString() || null,
@@ -42,7 +42,7 @@ export async function getGitlabUserProfileData(tokenExchangeCode: string) {
         tokenType: accessTokenType || null,
         scope: tokenData?.scope || null,
         avatarImage: userProfile?.avatar_url || null,
-    } satisfies OAuthProfile;
+    } satisfies OAuthData;
 
     return profile;
 }

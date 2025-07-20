@@ -1,4 +1,6 @@
 import { SITE_NAME_SHORT } from "@app/utils/constants";
+import { OAuthProfileDataSchema } from "@app/utils/schemas/auth";
+import { zodParse } from "@app/utils/schemas/utils";
 import { Capitalize, CapitalizeAndFormatString } from "@app/utils/string";
 import type { Context } from "hono";
 import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-attempt";
@@ -8,21 +10,21 @@ import prisma from "~/services/prisma";
 import { HTTP_STATUS, invalidReqestResponseData } from "~/utils/http";
 
 export async function oAuthSignInHandler(ctx: Context, authProvider: string, tokenExchangeCode: string) {
-    const profileData = await getAuthProviderProfileData(authProvider, tokenExchangeCode);
+    const { data: oAuthData, error } = await zodParse(
+        OAuthProfileDataSchema,
+        await getAuthProviderProfileData(authProvider, tokenExchangeCode),
+    );
 
-    if (
-        !profileData ||
-        !profileData?.email ||
-        !profileData?.providerName ||
-        !profileData?.providerAccountId ||
-        !profileData.emailVerified
-    ) {
+    if (!oAuthData || error) {
         await addInvalidAuthAttempt(ctx);
+
+        let msg = "Invalid profile data received from the auth provider, most likely the code provided was invalid.";
+        if (error) msg += `\nERROR: ${error}`;
+
         return {
             data: {
-                message: "Invalid profile data received from the auth provider, most likely the code provided was invalid",
+                message: msg,
                 success: false,
-                received: profileData,
             },
             status: HTTP_STATUS.BAD_REQUEST,
         };
@@ -30,8 +32,8 @@ export async function oAuthSignInHandler(ctx: Context, authProvider: string, tok
 
     const authAccount = await prisma.authAccount.findFirst({
         where: {
-            providerName: profileData.providerName,
-            OR: [{ providerAccountEmail: profileData.email }, { providerAccountId: profileData.providerAccountId }],
+            providerName: oAuthData.providerName,
+            providerAccountId: oAuthData.providerAccountId,
         },
         include: {
             user: true,
@@ -41,25 +43,23 @@ export async function oAuthSignInHandler(ctx: Context, authProvider: string, tok
     if (!authAccount?.id) {
         const otherProviderAccount = await prisma.authAccount.findFirst({
             where: {
-                OR: [{ providerAccountEmail: profileData.email }, { providerAccountId: profileData.providerAccountId }],
+                providerAccountEmail: oAuthData.email,
             },
         });
 
         if (!otherProviderAccount?.id) {
-            return invalidReqestResponseData(
-                "No user account found with this email or provider account id. Sign up first to link this account",
-            );
+            return invalidReqestResponseData("The provider you're trying to sign in with is not linked to any crmm account!");
         }
 
         await addInvalidAuthAttempt(ctx);
         return invalidReqestResponseData(
-            `This ${Capitalize(profileData.providerName)} account is not linked to your ${SITE_NAME_SHORT} user account. We found a ${CapitalizeAndFormatString(otherProviderAccount.providerName)} account linked to your user account, please sign in using that.\nNOTE: You can manage linked providers in account settings.`,
+            `This ${Capitalize(oAuthData.providerName)} account is not linked to your ${SITE_NAME_SHORT} user account. We found a ${CapitalizeAndFormatString(otherProviderAccount.providerName)} account linked to your user account, please sign in using that.\nNOTE: You can manage linked providers in account settings.`,
         );
     }
 
     const newSession = await createUserSession({
         userId: authAccount.user.id,
-        providerName: profileData.providerName,
+        providerName: oAuthData.providerName,
         ctx: ctx,
         user: authAccount.user,
     });
@@ -68,7 +68,7 @@ export async function oAuthSignInHandler(ctx: Context, authProvider: string, tok
     return {
         data: {
             success: true,
-            message: `Successfuly logged in using ${profileData.providerName} as ${authAccount.user.userName}`,
+            message: `Successfuly logged in using ${oAuthData.providerName} as ${authAccount.user.userName}`,
         },
         status: HTTP_STATUS.OK,
     };

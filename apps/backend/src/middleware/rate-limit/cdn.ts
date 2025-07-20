@@ -5,7 +5,7 @@ import { TokenBucket } from "./bucket";
 import rateLimits from "./limits";
 import { setRateLimitHeaders } from "./utils";
 
-const cdnAssetLimit = rateLimits.global.DDOS_PROTECTION;
+const cdnAssetLimit = rateLimits.CDN_ASSETS;
 const cdnAssetLimiterBucket = new TokenBucket(cdnAssetLimit.namespace, cdnAssetLimit.max, cdnAssetLimit.timeWindow_seconds);
 
 export async function cdnAssetRateLimiter(ctx: Context, next: Next) {
@@ -23,7 +23,7 @@ export async function cdnAssetRateLimiter(ctx: Context, next: Next) {
     await next();
 }
 
-const cdnLargeFileLimit = rateLimits.global.DDOS_PROTECTION;
+const cdnLargeFileLimit = rateLimits.CDN_LARGE_FILES;
 const cdnLargeFileLimiterBucket = new TokenBucket(
     cdnLargeFileLimit.namespace,
     cdnLargeFileLimit.max,

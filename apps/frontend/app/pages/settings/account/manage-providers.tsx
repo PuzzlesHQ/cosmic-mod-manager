@@ -1,11 +1,10 @@
 import { getAuthProviderFromString } from "@app/utils/convertors";
 import { Capitalize } from "@app/utils/string";
-import { AuthActionIntent, type AuthProvider, type LinkedProvidersListData } from "@app/utils/types";
-import { Link2Icon, SettingsIcon, Trash2Icon } from "lucide-react";
-import { useState } from "react";
+import { AuthActionIntent, AuthProvider, type LinkedProvidersListData } from "@app/utils/types";
+import { ExternalLinkIcon, Link2Icon, SettingsIcon, Trash2Icon } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import RefreshPage from "~/components/misc/refresh-page";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
 import { Button } from "~/components/ui/button";
 import {
     Dialog,
@@ -16,7 +15,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "~/components/ui/dialog";
-import { useNavigate } from "~/components/ui/link";
+import { TextLink, useNavigate } from "~/components/ui/link";
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
@@ -24,6 +23,7 @@ import { useTranslation } from "~/locales/provider";
 import { authProvidersList, setReturnUrl } from "~/pages/auth/oauth-providers";
 import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";
+import { resJson } from "~/utils/server-fetch";
 
 export default function ManageAuthProviders({ linkedAuthProviders }: { linkedAuthProviders: LinkedProvidersListData[] }) {
     const { t } = useTranslation();
@@ -68,75 +68,106 @@ export default function ManageAuthProviders({ linkedAuthProviders }: { linkedAut
                 <DialogHeader>
                     <DialogTitle>{t.settings.linkedProviders}</DialogTitle>
                     <VisuallyHidden>
-                        <DialogDescription>Manage login auth provider for your account</DialogDescription>
+                        <DialogDescription>{t.settings.manageProvidersDesc}</DialogDescription>
                     </VisuallyHidden>
                 </DialogHeader>
-                <DialogBody>
-                    <Accordion type="multiple" className="w-full">
-                        {authProvidersList.map((authProvider) => {
-                            let additionalProviderDetails = null;
-                            for (const linkedProvider of linkedAuthProviders) {
-                                if (getAuthProviderFromString(linkedProvider.providerName) === authProvider.name) {
-                                    additionalProviderDetails = linkedProvider;
-                                    break;
-                                }
+                <DialogBody className="grid gap-6">
+                    {authProvidersList.map((authProvider) => {
+                        let additionalProviderDetails = null;
+                        for (const linkedProvider of linkedAuthProviders) {
+                            if (getAuthProviderFromString(linkedProvider.providerName) === authProvider.name) {
+                                additionalProviderDetails = linkedProvider;
+                                break;
                             }
+                        }
 
-                            return (
-                                <AccordionItem key={authProvider.name} value={authProvider.name} className="border-transparent">
-                                    <AccordionTrigger className="text-base">
-                                        <div className="flex items-center justify-start gap-2">
-                                            <i className="flex w-6 items-center justify-start">{authProvider.icon}</i>
-                                            {Capitalize(authProvider.name)}
-                                        </div>
-                                    </AccordionTrigger>
-                                    <AccordionContent className="flex w-full items-center justify-between">
-                                        <p className="text-foreground-muted">
-                                            {additionalProviderDetails ? (
-                                                <span className="font-medium text-foreground">
-                                                    {additionalProviderDetails.providerAccountEmail}
-                                                </span>
-                                            ) : (
-                                                t.settings.linkProvider(Capitalize(authProvider.name))
-                                            )}
-                                        </p>
+                        return (
+                            <div key={authProvider.name} className="flex flex-wrap items-center justify-between">
+                                <div className="grid grid-cols-[min-content_1fr] items-center gap-3">
+                                    <i className="flex h-8 w-8 items-center justify-center">{authProvider.icon}</i>
 
-                                        {additionalProviderDetails ? (
-                                            <Button
-                                                variant="secondary-destructive"
-                                                disabled={isLoading.value}
-                                                onClick={() => removeAuthProvider(getAuthProviderFromString(authProvider.name))}
-                                            >
-                                                {isLoading.provider === getAuthProviderFromString(authProvider.name) ? (
-                                                    <LoadingSpinner size="xs" />
-                                                ) : (
-                                                    <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
-                                                )}
-                                                {t.form.remove}
-                                            </Button>
-                                        ) : (
-                                            <Button
-                                                variant="secondary"
-                                                onClick={() => {
-                                                    setReturnUrl(location);
-                                                    window.location.href = `${Config.BACKEND_URL_PUBLIC}/api/auth/${AuthActionIntent.LINK}/${authProvider.name}?redirect=true`;
-                                                }}
-                                            >
-                                                {isLoading.provider === getAuthProviderFromString(authProvider.name) ? (
-                                                    <LoadingSpinner size="xs" />
-                                                ) : (
-                                                    <Link2Icon aria-hidden className="h-btn-icon w-btn-icon" />
-                                                )}
-                                                {t.settings.link}
-                                            </Button>
+                                    <div className="grid gap-1">
+                                        <span className="font-bold leading-none">{Capitalize(authProvider.name)}</span>
+
+                                        {!!additionalProviderDetails && (
+                                            <div className="flex items-center gap-2 text-foreground-muted leading-none min-h-5">
+                                                <span className="text-sm">{additionalProviderDetails.providerAccountEmail}</span>
+
+                                                <LinkToProviderProfile
+                                                    provider={authProvider.name}
+                                                    accountId={additionalProviderDetails.providerAccountId}
+                                                />
+                                            </div>
                                         )}
-                                    </AccordionContent>
-                                </AccordionItem>
-                            );
-                        })}
-                    </Accordion>
+                                    </div>
+                                </div>
+
+                                {additionalProviderDetails ? (
+                                    <Button
+                                        variant="secondary-destructive"
+                                        size="sm"
+                                        disabled={isLoading.value}
+                                        onClick={() => removeAuthProvider(getAuthProviderFromString(authProvider.name))}
+                                    >
+                                        {isLoading.provider === getAuthProviderFromString(authProvider.name) ? (
+                                            <LoadingSpinner size="xs" />
+                                        ) : (
+                                            <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
+                                        )}
+                                        {t.form.remove}
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                        onClick={() => {
+                                            setReturnUrl(location);
+                                            window.location.href = `${Config.BACKEND_URL_PUBLIC}/api/auth/${AuthActionIntent.LINK}/${authProvider.name}?redirect=true`;
+                                        }}
+                                    >
+                                        {isLoading.provider === getAuthProviderFromString(authProvider.name) ? (
+                                            <LoadingSpinner size="xs" />
+                                        ) : (
+                                            <Link2Icon aria-hidden className="h-btn-icon w-btn-icon" />
+                                        )}
+                                        {t.settings.link}
+                                    </Button>
+                                )}
+                            </div>
+                        );
+                    })}
                 </DialogBody>
             </DialogContent>
         </Dialog>
+    );
+}
+
+interface LinkToProviderProfileProps {
+    provider: AuthProvider;
+    accountId: string;
+}
+
+function LinkToProviderProfile(props: LinkToProviderProfileProps) {
+    const [profileUrl, setProfileUrl] = useState<string | null>(null);
+
+    async function fetchUserProfileUrl() {
+        if (props.provider === AuthProvider.GITHUB) {
+            const res = await clientFetch(`https://api.github.com/user/${props.accountId}`);
+            if (!res.ok) return null;
+            const data = await resJson<{ html_url: string }>(res);
+            if (data) setProfileUrl(data.html_url);
+        }
+    }
+
+    useEffect(() => {
+        fetchUserProfileUrl();
+    }, [props.accountId]);
+
+    if (!profileUrl) return null;
+
+    return (
+        <TextLink to={profileUrl} target="_blank">
+            <ExternalLinkIcon className="h-4 w-4" />
+        </TextLink>
     );
 }

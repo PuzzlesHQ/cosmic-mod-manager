@@ -1,8 +1,22 @@
+const envKeys = ["CLOUDFLARE_SECRET", "ASSETS_SERVER_URL"] as const;
+
+type EnvKeys = (typeof envKeys)[number];
+const env = {} as Record<EnvKeys, string>;
+
+for (const key of envKeys) {
+    const value = process.env[key];
+    if (value === undefined) {
+        console.error(`Missing environment variable: ${key}`);
+        process.exit(1);
+    }
+
+    env[key] = value;
+}
+
 let ASSETS_SERVER_URL: string | undefined;
 
 if (import.meta.env?.PROD) {
-    const env_ASSETS_SERVER_URL = process.env.ASSETS_SERVER_URL;
-    if (env_ASSETS_SERVER_URL) ASSETS_SERVER_URL = env_ASSETS_SERVER_URL;
+    if (env.ASSETS_SERVER_URL) ASSETS_SERVER_URL = env.ASSETS_SERVER_URL;
 }
 
-export { ASSETS_SERVER_URL };
+export { ASSETS_SERVER_URL, env };

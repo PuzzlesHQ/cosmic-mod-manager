@@ -6,7 +6,6 @@ import {
     MAX_PASSWORD_LENGTH,
     MAX_USER_BIO_LENGTH,
     MAX_USERNAME_LENGTH,
-    MIN_EMAIL_LENGTH,
     MIN_PASSWORD_LENGTH,
 } from "~/constants";
 import { createURLSafeSlug } from "~/string";
@@ -55,5 +54,5 @@ export const removeAccountPasswordFormSchema = z.object({
 });
 
 export const sendAccoutPasswordChangeLinkFormSchema = z.object({
-    email: z.string().email().min(MIN_EMAIL_LENGTH).max(MAX_EMAIL_LENGTH),
+    email: z.email().max(MAX_EMAIL_LENGTH),
 });

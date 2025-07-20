@@ -28,8 +28,7 @@ export async function modifyReqRateLimiter(ctx: Context, next: Next) {
     await next();
 }
 
-// Limiter for requests that modify critical data
-const critModifyLimit = rateLimits.global.MODIFY;
+const critModifyLimit = rateLimits.global.CRITICAL_MODIFY;
 const critModifyLimiter = new TokenBucket(critModifyLimit.namespace, critModifyLimit.max, critModifyLimit.timeWindow_seconds);
 
 export async function critModifyReqRateLimiter(ctx: Context, next: Next) {

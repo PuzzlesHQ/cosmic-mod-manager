@@ -1,5 +1,5 @@
 import { createThreadMessage_Schema } from "@app/utils/schemas/thread";
-import { parseInput } from "@app/utils/schemas/utils";
+import { zodParse } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
@@ -41,7 +41,7 @@ async function thread_post(ctx: Context) {
         const threadId = ctx.req.param("threadId");
         if (!threadId) return invalidReqestResponse(ctx);
 
-        const { data, error } = await parseInput(createThreadMessage_Schema, ctx.get(REQ_BODY_NAMESPACE));
+        const { data, error } = await zodParse(createThreadMessage_Schema, ctx.get(REQ_BODY_NAMESPACE));
         if (!data || error) return invalidReqestResponse(ctx, error);
 
         const res = await CreateThreadMessage(user, threadId, data);

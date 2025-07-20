@@ -1,7 +1,7 @@
 import { iconFieldSchema } from "@app/utils/schemas";
 import { createOrganisationFormSchema } from "@app/utils/schemas/organisation";
 import { orgSettingsFormSchema } from "@app/utils/schemas/organisation/settings/general";
-import { parseInput } from "@app/utils/schemas/utils";
+import { zodParse } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
 import type { z } from "zod/v4";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
@@ -62,7 +62,7 @@ async function organisation_post(ctx: Context) {
         }
 
         const body = ctx.get(REQ_BODY_NAMESPACE);
-        const { data, error } = await parseInput(createOrganisationFormSchema, body);
+        const { data, error } = await zodParse(createOrganisationFormSchema, body);
         if (!data || error) return invalidReqestResponse(ctx, error);
 
         const res = await createOrganisation(userSession, data);
@@ -121,7 +121,7 @@ async function organisation_patch(ctx: Context) {
             description: formData.get("description"),
         } satisfies z.infer<typeof orgSettingsFormSchema>;
 
-        const { data, error } = await parseInput(orgSettingsFormSchema, obj);
+        const { data, error } = await zodParse(orgSettingsFormSchema, obj);
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const res = await updateOrg(ctx, userSession, orgId, data);
@@ -159,7 +159,7 @@ async function organisationIcon_patch(ctx: Context) {
 
         if (!userSession || !orgId || !icon || !(icon instanceof File)) return invalidReqestResponse(ctx, "Invalid data");
 
-        const { data, error } = await parseInput(iconFieldSchema, icon);
+        const { data, error } = await zodParse(iconFieldSchema, icon);
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const res = await updateOrgIcon(ctx, userSession, orgId, data);

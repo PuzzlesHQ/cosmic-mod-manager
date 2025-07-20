@@ -2,18 +2,33 @@ import { UAParser } from "ua-parser-js";
 
 type GetHeader = (key: string) => string | null | undefined;
 
-export function getSessionIp(getHeader: GetHeader, fallbackIp: string): string {
-    const cloudflareIp = getHeader("CF-Connecting-IP");
-    if (cloudflareIp) return cloudflareIp;
+interface getSessionIpOptions {
+    fallbackIp: string;
+    cdnSecret?: string;
+    cloudflareSecret?: string;
+}
 
-    const forwardedFor = getHeader("X-Forwarded-For");
-    if (!forwardedFor) return fallbackIp;
+export function getSessionIp(getHeader: GetHeader, options: getSessionIpOptions): string {
+    let ipStr: string | null = null;
 
-    if (forwardedFor.includes(",")) {
-        return forwardedFor.replaceAll(" ", "").split(",")[0];
+    const cdnSecret = getHeader("cdn-secret");
+    const cfSecret = getHeader("cloudflare-secret");
+
+    if (options.cloudflareSecret && cfSecret === options.cloudflareSecret) {
+        ipStr = getHeader("cf-connecting-ip");
+    } else if (options.cdnSecret && cdnSecret === options.cdnSecret) {
+        ipStr = getHeader("fastly-client-ip");
+    } else {
+        ipStr = getHeader("x-forwarded-for");
     }
 
-    return forwardedFor;
+    if (!ipStr) ipStr = options.fallbackIp;
+
+    if (ipStr.includes(",")) {
+        ipStr = ipStr.replaceAll(" ", "").split(",")[0];
+    }
+
+    return ipStr;
 }
 
 export interface SessionMetadata {
@@ -28,8 +43,7 @@ export interface SessionMetadata {
     };
 }
 
-export function getSessionMetadata(getHeader: GetHeader, fallbackIp: string): SessionMetadata {
-    const ipAddr = getSessionIp(getHeader, fallbackIp);
+export function getSessionMetadata(getHeader: GetHeader, ipAddr: string): SessionMetadata {
     const userAgent = getHeader("User-Agent") || "";
 
     const parsedResult = new UAParser(userAgent).getResult();

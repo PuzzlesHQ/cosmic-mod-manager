@@ -1,5 +1,6 @@
 import { getSessionIp } from "@app/utils/headers";
 import Config from "./config";
+import { env } from "./env";
 
 const reset = "\x1b[0m";
 const cyan = "\x1b[36m";
@@ -17,28 +18,33 @@ export async function serverFetch(clientReq: Request, pathname: string, init?: R
         const backendHost = Config.BACKEND_URL_LOCAL;
 
         let fetchUrl = pathname;
-        const clientIp = getSessionIp(getHeader, "::1");
         const userAgent = getHeader("User-Agent") || "";
 
         const headers = {
-            "X-Forwarded-For": clientIp,
             "User-Agent": userAgent,
-
-            "x-client-ip": clientIp,
-            "x-identity-token": "",
             Cookie: "",
+
+            "X-Forwarded-For": getHeader("X-Forwarded-For") || "",
+            "Cloudflare-Secret": "",
+            "CF-Connecting-IP": "",
         };
 
         if (fetchUrl.startsWith("/")) {
             fetchUrl = `${backendHost}${fetchUrl}`;
 
             headers.Cookie = getHeader("Cookie") || "";
-            headers["x-identity-token"] = process.env.FRONTEND_SECRET || "";
+            headers["CF-Connecting-IP"] = getHeader("CF-Connecting-IP") || "";
+            headers["Cloudflare-Secret"] = getHeader("Cloudflare-Secret") || "";
         }
 
         const res = await fetch(fetchUrl, {
             ...init,
             headers: { ...init?.headers, ...headers },
+        });
+
+        const clientIp = getSessionIp(getHeader, {
+            fallbackIp: "::1",
+            cloudflareSecret: env.CLOUDFLARE_SECRET || "",
         });
 
         console.log(`${green}${pathname} ${magenta}${Date.now() - startTime}ms ${gray}| ${cyan}${clientIp}${reset}`);

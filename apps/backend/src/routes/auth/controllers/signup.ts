@@ -1,3 +1,5 @@
+import { OAuthProfileDataSchema } from "@app/utils/schemas/auth";
+import { zodParse } from "@app/utils/schemas/utils";
 import { createURLSafeSlug } from "@app/utils/string";
 import { GlobalUserRole } from "@app/utils/types";
 import type { Context } from "hono";
@@ -12,21 +14,21 @@ import { HTTP_STATUS } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 
 export async function oAuthSignUpHandler(ctx: Context, authProvider: string, tokenExchangeCode: string) {
-    const profileData = await getAuthProviderProfileData(authProvider, tokenExchangeCode);
+    const { data: oAuthData, error } = await zodParse(
+        OAuthProfileDataSchema,
+        await getAuthProviderProfileData(authProvider, tokenExchangeCode),
+    );
 
-    if (
-        !profileData ||
-        !profileData?.email ||
-        !profileData?.providerName ||
-        !profileData?.providerAccountId ||
-        !profileData.emailVerified
-    ) {
+    if (!oAuthData || error) {
         await addInvalidAuthAttempt(ctx);
+
+        let msg = "Invalid profile data received from the auth provider, most likely the code provided was invalid.";
+        if (error) msg += `\nERROR: ${error}`;
+
         return {
             data: {
-                message: "Invalid profile data received from the auth provider, most likely the code provided was invalid",
+                message: msg,
                 success: false,
-                data: profileData,
             },
             status: HTTP_STATUS.BAD_REQUEST,
         };
@@ -35,14 +37,14 @@ export async function oAuthSignUpHandler(ctx: Context, authProvider: string, tok
     // Return if an auth account already exists with the same provider
     const possiblyAlreadyExistingAuthAccount = await prisma.authAccount.findFirst({
         where: {
-            providerName: profileData.providerName,
-            OR: [{ providerAccountId: `${profileData.providerAccountId}` }, { providerAccountEmail: profileData.email }],
+            providerName: oAuthData.providerName,
+            OR: [{ providerAccountId: `${oAuthData.providerAccountId}` }, { providerAccountEmail: oAuthData.email }],
         },
     });
     if (possiblyAlreadyExistingAuthAccount?.id) {
         await addInvalidAuthAttempt(ctx);
         return {
-            data: { success: false, message: "A user already exists with this account, try to login instead" },
+            data: { success: false, message: "A user already exists with this account, try logging in instead" },
             status: HTTP_STATUS.BAD_REQUEST,
         };
     }
@@ -50,7 +52,7 @@ export async function oAuthSignUpHandler(ctx: Context, authProvider: string, tok
     // Return if a user already exists with the same email
     const possiblyAlreadyExistingUser = await GetUser_Unique({
         where: {
-            email: profileData.email,
+            email: oAuthData.email,
         },
     });
     if (possiblyAlreadyExistingUser?.id) {
@@ -62,7 +64,7 @@ export async function oAuthSignUpHandler(ctx: Context, authProvider: string, tok
     }
 
     const userId = generateDbId();
-    let userName = createURLSafeSlug(profileData.name || "");
+    let userName = createURLSafeSlug(oAuthData.name || "");
 
     // Check if the username is available
     const existingUserWithSameUserName = userName?.length > 0 ? await GetUser_ByIdOrUsername(userName) : null;
@@ -74,7 +76,7 @@ export async function oAuthSignUpHandler(ctx: Context, authProvider: string, tok
     // Create the avatar image
     let avatarImgId: string | null = null;
     try {
-        const avatarFile = await getImageFromHttpUrl(profileData.avatarImage || "");
+        const avatarFile = await getImageFromHttpUrl(oAuthData.avatarImage || "");
         if (avatarFile) avatarImgId = await getUserAvatar(userId, null, avatarFile);
     } catch (error) {
         console.error("Error creating avatar image");
@@ -85,17 +87,17 @@ export async function oAuthSignUpHandler(ctx: Context, authProvider: string, tok
     const newUser = await CreateUser({
         data: {
             id: userId,
-            email: profileData.email,
+            email: oAuthData.email,
             userName: userName,
-            name: profileData?.name || "",
-            emailVerified: profileData.emailVerified === true,
+            name: oAuthData?.name || "",
+            emailVerified: oAuthData.emailVerified === true,
             role: GlobalUserRole.USER,
             newSignInAlerts: true,
             avatar: avatarImgId,
         },
     });
 
-    await createNewAuthAccount(newUser.id, profileData);
+    await createNewAuthAccount(newUser.id, oAuthData);
 
     const newSession = await createUserSession({
         userId: newUser.id,

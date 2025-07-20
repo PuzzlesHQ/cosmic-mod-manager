@@ -1,5 +1,7 @@
 import { AUTHTOKEN_COOKIE_NAMESPACE, CSRF_STATE_COOKIE_NAMESPACE, PASSWORD_HASH_SALT_ROUNDS } from "@app/utils/constants";
 import { getSessionIp } from "@app/utils/headers";
+import { convertToIPv6, stripIp } from "@app/utils/ip";
+import type { ValidatedOAuthProfile } from "@app/utils/schemas/auth";
 import { type AuthActionIntent, AuthProvider } from "@app/utils/types";
 import { encodeBase32LowerCaseNoPadding } from "@oslojs/encoding";
 import type { Context } from "hono";
@@ -10,10 +12,8 @@ import { getGithubUserProfileData } from "~/routes/auth/providers/github";
 import { getGitlabUserProfileData } from "~/routes/auth/providers/gitlab";
 import { getGoogleUserProfileData } from "~/routes/auth/providers/google";
 import prisma from "~/services/prisma";
-import type { OAuthProfile } from "~/types/oAuth";
 import env from "~/utils/env";
 import { setCookie } from "~/utils/http";
-import { convertToIPv6, stripIp } from "~/utils/ip";
 import { generateDbId, generateRandomId } from "~/utils/str";
 
 const oAuthUrlTemplates = {
@@ -51,41 +51,42 @@ export function getOAuthUrl(ctx: Context, authProvider: string, actionIntent: Au
 }
 
 export async function getAuthProviderProfileData(authProvider: string, code: string) {
-    switch (authProvider.toLowerCase()) {
-        case AuthProvider.GITHUB:
-            return await getGithubUserProfileData(code);
+    try {
+        switch (authProvider.toLowerCase()) {
+            case AuthProvider.GITHUB:
+                return await getGithubUserProfileData(code);
 
-        case AuthProvider.GITLAB:
-            return await getGitlabUserProfileData(code);
+            case AuthProvider.GITLAB:
+                return await getGitlabUserProfileData(code);
 
-        case AuthProvider.DISCORD:
-            return await getDiscordUserProfileData(code);
+            case AuthProvider.DISCORD:
+                return await getDiscordUserProfileData(code);
 
-        case AuthProvider.GOOGLE:
-            return await getGoogleUserProfileData(code);
+            case AuthProvider.GOOGLE:
+                return await getGoogleUserProfileData(code);
 
-        default:
-            return null;
+            default:
+                return null;
+        }
+    } catch (error) {
+        console.error(error);
+        return null;
     }
 }
 
-export async function createNewAuthAccount(
-    userId: string,
-    { providerName, providerAccountId, email, avatarImage, accessToken, tokenType, refreshToken, authType, scope }: OAuthProfile,
-) {
+export async function createNewAuthAccount(userId: string, data: ValidatedOAuthProfile) {
     return await prisma.authAccount.create({
         data: {
             id: generateDbId(),
             userId: userId,
-            providerName: providerName,
-            providerAccountId: `${providerAccountId}`,
-            providerAccountEmail: email,
-            avatarUrl: avatarImage,
-            accessToken: accessToken,
-            tokenType: tokenType,
-            refreshToken: refreshToken,
-            authType: authType,
-            authorizationScope: scope,
+            providerName: data.providerName,
+            providerAccountId: data.providerAccountId,
+            providerAccountEmail: data.email,
+            accessToken: data.accessToken,
+            tokenType: data.tokenType,
+            refreshToken: data.refreshToken,
+            authType: data.authType,
+            authorizationScope: data.scope,
         },
     });
 }
@@ -95,22 +96,19 @@ export function getUserIpAddress(ctx: Context, strip = true): string | null {
         return ctx.req.header(key);
     }
 
-    let ipStr = null;
+    const ipStr = getSessionIp(getHeader, {
+        fallbackIp: ctx.env.ip?.address || "::1",
+        cdnSecret: env.CDN_SECRET,
+        cloudflareSecret: env.CLOUDFLARE_SECRET,
+    });
 
-    const frontendSecret_header = ctx.req.header("x-identity-token");
-    if (frontendSecret_header === env.FRONTEND_SECRET) ipStr = ctx.req.header("x-client-ip");
-
-    const cdnSecret_header = ctx.req.header("CDN-Secret");
-    if (cdnSecret_header === env.CDN_SECRET) ipStr = ctx.req.header("Fastly-Client-IP");
-
-    if (!ipStr) ipStr = getSessionIp(getHeader, ctx.env.ip?.address || "");
     if (!ipStr) return null;
 
     const IPv6 = convertToIPv6(ipStr);
     if (!IPv6) return null;
 
-    if (strip === false) return IPv6;
     // Strip the IP address to prevent abuse due to IPv6 (to be used in rate limiting)
+    if (strip === false) return IPv6;
     return stripIp(IPv6).toString(16);
 }
 

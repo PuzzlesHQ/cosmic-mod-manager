@@ -19,7 +19,6 @@ export const CONFIRM_NEW_PASSWORD_EMAIL_VALIDITY_ms = 7200_000; // 2 hour
 export const CHANGE_ACCOUNT_PASSWORD_EMAIL_VALIDITY_ms = 7200_000; // 2 hour
 export const DELETE_USER_ACCOUNT_EMAIL_VALIDITY_ms = 7200_000; // 2 hour
 
-export const MIN_EMAIL_LENGTH = 5;
 export const MAX_EMAIL_LENGTH = 256;
 
 export const MIN_PASSWORD_LENGTH = 8;

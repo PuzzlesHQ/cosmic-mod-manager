@@ -1,6 +1,6 @@
 import type z from "zod/v4";
 
-export async function parseInput<T extends z.Schema, K>(schema: T, data: unknown, params?: K) {
+export async function zodParse<T extends z.Schema, K>(schema: T, data: unknown, params?: K) {
     try {
         const parsedData = (await schema.parseAsync(data, params)) as z.infer<typeof schema>;
         return { data: parsedData, error: null };

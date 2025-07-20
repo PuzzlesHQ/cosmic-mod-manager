@@ -1,5 +1,5 @@
 import { AuthProvider } from "@app/utils/types";
-import type { OAuthProfile } from "~/types/oAuth";
+import type { OAuthData } from "~/types/oAuth";
 import env from "~/utils/env";
 
 export async function getDiscordUserProfileData(tokenExchangeCode: string) {
@@ -34,7 +34,7 @@ export async function getDiscordUserProfileData(tokenExchangeCode: string) {
 
     const profile = {
         name: userProfile?.name || null,
-        email: userProfile?.email || null,
+        email: userProfile?.email?.toLowerCase() || null,
         emailVerified: userProfile?.verified === true,
         providerName: AuthProvider.DISCORD,
         providerAccountId: userProfile?.id?.toString() || null,
@@ -44,7 +44,7 @@ export async function getDiscordUserProfileData(tokenExchangeCode: string) {
         tokenType: accessTokenType || null,
         scope: tokenData?.scope || null,
         avatarImage: `https://cdn.discordapp.com/avatars/${userProfile?.id}/${userProfile?.avatar}`,
-    } satisfies OAuthProfile;
+    } satisfies OAuthData;
 
     return profile;
 }

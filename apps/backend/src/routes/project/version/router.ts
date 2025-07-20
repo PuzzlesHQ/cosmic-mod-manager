@@ -1,5 +1,5 @@
 import { newVersionFormSchema, updateVersionFormSchema } from "@app/utils/schemas/project/version";
-import { parseInput } from "@app/utils/schemas/utils";
+import { zodParse } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
 import { LoginProtectedRoute } from "~/middleware/auth";
 import { getReqRateLimiter } from "~/middleware/rate-limit/get-req";
@@ -116,7 +116,7 @@ async function version_post(ctx: Context) {
             }),
         };
 
-        const { data, error } = await parseInput(newVersionFormSchema, schemaObj);
+        const { data, error } = await zodParse(newVersionFormSchema, schemaObj);
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const res = await createNewVersion(ctx, userSession, projectId, data);
@@ -155,7 +155,7 @@ async function version_patch(ctx: Context) {
             additionalFiles: additionalFiles,
         };
 
-        const { data, error } = await parseInput(updateVersionFormSchema, schemaObj);
+        const { data, error } = await zodParse(updateVersionFormSchema, schemaObj);
         if (error || !data) return invalidReqestResponse(ctx, error);
 
         const res = await updateVersionData(ctx, projectId, versionId, userSession, data);

@@ -1,5 +1,5 @@
 import { AuthProvider } from "@app/utils/types";
-import type { OAuthProfile } from "~/types/oAuth";
+import type { OAuthData } from "~/types/oAuth";
 import env from "~/utils/env";
 
 export async function getGoogleUserProfileData(tokenExchangeCode: string) {
@@ -32,7 +32,7 @@ export async function getGoogleUserProfileData(tokenExchangeCode: string) {
     // Construct the user profile
     const profile = {
         name: userData?.name || "",
-        email: userData?.email || null,
+        email: userData?.email?.toLowerCase() || null,
         emailVerified: userData?.email_verified === true,
         providerName: AuthProvider.GOOGLE,
         providerAccountId: userData?.sub?.toString() || null,
@@ -42,7 +42,7 @@ export async function getGoogleUserProfileData(tokenExchangeCode: string) {
         tokenType: tokenData?.token_type || null,
         scope: (tokenData?.scope || "").replaceAll("https://www.googleapi.com/auth/userinfo.", "").replaceAll(" ", "+") || null,
         avatarImage: userData?.picture || null,
-    } satisfies OAuthProfile;
+    } satisfies OAuthData;
 
     return profile;
 }

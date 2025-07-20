@@ -1,5 +1,5 @@
 import { AUTHTOKEN_COOKIE_NAMESPACE, USER_SESSION_VALIDITY, USER_SESSION_VALIDITY_ms } from "@app/utils/constants";
-import { getSessionMetadata } from "@app/utils/headers";
+import { getSessionIp, getSessionMetadata } from "@app/utils/headers";
 import { type GlobalUserRole, UserSessionStates } from "@app/utils/types";
 import type { Prisma, Session, User } from "@prisma/client";
 import type { Context } from "hono";
@@ -17,6 +17,7 @@ import { GetUser_ByIdOrUsername } from "~/db/user_item";
 import { deleteSessionTokenAndIdCache, getSessionCacheFromToken, setSessionTokenCache } from "~/services/cache/session";
 import type { ContextUserData } from "~/types";
 import { sendNewSigninAlertEmail } from "~/utils/email";
+import env from "~/utils/env";
 import { deleteCookie, setCookie } from "~/utils/http";
 import { generateDbId, generateRandomId } from "~/utils/str";
 import { generateRandomToken, getUserSessionCookie, hashString } from "./index";
@@ -40,34 +41,11 @@ export async function createUserSession({ userId, providerName, ctx, isFirstSign
     const revokeAccessCode = generateRandomId(32);
     const revokeAccessCodeHash = await hashString(revokeAccessCode);
 
-    const sessionMetadata = getSessionMetadata(getHeader, ctx.env.ip?.address || "");
-
-    if (isFirstSignIn !== true) {
-        const significantIp = (sessionMetadata.ipAddr || "")?.slice(0, 9);
-        const similarSession = await GetSession_First({
-            where: {
-                userId: userId,
-                ip: {
-                    startsWith: significantIp,
-                },
-            },
-        });
-
-        // Send email alert if the user is signing in from a new location
-        if (!similarSession?.id) {
-            sendNewSigninAlertEmail({
-                fullName: user.name || user.userName,
-                receiverEmail: user.email,
-                region: sessionMetadata.city || "",
-                country: sessionMetadata.country || "",
-                ip: sessionMetadata.ipAddr || "",
-                browserName: sessionMetadata.browserName || "",
-                osName: sessionMetadata.os.name || "",
-                authProviderName: providerName || "",
-                revokeAccessCode: revokeAccessCode,
-            });
-        }
-    }
+    const sessionIp = getSessionIp(getHeader, {
+        fallbackIp: ctx.env?.ip?.address || "::1",
+        cloudflareSecret: env.CLOUDFLARE_SECRET,
+    });
+    const sessionMetadata = getSessionMetadata(getHeader, sessionIp);
 
     await CreateSession({
         data: {
@@ -86,6 +64,33 @@ export async function createUserSession({ userId, providerName, ctx, isFirstSign
             userAgent: sessionMetadata.userAgent || "",
         },
     });
+
+    if (isFirstSignIn) return sessionToken;
+
+    const significantIp = (sessionMetadata.ipAddr || "")?.slice(0, 9);
+    const similarSession = await GetSession_First({
+        where: {
+            userId: userId,
+            ip: {
+                startsWith: significantIp,
+            },
+        },
+    });
+
+    // Send email alert if the user is signing in from a new location
+    if (!similarSession?.id) {
+        sendNewSigninAlertEmail({
+            fullName: user.name || user.userName,
+            receiverEmail: user.email,
+            region: sessionMetadata.city || "",
+            country: sessionMetadata.country || "",
+            ip: sessionMetadata.ipAddr || "",
+            browserName: sessionMetadata.browserName || "",
+            osName: sessionMetadata.os.name || "",
+            authProviderName: providerName || "",
+            revokeAccessCode: revokeAccessCode,
+        });
+    }
 
     return sessionToken;
 }

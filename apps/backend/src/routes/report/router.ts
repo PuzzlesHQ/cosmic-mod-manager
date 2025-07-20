@@ -1,6 +1,6 @@
 import { isModerator } from "@app/utils/constants/roles";
 import { newReportFormSchema } from "@app/utils/schemas/report";
-import { parseInput } from "@app/utils/schemas/utils";
+import { zodParse } from "@app/utils/schemas/utils";
 import { decodeStringArray } from "@app/utils/string";
 import { type ReportItemType, reportFilters_defaults } from "@app/utils/types/api/report";
 import { type Context, Hono } from "hono";
@@ -27,7 +27,7 @@ async function report_post(ctx: Context) {
         const user = getUserFromCtx(ctx);
         if (!user?.id) return unauthorizedReqResponse(ctx);
 
-        const { error, data } = await parseInput(newReportFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+        const { error, data } = await zodParse(newReportFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) {
             return invalidReqestResponse(ctx, error);
         }

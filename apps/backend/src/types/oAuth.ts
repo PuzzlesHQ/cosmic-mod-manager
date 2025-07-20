@@ -1,6 +1,6 @@
-export interface OAuthProfile {
-    name?: string | null;
-    email: string;
+export interface OAuthData {
+    name: string | null;
+    email: string | null;
     emailVerified: boolean;
     providerName: string;
     providerAccountId: string;
