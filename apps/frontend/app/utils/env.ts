@@ -1,3 +1,7 @@
+import dotenv from "dotenv";
+
+dotenv.config({ path: "./.env" });
+
 const envKeys = ["CLOUDFLARE_SECRET", "ASSETS_SERVER_URL"] as const;
 
 type EnvKeys = (typeof envKeys)[number];
