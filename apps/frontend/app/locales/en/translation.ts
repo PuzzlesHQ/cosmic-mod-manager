@@ -701,6 +701,7 @@ export default {
         threadClosedDesc: "This thread is closed and new messages cannot be sent to it.",
         closeThread: "Close thread",
         reopenThread: "Reopen thread",
+        permalink: "Permalink",
     },
 
     form: {

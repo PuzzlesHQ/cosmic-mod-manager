@@ -21,7 +21,7 @@ export function enableInteractions() {
     document.documentElement.removeEventListener("keydown", disablePathNavigations);
 }
 
-export function scrollElementIntoView(element: HTMLElement | null, options?: ScrollIntoViewOptions) {
+export function scrollElementIntoView(element: HTMLElement | Element | null, options?: ScrollIntoViewOptions) {
     if (!element) return;
     element.scrollIntoView({
         behavior: "smooth",

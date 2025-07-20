@@ -10,6 +10,7 @@ import { MessageType, type Thread, type ThreadMember, type ThreadMessage as Thre
 import {
     BanIcon,
     CheckCircleIcon,
+    HashIcon,
     LockIcon,
     LockKeyholeIcon,
     MoreHorizontalIcon,
@@ -20,19 +21,20 @@ import {
     Trash2Icon,
     XIcon,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router";
 import ConfirmDialog from "~/components/confirm-dialog";
 import { BrandIcon, fallbackUserIcon } from "~/components/icons";
 import MarkdownRenderBox from "~/components/md-editor/md-renderer";
 import RefreshPage from "~/components/misc/refresh-page";
 import { ImgWrapper } from "~/components/ui/avatar";
-import { Button } from "~/components/ui/button";
+import { Button, buttonVariants } from "~/components/ui/button";
 import { FormattedDate } from "~/components/ui/date";
 import { FormErrorMessage } from "~/components/ui/form-message";
 import Link, { useNavigate } from "~/components/ui/link";
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
+import { Separator } from "~/components/ui/separator";
 import { toast } from "~/components/ui/sonner";
 import { SuspenseFallback } from "~/components/ui/spinner";
 import { TooltipProvider, TooltipTemplate } from "~/components/ui/tooltip";
@@ -154,9 +156,21 @@ export function ChatThread(props: ChatThreadProps) {
     useEffect(() => {
         if (!thread) return;
 
-        scrollElementIntoView(document.querySelector("#thread-bottom"), {
-            block: "end",
-        });
+        if (location.hash) {
+            const elem = document.querySelector(location.hash);
+            if (!elem) return;
+
+            scrollElementIntoView(elem, { block: "center" });
+            elem.classList.add("msg-highlight");
+
+            window.setTimeout(() => {
+                elem.classList.remove("msg-highlight");
+            }, 5000);
+        } else {
+            scrollElementIntoView(document.querySelector("#thread-bottom"), {
+                block: "end",
+            });
+        }
     }, [thread?.id]);
 
     if (!session) return null;
@@ -404,11 +418,10 @@ interface ThreadMessageProps {
     fetchThreadMessages: () => Promise<void>;
 }
 
-const msgHighlightTimeoutMap = new Map<string, number | undefined>();
-
 function ThreadMessage(props: ThreadMessageProps) {
     const { t } = useTranslation();
     const session = useSession();
+    const msgHighlightTimeoutMap = useRef(new Map<string, number | undefined>());
 
     const msg = props.message;
     const author = props.members.find((m) => m.id === msg.authorId);
@@ -583,7 +596,7 @@ function ThreadMessage(props: ThreadMessageProps) {
                         if (!msgId) return;
 
                         scrollMsgIntoView(msgId);
-                        highlightChatMessage(msgId, msgHighlightTimeoutMap);
+                        highlightChatMessage(msgId, msgHighlightTimeoutMap.current);
                     }}
                 >
                     <div style={{ gridArea: "reply-illustration" }} className="relative grid h-full w-12 shrink-0">
@@ -651,7 +664,12 @@ function ThreadMessage(props: ThreadMessageProps) {
                     </PopoverTrigger>
                     <PopoverContent className="min-w-0 p-1" align="end">
                         <PopoverClose asChild>
-                            <Button variant="ghost" size="sm" onClick={() => props.setReplyingTo(msg.id)}>
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => props.setReplyingTo(msg.id)}
+                                className="justify-start"
+                            >
                                 <ReplyIcon className="h-btn-icon-md w-btn-icon-md" />
                                 {t.chatThread.reply}
                             </Button>
@@ -665,12 +683,24 @@ function ThreadMessage(props: ThreadMessageProps) {
                                 description={t.chatThread.sureToDeleteMsg}
                                 variant="destructive"
                             >
-                                <Button variant="ghost-destructive" size="sm">
+                                <Button variant="ghost-destructive" size="sm" className="justify-start">
                                     <Trash2Icon className="h-btn-icon w-btn-icon" />
                                     {t.form.delete}
                                 </Button>
                             </ConfirmDialog>
                         )}
+
+                        <Separator />
+
+                        <PopoverClose asChild>
+                            <a
+                                href={`#${msgElemId(msg.id)}`}
+                                className={buttonVariants({ variant: "ghost", size: "sm", className: "justify-start" })}
+                            >
+                                <HashIcon className="h-btn-icon w-btn-icon text-foreground-extra-muted" />
+                                {t.chatThread.permalink}
+                            </a>
+                        </PopoverClose>
                     </PopoverContent>
                 </Popover>
             )}

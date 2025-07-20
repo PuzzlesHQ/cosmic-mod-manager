@@ -4,7 +4,7 @@
     "": {
       "name": "@app/docs",
       "dependencies": {
-        "vitepress": "^1.6.1",
+        "vitepress": "latest",
       },
     },
   },

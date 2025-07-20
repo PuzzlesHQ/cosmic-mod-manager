@@ -187,7 +187,7 @@ export default function DownloadsAnalyticsChart({ data: props }: DownloadsAnalyt
             </div>
 
             {props.topProjects.length > 0 && (
-                <ol className="grid grid-cols-[max-content_1fr_max-content_1fr] gap-x-6 gap-y-4 rounded-lg bg-card-background p-card-surround">
+                <ol className="grid grid-cols-[max-content_1fr] gap-x-6 gap-y-4 rounded-lg bg-card-background p-card-surround xl:grid-cols-[max-content_1fr_max-content_1fr]">
                     {props.topProjects.map((project) => {
                         return (
                             <li key={project.id} className="col-span-2 grid grid-cols-subgrid">
