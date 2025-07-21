@@ -37,12 +37,11 @@ import SearchFilters from "./sidebar";
 
 export default function SearchPage() {
     const { t } = useTranslation();
-    const [__, setSearchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
     const [showFilters, setShowFilters] = useState(false);
     const searchInput = useRef<HTMLInputElement>(null);
 
     const {
-        params: searchParams,
         searchTerm,
         setSearchTerm,
         sortBy,
@@ -121,14 +120,21 @@ export default function SearchPage() {
                     <Select
                         value={sortBy || defaultSortBy}
                         onValueChange={(val) => {
-                            const updatedParams = updateSearchParam({
-                                key: sortByParamNamespace,
-                                value: val,
-                                deleteIfEqualsThis: defaultSortBy,
-                                newParamsInsertionMode: "replace",
-                            });
+                            setSearchParams(
+                                (prev) => {
+                                    updateSearchParam({
+                                        searchParams: prev,
+                                        key: sortByParamNamespace,
+                                        value: val,
+                                        deleteIfEqualsThis: defaultSortBy,
+                                        newParamsInsertionMode: "replace",
+                                    });
 
-                            setSearchParams(removePageOffsetSearchParam(updatedParams), { preventScrollReset: true });
+                                    removePageOffsetSearchParam(prev);
+                                    return prev;
+                                },
+                                { preventScrollReset: true },
+                            );
                         }}
                         name="sort-by"
                     >
@@ -159,13 +165,21 @@ export default function SearchPage() {
                     <Select
                         value={numProjectsLimit_Param.toString()}
                         onValueChange={(val) => {
-                            const updatedParams = updateSearchParam({
-                                key: searchLimitParamNamespace,
-                                value: val,
-                                deleteIfEqualsThis: `${defaultSearchLimit}`,
-                                newParamsInsertionMode: "replace",
-                            });
-                            setSearchParams(removePageOffsetSearchParam(updatedParams), { preventScrollReset: true });
+                            setSearchParams(
+                                (prev) => {
+                                    updateSearchParam({
+                                        searchParams: prev,
+                                        key: searchLimitParamNamespace,
+                                        value: val,
+                                        deleteIfEqualsThis: `${defaultSearchLimit}`,
+                                        newParamsInsertionMode: "replace",
+                                    });
+                                    removePageOffsetSearchParam(prev);
+
+                                    return prev;
+                                },
+                                { preventScrollReset: true },
+                            );
                         }}
                         name="Show per page"
                     >

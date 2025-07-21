@@ -3,7 +3,6 @@ import type { useLocation } from "react-router";
 import { DiscordIcon, GithubIcon, GitlabIcon, GoogleIcon } from "~/components/icons";
 import { VariantButtonLink } from "~/components/ui/link";
 import Config from "~/utils/config";
-import { FormatUrl_WithHintLocale } from "~/utils/urls";
 
 export const ConfiguredAuthProviders = [AuthProvider.GITHUB, AuthProvider.DISCORD, AuthProvider.GOOGLE, AuthProvider.GITLAB];
 
@@ -57,5 +56,5 @@ export function setReturnUrl(location: ReturnType<typeof useLocation>) {
     if (location.pathname.startsWith("/login") || location.pathname.startsWith("/signup")) return;
 
     const returnTo = location.pathname;
-    sessionStorage.setItem("returnTo", encodeURIComponent(FormatUrl_WithHintLocale(returnTo)));
+    sessionStorage.setItem("returnTo", encodeURIComponent(returnTo));
 }

@@ -19,7 +19,8 @@ import yaml from "highlight.js/lib/languages/yaml";
 import { useMemo } from "react";
 // Scripting
 import { cn } from "~/components/utils";
-import { FormatUrl_WithHintLocale } from "~/utils/urls";
+import { useTranslation } from "~/locales/provider";
+import { changeHintLocale } from "~/utils/urls";
 import { configureXss, md } from "./parse-md";
 
 /* REGISTRATION */
@@ -80,6 +81,12 @@ interface Props {
 }
 
 export function MarkdownRenderBox({ text, className, divElem, addIdToHeadings = true }: Props) {
+    const { locale } = useTranslation();
+
+    function urlFormatter(url: string) {
+        return changeHintLocale(locale, url);
+    }
+
     const formattedText = useMemo(() => {
         if (addIdToHeadings !== true) return text;
 
@@ -94,7 +101,7 @@ export function MarkdownRenderBox({ text, className, divElem, addIdToHeadings = 
             if (!id) continue;
 
             const anchor = `<a class="anchor" id="${id}" title="Permalink: ${escapeSpecialChars(headingContent)}" href="#${id}" aria-hidden>#</a>`;
-            parts[i] = renderHighlightedString(`${part.trim()}${anchor}`, FormatUrl_WithHintLocale);
+            parts[i] = renderHighlightedString(`${part.trim()}${anchor}`, urlFormatter);
         }
 
         return parts.join("\n");
@@ -105,7 +112,7 @@ export function MarkdownRenderBox({ text, className, divElem, addIdToHeadings = 
             <div
                 className={cn("markdown-body w-full overflow-auto", className)}
                 // biome-ignore lint/security/noDangerouslySetInnerHtml: the html is sanitized
-                dangerouslySetInnerHTML={{ __html: renderHighlightedString(formattedText, FormatUrl_WithHintLocale) }}
+                dangerouslySetInnerHTML={{ __html: renderHighlightedString(formattedText, urlFormatter) }}
             />
         );
     }
@@ -114,7 +121,7 @@ export function MarkdownRenderBox({ text, className, divElem, addIdToHeadings = 
         <section
             className={cn("markdown-body w-full overflow-auto", className)}
             // biome-ignore lint/security/noDangerouslySetInnerHtml: the html is sanitized
-            dangerouslySetInnerHTML={{ __html: renderHighlightedString(formattedText, FormatUrl_WithHintLocale) }}
+            dangerouslySetInnerHTML={{ __html: renderHighlightedString(formattedText, urlFormatter) }}
         />
     );
 }

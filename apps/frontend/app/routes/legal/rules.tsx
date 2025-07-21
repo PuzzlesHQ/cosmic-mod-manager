@@ -2,10 +2,10 @@ import MarkdownRenderBox from "~/components/md-editor/md-renderer";
 import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
-import { FormatUrl_WithHintLocale } from "~/utils/urls";
+import { changeHintLocale } from "~/utils/urls";
 
 export default function () {
-    const { t } = useTranslation();
+    const { t, locale } = useTranslation();
 
     return (
         <MarkdownRenderBox
@@ -13,8 +13,8 @@ export default function () {
             text={t.legal.contentRules({
                 title: t.legal.rulesTitle,
                 supportEmail: "support@crmm.tech",
-                privacyPageUrl: FormatUrl_WithHintLocale("legal/privacy"),
-                termsPageUrl: FormatUrl_WithHintLocale("legal/terms"),
+                privacyPageUrl: changeHintLocale(locale, "legal/privacy"),
+                termsPageUrl: changeHintLocale(locale, "legal/terms"),
                 siteName_Short: Config.SITE_NAME_SHORT,
             })}
         />

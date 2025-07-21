@@ -8,10 +8,10 @@ import { Links, Meta, Outlet, Scripts, ScrollRestoration, type ShouldRevalidateF
 import ClientOnly from "~/components/client-only";
 import Footer from "~/components/layout/footer";
 import Navbar from "~/components/layout/Navbar/navbar";
+import { MarkdownLinkHandler } from "~/components/md-editor/link-handler";
 import { DownloadRipple } from "~/components/misc/file-downloader";
 import LoaderBar from "~/components/misc/loader-bar";
 import ToastAnnouncer from "~/components/toast-announcer";
-import { useNavigate } from "~/components/ui/link";
 import { cn } from "~/components/utils";
 import { PageBreadCrumbs } from "~/hooks/breadcrumb";
 import { getUserConfig } from "~/hooks/preferences/helpers";
@@ -29,7 +29,7 @@ import Config from "~/utils/config";
 import { ASSETS_SERVER_URL } from "~/utils/env";
 import { MetaTags } from "~/utils/meta";
 import { resJson, serverFetch } from "~/utils/server-fetch";
-import { FormatUrl_WithHintLocale, getHintLocale } from "~/utils/urls";
+import { changeHintLocale, getHintLocale, omitOrigin } from "~/utils/urls";
 import type { Route } from "./+types/root";
 
 export interface RootOutletData {
@@ -88,50 +88,6 @@ export default function App() {
 function AppSetup(props: { data: RootOutletData }) {
     const data = props.data;
 
-    // HANDLE SAME SITE NAVIGATIONS FROM MARKDOWN RENDERED LINKS
-    const navigate = useNavigate();
-
-    // Use React router to handle internal links
-    function handleNavigate(e: MouseEvent) {
-        try {
-            if (!(e.target instanceof HTMLAnchorElement)) return;
-            e.preventDefault();
-
-            const target = e.target as HTMLAnchorElement;
-            const targetUrl = new URL(target.href);
-
-            if (target.getAttribute("href")?.startsWith("#")) {
-                navigate(`${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`, { preventScrollReset: true });
-                return;
-            }
-
-            const targetHost = targetUrl.hostname;
-            const currHost = window.location.hostname;
-
-            if (currHost.replace("www.", "") !== targetHost.replace("www.", "")) {
-                window.open(targetUrl.href, "_blank");
-                return;
-            }
-
-            navigate(`${targetUrl.pathname}${targetUrl.search}`, { viewTransition: true });
-        } catch {}
-    }
-
-    useEffect(() => {
-        function delegateMdLinkClick(e: MouseEvent) {
-            if (!e.target) return;
-            if (e.ctrlKey || e.metaKey || e.shiftKey) return;
-
-            // @ts-ignore
-            if (e.target?.closest(".markdown-body")) {
-                handleNavigate(e);
-            }
-        }
-
-        document.body.addEventListener("click", delegateMdLinkClick);
-        return () => document.body.removeEventListener("click", delegateMdLinkClick);
-    }, []);
-
     return (
         <>
             {!data.session?.id && <LoginDialog isMainDialog />}
@@ -155,21 +111,14 @@ function AppSetup(props: { data: RootOutletData }) {
             </div>
 
             <DownloadRipple />
+            <MarkdownLinkHandler />
         </>
     );
 }
 
 export async function loader({ request }: Route.LoaderArgs): Promise<RootOutletData> {
     const reqUrl = new URL(request.url);
-    let session: LoggedInUserData | null = null;
     const cookie = request.headers.get("Cookie") || "";
-
-    if (getCookie("auth-token", cookie)?.length) {
-        const sessionRes = await serverFetch(request, "/api/auth/me");
-        session = await resJson<LoggedInUserData>(sessionRes);
-
-        if (!session?.id) session = null;
-    }
 
     // Preferences
     const userConfig = getUserConfig(cookie);
@@ -186,8 +135,18 @@ export async function loader({ request }: Route.LoaderArgs): Promise<RootOutletD
 
     // If there's no hintLocale and user has a non default locale set, redirect to the url with user's locale
     if (!hintLocale.length && formatLocaleCode(cookieLocale_Metadata) !== formatLocaleCode(hintLocale_Metadata)) {
-        const localeFormattedUrl = FormatUrl_WithHintLocale(reqUrl.pathname, formatLocaleCode(currLocale));
+        const localeFormattedUrl = changeHintLocale(currLocale, omitOrigin(reqUrl));
         throw Response.redirect(new URL(localeFormattedUrl, Config.FRONTEND_URL), 302);
+    }
+
+    // Session
+    let session: LoggedInUserData | null = null;
+
+    if (getCookie("auth-token", cookie)?.length) {
+        const sessionRes = await serverFetch(request, "/api/auth/me");
+        session = await resJson<LoggedInUserData>(sessionRes);
+
+        if (!session?.id) session = null;
     }
 
     return {

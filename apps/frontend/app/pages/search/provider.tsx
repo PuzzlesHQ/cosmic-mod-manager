@@ -1,4 +1,3 @@
-import { projectTypes } from "@app/utils/config/project";
 import {
     defaultSearchLimit,
     pageOffsetParamNamespace,
@@ -9,11 +8,10 @@ import {
 import { getProjectTypeFromName } from "@app/utils/convertors";
 import type { ProjectType, SearchResultSortMethod } from "@app/utils/types";
 import type { SearchResult } from "@app/utils/types/api";
-import { createContext, use, useEffect, useState } from "react";
-import { useNavigation, useSearchParams } from "react-router";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { useLocation, useSearchParams } from "react-router";
 import { useSpinnerCtx } from "~/components/global-spinner";
 import { useProjectType } from "~/hooks/project";
-import { getCurrLocation, getHintLocale } from "~/utils/urls";
 import { getSearchResults } from "./loader";
 
 interface SearchContext {
@@ -38,13 +36,13 @@ interface SearchProviderProps {
     initialSearchResult: SearchResult | null;
 }
 
-let updateSearchParam_timeoutRef: number | undefined;
-
 export function SearchProvider(props: SearchProviderProps) {
+    const timeoutRef = useRef<number | undefined>(undefined);
+    const abortControllerRef = useRef<AbortController>(new AbortController());
+
+    const location = useLocation();
     const { setShowSpinner } = useSpinnerCtx();
-    const navigation = useNavigation();
     const [searchParams, setSearchParams] = useSearchParams();
-    const localePrefix = getHintLocale(searchParams);
 
     // Params
     const searchQueryParam = searchParams.get(searchQueryParamNamespace) || "";
@@ -55,12 +53,6 @@ export function SearchProvider(props: SearchProviderProps) {
     const projectType = useProjectType();
     const projectType_Coerced = getProjectTypeFromName(projectType);
 
-    const navigated_ProjectType = useProjectType(navigation?.location?.pathname || "");
-    const nextPathname_WithoutLocalePrefix = (navigation?.location?.pathname || "").replace(localePrefix, "").replaceAll("/", "");
-    const isNavigatedPage_SearchPage = ["project", ...projectTypes]
-        .map((t) => `${t}s`)
-        .includes(nextPathname_WithoutLocalePrefix);
-
     const [query, setQuery] = useState({
         isLoading: false,
         isFetching: false,
@@ -68,6 +60,9 @@ export function SearchProvider(props: SearchProviderProps) {
     });
 
     async function fetchQuery() {
+        if (!abortControllerRef.current.signal.aborted) abortControllerRef.current.abort("Aborted due to new request");
+        abortControllerRef.current = new AbortController();
+
         setQuery({
             isLoading: !!query.data,
             isFetching: true,
@@ -77,6 +72,7 @@ export function SearchProvider(props: SearchProviderProps) {
         const res = await getSearchResults(
             searchParams.toString(),
             projectType_Coerced === projectType ? projectType_Coerced : undefined,
+            abortControllerRef.current,
         );
         setQuery({ isLoading: false, isFetching: false, data: res });
     }
@@ -85,13 +81,20 @@ export function SearchProvider(props: SearchProviderProps) {
     const numProjectsLimit_Param = Number.parseInt(pageSize || "0") || defaultSearchLimit;
 
     function updateSearchTerm_Param(q: string) {
-        const newSearchParams = updateSearchParam({
-            key: searchQueryParamNamespace,
-            value: q,
-            deleteIfFalsyValue: true,
-            newParamsInsertionMode: "replace",
-        });
-        setSearchParams(removePageOffsetSearchParam(newSearchParams), { preventScrollReset: true });
+        setSearchParams(
+            (prev) => {
+                updateSearchParam({
+                    searchParams: prev,
+                    key: searchQueryParamNamespace,
+                    value: q,
+                    deleteIfFalsyValue: true,
+                    newParamsInsertionMode: "replace",
+                });
+                removePageOffsetSearchParam(prev);
+                return prev;
+            },
+            { preventScrollReset: true },
+        );
     }
 
     useEffect(() => {
@@ -99,30 +102,35 @@ export function SearchProvider(props: SearchProviderProps) {
     }, [searchParams.toString(), projectType]);
 
     useEffect(() => {
-        if (updateSearchParam_timeoutRef) window.clearTimeout(updateSearchParam_timeoutRef);
+        if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
         if (searchQueryParam === searchTerm_state) return;
-        if (navigation.location && !isNavigatedPage_SearchPage) return;
+        // if (navigation.location && navigatedOutsideSearchPage) return;
 
-        updateSearchParam_timeoutRef = window.setTimeout(() => {
-            if (navigation.location && !isNavigatedPage_SearchPage) return;
+        timeoutRef.current = window.setTimeout(() => {
+            // if (navigation.location && navigatedOutsideSearchPage) return;
             updateSearchTerm_Param(searchTerm_state);
         }, 250);
     }, [searchTerm_state]);
 
     // Reset search term and query data when navigating away from curr page
     useEffect(() => {
-        if (!navigation.location?.pathname) return;
+        console.log({
+            query: query.data?.projectType,
+            path: projectType,
+        });
+
+        if (!location.pathname) return;
         setSearchTerm_state("");
 
         // If the user navigates to a different project type search page, reset the query data
-        if (query.data?.projectType !== navigated_ProjectType && isNavigatedPage_SearchPage === true) {
+        if (query.data?.projectType !== projectType) {
             setQuery({
                 isLoading: false,
                 isFetching: true,
                 data: null,
             });
         }
-    }, [navigation.location?.pathname]);
+    }, [location.pathname]);
 
     // Handle showing and hiding loading spinner
     useEffect(() => {
@@ -151,12 +159,13 @@ export function SearchProvider(props: SearchProviderProps) {
 }
 
 export function useSearchContext() {
-    return use(SearchContext);
+    return useContext(SearchContext);
 }
 
 interface UpdateSearchParamProps {
     key: string;
     value: string;
+    searchParams: URLSearchParams;
     newParamsInsertionMode?: "replace" | "append";
     deleteIfEqualsThis?: string;
     deleteIfExists?: boolean;
@@ -167,40 +176,40 @@ interface UpdateSearchParamProps {
 export function updateSearchParam({
     key,
     value,
+    searchParams,
     deleteIfEqualsThis,
     deleteIfFalsyValue,
     deleteIfExists,
     deleteParamsWithMatchingValueOnly = false,
     newParamsInsertionMode = "append",
 }: UpdateSearchParamProps) {
-    const url = getCurrLocation();
-
     if (
         // If deleteIfExists is true and the key already exists
-        (deleteIfExists === true && url.searchParams.has(key, value)) ||
+        (deleteIfExists === true && searchParams.has(key, value)) ||
         // If deleteIfFalsyValue is true and value is falsy
         (deleteIfFalsyValue === true && !value) ||
         // deleteIfEqualsThis is provided and equals the curr value
         (deleteIfEqualsThis !== undefined && deleteIfEqualsThis === value)
     ) {
-        if (deleteParamsWithMatchingValueOnly === true) url.searchParams.delete(key, value);
-        else url.searchParams.delete(key);
+        if (deleteParamsWithMatchingValueOnly === true) searchParams.delete(key, value);
+        else searchParams.delete(key);
     }
     //
     else {
-        if (newParamsInsertionMode === "replace") url.searchParams.set(key, value);
-        else url.searchParams.append(key, value);
+        if (newParamsInsertionMode === "replace") searchParams.set(key, value);
+        else searchParams.append(key, value);
     }
 
-    return url.searchParams;
+    return searchParams;
 }
 
 export function updateTernaryState_SearchParam(props: {
     key: string;
     value: string;
+    searchParams: URLSearchParams;
     searchParamModifier?: (searchParams: URLSearchParams) => URLSearchParams;
 }) {
-    const searchParams = getCurrLocation().searchParams;
+    const searchParams = props.searchParams;
     const allVals = searchParams.getAll(props.key);
 
     if (allVals.includes(props.value)) {

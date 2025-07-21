@@ -125,7 +125,7 @@ function ProjectVersionsListTable({
     const pagesCount = Math.ceil((allProjectVersions?.length || 0) / ITEMS_PER_PAGE);
     const activePage = Number.parseInt(page) <= pagesCount ? Number.parseInt(page) : 1;
 
-    const customNavigate = useNavigate();
+    const navigate = useNavigate();
     const { downloadFile } = useContext(FileDownloader);
 
     function versionPagePathname(versionSlug: string) {
@@ -183,7 +183,7 @@ function ProjectVersionsListTable({
                             onClick={(e) => {
                                 //@ts-expect-error
                                 if (!e.target.closest(".noClickRedirect")) {
-                                    customNavigate(versionPagePathname(version.slug));
+                                    navigate(versionPagePathname(version.slug));
                                 }
                             }}
                         >

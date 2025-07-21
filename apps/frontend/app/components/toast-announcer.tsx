@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { toast } from "~/components/ui/sonner";
+import { omitOrigin } from "~/utils/urls";
 import { useNavigate } from "./ui/link";
 
 export default function ToastAnnouncer() {
@@ -12,7 +13,7 @@ export default function ToastAnnouncer() {
             toast.info(announcement);
 
             currUrl.searchParams.delete("announce");
-            navigate(currUrl.toString().replace(currUrl.origin, ""), { replace: true });
+            navigate(omitOrigin(currUrl), { replace: true });
         }
     }, []);
 

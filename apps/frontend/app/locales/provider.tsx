@@ -1,8 +1,8 @@
 import { disableInteractions, enableInteractions } from "@app/utils/dom";
-import { createContext, type ReactNode, use, useState } from "react";
-import type { NavigateFunction } from "react-router";
+import { createContext, type ReactNode, useContext, useState } from "react";
+import type { NavigateFunction } from "~/components/ui/link";
 import default_locale from "~/locales/default/translation";
-import { getCurrLocation, HINT_LOCALE_KEY } from "~/utils/urls";
+import { changeHintLocale, omitOrigin } from "~/utils/urls";
 import { formatLocaleCode, getLocale, parseLocale } from ".";
 import { DefaultLocale, GetLocaleMetadata } from "./meta";
 import type { Locale, LocaleMetaData } from "./types";
@@ -29,8 +29,8 @@ export function LocaleProvider({ children, initLocale, initMetadata }: Props) {
 
         if (navigate) {
             const newLangMetadata = GetLocaleMetadata(locale);
-            const newUrl = alterUrlHintLocale(newLangMetadata || DefaultLocale);
-            navigate(newUrl.href.replace(newUrl.origin, ""), { preventScrollReset: true });
+            const updatedPath = changeHintLocale(newLangMetadata || DefaultLocale, omitOrigin(new URL(window.location.href)));
+            navigate(updatedPath, { preventScrollReset: true });
         }
 
         setTranslation(await getLocale(locale));
@@ -53,21 +53,6 @@ export function LocaleProvider({ children, initLocale, initMetadata }: Props) {
     );
 }
 
-/**
- * Changes the existing hint locale in the url to be the one provided, if doesn't exist already adds the hint locale param
- */
-export function alterUrlHintLocale(locale: LocaleMetaData, omitDefaultLocale = true, url = getCurrLocation()) {
-    const localeCode = formatLocaleCode(locale);
-
-    if (omitDefaultLocale === true && localeCode === formatLocaleCode(DefaultLocale)) {
-        url.searchParams.delete(HINT_LOCALE_KEY);
-        return url;
-    }
-
-    url.searchParams.set(HINT_LOCALE_KEY, localeCode);
-    return url;
-}
-
 interface Props {
     children: ReactNode;
     initLocale: Locale;
@@ -75,5 +60,5 @@ interface Props {
 }
 
 export function useTranslation() {
-    return use(LocaleContext);
+    return useContext(LocaleContext);
 }

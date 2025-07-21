@@ -1,4 +1,6 @@
-import type { Location, NavigateFunction } from "react-router";
+import type { Location } from "react-router";
+import type { NavigateFunction } from "~/components/ui/link";
+import { omitOrigin } from "~/utils/urls";
 
 export default function RefreshPage(navigate: NavigateFunction, location: Location | URL | string) {
     let _url = new URL("https://example.com");
@@ -6,11 +8,11 @@ export default function RefreshPage(navigate: NavigateFunction, location: Locati
     if (typeof location === "string") {
         _url = new URL(`https://example.com${location}`);
     } else {
-        _url = new URL(`https://example.com${location.pathname}${location.search}${location.hash}`);
+        _url = new URL(`https://example.com${omitOrigin(location)}`);
     }
 
     _url.searchParams.set("revalidate", "true");
-    const navigatePath = _url.toString().replace(_url.origin, "");
+    const navigatePath = omitOrigin(_url);
 
     navigate(navigatePath, { replace: true, viewTransition: false, preventScrollReset: true });
 }

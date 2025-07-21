@@ -2,10 +2,10 @@ import MarkdownRenderBox from "~/components/md-editor/md-renderer";
 import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
-import { FormatUrl_WithHintLocale } from "~/utils/urls";
+import { changeHintLocale } from "~/utils/urls";
 
 export default function () {
-    const { t } = useTranslation();
+    const { t, locale } = useTranslation();
 
     return (
         <MarkdownRenderBox
@@ -16,8 +16,8 @@ export default function () {
                 siteName_Short: Config.SITE_NAME_SHORT,
                 siteName_Long: Config.SITE_NAME_LONG,
                 websiteUrl: Config.FRONTEND_URL,
-                sessionSettings_PageUrl: `${Config.FRONTEND_URL}${FormatUrl_WithHintLocale("settings/sessions")}`,
-                accountSettings_PageUrl: `${Config.FRONTEND_URL}${FormatUrl_WithHintLocale("settings/account")}`,
+                sessionSettings_PageUrl: changeHintLocale(locale, "settings/sessions"),
+                accountSettings_PageUrl: changeHintLocale(locale, "settings/account"),
             })}
         />
     );

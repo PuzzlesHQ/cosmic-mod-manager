@@ -3,7 +3,6 @@ import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
-import { getCurrLocation } from "~/utils/urls";
 
 interface Props {
     title?: string | React.ReactNode;
@@ -41,6 +40,6 @@ export function meta() {
         title: `${t.error.pageNotFound} | ${Config.SITE_NAME_SHORT}`,
         description: t.error.pageNotFoundDesc,
         image: Config.SITE_ICON,
-        url: getCurrLocation().href,
+        url: undefined,
     });
 }

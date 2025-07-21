@@ -1,16 +1,10 @@
 import type React from "react";
-import {
-    useNavigate as __useNavigate,
-    type LinkProps,
-    type NavigateFunction,
-    type NavigateOptions,
-    Link as RemixLink,
-    useLocation,
-} from "react-router";
+import { useNavigate as __useNavigate, type LinkProps, type NavigateOptions, Link as RemixLink, useLocation } from "react-router";
 import type { VariantProps } from "~/components/types";
 import { cn } from "~/components/utils";
 import { usePreferences } from "~/hooks/preferences";
-import { FormatUrl_WithHintLocale, isCurrLinkActive } from "~/utils/urls";
+import { useTranslation } from "~/locales/provider";
+import { changeHintLocale, isCurrLinkActive } from "~/utils/urls";
 import { buttonVariants } from "./button";
 
 export enum LinkPrefetchStrategy {
@@ -26,8 +20,10 @@ interface CustomLinkProps extends LinkProps {
 }
 
 export default function Link({ ref, escapeUrlWrapper, ...props }: CustomLinkProps) {
-    let to = props.to?.toString() || "#";
-    if (escapeUrlWrapper !== true) to = FormatUrl_WithHintLocale(to);
+    const { locale } = useTranslation();
+
+    let to = props.to?.toString().trim() || "#";
+    if (escapeUrlWrapper !== true && !to.startsWith("#")) to = changeHintLocale(locale, to);
     const { viewTransitions } = usePreferences();
 
     return <RemixLink ref={ref} {...props} to={to} viewTransition={viewTransitions !== false} />;
@@ -125,15 +121,25 @@ export function VariantButtonLink({
     );
 }
 
-export function useNavigate(escapeUrlWrapper?: boolean, initOptions?: NavigateOptions) {
+export function useNavigate(dontAlterHintLocale?: boolean, initOptions?: NavigateOptions) {
     const navigate = __useNavigate();
+    const { locale } = useTranslation();
     const { viewTransitions } = usePreferences();
 
-    function __navigate(to: string, options?: NavigateOptions): void {
-        const toUrl = escapeUrlWrapper === true ? to : FormatUrl_WithHintLocale(to);
+    function __navigate(_to: string, options?: NavigateOptions): void {
+        const to = _to?.trim() || "#";
+        const toUrl = dontAlterHintLocale || to.startsWith("#") ? to : changeHintLocale(locale, to);
+
+        console.log({
+            to,
+            toUrl,
+            locale,
+        });
 
         navigate(toUrl, { viewTransition: viewTransitions !== false, ...initOptions, ...options });
     }
 
-    return __navigate as NavigateFunction;
+    return __navigate;
 }
+
+export type NavigateFunction = ReturnType<typeof useNavigate>;

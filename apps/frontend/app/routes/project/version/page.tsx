@@ -14,7 +14,7 @@ import VersionPage from "~/pages/project/version/page";
 import { getProjectLoaderData } from "~/routes/project/utils";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
-import { getCurrLocation, ProjectPagePath, VersionPagePath } from "~/utils/urls";
+import { ProjectPagePath, VersionPagePath } from "~/utils/urls";
 import type { Route } from "./+types/page";
 
 export default function () {
@@ -57,8 +57,7 @@ export function meta(props: Route.MetaArgs) {
     const project = ctx?.projectData;
     const versionSlug = props.params?.versionSlug;
 
-    const url = getCurrLocation();
-    const version = filterGameVersion(ctx.versions, versionSlug, new URLSearchParams(url.search));
+    const version = filterGameVersion(ctx.versions, versionSlug, new URLSearchParams(props.location.search));
 
     if (!project?.id) {
         return null;

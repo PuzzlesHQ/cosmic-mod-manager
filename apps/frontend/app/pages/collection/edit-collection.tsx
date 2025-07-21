@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { EditIcon, SaveIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation } from "react-router";
 import IconPicker from "~/components/icon-picker";
 import { fallbackProjectIcon } from "~/components/icons";
 import RefreshPage from "~/components/misc/refresh-page";
@@ -27,6 +27,7 @@ import {
 } from "~/components/ui/dialog";
 import { CharacterCounter, Form, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
+import { useNavigate } from "~/components/ui/link";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";

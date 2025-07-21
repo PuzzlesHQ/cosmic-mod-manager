@@ -72,7 +72,6 @@ export default function ProjectPageLayout() {
     const projectData = ctx.projectData;
 
     const navigate = useNavigate();
-    const customNavigate = useNavigate();
     const location = useLocation();
 
     const isVersionDetailsPage = isCurrLinkActive(
@@ -241,7 +240,7 @@ export default function ProjectPageLayout() {
                                         ) {
                                             const link = VersionPagePath(ctx.projectType, projectData.slug, version.slug);
                                             if (window.location.pathname !== link) {
-                                                customNavigate(link);
+                                                navigate(link);
                                             }
                                         }
                                     }}

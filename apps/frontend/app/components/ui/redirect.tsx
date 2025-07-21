@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import { useLocation } from "react-router";
 import { useTranslation } from "~/locales/provider";
 import { setReturnUrl } from "~/pages/auth/oauth-providers";
-import { FormatUrl_WithHintLocale } from "~/utils/urls";
+import { changeHintLocale } from "~/utils/urls";
 import { useNavigate } from "./link";
 
 export default function Redirect({ to }: { to: string }) {
-    const { t } = useTranslation();
+    const { t, locale } = useTranslation();
     const location = useLocation();
 
     useEffect(() => {
@@ -14,7 +14,7 @@ export default function Redirect({ to }: { to: string }) {
             setReturnUrl(location);
         }
 
-        window.location.href = new URL(FormatUrl_WithHintLocale(to), window.location.href).href;
+        window.location.href = new URL(changeHintLocale(locale, to), window.location.origin).href;
     }, []);
 
     return (

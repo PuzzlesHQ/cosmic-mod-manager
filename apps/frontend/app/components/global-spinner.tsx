@@ -1,4 +1,4 @@
-import { createContext, use, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 interface SpinnerCtx {
     showSpinner: boolean;
@@ -17,5 +17,5 @@ export function SpinnerCtxProvider({ children }: { children: React.ReactNode }) 
 }
 
 export function useSpinnerCtx() {
-    return use(SpinnerCtx);
+    return useContext(SpinnerCtx);
 }

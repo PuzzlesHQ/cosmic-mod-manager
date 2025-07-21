@@ -7,7 +7,7 @@ import { LocaleProvider } from "~/locales/provider";
 import { getHintLocale } from "~/utils/urls";
 
 startTransition(async () => {
-    const hintLocale = getHintLocale();
+    const hintLocale = getHintLocale(new URLSearchParams(window.location.search));
     const initLocaleModule = await getLocale(hintLocale);
     const initLocaleMetadata = GetLocaleMetadata(hintLocale);
 

@@ -43,7 +43,7 @@ import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";
-import { FormatUrl_WithHintLocale, OrgPagePath, ProjectPagePath } from "~/utils/urls";
+import { joinPaths, OrgPagePath, ProjectPagePath } from "~/utils/urls";
 import { LeaveTeam } from "./members/page";
 
 export default function GeneralSettingsPage() {
@@ -96,7 +96,7 @@ export default function GeneralSettingsPage() {
             }
 
             const newSlug: string = result?.slug || projectData.slug;
-            RefreshPage(navigate, `/${ctx.projectType}/${newSlug}/settings`);
+            RefreshPage(navigate, joinPaths(ctx.projectType, newSlug, "settings"));
             toast.success(result?.message || t.common.success);
         } finally {
             setIsLoading(false);
@@ -431,7 +431,7 @@ export default function GeneralSettingsPage() {
                 returnUrl={
                     projectData.organisation?.id
                         ? OrgPagePath(projectData.organisation?.slug, "settings/projects")
-                        : FormatUrl_WithHintLocale("/dashboard/projects")
+                        : "/dashboard/projects"
                 }
             />
         </>

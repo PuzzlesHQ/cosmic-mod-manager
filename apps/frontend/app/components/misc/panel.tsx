@@ -91,7 +91,7 @@ export function SidePanel(props: SidePanelProps) {
 
                         {section.items.map((item) => (
                             <ButtonLink
-                                className="relative"
+                                className="relative whitespace-normal"
                                 url={item.href}
                                 key={item.href}
                                 preventScrollReset

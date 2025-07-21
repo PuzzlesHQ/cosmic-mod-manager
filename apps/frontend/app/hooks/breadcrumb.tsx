@@ -1,10 +1,12 @@
 import { projectTypes } from "@app/utils/config/project";
 import { prepend, removeLeading } from "@app/utils/string";
-import { createContext, use, useState } from "react";
+import { createContext, useContext, useState } from "react";
+import { useLocation } from "react-router";
 import { itemType, MicrodataItemProps, MicrodataItemType } from "~/components/microdata";
 import Link from "~/components/ui/link";
 import { DefaultLocale } from "~/locales/meta";
-import { alterUrlHintLocale, useTranslation } from "~/locales/provider";
+import { useTranslation } from "~/locales/provider";
+import { changeHintLocale, omitOrigin } from "~/utils/urls";
 
 interface Breadcrumb {
     label: string;
@@ -28,7 +30,7 @@ export function BreadcrumbsContextProvider({ children }: { children: React.React
 }
 
 export function useBreadcrumbs() {
-    return use(BreadcrumbsContext);
+    return useContext(BreadcrumbsContext);
 }
 
 export function PageBreadCrumbs() {
@@ -65,7 +67,8 @@ export function PageBreadCrumbs() {
 
 function getBreadCrumbsFromUrl() {
     const { t } = useTranslation();
-    const path = removeLeading("/", alterUrlHintLocale(DefaultLocale, true).pathname);
+    const loc = useLocation();
+    const path = removeLeading("/", changeHintLocale(DefaultLocale, omitOrigin(loc), true));
     const pathParts = path.split("/");
 
     return pathParts

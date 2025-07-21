@@ -14,14 +14,13 @@ import type React from "react";
 import { useState } from "react";
 import { useSearchParams } from "react-router";
 import { TagIcon } from "~/components/icons/tag-icons";
+import { Button } from "~/components/ui/button";
 import { LabelledCheckbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
-import { VariantButtonLink } from "~/components/ui/link";
 import { SkipNav } from "~/components/ui/skip-nav";
 import { LabelledTernaryCheckbox, TernaryStates } from "~/components/ui/ternary-checkbox";
 import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
-import { getCurrLocation } from "~/utils/urls";
 import { NOT, removePageOffsetSearchParam, updateSearchParam, updateTernaryState_SearchParam } from "./provider";
 
 const SHOW_ENV_FILTER_FOR_TYPES = [ProjectType.MOD, ProjectType.MODPACK /*, ProjectType.DATAMOD */];
@@ -51,17 +50,9 @@ const filtersKeyList = [
     licenseFilterParamNamespace,
 ];
 
-function clearFilters() {
-    const currUrl = getCurrLocation();
-    for (const key of filtersKeyList) {
-        currUrl.searchParams.delete(key);
-    }
-
-    return currUrl.href.replace(currUrl.origin, "");
-}
-
 function SearchFilters({ type, searchParams }: Props) {
     const { t } = useTranslation();
+    const [, setSearchParams] = useSearchParams();
     const [showAllVersions, setShowAllVersions] = useState(false);
     const [query, setQuery] = useState("");
 
@@ -124,6 +115,16 @@ function SearchFilters({ type, searchParams }: Props) {
     const isUniversalSearchPage = type.length > 1;
     const defaultOpenAdditionalFilters = !isUniversalSearchPage;
 
+    function clearFilters() {
+        setSearchParams((prev) => {
+            for (const key of filtersKeyList) {
+                prev.delete(key);
+            }
+
+            return prev;
+        });
+    }
+
     return (
         <>
             <SkipNav />
@@ -137,15 +138,15 @@ function SearchFilters({ type, searchParams }: Props) {
                     }}
                 />
 
-                <VariantButtonLink
-                    to={clearFilters()}
+                <Button
+                    onClick={clearFilters}
                     variant="secondary"
                     className="!w-10 !h-10 shrink-0"
                     title={t.search.clearFilters}
                     size="icon"
                 >
                     <FilterXIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                </VariantButtonLink>
+                </Button>
             </div>
 
             <FilterCategory
@@ -153,7 +154,10 @@ function SearchFilters({ type, searchParams }: Props) {
                 selectedItems={searchParams.getAll(loaderFilterParamNamespace)}
                 label={loadersFilterLabel}
                 filterToggledUrl={(loaderName) => {
+                    const params = new URLSearchParams(searchParams);
+
                     return updateTernaryState_SearchParam({
+                        searchParams: params,
                         key: loaderFilterParamNamespace,
                         value: loaderName,
                         searchParamModifier: removePageOffsetSearchParam,
@@ -168,7 +172,10 @@ function SearchFilters({ type, searchParams }: Props) {
                 listWrapperClassName="max-h-[15rem] overflow-y-auto px-0.5"
                 formatLabel={false}
                 filterToggledUrl={(version) => {
+                    const params = new URLSearchParams(searchParams);
+
                     return updateTernaryState_SearchParam({
+                        searchParams: params,
                         key: gameVersionFilterParamNamespace,
                         value: version,
                         searchParamModifier: removePageOffsetSearchParam,
@@ -193,8 +200,11 @@ function SearchFilters({ type, searchParams }: Props) {
                     selectedItems={searchParams.getAll(environmentFilterParamNamespace)}
                     label={environmentFilterLabel}
                     filterToggledUrl={(env) => {
+                        const params = new URLSearchParams(searchParams);
+
                         return removePageOffsetSearchParam(
                             updateSearchParam({
+                                searchParams: params,
                                 key: environmentFilterParamNamespace,
                                 value: env,
                                 deleteIfExists: true,
@@ -211,7 +221,10 @@ function SearchFilters({ type, searchParams }: Props) {
                 selectedItems={searchParams.getAll(categoryFilterParamNamespace)}
                 label={categoryFilterLabel}
                 filterToggledUrl={(category) => {
+                    const params = new URLSearchParams(searchParams);
+
                     return updateTernaryState_SearchParam({
+                        searchParams: params,
                         key: categoryFilterParamNamespace,
                         value: category,
                         searchParamModifier: removePageOffsetSearchParam,
@@ -225,7 +238,10 @@ function SearchFilters({ type, searchParams }: Props) {
                 selectedItems={searchParams.getAll(categoryFilterParamNamespace)}
                 label={featureFilterLabel}
                 filterToggledUrl={(feature) => {
+                    const params = new URLSearchParams(searchParams);
+
                     return updateTernaryState_SearchParam({
+                        searchParams: params,
                         key: categoryFilterParamNamespace,
                         value: feature,
                         searchParamModifier: removePageOffsetSearchParam,
@@ -239,7 +255,10 @@ function SearchFilters({ type, searchParams }: Props) {
                 selectedItems={searchParams.getAll(categoryFilterParamNamespace)}
                 label={resolutionFilterLabel}
                 filterToggledUrl={(resolution) => {
+                    const params = new URLSearchParams(searchParams);
+
                     return updateTernaryState_SearchParam({
+                        searchParams: params,
                         key: categoryFilterParamNamespace,
                         value: resolution,
                         searchParamModifier: removePageOffsetSearchParam,
@@ -253,7 +272,10 @@ function SearchFilters({ type, searchParams }: Props) {
                 selectedItems={searchParams.getAll(categoryFilterParamNamespace)}
                 label={performanceFilterLabel}
                 filterToggledUrl={(performance) => {
+                    const params = new URLSearchParams(searchParams);
+
                     return updateTernaryState_SearchParam({
+                        searchParams: params,
                         key: categoryFilterParamNamespace,
                         value: performance,
                         searchParamModifier: removePageOffsetSearchParam,
@@ -267,7 +289,10 @@ function SearchFilters({ type, searchParams }: Props) {
                 selectedItems={searchParams.getAll(licenseFilterParamNamespace)}
                 label={licenseFilterLabel}
                 filterToggledUrl={(license) => {
+                    const params = new URLSearchParams(searchParams);
+
                     return updateTernaryState_SearchParam({
+                        searchParams: params,
                         key: licenseFilterParamNamespace,
                         value: license,
                         searchParamModifier: removePageOffsetSearchParam,
@@ -370,8 +395,8 @@ function FilterCategory({
                         <LabelledTernaryCheckbox
                             state={state}
                             onCheckedChange={() => {
-                                const sp = filterToggledUrl(itemValue);
-                                setSearchParams(sp, { preventScrollReset: true });
+                                const params = filterToggledUrl(itemValue);
+                                setSearchParams(params, { preventScrollReset: true });
                             }}
                             key={itemValue}
                         >

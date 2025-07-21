@@ -2,9 +2,8 @@ import { getProjectTypeFromName } from "@app/utils/convertors";
 import { getCurrMember } from "@app/utils/project";
 import type { ProjectType } from "@app/utils/types";
 import type { ProjectDetailsData, ProjectListItem, ProjectVersionData, TeamMember } from "@app/utils/types/api";
-import { useRouteLoaderData } from "react-router";
+import { useLocation, useRouteLoaderData } from "react-router";
 import type { ProjectLoaderData } from "~/routes/project/data-wrapper";
-import { getCurrLocation } from "~/utils/urls";
 import { useSession } from "./session";
 
 export interface ProjectContextData {
@@ -73,7 +72,8 @@ export function useProjectData(): ProjectContextData {
 }
 
 export function useProjectType(customPath?: string): "project" | ProjectType {
-    const pathname = customPath ? customPath : getCurrLocation().pathname;
+    const loc = useLocation();
+    const pathname = customPath ? customPath : loc.pathname;
 
     let typeStr = pathname?.split("/")[1];
     if (typeStr?.endsWith("s")) typeStr = typeStr.slice(0, -1);

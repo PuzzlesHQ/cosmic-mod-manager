@@ -1,6 +1,9 @@
 import { append, prepend, removeLeading, removeTrailing } from "@app/utils/string";
+import type { Location } from "react-router";
 import { useLocation } from "react-router";
-import { parseLocale } from "~/locales";
+import { formatLocaleCode, parseLocale } from "~/locales";
+import { DefaultLocale } from "~/locales/meta";
+import type { LocaleMetaData } from "~/locales/types";
 import Config from "./config";
 
 export const HINT_LOCALE_KEY = "hl";
@@ -8,8 +11,7 @@ export const HINT_LOCALE_KEY = "hl";
 export { isCurrLinkActive } from "@app/utils/string";
 export { append, prepend, removeLeading, removeTrailing };
 
-export function getHintLocale(searchParams?: URLSearchParams) {
-    const params = searchParams ? searchParams : getCurrLocation().searchParams;
+export function getHintLocale(params: URLSearchParams) {
     const hlParam = params.get(HINT_LOCALE_KEY);
     const localeCode = parseLocale(hlParam);
 
@@ -23,31 +25,31 @@ export function getCurrLocation() {
     return new URL(`${Config.FRONTEND_URL}${loc.pathname}${loc.search}${loc.hash}`);
 }
 
-// ? URL Formatters
+export function omitOrigin(loc: Location<unknown> | URL) {
+    let path = loc.pathname;
+    if (loc.search.length > 1) path += loc.search;
+    if (loc.hash.length > 1) path += loc.hash;
+
+    return path;
+}
 
 /**
- * Constructs a URL path with an optional language prefix and additional path segment.
- *
- * @param url - The main path segment of the URL.
- * @param hl - An optional language prefix to prepend to the URL.
- * @returns The constructed URL path as a string.
+ * Changes the existing hint locale in the url to be the one provided, if doesn't exist already adds the hint locale param
  */
-export function FormatUrl_WithHintLocale(url: string, hl?: string) {
-    if (url.startsWith("http") || url.startsWith("mailto:")) return url;
+export function changeHintLocale(locale: LocaleMetaData, _path: string, omitDefaultLocale = true) {
+    const isFullUrl = _path.startsWith("http");
+    const url = new URL(_path, Config.FRONTEND_URL);
 
-    const hintLocale = hl ? hl : getHintLocale();
-    const searchParams = new URLSearchParams(url.split("?")[1] || `?${HINT_LOCALE_KEY}=${hintLocale}`);
+    const localeCode = formatLocaleCode(locale);
 
-    if (!hintLocale) searchParams.delete(HINT_LOCALE_KEY);
-    else searchParams.set(HINT_LOCALE_KEY, hintLocale);
+    if (omitDefaultLocale === true && localeCode === formatLocaleCode(DefaultLocale)) {
+        url.searchParams.delete(HINT_LOCALE_KEY);
+    } else {
+        url.searchParams.set(HINT_LOCALE_KEY, localeCode);
+    }
 
-    const fragment = url.split("#")[1];
-
-    let newUrl = url.split("?")[0]?.split("#")[0];
-    if (searchParams.size) newUrl += `?${searchParams.toString()}`;
-    if (fragment) newUrl += `#${fragment}`;
-
-    return prepend("/", newUrl);
+    if (isFullUrl) return url.href;
+    return omitOrigin(url);
 }
 
 export function ProjectPagePath(type: string, projectSlug: string, extra?: string) {
@@ -77,10 +79,15 @@ export function ReportPagePath(reportId: string, isMod = false) {
 export function joinPaths(...paths: (string | undefined | null)[]) {
     if (!paths || paths.length === 0) return "";
 
-    // An empty string in the start so that Array.join adds a leading slash
-    const pathFragments: string[] = [""];
-    for (const path of paths) {
+    const pathFragments: string[] = [];
+
+    for (let i = 0; i < paths.length; i++) {
+        const path = paths[i];
+
         if (path && path.length > 0) {
+            // An empty string in the start so that Array.join adds a leading slash
+            if (i === 0 && !path?.startsWith("http")) pathFragments.push("");
+
             pathFragments.push(removeLeading("/", removeTrailing("/", path)));
         }
     }
