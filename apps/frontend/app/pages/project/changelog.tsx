@@ -69,7 +69,7 @@ export default function VersionChangelogs() {
                                             <TooltipTemplate content="Dev release!" className="font-normal">
                                                 <FlaskConicalIcon
                                                     aria-hidden
-                                                    className="h-btn-icon-md w-btn-icon-md cursor-help text-danger-fg"
+                                                    className="h-btn-icon-md w-btn-icon-md cursor-help text-error-fg"
                                                 />
                                             </TooltipTemplate>
                                         </TooltipProvider>
