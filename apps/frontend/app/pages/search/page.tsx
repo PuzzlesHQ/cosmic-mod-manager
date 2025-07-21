@@ -9,7 +9,7 @@ import {
 } from "@app/utils/config/search";
 import { type ProjectType, SearchResultSortMethod } from "@app/utils/types";
 import { FilterIcon, ImageIcon, LayoutListIcon, SearchIcon } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useSpinnerCtx } from "~/components/global-spinner";
 import { ListViewType } from "~/components/misc/search-list-item";
@@ -71,14 +71,12 @@ export default function SearchPage() {
 
     const searchLabel = t.search[projectType];
 
-    const filtersComponent = useMemo(() => {
-        return (
-            <SearchFilters
-                type={projectType_Coerced === projectType ? [projectType_Coerced] : projectTypes}
-                searchParams={searchParams}
-            />
-        );
-    }, [projectType, showFilters, searchParams.toString()]);
+    const filtersComponent = (
+        <SearchFilters
+            type={projectType_Coerced === projectType ? [projectType_Coerced] : projectTypes}
+            searchParams={searchParams}
+        />
+    );
 
     return (
         <div className="search-page-grid-layout grid w-full gap-panel-cards pb-16">

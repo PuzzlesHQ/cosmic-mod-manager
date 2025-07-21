@@ -1,7 +1,6 @@
 import { isModerator } from "@app/utils/constants/roles";
 import { type DetailedReport, ReportItemType } from "@app/utils/types/api/report";
 import { ChevronRightIcon, GitCommitHorizontalIcon, LockKeyholeIcon } from "lucide-react";
-import { useMemo } from "react";
 import { fallbackProjectIcon, fallbackUserIcon } from "~/components/icons";
 import { ImgWrapper } from "~/components/ui/avatar";
 import { Badge } from "~/components/ui/badge";
@@ -20,11 +19,7 @@ interface Props {
 }
 
 export default function ReportList(props: Props) {
-    const data = props.data;
-
-    const detailedReports = useMemo(() => {
-        return getDetailedReports(data);
-    }, [props.data.reports]);
+    const detailedReports = getDetailedReports(props.data);
 
     return (
         <div className="grid w-full gap-panel-cards">

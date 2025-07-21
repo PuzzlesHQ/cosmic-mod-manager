@@ -3,7 +3,7 @@ import { Capitalize } from "@app/utils/string";
 import type { LoggedInUserData } from "@app/utils/types";
 import { Building2Icon, ChevronDownIcon, LibraryIcon, PlusIcon, SettingsIcon } from "lucide-react";
 import type React from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigation } from "react-router";
 import { BrandIcon, CubeIcon } from "~/components/icons";
 import { Button } from "~/components/ui/button";
@@ -89,13 +89,11 @@ export default function Navbar(props: NavbarProps) {
         toggleNavMenu(false);
     }, [location.pathname, location.search, location.hash]);
 
-    const SettingsButton = useMemo(() => {
-        return (
-            <VariantButtonLink to="/settings" variant="secondary" className="aspect-square rounded-full p-0">
-                <SettingsIcon className="h-btn-icon-md w-btn-icon-md" />
-            </VariantButtonLink>
-        );
-    }, []);
+    const SettingsButton = (
+        <VariantButtonLink to="/settings" variant="secondary" className="aspect-square rounded-full p-0">
+            <SettingsIcon className="h-btn-icon-md w-btn-icon-md" />
+        </VariantButtonLink>
+    );
 
     return (
         <header className="relative w-full">

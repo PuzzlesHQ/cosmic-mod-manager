@@ -104,21 +104,14 @@ export function SearchProvider(props: SearchProviderProps) {
     useEffect(() => {
         if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
         if (searchQueryParam === searchTerm_state) return;
-        // if (navigation.location && navigatedOutsideSearchPage) return;
 
         timeoutRef.current = window.setTimeout(() => {
-            // if (navigation.location && navigatedOutsideSearchPage) return;
             updateSearchTerm_Param(searchTerm_state);
         }, 250);
     }, [searchTerm_state]);
 
     // Reset search term and query data when navigating away from curr page
     useEffect(() => {
-        console.log({
-            query: query.data?.projectType,
-            path: projectType,
-        });
-
         if (!location.pathname) return;
         setSearchTerm_state("");
 
