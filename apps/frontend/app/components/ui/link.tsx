@@ -74,7 +74,7 @@ export function ButtonLink({
             ref={ref}
             className={cn(
                 buttonVariants({ variant: "ghost" }),
-                "bg_hover_stagger h-fit min-h-10 justify-start whitespace-normal",
+                "bg_hover_stagger h-[unset] min-h-10 justify-start whitespace-normal",
                 isActive && activityIndicator && "bg-raised-background hover:brightness-95 dark:hover:brightness-110",
                 isActive && `active ${activeClassName}`,
                 className,
@@ -109,13 +109,7 @@ export function VariantButtonLink({
     ...props
 }: VariantLinkProps & CustomLinkProps) {
     return (
-        <Link
-            to={to}
-            ref={ref}
-            className={cn("flex items-center justify-center gap-2 font-medium", buttonVariants({ variant, size }), className)}
-            aria-label={label}
-            {...props}
-        >
+        <Link to={to} ref={ref} className={cn(buttonVariants({ variant, size }), className)} aria-label={label} {...props}>
             {children}
         </Link>
     );
