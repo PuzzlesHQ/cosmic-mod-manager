@@ -70,10 +70,11 @@ export function shouldRevalidate({ currentParams, nextParams, nextUrl, defaultSh
 
 export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
-    const collection = props.data.collection;
+    const collection = props.data?.collection;
 
     if (!collection?.id) {
         return MetaTags({
+            location: props.location,
             title: t.meta.collectionNotFound,
             description: t.meta.collectionNotFoundDesc(props.params.collectionId),
             image: Config.SITE_ICON,
@@ -82,6 +83,7 @@ export function meta(props: Route.MetaArgs) {
     }
 
     return MetaTags({
+        location: props.location,
         title: t.meta.collection(collection.name),
         description: t.meta.collectionDesc(collection.description || "", Config.SITE_NAME_SHORT, collection.name),
         image: collection.icon || Config.SITE_ICON,

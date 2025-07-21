@@ -7,6 +7,7 @@ import OrgSettingsLayout from "~/pages/organization/settings/layout";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
 import { OrgPagePath } from "~/utils/urls";
+import type { Route } from "./+types/layout";
 
 export default function () {
     const session = useSession();
@@ -20,11 +21,12 @@ export default function () {
     return <OrgSettingsLayout />;
 }
 
-export function meta() {
+export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
     const ctx = useOrgData();
 
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(t.organization.orgSettings, ctx.orgData.name),
         description: t.organization.orgSettings,
         image: Config.SITE_ICON,

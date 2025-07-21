@@ -11,12 +11,13 @@ export default ProjectGallery;
 
 export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
-    const ctx = getProjectLoaderData(props.matches);
+    const ctx = getProjectLoaderData(props.matches, props.location.pathname);
 
     const project = ctx?.projectData;
     const projectType = t.navbar[getProjectTypeFromName(project.type[0])];
 
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(project.name, t.project.gallery),
         description: t.meta.galleryDesc(project.gallery.length, project.name, projectType, Config.SITE_NAME_SHORT),
         image: project.icon || "",

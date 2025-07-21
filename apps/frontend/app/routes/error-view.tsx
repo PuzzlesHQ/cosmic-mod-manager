@@ -1,4 +1,5 @@
 import { RotateCwIcon, TriangleAlertIcon } from "lucide-react";
+import type { MetaArgs } from "react-router";
 import { DiscordIcon } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import { useTranslation } from "~/locales/provider";
@@ -32,10 +33,11 @@ export default function () {
     );
 }
 
-export function meta() {
+export function meta(props: MetaArgs) {
     const { t } = useTranslation();
 
     return MetaTags({
+        location: props.location,
         title: t.error.sthWentWrong,
         description: t.error.errorDesc,
         image: Config.SITE_ICON,

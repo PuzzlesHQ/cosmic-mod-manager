@@ -10,10 +10,11 @@ export default ProjectVersionsPage;
 
 export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
-    const ctx = getProjectLoaderData(props.matches);
+    const ctx = getProjectLoaderData(props.matches, props.location.pathname);
     const project = ctx?.projectData;
 
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(project.name, t.project.versions),
         description: t.meta.versionsListDesc(project.name, ctx.versions.length),
         image: project.icon || "",

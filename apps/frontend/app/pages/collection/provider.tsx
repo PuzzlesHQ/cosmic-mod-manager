@@ -1,6 +1,6 @@
 import { disableInteractions, enableInteractions } from "@app/utils/dom";
 import type { Collection, GenericErrorResponse } from "@app/utils/types/api";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, use, useEffect, useState } from "react";
 import { toast } from "~/components/ui/sonner";
 import { useSession } from "~/hooks/session";
 import clientFetch from "~/utils/client-fetch";
@@ -151,5 +151,5 @@ export function CollectionsProvider(props: { children: React.ReactNode }) {
 }
 
 export default function useCollections() {
-    return useContext(CollectionsContext) as CollectionsContext;
+    return use(CollectionsContext) as CollectionsContext;
 }

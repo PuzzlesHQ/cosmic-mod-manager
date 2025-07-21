@@ -7,7 +7,7 @@ import { ReportItemType } from "@app/utils/types/api/report";
 import { imageUrl } from "@app/utils/url";
 import { formatVersionsForDisplay_noOmit } from "@app/utils/version/format-verbose";
 import { ChevronRightIcon, CopyIcon, DownloadIcon, Edit3Icon, FileIcon, LinkIcon, StarIcon } from "lucide-react";
-import { lazy, Suspense, useContext } from "react";
+import { lazy, Suspense, use } from "react";
 import { fallbackProjectIcon, fallbackUserIcon } from "~/components/icons";
 import MarkdownRenderBox from "~/components/md-editor/md-renderer";
 import { FileDownloader } from "~/components/misc/file-downloader";
@@ -48,7 +48,7 @@ interface Props {
 
 export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
     const { t } = useTranslation();
-    const { downloadFile } = useContext(FileDownloader);
+    const { downloadFile } = use(FileDownloader);
 
     const session = useSession();
     const currUsersMembership = ctx.currUsersMembership;

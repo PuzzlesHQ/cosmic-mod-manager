@@ -10,6 +10,7 @@ import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
 import { resJson } from "~/utils/server-fetch";
+import type { Route } from "./+types/page";
 
 export default function () {
     const data = useLoaderData() as LoaderData;
@@ -80,10 +81,11 @@ export function HydrateFallback() {
     return <SuspenseFallback />;
 }
 
-export function meta() {
+export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
 
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(t.dashboard.notifications, Config.SITE_NAME_SHORT),
         description: t.dashboard.notifications,
         image: Config.SITE_ICON,

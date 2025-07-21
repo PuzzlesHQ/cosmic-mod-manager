@@ -75,6 +75,10 @@ export function useProjectType(customPath?: string): "project" | ProjectType {
     const loc = useLocation();
     const pathname = customPath ? customPath : loc.pathname;
 
+    return getProjectTypeFromPath(pathname);
+}
+
+export function getProjectTypeFromPath(pathname: string): "project" | ProjectType {
     let typeStr = pathname?.split("/")[1];
     if (typeStr?.endsWith("s")) typeStr = typeStr.slice(0, -1);
 

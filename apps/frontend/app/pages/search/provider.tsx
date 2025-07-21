@@ -8,7 +8,7 @@ import {
 import { getProjectTypeFromName } from "@app/utils/convertors";
 import type { ProjectType, SearchResultSortMethod } from "@app/utils/types";
 import type { SearchResult } from "@app/utils/types/api";
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, use, useEffect, useRef, useState } from "react";
 import { useLocation, useSearchParams } from "react-router";
 import { useSpinnerCtx } from "~/components/global-spinner";
 import { useProjectType } from "~/hooks/project";
@@ -152,7 +152,7 @@ export function SearchProvider(props: SearchProviderProps) {
 }
 
 export function useSearchContext() {
-    return useContext(SearchContext);
+    return use(SearchContext);
 }
 
 interface UpdateSearchParamProps {

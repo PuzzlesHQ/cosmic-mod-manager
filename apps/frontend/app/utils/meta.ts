@@ -1,4 +1,4 @@
-import { type MetaDescriptor, useLocation } from "react-router";
+import type { Location, MetaDescriptor } from "react-router";
 import { formatLocaleCode } from "~/locales";
 import SupportedLocales, { DefaultLocale, GetLocaleMetadata } from "~/locales/meta";
 import Config from "~/utils/config";
@@ -10,6 +10,7 @@ type BaseMetaProps = {
     siteMetaDescription?: string;
     parentMetaTags?: MetaDescriptor[];
     authorProfile?: string;
+    location: Location<unknown>;
 };
 
 type UnionMetaProps =
@@ -30,11 +31,9 @@ type MetaTagsProps = BaseMetaProps & UnionMetaProps;
  * @param { MetaTags } props
  */
 export function MetaTags(props: MetaTagsProps): MetaDescriptor[] {
-    const loc = useLocation();
-
     if (!props.parentMetaTags) props.parentMetaTags = [];
 
-    const urlObj = new URL(props.url ? props.url : `${Config.FRONTEND_URL}${omitOrigin(loc)}`);
+    const urlObj = new URL(props.url ? props.url : `${Config.FRONTEND_URL}${omitOrigin(props.location)}`);
     const url = urlObj.href;
 
     const currHintLocale = GetLocaleMetadata(getHintLocale(urlObj.searchParams)) || DefaultLocale;
@@ -125,3 +124,10 @@ function AuthorLink(url: string) {
         href: url,
     };
 }
+
+// export async function getLocaleObject(_search: string) {
+//     const searchParams = new URLSearchParams(_search);
+//     const locale = getHintLocale(searchParams);
+
+//     return await getLocale(locale);
+// }

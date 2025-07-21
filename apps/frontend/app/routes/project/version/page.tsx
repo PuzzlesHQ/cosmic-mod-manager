@@ -53,7 +53,7 @@ export default function () {
 
 export function meta(props: Route.MetaArgs) {
     const { t, formattedLocaleName } = useTranslation();
-    const ctx = getProjectLoaderData(props.matches);
+    const ctx = getProjectLoaderData(props.matches, props.location.pathname);
     const project = ctx?.projectData;
     const versionSlug = props.params?.versionSlug;
 
@@ -65,6 +65,7 @@ export function meta(props: Route.MetaArgs) {
 
     if (!version?.id) {
         return MetaTags({
+            location: props.location,
             title: t.meta.addContext(t.error.versionNotFound, project.name),
             description: t.error.versionNotFoundDesc(project.name, t.navbar[getProjectTypeFromName(project.type[0])]),
             image: project.icon || Config.SITE_ICON,
@@ -94,6 +95,7 @@ export function meta(props: Route.MetaArgs) {
     });
 
     return MetaTags({
+        location: props.location,
         title: titleIncludesProjectName ? version.title : t.meta.addContext(version.title, project.name),
         description: description,
         image: project.icon || "",

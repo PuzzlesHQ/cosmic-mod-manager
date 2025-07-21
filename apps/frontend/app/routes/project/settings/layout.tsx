@@ -23,9 +23,10 @@ export default function () {
 
 export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
-    const ctx = getProjectLoaderData(props.matches);
+    const ctx = getProjectLoaderData(props.matches, props.location.pathname);
 
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(ctx.projectData.name, t.common.settings),
         description: t.common.settings,
         image: Config.SITE_ICON,

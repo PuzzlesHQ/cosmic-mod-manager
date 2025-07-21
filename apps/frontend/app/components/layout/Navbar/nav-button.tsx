@@ -55,7 +55,7 @@ export default function NavButton({ session }: NavbuttonProps) {
     return (
         <Popover open={isOpen} onOpenChange={setIsOpen}>
             <PopoverTrigger asChild>
-                <Button size="lg" variant="ghost" aria-label="Profile icon" className="relative m-0 h-fit w-fit rounded-full p-0">
+                <Button variant="ghost" aria-label="Profile icon" className="relative m-0 rounded-full p-0">
                     <ImgWrapper
                         src={imageUrl(session.avatar)}
                         alt={`Profile picture of ${session?.userName}`}

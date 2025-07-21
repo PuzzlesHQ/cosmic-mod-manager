@@ -4,14 +4,16 @@ import OrgProjectsSettings from "~/pages/organization/settings/projects/page";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
 import { OrgPagePath } from "~/utils/urls";
+import type { Route } from "./+types/projects";
 
 export default OrgProjectsSettings;
 
-export function meta() {
+export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
     const ctx = useOrgData();
 
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(t.dashboard.projects, ctx.orgData.name),
         description: t.dashboard.projects,
         image: Config.SITE_ICON,

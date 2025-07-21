@@ -1,7 +1,7 @@
 import { ParseInt } from "@app/utils/string";
 import { VersionReleaseChannel } from "@app/utils/types";
 import { DownloadIcon, FlaskConicalIcon } from "lucide-react";
-import { useContext } from "react";
+import { use } from "react";
 import { useSearchParams } from "react-router";
 import MarkdownRenderBox from "~/components/md-editor/md-renderer";
 import { FileDownloader } from "~/components/misc/file-downloader";
@@ -28,7 +28,7 @@ export default function VersionChangelogs() {
     const pagesCount = Math.ceil((ctx.allProjectVersions?.length || 0) / ITEMS_PER_PAGE);
     const activePage = ParseInt(page) <= pagesCount ? ParseInt(page) : 1;
 
-    const { downloadFile } = useContext(FileDownloader);
+    const { downloadFile } = use(FileDownloader);
 
     const filter = VersionFilters({
         allProjectVersions: ctx.allProjectVersions,

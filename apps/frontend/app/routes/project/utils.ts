@@ -1,9 +1,9 @@
-import { useProjectType } from "~/hooks/project";
+import { getProjectTypeFromPath } from "~/hooks/project";
 import type { Route } from "./+types/data-wrapper";
 
-export function getProjectLoaderData<T extends Route.MetaArgs["matches"]>(matches: T) {
+export function getProjectLoaderData<T extends Route.MetaArgs["matches"]>(matches: T, pathname: string) {
     const _data = matches[1].data;
-    const projectType = useProjectType();
+    const projectType = getProjectTypeFromPath(pathname);
 
     type RouteData = {
         [K in keyof typeof _data]-?: NonNullable<(typeof _data)[K]>;

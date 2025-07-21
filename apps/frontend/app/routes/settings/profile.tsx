@@ -4,6 +4,7 @@ import { useTranslation } from "~/locales/provider";
 import { ProfileSettingsPage } from "~/pages/settings/profile";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
+import type { Route } from "./+types/profile";
 
 export default function () {
     const session = useSession();
@@ -12,10 +13,11 @@ export default function () {
     return <ProfileSettingsPage session={session} />;
 }
 
-export function meta() {
+export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
 
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(t.common.settings, t.settings.publicProfile),
         description: t.settings.publicProfile,
         image: Config.SITE_ICON,

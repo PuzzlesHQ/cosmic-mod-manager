@@ -1,6 +1,6 @@
 import type { Label as LabelPrimitive } from "radix-ui";
 import { Slot } from "radix-ui";
-import { createContext, useContext, useId } from "react";
+import { createContext, use, useId } from "react";
 import {
     Controller,
     type ControllerProps,
@@ -37,8 +37,8 @@ const FormField = <
 };
 
 function useFormField() {
-    const fieldContext = useContext(FormFieldContext);
-    const itemContext = useContext(FormItemContext);
+    const fieldContext = use(FormFieldContext);
+    const itemContext = use(FormItemContext);
     const { getFieldState, formState } = useFormContext();
 
     const fieldState = getFieldState(fieldContext.name, formState);

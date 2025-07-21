@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, use, useEffect, useState } from "react";
 import { ThemePreference } from "~/components/themes/config";
 import { getUserConfig, saveUserConfig, validateConfig } from "./helpers";
 import { applyTheme, MEDIA_PREFERS_LIGHT_THEME, resolveThemePreference } from "./theme";
@@ -71,7 +71,7 @@ export function UserPreferencesProvider({ init, children }: { init: UserPreferen
 }
 
 export function usePreferences() {
-    const ctx = useContext(UserPrefsCtx);
+    const ctx = use(UserPrefsCtx);
     if (ctx === null) throw new Error("usePreferences must be used inside a <UserPreferencesProvider>");
 
     return ctx;

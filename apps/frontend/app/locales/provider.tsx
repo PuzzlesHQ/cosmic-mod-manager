@@ -1,5 +1,5 @@
 import { disableInteractions, enableInteractions } from "@app/utils/dom";
-import { createContext, type ReactNode, useContext, useState } from "react";
+import { createContext, type ReactNode, use, useState } from "react";
 import type { NavigateFunction } from "~/components/ui/link";
 import default_locale from "~/locales/default/translation";
 import { changeHintLocale, omitOrigin } from "~/utils/urls";
@@ -60,5 +60,5 @@ interface Props {
 }
 
 export function useTranslation() {
-    return useContext(LocaleContext);
+    return use(LocaleContext);
 }

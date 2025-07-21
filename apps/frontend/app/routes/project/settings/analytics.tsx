@@ -30,9 +30,10 @@ export const ShouldRevalidate = AnalyticsRoute_ShouldRevalidate;
 
 export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
-    const ctx = getProjectLoaderData(props.matches);
+    const ctx = getProjectLoaderData(props.matches, props.location.pathname);
 
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(ctx.projectData.name, t.dashboard.analytics),
         description: t.dashboard.analytics,
         image: Config.SITE_ICON,

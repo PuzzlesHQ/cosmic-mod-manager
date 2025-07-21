@@ -10,7 +10,7 @@ import { formatLocaleCode, parseLocale } from "~/locales";
 import { SupportedLocalesList } from "~/locales/meta";
 import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
-import { changeHintLocale, omitOrigin } from "~/utils/urls";
+import { changeHintLocale } from "~/utils/urls";
 
 export default function Footer() {
     const { updatePreferences } = usePreferences();
@@ -115,7 +115,7 @@ export default function Footer() {
                     const title = region ? `${locale.name} - ${region.name}` : locale.name;
 
                     const formattedCode = formatLocaleCode(locale);
-                    const url = changeHintLocale(locale, omitOrigin(loc));
+                    const url = changeHintLocale(locale, loc.pathname);
 
                     return (
                         <TextLink

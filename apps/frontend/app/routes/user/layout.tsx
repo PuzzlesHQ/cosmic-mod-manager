@@ -102,6 +102,7 @@ export function meta(props: Route.MetaArgs): MetaDescriptor[] {
 
     if (!userData?.id) {
         return MetaTags({
+            location: props.location,
             title: t.error.userNotFound,
             description: t.error.userNotFoundDesc(userSlug || ""),
             image: Config.SITE_ICON,
@@ -110,6 +111,7 @@ export function meta(props: Route.MetaArgs): MetaDescriptor[] {
     }
 
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(userData.userName, Config.SITE_NAME_SHORT),
         description: t.meta.userPageDesc(userData.bio || "", userData.userName, Config.SITE_NAME_SHORT),
         image: userData?.avatar || Config.SITE_ICON,

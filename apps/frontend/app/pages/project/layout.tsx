@@ -26,7 +26,7 @@ import {
     TagsIcon,
 } from "lucide-react";
 import type React from "react";
-import { Suspense, useContext } from "react";
+import { Suspense, use } from "react";
 import { Outlet, useLocation } from "react-router";
 import { DiscordIcon, fallbackOrgIcon, fallbackProjectIcon, fallbackUserIcon } from "~/components/icons";
 import tagIcons from "~/components/icons/tag-icons";
@@ -65,7 +65,7 @@ import UpdateProjectStatusDialog from "./update-project-status";
 
 export default function ProjectPageLayout() {
     const { t } = useTranslation();
-    const { downloadFile } = useContext(FileDownloader);
+    const { downloadFile } = use(FileDownloader);
 
     const session = useSession();
     const ctx = useProjectData();

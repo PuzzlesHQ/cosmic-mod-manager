@@ -28,10 +28,11 @@ export async function loader({ request: req }: Route.LoaderArgs) {
     return data as Statistics;
 }
 
-export function meta() {
+export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
 
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(t.moderation.statistics, Config.SITE_NAME_SHORT),
         description: t.moderation.statistics,
         image: Config.SITE_ICON,

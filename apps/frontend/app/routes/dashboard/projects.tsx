@@ -20,10 +20,11 @@ export async function loader(props: Route.LoaderArgs): Promise<ProjectListItem[]
     return projects || [];
 }
 
-export function meta() {
+export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
 
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(t.dashboard.projects, Config.SITE_NAME_SHORT),
         description: t.dashboard.projects,
         image: Config.SITE_ICON,

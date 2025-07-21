@@ -2,6 +2,7 @@ import MarkdownRenderBox from "~/components/md-editor/md-renderer";
 import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
+import type { Route } from "./+types/about";
 
 export default function () {
     const { t } = useTranslation();
@@ -19,10 +20,11 @@ export default function () {
     );
 }
 
-export function meta() {
+export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
 
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(t.meta.about, Config.SITE_NAME_SHORT),
         description: t.meta.about,
         image: Config.SITE_ICON,

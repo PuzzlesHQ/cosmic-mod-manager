@@ -81,11 +81,12 @@ export async function loader(props: Route.LoaderArgs): Promise<ProjectLoaderData
 
 export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
-    const data = getProjectLoaderData(props.matches);
+    const data = getProjectLoaderData(props.matches, props.location.pathname);
     const project = data?.projectData;
 
     if (!project) {
         return MetaTags({
+            location: props.location,
             title: t.meta.addContext(t.error.projectNotFound, Config.SITE_NAME_SHORT),
             description: t.error.projectNotFoundDesc(t.navbar[getProjectTypeFromName(data.projectType)], data.projectSlug),
             image: Config.SITE_ICON,
@@ -100,6 +101,7 @@ export function meta(props: Route.MetaArgs) {
     const projectType_translated = t.navbar[getProjectTypeFromName(project.type[0])];
 
     return MetaTags({
+        location: props.location,
         title: t.meta.project(project.name, projectType_translated),
         description: t.meta.projectDesc(project.name, project.summary, projectType_translated, author, Config.SITE_NAME_SHORT),
         image: project.icon || "",

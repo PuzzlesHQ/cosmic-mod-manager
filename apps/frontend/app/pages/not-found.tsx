@@ -3,6 +3,7 @@ import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
+import type { Route } from "../routes/+types/$";
 
 interface Props {
     title?: string | React.ReactNode;
@@ -33,10 +34,11 @@ export default function NotFoundPage({ className, title, description, linkHref, 
     );
 }
 
-export function meta() {
+export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
 
     return MetaTags({
+        location: props.location,
         title: `${t.error.pageNotFound} | ${Config.SITE_NAME_SHORT}`,
         description: t.error.pageNotFoundDesc,
         image: Config.SITE_ICON,

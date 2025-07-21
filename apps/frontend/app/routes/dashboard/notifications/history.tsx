@@ -4,6 +4,7 @@ import { useTranslation } from "~/locales/provider";
 import NotificationsHistoryPage from "~/pages/dashboard/notification/history";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
+import type { Route } from "./+types/history";
 import { clientLoader as NotificationsDataLoader } from "./page";
 
 export default function () {
@@ -25,10 +26,11 @@ export function HydrateFallback() {
     return <SuspenseFallback />;
 }
 
-export function meta() {
+export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
 
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(t.dashboard.notifHistory, Config.SITE_NAME_SHORT),
         description: t.dashboard.viewNotifHistory,
         image: Config.SITE_ICON,

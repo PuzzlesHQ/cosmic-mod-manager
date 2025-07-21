@@ -8,10 +8,13 @@ export default ModerationPage;
 
 export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
-    const ctx = getProjectLoaderData(props.matches);
+    const ctx = getProjectLoaderData(props.matches, props.location.pathname);
     const project = ctx?.projectData;
 
+    if (!project?.id) return null;
+
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(project.name, t.moderation.moderation),
         description: t.moderation.moderation,
         image: project.icon || "",

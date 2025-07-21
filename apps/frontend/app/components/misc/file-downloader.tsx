@@ -1,10 +1,10 @@
 import { DownloadIcon } from "lucide-react";
-import { createContext, useContext, useState } from "react";
+import { createContext, use, useState } from "react";
 import { toast } from "sonner";
 import { cn } from "~/components/utils";
 
 export function DownloadRipple() {
-    const { isAnimationPlaying, isVisible } = useContext(FileDownloader);
+    const { isAnimationPlaying, isVisible } = use(FileDownloader);
 
     return (
         <div

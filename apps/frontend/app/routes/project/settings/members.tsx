@@ -24,9 +24,10 @@ export async function loader(props: Route.LoaderArgs): Promise<Organisation[]> {
 
 export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
-    const ctx = getProjectLoaderData(props.matches);
+    const ctx = getProjectLoaderData(props.matches, props.location.pathname);
 
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(ctx.projectData.name, t.projectSettings.members),
         description: t.projectSettings.members,
         image: Config.SITE_ICON,

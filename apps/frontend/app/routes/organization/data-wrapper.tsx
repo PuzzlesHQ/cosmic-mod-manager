@@ -71,6 +71,7 @@ export function meta(props: Route.MetaArgs) {
 
     if (!orgData?.id) {
         return MetaTags({
+            location: props.location,
             title: t.error.oraganizationNotFound,
             description: t.error.oraganizationNotFoundDesc(props.params.orgSlug),
             image: Config.SITE_ICON,
@@ -79,6 +80,7 @@ export function meta(props: Route.MetaArgs) {
     }
 
     return MetaTags({
+        location: props.location,
         title: t.meta.organization(orgData.name),
         description: t.meta.organizationDesc(orgData.description || "", orgData.name, Config.SITE_NAME_SHORT),
         image: orgData.icon || "",

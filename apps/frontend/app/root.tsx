@@ -201,10 +201,11 @@ export function links(): LinkDescriptor[] {
     return headLinks;
 }
 
-export function meta() {
+export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
 
     return MetaTags({
+        location: props.location,
         title: Config.SITE_NAME_LONG,
         description: t.meta.siteDesc(Config.SITE_NAME_LONG, Config.SITE_NAME_SHORT),
         image: Config.SITE_ICON,

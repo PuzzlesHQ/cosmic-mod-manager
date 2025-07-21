@@ -24,10 +24,11 @@ export async function loader(props: Route.LoaderArgs): Promise<SessionListData[]
     return sessions || [];
 }
 
-export function meta() {
+export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
 
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(t.common.settings, t.settings.sessions),
         description: t.settings.sessionsDesc,
         image: Config.SITE_ICON,

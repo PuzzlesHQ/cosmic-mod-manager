@@ -20,10 +20,11 @@ export async function loader({ request }: Route.LoaderArgs) {
     return queuedProjects;
 }
 
-export function meta() {
+export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
 
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(t.moderation.review, Config.SITE_NAME_SHORT),
         description: t.moderation.review,
         image: Config.SITE_ICON,

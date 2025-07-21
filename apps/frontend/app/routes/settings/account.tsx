@@ -24,10 +24,11 @@ export async function loader(props: Route.LoaderArgs): Promise<LinkedProvidersLi
     return providersList || [];
 }
 
-export function meta() {
+export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
 
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(t.common.settings, t.settings.accountAndSecurity),
         description: t.settings.accountAndSecurity,
         image: Config.SITE_ICON,

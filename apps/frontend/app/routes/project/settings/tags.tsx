@@ -10,9 +10,10 @@ export default TagsSettingsPage;
 
 export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
-    const ctx = getProjectLoaderData(props.matches);
+    const ctx = getProjectLoaderData(props.matches, props.location.pathname);
 
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(ctx.projectData.name, t.projectSettings.tags),
         description: t.projectSettings.tags,
         image: Config.SITE_ICON,

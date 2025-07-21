@@ -3,6 +3,7 @@ import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
 import { changeHintLocale } from "~/utils/urls";
+import type { Route } from "./+types/rules";
 
 export default function () {
     const { t, locale } = useTranslation();
@@ -21,10 +22,11 @@ export default function () {
     );
 }
 
-export function meta() {
+export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
 
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(t.legal.rulesTitle, Config.SITE_NAME_SHORT),
         description: t.meta.contentRulesPageDesc(Config.SITE_NAME_SHORT),
         image: Config.SITE_ICON,

@@ -27,10 +27,11 @@ export async function loader(props: Route.LoaderArgs) {
 
 export const shouldRevalidate = AnalyticsRoute_ShouldRevalidate;
 
-export function meta() {
+export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
 
     return MetaTags({
+        location: props.location,
         title: t.meta.addContext(t.dashboard.analytics, Config.SITE_NAME_SHORT),
         description: t.dashboard.analytics,
         image: Config.SITE_ICON,

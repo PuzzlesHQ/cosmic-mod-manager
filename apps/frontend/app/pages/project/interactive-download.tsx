@@ -8,7 +8,7 @@ import { VersionReleaseChannel } from "@app/utils/types";
 import type { ProjectVersionData } from "@app/utils/types/api";
 import { imageUrl } from "@app/utils/url";
 import { ChevronsUpDownIcon, DownloadIcon, Gamepad2Icon, WrenchIcon } from "lucide-react";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router";
 import { fallbackProjectIcon } from "~/components/icons";
 import { FileDownloader } from "~/components/misc/file-downloader";
@@ -265,7 +265,7 @@ function AvailableVersionsList({ selectedGameVersion, selectedLoader }: Availabl
     const allProjectVersions = ctx.allProjectVersions;
     const { t } = useTranslation();
 
-    const { downloadFile, isVisible: isDownloadAnimationVisible } = useContext(FileDownloader);
+    const { downloadFile, isVisible: isDownloadAnimationVisible } = use(FileDownloader);
 
     const versionsList = useMemo(() => {
         if (!projectdata || !allProjectVersions) return [];

@@ -16,7 +16,7 @@ import {
     SquareArrowOutUpRightIcon,
     UploadIcon,
 } from "lucide-react";
-import { useContext, useState } from "react";
+import { use, useState } from "react";
 import { useSearchParams } from "react-router";
 import loaderIcons from "~/components/icons/tag-icons";
 import { FileDownloader } from "~/components/misc/file-downloader";
@@ -126,7 +126,7 @@ function ProjectVersionsListTable({
     const activePage = Number.parseInt(page) <= pagesCount ? Number.parseInt(page) : 1;
 
     const navigate = useNavigate();
-    const { downloadFile } = useContext(FileDownloader);
+    const { downloadFile } = use(FileDownloader);
 
     function versionPagePathname(versionSlug: string) {
         return VersionPagePath(projectType, projectData.slug, versionSlug);
