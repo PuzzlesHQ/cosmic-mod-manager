@@ -37,7 +37,7 @@ import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
-import { VersionPagePath } from "~/utils/urls";
+import { joinPaths, VersionPagePath } from "~/utils/urls";
 import VersionFilters from "./version-filters";
 
 export default function ProjectVersionsPage() {
@@ -371,7 +371,7 @@ function ThreeDotMenu({ versionPageUrl, canEditVersion }: { versionPageUrl: stri
                     <>
                         <Separator />
                         <VariantButtonLink
-                            to={`${versionPageUrl}/edit`}
+                            to={joinPaths(versionPageUrl, "edit")}
                             variant="ghost"
                             className="justify-start"
                             size="sm"

@@ -35,7 +35,7 @@ import type { ProjectContextData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import ReportButton from "~/pages/report/report-btn";
-import { appendPathInUrl, ProjectPagePath, VersionPagePath } from "~/utils/urls";
+import { ProjectPagePath, VersionPagePath } from "~/utils/urls";
 import { TeamMember_Card } from "../layout";
 
 const DeleteVersionDialog = lazy(() => import("./delete-version"));
@@ -62,7 +62,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                 <Breadcrumb>
                     <BreadcrumbList className="flex items-center">
                         <BreadcrumbItem>
-                            <BreadcrumbLink href={appendPathInUrl(projectPageUrl, "versions")} className="text-base">
+                            <BreadcrumbLink href={`${projectPageUrl}/versions`} className="text-base">
                                 {t.project.versions}
                             </BreadcrumbLink>
                         </BreadcrumbItem>

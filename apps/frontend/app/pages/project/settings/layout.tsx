@@ -29,7 +29,7 @@ import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { useProjectData } from "~/hooks/project";
 import { useTranslation } from "~/locales/provider";
 import type { Locale } from "~/locales/types";
-import { appendPathInUrl, FormatUrl_WithHintLocale, OrgPagePath, ProjectPagePath } from "~/utils/urls";
+import { joinPaths, OrgPagePath, ProjectPagePath } from "~/utils/urls";
 import ModerationBanner from "../moderation-banner";
 import { PublishingChecklist } from "../publishing-checklist";
 
@@ -40,9 +40,9 @@ export default function ProjectSettingsLayout() {
 
     const baseUrl = ProjectPagePath(ctx.projectType, projectData.slug);
 
-    let projectsPageUrl = FormatUrl_WithHintLocale("/dashboard/projects");
+    let projectsPageUrl = "/dashboard/projects";
     if (projectData.organisation?.id) {
-        projectsPageUrl = OrgPagePath(projectData.organisation?.slug, "settings/projects");
+        projectsPageUrl = OrgPagePath(projectData.organisation.slug, "settings/projects");
     }
 
     const sidePanelSections = useMemo(() => links(t, baseUrl), [formattedLocaleName, baseUrl]);
@@ -101,37 +101,37 @@ function links(t: Locale, base: string): SidePanelSection[] {
             items: [
                 {
                     label: t.projectSettings.general,
-                    href: appendPathInUrl(base, "settings"),
+                    href: joinPaths(base, "settings"),
                     icon: <SettingsIcon aria-hidden className="h-btn-icon w-btn-icon" />,
                     prefetch: LinkPrefetchStrategy.Render,
                 },
                 {
                     label: t.projectSettings.tags,
-                    href: appendPathInUrl(base, "settings/tags"),
+                    href: joinPaths(base, "settings/tags"),
                     icon: <TagsIcon aria-hidden className="h-btn-icon w-btn-icon" />,
                     prefetch: LinkPrefetchStrategy.Render,
                 },
                 {
                     label: t.form.description,
-                    href: appendPathInUrl(base, "settings/description"),
+                    href: joinPaths(base, "settings/description"),
                     icon: <TextIcon aria-hidden className="h-btn-icon w-btn-icon" />,
                     prefetch: LinkPrefetchStrategy.Render,
                 },
                 {
                     label: t.search.license,
-                    href: appendPathInUrl(base, "settings/license"),
+                    href: joinPaths(base, "settings/license"),
                     icon: <CopyrightIcon aria-hidden className="h-btn-icon w-btn-icon" />,
                     prefetch: LinkPrefetchStrategy.Render,
                 },
                 {
                     label: t.projectSettings.links,
-                    href: appendPathInUrl(base, "settings/links"),
+                    href: joinPaths(base, "settings/links"),
                     icon: <LinkIcon aria-hidden className="h-btn-icon w-btn-icon" />,
                     prefetch: LinkPrefetchStrategy.Render,
                 },
                 {
                     label: t.projectSettings.members,
-                    href: appendPathInUrl(base, "settings/members"),
+                    href: joinPaths(base, "settings/members"),
                     icon: <UsersIcon aria-hidden className="h-btn-icon w-btn-icon" />,
                 },
             ],
@@ -141,7 +141,7 @@ function links(t: Locale, base: string): SidePanelSection[] {
             items: [
                 {
                     label: t.dashboard.analytics,
-                    href: appendPathInUrl(base, "settings/analytics"),
+                    href: joinPaths(base, "settings/analytics"),
                     icon: <BarChart2Icon aria-hidden className="h-btn-icon w-btn-icon" />,
                     prefetch: LinkPrefetchStrategy.Render,
                 },
@@ -152,14 +152,14 @@ function links(t: Locale, base: string): SidePanelSection[] {
             items: [
                 {
                     label: t.project.gallery,
-                    href: appendPathInUrl(base, "gallery"),
+                    href: joinPaths(base, "gallery"),
                     icon: <ImageIcon aria-hidden className="h-btn-icon w-btn-icon" />,
                     prefetch: LinkPrefetchStrategy.Render,
                     icon_2: <ChevronRightIcon aria-hidden className="ms-auto h-btn-icon w-btn-icon text-foreground-muted" />,
                 },
                 {
                     label: t.project.versions,
-                    href: appendPathInUrl(base, "versions"),
+                    href: joinPaths(base, "versions"),
                     icon: <GitCommitHorizontalIcon aria-hidden className="h-btn-icon w-btn-icon" />,
                     prefetch: LinkPrefetchStrategy.Render,
                     icon_2: <ChevronRightIcon aria-hidden className="ms-auto h-btn-icon w-btn-icon text-foreground-muted" />,

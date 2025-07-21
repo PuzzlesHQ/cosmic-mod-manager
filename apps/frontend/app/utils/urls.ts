@@ -51,58 +51,39 @@ export function FormatUrl_WithHintLocale(url: string, hl?: string) {
 }
 
 export function ProjectPagePath(type: string, projectSlug: string, extra?: string) {
-    let path = `${type}/${projectSlug}`;
-    if (extra) path += `/${extra}`;
-
-    return FormatUrl_WithHintLocale(path);
+    return joinPaths(type, projectSlug, extra);
 }
 
 export function VersionPagePath(type: string, projectSlug: string, versionSlug: string, extra?: string) {
-    const projectPgPath = ProjectPagePath(type, projectSlug);
-
-    let appendStr = `version/${versionSlug}`;
-    if (extra) appendStr += `/${extra}`;
-
-    return appendPathInUrl(projectPgPath, appendStr);
+    return joinPaths(ProjectPagePath(type, projectSlug), "version", versionSlug, extra);
 }
 
 export function OrgPagePath(orgSlug: string, extra?: string) {
-    const orgUrl = FormatUrl_WithHintLocale(`organization/${orgSlug}`);
-    if (!extra) return orgUrl;
-
-    return appendPathInUrl(orgUrl, extra);
+    return joinPaths("organization", orgSlug, extra);
 }
 
 export function UserProfilePath(username: string, extra?: string) {
-    const userProfileUrl = FormatUrl_WithHintLocale(`user/${username}`);
-    if (!extra) return userProfileUrl;
-
-    return appendPathInUrl(userProfileUrl, extra);
+    return joinPaths("user", username, extra);
 }
 
 export function CollectionPagePath(id: string, extra?: string) {
-    const collectionPageUrl = FormatUrl_WithHintLocale(`collection/${id}`);
-    if (!extra) return collectionPageUrl;
-
-    return appendPathInUrl(collectionPageUrl, extra);
+    return joinPaths("collection", id, extra);
 }
 
 export function ReportPagePath(reportId: string, isMod = false) {
-    return FormatUrl_WithHintLocale(isMod ? `moderation/report/${reportId}` : `dashboard/report/${reportId}`);
+    return isMod ? joinPaths("moderation/report", reportId) : joinPaths("dashboard/report", reportId);
 }
 
-export function appendPathInUrl(_url: string | URL, str: string) {
-    let url: URL;
-    if (typeof _url === "string") {
-        if (_url.startsWith("/")) url = new URL(`${Config.FRONTEND_URL}${_url}`);
-        else if (_url.startsWith("http")) url = new URL(_url);
-        else url = new URL(`${Config.FRONTEND_URL}/${_url}`);
-    } else {
-        url = _url;
+export function joinPaths(...paths: (string | undefined | null)[]) {
+    if (!paths || paths.length === 0) return "";
+
+    // An empty string in the start so that Array.join adds a leading slash
+    const pathFragments: string[] = [""];
+    for (const path of paths) {
+        if (path && path.length > 0) {
+            pathFragments.push(removeLeading("/", removeTrailing("/", path)));
+        }
     }
 
-    if (url.pathname.endsWith("/") || str.startsWith("/")) url.pathname = `${url.pathname}${str}`;
-    else if (str.length) url.pathname = `${url.pathname}/${str}`;
-
-    return url.href.replace(url.origin, "");
+    return pathFragments.join("/");
 }

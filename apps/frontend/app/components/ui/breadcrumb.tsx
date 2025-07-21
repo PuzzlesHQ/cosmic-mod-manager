@@ -1,5 +1,4 @@
 import { ChevronRightIcon, MoreHorizontalIcon } from "lucide-react";
-import { Slot } from "radix-ui";
 import Link from "~/components/ui/link";
 import { cn } from "~/components/utils";
 
@@ -39,9 +38,7 @@ function BreadcrumbLink({
 }: React.ComponentProps<"a"> & {
     asChild?: boolean;
 }) {
-    const Comp = asChild ? Slot.Slot : Link;
-
-    return <Comp to={href || ""} className={cn("text-accent-text transition-all hover:brightness-110", className)} {...props} />;
+    return <Link to={href || "#"} className={cn("text-accent-text transition-all hover:brightness-110", className)} {...props} />;
 }
 BreadcrumbLink.displayName = "BreadcrumbLink";
 

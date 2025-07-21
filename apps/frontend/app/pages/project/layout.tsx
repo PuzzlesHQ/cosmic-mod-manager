@@ -52,7 +52,7 @@ import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import ReportButton from "~/pages/report/report-btn";
-import { isCurrLinkActive, OrgPagePath, ProjectPagePath, UserProfilePath, VersionPagePath } from "~/utils/urls";
+import { isCurrLinkActive, joinPaths, OrgPagePath, ProjectPagePath, UserProfilePath, VersionPagePath } from "~/utils/urls";
 import { AddToCollection_Popup } from "../collection/add-to-collection";
 import { FollowProject_Btn } from "../collection/follow-btn";
 import InteractiveDownloadPopup from "./interactive-download";
@@ -389,7 +389,7 @@ export default function ProjectPageLayout() {
 
             <div className="page-content grid h-fit grid-cols-1 gap-panel-cards overflow-auto">
                 <SecondaryNav
-                    urlBase={`/${ctx.projectType}/${projectData?.slug || ""}`}
+                    urlBase={joinPaths(ctx.projectType, projectData?.slug)}
                     className="h-fit rounded-lg bg-card-background px-3 py-2"
                     links={[
                         {
