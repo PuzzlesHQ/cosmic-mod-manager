@@ -7,7 +7,7 @@ export function trimWhitespaces(str: string) {
 }
 
 export function Capitalize(str: string, eachWord = false) {
-    if (!str) return str;
+    if (!str) return "";
     if (eachWord === false) return `${str[0].toUpperCase()}${str.slice(1)}`;
 
     let newStr = "";
@@ -111,7 +111,7 @@ export function ParseInt(str: string) {
 
 export function encodeArrayIntoStr(items: Set<string> | string[]) {
     const arr = items instanceof Set ? Array.from(items) : items;
-    if (!arr || !arr.length) return "";
+    if (!arr || !arr.length || !Array.isArray(arr)) return "";
 
     let result = "";
     for (let i = 0; i < arr.length; i++) {

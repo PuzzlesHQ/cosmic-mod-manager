@@ -2,27 +2,27 @@ import { describe, expect, test } from "bun:test";
 import { formatVersionsForDisplay_noOmit } from "./format-verbose";
 
 describe("formatGameVersionsList_verbose", () => {
-    test("empty input", () => {
+    test("should return empty array when input is empty", () => {
         expect(formatVersionsForDisplay_noOmit([])).toEqual([]);
     });
 
-    test("returns single version as is", () => {
+    test("should return single version as is", () => {
         expect(formatVersionsForDisplay_noOmit(["0.1.1"])).toEqual(["0.1.1"]);
     });
 
-    test("non-continuous versions", () => {
+    test("should return non-continuous versions in descending order", () => {
         expect(formatVersionsForDisplay_noOmit(["0.1.1", "0.1.3"])).toEqual(["0.1.3", "0.1.1"]);
     });
 
-    test("continuous versions", () => {
+    test("should merge continuous versions into a range", () => {
         expect(formatVersionsForDisplay_noOmit(["0.1.1", "0.1.2", "0.1.3"])).toEqual(["0.1.1–0.1.3"]);
     });
 
-    test("mix of continuous and non-continuous versions", () => {
+    test("should merge continuous versions and keep non-continuous separately", () => {
         expect(formatVersionsForDisplay_noOmit(["0.1.1", "0.1.2", "0.1.3", "0.4.1"])).toEqual(["0.4.1", "0.1.1–0.1.3"]);
     });
 
-    test("doesn't omit non-release versions", () => {
+    test("should not omit non-release versions and merge pre-releases correctly", () => {
         expect(formatVersionsForDisplay_noOmit(["0.3.3", "0.3.2", "0.3.2-pre2", "0.3.2-pre1", "0.3.1"])).toEqual([
             "0.3.2–0.3.3",
             "0.3.2-pre1–0.3.2-pre2",
