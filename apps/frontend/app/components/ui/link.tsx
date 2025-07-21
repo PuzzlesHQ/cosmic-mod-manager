@@ -74,7 +74,7 @@ export function ButtonLink({
             ref={ref}
             className={cn(
                 buttonVariants({ variant: "ghost" }),
-                "bg_hover_stagger justify-start",
+                "bg_hover_stagger h-fit min-h-10 justify-start whitespace-normal",
                 isActive && activityIndicator && "bg-raised-background hover:brightness-95 dark:hover:brightness-110",
                 isActive && `active ${activeClassName}`,
                 className,
@@ -129,12 +129,6 @@ export function useNavigate(dontAlterHintLocale?: boolean, initOptions?: Navigat
     function __navigate(_to: string, options?: NavigateOptions): void {
         const to = _to?.trim() || "#";
         const toUrl = dontAlterHintLocale || to.startsWith("#") ? to : changeHintLocale(locale, to);
-
-        console.log({
-            to,
-            toUrl,
-            locale,
-        });
 
         navigate(toUrl, { viewTransition: viewTransitions !== false, ...initOptions, ...options });
     }

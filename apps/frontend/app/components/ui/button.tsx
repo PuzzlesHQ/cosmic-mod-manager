@@ -5,7 +5,7 @@ import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 
 export const buttonVariants = cva(
-    "focus-visible:keyboard_focus_ring inline-flex items-center leading-tight justify-center gap-2 whitespace-nowrap rounded font-[500] transition-[color,filter,background-color] focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
+    "focus-visible:keyboard_focus_ring inline-flex items-center justify-center gap-2 whitespace-nowrap rounded font-[500] leading-tight transition-[color,filter,background-color] focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
     {
         variants: {
             variant: {
@@ -25,9 +25,9 @@ export const buttonVariants = cva(
                 link: "whitespace-normal text-wrap text-foreground-link underline-offset-2 hover:underline hover:brightness-110",
             },
             size: {
-                default: "min-h-10 px-4 py-1.5",
-                sm: "min-h-9 px-3",
-                lg: "min-h-11 px-8",
+                default: "h-10 px-4 py-1.5",
+                sm: "h-9 px-3",
+                lg: "h-11 px-8",
                 icon: "h-iconified-btn w-iconified-btn",
             },
         },

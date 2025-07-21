@@ -9,7 +9,7 @@ import {
 } from "@app/utils/config/search";
 import { type ProjectType, SearchResultSortMethod } from "@app/utils/types";
 import { FilterIcon, ImageIcon, LayoutListIcon, SearchIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useSearchParams } from "react-router";
 import { useSpinnerCtx } from "~/components/global-spinner";
 import { ListViewType } from "~/components/misc/search-list-item";
@@ -38,7 +38,6 @@ import SearchFilters from "./sidebar";
 export default function SearchPage() {
     const { t } = useTranslation();
     const [searchParams, setSearchParams] = useSearchParams();
-    const [showFilters, setShowFilters] = useState(false);
     const searchInput = useRef<HTMLInputElement>(null);
 
     const {
@@ -201,11 +200,7 @@ export default function SearchPage() {
 
                     <Dialog>
                         <DialogTrigger asChild>
-                            <Button
-                                className="flex lg:hidden"
-                                variant="secondary"
-                                onClick={() => setShowFilters((prev) => !prev)}
-                            >
+                            <Button className="flex lg:hidden" variant="secondary">
                                 <FilterIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                 {t.search.filters}
                             </Button>
