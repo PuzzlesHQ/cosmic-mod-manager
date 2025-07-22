@@ -87,7 +87,7 @@ export function FeaturedBtn({ isLoading, featured, setFeatured }: FeaturedBtnPro
 
 interface UploadVersionPageTopCardProps {
     isLoading: boolean;
-    versionPageUrl: string;
+    versionsPageUrl: string;
     versionTitle: string;
     children: React.ReactNode;
     backUrl: string;
@@ -95,9 +95,10 @@ interface UploadVersionPageTopCardProps {
     submitBtnLabel?: string;
     submitBtnIcon: React.ReactNode;
     onSubmitBtnClick: () => Promise<void>;
+    versionDetailsPage?: string;
 }
 export function UploadVersionPageTopCard({
-    versionPageUrl,
+    versionsPageUrl,
     versionTitle,
     isLoading,
     backUrl,
@@ -106,6 +107,7 @@ export function UploadVersionPageTopCard({
     submitBtnLabel,
     submitBtnIcon,
     onSubmitBtnClick,
+    versionDetailsPage,
 }: UploadVersionPageTopCardProps) {
     const { t } = useTranslation();
 
@@ -114,13 +116,28 @@ export function UploadVersionPageTopCard({
             <Breadcrumb>
                 <BreadcrumbList>
                     <BreadcrumbItem>
-                        <BreadcrumbLink href={versionPageUrl}>{t.project.versions}</BreadcrumbLink>
+                        <BreadcrumbLink href={versionsPageUrl}>{t.project.versions}</BreadcrumbLink>
                     </BreadcrumbItem>
 
                     <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                        <BreadcrumbPage>{versionTitle}</BreadcrumbPage>
-                    </BreadcrumbItem>
+
+                    {versionDetailsPage ? (
+                        <>
+                            <BreadcrumbItem>
+                                <BreadcrumbLink href={versionDetailsPage}>{versionTitle}</BreadcrumbLink>
+                            </BreadcrumbItem>
+
+                            <BreadcrumbSeparator />
+
+                            <BreadcrumbItem>
+                                <BreadcrumbPage>{t.form.edit}</BreadcrumbPage>
+                            </BreadcrumbItem>
+                        </>
+                    ) : (
+                        <BreadcrumbItem>
+                            <BreadcrumbPage>{versionTitle}</BreadcrumbPage>
+                        </BreadcrumbItem>
+                    )}
                 </BreadcrumbList>
             </Breadcrumb>
 

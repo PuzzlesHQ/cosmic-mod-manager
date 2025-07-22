@@ -58,8 +58,8 @@ export default function DownloadsAnalyticsChart({ data: props }: DownloadsAnalyt
 
     return (
         <>
-            <div className="flex flex-col gap-4 rounded-lg bg-card-background p-card-surround ps-0">
-                <div className="flex items-start justify-between ps-card-surround">
+            <div className="grid gap-4 rounded-lg bg-card-background p-card-surround ps-0">
+                <div className="flex flex-wrap items-start justify-between gap-4 ps-card-surround">
                     <div>
                         <h1 className="font-semibold text-foreground text-xl leading-none">{t.project.downloads}</h1>
 

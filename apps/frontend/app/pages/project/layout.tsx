@@ -16,6 +16,7 @@ import {
     BookTextIcon,
     BugIcon,
     CalendarIcon,
+    ChevronRightIcon,
     ClipboardCopyIcon,
     CodeIcon,
     CrownIcon,
@@ -75,10 +76,12 @@ export default function ProjectPageLayout() {
     const location = useLocation();
 
     const isVersionDetailsPage = isCurrLinkActive(
-        ProjectPagePath(ctx.projectType, projectData.slug, "version/"),
+        ProjectPagePath(ctx.projectType, projectData.slug, "version"),
         location.pathname,
         false,
     );
+    const isVersionListPage = isCurrLinkActive(ProjectPagePath(ctx.projectType, projectData.slug, "versions"), location.pathname);
+
     const projectEnvironments = ProjectSupprotedEnvironments({
         clientSide: projectData.clientSide,
         serverSide: projectData.serverSide,
@@ -225,7 +228,17 @@ export default function ProjectPageLayout() {
 
                 {(ctx.featuredProjectVersions?.length || 0) > 0 ? (
                     <Card className="grid grid-cols-1 gap-1 p-card-surround">
-                        <h2 className="pb-2 font-bold text-lg">{t.project.featuredVersions}</h2>
+                        <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                            <h2 className="font-bold text-lg">{t.project.featuredVersions}</h2>
+
+                            {!isVersionListPage && (
+                                <TextLink to={ProjectPagePath(ctx.projectType, projectData.slug, "versions")} className="">
+                                    {t.dashboard.seeAll}
+                                    <ChevronRightIcon className="inline h-4 w-4" />
+                                </TextLink>
+                            )}
+                        </div>
+
                         <TooltipProvider>
                             {ctx.featuredProjectVersions?.map((version) => (
                                 // biome-ignore lint/a11y/useKeyWithClickEvents: --

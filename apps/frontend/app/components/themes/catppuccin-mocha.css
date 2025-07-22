@@ -41,12 +41,12 @@
     --chart-1: 267, 84%, 81%;
 
     /* Border Radius */
-    --radius-sm: 0.25rem;
+    --radius-sm: 0.2rem;
     --radius-md: 0.33rem;
-    --radius-DEFAULT: 0.45rem;
+    --radius-DEFAULT: 0.5rem;
     --radius-lg: 0.67rem;
     --radius-xl: 1rem;
     --radius-2xl: 1.17rem;
-    --radius-3xl: 1.7rem;
+    --radius-3xl: 1.6rem;
     --radius-full: 9999px;
 }

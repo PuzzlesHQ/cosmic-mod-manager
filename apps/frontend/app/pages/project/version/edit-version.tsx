@@ -134,7 +134,8 @@ export default function EditVersionPage() {
                     isLoading={isLoading}
                     submitBtnLabel={t.form.saveChanges}
                     submitBtnIcon={<SaveIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />}
-                    versionPageUrl={versionsPageUrl}
+                    versionsPageUrl={versionsPageUrl}
+                    versionDetailsPage={currVersionPageUrl}
                     versionTitle={form.getValues().title}
                     backUrl={currVersionPageUrl}
                     onSubmitBtnClick={async () => {

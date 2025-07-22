@@ -107,7 +107,7 @@ export default function UploadVersionPage() {
                     isLoading={isLoading}
                     submitBtnLabel="Create"
                     submitBtnIcon={<PlusIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />}
-                    versionPageUrl={versionsPageUrl}
+                    versionsPageUrl={versionsPageUrl}
                     versionTitle={form.getValues().title}
                     backUrl={versionsPageUrl}
                     onSubmitBtnClick={async () => {

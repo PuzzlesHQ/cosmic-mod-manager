@@ -359,6 +359,7 @@ function ThreeDotMenu(props: ThreeDotMenuProps) {
                 variant="ghost"
                 className="justify-start"
                 size="sm"
+                prefetch={LinkPrefetchStrategy.Render}
                 onClick={() => {
                     setPopoverOpen(false);
                 }}
