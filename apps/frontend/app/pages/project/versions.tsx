@@ -14,6 +14,7 @@ import {
     LinkIcon,
     MoreVerticalIcon,
     SquareArrowOutUpRightIcon,
+    Trash2Icon,
     UploadIcon,
 } from "lucide-react";
 import { use, useState } from "react";
@@ -37,8 +38,9 @@ import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
-import { joinPaths, VersionPagePath } from "~/utils/urls";
+import { joinPaths, ProjectPagePath, VersionPagePath } from "~/utils/urls";
 import VersionFilters from "./version-filters";
+import DeleteVersionDialog from "./version/delete-version";
 
 export default function ProjectVersionsPage() {
     const session = useSession();
@@ -77,6 +79,12 @@ export default function ProjectVersionsPage() {
                     ctx.currUsersMembership?.isOwner === true,
                     session?.role,
                 )}
+                canDeleteVersion={doesMemberHaveAccess(
+                    ProjectPermission.DELETE_VERSION,
+                    ctx.currUsersMembership?.permissions || [],
+                    ctx.currUsersMembership?.isOwner === true,
+                    session?.role,
+                )}
                 anyFilterEnabled={versionFilterRes.anyFilterEnabled}
             />
         </>
@@ -106,6 +114,7 @@ interface VersionsTableProps {
     projectData: ProjectDetailsData;
     allProjectVersions: ProjectVersionData[];
     canEditVersion: boolean;
+    canDeleteVersion: boolean;
     anyFilterEnabled: boolean;
 }
 
@@ -114,6 +123,7 @@ function ProjectVersionsListTable({
     projectData,
     allProjectVersions,
     canEditVersion,
+    canDeleteVersion,
     anyFilterEnabled,
 }: VersionsTableProps) {
     const { t } = useTranslation();
@@ -145,20 +155,6 @@ function ProjectVersionsListTable({
         );
     }
 
-    function Row({ children, className, ...props }: React.ComponentProps<"div">) {
-        return (
-            <div
-                className={cn(
-                    "col-[1/-1] grid grid-cols-subgrid items-center gap-x-4 border-background border-b px-4 py-4 last:border-none first-of-type:pt-5 hover:bg-background/25 md:px-8",
-                    className,
-                )}
-                {...props}
-            >
-                {children}
-            </div>
-        );
-    }
-
     return (
         <>
             <TooltipProvider>
@@ -182,7 +178,7 @@ function ProjectVersionsListTable({
                             className="cursor-pointer"
                             onClick={(e) => {
                                 //@ts-expect-error
-                                if (!e.target.closest(".noClickRedirect")) {
+                                if (!e.target.closest(".noClickRedirect") && e.target.closest(".table_row")) {
                                     navigate(versionPagePathname(version.slug));
                                 }
                             }}
@@ -225,7 +221,11 @@ function ProjectVersionsListTable({
 
                                 <ThreeDotMenu
                                     canEditVersion={canEditVersion}
-                                    versionPageUrl={versionPagePathname(version.slug)}
+                                    canDeleteVersion={canDeleteVersion}
+                                    versionDetailsPage={versionPagePathname(version.slug)}
+                                    versionsPageUrl={ProjectPagePath(projectType, projectData.slug, "versions")}
+                                    projectId={version.projectId}
+                                    versionId={version.id}
                                 />
                             </div>
                         </Row>
@@ -235,6 +235,20 @@ function ProjectVersionsListTable({
 
             {Pagination ? <div className="flex items-center justify-center">{Pagination}</div> : null}
         </>
+    );
+}
+
+function Row({ children, className, ...props }: React.ComponentProps<"div">) {
+    return (
+        <div
+            className={cn(
+                "table_row col-[1/-1] grid grid-cols-subgrid items-center gap-x-4 border-background border-b px-4 py-4 last:border-none first-of-type:pt-5 hover:bg-background/25 md:px-8",
+                className,
+            )}
+            {...props}
+        >
+            {children}
+        </div>
     );
 }
 
@@ -323,9 +337,53 @@ function DownloadsCount({ downloads }: { downloads: number }) {
     );
 }
 
-function ThreeDotMenu({ versionPageUrl, canEditVersion }: { versionPageUrl: string; canEditVersion: boolean }) {
+interface ThreeDotMenuProps {
+    versionDetailsPage: string;
+    versionsPageUrl: string;
+    canEditVersion: boolean;
+    canDeleteVersion: boolean;
+    projectId: string;
+    versionId: string;
+}
+
+function ThreeDotMenu(props: ThreeDotMenuProps) {
     const { t } = useTranslation();
     const [popoverOpen, setPopoverOpen] = useState(false);
+
+    const actions: React.ReactNode[] = [];
+    if (props.canEditVersion) {
+        actions.push(
+            <VariantButtonLink
+                key="edit-version"
+                to={joinPaths(props.versionDetailsPage, "edit")}
+                variant="ghost"
+                className="justify-start"
+                size="sm"
+                onClick={() => {
+                    setPopoverOpen(false);
+                }}
+            >
+                <EditIcon aria-hidden className="h-btn-icon w-btn-icon text-foreground-muted" />
+                {t.form.edit}
+            </VariantButtonLink>,
+        );
+    }
+
+    if (props.canDeleteVersion) {
+        actions.push(
+            <DeleteVersionDialog
+                key="delete-version"
+                projectId={props.projectId}
+                versionId={props.versionId}
+                versionsPageUrl={props.versionsPageUrl}
+            >
+                <Button variant="ghost-destructive" size="sm" className="justify-start">
+                    <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
+                    {t.form.delete}
+                </Button>
+            </DeleteVersionDialog>,
+        );
+    }
 
     return (
         <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
@@ -339,10 +397,10 @@ function ThreeDotMenu({ versionPageUrl, canEditVersion }: { versionPageUrl: stri
                     <MoreVerticalIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent align="end" className="noClickRedirect min-w-fit gap-1 p-1">
+            <PopoverContent align="end" className="min-w-fit gap-1 p-1">
                 <VariantButtonLink
                     className="justify-start"
-                    to={versionPageUrl}
+                    to={props.versionDetailsPage}
                     variant="ghost"
                     size="sm"
                     target="_blank"
@@ -359,7 +417,7 @@ function ThreeDotMenu({ versionPageUrl, canEditVersion }: { versionPageUrl: stri
                     size="sm"
                     className="justify-start"
                     onClick={() => {
-                        copyTextToClipboard(`${Config.FRONTEND_URL}${versionPageUrl}`);
+                        copyTextToClipboard(`${Config.FRONTEND_URL}${props.versionDetailsPage}`);
                         setPopoverOpen(false);
                     }}
                 >
@@ -367,21 +425,10 @@ function ThreeDotMenu({ versionPageUrl, canEditVersion }: { versionPageUrl: stri
                     {t.project.copyLink}
                 </Button>
 
-                {canEditVersion ? (
+                {actions.length > 0 ? (
                     <>
                         <Separator />
-                        <VariantButtonLink
-                            to={joinPaths(versionPageUrl, "edit")}
-                            variant="ghost"
-                            className="justify-start"
-                            size="sm"
-                            onClick={() => {
-                                setPopoverOpen(false);
-                            }}
-                        >
-                            <EditIcon aria-hidden className="h-btn-icon w-btn-icon text-foreground-muted" />
-                            {t.form.edit}
-                        </VariantButtonLink>
+                        {actions}
                     </>
                 ) : null}
             </PopoverContent>

@@ -65,7 +65,7 @@ export function isCurrLinkActive(_targetUrl: string, currUrl: string, exactEnds 
     if (exactEnds === true) {
         return append("/", currUrl) === append("/", targetUrl);
     }
-    return currUrl.includes(targetUrl);
+    return currUrl.includes(targetUrl) && currUrl.startsWith(targetUrl);
 }
 
 export function getPathnameFromUrlString(str: string) {

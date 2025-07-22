@@ -9,8 +9,8 @@ import {
 import { BoolFromStr, CapitalizeAndFormatString } from "@app/utils/string";
 import { VersionReleaseChannel } from "@app/utils/types";
 import type { ProjectVersionData } from "@app/utils/types/api";
-import { ChevronDownIcon, FilterIcon, FlaskConicalIcon, XCircleIcon } from "lucide-react";
-import { useMemo, useState } from "react";
+import { ChevronDownIcon, FilterIcon, FlaskConicalIcon, XIcon } from "lucide-react";
+import { type CSSProperties, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
 import { Button } from "~/components/ui/button";
 import { LabelledCheckbox } from "~/components/ui/checkbox";
@@ -18,6 +18,7 @@ import { ChipButton } from "~/components/ui/chip";
 import { CommandSeparator } from "~/components/ui/command";
 import { MultiSelect } from "~/components/ui/multi-select";
 import { releaseChannelTextColor } from "~/components/ui/release-channel-pill";
+import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 
 const LOADER_KEY = "l";
@@ -181,15 +182,16 @@ export default function VersionFilters(props: VersionFiltersProps) {
             {filters.loaders.length + filters.gameVersions.length + filters.releaseChannels.length > 0 ? (
                 <div className="flex w-full flex-wrap items-center justify-start gap-x-2 gap-y-1">
                     {filters.loaders.length + filters.gameVersions.length + filters.releaseChannels.length > 1 ? (
-                        <ChipButton onClick={() => updateSearchParams(resetFilters(searchParams))}>
-                            {t.search.clearFilters}
-                            <XCircleIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />
-                        </ChipButton>
+                        <FilterItemChip
+                            label={t.search.clearFilters}
+                            onClick={() => updateSearchParams(resetFilters(searchParams))}
+                        />
                     ) : null}
 
                     {filters.releaseChannels.map((channel) => (
-                        <ChipButton
+                        <FilterItemChip
                             key={channel}
+                            label={CapitalizeAndFormatString(channel)}
                             className={releaseChannelTextColor(channel as VersionReleaseChannel)}
                             onClick={() => {
                                 setFilters({
@@ -197,25 +199,20 @@ export default function VersionFilters(props: VersionFiltersProps) {
                                     releaseChannels: filters.releaseChannels.filter((c) => c !== channel),
                                 });
                             }}
-                        >
-                            {CapitalizeAndFormatString(channel)}
-                            <XCircleIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />
-                        </ChipButton>
+                        />
                     ))}
 
                     {getGameVersionsFromValues(filters.gameVersions).map((version) => (
-                        <ChipButton
-                            key={version.value}
+                        <FilterItemChip
+                            key={version.label}
+                            label={version.label}
                             onClick={() => {
                                 setFilters({
                                     ...filters,
                                     gameVersions: filters.gameVersions.filter((v) => v !== version.value),
                                 });
                             }}
-                        >
-                            {version.label}
-                            <XCircleIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />
-                        </ChipButton>
+                        />
                     ))}
 
                     {filters.loaders.map((loader) => {
@@ -223,21 +220,19 @@ export default function VersionFilters(props: VersionFiltersProps) {
                         if (!loaderData) return null;
 
                         return (
-                            <ChipButton
+                            <FilterItemChip
                                 key={loader}
+                                label={CapitalizeAndFormatString(loader)}
+                                style={{
+                                    color: `hsla(var(--loader-fg-${loaderData.name}, --foreground-muted))`,
+                                }}
                                 onClick={() => {
                                     setFilters({
                                         ...filters,
                                         loaders: filters.loaders.filter((l) => l !== loader),
                                     });
                                 }}
-                                style={{
-                                    color: `hsla(var(--loader-fg-${loaderData.name}, --foreground-muted))`,
-                                }}
-                            >
-                                {CapitalizeAndFormatString(loader)}
-                                <XCircleIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />
-                            </ChipButton>
+                            />
                         );
                     })}
                 </div>
@@ -251,6 +246,15 @@ export default function VersionFilters(props: VersionFiltersProps) {
         filteredItems: filteredItems,
         showDevVersions: showDevVersions,
     };
+}
+
+function FilterItemChip(props: { label: string; onClick: () => void; className?: string; style?: CSSProperties }) {
+    return (
+        <ChipButton onClick={props.onClick} style={props.style} className={cn("gap-1 pe-1.5 hover:underline", props.className)}>
+            {props.label}
+            <XIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />
+        </ChipButton>
+    );
 }
 
 export function filterVersionItems(allProjectVersions: ProjectVersionData[], filters: FilterItems, showDevVersions = false) {

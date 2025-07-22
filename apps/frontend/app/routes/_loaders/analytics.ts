@@ -8,7 +8,7 @@ import { resJson, serverFetch } from "~/utils/server-fetch";
 
 export const timelineKey = "timeline";
 const MAX_DATA_POINTS = 50;
-const MAX_TOP_PROJECTS = 5;
+const MAX_TOP_PROJECTS = 6;
 
 export type GetFetchUrl_Func = (searchParams: URLSearchParams, projectIds: string[]) => string;
 

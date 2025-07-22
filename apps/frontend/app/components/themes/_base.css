@@ -10,21 +10,22 @@
         --foreground-extra-muted: 208, 16%, 67%;
         --foreground-link: 213, 94%, 74%;
 
-        --background: 215, 12%, 8%;
-        --card-background: 215, 12%, 15%;
+        --background: 215, 14%, 8%;
+        --card-background: 215, 13%, 15%;
         --raised-background: 215, 12%, 22%;
-        --hover-background: 215, 12%, 26%;
+        --hover-background: 215, 11%, 26%;
+        --hover-background-strong: 215, 10%, 32%;
 
         --accent-text: 345, 85%, 70%;
         --accent-bg: 345, 85%, 62%;
         --accent-bg-foreground: 345, 16%, 98%;
 
-        --error-fg: 0, 91%, 71%;
-        --error-bg: 352, 74%, 64%, 0.15;
-        --warning-fg: 33, 98%, 66%;
-        --warning-bg: 35, 74%, 62%, 0.15;
-        --success-fg: 148, 78%, 52%;
-        --success-bg: 154, 74%, 44%, 0.15;
+        --error-fg: 0, 88%, 72%;
+        --error-bg: 352, 52%, 64%, 0.15;
+        --warning-fg: 33, 84%, 66%;
+        --warning-bg: 35, 44%, 56%, 0.15;
+        --success-fg: 148, 82%, 58%;
+        --success-bg: 154, 44%, 46%, 0.15;
 
         --primary-btn-bg: 345, 85%, 62%;
         --primary-btn-fg: 345, 16%, 6%;

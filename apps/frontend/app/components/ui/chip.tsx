@@ -13,7 +13,7 @@ function Chip({ children, className, style }: ChipProps) {
         <span
             style={style}
             className={cn(
-                "flex items-center gap-1 whitespace-nowrap text-nowrap rounded-full bg-raised-background px-2 py-[0.13rem] font-semibold text-foreground-extra-muted text-sm",
+                "flex items-center gap-1 whitespace-nowrap text-nowrap rounded-full bg-raised-background px-2 py-0.5 font-semibold text-foreground-extra-muted text-sm leading-[0]",
                 className,
             )}
         >
@@ -29,9 +29,8 @@ export function ChipButton({ ref, variant = "secondary", className, children, id
             type="button"
             className={cn(
                 buttonVariants({ variant }),
-                "h-fit w-fit cursor-pointer rounded-full border-foreground/25 font-semibold text-[0.85rem] text-foreground underline-offset-2 hover:underline",
-                "gap-x-1.5 px-2 py-0.5",
-                variant === "outline" && "py-[calc(0.125rem_-_1px)] pe-1",
+                "h-fit w-fit cursor-pointer rounded-full border-foreground/25 font-semibold text-[0.85rem] text-foreground underline-offset-2",
+                "gap-x-1.5 px-2 py-1 leading-[0]",
                 className,
             )}
             id={id}

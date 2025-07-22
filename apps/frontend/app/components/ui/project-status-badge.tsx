@@ -13,17 +13,17 @@ export function ProjectStatusBadge(props: ProjectStatusBadge) {
     let colorClass = "";
     switch (props.status) {
         case ProjectPublishingStatus.DRAFT:
-            colorClass = "text-foreground-muted";
+            colorClass = "text-foreground-muted bg-raised-background";
             break;
         case ProjectPublishingStatus.APPROVED:
-            colorClass = "text-success-fg";
+            colorClass = "text-success-fg bg-success-bg";
             break;
         case ProjectPublishingStatus.PROCESSING:
-            colorClass = "text-warning-fg";
+            colorClass = "text-warning-fg bg-warning-bg";
             break;
         case ProjectPublishingStatus.WITHHELD:
         case ProjectPublishingStatus.REJECTED:
-            colorClass = "text-error-fg";
+            colorClass = "text-error-fg bg-error-bg";
             break;
     }
 
@@ -31,7 +31,7 @@ export function ProjectStatusBadge(props: ProjectStatusBadge) {
         <span
             title={props.title === false ? undefined : ProjectStatusDesc(props.status)}
             className={cn(
-                "inline-block cursor-help gap-x-space rounded-full bg-raised-background px-2 py-[0.13em] font-semibold text-sm",
+                "inline-block cursor-help gap-x-space rounded-full px-2 py-[0.15em] font-semibold text-sm leading-[0]",
                 colorClass,
             )}
         >

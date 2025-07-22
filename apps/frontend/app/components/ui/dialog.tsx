@@ -41,7 +41,7 @@ function DialogContent({ ref, className, children, ...props }: React.ComponentPr
                 <DialogPrimitive.Close
                     className={cn(
                         buttonVariants({ variant: "ghost", size: "icon" }),
-                        "absolute end-3 top-3 rounded p-1.5 disabled:pointer-events-none",
+                        "absolute end-2.5 top-2.5 rounded p-1.5 disabled:pointer-events-none",
                     )}
                 >
                     <XIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />

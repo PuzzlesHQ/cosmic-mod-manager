@@ -1,5 +1,5 @@
 import type { VariantProps } from "class-variance-authority";
-import { CheckIcon, ChevronDownIcon, XCircle } from "lucide-react";
+import { CheckIcon, ChevronDownIcon, XIcon } from "lucide-react";
 import { useState } from "react";
 import type { badgeVariants } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
@@ -128,11 +128,15 @@ export const MultiSelect = ({
                                         const option = (allOptions || options).find((o) => o.value === value);
                                         const IconComponent = option?.icon;
                                         return (
-                                            <ChipButton variant="outline" key={value} className={cn("m-[0.17rem]")}>
+                                            <ChipButton
+                                                variant="outline"
+                                                key={value}
+                                                className="m-[0.17rem] gap-1 pe-1 has-[svg:hover]:underline"
+                                            >
                                                 {IconComponent && <IconComponent className="me-2 h-4 w-4" />}
                                                 {option?.label}
-                                                <XCircle
-                                                    className="h-4 w-4 cursor-pointer"
+                                                <XIcon
+                                                    className="inline h-3.5 w-3.5 cursor-pointer text-foreground-muted hover:text-error-fg"
                                                     onClick={(event) => {
                                                         event.stopPropagation();
                                                         toggleOption(value);
@@ -142,10 +146,13 @@ export const MultiSelect = ({
                                         );
                                     })}
                                     {selectedValues.length > maxCount && (
-                                        <ChipButton variant="outline" className="m-[0.17rem]">
+                                        <ChipButton
+                                            variant="outline"
+                                            className="m-[0.17rem] gap-1 pe-1 has-[svg:hover]:underline"
+                                        >
                                             {`+ ${selectedValues.length - maxCount} more`}
-                                            <XCircle
-                                                className="h-4 w-4 cursor-pointer"
+                                            <XIcon
+                                                className="inline h-3.5 w-3.5 cursor-pointer text-foreground-muted hover:text-error-fg"
                                                 onClick={(event) => {
                                                     event.stopPropagation();
                                                     clearExtraOptions();
@@ -176,33 +183,35 @@ export const MultiSelect = ({
                         wrapperClassName={cn(searchBox === false && "h-0 w-0 overflow-hidden opacity-0")}
                         {...(searchBox === false ? { readOnly: true } : {})}
                     />
-                    <CommandList>
+                    <CommandList className="grid gap-y-1">
                         <CommandEmpty>{noResultsElement || "No results"}</CommandEmpty>
                         <CommandGroup>
                             {options.map((option) => {
                                 const isSelected = selectedValues.includes(option.value);
                                 return (
-                                    <CommandItem key={option.value} onSelect={() => toggleOption(option.value)} className="pe-6">
+                                    <CommandItem
+                                        key={option.value}
+                                        onSelect={() => toggleOption(option.value)}
+                                        className={cn(
+                                            "ps-3",
+                                            isSelected
+                                                ? "text-accent-text data-[selected=true]:text-accent-text"
+                                                : "text-foreground-muted",
+                                        )}
+                                    >
+                                        {option.icon && <option.icon className="me-2 h-4 w-4 text-current" />}
+                                        <span>{option.label}</span>
+
                                         <div
                                             className={cn(
-                                                "me-3 flex h-4 w-4 items-center justify-center rounded-sm border border-foreground-extra-muted",
+                                                "ms-auto flex h-4 w-4 items-center justify-center rounded-sm border",
                                                 isSelected
-                                                    ? "border-transparent bg-foreground-extra-muted text-background"
-                                                    : "opacity-50 [&_svg]:invisible",
+                                                    ? "border-transparent bg-accent-bg text-accent-bg-foreground"
+                                                    : "border-hover-background-strong [&_svg]:invisible",
                                             )}
                                         >
-                                            <CheckIcon aria-hidden className="h-3.5 w-3.5" strokeWidth={2.7} />
+                                            <CheckIcon aria-hidden className="h-3.5 w-3.5" strokeWidth={2.8} />
                                         </div>
-
-                                        {option.icon && (
-                                            <option.icon
-                                                className={cn(
-                                                    "me-2 h-4 w-4 text-foreground-muted",
-                                                    isSelected && "text-foreground",
-                                                )}
-                                            />
-                                        )}
-                                        <span className={cn(isSelected && "text-foreground-bright")}>{option.label}</span>
                                     </CommandItem>
                                 );
                             })}

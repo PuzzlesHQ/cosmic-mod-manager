@@ -11,6 +11,7 @@ interface Props {
     projectId: string;
     versionId: string;
     versionsPageUrl: string;
+    children?: React.ReactNode;
 }
 
 export default function DeleteVersionDialog(props: Props) {
@@ -39,10 +40,14 @@ export default function DeleteVersionDialog(props: Props) {
             variant="destructive"
             onConfirm={deleteVersion}
         >
-            <Button variant="secondary-destructive">
-                <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
-                {t.form.delete}
-            </Button>
+            {props.children ? (
+                props.children
+            ) : (
+                <Button variant="secondary-destructive">
+                    <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
+                    {t.form.delete}
+                </Button>
+            )}
         </ConfirmDialog>
     );
 }
