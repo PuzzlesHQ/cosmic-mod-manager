@@ -4,7 +4,6 @@ import tailwindcss from "tailwindcss";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import Config from "./app/utils/config";
-import { ASSETS_SERVER_URL } from "./app/utils/env";
 
 export default defineConfig({
     server: {
@@ -17,7 +16,7 @@ export default defineConfig({
             },
         },
     },
-    base: ASSETS_SERVER_URL,
+    base: process.env.NODE_ENV === "production" && process.env.VITE_ASSETS_SERVER_URL ? process.env.VITE_ASSETS_SERVER_URL : "/",
     build: {
         rollupOptions: {
             output: {

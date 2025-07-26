@@ -26,11 +26,12 @@ import ContextProviders from "~/providers";
 import ErrorView from "~/routes/error-view";
 import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";
-import { ASSETS_SERVER_URL } from "~/utils/env";
 import { MetaTags } from "~/utils/meta";
 import { resJson, serverFetch } from "~/utils/server-fetch";
 import { changeHintLocale, getHintLocale, omitOrigin } from "~/utils/urls";
 import type { Route } from "./+types/root";
+
+const ASSETS_SERVER_URL = import.meta.env.BASE_URL;
 
 export interface RootOutletData {
     userConfig: UserPreferences;
