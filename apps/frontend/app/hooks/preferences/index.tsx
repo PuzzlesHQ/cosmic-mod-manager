@@ -1,4 +1,4 @@
-import { createContext, use, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { ThemePreference } from "~/components/themes/config";
 import { getUserConfig, saveUserConfig, validateConfig } from "./helpers";
 import { applyTheme, MEDIA_PREFERS_LIGHT_THEME, resolveThemePreference } from "./theme";
@@ -57,7 +57,7 @@ export function UserPreferencesProvider({ init, children }: { init: UserPreferen
     }, [resolvedTheme]);
 
     return (
-        <UserPrefsCtx
+        <UserPrefsCtx.Provider
             value={{
                 ...config,
                 resolvedTheme: resolvedTheme,
@@ -66,13 +66,14 @@ export function UserPreferencesProvider({ init, children }: { init: UserPreferen
             }}
         >
             {children}
-        </UserPrefsCtx>
+        </UserPrefsCtx.Provider>
     );
 }
 
-export function usePreferences() {
-    const ctx = use(UserPrefsCtx);
-    if (ctx === null) throw new Error("usePreferences must be used inside a <UserPreferencesProvider>");
+// TODO: Fix this hacky thing
+export function usePreferences(): UserPrefsContext {
+    const ctx = useContext(UserPrefsCtx);
+    if (!ctx) return {} as UserPrefsContext;
 
     return ctx;
 }

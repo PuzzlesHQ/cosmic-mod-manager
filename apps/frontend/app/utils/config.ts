@@ -1,3 +1,4 @@
+// Can't use path aliases because this file is used in vite config also
 import { SITE_NAME_LONG, SITE_NAME_SHORT } from "../../../../packages/utils/src/constants";
 
 const isDev = import.meta.env?.DEV;
