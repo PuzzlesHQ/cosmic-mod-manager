@@ -20,13 +20,13 @@ export default function RefreshPage(navigate: NavigateFunction, location: Locati
 }
 
 export function shouldForceRevalidate(currParams: URLSearchParams, nextParams: URLSearchParams) {
-    const nextRevalidate = nextParams.get("revalidate");
     const currRevalidate = currParams.get("revalidate");
+    const nextRevalidate = nextParams.get("revalidate");
 
     // return false if the query param is not present in the navigated url
     if (!nextRevalidate?.length) return false;
 
     // return true only if the param value is different
-    if (currRevalidate !== nextRevalidate) return false;
+    if (currRevalidate !== nextRevalidate) return true;
     return false;
 }
