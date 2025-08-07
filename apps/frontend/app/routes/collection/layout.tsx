@@ -1,5 +1,6 @@
 import type { Collection, CollectionOwner, ProjectListItem } from "@app/utils/types/api";
 import { type ShouldRevalidateFunctionArgs, useLoaderData } from "react-router";
+import { shouldForceRevalidate } from "~/components/misc/refresh-page";
 import { useTranslation } from "~/locales/provider";
 import CollectionPageLayout from "~/pages/collection/layout";
 import NotFoundPage from "~/pages/not-found";
@@ -57,9 +58,15 @@ export async function loader(props: Route.LoaderArgs): Promise<CollectionLoaderD
     };
 }
 
-export function shouldRevalidate({ currentParams, nextParams, nextUrl, defaultShouldRevalidate }: ShouldRevalidateFunctionArgs) {
-    const revalidate = nextUrl.searchParams.get("revalidate") === "true";
-    if (revalidate) return true;
+export function shouldRevalidate({
+    currentParams,
+    nextParams,
+    nextUrl,
+    currentUrl,
+    defaultShouldRevalidate,
+}: ShouldRevalidateFunctionArgs) {
+    const forceRevalidate = shouldForceRevalidate(currentUrl.searchParams, nextUrl.searchParams);
+    if (forceRevalidate) return true;
 
     const currentId = currentParams?.collectionId?.toLowerCase();
     const nextId = nextParams?.collectionId?.toLowerCase();

@@ -12,6 +12,7 @@ export default ProjectGallery;
 export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
     const ctx = getProjectLoaderData(props.matches, props.location.pathname);
+    if (!ctx?.projectData) return;
 
     const project = ctx?.projectData;
     const projectType = t.navbar[getProjectTypeFromName(project.type[0])];

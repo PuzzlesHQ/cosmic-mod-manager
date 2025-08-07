@@ -11,6 +11,7 @@ export default OrgProjectsSettings;
 export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
     const ctx = useOrgData();
+    if (!ctx?.orgData) return;
 
     return MetaTags({
         location: props.location,

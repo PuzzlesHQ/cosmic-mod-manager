@@ -30,6 +30,7 @@ import { MetaTags } from "~/utils/meta";
 import { resJson, serverFetch } from "~/utils/server-fetch";
 import { changeHintLocale, getHintLocale, omitOrigin } from "~/utils/urls";
 import type { Route } from "./+types/root";
+import { shouldForceRevalidate } from "./components/misc/refresh-page";
 
 const ASSETS_SERVER_URL = import.meta.env.BASE_URL;
 
@@ -158,10 +159,8 @@ export async function loader({ request }: Route.LoaderArgs): Promise<RootOutletD
     };
 }
 
-export function shouldRevalidate({ nextUrl }: ShouldRevalidateFunctionArgs) {
-    const revalidate = nextUrl.searchParams.get("revalidate") === "true";
-
-    if (revalidate) return true;
+export function shouldRevalidate({ currentUrl, nextUrl }: ShouldRevalidateFunctionArgs) {
+    if (shouldForceRevalidate(currentUrl.searchParams, nextUrl.searchParams)) return true;
     return false;
 }
 

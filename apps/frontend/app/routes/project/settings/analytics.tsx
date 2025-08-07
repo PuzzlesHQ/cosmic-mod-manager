@@ -31,6 +31,7 @@ export const ShouldRevalidate = AnalyticsRoute_ShouldRevalidate;
 export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
     const ctx = getProjectLoaderData(props.matches, props.location.pathname);
+    if (!ctx?.projectData) return;
 
     return MetaTags({
         location: props.location,

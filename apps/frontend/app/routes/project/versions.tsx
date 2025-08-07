@@ -11,8 +11,9 @@ export default ProjectVersionsPage;
 export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
     const ctx = getProjectLoaderData(props.matches, props.location.pathname);
-    const project = ctx?.projectData;
+    if (!ctx?.projectData) return;
 
+    const project = ctx.projectData;
     return MetaTags({
         location: props.location,
         title: t.meta.addContext(project.name, t.project.versions),

@@ -1,6 +1,7 @@
 import { getProjectTypeFromName } from "@app/utils/convertors";
 import type { ProjectDetailsData, ProjectListItem, ProjectVersionData } from "@app/utils/types/api";
 import { Outlet, type ShouldRevalidateFunctionArgs } from "react-router";
+import { shouldForceRevalidate } from "~/components/misc/refresh-page";
 import { useProjectData } from "~/hooks/project";
 import { useTranslation } from "~/locales/provider";
 import NotFoundPage from "~/pages/not-found";
@@ -111,8 +112,8 @@ export function meta(props: Route.MetaArgs) {
 }
 
 export function shouldRevalidate(props: ShouldRevalidateFunctionArgs) {
-    const revalidate = props.nextUrl.searchParams.get("revalidate") === "true";
-    if (revalidate) return true;
+    const forceRevalidate = shouldForceRevalidate(props.currentUrl.searchParams, props.nextUrl.searchParams);
+    if (forceRevalidate) return true;
 
     const currentId = props.currentParams.projectSlug?.toLowerCase();
     const nextId = props.nextParams.projectSlug?.toLowerCase();
