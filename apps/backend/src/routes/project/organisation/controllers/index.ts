@@ -96,35 +96,45 @@ export async function createOrganisation(userSession: ContextUserData, formData:
         return invalidReqestResponseData("Organisation with the same slug already exists");
     }
 
-    const newOrganisation = await CreateOrganization({
-        data: {
-            id: generateDbId(),
-            name: formData.name,
-            slug: formData.slug,
-            description: formData.description,
+    const newOrganisation = await CreateOrganization(
+        {
+            data: {
+                id: generateDbId(),
+                name: formData.name,
+                slug: formData.slug,
+                description: formData.description,
 
-            // Create the org team
-            team: {
-                create: {
-                    id: generateDbId(),
+                // Create the org team
+                team: {
+                    create: {
+                        id: generateDbId(),
 
-                    // Create the org owner member
-                    members: {
-                        create: {
-                            id: generateDbId(),
-                            userId: userSession.id,
-                            role: "Owner",
-                            isOwner: true,
-                            accepted: true,
-                            dateAccepted: new Date(),
+                        // Create the org owner member
+                        members: {
+                            create: {
+                                id: generateDbId(),
+                                userId: userSession.id,
+                                role: "Owner",
+                                isOwner: true,
+                                accepted: true,
+                                dateAccepted: new Date(),
+                            },
                         },
                     },
                 },
             },
         },
-    });
 
-    return { data: { success: true, slug: newOrganisation.slug }, status: HTTP_STATUS.OK };
+        userSession.id,
+    );
+
+    return {
+        data: {
+            success: true,
+            slug: newOrganisation.slug,
+        },
+        status: HTTP_STATUS.OK,
+    };
 }
 
 export async function getOrganisationProjects(userSession: ContextUserData | undefined, slug: string, listedOnly = false) {

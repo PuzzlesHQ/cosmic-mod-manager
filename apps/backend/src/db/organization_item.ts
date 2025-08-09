@@ -2,7 +2,7 @@ import type { Prisma } from "@prisma/client";
 import { cacheKey } from "~/services/cache/utils";
 import prisma from "~/services/prisma";
 import valkey from "~/services/redis";
-import { ORGANIZATION_DATA_CACHE_KEY } from "~/types/namespaces";
+import { ORGANIZATION_DATA_CACHE_KEY, USER_ORGANIZATIONS_CACHE_KEY } from "~/types/namespaces";
 import { GetData_FromCache, ORGANIZATION_DATA_CACHE_EXPIRY_seconds, SetCache } from "./_cache";
 import { GetManyTeams_ById, GetTeam } from "./team_item";
 
@@ -150,10 +150,12 @@ export async function UpdateOrganization<T extends Prisma.OrganisationUpdateArgs
     return data;
 }
 
-export function CreateOrganization<T extends Prisma.OrganisationCreateArgs>(
+export async function CreateOrganization<T extends Prisma.OrganisationCreateArgs>(
     args: Prisma.SelectSubset<T, Prisma.OrganisationCreateArgs>,
+    ownerUserId: string,
 ) {
-    return prisma.organisation.create(args);
+    await valkey.del(cacheKey(ownerUserId, USER_ORGANIZATIONS_CACHE_KEY));
+    return await prisma.organisation.create(args);
 }
 
 export function GetManyOrganizations<T extends Prisma.OrganisationFindManyArgs>(
