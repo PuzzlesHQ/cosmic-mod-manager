@@ -9,7 +9,7 @@ import {
 } from "@app/utils/config/search";
 import { type ProjectType, SearchResultSortMethod } from "@app/utils/types";
 import { FilterIcon, ImageIcon, LayoutListIcon, SearchIcon } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useSpinnerCtx } from "~/components/global-spinner";
 import { ListViewType } from "~/components/misc/search-list-item";
@@ -39,6 +39,7 @@ export default function SearchPage() {
     const { t } = useTranslation();
     const [searchParams, setSearchParams] = useSearchParams();
     const searchInput = useRef<HTMLInputElement>(null);
+    const [filtersDialogOpen, setFiltersDialogOpen] = useState(false);
 
     const {
         searchTerm,
@@ -70,17 +71,21 @@ export default function SearchPage() {
 
     const searchLabel = t.search[projectType];
 
-    const filtersComponent = (
-        <SearchFilters
-            type={projectType_Coerced === projectType ? [projectType_Coerced] : projectTypes}
-            searchParams={searchParams}
-        />
+    const filtersComponent = useCallback(
+        (defaultOpen?: boolean) => (
+            <SearchFilters
+                type={projectType_Coerced === projectType ? [projectType_Coerced] : projectTypes}
+                searchParams={searchParams}
+                sectionsDefaultOpen={defaultOpen}
+            />
+        ),
+        [searchParams, projectType],
     );
 
     return (
         <div className="search-page-grid-layout grid w-full gap-panel-cards pb-16">
             <aside className="page-sidebar relative hidden h-fit gap-panel-cards rounded-lg bg-card-background p-card-surround lg:grid">
-                {filtersComponent}
+                {filtersComponent()}
             </aside>
 
             <main id="main" className="page-content grid h-fit grid-cols-1 gap-panel-cards">
@@ -198,7 +203,7 @@ export default function SearchPage() {
                         </SelectContent>
                     </Select>
 
-                    <Dialog>
+                    <Dialog open={filtersDialogOpen} onOpenChange={setFiltersDialogOpen}>
                         <DialogTrigger asChild>
                             <Button className="flex lg:hidden" variant="secondary">
                                 <FilterIcon aria-hidden className="h-btn-icon w-btn-icon" />
@@ -213,7 +218,7 @@ export default function SearchPage() {
                                 </VisuallyHidden>
                             </DialogHeader>
 
-                            <DialogBody className="grid gap-panel-cards">{filtersComponent}</DialogBody>
+                            <DialogBody className="grid gap-panel-cards">{filtersComponent(false)}</DialogBody>
                         </DialogContent>
                     </Dialog>
 

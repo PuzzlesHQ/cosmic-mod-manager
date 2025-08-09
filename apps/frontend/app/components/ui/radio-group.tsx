@@ -22,7 +22,7 @@ export function RadioGroupItem({ className, ...props }: React.ComponentProps<typ
                 data-slot="radio-group-indicator"
                 className="relative flex items-center justify-center"
             >
-                <CircleIcon className="-translate-x-1/2 -translate-y-1/2 absolute start-1/2 top-1/2 size-2 fill-current stroke-current text-accent-bg" />
+                <CircleIcon className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 size-2 fill-current stroke-current text-accent-bg" />
             </RadioGroupPrimitive.Indicator>
         </RadioGroupPrimitive.Item>
     );

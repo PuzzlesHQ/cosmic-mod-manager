@@ -28,6 +28,7 @@ const SHOW_ENV_FILTER_FOR_TYPES = [ProjectType.MOD, ProjectType.MODPACK /*, Proj
 interface Props {
     type: ProjectType[];
     searchParams: URLSearchParams;
+    sectionsDefaultOpen?: boolean;
 }
 
 function matchesSearch(strings: string[], query: string) {
@@ -50,7 +51,7 @@ const filtersKeyList = [
     licenseFilterParamNamespace,
 ];
 
-function SearchFilters({ type, searchParams }: Props) {
+function SearchFilters({ type, searchParams, sectionsDefaultOpen }: Props) {
     const { t } = useTranslation();
     const [, setSearchParams] = useSearchParams();
     const [showAllVersions, setShowAllVersions] = useState(false);
@@ -125,6 +126,12 @@ function SearchFilters({ type, searchParams }: Props) {
         });
     }
 
+    function isFilteredThroughSearch<T>(filterItems: T[]) {
+        if (!query?.length) return undefined;
+        if (!filterItems?.length) return undefined;
+        return true;
+    }
+
     return (
         <>
             <SkipNav />
@@ -163,6 +170,8 @@ function SearchFilters({ type, searchParams }: Props) {
                         searchParamModifier: removePageOffsetSearchParam,
                     });
                 }}
+                defaultOpen={sectionsDefaultOpen}
+                overrideOpenState={isFilteredThroughSearch(loaderFilterOptions)}
             />
 
             <FilterCategory
@@ -192,6 +201,8 @@ function SearchFilters({ type, searchParams }: Props) {
                         {t.form.showAllVersions}
                     </LabelledCheckbox>
                 }
+                defaultOpen={sectionsDefaultOpen}
+                overrideOpenState={isFilteredThroughSearch(gameVersionFilterOptions)}
             />
 
             {SHOW_ENV_FILTER_FOR_TYPES.some((t) => type.includes(t)) && (
@@ -212,7 +223,8 @@ function SearchFilters({ type, searchParams }: Props) {
                             }),
                         );
                     }}
-                    defaultOpen={defaultOpenAdditionalFilters}
+                    defaultOpen={sectionsDefaultOpen ?? defaultOpenAdditionalFilters}
+                    overrideOpenState={isFilteredThroughSearch(environmentFilterOptions)}
                 />
             )}
 
@@ -230,7 +242,8 @@ function SearchFilters({ type, searchParams }: Props) {
                         searchParamModifier: removePageOffsetSearchParam,
                     });
                 }}
-                defaultOpen={defaultOpenAdditionalFilters}
+                defaultOpen={sectionsDefaultOpen ?? defaultOpenAdditionalFilters}
+                overrideOpenState={isFilteredThroughSearch(categoryFilterOptions)}
             />
 
             <FilterCategory
@@ -247,7 +260,8 @@ function SearchFilters({ type, searchParams }: Props) {
                         searchParamModifier: removePageOffsetSearchParam,
                     });
                 }}
-                defaultOpen={defaultOpenAdditionalFilters}
+                defaultOpen={sectionsDefaultOpen ?? defaultOpenAdditionalFilters}
+                overrideOpenState={isFilteredThroughSearch(featureFilterOptions)}
             />
 
             <FilterCategory
@@ -264,7 +278,8 @@ function SearchFilters({ type, searchParams }: Props) {
                         searchParamModifier: removePageOffsetSearchParam,
                     });
                 }}
-                defaultOpen={defaultOpenAdditionalFilters}
+                defaultOpen={sectionsDefaultOpen ?? defaultOpenAdditionalFilters}
+                overrideOpenState={isFilteredThroughSearch(resolutionFilterOptions)}
             />
 
             <FilterCategory
@@ -281,7 +296,8 @@ function SearchFilters({ type, searchParams }: Props) {
                         searchParamModifier: removePageOffsetSearchParam,
                     });
                 }}
-                defaultOpen={defaultOpenAdditionalFilters}
+                defaultOpen={sectionsDefaultOpen ?? defaultOpenAdditionalFilters}
+                overrideOpenState={isFilteredThroughSearch(performanceFilterOptions)}
             />
 
             <FilterCategory
@@ -298,7 +314,8 @@ function SearchFilters({ type, searchParams }: Props) {
                         searchParamModifier: removePageOffsetSearchParam,
                     });
                 }}
-                defaultOpen={defaultOpenAdditionalFilters}
+                defaultOpen={sectionsDefaultOpen ?? defaultOpenAdditionalFilters}
+                overrideOpenState={isFilteredThroughSearch(licenseFilterOptions)}
             />
         </>
     );
@@ -323,6 +340,7 @@ interface FilterCategoryProps {
     footerItem?: React.ReactNode;
     collapsible?: boolean;
     defaultOpen?: boolean;
+    overrideOpenState?: boolean;
 }
 
 function FilterCategory({
@@ -336,10 +354,13 @@ function FilterCategory({
     footerItem,
     collapsible = true,
     defaultOpen = true,
+    overrideOpenState,
 }: FilterCategoryProps) {
     const { t } = useTranslation();
     const [_, setSearchParams] = useSearchParams();
-    const [isOpen, setIsOpen] = useState(defaultOpen);
+    const [_isOpen, setIsOpen] = useState(defaultOpen);
+    const isOpen = overrideOpenState ?? _isOpen;
+
     if (!items.length) return null;
 
     function toggleVisibility(e?: React.MouseEvent) {
