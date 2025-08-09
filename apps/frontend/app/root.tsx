@@ -11,7 +11,6 @@ import Navbar from "~/components/layout/Navbar/navbar";
 import { MarkdownLinkHandler } from "~/components/md-editor/link-handler";
 import { DownloadRipple } from "~/components/misc/file-downloader";
 import LoaderBar from "~/components/misc/loader-bar";
-import ToastAnnouncer from "~/components/toast-announcer";
 import { cn } from "~/components/utils";
 import { PageBreadCrumbs } from "~/hooks/breadcrumb";
 import { getUserConfig } from "~/hooks/preferences/helpers";
@@ -93,7 +92,6 @@ function AppSetup(props: { data: RootOutletData }) {
         <>
             {!data.session?.id && <LoginDialog isMainDialog />}
             <ValidateClientSession />
-            <ClientOnly Element={ToastAnnouncer} />
             <ClientOnly Element={LoaderBar} />
 
             {/* A portal for the grid_bg_div inserted from the pages/page.tsx */}
