@@ -13,7 +13,7 @@ export default function () {
         <div className="full_page flex w-full flex-col items-center justify-center gap-4">
             <div className="headings">
                 <h1 className="flex w-full items-center justify-center text-center font-bold text-5xl text-error-fg leading-tight">
-                    <TriangleAlertIcon aria-hidden className="me-6 h-12 w-12 text-danger-fg" /> {t.error.sthWentWrong}
+                    <TriangleAlertIcon aria-hidden className="me-6 h-12 w-12 text-error-fg" /> {t.error.sthWentWrong}
                 </h1>
             </div>
             <p className="flex max-w-xl items-center justify-center text-center text-lg">{t.error.errorDesc}</p>

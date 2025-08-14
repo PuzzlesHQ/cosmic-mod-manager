@@ -131,7 +131,7 @@ function FormMessage({ ref, className, children, ...props }: React.ComponentProp
         <p
             ref={ref}
             id={formMessageId}
-            className={cn("ps-0.5 font-medium text-danger-fg text-sm leading-tight", className)}
+            className={cn("ps-0.5 font-medium text-error-fg text-sm leading-tight", className)}
             {...props}
         >
             {body}
@@ -159,7 +159,7 @@ function CharacterCounter({ ref, currVal, max, visibleAfter, className, ...props
             ref={ref}
             className={cn(
                 "self-center pe-0.5 font-normal text-foreground-extra-muted text-xs leading-none",
-                curr > max && "text-danger-fg",
+                curr > max && "text-error-fg",
                 className,
             )}
             {...props}

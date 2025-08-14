@@ -51,7 +51,7 @@ function ComboBox(props: ComboBoxProps) {
                     }}
                     className={cn(
                         option?.disabled === true &&
-                            "text-danger-fg data-[selected=true]:bg-raised-background data-[selected=true]:text-danger-fg",
+                            "text-error-fg data-[selected=true]:bg-raised-background data-[selected=true]:text-error-fg",
                     )}
                 >
                     <Check className={cn("me-2 h-4 w-4", props.value === option.value ? "opacity-100" : "opacity-0")} />

@@ -58,7 +58,7 @@ export default function ReviewProjects({ projects }: { projects: ModerationProje
                     </span>
                 ) : null}
                 {projectsOver48Hours.length > 0 ? (
-                    <span className="font-bold text-danger-fg">
+                    <span className="font-bold text-error-fg">
                         <TriangleAlertIcon aria-hidden className="inline h-4 w-4" />{" "}
                         {t.moderation.projectsQueuedFor(projectsOver48Hours.length, 48)}
                     </span>
@@ -116,7 +116,7 @@ function ModerationItem({ project }: { project: ModerationProjectItem }) {
                     className={cn(
                         "flex items-center justify-start gap-x-1.5",
                         isOver24Hrs && "text-warning-fg",
-                        isOver48Hrs && "text-danger-fg",
+                        isOver48Hrs && "text-error-fg",
                     )}
                 >
                     {isOver24Hrs || (isOver48Hrs && <AlertTriangleIcon aria-hidden className="inline h-4 w-4" />)}
