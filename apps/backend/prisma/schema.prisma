@@ -233,6 +233,7 @@ model GalleryItem {
 model File {
     id             String  @id @db.VarChar(32)
     name           String  @db.VarChar(64)
+    // File size in bytes
     size           Int
     type           String  @db.VarChar(32)
     sha1_hash      String? @db.VarChar(256)

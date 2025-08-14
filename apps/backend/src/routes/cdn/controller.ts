@@ -1,7 +1,8 @@
 import { getMimeFromType } from "@app/utils/file-signature";
+import { MiB } from "@app/utils/number";
 import type { Context } from "hono";
 import { GetCollection } from "~/db/collection_item";
-import { GetFile, type GetFile_ReturnType, GetManyFiles_ByID } from "~/db/file_item";
+import { GetFile, GetManyFiles_ByID } from "~/db/file_item";
 import { GetOrganization_Data } from "~/db/organization_item";
 import { GetProject_Details, GetProject_ListItem } from "~/db/project_item";
 import { GetUser_ByIdOrUsername } from "~/db/user_item";
@@ -21,6 +22,8 @@ import { HTTP_STATUS, notFoundResponse } from "~/utils/http";
 import { collectionIconUrl, orgIconUrl, projectGalleryFileUrl, projectIconUrl, userIconUrl, versionFileUrl } from "~/utils/urls";
 import { addToDownloadsQueue } from "./downloads-counter";
 
+const MAX_CDN_FILE_SIZE = 19 * MiB;
+
 export async function serveVersionFile(
     ctx: Context,
     projectId: string,
@@ -31,8 +34,8 @@ export async function serveVersionFile(
 ) {
     const [project, _projectVersions] = await Promise.all([GetProject_ListItem(projectId), GetVersions(projectId)]);
 
-    const targetVersion = (_projectVersions?.versions || []).find((version) => version.id === versionId);
-    if (!project?.id || !targetVersion?.files?.[0]?.fileId) {
+    const associatedProjectVersion = (_projectVersions?.versions || []).find((version) => version.id === versionId);
+    if (!project?.id || !associatedProjectVersion?.files?.[0]?.fileId) {
         return notFoundResponse(ctx);
     }
 
@@ -49,45 +52,38 @@ export async function serveVersionFile(
     }
 
     const isPublicallyAccessible = isProjectPublic(project.visibility, project.status);
-    const fileIds = targetVersion.files.map((file) => file.fileId);
+    const fileIds = associatedProjectVersion.files.map((file) => file.fileId);
     const VersionFileDataList = await GetManyFiles_ByID(fileIds);
 
-    let requiredFile: GetFile_ReturnType | undefined;
-    for (const file of VersionFileDataList) {
-        if (!file) continue;
-        if (file.name === fileName) {
-            requiredFile = file;
-            break;
-        }
-    }
-    if (!requiredFile?.id) {
-        return ctx.json({ message: "File not found" }, HTTP_STATUS.NOT_FOUND);
-    }
+    const file_meta = VersionFileDataList.find((_file) => _file?.name === fileName || _file?.id === fileName);
+    if (!file_meta?.id) return notFoundResponse(ctx, "File not found");
 
     // Get corresponding file from version
-    const targetVersionFile = targetVersion.files.find((file) => file.fileId === requiredFile.id);
+    const versionFile = associatedProjectVersion.files.find((file) => file.fileId === file_meta.id);
 
     // If the request was not made from the CDN, add the download count
-    if (!isCdnRequest && targetVersionFile?.isPrimary === true) {
+    if (!isCdnRequest && versionFile?.isPrimary === true) {
         // add download count
         await addToDownloadsQueue({
             ipAddress: getUserIpAddress(ctx) || "",
             userId: userSession?.id || ctx.get("guest-session"),
             projectId: project.id,
-            versionId: targetVersion.id,
+            versionId: associatedProjectVersion.id,
         });
     }
 
+    const isFileUnderCdnSizeLimit = file_meta.size < MAX_CDN_FILE_SIZE;
+
     // Redirect to the cdn url if the project is public
-    if (!isCdnRequest && isPublicallyAccessible) {
-        return ctx.redirect(`${versionFileUrl(project.id, targetVersion.id, fileName, true)}`);
+    if (!isCdnRequest && isPublicallyAccessible && isFileUnderCdnSizeLimit) {
+        return ctx.redirect(`${versionFileUrl(project.id, associatedProjectVersion.id, fileName, true)}`);
     }
 
     const file = await getProjectVersionFile(
-        requiredFile.storageService as FILE_STORAGE_SERVICE,
+        file_meta.storageService as FILE_STORAGE_SERVICE,
         project.id,
-        targetVersion.id,
-        requiredFile.name,
+        associatedProjectVersion.id,
+        file_meta.name,
     );
     if (!file) return ctx.json({ message: "File not found" }, HTTP_STATUS.NOT_FOUND);
 
@@ -95,8 +91,8 @@ export async function serveVersionFile(
 
     const response = new Response(file, { status: HTTP_STATUS.OK });
     response.headers.set("Cache-Control", "public, max-age=31536000");
-    response.headers.set("Content-Type", getMimeFromType(requiredFile.type));
-    response.headers.set("Content-Disposition", `attachment; filename="${requiredFile.name}"`);
+    response.headers.set("Content-Type", getMimeFromType(file_meta.type));
+    response.headers.set("Content-Disposition", `attachment; filename="${file_meta.name}"`);
 
     return response;
 }
