@@ -1,0 +1,14 @@
+# --- Force specific languages to be counted ---
+*.py linguist-detectable=true
+*.java linguist-detectable=true
+*.cs linguist-detectable=true
+*.cpp linguist-detectable=true
+*.c linguist-detectable=true
+*.js linguist-detectable=true
+*.ts linguist-detectable=true
+*.html linguist-detectable=true
+*.css linguist-detectable=true
+*.md linguist-detectable=true
+*.json linguist-detectable=true
+*.yml linguist-detectable=true
+*.yaml linguist-detectable=true
