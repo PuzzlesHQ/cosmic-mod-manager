@@ -73,10 +73,14 @@ export async function serveVersionFile(
     }
 
     const isFileUnderCdnSizeLimit = file_meta.size < MAX_CDN_FILE_SIZE;
+    const hasRangeHeader = ctx.req.header("Range") !== undefined;
 
     // Redirect to the cdn url if the project is public
-    if (!isCdnRequest && isPublicallyAccessible && isFileUnderCdnSizeLimit) {
-        return ctx.redirect(`${versionFileUrl(project.id, associatedProjectVersion.id, fileName, true)}`);
+    if (!isCdnRequest && isPublicallyAccessible && (isFileUnderCdnSizeLimit || hasRangeHeader)) {
+        return ctx.redirect(
+            `${versionFileUrl(project.id, associatedProjectVersion.id, fileName, true)}`,
+            HTTP_STATUS.TEMPORARY_REDIRECT,
+        );
     }
 
     const file = await getProjectVersionFile(
@@ -87,7 +91,7 @@ export async function serveVersionFile(
     );
     if (!file) return ctx.json({ message: "File not found" }, HTTP_STATUS.NOT_FOUND);
 
-    if (typeof file === "string") return ctx.redirect(file);
+    if (typeof file === "string") return ctx.redirect(file, HTTP_STATUS.PERMANENT_REDIRECT);
 
     const response = new Response(file, { status: HTTP_STATUS.OK });
     response.headers.set("Cache-Control", "public, max-age=31536000");
