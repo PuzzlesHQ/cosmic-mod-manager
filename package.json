@@ -6,7 +6,7 @@
         "zod": "^4.0.5"
     },
     "devDependencies": {
-        "@biomejs/biome": "^2.1.1",
+        "@biomejs/biome": "2.1.1",
         "@types/bun": "latest"
     },
     "peerDependencies": {

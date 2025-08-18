@@ -59,7 +59,7 @@ If your lang's metadata doesn't have region field then just `{lang}` (eg: `es`).
 > So having a code editor that supports TypeScript (when I say supports TS, I mean, it has a TypeScript lsp and provides syntax highlighting) will help you a lot.
 
 7. Now, the translation is not crammed up in a single file, it's organized in separate files all located under the same directory/folder of you locale. Open up the `apps/frontend/app/locales/en` folder and see what additional files it has, create those under your folder and translate the contents. \
-If you can't translate all of that at once, there's no need to copy and duplicate the files from default locale for fallback, that is handled automatically handled for you. \
+If you can't translate all of that at once, there's no need to copy and duplicate the files from default locale for fallback, that is handled automatically for you. \
 \
 Example (Translating the tags): \
     The tags are in a separate file, named `tags.ts`. So if I'm going to translate that, I'll create a file `tags.ts` in the concerned locale's folder and add the translations. After I'm done with that I'll open up the respective directory's `translation.ts`, \
@@ -103,7 +103,7 @@ Here's an example to show the exact process of adding a locale. Suppose you want
 1. Fork and clone the repo. (I'm not going to explain it again)
 2. Create the metadata entry in [**apps/frontend/app/locales/meta.ts**](/apps/frontend/app/locales/meta.ts)
     ```ts
-    const SupportedLocales: LocaleMetaData[] = [
+    const SupportedLocales: defineLocales([
         //...
 
         {
@@ -117,7 +117,7 @@ Here's an example to show the exact process of adding a locale. Suppose you want
                 displayName: "France",
             },
         }
-    ];
+    ]);
     ```
 
 3. Create a folder for the locale under `apps/frontend/app/locales/`, in this case the folder name would be `fr-FR`
