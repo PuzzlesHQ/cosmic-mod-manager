@@ -4,6 +4,7 @@ import { getCookie } from "hono/cookie";
 import { getUserIpAddress } from "~/routes/auth/helpers";
 import { validateContextSession } from "~/routes/auth/helpers/session";
 import { CTX_USER_NAMESPACE } from "~/types/namespaces";
+import env from "~/utils/env";
 import { deleteCookie, HTTP_STATUS, serverErrorResponse, setCookie } from "~/utils/http";
 import { getUserFromCtx } from "~/utils/router";
 import { generateRandomId } from "~/utils/str";
@@ -11,8 +12,10 @@ import { generateRandomId } from "~/utils/str";
 export async function AuthenticationMiddleware(ctx: Context, next: Next) {
     const user = await validateContextSession(ctx);
     const ipAddr = getUserIpAddress(ctx);
+    const isCdnReq = IsCdnRequest(ctx);
 
-    if (!user) {
+    // do not set cookie for CDN requests
+    if (!user && !isCdnReq) {
         // Set a guest session cookie
         if (!getCookie(ctx, "guest-session")) {
             const randomId = generateRandomId(32);
@@ -21,7 +24,7 @@ export async function AuthenticationMiddleware(ctx: Context, next: Next) {
         } else {
             ctx.set("guest-session", getCookie(ctx, "guest-session"));
         }
-    } else if (getCookie(ctx, "guest-session")) {
+    } else if (!isCdnReq && getCookie(ctx, "guest-session")) {
         deleteCookie(ctx, "guest-session");
     }
 
@@ -42,4 +45,9 @@ export async function LoginProtectedRoute(ctx: Context, next: Next) {
         console.error(error);
         return serverErrorResponse(ctx);
     }
+}
+
+function IsCdnRequest(ctx: Context) {
+    if (env.NODE_ENV === "development") return false;
+    return ctx.req.header("CDN-Secret") === env.CDN_SECRET;
 }

@@ -25,17 +25,6 @@ const cdnRouter = new Hono()
         }),
     )
 
-    // TODO: Remove these three later and just ust the /project prefix
-    .get("/data/:projectId/:file", cdnAssetRateLimiter, projectFile_get)
-    .get("/data/:projectId/gallery/:image", cdnAssetRateLimiter, galleryImage_get)
-    .get(
-        "/data/:projectId/version/:versionId/:fileName",
-        invalidAuthAttemptLimiter,
-        cdnLargeFileRateLimiter,
-        AuthenticationMiddleware,
-        versionFile_get,
-    )
-
     .get("/data/project/:projectId/:file", cdnAssetRateLimiter, projectFile_get)
     .get("/data/project/:projectId/gallery/:image", cdnAssetRateLimiter, galleryImage_get)
     .get(

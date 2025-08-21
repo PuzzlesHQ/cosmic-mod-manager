@@ -89,7 +89,7 @@ export async function serveVersionFile(
         associatedProjectVersion.id,
         file_meta.name,
     );
-    if (!file) return ctx.json({ message: "File not found" }, HTTP_STATUS.NOT_FOUND);
+    if (!file) return notFoundResponse(ctx, "File not found");
 
     if (typeof file === "string") return ctx.redirect(file, HTTP_STATUS.PERMANENT_REDIRECT);
 
