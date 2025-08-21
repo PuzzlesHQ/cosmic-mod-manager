@@ -1,4 +1,4 @@
-import { DownloadAnimationProvider } from "~/components/misc/file-downloader";
+import { DownloadProvider } from "~/components/misc/file-downloader";
 import { Toaster } from "~/components/ui/sonner";
 import { BreadcrumbsContextProvider } from "~/hooks/breadcrumb";
 import type { UserPreferences } from "~/hooks/preferences/types";
@@ -14,10 +14,10 @@ export default function ContextProviders({ children, init_userConfig }: ContextP
     return (
         <UserPreferencesProvider init={init_userConfig}>
             <BreadcrumbsContextProvider>
-                <DownloadAnimationProvider>
+                <DownloadProvider>
                     <CollectionsProvider>{children}</CollectionsProvider>
                     <Toaster />
-                </DownloadAnimationProvider>
+                </DownloadProvider>
             </BreadcrumbsContextProvider>
         </UserPreferencesProvider>
     );

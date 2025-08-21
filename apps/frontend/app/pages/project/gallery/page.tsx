@@ -15,7 +15,7 @@ import {
     Trash2Icon,
     XIcon,
 } from "lucide-react";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { itemType, MicrodataItemProps, MicrodataItemType } from "~/components/microdata";
 import { ImgLoader } from "~/components/misc/img-loading-spinner";
 import { Button, buttonVariants } from "~/components/ui/button";
@@ -27,10 +27,9 @@ import { cn } from "~/components/utils";
 import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
-
-const RemoveGalleryImage = lazy(() => import("./remove-img"));
-const EditGalleryImage = lazy(() => import("./edit-img"));
-const UploadGalleryImageForm = lazy(() => import("./upload-img"));
+import EditGalleryImage from "./edit-img";
+import RemoveGalleryImage from "./remove-img";
+import UploadGalleryImageForm from "./upload-img";
 
 export default function ProjectGallery() {
     const { t } = useTranslation();
@@ -50,9 +49,8 @@ export default function ProjectGallery() {
                 session?.role,
             ) ? (
                 <Card className="flex w-full flex-row flex-wrap items-center justify-start gap-x-4 gap-y-2 p-card-surround">
-                    <Suspense>
-                        <UploadGalleryImageForm projectData={projectData} />
-                    </Suspense>
+                    <UploadGalleryImageForm projectData={projectData} />
+
                     <div className="flex items-center justify-center gap-2 text-foreground-muted">
                         <InfoIcon aria-hidden className="h-btn-icon w-btn-icon" />
                         {t.project.uploadNewImg}
@@ -170,16 +168,14 @@ function GalleryItemCard({
                         session?.role,
                     ) ? (
                         <div className="flex w-full flex-wrap items-center justify-start gap-x-2 gap-y-1">
-                            <Suspense>
-                                <EditGalleryImage galleryItem={galleryItem} projectData={projectData} />
+                            <EditGalleryImage galleryItem={galleryItem} projectData={projectData} />
 
-                                <RemoveGalleryImage id={galleryItem.id} projectData={projectData}>
-                                    <Button variant="secondary" size="sm">
-                                        <Trash2Icon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />
-                                        {t.form.remove}
-                                    </Button>
-                                </RemoveGalleryImage>
-                            </Suspense>
+                            <RemoveGalleryImage id={galleryItem.id} projectData={projectData}>
+                                <Button variant="secondary" size="sm">
+                                    <Trash2Icon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />
+                                    {t.form.remove}
+                                </Button>
+                            </RemoveGalleryImage>
                         </div>
                     ) : null}
                 </div>
@@ -269,7 +265,6 @@ function ImageDialog({
                             "max-h-[calc(100vh_-_4rem)] max-w-[calc(100vw_-_2rem)] sm:max-w-[calc(100vw_-_6rem)]",
                             isFullWidth && "h-full w-full",
                         )}
-                        setLoaded={() => {}}
                     />
 
                     <div className="group absolute bottom-[0.5rem] left-[50%] z-20 flex w-fit max-w-full translate-x-[-50%] flex-col items-center justify-center gap-4 rounded p-16 pt-24 pb-4">

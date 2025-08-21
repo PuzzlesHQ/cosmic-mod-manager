@@ -27,7 +27,7 @@ import {
     TagsIcon,
 } from "lucide-react";
 import type React from "react";
-import { Suspense, use } from "react";
+import { use } from "react";
 import { Outlet, useLocation } from "react-router";
 import { DiscordIcon, fallbackOrgIcon, fallbackProjectIcon, fallbackUserIcon } from "~/components/icons";
 import tagIcons from "~/components/icons/tag-icons";
@@ -273,7 +273,9 @@ export default function ProjectPageLayout() {
                                                     variant={isVersionDetailsPage ? "secondary-dark" : "default"}
                                                     size="icon"
                                                     aria-label={t.project.downloadItem(version.primaryFile?.name || "")}
-                                                    onClick={() => downloadFile(version.primaryFile?.url)}
+                                                    onClick={() =>
+                                                        downloadFile(version.primaryFile?.url, version.primaryFile?.size || 0)
+                                                    }
                                                 >
                                                     <DownloadIcon
                                                         aria-hidden
@@ -597,9 +599,7 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
             ) : null}
 
             {invitedMember && (
-                <Suspense>
-                    <TeamInvitationBanner refreshData={fetchProjectData} role={invitedMember.role} teamId={projectData.teamId} />
-                </Suspense>
+                <TeamInvitationBanner refreshData={fetchProjectData} role={invitedMember.role} teamId={projectData.teamId} />
             )}
 
             <PublishingChecklist />

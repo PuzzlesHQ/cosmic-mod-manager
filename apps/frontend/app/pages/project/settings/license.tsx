@@ -213,14 +213,17 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                             />
                         </div>
                     </div>
-                    <Button type="submit" className="w-fit" disabled={!hasFormChanged || form.formState.isSubmitting}>
-                        {form.formState.isSubmitting ? (
-                            <LoadingSpinner size="xs" />
-                        ) : (
-                            <SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
-                        )}
-                        {t.form.saveChanges}
-                    </Button>
+
+                    <div className="flex justify-end">
+                        <Button type="submit" className="w-fit" disabled={!hasFormChanged || form.formState.isSubmitting}>
+                            {form.formState.isSubmitting ? (
+                                <LoadingSpinner size="xs" />
+                            ) : (
+                                <SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
+                            )}
+                            {t.form.saveChanges}
+                        </Button>
+                    </div>
                 </Card>
             </form>
         </Form>

@@ -127,7 +127,7 @@ function RadioBtnSelector(props: RadioBtnSelectorProps) {
         >
             {props.children}
 
-            <div className="flex items-center gap-2 rounded-b bg-raised-background px-4 py-2">
+            <div className="flex items-center gap-2 bg-raised-background px-4 py-2">
                 <svg
                     viewBox="0 0 24 24"
                     strokeLinecap="round"

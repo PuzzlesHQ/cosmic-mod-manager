@@ -89,7 +89,12 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                             <TooltipTrigger asChild>
                                 <Button
                                     variant="default"
-                                    onClick={() => downloadFile(versionData.primaryFile?.url ? versionData.primaryFile?.url : "")}
+                                    onClick={() =>
+                                        downloadFile(
+                                            versionData.primaryFile?.url ? versionData.primaryFile?.url : "",
+                                            versionData.primaryFile?.size || 0,
+                                        )
+                                    }
                                     rel="nofollow noindex"
                                 >
                                     <DownloadIcon aria-hidden className="h-btn-icon w-btn-icon" />
@@ -317,7 +322,7 @@ interface FileDetailsItemProps {
     downloadLink: string;
     sha1_hash: string | null;
     sha512_hash: string | null;
-    downloadFile: (fileUrl: string | undefined) => void;
+    downloadFile: (fileUrl: string | undefined, fileSize: number) => void;
 }
 
 function FileDetailsItem({
@@ -339,7 +344,7 @@ function FileDetailsItem({
                     <Button
                         className="inline h-fit px-1 py-0 text-start"
                         variant="link"
-                        onClick={() => downloadFile(downloadLink)}
+                        onClick={() => downloadFile(downloadLink, fileSize)}
                     >
                         {fileName}
                     </Button>{" "}

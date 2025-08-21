@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "~/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { cn } from "~/components/utils";
+import { useTranslation } from "~/locales/provider";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
 
 export interface ComboBoxItem {
@@ -25,6 +26,7 @@ interface ComboBoxProps {
 }
 
 function ComboBox(props: ComboBoxProps) {
+    const { t } = useTranslation();
     const [searchVal, setSearchVal] = useState("");
     const [open, setOpen] = useState(false);
 
@@ -79,7 +81,7 @@ function ComboBox(props: ComboBoxProps) {
                         <CommandInput
                             value={searchVal}
                             onValueChange={setSearchVal}
-                            placeholder={props.inputLabel || "Search..."}
+                            placeholder={props.inputLabel || t.common.search}
                         />
                     )}
                     <TooltipProvider delayDuration={200}>

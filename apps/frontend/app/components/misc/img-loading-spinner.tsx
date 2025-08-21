@@ -3,7 +3,6 @@ import { WanderingCubesSpinner } from "~/components/ui/spinner";
 import { cn } from "~/components/utils";
 
 interface ImgLoaderProps {
-    setLoaded: (loaded: boolean) => void;
     src: string;
     alt: string;
     thumbnailSrc?: string;
@@ -14,15 +13,11 @@ interface ImgLoaderProps {
 
 const loadedImages = new Set<string>();
 
-export function ImgLoader({ src, alt, className, wrapperClassName, spinner, setLoaded, thumbnailSrc }: ImgLoaderProps) {
+export function ImgLoader({ src, alt, className, wrapperClassName, spinner, thumbnailSrc }: ImgLoaderProps) {
     const [isImageLoaded, setIsImageLoaded] = useState(loadedImages.has(src));
 
     useEffect(() => {
-        setLoaded(isImageLoaded);
-    }, [isImageLoaded]);
-
-    useEffect(() => {
-        if (loadedImages.has(src)) return;
+        if (loadedImages.has(src)) return setIsImageLoaded(true);
         setIsImageLoaded(false);
 
         function handleImgLoad() {
