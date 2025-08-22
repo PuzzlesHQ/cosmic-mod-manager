@@ -73,10 +73,9 @@ export async function serveVersionFile(
     }
 
     const isFileUnderCdnSizeLimit = file_meta.size < MAX_CDN_FILE_SIZE;
-    const hasRangeHeader = ctx.req.header("Range") !== undefined;
 
-    // Redirect to the cdn url if the project is public
-    if (!isCdnRequest && isPublicallyAccessible && (isFileUnderCdnSizeLimit || hasRangeHeader)) {
+    // Redirect to the cdn url if the project is public and the file is under the CDN size limit
+    if (!isCdnRequest && isPublicallyAccessible && isFileUnderCdnSizeLimit) {
         return ctx.redirect(
             `${versionFileUrl(project.id, associatedProjectVersion.id, fileName, true)}`,
             HTTP_STATUS.TEMPORARY_REDIRECT,
