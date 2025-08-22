@@ -99,11 +99,7 @@ export default function VersionChangelogs() {
                                 </div>
 
                                 {primaryFile?.url ? (
-                                    <Button
-                                        variant="secondary"
-                                        size="sm"
-                                        onClick={() => downloadFile(primaryFile.url, primaryFile.size)}
-                                    >
+                                    <Button variant="secondary" size="sm" onClick={() => downloadFile(primaryFile.url)}>
                                         <DownloadIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                         {t.common.download}
                                     </Button>

@@ -31,13 +31,13 @@ function RippleCircle({ children, className }: { children?: React.ReactNode; cla
 }
 
 interface DownloadAnimationContext {
-    downloadFile: (fileUrl: string | undefined, fileSize: number) => void;
+    downloadFile: (fileUrl: string | undefined) => void;
     isAnimationPlaying: boolean;
     isVisible: boolean;
 }
 
 export const FileDownloader = createContext<DownloadAnimationContext>({
-    downloadFile: (_fileUrl: string | undefined, _fileSize: number) => {},
+    downloadFile: (_fileUrl: string | undefined) => {},
     isAnimationPlaying: false,
     isVisible: false,
 });
@@ -48,9 +48,8 @@ export function DownloadProvider({ children }: { children: React.ReactNode }) {
 
     const [isAnimationPlaying, setIsAnimationPlaying] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
-    // const [downloadingFiles, setDownloadingFiles] = useState<RunningDownload[]>([]);
 
-    function downloadFile(fileUrl: string | undefined, fileSize: number) {
+    function downloadFile(fileUrl: string | undefined) {
         if (animationTimeoutRef.current) window.clearTimeout(animationTimeoutRef.current);
         if (visibilityTimeoutRef.current) window.clearTimeout(visibilityTimeoutRef.current);
 
@@ -74,30 +73,6 @@ export function DownloadProvider({ children }: { children: React.ReactNode }) {
         window.location.href = fileUrl;
     }
 
-    // const downloadsProgress = (
-    //     <div className="fixed end-0 bottom-0 z-[9999] grid w-full max-w-md gap-4 p-4">
-    //         {downloadingFiles.map((file) => (
-    //             <div
-    //                 key={file.url}
-    //                 className="grid gap-2 overflow-clip rounded border border-raised-background bg-card-background p-2 shadow-md"
-    //             >
-    //                 <div className="grid grid-cols-[2rem_1fr] gap-2">
-    //                     <div className="flex items-center justify-center">
-    //                         <DownloadIcon className="h-5 w-5 text-foreground-extra-muted" />
-    //                     </div>
-
-    //                     <div>
-    //                         <span className="font-medium font-mono text-foreground text-sm">{file.name}</span>
-    //                         <p className="ms-auto font-mono text-xs">
-    //                             <span>{parseFileSize(file.progress)}</span> <span>/</span> <span>{parseFileSize(file.size)}</span>
-    //                         </p>
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         ))}
-    //     </div>
-    // );
-
     return (
         <FileDownloader.Provider
             value={{
@@ -110,21 +85,3 @@ export function DownloadProvider({ children }: { children: React.ReactNode }) {
         </FileDownloader.Provider>
     );
 }
-
-// interface RunningDownload {
-//     url: string;
-//     size: number;
-//     name: string;
-//     progress: number;
-// }
-
-// function getFileName(contentDisposition: string | null) {
-//     if (!contentDisposition) return null;
-
-//     return contentDisposition
-//         .split(";")
-//         .map((part) => part.trim())
-//         .find((part) => part.startsWith("filename="))
-//         ?.split("=")[1]
-//         ?.replace(/"/g, "");
-// }

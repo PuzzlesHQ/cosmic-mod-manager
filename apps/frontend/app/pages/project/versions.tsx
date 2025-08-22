@@ -209,7 +209,7 @@ function ProjectVersionsListTable({
                                             size="icon"
                                             className="noClickRedirect !w-10 !h-10 shrink-0 rounded-full"
                                             aria-label={t.project.downloadItem(version.primaryFile?.name || "")}
-                                            onClick={() => downloadFile(version.primaryFile?.url, version.primaryFile?.size || 0)}
+                                            onClick={() => downloadFile(version.primaryFile?.url)}
                                         >
                                             <DownloadIcon aria-hidden className="h-btn-icon w-btn-icon" strokeWidth={2.2} />
                                         </Button>

@@ -325,7 +325,7 @@ function AvailableVersionsList({ selectedGameVersion, selectedLoader }: Availabl
                             variant="default"
                             className={cn("shrink-0", isDownloadAnimationVisible && "pointer-events-none")}
                             title={t.project.downloadItem(version.primaryFile?.name || "")}
-                            onClick={() => downloadFile(version.primaryFile?.url, version.primaryFile?.size || 0)}
+                            onClick={() => downloadFile(version.primaryFile?.url)}
                         >
                             <DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                         </Button>

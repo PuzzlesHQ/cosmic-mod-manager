@@ -273,9 +273,7 @@ export default function ProjectPageLayout() {
                                                     variant={isVersionDetailsPage ? "secondary-dark" : "default"}
                                                     size="icon"
                                                     aria-label={t.project.downloadItem(version.primaryFile?.name || "")}
-                                                    onClick={() =>
-                                                        downloadFile(version.primaryFile?.url, version.primaryFile?.size || 0)
-                                                    }
+                                                    onClick={() => downloadFile(version.primaryFile?.url)}
                                                 >
                                                     <DownloadIcon
                                                         aria-hidden
