@@ -2,8 +2,11 @@ const envKeys = [
     "FRONTEND_URL",
     "CORS_ALLOWED_URLS",
     "OAUTH_REDIRECT_URI",
-    "CDN_SERVER_URL",
-    "CACHE_CDN_URL",
+
+    "CDN_SERVER_URL", // the main server that serves files
+    "CACHE_CDN_URL", // fastly
+    "CLOUDFLARE_CDN_URL", // cloudflare cdn for files that exceed fastly's size limit
+
     "COOKIE_DOMAIN",
     "PG_DATABASE_URL",
     "HASH_SECRET_KEY",

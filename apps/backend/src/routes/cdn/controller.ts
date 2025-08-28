@@ -18,8 +18,17 @@ import {
     getUserFile,
 } from "~/services/storage";
 import type { ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
+import env from "~/utils/env";
 import { HTTP_STATUS, notFoundResponse } from "~/utils/http";
-import { collectionIconUrl, orgIconUrl, projectGalleryFileUrl, projectIconUrl, userIconUrl, versionFileUrl } from "~/utils/urls";
+import {
+    collectionIconUrl,
+    orgIconUrl,
+    projectGalleryFileUrl,
+    projectIconUrl,
+    userIconUrl,
+    versionFileUrl,
+    versionFileUrl_CustomCdn,
+} from "~/utils/urls";
 import { addToDownloadsQueue } from "./downloads-counter";
 
 const MAX_CDN_FILE_SIZE = 19 * MiB;
@@ -75,9 +84,16 @@ export async function serveVersionFile(
     const isFileUnderCdnSizeLimit = file_meta.size < MAX_CDN_FILE_SIZE;
 
     // Redirect to the cdn url if the project is public and the file is under the CDN size limit
-    if (!isCdnRequest && isPublicallyAccessible && isFileUnderCdnSizeLimit) {
+    if (!isCdnRequest && isPublicallyAccessible) {
+        if (isFileUnderCdnSizeLimit) {
+            return ctx.redirect(
+                `${versionFileUrl(project.id, associatedProjectVersion.id, fileName, true)}`,
+                HTTP_STATUS.TEMPORARY_REDIRECT,
+            );
+        }
+
         return ctx.redirect(
-            `${versionFileUrl(project.id, associatedProjectVersion.id, fileName, true)}`,
+            `${versionFileUrl_CustomCdn(project.id, associatedProjectVersion.id, fileName, env.CLOUDFLARE_CDN_URL)}`,
             HTTP_STATUS.TEMPORARY_REDIRECT,
         );
     }
@@ -88,8 +104,8 @@ export async function serveVersionFile(
         associatedProjectVersion.id,
         file_meta.name,
     );
-    if (!file) return notFoundResponse(ctx, "File not found");
 
+    if (!file) return notFoundResponse(ctx, "File not found");
     if (typeof file === "string") return ctx.redirect(file, HTTP_STATUS.PERMANENT_REDIRECT);
 
     const response = new Response(file, { status: HTTP_STATUS.OK });
