@@ -30,11 +30,6 @@ export function versionFileUrl(projectId: string, versionId: string, fileName: s
     return cdnUrl(`project/${projectId}/version/${versionId}/${encodeURIComponent(fileName)}`, useCacheCdn === true);
 }
 
-export function versionFileUrl_CustomCdn(projectId: string, versionId: string, fileName: string, customCdnUrl: string) {
-    if (fileName.startsWith("http")) return fileName;
-    return `${customCdnUrl}/cdn/data/project/${projectId}/version/${versionId}/${encodeURIComponent(fileName)}`;
-}
-
 export function orgIconUrl(orgId: string, icon: string | null) {
     if (!icon) return null;
     // If the icon has a full URL, return it

@@ -4,8 +4,7 @@ const envKeys = [
     "OAUTH_REDIRECT_URI",
 
     "CDN_SERVER_URL", // the main server that serves files
-    "CACHE_CDN_URL", // fastly
-    "CLOUDFLARE_CDN_URL", // cloudflare cdn for files that exceed fastly's size limit
+    "CACHE_CDN_URL", // fastly cache cdn
 
     "COOKIE_DOMAIN",
     "PG_DATABASE_URL",

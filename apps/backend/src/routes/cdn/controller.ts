@@ -18,23 +18,11 @@ import {
     getUserFile,
 } from "~/services/storage";
 import type { ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
-import env from "~/utils/env";
 import { HTTP_STATUS, notFoundResponse } from "~/utils/http";
-import {
-    collectionIconUrl,
-    orgIconUrl,
-    projectGalleryFileUrl,
-    projectIconUrl,
-    userIconUrl,
-    versionFileUrl,
-    versionFileUrl_CustomCdn,
-} from "~/utils/urls";
+import { collectionIconUrl, orgIconUrl, projectGalleryFileUrl, projectIconUrl, userIconUrl, versionFileUrl } from "~/utils/urls";
 import { addToDownloadsQueue } from "./downloads-counter";
 
 const MAX_FASTLY_FILE_SIZE = 19 * MiB;
-
-// NOTE: cdn generally referes to the fastly cdn
-// if it referes to cloudflare, it will most likely be mentioned there
 
 export async function serveVersionFile(
     ctx: Context,
@@ -87,21 +75,11 @@ export async function serveVersionFile(
     const fileUnder_FastlyCdn_SizeLimit = file_meta.size < MAX_FASTLY_FILE_SIZE;
 
     // Redirect to the cdn url if the project is public and the file is under the CDN size limit
-    if (!isCdnRequest && isPublicallyAccessible) {
-        if (fileUnder_FastlyCdn_SizeLimit) {
-            return ctx.redirect(
-                `${versionFileUrl(project.id, associatedProjectVersion.id, fileName, true)}`,
-                HTTP_STATUS.TEMPORARY_REDIRECT,
-            );
-        }
-        // redirect to the cloudflare cdn subdomain so that the file can be cached
-        // but only if the request is not already coming from that subdomain (otherwise it would cause a redirect loop)
-        else if (!ctx.req.url.startsWith(env.CLOUDFLARE_CDN_URL)) {
-            return ctx.redirect(
-                `${versionFileUrl_CustomCdn(project.id, associatedProjectVersion.id, fileName, env.CLOUDFLARE_CDN_URL)}`,
-                HTTP_STATUS.TEMPORARY_REDIRECT,
-            );
-        }
+    if (!isCdnRequest && isPublicallyAccessible && fileUnder_FastlyCdn_SizeLimit) {
+        return ctx.redirect(
+            `${versionFileUrl(project.id, associatedProjectVersion.id, fileName, true)}`,
+            HTTP_STATUS.TEMPORARY_REDIRECT,
+        );
     }
 
     const file = await getProjectVersionFile(
