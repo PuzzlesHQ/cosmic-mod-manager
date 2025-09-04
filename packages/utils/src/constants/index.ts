@@ -1,4 +1,4 @@
-import { KiB, MiB } from "~/number";
+import { KiB, MiB } from "./../number";
 
 // Site config
 export const SITE_NAME_SHORT = "CRMM";
