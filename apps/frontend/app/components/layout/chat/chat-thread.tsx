@@ -450,7 +450,7 @@ function ThreadMessage(props: ThreadMessageProps) {
 
         case MessageType.DELETED:
             msgText = (
-                <div className="gap-1 text-error-fg text-sm">
+                <div className="gap-1 text-foreground-extra-muted text-sm">
                     <BanIcon className="mb-[0.25ch] inline h-btn-icon-sm w-btn-icon-sm" /> {t.chatThread.messageDeleted}
                 </div>
             );
