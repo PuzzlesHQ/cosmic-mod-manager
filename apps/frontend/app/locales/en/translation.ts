@@ -148,6 +148,9 @@ export default {
         bio: "Bio",
         bioDesc: "A short description to tell everyone a little bit about you.",
         visitYourProfile: "Visit your profile",
+        profilePageBg: "Profile page background",
+        profilePageBgDesc: "This image will be used as a custom background for your profile page",
+
         showIpAddr: "Show IP addresses",
         sessionsDesc:
             "These devices are currently logged into your account, you can revoke any session at any time. If you see something you don't recognize, immediately revoke the session and change the password of the associated auth provider.",

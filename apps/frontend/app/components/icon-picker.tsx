@@ -18,6 +18,7 @@ interface IconPickerProps {
     fallbackIcon: React.ReactNode;
     originalIcon: string;
     vtId?: string;
+    previewClassName?: string;
 }
 
 export default function IconPicker(props: IconPickerProps) {
@@ -57,7 +58,7 @@ export default function IconPicker(props: IconPickerProps) {
 
                         return imageUrl(props.originalIcon || "");
                     })()}
-                    className="rounded"
+                    className={cn("rounded", props.previewClassName)}
                     fallback={props.fallbackIcon}
                     // Only set view transition id if the icon has not changed
                     vtId={!(props.icon instanceof File) ? props.vtId : undefined}

@@ -108,6 +108,7 @@ export function ProfileSettingsPage({ session }: Props) {
                                     onChange={field.onChange}
                                     fallbackIcon={fallbackUserIcon}
                                     originalIcon={session.avatar || ""}
+                                    previewClassName="rounded-full"
                                 />
                             )}
                         />
@@ -190,8 +191,8 @@ export function ProfileSettingsPage({ session }: Props) {
                                         }}
                                     >
                                         <FormLabel htmlFor="bg-input" className="justify-start gap-2">
-                                            Profile page background{" "}
-                                            <TooltipTemplate content="This image will be used as a custom background for your profile page">
+                                            {t.settings.profilePageBg}{" "}
+                                            <TooltipTemplate content={t.settings.profilePageBgDesc}>
                                                 <HelpCircleIcon className="h-btn-icon w-btn-icon cursor-help text-foreground-extra-muted" />
                                             </TooltipTemplate>
                                         </FormLabel>
