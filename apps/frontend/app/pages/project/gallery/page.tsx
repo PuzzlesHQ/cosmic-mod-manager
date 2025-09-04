@@ -198,7 +198,7 @@ function ImageDialog({
     dialogOpen: boolean;
     setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-    const [isFullWidth, setIsFullWidth] = useState(false);
+    const [isFullWidth, setIsFullWidth] = useState(true);
 
     function toggleFullWidth() {
         setIsFullWidth((prev) => !prev);
