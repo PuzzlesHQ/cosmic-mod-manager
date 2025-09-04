@@ -23,7 +23,7 @@ import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
 import { HTTP_STATUS, notFoundResponseData, serverErrorResponseData, unauthorizedReqResponseData } from "~/utils/http";
 import { resizeImageToWebp } from "~/utils/images";
 import { generateDbId } from "~/utils/str";
-import { collectionIconUrl, userIconUrl } from "~/utils/urls";
+import { collectionIconUrl, userFileUrl } from "~/utils/urls";
 import { CanEditCollection, CollectionAccessible } from "../utils";
 
 export async function GetUserCollections(userSlug: string, userSession: ContextUserData | undefined) {
@@ -128,7 +128,7 @@ export async function GetCollectionOwner(collectionId: string, userSession: Cont
             data: {
                 id: userSession.id,
                 userName: userSession.userName,
-                avatar: userIconUrl(userSession.id, userSession.avatar),
+                avatar: userFileUrl(userSession.id, userSession.avatar),
             } satisfies CollectionOwner,
             status: HTTP_STATUS.OK,
         };
@@ -145,7 +145,7 @@ export async function GetCollectionOwner(collectionId: string, userSession: Cont
     const ownerData: CollectionOwner = {
         id: owner.id,
         userName: owner.userName,
-        avatar: userIconUrl(owner.id, owner.avatar),
+        avatar: userFileUrl(owner.id, owner.avatar),
     };
 
     return {

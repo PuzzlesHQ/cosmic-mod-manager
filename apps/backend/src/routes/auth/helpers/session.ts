@@ -163,6 +163,7 @@ export async function validateSessionToken(token: string): Promise<ContextUserDa
         password: sessionUser.password,
         newSignInAlerts: sessionUser.newSignInAlerts,
         followingProjects: sessionUser.followingProjects,
+        profilePageBg: sessionUser.profilePageBg,
 
         sessionId: session.id,
     };

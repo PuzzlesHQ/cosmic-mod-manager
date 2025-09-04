@@ -30,7 +30,7 @@ export default function UserProjectsList(props: Props) {
             <div className="grid w-full grid-cols-1 gap-panel-cards md:grid-cols-2">
                 {props.userData.id === session?.id ? (
                     <FollowsCollectionItem
-                        className="bg-card-background hover:bg-card-background/85"
+                        className="blurred bg-card-background hover:bg-card-background/85"
                         followingProjects={collectionCtx.followingProjects.length}
                     />
                 ) : null}
@@ -45,7 +45,7 @@ export default function UserProjectsList(props: Props) {
                             icon={imageUrl(collection.icon)}
                             description={collection.description || ""}
                             projects={collection.projects.length}
-                            className="bg-card-background hover:bg-card-background/85"
+                            className="blurred bg-card-background hover:bg-card-background/85"
                             visibility={
                                 <div className="inline-flex items-center justify-center gap-1">
                                     {collection.visibility === CollectionVisibility.PRIVATE ? (
@@ -82,6 +82,7 @@ export default function UserProjectsList(props: Props) {
 
     return filteredProjects.map((project) => (
         <ProjectCardItem
+            className="blurred"
             pageId="user-projects"
             projectType={project.type[0] as ProjectType}
             pageProjectType={(formattedProjectType as ProjectType) || "project"}

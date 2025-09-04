@@ -13,7 +13,7 @@ datasource db {
 model User {
     id              String   @id @db.VarChar(32)
     email           String   @unique @db.VarChar(64)
-    avatar          String?  @db.VarChar(256)
+    avatar          String?  @db.VarChar(32) // @File.id
     name            String?  @db.VarChar(32)
     userName        String   @unique @db.VarChar(32)
     dateJoined      DateTime @default(now())
@@ -22,6 +22,7 @@ model User {
     bio             String?  @db.VarChar(256)
     password        String?
     newSignInAlerts Boolean  @default(true)
+    profilePageBg   String?  @db.VarChar(32) // @File.id
 
     sessions         Session[]          @relation(name: "UserSessions")
     authAccounts     AuthAccount[]      @relation(name: "UserAuthAccounts")
@@ -83,12 +84,13 @@ model UserConfirmation {
 }
 
 model Organisation {
-    id          String  @id @db.VarChar(32)
-    teamId      String  @unique @db.VarChar(32)
-    slug        String  @unique @db.VarChar(32)
-    name        String  @db.VarChar(32)
-    description String? @db.VarChar(256)
-    iconFileId  String? @db.VarChar(32)
+    id          String   @id @db.VarChar(32)
+    teamId      String   @unique @db.VarChar(32)
+    slug        String   @unique @db.VarChar(32)
+    name        String   @db.VarChar(32)
+    description String?  @db.VarChar(256)
+    iconFileId  String?  @db.VarChar(32) // @File.id
+    dateCreated DateTime @default(now())
 
     team     Team      @relation(name: "OrganisationTeam", fields: [teamId], references: [id])
     projects Project[] @relation(name: "OrganisationProjects")
@@ -139,7 +141,7 @@ model Project {
     datePublished  DateTime @default(now())
     dateUpdated    DateTime @default(now())
     visibility     String   @db.VarChar(32)
-    iconFileId     String?  @db.VarChar(32)
+    iconFileId     String?  @db.VarChar(32) // @File.id
 
     // licenseId maybe null for custom licenses
     licenseId   String? @db.VarChar(64)
@@ -201,7 +203,7 @@ model VersionFile {
     id        String  @id @db.VarChar(32)
     versionId String  @db.VarChar(32)
     isPrimary Boolean
-    fileId    String  @unique @db.VarChar(32)
+    fileId    String  @unique @db.VarChar(32) // @File.id
 
     version Version @relation(name: "VersionFiles", fields: [versionId], references: [id], onDelete: Cascade)
 }
@@ -218,7 +220,7 @@ model Dependency {
 
 model GalleryItem {
     id              String   @id @db.VarChar(32)
-    imageFileId     String   @db.VarChar(32)
+    imageFileId     String   @db.VarChar(32) // @File.id
     thumbnailFileId String   @db.VarChar(32)
     projectId       String   @db.VarChar(32)
     name            String   @db.VarChar(64)
@@ -260,7 +262,7 @@ model Collection {
     userId      String   @db.VarChar(32)
     name        String   @db.VarChar(32)
     description String?  @db.VarChar(256)
-    iconFileId  String?  @db.VarChar(32)
+    iconFileId  String?  @db.VarChar(32) // @File.id
     visibility  String   @db.VarChar(32)
     dateCreated DateTime @default(now())
     dateUpdated DateTime @default(now())

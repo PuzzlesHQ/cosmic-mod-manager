@@ -1,0 +1,11 @@
+@tailwind utilities;
+
+@layer utilities {
+    .has-bg-image .blurred {
+        @apply bg-card-background/65 backdrop-blur-lg;
+    }
+
+    .has-bg-image .blurred-on-hover {
+        @apply hover:!bg-raised-background/50;
+    }
+}

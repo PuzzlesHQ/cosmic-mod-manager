@@ -11,15 +11,17 @@ import { Outlet } from "react-router";
 import { CubeIcon, fallbackOrgIcon, fallbackUserIcon } from "~/components/icons";
 import { itemType, MicrodataItemProps, MicrodataItemType } from "~/components/microdata";
 import { PageHeader } from "~/components/misc/page-header";
-import { ContentCardTemplate } from "~/components/misc/panel";
+import { DefaultTheme, ThemeVariant } from "~/components/themes/config";
 import { ImgWrapper } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import Chip from "~/components/ui/chip";
 import { TimePassedSince } from "~/components/ui/date";
 import Link, { LinkPrefetchStrategy, useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { PopoverClose } from "~/components/ui/popover";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
+import { usePreferences } from "~/hooks/preferences";
+import { getThemeClassName } from "~/hooks/preferences/theme";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import ReportButton from "~/pages/report/report-btn";
@@ -37,6 +39,9 @@ interface Props {
 export default function UserPageLayout(props: Props) {
     const { t } = useTranslation();
     const navigate = useNavigate();
+
+    const prefs = usePreferences();
+    const isActiveTheme_Dark = getThemeClassName(prefs.resolvedTheme, prefs.prefersOLED).some((cls) => cls === ThemeVariant.DARK);
 
     const aggregatedDownloads = (props.projectsList || [])?.reduce((acc, project) => acc + project.downloads, 0) || 0;
     const totalProjects = (props.projectsList || [])?.length;
@@ -62,31 +67,51 @@ export default function UserPageLayout(props: Props) {
         );
     }
 
+    // Auto navigate to /collections page if the user has no projects but has collections
+    // just good ux (probably)
     useEffect(() => {
         if (props.projectsList.length === 0 && props.collections.length > 0) {
             navigate(UserProfilePath(props.userData.userName, "collections"));
         }
     }, [props.userData.id]);
 
-    // Using JSX syntax returns an Element object which is not easy to check if it's null or not, so using the function syntax
+    // Using the JSX syntax returns an Element object which is not easy to check if it's null or not, so using the function syntax
     const sidebar = PageSidebar({
         displayName: props.userData.name,
         userId: props.userData.id,
         orgsList: props.orgsList || [],
     });
 
+    const bgImageUrl = props.userData.profilePageBg;
+
     return (
         <main
-            className={cn("header-content-sidebar-layout gap-y-panel-cards pb-12", sidebar && "gap-x-panel-cards")}
+            data-showbg="true"
+            className={cn(
+                !isActiveTheme_Dark && [DefaultTheme.variant, DefaultTheme.name],
+                bgImageUrl && "has-bg-image",
+                "header-content-sidebar-layout gap-y-panel-cards pb-12",
+                sidebar && "gap-x-panel-cards",
+            )}
             itemScope
             itemType={itemType(MicrodataItemType.Person)}
         >
+            <style>{`
+                .page_content_wrapper {
+                    background-image: url("${bgImageUrl}");
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    background-attachment: fixed;
+                    background-position: center;
+                }
+            `}</style>
+
             <ProfilePageHeader userData={props.userData} totalDownloads={aggregatedDownloads} totalProjects={totalProjects} />
 
             <div className="page-content grid h-fit grid-cols-1 gap-panel-cards">
                 {navLinks?.length > 1 || navLinks[0]?.href?.length > 0 ? (
                     <SecondaryNav
-                        className="rounded-lg bg-card-background px-3 py-2"
+                        className="blurred rounded-lg bg-card-background px-3 py-2"
                         urlBase={UserProfilePath(props.userData.userName)}
                         links={navLinks}
                     />
@@ -121,6 +146,7 @@ export default function UserPageLayout(props: Props) {
 
 function PageSidebar({ userId, orgsList }: { displayName: string; userId: string; orgsList: Organisation[] }) {
     const { t } = useTranslation();
+
     const joinedOrgs = orgsList.filter((org) => {
         const member = org.members.find((member) => member.userId === userId);
         return member?.accepted === true;
@@ -130,28 +156,37 @@ function PageSidebar({ userId, orgsList }: { displayName: string; userId: string
 
     return (
         <div className="page-sidebar flex w-full flex-col gap-panel-cards lg:w-sidebar">
-            <ContentCardTemplate title={t.dashboard.organizations} titleClassName="text-lg">
-                <div className="flex flex-wrap items-start justify-start gap-2">
-                    <TooltipProvider>
-                        {joinedOrgs.map((org) => (
-                            <Tooltip key={org.id}>
-                                <TooltipTrigger asChild>
-                                    <Link to={OrgPagePath(org.slug)}>
-                                        <ImgWrapper
-                                            vtId={org.id}
-                                            src={imageUrl(org.icon)}
-                                            alt={org.name}
-                                            fallback={fallbackOrgIcon}
-                                            className="h-14 w-14"
-                                        />
-                                    </Link>
-                                </TooltipTrigger>
-                                <TooltipContent>{org.name}</TooltipContent>
-                            </Tooltip>
-                        ))}
-                    </TooltipProvider>
-                </div>
-            </ContentCardTemplate>
+            <Card className="blurred">
+                <CardHeader>
+                    <CardTitle>{t.dashboard.organizations}</CardTitle>
+                </CardHeader>
+                <CardContent className="grid grid-cols-1 gap-2">
+                    {joinedOrgs.map((org) => {
+                        const role = org.members.find((member) => member.userId === userId)?.role;
+
+                        return (
+                            <Link
+                                key={org.id}
+                                to={OrgPagePath(org.slug)}
+                                className="bg_hover_stagger blurred-on-hover flex items-center gap-3 p-1 hover:bg-raised-background"
+                            >
+                                <ImgWrapper
+                                    vtId={org.id}
+                                    src={imageUrl(org.icon)}
+                                    alt={org.name}
+                                    fallback={fallbackOrgIcon}
+                                    className="h-12 w-12"
+                                />
+
+                                <div className="grid grid-cols-1 gap-x-3 leading-tight">
+                                    <span className="font-semibold">{org.name}</span>
+                                    <span className="text-foreground-extra-muted">{role || "__"}</span>
+                                </div>
+                            </Link>
+                        );
+                    })}
+                </CardContent>
+            </Card>
 
             {
                 // TODO:
@@ -188,6 +223,7 @@ function ProfilePageHeader({ userData, totalProjects, totalDownloads }: ProfileP
         <PageHeader
             vtId={userData.id}
             icon={imageUrl(userData.avatar)}
+            className={cn("blurred", userData.profilePageBg && "px-4 py-4")}
             iconClassName="rounded-full"
             fallbackIcon={fallbackUserIcon}
             title={userData.name}

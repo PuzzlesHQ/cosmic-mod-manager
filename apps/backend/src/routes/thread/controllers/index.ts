@@ -17,7 +17,7 @@ import prisma from "~/services/prisma";
 import type { ContextUserData } from "~/types";
 import { HTTP_STATUS, invalidReqestResponseData, unauthorizedReqResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
-import { userIconUrl } from "~/utils/urls";
+import { userFileUrl } from "~/utils/urls";
 
 export async function GetThreadMessages(user: ContextUserData, threadId: string) {
     const thread = await prisma.thread.findUnique({
@@ -106,7 +106,7 @@ export async function GetThreadMessages(user: ContextUserData, threadId: string)
         formattedMembers.push({
             id: user.id,
             userName: user.userName,
-            avatar: userIconUrl(user.id, user.avatar),
+            avatar: userFileUrl(user.id, user.avatar),
             role: user.role as GlobalUserRole,
         });
     }

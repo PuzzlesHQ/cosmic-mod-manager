@@ -17,7 +17,7 @@ import prisma from "~/services/prisma";
 import type { ContextUserData } from "~/types";
 import { HTTP_STATUS, notFoundResponseData, serverErrorResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
-import { orgIconUrl, projectIconUrl, userIconUrl } from "~/utils/urls";
+import { orgIconUrl, projectIconUrl, userFileUrl } from "~/utils/urls";
 
 export async function getModerationProjects() {
     const _ProjectIds = await prisma.project.findMany({
@@ -54,7 +54,7 @@ export async function getModerationProjects() {
             author = {
                 name: owner.userName,
                 slug: owner.userName,
-                icon: userIconUrl(owner.id, owner.avatar),
+                icon: userFileUrl(owner.id, owner.avatar),
                 isOrg: false,
             };
         }

@@ -35,4 +35,4 @@ export async function handleFormError(callback: () => void | Promise<void>, toas
     }
 }
 
-export const validImgFileExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp"];
+export const validImgFileExtensions = [".jpg", ".jpeg", ".png", ".apng", ".gif", ".webp"];

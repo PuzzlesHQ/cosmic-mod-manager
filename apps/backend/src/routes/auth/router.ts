@@ -11,7 +11,7 @@ import { critModifyReqRateLimiter } from "~/middleware/rate-limit/modify-req";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { HTTP_STATUS, invalidReqestResponse, serverErrorResponse } from "~/utils/http";
 import { getUserFromCtx } from "~/utils/router";
-import { userIconUrl } from "~/utils/urls";
+import { userFileUrl } from "~/utils/urls";
 import { getLinkedAuthProviders, linkAuthProviderHandler, unlinkAuthProvider } from "./controllers/link-provider";
 import { deleteUserSession, getUserSessions, revokeSessionFromAccessCode } from "./controllers/session";
 import { oAuthSignInHandler } from "./controllers/signin";
@@ -57,9 +57,10 @@ async function currSession_get(ctx: Context) {
             name: userSession.name,
             role: getUserRoleFromString(userSession.role),
             hasAPassword: !!userSession.password,
-            avatar: userIconUrl(userSession.id, userSession.avatar),
+            avatar: userFileUrl(userSession.id, userSession.avatar),
             sessionId: userSession.sessionId,
             bio: userSession.bio,
+            profilePageBg: userFileUrl(userSession.id, userSession.profilePageBg),
         } satisfies LoggedInUserData;
 
         return ctx.json(formattedObject, HTTP_STATUS.OK);

@@ -25,7 +25,7 @@ export default function IconPicker(props: IconPickerProps) {
 
     return (
         <FormItem>
-            <FormLabel>{t.form.icon}</FormLabel>
+            <FormLabel className="font-bold">{t.form.icon}</FormLabel>
             <div className="flex flex-wrap items-center justify-start gap-4">
                 <input
                     hidden

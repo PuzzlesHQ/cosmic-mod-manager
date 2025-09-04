@@ -12,11 +12,12 @@ interface LinkItem {
 interface Props {
     urlBase: string;
     className?: string;
+    linkClassName?: string;
     links: LinkItem[];
     onClick?: (e: React.MouseEvent, link: LinkItem) => void;
 }
 
-export default function SecondaryNav({ urlBase, className, links, onClick }: Props) {
+export default function SecondaryNav({ urlBase, className, links, onClick, linkClassName }: Props) {
     return (
         <nav className={cn("flex items-center justify-start", className)} id="project-page-nav">
             <ul className="flex w-full flex-wrap gap-1">
@@ -28,7 +29,7 @@ export default function SecondaryNav({ urlBase, className, links, onClick }: Pro
                             <ButtonLink
                                 prefetch={LinkPrefetchStrategy.Render}
                                 url={joinPaths(urlBase, link.href)}
-                                className="h-10 rounded px-4 py-0 font-semibold"
+                                className={cn("h-10 rounded px-4 py-0 font-semibold", linkClassName)}
                                 onClick={(e) => onClick?.(e, link)}
                                 preventScrollReset
                             >

@@ -3,14 +3,14 @@
     "type": "module",
     "module": "index.ts",
     "dependencies": {
-        "zod": "^4.0.5"
+        "zod": "^4.1.5"
     },
     "devDependencies": {
         "@biomejs/biome": "2.1.1",
         "@types/bun": "latest"
     },
     "peerDependencies": {
-        "typescript": "^5.7.3"
+        "typescript": "^5.9.2"
     },
     "scripts": {
         "lint": "biome lint",

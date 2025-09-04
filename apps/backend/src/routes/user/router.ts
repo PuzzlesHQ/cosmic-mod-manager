@@ -141,6 +141,7 @@ async function user_patch(ctx: Context) {
             name: formData.get("name"),
             userName: formData.get("userName"),
             bio: formData.get("bio"),
+            profilePageBg: formData.get("profilePageBg"),
         } satisfies z.infer<typeof profileUpdateFormSchema>;
 
         const { data, error } = await zodParse(profileUpdateFormSchema, obj);

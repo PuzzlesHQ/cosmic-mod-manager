@@ -15,7 +15,7 @@ import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
 import { HTTP_STATUS, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
 import { resizeImageToWebp } from "~/utils/images";
 import { generateDbId } from "~/utils/str";
-import { userIconUrl } from "~/utils/urls";
+import { userFileUrl } from "~/utils/urls";
 
 export async function getUserProfileData(slug: string) {
     const user = await GetUser_ByIdOrUsername(slug, slug);
@@ -26,9 +26,10 @@ export async function getUserProfileData(slug: string) {
         name: user.name || user.userName,
         userName: user.userName,
         role: user.role as GlobalUserRole,
-        avatar: userIconUrl(user.id, user.avatar),
+        avatar: userFileUrl(user.id, user.avatar),
         bio: user.bio,
         dateJoined: user.dateJoined,
+        profilePageBg: userFileUrl(user.id, user.profilePageBg),
     } satisfies UserProfileData;
 
     return { data: dataObj, status: HTTP_STATUS.OK };
@@ -78,6 +79,38 @@ export async function updateUserProfile(userSession: ContextUserData, profileDat
 
     const avatarFileId = await getUserAvatar(user.id, user.avatar, profileData.avatar);
 
+    let profilePageBg_FileId = user.profilePageBg;
+    // Delete image file if the user removed their profile page background or uploaded a new one
+    if (user.profilePageBg && (!profileData.profilePageBg || profileData.profilePageBg instanceof File)) {
+        try {
+            const deleted_ImageFile = await DeleteFile_ByID(user.profilePageBg);
+            await deleteUserFile(deleted_ImageFile.storageService as FILE_STORAGE_SERVICE, user.id, deleted_ImageFile.name);
+        } catch {}
+
+        profilePageBg_FileId = null;
+    }
+
+    if (profileData.profilePageBg instanceof File) {
+        const fileType = (await getFileType(profileData.profilePageBg)) || FileType.PNG;
+        const bgImgFileId = `${generateDbId()}.${fileType}`;
+
+        const saveUrl = await saveUserFile(FILE_STORAGE_SERVICE.LOCAL, user.id, profileData.profilePageBg, bgImgFileId);
+        if (saveUrl) {
+            await CreateFile({
+                data: {
+                    id: bgImgFileId,
+                    name: bgImgFileId,
+                    size: profileData.profilePageBg.size,
+                    type: fileType,
+                    url: saveUrl,
+                    storageService: FILE_STORAGE_SERVICE.LOCAL,
+                },
+            });
+
+            profilePageBg_FileId = bgImgFileId;
+        }
+    }
+
     await UpdateUser({
         where: {
             id: user.id,
@@ -87,6 +120,7 @@ export async function updateUserProfile(userSession: ContextUserData, profileDat
             avatar: avatarFileId,
             userName: profileData.userName,
             bio: profileData.bio,
+            profilePageBg: profilePageBg_FileId,
         },
     });
 
@@ -112,8 +146,8 @@ export async function getUserAvatar(
 
         return null;
     }
-    // set the new avatar if the user uploaded one
 
+    // set the new avatar if the user uploaded one
     const uploadedImg_Type = await getFileType(avatarFile);
     if (!uploadedImg_Type) return null;
 

@@ -35,6 +35,7 @@ export const profileUpdateFormSchema = z.object({
     avatar: iconFieldSchema.or(z.string()).optional(),
     userName: userNameSchema,
     bio: z.string().max(MAX_USER_BIO_LENGTH).optional(),
+    profilePageBg: z.string().nullable().or(z.file().nullable()),
 });
 
 export const setNewPasswordFormSchema = z.object({

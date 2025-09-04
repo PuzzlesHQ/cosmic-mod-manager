@@ -36,6 +36,7 @@ interface SearchListItemProps {
     icon: string | null;
     featuredGallery: string | null;
     color: string | null;
+    className?: string;
     author?: string;
     summary: string;
     clientSide: EnvironmentSupport;
@@ -89,6 +90,7 @@ function BaseView(props: SearchListItemProps) {
                 listViewType && "p-card-surround",
                 galleryViewType && "pb-4",
                 props.viewType,
+                props.className,
             )}
             aria-label={props.projectName}
             style={vtStyle}
@@ -350,9 +352,12 @@ function ProjectLink(props: ProjectLinkProps) {
             )}
             aria-label={props.projectName}
         >
-            <p itemProp={MicrodataItemProps.name} className={cn("inline leading-none", props.galleryViewType && "leading-tight")}>
+            <span
+                itemProp={MicrodataItemProps.name}
+                className={cn("inline leading-none", props.galleryViewType && "leading-tight")}
+            >
                 {props.projectName}
-            </p>
+            </span>
         </Link>
     );
 }

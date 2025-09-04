@@ -102,8 +102,10 @@ function AppSetup(props: { data: RootOutletData }) {
 
                 <PageBreadCrumbs />
 
-                <div className="full_page container px-4 sm:px-8">
-                    <Outlet context={data satisfies RootOutletData} />
+                <div className="page_content_wrapper">
+                    <div className="full_page container mb-16 px-4 sm:px-8">
+                        <Outlet context={data satisfies RootOutletData} />
+                    </div>
                 </div>
 
                 <Footer />

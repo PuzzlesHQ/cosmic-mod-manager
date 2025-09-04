@@ -6,7 +6,7 @@ import type { UnwrapArray } from "@app/utils/types/helpers";
 import type { File as DBFile } from "@prisma/client";
 import type { GetVersions_ReturnType } from "~/db/version_item";
 import { DELETED_USER_AUTHOR_OBJ } from "~/routes/project/utils";
-import { userIconUrl, versionFileUrl } from "~/utils/urls";
+import { userFileUrl, versionFileUrl } from "~/utils/urls";
 
 type VersionProp = UnwrapArray<NonNullable<GetVersions_ReturnType>["versions"]>;
 type VersionFilesMap = Map<string, DBFile>;
@@ -55,7 +55,7 @@ export function formatVersionData(v: VersionProp, versionFilesMap: VersionFilesM
             ? {
                   id: v.author.id,
                   userName: v.author.userName,
-                  avatar: userIconUrl(v.author.id, v.author.avatar),
+                  avatar: userFileUrl(v.author.id, v.author.avatar),
                   role: authorRole || "",
               }
             : DELETED_USER_AUTHOR_OBJ,

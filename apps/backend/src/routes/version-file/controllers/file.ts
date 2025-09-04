@@ -9,7 +9,7 @@ import prisma from "~/services/prisma";
 import { HashAlgorithms } from "~/types";
 import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData } from "~/utils/http";
 import { GetReleaseChannelFilter } from "~/utils/project";
-import { userIconUrl, versionFileUrl } from "~/utils/urls";
+import { userFileUrl, versionFileUrl } from "~/utils/urls";
 
 export async function GetVersionFromFileHash(hash: string, algorithm: HashAlgorithms) {
     const res = await GetVersionsFromFileHashes([hash], algorithm);
@@ -132,7 +132,7 @@ export async function GetVersionsFromFileHashes(hashes: string[], algorithm: Has
                 ? {
                       id: version.author.id,
                       userName: version.author.userName,
-                      avatar: userIconUrl(version.author.id, version.author.avatar),
+                      avatar: userFileUrl(version.author.id, version.author.avatar),
                       role: "",
                   }
                 : DELETED_USER_AUTHOR_OBJ,
@@ -249,8 +249,12 @@ export async function GetLatestProjectVersionsFromHashes(hashes: string[], algor
 
             if (filter.gameVersions?.length && !version.gameVersions.some((gv) => filter.gameVersions?.includes(gv))) continue;
             if (filter.loader && !version.loaders.includes(filter.loader)) continue;
-            if (filter.releaseChannel && !GetReleaseChannelFilter(filter.releaseChannel).includes(version.releaseChannel))
+            if (
+                filter.releaseChannel &&
+                !GetReleaseChannelFilter(filter.releaseChannel).includes(version.releaseChannel as VersionReleaseChannel)
+            ) {
                 continue;
+            }
 
             Versions.push(version);
         }
@@ -322,7 +326,7 @@ export async function GetLatestProjectVersionsFromHashes(hashes: string[], algor
                 ? {
                       id: version.author.id,
                       userName: version.author.userName,
-                      avatar: userIconUrl(version.author.id, version.author.avatar),
+                      avatar: userFileUrl(version.author.id, version.author.avatar),
                       role: "",
                   }
                 : DELETED_USER_AUTHOR_OBJ,

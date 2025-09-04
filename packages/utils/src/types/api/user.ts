@@ -8,4 +8,5 @@ export interface UserProfileData {
     avatar: string | null;
     bio: string | null;
     dateJoined: Date;
+    profilePageBg: string | null;
 }

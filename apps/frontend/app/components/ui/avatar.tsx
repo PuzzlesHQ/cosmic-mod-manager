@@ -20,7 +20,7 @@ export function ImgWrapper({ vtId, src, alt, className, loading, fallback, ...pr
             <div
                 {...props}
                 className={cn(
-                    "flex h-24 w-24 shrink-0 items-center justify-center rounded border border-border bg-raised-background shadow shadow-shadow",
+                    "flex h-24 w-24 shrink-0 items-center justify-center rounded border border-border bg-raised-background",
                     className,
                 )}
             >
@@ -36,7 +36,7 @@ export function ImgWrapper({ vtId, src, alt, className, loading, fallback, ...pr
             loading={loading}
             alt={alt}
             className={cn(
-                "view-transition-item h-24 w-24 shrink-0 rounded border border-border bg-raised-background object-cover shadow shadow-shadow",
+                "view-transition-item h-24 w-24 shrink-0 rounded border border-border bg-raised-background object-cover",
                 className,
             )}
             style={style}

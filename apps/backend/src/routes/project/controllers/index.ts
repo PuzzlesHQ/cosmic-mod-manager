@@ -20,7 +20,7 @@ import type { ContextUserData } from "~/types";
 import { isNumber } from "~/utils";
 import { HTTP_STATUS } from "~/utils/http";
 import { parseJson } from "~/utils/str";
-import { orgIconUrl, projectGalleryFileUrl, projectIconUrl, userIconUrl } from "~/utils/urls";
+import { orgIconUrl, projectGalleryFileUrl, projectIconUrl, userFileUrl } from "~/utils/urls";
 import { isProjectAccessible, isProjectListed } from "../utils";
 
 export async function getProjectData(slug: string, userSession: ContextUserData | undefined) {
@@ -130,7 +130,7 @@ function formatProjectMember<T extends FormatMemberProps>(member: T, currMember?
         userId: member.user.id,
         teamId: member.teamId,
         userName: member.user.userName,
-        avatar: userIconUrl(member.user.id, member.user.avatar),
+        avatar: userFileUrl(member.user.id, member.user.avatar),
         role: member.role,
         isOwner: member.isOwner,
         accepted: member.accepted,

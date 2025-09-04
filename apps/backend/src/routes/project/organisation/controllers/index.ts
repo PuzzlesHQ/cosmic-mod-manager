@@ -8,7 +8,7 @@ import { Get_UserOrganizations, GetUser_ByIdOrUsername } from "~/db/user_item";
 import type { ContextUserData } from "~/types";
 import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
-import { orgIconUrl, userIconUrl } from "~/utils/urls";
+import { orgIconUrl, userFileUrl } from "~/utils/urls";
 import { getManyProjects } from "../../controllers";
 
 export async function getOrganisationById(userSession: ContextUserData | undefined, slug: string) {
@@ -32,7 +32,7 @@ export async function getOrganisationById(userSession: ContextUserData | undefin
                 userId: member.userId,
                 teamId: member.teamId,
                 userName: member.user.userName,
-                avatar: userIconUrl(member.user.id, member.user.avatar),
+                avatar: userFileUrl(member.user.id, member.user.avatar),
                 role: member.role,
                 isOwner: member.isOwner,
                 accepted: member.accepted,
@@ -75,7 +75,7 @@ export async function getUserOrganisations(userSession: ContextUserData | undefi
                 userId: member.userId,
                 teamId: member.teamId,
                 userName: member.user.userName,
-                avatar: userIconUrl(member.user.id, member.user.avatar),
+                avatar: userFileUrl(member.user.id, member.user.avatar),
                 role: member.role,
                 isOwner: member.isOwner,
                 accepted: member.accepted,

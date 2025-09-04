@@ -20,7 +20,7 @@ export default function Footer() {
     const legal = t.legal;
 
     return (
-        <footer className="mx-auto mt-24 w-full bg-card-background/50 pt-20 pb-8">
+        <footer className="mx-auto w-full bg-card-background/50 pt-20 pb-8">
             <div className="footer-grid container gap-y-5 pb-16">
                 <LinksColumn area="logo">
                     <span

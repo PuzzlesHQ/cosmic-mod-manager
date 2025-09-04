@@ -18,6 +18,7 @@ const USER_DATA_SELECT_FIELDS = {
     password: true,
     newSignInAlerts: true,
     followingProjects: true,
+    profilePageBg: true,
 } satisfies Prisma.UserSelect;
 
 export type GetUser_ReturnType = Awaited<ReturnType<typeof GetUser_FromDb>>;
