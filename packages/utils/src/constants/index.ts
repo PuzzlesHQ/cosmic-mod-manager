@@ -1,3 +1,5 @@
+import { KiB, MiB } from "~/number";
+
 // Site config
 export const SITE_NAME_SHORT = "CRMM";
 export const SITE_NAME_LONG = "Cosmic Reach Mod Manager";
@@ -34,12 +36,14 @@ export const MAX_DISPLAY_NAME_LENGTH = 64;
 
 // Images
 export const ICON_WIDTH = 128;
-export const MAX_ICON_SIZE = 524288; // 512 KiB
+export const MAX_ICON_SIZE = 512 * KiB;
 export const GALLERY_IMG_THUMBNAIL_WIDTH = 420;
-export const MAX_PROJECT_GALLERY_IMAGE_SIZE = 5242880; // 5 MiB
+export const MAX_PROJECT_GALLERY_IMAGE_SIZE = 8 * MiB;
 
 export const MAX_GALLERY_TITLE_LENGTH = 32;
 export const MAX_GALLERY_DESCRIPTION_LENGTH = 1024;
+
+export const MAX_PROFILE_PAGE_BG_SIZE = 8 * MiB;
 
 // Project
 export const MIN_PROJECT_NAME_LENGTH = 2;
@@ -59,9 +63,9 @@ export const MIN_VERSION_TITLE_LENGTH = 2;
 export const MAX_VERSION_TITLE_LENGTH = 64;
 export const MAX_VERSION_NUMBER_LENGTH = 32;
 export const MAX_VERSION_CHANGELOG_LENGTH = 65256;
-export const MAX_OPTIONAL_FILES = 10;
-export const MAX_VERSION_FILE_SIZE = 33554432; // 32 MiB
-export const MAX_ADDITIONAL_VERSION_FILE_SIZE = 5242880; // 5 MiB
+export const MAX_VERSION_FILE_SIZE = 32 * MiB;
+export const MAX_ADDITIONAL_VERSION_FILE_SIZE = 16 * MiB;
+export const MAX_OPTIONAL_FILES = 5;
 
 // Organisation
 export const MAX_ORGANISATION_NAME_LENGTH = 32;

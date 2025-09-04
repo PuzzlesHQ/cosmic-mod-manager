@@ -4,6 +4,7 @@ import {
     MAX_DISPLAY_NAME_LENGTH,
     MAX_EMAIL_LENGTH,
     MAX_PASSWORD_LENGTH,
+    MAX_PROFILE_PAGE_BG_SIZE,
     MAX_USER_BIO_LENGTH,
     MAX_USERNAME_LENGTH,
     MIN_PASSWORD_LENGTH,
@@ -35,7 +36,7 @@ export const profileUpdateFormSchema = z.object({
     avatar: iconFieldSchema.or(z.string()).optional(),
     userName: userNameSchema,
     bio: z.string().max(MAX_USER_BIO_LENGTH).optional(),
-    profilePageBg: z.string().nullable().or(z.file().nullable()),
+    profilePageBg: z.file().max(MAX_PROFILE_PAGE_BG_SIZE).nullable().or(z.string().nullable()),
 });
 
 export const setNewPasswordFormSchema = z.object({

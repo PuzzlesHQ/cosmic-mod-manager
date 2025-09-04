@@ -168,7 +168,7 @@ function PageSidebar({ userId, orgsList }: { displayName: string; userId: string
                             <Link
                                 key={org.id}
                                 to={OrgPagePath(org.slug)}
-                                className="bg_hover_stagger blurred-on-hover flex items-center gap-3 p-1 hover:bg-raised-background"
+                                className="bg_hover_stagger flex items-center gap-3 p-1 hover:bg-raised-background"
                             >
                                 <ImgWrapper
                                     vtId={org.id}
