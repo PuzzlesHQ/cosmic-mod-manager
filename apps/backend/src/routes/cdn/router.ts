@@ -5,17 +5,12 @@ import { AuthenticationMiddleware } from "~/middleware/auth";
 import { cdnAssetRateLimiter, cdnLargeFileRateLimiter } from "~/middleware/rate-limit/cdn";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { getSitemap } from "~/services/sitemap-gen";
+import { getCollectionFile, getOrgFile, getProjectFile, getProjectGalleryFile, getUserFile } from "~/services/storage";
 import env from "~/utils/env";
 import { invalidReqestResponse, notFoundResponse, serverErrorResponse } from "~/utils/http";
 import { getUserFromCtx } from "~/utils/router";
-import {
-    serveCollectionIcon,
-    serveOrgIconFile,
-    serveProjectGalleryImage,
-    serveProjectIconFile,
-    serveUserAvatar,
-    serveVersionFile,
-} from "./controller";
+import { collectionIconUrl, orgIconUrl, projectGalleryFileUrl, projectIconUrl, userFileUrl } from "~/utils/urls";
+import { serveImageFile, serveVersionFile } from "./controller";
 
 const cdnRouter = new Hono()
     .use(
@@ -26,7 +21,7 @@ const cdnRouter = new Hono()
     )
 
     .get("/data/project/:projectId/:file", cdnAssetRateLimiter, projectFile_get)
-    .get("/data/project/:projectId/gallery/:image", cdnAssetRateLimiter, galleryImage_get)
+    .get("/data/project/:projectId/gallery/:file", cdnAssetRateLimiter, galleryImage_get)
     .get(
         "/data/project/:projectId/version/:versionId/:fileName",
         invalidAuthAttemptLimiter,
@@ -37,19 +32,25 @@ const cdnRouter = new Hono()
 
     .get("/data/organization/:orgId/:file", cdnAssetRateLimiter, orgFile_get)
     .get("/data/user/:userId/:file", cdnAssetRateLimiter, userFile_get)
-    .get("/data/collection/:collectionId/:icon", cdnAssetRateLimiter, collectionIcon_get)
+    .get("/data/collection/:collectionId/:file", cdnAssetRateLimiter, collectionIcon_get)
 
     // Sitemaps
     .get("/sitemap/:name", cdnAssetRateLimiter, sitemap_get);
 
 async function projectFile_get(ctx: Context) {
     try {
-        const { projectId } = ctx.req.param();
-        if (!projectId) {
-            return invalidReqestResponse(ctx);
-        }
+        const projectId = ctx.req.param("projectId");
+        const fileId = ctx.req.param("file");
+        if (!projectId) return invalidReqestResponse(ctx);
 
-        return await serveProjectIconFile(ctx, projectId, IsCdnRequest(ctx));
+        return await serveImageFile({
+            ctx: ctx,
+            isCdnRequest: IsCdnRequest(ctx),
+            fileId: fileId,
+            entityId: projectId,
+            cdnUrlOfFile: `${projectIconUrl(projectId, fileId)}`,
+            getFile: getProjectFile,
+        });
     } catch (error) {
         console.error(error);
         return serverErrorResponse(ctx);
@@ -58,12 +59,20 @@ async function projectFile_get(ctx: Context) {
 
 async function galleryImage_get(ctx: Context) {
     try {
-        const { projectId, image } = ctx.req.param();
-        if (!projectId || !image) {
+        const projectId = ctx.req.param("projectId");
+        const fileId = ctx.req.param("file");
+        if (!projectId || !fileId) {
             return invalidReqestResponse(ctx);
         }
 
-        return await serveProjectGalleryImage(ctx, projectId, image, IsCdnRequest(ctx));
+        return await serveImageFile({
+            ctx: ctx,
+            isCdnRequest: IsCdnRequest(ctx),
+            fileId: fileId,
+            entityId: projectId,
+            cdnUrlOfFile: `${projectGalleryFileUrl(projectId, fileId)}`,
+            getFile: getProjectGalleryFile,
+        });
     } catch (error) {
         console.error(error);
         return serverErrorResponse(ctx);
@@ -103,11 +112,17 @@ async function versionFile_get(ctx: Context) {
 async function orgFile_get(ctx: Context) {
     try {
         const orgId = ctx.req.param("orgId");
-        if (!orgId) {
-            return invalidReqestResponse(ctx);
-        }
+        const fileId = ctx.req.param("file");
+        if (!orgId || !fileId) return invalidReqestResponse(ctx);
 
-        return await serveOrgIconFile(ctx, orgId, IsCdnRequest(ctx));
+        return await serveImageFile({
+            ctx: ctx,
+            isCdnRequest: IsCdnRequest(ctx),
+            fileId: fileId,
+            entityId: orgId,
+            cdnUrlOfFile: `${orgIconUrl(orgId, fileId)}`,
+            getFile: getOrgFile,
+        });
     } catch (error) {
         console.error(error);
         return serverErrorResponse(ctx);
@@ -117,11 +132,17 @@ async function orgFile_get(ctx: Context) {
 async function userFile_get(ctx: Context) {
     try {
         const userId = ctx.req.param("userId");
-        if (!userId) {
-            return invalidReqestResponse(ctx);
-        }
+        const fileId = ctx.req.param("file");
+        if (!userId || !fileId) return invalidReqestResponse(ctx);
 
-        return await serveUserAvatar(ctx, userId, IsCdnRequest(ctx));
+        return await serveImageFile({
+            ctx: ctx,
+            isCdnRequest: IsCdnRequest(ctx),
+            fileId: fileId,
+            entityId: userId,
+            cdnUrlOfFile: `${userFileUrl(userId, fileId)}`,
+            getFile: getUserFile,
+        });
     } catch (error) {
         console.error(error);
         return serverErrorResponse(ctx);
@@ -131,9 +152,17 @@ async function userFile_get(ctx: Context) {
 async function collectionIcon_get(ctx: Context) {
     try {
         const collectionId = ctx.req.param("collectionId");
-        if (!collectionId) return invalidReqestResponse(ctx);
+        const iconId = ctx.req.param("file");
+        if (!collectionId || !iconId) return invalidReqestResponse(ctx);
 
-        return await serveCollectionIcon(ctx, collectionId, IsCdnRequest(ctx));
+        return await serveImageFile({
+            ctx: ctx,
+            isCdnRequest: IsCdnRequest(ctx),
+            fileId: iconId,
+            entityId: collectionId,
+            cdnUrlOfFile: `${collectionIconUrl(collectionId, iconId)}`,
+            getFile: getCollectionFile,
+        });
     } catch (error) {
         console.error(error);
         return serverErrorResponse(ctx);
@@ -142,10 +171,8 @@ async function collectionIcon_get(ctx: Context) {
 
 async function sitemap_get(ctx: Context) {
     try {
-        const { name } = ctx.req.param();
-        if (!name) {
-            return invalidReqestResponse(ctx);
-        }
+        const name = ctx.req.param("name");
+        if (!name) return invalidReqestResponse(ctx);
 
         const sitemap = await getSitemap(name);
         if (!sitemap) return invalidReqestResponse(ctx);

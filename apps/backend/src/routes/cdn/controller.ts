@@ -1,25 +1,15 @@
 import { getMimeFromType } from "@app/utils/file-signature";
 import { MiB } from "@app/utils/number";
 import type { Context } from "hono";
-import { GetCollection } from "~/db/collection_item";
 import { GetFile, GetManyFiles_ByID } from "~/db/file_item";
-import { GetOrganization_Data } from "~/db/organization_item";
-import { GetProject_Details, GetProject_ListItem } from "~/db/project_item";
-import { GetUser_ByIdOrUsername } from "~/db/user_item";
+import { GetProject_ListItem } from "~/db/project_item";
 import { GetVersions } from "~/db/version_item";
 import { getUserIpAddress } from "~/routes/auth/helpers";
 import { isProjectAccessible, isProjectPublic } from "~/routes/project/utils";
-import {
-    getCollectionFile,
-    getOrgFile,
-    getProjectFile,
-    getProjectGalleryFile,
-    getProjectVersionFile,
-    getUserFile,
-} from "~/services/storage";
+import { getProjectVersionFile } from "~/services/storage";
 import type { ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
 import { HTTP_STATUS, notFoundResponse } from "~/utils/http";
-import { collectionIconUrl, orgIconUrl, projectGalleryFileUrl, projectIconUrl, userIconUrl, versionFileUrl } from "~/utils/urls";
+import { versionFileUrl } from "~/utils/urls";
 import { addToDownloadsQueue } from "./downloads-counter";
 
 const MAX_FASTLY_FILE_SIZE = 19 * MiB;
@@ -88,9 +78,7 @@ export async function serveVersionFile(
         associatedProjectVersion.id,
         file_meta.name,
     );
-
     if (!file) return notFoundResponse(ctx, "File not found");
-    if (typeof file === "string") return ctx.redirect(file, HTTP_STATUS.PERMANENT_REDIRECT);
 
     const response = new Response(file, { status: HTTP_STATUS.OK });
     response.headers.set("Cache-Control", "public, max-age=31536000");
@@ -100,123 +88,30 @@ export async function serveVersionFile(
     return response;
 }
 
-export async function serveProjectIconFile(ctx: Context, projectId: string, isCdnRequest: boolean) {
-    const project = await GetProject_ListItem(projectId);
-    if (!project?.iconFileId) return ctx.json({}, HTTP_STATUS.NOT_FOUND);
-
-    const iconFileData = await GetFile(project.iconFileId);
-    if (!iconFileData?.id) return ctx.json({}, HTTP_STATUS.NOT_FOUND);
-
-    if (!isCdnRequest) {
-        return ctx.redirect(`${projectIconUrl(project.id, project.iconFileId)}`);
-    }
-
-    const iconFile = await getProjectFile(iconFileData.storageService as FILE_STORAGE_SERVICE, project.id, iconFileData.name);
-
-    // Redirect to the file if it's a URL
-    if (typeof iconFile === "string") return ctx.redirect(iconFile);
-
-    const response = new Response(iconFile);
-    response.headers.set("Cache-Control", "public, max-age=31536000"); // For a full year
-    response.headers.set("Content-Type", getMimeFromType(iconFileData.type));
-    response.headers.set("Content-Disposition", `inline; filename="${iconFileData.name}"`);
-    return response;
+interface ServeImageFileProps {
+    ctx: Context;
+    entityId: string;
+    fileId: string;
+    isCdnRequest: boolean;
+    cdnUrlOfFile: string;
+    getFile: (storageService: FILE_STORAGE_SERVICE, entityId: string, fileSlug: string) => Promise<Bun.BunFile | string | null>;
 }
 
-export async function serveProjectGalleryImage(ctx: Context, projectId: string, imgFileId: string, isCdnRequest: boolean) {
-    const project = await GetProject_Details(projectId);
-    if (!project || !project?.gallery?.[0]?.id) return notFoundResponse(ctx);
+export async function serveImageFile(props: ServeImageFileProps) {
+    const fileMeta = await GetFile(props.fileId);
+    if (!fileMeta?.id) return notFoundResponse(props.ctx);
 
-    const targetGalleryItem = project.gallery.find(
-        (item) => item.imageFileId === imgFileId || item.thumbnailFileId === imgFileId,
-    );
-    if (!targetGalleryItem) return notFoundResponse(ctx);
-
-    const dbFile = await GetFile(imgFileId);
-    if (!dbFile?.id) return notFoundResponse(ctx);
-
-    // If it's not a CDN request redirect to the cache_cdn url
-    if (!isCdnRequest) {
-        return ctx.redirect(`${projectGalleryFileUrl(project.id, dbFile.id)}`);
+    if (!props.isCdnRequest && fileMeta.size < MAX_FASTLY_FILE_SIZE) {
+        return props.ctx.redirect(props.cdnUrlOfFile);
     }
 
-    // Get the file from the storage service
-    const file = await getProjectGalleryFile(dbFile.storageService as FILE_STORAGE_SERVICE, project.id, dbFile.name);
-    if (!file) return ctx.json({}, HTTP_STATUS.NOT_FOUND);
+    const image = await props.getFile(fileMeta.storageService as FILE_STORAGE_SERVICE, props.entityId, fileMeta.name);
+    if (!image) return notFoundResponse(props.ctx);
+    if (typeof image === "string") return props.ctx.redirect(image);
 
-    // If the file is a URL, redirect to it
-    if (typeof file === "string") return ctx.redirect(file);
-
-    const response = new Response(file);
-    response.headers.set("Cache-Control", "public, max-age=31536000"); // 1 year
-    response.headers.set("Content-Type", getMimeFromType(dbFile.type));
-    response.headers.set("Content-Disposition", `inline; filename="${dbFile.name}"`);
-    return response;
-}
-
-export async function serveOrgIconFile(ctx: Context, orgId: string, isCdnRequest: boolean) {
-    const org = await GetOrganization_Data(orgId);
-    if (!org?.iconFileId) return notFoundResponse(ctx);
-
-    const iconFileData = await GetFile(org.iconFileId);
-    if (!iconFileData?.id) return notFoundResponse(ctx);
-
-    if (!isCdnRequest) {
-        return ctx.redirect(`${orgIconUrl(org.id, org.iconFileId)}`);
-    }
-
-    const icon = await getOrgFile(iconFileData.storageService as FILE_STORAGE_SERVICE, org.id, iconFileData.name);
-
-    // Redirect to the file if it's a URL
-    if (typeof icon === "string") return ctx.redirect(icon);
-
-    const response = new Response(icon);
-    response.headers.set("Cache-Control", "public, max-age=31536000"); // For a full year
-    response.headers.set("Content-Type", getMimeFromType(iconFileData.type));
-    response.headers.set("Content-Disposition", `inline; filename="${iconFileData.name}"`);
-    return response;
-}
-
-export async function serveUserAvatar(ctx: Context, userId: string, isCdnRequest: boolean) {
-    const user = await GetUser_ByIdOrUsername(undefined, userId);
-    if (!user?.avatar) return notFoundResponse(ctx);
-
-    const iconFileData = await GetFile(user.avatar);
-    if (!iconFileData?.id) return notFoundResponse(ctx);
-
-    if (!isCdnRequest) {
-        return ctx.redirect(`${userIconUrl(user.id, user.avatar)}`);
-    }
-
-    const icon = await getUserFile(iconFileData.storageService as FILE_STORAGE_SERVICE, user.id, iconFileData.name);
-
-    // Redirect to the file if it's a URL
-    if (typeof icon === "string") return ctx.redirect(icon);
-
-    const response = new Response(icon);
-    response.headers.set("Cache-Control", "public, max-age=31536000"); // For a full year
-    response.headers.set("Content-Type", getMimeFromType(iconFileData.type));
-    response.headers.set("Content-Disposition", `inline; filename="${iconFileData.name}"`);
-    return response;
-}
-
-export async function serveCollectionIcon(ctx: Context, collectionId: string, isCdnRequest: boolean) {
-    const collection = await GetCollection(collectionId);
-    if (!collection?.iconFileId) return notFoundResponse(ctx);
-
-    const iconFileData = await GetFile(collection.iconFileId);
-    if (!iconFileData?.id) return notFoundResponse(ctx);
-
-    if (!isCdnRequest) {
-        return ctx.redirect(`${collectionIconUrl(collection.id, collection.iconFileId)}`);
-    }
-
-    const icon = await getCollectionFile(iconFileData.storageService as FILE_STORAGE_SERVICE, collection.id, iconFileData.name);
-    if (typeof icon === "string") return ctx.redirect(icon);
-
-    const response = new Response(icon);
+    const response = new Response(image);
     response.headers.set("Cache-Control", "public, max-age=31536000");
-    response.headers.set("Content-Type", getMimeFromType(iconFileData.type));
-    response.headers.set("Content-Disposition", `inline; filename="${iconFileData.name}"`);
+    response.headers.set("Content-Type", getMimeFromType(fileMeta.type));
+    response.headers.set("Content-Disposition", `inline; filename="${fileMeta.name}"`);
     return response;
 }
