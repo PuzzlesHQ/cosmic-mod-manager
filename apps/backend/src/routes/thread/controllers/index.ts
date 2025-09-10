@@ -33,7 +33,9 @@ export async function GetThreadMessages(user: ContextUserData, threadId: string)
         },
     });
     if (!thread?.id) return invalidReqestResponseData("Invalid thread ID");
-    if (!canUserAccessThread(user, thread)) return unauthorizedReqResponseData();
+
+    const hasThreadAccess = await canUserAccessThread(user, thread);
+    if (!hasThreadAccess) return unauthorizedReqResponseData();
 
     const memberIds = new Set<string>(thread.members);
     const threadMessages: ThreadMessage[] = [];
@@ -138,7 +140,12 @@ export async function CreateThreadMessage(
         },
     });
     if (!thread?.id) return invalidReqestResponseData("Invalid thread ID");
-    if (!canUserAccessThread(user, thread)) return unauthorizedReqResponseData();
+
+    const hasThreadAccess = await canUserAccessThread(user, thread);
+    if (!hasThreadAccess) return unauthorizedReqResponseData();
+
+    const threadOpen = await isThreadOpen(thread);
+    if (!threadOpen) return invalidReqestResponseData("This thread is closed.");
 
     const msg_body: ThreadMessage["body"] = { text: data.message };
     if (data.isPrivate) msg_body.isPrivate = true;
@@ -222,5 +229,23 @@ async function canUserAccessThread(user: ContextUserData, thread: DB_Thread) {
 
         default:
             return false;
+    }
+}
+
+async function isThreadOpen(thread: DB_Thread) {
+    switch (thread.type) {
+        case ThreadType.REPORT: {
+            const report = await prisma.report.findUnique({
+                where: {
+                    id: thread.relatedEntity,
+                },
+            });
+
+            return report?.closed === false;
+        }
+
+        // case ThreadType.PROJECT:
+        default:
+            return true;
     }
 }
