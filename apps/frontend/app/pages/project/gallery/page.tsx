@@ -200,10 +200,6 @@ function ImageDialog({
 }) {
     const [isFullWidth, setIsFullWidth] = useState(true);
 
-    function toggleFullWidth() {
-        setIsFullWidth((prev) => !prev);
-    }
-
     function next() {
         setActiveIndex((current) => {
             if (current < totalItems - 1) {
@@ -236,10 +232,6 @@ function ImageDialog({
             document.body.removeEventListener("keydown", handleKeyboardInputs);
         };
     }, []);
-
-    useEffect(() => {
-        if (dialogOpen === false) setIsFullWidth(false);
-    }, [dialogOpen]);
 
     return (
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -298,7 +290,12 @@ function ImageDialog({
                                 <ExternalLinkIcon aria-hidden className="h-btn-icon w-btn-icon" />
                             </a>
 
-                            <Button variant="secondary" size="icon" className="rounded-full" onClick={toggleFullWidth}>
+                            <Button
+                                variant="secondary"
+                                size="icon"
+                                className="rounded-full"
+                                onClick={() => setIsFullWidth((prev) => !prev)}
+                            >
                                 {isFullWidth ? (
                                     <ShrinkIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                 ) : (
