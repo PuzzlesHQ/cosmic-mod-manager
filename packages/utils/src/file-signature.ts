@@ -86,6 +86,34 @@ const fileTypeSignaturesList: FileSignatureListItem[] = [
         signature: [{ offset: 0, signature: "47 49 46 38 39 61" }],
         types: [FileType.GIF],
     },
+
+    // .mp4
+    {
+        signature: [{ offset: 4, signature: "66 74 79 70 69" }],
+        types: [FileType.MP4],
+    },
+    {
+        signature: [{ offset: 4, signature: "66 74 79 70 6D" }],
+        types: [FileType.MP4],
+    },
+
+    // .webm
+    {
+        signature: [
+            { offset: 0, signature: "1A 45 DF A3" },
+            { offset: 31, signature: "42 82 88 77 65 62 6D" },
+        ],
+        types: [FileType.WEBM],
+    },
+
+    // .mkv
+    {
+        signature: [
+            { offset: 0, signature: "1A 45 DF A3" },
+            { offset: 31, signature: "42 82 84 6D 61 74 72 6F 73 6B 61" },
+        ],
+        types: [FileType.MKV],
+    },
 ];
 
 function getFilesTypeFromSignature(fileSignature: string) {
@@ -136,6 +164,7 @@ export async function getFileSignatures(file: File | BunFile) {
 
 export function getMimeFromType(fileType: string) {
     switch (fileType.toLowerCase()) {
+        // ? Archive Files
         case FileType.JAR:
             return "application/java-archive";
         case FileType.ZIP:
@@ -146,14 +175,25 @@ export function getMimeFromType(fileType: string) {
             return "application/gzip";
         case FileType.TAR:
             return "application/x-tar";
+
+        // ? Image Files
         case FileType.PNG:
             return "image/png";
-        case FileType.WEBP:
-            return "image/webp";
         case FileType.JPEG:
             return "image/jpeg";
+        case FileType.WEBP:
+            return "image/webp";
         case FileType.GIF:
             return "image/gif";
+
+        // ? Video Files
+        case FileType.MP4:
+            return "video/mp4";
+        case FileType.WEBM:
+            return "video/webm";
+        case FileType.MKV:
+            return "video/x-matroska";
+
         default:
             return "application/octet-stream";
     }

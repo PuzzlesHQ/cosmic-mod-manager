@@ -45,3 +45,10 @@ export function isImageFile(fileType: FileType | null, allowGif = true) {
 
     return validImageTypes.includes(fileType);
 }
+
+export function isVideoFile(fileType: FileType | null) {
+    if (!fileType) return false;
+
+    const validVideoTypes = [FileType.MP4, FileType.WEBM, FileType.MKV];
+    return validVideoTypes.includes(fileType);
+}

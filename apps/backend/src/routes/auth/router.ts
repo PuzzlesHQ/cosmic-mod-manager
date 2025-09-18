@@ -57,10 +57,10 @@ async function currSession_get(ctx: Context) {
             name: userSession.name,
             role: getUserRoleFromString(userSession.role),
             hasAPassword: !!userSession.password,
-            avatar: userFileUrl(userSession.id, userSession.avatar),
+            avatar: userFileUrl(userSession.id, userSession.avatar || undefined),
             sessionId: userSession.sessionId,
-            bio: userSession.bio,
-            profilePageBg: userFileUrl(userSession.id, userSession.profilePageBg),
+            bio: userSession.bio || undefined,
+            profilePageBg: userFileUrl(userSession.id, userSession.profilePageBg || undefined),
         } satisfies LoggedInUserData;
 
         return ctx.json(formattedObject, HTTP_STATUS.OK);

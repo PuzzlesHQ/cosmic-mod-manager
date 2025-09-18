@@ -1,7 +1,7 @@
 import { MAX_DISPLAY_NAME_LENGTH, MAX_USER_BIO_LENGTH, MAX_USERNAME_LENGTH } from "@app/utils/constants";
 import type { z } from "@app/utils/schemas";
 import { profileUpdateFormSchema } from "@app/utils/schemas/settings";
-import { validImgFileExtensions } from "@app/utils/schemas/utils";
+import { validImgFileExtensions, validVideoFileExtensions, zodParse } from "@app/utils/schemas/utils";
 import type { LoggedInUserData } from "@app/utils/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FileImageIcon, HelpCircleIcon, SaveIcon, Trash2Icon, UserIcon } from "lucide-react";
@@ -94,7 +94,13 @@ export function ProfileSettingsPage({ session }: Props) {
             <CardContent>
                 <Form {...form}>
                     <form
-                        onSubmit={form.handleSubmit(saveSettings)}
+                        onSubmit={async (e) => {
+                            e.preventDefault();
+                            const { error } = await zodParse(profileUpdateFormSchema, form.getValues());
+                            if (error) toast.error(error);
+
+                            form.handleSubmit(saveSettings)(e);
+                        }}
                         className="flex w-full flex-col items-start justify-start gap-form-elements"
                     >
                         <FormField
@@ -161,7 +167,7 @@ export function ProfileSettingsPage({ session }: Props) {
 
                                     <Textarea
                                         {...field}
-                                        className="min-h-32 resize-none md:w-[48ch]"
+                                        className="min-h-16 resize-none md:w-[48ch]"
                                         spellCheck="false"
                                         id="user-description-input"
                                         placeholder={t.settings.bioDesc}
@@ -181,12 +187,6 @@ export function ProfileSettingsPage({ session }: Props) {
                                             const file = e.clipboardData?.files?.[0];
                                             if (!file) return;
 
-                                            const fileExtension = `.${file.name.split(".").pop()}`;
-                                            if (!validImgFileExtensions.includes(fileExtension)) {
-                                                return toast.error(
-                                                    `Invalid image type: ${fileExtension}. Allowed types: ${validImgFileExtensions.join(", ")}`,
-                                                );
-                                            }
                                             field.onChange(file);
                                         }}
                                     >
@@ -211,12 +211,10 @@ export function ProfileSettingsPage({ session }: Props) {
                                                         name={field.name}
                                                         id="gallery-image-input"
                                                         className="hidden"
-                                                        accept={validImgFileExtensions.join(", ")}
+                                                        accept={validImgFileExtensions.concat(validVideoFileExtensions).join(",")}
                                                         onChange={(e) => {
                                                             const file = e.target.files?.[0];
-                                                            if (file) {
-                                                                field.onChange(file);
-                                                            }
+                                                            if (file) field.onChange(file);
                                                         }}
                                                     />
                                                     <FileImageIcon
@@ -260,13 +258,21 @@ export function ProfileSettingsPage({ session }: Props) {
                                             </div>
                                             {field.value ? (
                                                 <div className="aspect-[2/1] w-full overflow-hidden rounded rounded-t-none bg-zinc-900">
-                                                    <img
+                                                    {/* HACKY_THING */}
+                                                    <video
                                                         src={
                                                             field.value instanceof File
                                                                 ? URL.createObjectURL(field.value)
                                                                 : field.value
                                                         }
-                                                        alt="img"
+                                                        poster={
+                                                            field.value instanceof File
+                                                                ? URL.createObjectURL(field.value)
+                                                                : field.value
+                                                        }
+                                                        muted
+                                                        autoPlay
+                                                        loop
                                                         className="h-full w-full object-contain"
                                                     />
                                                 </div>

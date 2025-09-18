@@ -12,7 +12,7 @@ import { getManyProjects } from "~/routes/project/controllers";
 import { UpdateProjects_SearchIndex } from "~/routes/search/search-db";
 import { deleteUserFile, saveUserFile } from "~/services/storage";
 import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
-import { HTTP_STATUS, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
 import { resizeImageToWebp } from "~/utils/images";
 import { generateDbId } from "~/utils/str";
 import { userFileUrl } from "~/utils/urls";
@@ -26,10 +26,10 @@ export async function getUserProfileData(slug: string) {
         name: user.name || user.userName,
         userName: user.userName,
         role: user.role as GlobalUserRole,
-        avatar: userFileUrl(user.id, user.avatar),
-        bio: user.bio,
+        avatar: userFileUrl(user.id, user.avatar || undefined),
+        bio: user.bio || undefined,
         dateJoined: user.dateJoined,
-        profilePageBg: userFileUrl(user.id, user.profilePageBg),
+        profilePageBg: userFileUrl(user.id, user.profilePageBg || undefined),
     } satisfies UserProfileData;
 
     return { data: dataObj, status: HTTP_STATUS.OK };
@@ -91,10 +91,12 @@ export async function updateUserProfile(userSession: ContextUserData, profileDat
     }
 
     if (profileData.profilePageBg instanceof File) {
-        const fileType = (await getFileType(profileData.profilePageBg)) || FileType.PNG;
-        const bgImgFileId = `${generateDbId()}.${fileType}`;
+        const fileType = await getFileType(profileData.profilePageBg);
+        if (!fileType) return invalidReqestResponseData("Couldn't determine the file type of profilePageBg");
 
+        const bgImgFileId = `${generateDbId()}.${fileType}`;
         const saveUrl = await saveUserFile(FILE_STORAGE_SERVICE.LOCAL, user.id, profileData.profilePageBg, bgImgFileId);
+
         if (saveUrl) {
             await CreateFile({
                 data: {

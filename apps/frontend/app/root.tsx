@@ -99,15 +99,11 @@ function AppSetup(props: { data: RootOutletData }) {
 
             <div className="relative grid min-h-[100vh] w-full grid-rows-[auto_1fr_auto]">
                 <Navbar session={data.session} />
-
                 <PageBreadCrumbs />
 
-                <div className="page_content_wrapper">
-                    <div className="full_page container mb-16 px-4 sm:px-8">
-                        <Outlet context={data satisfies RootOutletData} />
-                    </div>
+                <div className="full_page content-container">
+                    <Outlet context={data satisfies RootOutletData} />
                 </div>
-
                 <Footer />
             </div>
 

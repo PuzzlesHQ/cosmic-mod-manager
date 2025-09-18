@@ -82,65 +82,61 @@ export default function UserPageLayout(props: Props) {
         orgsList: props.orgsList || [],
     });
 
-    const bgImageUrl = props.userData.profilePageBg;
-
+    const bgFileUrl = props.userData.profilePageBg;
     return (
-        <main
-            data-showbg="true"
-            className={cn(
-                !isActiveTheme_Dark && [DefaultTheme.variant, DefaultTheme.name],
-                bgImageUrl && "has-bg-image",
-                "header-content-sidebar-layout gap-y-panel-cards pb-12",
-                sidebar && "gap-x-panel-cards",
+        <div className="full_page full-width relative grid">
+            {/* HACKY_THING */}
+            {!!bgFileUrl && (
+                <video src={bgFileUrl} poster={bgFileUrl} muted autoPlay loop playsInline className="absolute inset-0" />
             )}
-            itemScope
-            itemType={itemType(MicrodataItemType.Person)}
-        >
-            <style>{`
-                .page_content_wrapper {
-                    background-image: url("${bgImageUrl}");
-                    background-repeat: no-repeat;
-                    background-size: cover;
-                    background-attachment: fixed;
-                    background-position: center;
-                }
-            `}</style>
 
-            <ProfilePageHeader userData={props.userData} totalDownloads={aggregatedDownloads} totalProjects={totalProjects} />
-
-            <div className="page-content grid h-fit grid-cols-1 gap-panel-cards">
-                {navLinks?.length > 1 || navLinks[0]?.href?.length > 0 ? (
-                    <SecondaryNav
-                        className="blurred rounded-lg bg-card-background px-3 py-2"
-                        urlBase={UserProfilePath(props.userData.userName)}
-                        links={navLinks}
-                    />
-                ) : null}
-
-                {navLinks.length < 1 ? (
-                    <div className="flex w-full items-center justify-center py-12">
-                        <p className="text-center text-foreground-muted text-lg italic">
-                            {t.user.doesntHaveProjects(props.userData.name)}
-                        </p>
-                    </div>
-                ) : (
-                    // biome-ignore lint/a11y/useSemanticElements: --
-                    <div className="flex w-full flex-col gap-panel-cards" role="list">
-                        <Outlet
-                            context={
-                                {
-                                    projectsList: props.projectsList,
-                                    collections: props.collections,
-                                    userData: props.userData,
-                                } satisfies UserOutletData
-                            }
-                        />
-                    </div>
+            <main
+                data-showbg="true"
+                className={cn(
+                    "header-content-sidebar-layout gap-y-panel-cards pb-12 content-container",
+                    !isActiveTheme_Dark && [DefaultTheme.variant, DefaultTheme.name],
+                    bgFileUrl && "has-bg-image",
+                    sidebar && "gap-x-panel-cards",
                 )}
-            </div>
+                itemScope
+                itemType={itemType(MicrodataItemType.Person)}
+            >
+                <ProfilePageHeader userData={props.userData} totalDownloads={aggregatedDownloads} totalProjects={totalProjects} />
 
-            {sidebar}
-        </main>
+                <div className="page-content grid h-fit grid-cols-1 gap-panel-cards">
+                    {navLinks?.length > 1 || navLinks[0]?.href?.length > 0 ? (
+                        <SecondaryNav
+                            className="blurred rounded-lg bg-card-background px-3 py-2"
+                            urlBase={UserProfilePath(props.userData.userName)}
+                            links={navLinks}
+                        />
+                    ) : null}
+
+                    {navLinks.length < 1 ? (
+                        <div className="flex w-full items-center justify-center py-12">
+                            <p className="text-center text-foreground-muted text-lg italic">
+                                {t.user.doesntHaveProjects(props.userData.name)}
+                            </p>
+                        </div>
+                    ) : (
+                        // biome-ignore lint/a11y/useSemanticElements: --
+                        <div className="flex w-full flex-col gap-panel-cards" role="list">
+                            <Outlet
+                                context={
+                                    {
+                                        projectsList: props.projectsList,
+                                        collections: props.collections,
+                                        userData: props.userData,
+                                    } satisfies UserOutletData
+                                }
+                            />
+                        </div>
+                    )}
+                </div>
+
+                {sidebar}
+            </main>
+        </div>
     );
 }
 

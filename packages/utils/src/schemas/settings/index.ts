@@ -9,8 +9,11 @@ import {
     MAX_USERNAME_LENGTH,
     MIN_PASSWORD_LENGTH,
 } from "~/constants";
+import { getFileType } from "~/convertors";
+import { iconFieldSchema } from "~/schemas";
+import { fileMaxSize_ErrMsg, mustBeURLSafe } from "~/schemas/utils";
+import { isImageFile, isVideoFile } from "~/schemas/validation";
 import { createURLSafeSlug } from "~/string";
-import { iconFieldSchema } from "..";
 
 const userNameSchema = z
     .string()
@@ -18,17 +21,17 @@ const userNameSchema = z
     .max(MAX_USERNAME_LENGTH)
     .refine(
         (userName) => {
-            if (userName.length !== createURLSafeSlug(userName).length) return false;
+            if (userName !== createURLSafeSlug(userName)) return false;
             return true;
         },
-        { message: "Username must be a URL safe string" },
+        { error: mustBeURLSafe("Username") },
     )
     .refine(
         (userName) => {
             if (RESERVED_USERNAMES.includes(userName)) return false;
             return true;
         },
-        { message: "Can't use a reserved username. Please choose something else" },
+        { error: "Can't use a reserved username, please choose something else." },
     );
 
 export const profileUpdateFormSchema = z.object({
@@ -36,7 +39,22 @@ export const profileUpdateFormSchema = z.object({
     avatar: iconFieldSchema.or(z.string()).optional(),
     userName: userNameSchema,
     bio: z.string().max(MAX_USER_BIO_LENGTH).optional(),
-    profilePageBg: z.file().max(MAX_PROFILE_PAGE_BG_SIZE).nullable().or(z.string().nullable()),
+    profilePageBg: z
+        .file()
+        .max(MAX_PROFILE_PAGE_BG_SIZE, fileMaxSize_ErrMsg(MAX_PROFILE_PAGE_BG_SIZE))
+        .refine(
+            async (file) => {
+                const type = await getFileType(file);
+                if (!type || !(isImageFile(type) || isVideoFile(type))) {
+                    return false;
+                }
+
+                return true;
+            },
+            { error: "Invalid file type, only image/video files allowed" },
+        )
+        .or(z.string())
+        .optional(),
 });
 
 export const setNewPasswordFormSchema = z.object({
