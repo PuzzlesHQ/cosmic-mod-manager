@@ -21,7 +21,7 @@ const userNameSchema = z
     .max(MAX_USERNAME_LENGTH)
     .refine(
         (userName) => {
-            if (userName !== createURLSafeSlug(userName)) return false;
+            if (userName.toLowerCase() !== createURLSafeSlug(userName)) return false;
             return true;
         },
         { error: mustBeURLSafe("Username") },
