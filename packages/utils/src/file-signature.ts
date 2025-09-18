@@ -97,22 +97,10 @@ const fileTypeSignaturesList: FileSignatureListItem[] = [
         types: [FileType.MP4],
     },
 
-    // .webm
+    // .webm, .mkv
     {
-        signature: [
-            { offset: 0, signature: "1A 45 DF A3" },
-            { offset: 31, signature: "42 82 88 77 65 62 6D" },
-        ],
-        types: [FileType.WEBM],
-    },
-
-    // .mkv
-    {
-        signature: [
-            { offset: 0, signature: "1A 45 DF A3" },
-            { offset: 31, signature: "42 82 84 6D 61 74 72 6F 73 6B 61" },
-        ],
-        types: [FileType.MKV],
+        signature: [{ offset: 0, signature: "1A 45 DF A3" }],
+        types: [FileType.WEBM, FileType.MKV],
     },
 ];
 
