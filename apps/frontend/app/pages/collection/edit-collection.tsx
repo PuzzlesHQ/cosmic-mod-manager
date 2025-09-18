@@ -55,8 +55,8 @@ export default function EditCollection(props: EditCollectionProps) {
         defaultValues: {
             name: props.collection.name,
             description: props.collection.description || "",
-            visibility: props.collection.visibility,
             icon: props.collection.icon || "",
+            visibility: props.collection.visibility,
         },
     });
 
@@ -191,8 +191,9 @@ export default function EditCollection(props: EditCollectionProps) {
                                             <CharacterCounter currVal={field.value} max={MAX_COLLECTION_DESCRIPTION_LENGTH} />
                                         </FormLabel>
                                         <Textarea
-                                            id="collection-description-input"
                                             {...field}
+                                            value={field.value || ""}
+                                            id="collection-description-input"
                                             className="resize-none"
                                             placeholder="..."
                                         />

@@ -225,6 +225,7 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
                                         </FormLabel>
                                         <Textarea
                                             {...field}
+                                            value={field.value || ""}
                                             placeholder={t.form.description}
                                             className="h-fit min-h-14 resize-none"
                                             id="gallery-item-description"

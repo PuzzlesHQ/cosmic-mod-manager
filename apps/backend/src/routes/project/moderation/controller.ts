@@ -39,7 +39,7 @@ export async function getModerationProjects() {
     for (const project of _ModerationProjects) {
         if (!project) continue;
 
-        let author: ModerationProjectItem["author"] | undefined;
+        let author: ModerationProjectItem["author"];
         if (project.organisation?.slug) {
             const org = project.organisation;
 

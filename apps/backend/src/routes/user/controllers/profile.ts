@@ -26,16 +26,16 @@ export async function getUserProfileData(slug: string) {
         name: user.name || user.userName,
         userName: user.userName,
         role: user.role as GlobalUserRole,
-        avatar: userFileUrl(user.id, user.avatar || undefined),
-        bio: user.bio || undefined,
+        avatar: userFileUrl(user.id, user.avatar),
+        bio: user.bio,
         dateJoined: user.dateJoined,
-        profilePageBg: userFileUrl(user.id, user.profilePageBg || undefined),
+        profilePageBg: userFileUrl(user.id, user.profilePageBg),
     } satisfies UserProfileData;
 
     return { data: dataObj, status: HTTP_STATUS.OK };
 }
 
-export async function getUserFollowedProjects(userSlug: string, userSession: ContextUserData | undefined, idsOnly = true) {
+export async function getUserFollowedProjects(userSlug: string, userSession: ContextUserData | null, idsOnly = true) {
     // If it's the current user's profile, return their following projects directly
     if (userSession && (userSlug === userSession.userName || userSlug === userSession.id)) {
         if (idsOnly) return { data: userSession.followingProjects, status: HTTP_STATUS.OK };
@@ -178,11 +178,7 @@ export async function getUserAvatar(
     return imgFile_Id;
 }
 
-export async function getAllVisibleProjects(
-    userSession: ContextUserData | undefined,
-    userSlug: string,
-    listedProjectsOnly: boolean,
-) {
+export async function getAllVisibleProjects(userSession: ContextUserData | null, userSlug: string, listedProjectsOnly: boolean) {
     const user = await GetUser_ByIdOrUsername(userSlug, userSlug);
     if (!user) return { data: { success: false, message: "user not found" }, status: HTTP_STATUS.NOT_FOUND };
 

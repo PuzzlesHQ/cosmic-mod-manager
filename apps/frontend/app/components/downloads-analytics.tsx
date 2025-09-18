@@ -200,7 +200,7 @@ export default function DownloadsAnalyticsChart({ data: props }: DownloadsAnalyt
                                     className="flex items-center gap-2 text-foreground-muted"
                                 >
                                     <ImgWrapper
-                                        src={project.icon || undefined}
+                                        src={project.icon}
                                         alt={project.name}
                                         fallback={fallbackProjectIcon}
                                         className="h-10 w-10"

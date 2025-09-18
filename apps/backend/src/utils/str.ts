@@ -12,7 +12,7 @@ export function generateDbId() {
 export function parseJson<T extends object | null>(str: string | null): Promise<T | null> {
     return new Promise((resolve) => {
         try {
-            if (str == null) resolve(str);
+            if (str === null || str === null) resolve(null);
             else resolve(JSON.parse(str));
         } catch {
             resolve(null);

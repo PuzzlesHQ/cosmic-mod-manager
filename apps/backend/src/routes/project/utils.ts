@@ -33,13 +33,13 @@ export function isProjectIndexable(visibility: string, publishingStatus: string)
     return isProjectPublic(visibility, publishingStatus) && visibility !== ProjectVisibility.UNLISTED;
 }
 
-interface IsProjectAccessible<T> {
+interface IsProjectAccessibleProps<T> {
     visibility: string;
     publishingStatus: string;
-    userId: string | undefined;
+    userId: string | undefined | null;
     teamMembers: T[];
     orgMembers: T[];
-    sessionUserRole: GlobalUserRole | undefined;
+    sessionUserRole: GlobalUserRole | undefined | null;
 }
 
 export function isProjectAccessible<T extends PartialTeamMember>({
@@ -49,7 +49,7 @@ export function isProjectAccessible<T extends PartialTeamMember>({
     teamMembers,
     orgMembers,
     sessionUserRole,
-}: IsProjectAccessible<T>) {
+}: IsProjectAccessibleProps<T>) {
     if (isModerator(sessionUserRole) === true) return true;
 
     const combinedMembers = combineProjectMembers(teamMembers, orgMembers);

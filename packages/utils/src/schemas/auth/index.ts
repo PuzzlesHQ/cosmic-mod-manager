@@ -3,7 +3,7 @@ import { MAX_EMAIL_LENGTH, MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from "~/co
 import { AuthProvider } from "~/types";
 
 export const LoginFormSchema = z.object({
-    email: z.string().max(MAX_EMAIL_LENGTH, "Invalid email length"),
+    email: z.email().max(MAX_EMAIL_LENGTH),
     password: z
         .string()
         .min(MIN_PASSWORD_LENGTH, `Your password must be atleast ${MIN_PASSWORD_LENGTH} characters long`)

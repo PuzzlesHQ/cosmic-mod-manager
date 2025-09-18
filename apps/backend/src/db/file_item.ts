@@ -33,7 +33,7 @@ export async function GetManyFiles_ByID(ids: string[]) {
     // Get cached files from redis
     const FileIds_RetrievedFromCache: string[] = [];
     {
-        const _cachedFiles_promises: Promise<GetFile_ReturnType | null>[] = [];
+        const _cachedFiles_promises: Promise<GetFile_ReturnType>[] = [];
         for (const id of FileIds) {
             const cachedData = GetData_FromCache<GetFile_ReturnType>(FILE_ITEM_CACHE_KEY, id);
             _cachedFiles_promises.push(cachedData);

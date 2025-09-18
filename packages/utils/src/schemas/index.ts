@@ -1,23 +1,20 @@
 import { z } from "zod/v4";
 import { MAX_ICON_SIZE } from "~/constants";
 import { getFileType } from "~/convertors";
+import { fileMaxSize_ErrMsg, validImgFileExtensions } from "./utils";
 import { isImageFile } from "./validation";
 
 export { z };
 
 export const iconFieldSchema = z
     .file()
-    .max(MAX_ICON_SIZE, `Icon can only be a maximum of ${MAX_ICON_SIZE / 1024} KiB`)
+    .max(MAX_ICON_SIZE, fileMaxSize_ErrMsg(MAX_ICON_SIZE))
     .refine(
         async (file) => {
-            if (file instanceof File) {
-                const type = await getFileType(file);
-                if (!type || !isImageFile(type)) {
-                    return false;
-                }
-            }
+            const type = await getFileType(file);
+            if (!type || !isImageFile(type)) return false;
 
             return true;
         },
-        { message: "Invalid file type, only image files allowed" },
+        { error: `Invalid file type! Allowed files: ${validImgFileExtensions.join(", ")}` },
     );

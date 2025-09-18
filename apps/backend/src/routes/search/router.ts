@@ -47,14 +47,14 @@ async function search_get(ctx: Context) {
         const environments = ctx.req.queries("e") || [];
         const sortBy = ctx.req.query(sortByParamNamespace) || defaultSortBy;
         const typeStr = ctx.req.query("type");
-        const type = typeStr ? getProjectTypeFromName(typeStr) : undefined;
+        const type = typeStr ? getProjectTypeFromName(typeStr) : null;
 
         const openSourceOnly =
             ctx.req.query(licenseFilterParamNamespace) === "oss"
                 ? "true"
                 : ctx.req.query(licenseFilterParamNamespace) === "!oss"
                   ? "!true"
-                  : undefined;
+                  : null;
 
         let limit = Number.parseInt(limitStr);
         if (!isNumber(limit)) limit = defaultSearchLimit;

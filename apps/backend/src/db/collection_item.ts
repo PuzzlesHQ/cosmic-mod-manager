@@ -18,8 +18,8 @@ const COLLECTION_SELECT_FIELDS = {
 } satisfies Prisma.CollectionSelect;
 
 export type GetCollection_ReturnType = Awaited<ReturnType<typeof GetCollection_FromDb>>;
-async function GetCollection_FromDb(id: string) {
-    return await prisma.collection.findUnique({
+function GetCollection_FromDb(id: string) {
+    return prisma.collection.findUnique({
         where: {
             id: id,
         },

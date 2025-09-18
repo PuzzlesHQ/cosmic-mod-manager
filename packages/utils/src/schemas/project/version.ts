@@ -8,37 +8,12 @@ import {
     MAX_VERSION_TITLE_LENGTH,
     MIN_VERSION_TITLE_LENGTH,
 } from "~/constants";
-import GAME_VERSIONS from "~/constants/game-versions";
+import { gameVersionsList } from "~/constants/game-versions";
 import { loaders } from "~/constants/loaders";
-import { getFileType } from "~/convertors";
+import { fileMaxSize_ErrMsg, mustBeURLSafe } from "~/schemas/utils";
 import { createURLSafeSlug } from "~/string";
 import { DependencyType, VersionReleaseChannel } from "~/types";
 
-const AdditionVersionFilesList = z
-    .file()
-    .array()
-    .max(MAX_OPTIONAL_FILES, `You can upload up to ${MAX_OPTIONAL_FILES} additional files only.`)
-    .optional()
-    .refine(
-        (files) => {
-            const fileNamesList: string[] = [];
-            for (const file of files || []) {
-                if (file.size > MAX_ADDITIONAL_VERSION_FILE_SIZE) {
-                    return false;
-                }
-                if (!fileNamesList.includes(file.name.toLowerCase())) {
-                    fileNamesList.push(file.name.toLowerCase());
-                } else {
-                    return false;
-                }
-            }
-
-            return true;
-        },
-        {
-            message: `Error in additional files, Only .jar, .zip, .png and .jpeg file types are allowed. Max size (${MAX_ADDITIONAL_VERSION_FILE_SIZE / (1024 * 1024)} MiB)`,
-        },
-    );
 const VersionNumber = z
     .string()
     .min(1)
@@ -47,27 +22,22 @@ const VersionNumber = z
         (val) => {
             return val === createURLSafeSlug(val);
         },
-        { message: "Version number must be a URL safe string" },
+        { error: mustBeURLSafe("Version number") },
     );
 
-const projectLoadersList = [...loaders.map((loader) => loader.name)] as const;
-const ProjectLoaders = z
-    .enum([projectLoadersList[0], ...projectLoadersList.slice(1)])
-    .array()
-    .optional();
+const projectLoaderNames = [...loaders.map((loader) => loader.name)] as const;
+const ProjectLoaders = z.enum(projectLoaderNames).array().nullable();
+
 const SupportedGameVersions = z
-    .string()
+    .enum(gameVersionsList, { error: "Invalid game version" })
     .array()
     .min(1)
     .refine(
         (values) => {
-            const gameVersionNumbersList = GAME_VERSIONS.map((version) => version.value);
-            for (const value of values) {
-                if (!gameVersionNumbersList.includes(value)) return false;
-            }
-            return true;
+            const uniqueValues = Array.from(new Set(values));
+            return uniqueValues.length === values.length;
         },
-        { message: "Invalid game version" },
+        { error: "Duplicate entries not allowed" },
     );
 export const VersionDependencies = z
     .object({
@@ -77,33 +47,31 @@ export const VersionDependencies = z
     })
     .array()
     .max(256)
-    .optional();
+    .nullable();
 
 export const newVersionFormSchema = z.object({
     title: z.string().min(MIN_VERSION_TITLE_LENGTH).max(MAX_VERSION_TITLE_LENGTH),
-    changelog: z.string().max(MAX_VERSION_CHANGELOG_LENGTH).optional(),
-    releaseChannel: z.enum(VersionReleaseChannel).default(VersionReleaseChannel.RELEASE).optional(),
+    changelog: z.string().max(MAX_VERSION_CHANGELOG_LENGTH).nullable(),
+    releaseChannel: z.enum(VersionReleaseChannel).default(VersionReleaseChannel.RELEASE).nullish(),
     featured: z.boolean(),
     versionNumber: VersionNumber,
     loaders: ProjectLoaders,
     gameVersions: SupportedGameVersions,
     dependencies: VersionDependencies,
 
-    primaryFile: z.file().refine(
-        (file) => {
-            if (!file || file.size > MAX_VERSION_FILE_SIZE) return false;
-            return true;
-        },
-        { message: `You can upload a file of size up to ${MAX_VERSION_FILE_SIZE / (1024 * 1024)} MiB only` },
-    ),
-
-    additionalFiles: AdditionVersionFilesList,
+    primaryFile: z.file().max(MAX_VERSION_FILE_SIZE, fileMaxSize_ErrMsg(MAX_VERSION_FILE_SIZE)),
+    additionalFiles: z
+        .file()
+        .max(MAX_ADDITIONAL_VERSION_FILE_SIZE, fileMaxSize_ErrMsg(MAX_ADDITIONAL_VERSION_FILE_SIZE))
+        .array()
+        .max(MAX_OPTIONAL_FILES, `You can upload up to ${MAX_OPTIONAL_FILES} additional files only.`)
+        .nullable(),
 });
 
 export const updateVersionFormSchema = z.object({
     title: z.string().min(MIN_VERSION_TITLE_LENGTH).max(MAX_VERSION_TITLE_LENGTH),
-    changelog: z.string().max(MAX_VERSION_CHANGELOG_LENGTH).optional(),
-    releaseChannel: z.enum(VersionReleaseChannel).default(VersionReleaseChannel.RELEASE).optional(),
+    changelog: z.string().max(MAX_VERSION_CHANGELOG_LENGTH).nullable(),
+    releaseChannel: z.enum(VersionReleaseChannel).default(VersionReleaseChannel.RELEASE).nullish(),
     featured: z.boolean(),
     versionNumber: VersionNumber,
     loaders: ProjectLoaders,
@@ -111,6 +79,7 @@ export const updateVersionFormSchema = z.object({
     dependencies: VersionDependencies,
     additionalFiles: z
         .file()
+        .max(MAX_ADDITIONAL_VERSION_FILE_SIZE, fileMaxSize_ErrMsg(MAX_ADDITIONAL_VERSION_FILE_SIZE))
         .or(
             z.object({
                 id: z.string(),
@@ -120,33 +89,5 @@ export const updateVersionFormSchema = z.object({
             }),
         )
         .array()
-        .optional()
-        .refine(
-            (files) => {
-                if ((files?.length || 0) > MAX_OPTIONAL_FILES) return false;
-                return true;
-            },
-            { message: `You can upload up to ${MAX_OPTIONAL_FILES} additional files only.` },
-        )
-        .refine(
-            async (files) => {
-                const fileNamesList: string[] = [];
-                for (const file of files || []) {
-                    if (file instanceof File) {
-                        if (file.size > MAX_ADDITIONAL_VERSION_FILE_SIZE || !(await getFileType(file))) return false;
-                    }
-                    if (!fileNamesList.includes(file.name.toLowerCase())) {
-                        fileNamesList.push(file.name.toLowerCase());
-                    } else {
-                        return false;
-                    }
-                }
-
-                if (fileNamesList.length < MAX_OPTIONAL_FILES) return true;
-                return false;
-            },
-            {
-                message: `Error in additional files, Only .jar, .zip, .png and .jpeg file types are allowed. Max size (${MAX_VERSION_FILE_SIZE / (1024 * 1024)} MiB)`,
-            },
-        ),
+        .max(MAX_OPTIONAL_FILES),
 });

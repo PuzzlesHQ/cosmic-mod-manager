@@ -71,7 +71,7 @@ export default function EditVersionPage() {
             dependencies:
                 versionData?.dependencies.map((dep) => ({
                     projectId: dep.projectId,
-                    versionId: dep.versionId || null,
+                    versionId: dep.versionId,
                     dependencyType: dep.dependencyType,
                 })) || [],
         },
@@ -127,6 +127,7 @@ export default function EditVersionPage() {
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
+                    form.handleSubmit(handleSubmit);
                 }}
                 className="flex w-full flex-col items-start justify-start gap-panel-cards"
             >

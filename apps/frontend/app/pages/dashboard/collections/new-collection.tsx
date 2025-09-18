@@ -134,8 +134,9 @@ export default function CreateNewCollection_Dialog({
                                             <CharacterCounter currVal={field.value} max={MAX_COLLECTION_DESCRIPTION_LENGTH} />
                                         </FormLabel>
                                         <Textarea
-                                            id="collection-description-input"
                                             {...field}
+                                            value={field.value || ""}
+                                            id="collection-description-input"
                                             className="resize-none"
                                             placeholder="..."
                                         />

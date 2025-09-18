@@ -111,35 +111,35 @@ async function _SyncBatch(cursor: null | string) {
     }
 }
 
-export function FormatSearchDocument<T extends NonNullable<GetProject_Details_ReturnType>>(Project: T, recentDownloads: number) {
-    const author = Project.organisation?.slug || Project.team.members?.[0]?.user?.userName;
-    const FeaturedGalleryItem = Project.gallery.find((item) => item.featured === true);
-    const featured_gallery = FeaturedGalleryItem ? projectGalleryFileUrl(Project.id, FeaturedGalleryItem.thumbnailFileId) : null;
+export function FormatSearchDocument<T extends NonNullable<GetProject_Details_ReturnType>>(project: T, recentDownloads: number) {
+    const author = project.organisation?.slug || project.team.members?.[0]?.user?.userName;
+    const FeaturedGalleryItem = project.gallery.find((item) => item.featured === true);
+    const featured_gallery = FeaturedGalleryItem ? projectGalleryFileUrl(project.id, FeaturedGalleryItem.thumbnailFileId) : null;
 
     return {
-        id: Project.id,
-        name: Project.name,
-        slug: Project.slug,
-        iconUrl: projectIconUrl(Project.id, Project.iconFileId),
-        loaders: Project.loaders,
-        type: Project.type,
-        gameVersions: Project.gameVersions,
-        categories: Project.categories,
-        featuredCategories: Project.featuredCategories,
-        summary: Project.summary,
-        downloads: Project.downloads,
+        id: project.id,
+        name: project.name,
+        slug: project.slug,
+        iconUrl: projectIconUrl(project.id, project.iconFileId),
+        loaders: project.loaders,
+        type: project.type,
+        gameVersions: project.gameVersions,
+        categories: project.categories,
+        featuredCategories: project.featuredCategories,
+        summary: project.summary,
+        downloads: project.downloads,
         recentDownloads: recentDownloads,
-        followers: Project.followers,
-        datePublished: Project.datePublished,
-        dateUpdated: Project.dateUpdated,
-        openSource: !!Project.projectSourceUrl,
-        clientSide: Project.clientSide as EnvironmentSupport,
-        serverSide: Project.serverSide as EnvironmentSupport,
+        followers: project.followers,
+        datePublished: project.datePublished,
+        dateUpdated: project.dateUpdated,
+        openSource: !!project.projectSourceUrl,
+        clientSide: project.clientSide as EnvironmentSupport,
+        serverSide: project.serverSide as EnvironmentSupport,
         featured_gallery: featured_gallery,
-        color: Project.color,
+        color: project.color,
         author: author,
-        isOrgOwned: !!Project.organisation?.slug,
-        visibility: Project.visibility as ProjectVisibility,
+        isOrgOwned: !!project.organisation?.slug,
+        visibility: project.visibility as ProjectVisibility,
     } satisfies ProjectSearchDocument;
 }
 

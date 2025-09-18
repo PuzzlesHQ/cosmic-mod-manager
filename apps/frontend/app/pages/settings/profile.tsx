@@ -145,6 +145,7 @@ export function ProfileSettingsPage({ session }: Props) {
                                     </FormLabel>
                                     <Input
                                         {...field}
+                                        value={field.value || ""}
                                         className="md:w-[32ch]"
                                         id="displayname-input"
                                         autoComplete="name"
@@ -167,6 +168,7 @@ export function ProfileSettingsPage({ session }: Props) {
 
                                     <Textarea
                                         {...field}
+                                        value={field.value || ""}
                                         className="min-h-16 resize-none md:w-[48ch]"
                                         spellCheck="false"
                                         id="user-description-input"

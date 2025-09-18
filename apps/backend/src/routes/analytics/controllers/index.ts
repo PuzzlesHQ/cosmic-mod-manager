@@ -11,10 +11,10 @@ import { HTTP_STATUS, invalidReqestResponseData, unauthorizedReqResponseData } f
 
 interface getAnalyticsDataProps {
     // Either startDate and endDate or timeline must be provided
-    startDate?: Date | null;
-    endDate?: Date | null;
-    timeline?: TimelineOptions;
     projectIds: string[];
+    startDate: Date | null;
+    endDate: Date | null;
+    timeline: TimelineOptions | null;
 }
 
 export async function getDownloadsAnalyticsData(user: ContextUserData, props: getAnalyticsDataProps) {

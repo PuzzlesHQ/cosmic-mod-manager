@@ -53,7 +53,6 @@ export interface LinkedProvidersListData {
     providerName: string;
     providerAccountId: string;
     providerAccountEmail: string;
-    avatarImageUrl?: string | null;
 }
 
 export enum ConfirmationType {
@@ -138,13 +137,18 @@ export enum DependencyType {
 export enum FileType {
     JAR = "jar",
     ZIP = "zip",
+    SEVEN_Z = "7z",
+    GZ = "gz",
+    TAR = "tar",
+
     PNG = "png",
     JPEG = "jpeg",
     WEBP = "webp",
     GIF = "gif",
-    SEVEN_Z = "7z",
-    GZ = "gz",
-    TAR = "tar",
+
+    MP4 = "mp4",
+    WEBM = "webm",
+    MKV = "mkv",
 }
 
 export enum EnvironmentSupport {

@@ -35,10 +35,10 @@ const userNameSchema = z
     );
 
 export const profileUpdateFormSchema = z.object({
-    name: z.string().max(MAX_DISPLAY_NAME_LENGTH).optional(),
-    avatar: iconFieldSchema.or(z.string()).optional(),
+    name: z.string().max(MAX_DISPLAY_NAME_LENGTH).nullable(),
+    avatar: iconFieldSchema.or(z.string()).nullable(),
     userName: userNameSchema,
-    bio: z.string().max(MAX_USER_BIO_LENGTH).optional(),
+    bio: z.string().max(MAX_USER_BIO_LENGTH).nullable(),
     profilePageBg: z
         .file()
         .max(MAX_PROFILE_PAGE_BG_SIZE, fileMaxSize_ErrMsg(MAX_PROFILE_PAGE_BG_SIZE))
@@ -54,7 +54,7 @@ export const profileUpdateFormSchema = z.object({
             { error: "Invalid file type, only image/video files allowed" },
         )
         .or(z.string())
-        .optional(),
+        .nullable(),
 });
 
 export const setNewPasswordFormSchema = z.object({

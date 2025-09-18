@@ -83,7 +83,7 @@ export async function GetManyUsers_ByIds(ids: string[]) {
     // Get cached users from redis
     const UserIds_RetrievedFromCache: string[] = [];
     {
-        const _cachedUsers_promises: Promise<GetUser_ReturnType | null>[] = [];
+        const _cachedUsers_promises: Promise<GetUser_ReturnType>[] = [];
         for (const id of UserIds) {
             const cachedUser = GetData_FromCache<GetUser_ReturnType>(USER_DATA_CACHE_KEY, id);
             _cachedUsers_promises.push(cachedUser);
@@ -205,14 +205,14 @@ export async function UpdateUser<T extends Prisma.UserUpdateArgs>(args: Prisma.S
 
 // Cache functions
 export async function Delete_UserCache(id: string, _userName?: string) {
-    let UserName: string | undefined = _userName?.toLowerCase();
+    let userName = _userName?.toLowerCase();
 
     // If userName is not provided, get it from the cache
-    if (!UserName) {
-        UserName = (await valkey.get(cacheKey(id, USER_DATA_CACHE_KEY))) || "";
+    if (!userName) {
+        userName = (await valkey.get(cacheKey(id, USER_DATA_CACHE_KEY))) || "";
     }
 
-    return await valkey.del([cacheKey(id, USER_DATA_CACHE_KEY), cacheKey(UserName.toLowerCase(), USER_DATA_CACHE_KEY)]);
+    return await valkey.del([cacheKey(id, USER_DATA_CACHE_KEY), cacheKey(userName.toLowerCase(), USER_DATA_CACHE_KEY)]);
 }
 
 interface SetCache_Data {

@@ -68,10 +68,10 @@ export function hasRootAccess(isItemOwner: boolean | undefined | null, userRole?
     return isItemOwner === true || userRole === GlobalUserRole.ADMIN;
 }
 
-export function isModerator(userRole: string | undefined) {
+export function isModerator(userRole: string | undefined | null) {
     return MODERATOR_ROLES.includes(userRole as GlobalUserRole);
 }
 
-export function isAdmin(role: string | undefined) {
+export function isAdmin(role: string | undefined | null) {
     return GlobalUserRole.ADMIN === role;
 }

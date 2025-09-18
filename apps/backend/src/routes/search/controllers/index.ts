@@ -11,11 +11,11 @@ interface Props {
     gameVersions: string[];
     categories: string[];
     environments: string[];
-    openSourceOnly: string | undefined;
+    openSourceOnly: string | null;
     sortBy: SearchResultSortMethod;
     offset: number;
     limit: number;
-    type?: ProjectType;
+    type: ProjectType | null;
 }
 
 export async function searchProjects(props: Props) {

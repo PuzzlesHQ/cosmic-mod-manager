@@ -3,7 +3,7 @@ import { Capitalize } from "@app/utils/string";
 import type { LoggedInUserData } from "@app/utils/types";
 import { Building2Icon, ChevronDownIcon, LibraryIcon, PlusIcon, SettingsIcon } from "lucide-react";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigation } from "react-router";
 import { BrandIcon, CubeIcon } from "~/components/icons";
 import { Button } from "~/components/ui/button";
@@ -23,9 +23,8 @@ interface NavbarProps {
     session: LoggedInUserData | null;
 }
 
-let closeOtherLinksPopup_timeout: number | undefined;
-
 export default function Navbar(props: NavbarProps) {
+    const closeOtherLinksPopup_timeoudId = useRef<number | undefined>(undefined);
     const navigation = useNavigation();
     const curr_location = useLocation();
 
@@ -55,22 +54,22 @@ export default function Navbar(props: NavbarProps) {
     });
 
     function OpenOtherLinksPopup() {
-        if (closeOtherLinksPopup_timeout) {
-            clearTimeout(closeOtherLinksPopup_timeout);
+        if (closeOtherLinksPopup_timeoudId.current) {
+            clearTimeout(closeOtherLinksPopup_timeoudId.current);
         }
         setOtherLinksPopoverOpen(true);
     }
 
     function CloseOtherLinksPopup(instant = false) {
-        if (closeOtherLinksPopup_timeout) {
-            clearTimeout(closeOtherLinksPopup_timeout);
+        if (closeOtherLinksPopup_timeoudId.current) {
+            clearTimeout(closeOtherLinksPopup_timeoudId.current);
         }
 
         if (instant) {
             return setOtherLinksPopoverOpen(false);
         }
 
-        closeOtherLinksPopup_timeout = window.setTimeout(() => {
+        closeOtherLinksPopup_timeoudId.current = window.setTimeout(() => {
             setOtherLinksPopoverOpen(false);
         }, 500);
     }

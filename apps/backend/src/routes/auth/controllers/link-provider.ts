@@ -97,7 +97,7 @@ export async function unlinkAuthProvider(ctx: Context, userSession: ContextUserD
     }
 
     const providerName = getAuthProviderFromString(authProvider);
-    let deletedAuthAccount: number | undefined;
+    let deletedAuthAccount: number;
 
     try {
         deletedAuthAccount = (
@@ -108,7 +108,9 @@ export async function unlinkAuthProvider(ctx: Context, userSession: ContextUserD
                 },
             })
         ).count;
-    } catch {}
+    } catch {
+        deletedAuthAccount = 0;
+    }
 
     if (!deletedAuthAccount || deletedAuthAccount < 1) {
         await addInvalidAuthAttempt(ctx);
@@ -135,7 +137,6 @@ export async function getLinkedAuthProviders(userSession: ContextUserData) {
             providerName: provider.providerName,
             providerAccountId: provider.providerAccountId,
             providerAccountEmail: provider.providerAccountEmail,
-            avatarImageUrl: provider.avatarUrl,
         });
     }
 

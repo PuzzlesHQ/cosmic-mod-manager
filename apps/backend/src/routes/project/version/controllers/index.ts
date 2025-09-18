@@ -10,7 +10,7 @@ import { HTTP_STATUS, notFoundResponseData } from "~/utils/http";
 import { GetReleaseChannelFilter } from "~/utils/project";
 import { formatVersionData } from "./utils";
 
-export async function getAllProjectVersions(slug: string, userSession: ContextUserData | undefined, featuredOnly = false) {
+export async function getAllProjectVersions(slug: string, userSession: ContextUserData | null, featuredOnly = false) {
     const [project, _projectVersions] = await Promise.all([GetProject_Details(slug, slug), GetVersions(slug, slug)]);
     if (!project) return notFoundResponseData("Project not found");
 
@@ -59,7 +59,7 @@ export async function getAllProjectVersions(slug: string, userSession: ContextUs
     return { data: { success: true, data: versionsList }, status: HTTP_STATUS.OK } as const;
 }
 
-export async function getProjectVersionData(projectSlug: string, versionId: string, userSession: ContextUserData | undefined) {
+export async function getProjectVersionData(projectSlug: string, versionId: string, userSession: ContextUserData | null) {
     const res = await getAllProjectVersions(projectSlug, userSession, false);
 
     if (("success" in res.data && res.data.success === false) || !("data" in res.data))
@@ -80,7 +80,7 @@ interface GetLatestVersionFilters {
 
 export async function getLatestVersion(
     projectSlug: string,
-    userSession: ContextUserData | undefined,
+    userSession: ContextUserData | null,
     filters: GetLatestVersionFilters,
 ) {
     const whereInput: Prisma.VersionWhereInput = {};

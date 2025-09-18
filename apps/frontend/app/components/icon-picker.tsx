@@ -12,9 +12,9 @@ import { useTranslation } from "~/locales/provider";
 import { ImgWrapper } from "./ui/avatar";
 
 interface IconPickerProps {
-    icon: File | string | undefined;
+    icon: File | string | null;
     fieldName: string;
-    onChange: (file: File | undefined) => void;
+    onChange: (file: File | null) => void;
     fallbackIcon: React.ReactNode;
     originalIcon: string;
     vtId?: string;
@@ -77,7 +77,7 @@ export default function IconPicker(props: IconPickerProps) {
                             variant="secondary"
                             type="button"
                             onClick={() => {
-                                props.onChange(undefined);
+                                props.onChange(null);
                             }}
                         >
                             <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />

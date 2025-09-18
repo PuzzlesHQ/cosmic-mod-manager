@@ -5,7 +5,7 @@ import { EnvironmentSupport, ProjectVisibility } from "~/types";
 import { ProjectSlugField, ProjectTypeField } from "..";
 
 export const generalProjectSettingsFormSchema = z.object({
-    icon: iconFieldSchema.or(z.string()).optional(),
+    icon: iconFieldSchema.or(z.string()).nullable(),
     name: z.string().min(MIN_PROJECT_NAME_LENGTH).max(MAX_PROJECT_NAME_LENGTH),
     slug: ProjectSlugField,
     type: ProjectTypeField,

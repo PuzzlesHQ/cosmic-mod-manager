@@ -8,7 +8,7 @@ import { HTTP_STATUS } from "~/utils/http";
 import { projectIconUrl } from "~/utils/urls";
 import { isProjectAccessible } from "../utils";
 
-export async function getProjectDependencies(slug: string, userSession: ContextUserData | undefined) {
+export async function getProjectDependencies(slug: string, userSession: ContextUserData | null) {
     const [project, _projectVersions] = await Promise.all([GetProject_ListItem(slug, slug), GetVersions(slug, slug)]);
     if (!project?.id) {
         return { data: { success: false, message: "Project not found" }, status: HTTP_STATUS.NOT_FOUND };

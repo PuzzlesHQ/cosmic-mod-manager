@@ -49,7 +49,7 @@ export async function getProjectDownloads_Analytics(projectIds: string[], startD
 interface ProjectDownload_Item {
     projectId: string;
     downloadsCount: number;
-    date?: Date;
+    date: Date | null;
 }
 
 export async function Analytics_InsertProjectDownloads(items: ProjectDownload_Item[]) {

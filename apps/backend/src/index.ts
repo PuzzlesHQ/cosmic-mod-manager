@@ -98,7 +98,6 @@ const app = new Hono()
     .get("/api/statistics", applyCacheHeaders({ maxAge_s: 600, sMaxAge_s: 7200 }), async (ctx: Context) => {
         try {
             const stats = await getStatistics();
-
             return ctx.json(stats, HTTP_STATUS.OK);
         } catch {
             return serverErrorResponse(ctx);

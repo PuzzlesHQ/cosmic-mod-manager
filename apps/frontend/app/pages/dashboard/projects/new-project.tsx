@@ -59,7 +59,7 @@ export default function CreateNewProjectDialog({ orgId, trigger }: Props) {
             type: [],
             visibility: ProjectVisibility.LISTED,
             summary: "",
-            orgId: orgId,
+            orgId: orgId || null,
         },
     });
 

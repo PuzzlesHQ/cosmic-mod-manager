@@ -49,7 +49,6 @@ async function GetOrganization_FromDb(id?: string, slug?: string) {
             select: ORGANIZATION_SELECT_FIELDS,
         });
     }
-    if (!org) return null;
 
     return org;
 }
@@ -204,11 +203,11 @@ async function Set_OrganizationCache<T extends SetCache_Data | null>(NAMESPACE: 
 }
 
 export async function Delete_OrganizationCache_All(id: string, slug?: string) {
-    let OrgSlug: string | undefined = slug?.toLowerCase();
+    let orgSlug = slug?.toLowerCase();
     // If slug is not provided, get it from the cache
-    if (!OrgSlug) {
-        OrgSlug = (await valkey.get(cacheKey(id, ORGANIZATION_DATA_CACHE_KEY))) || "";
+    if (!orgSlug) {
+        orgSlug = (await valkey.get(cacheKey(id, ORGANIZATION_DATA_CACHE_KEY))) || "";
     }
 
-    return await valkey.del([cacheKey(id, ORGANIZATION_DATA_CACHE_KEY), cacheKey(OrgSlug, ORGANIZATION_DATA_CACHE_KEY)]);
+    return await valkey.del([cacheKey(id, ORGANIZATION_DATA_CACHE_KEY), cacheKey(orgSlug, ORGANIZATION_DATA_CACHE_KEY)]);
 }

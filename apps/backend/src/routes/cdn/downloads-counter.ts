@@ -244,7 +244,7 @@ async function pushOldDownloadsToAnalytics() {
             {
                 projectId: item.projectId,
                 downloadsCount: item.downloads,
-                date: DateFromStr(item.date) || undefined,
+                date: DateFromStr(item.date),
             },
         ]);
     }

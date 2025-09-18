@@ -2,19 +2,15 @@ import { z } from "zod/v4";
 import { RESERVED_PROJECT_SLUGS } from "~/config/reserved";
 import { MAX_PROJECT_NAME_LENGTH, MAX_PROJECT_SUMMARY_LENGTH, MIN_PROJECT_NAME_LENGTH } from "~/constants";
 import { validateProjectTypesCompatibility } from "~/project";
-import { createURLSafeSlug, isValidUrl } from "~/string";
+import { createURLSafeSlug } from "~/string";
 import { ProjectType, ProjectVisibility } from "~/types";
+import { mustBeURLSafe } from "../utils";
 
 export const formLink = z
-    .string()
-    .max(256)
-    .refine(
-        (value) => {
-            if (!value) return true;
-            return isValidUrl(value);
-        },
-        { message: "Invalid URL" },
-    );
+    .url({
+        protocol: /^https?/,
+    })
+    .max(256);
 
 export const ProjectTypeField = z
     .enum(ProjectType)
@@ -29,7 +25,7 @@ export const ProjectTypeField = z
 
             return true;
         },
-        { message: "Invalid project types combination" },
+        { error: "Invalid project types combination" },
     );
 
 export const ProjectSlugField = z
@@ -41,14 +37,14 @@ export const ProjectSlugField = z
             if (slug !== createURLSafeSlug(slug)) return false;
             return true;
         },
-        { message: "Slug must be a URL safe string" },
+        { error: mustBeURLSafe("Project slug") },
     )
     .refine(
         (slug) => {
             if (RESERVED_PROJECT_SLUGS.includes(slug)) return false;
             return true;
         },
-        { message: "Can't use a reserved project slug" },
+        { error: "Can't use a reserved project slug" },
     );
 
 export type newProjectFormSchemaType = z.infer<typeof newProjectFormSchema>;
@@ -59,5 +55,5 @@ export const newProjectFormSchema = z.object({
     type: ProjectTypeField,
     visibility: z.enum(ProjectVisibility),
     summary: z.string().min(1).max(MAX_PROJECT_SUMMARY_LENGTH),
-    orgId: z.string().max(32).optional(),
+    orgId: z.string().max(32).nullable(),
 });

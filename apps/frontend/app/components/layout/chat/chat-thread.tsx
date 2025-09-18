@@ -85,7 +85,7 @@ export function ChatThread(props: ChatThreadProps) {
                 body: JSON.stringify({
                     message: editorText,
                     isPrivate: isPrivate === true,
-                    replyingTo: replyingTo || undefined,
+                    replyingTo: replyingTo,
                 } satisfies z.infer<typeof createThreadMessage_Schema>),
             });
 
@@ -191,11 +191,11 @@ export function ChatThread(props: ChatThreadProps) {
                         const inResponseTo_msg =
                             msg.type === MessageType.TEXT && !!msg.body.replying_to
                                 ? thread.messages.find((m) => m.id === msg.body.replying_to)
-                                : undefined;
+                                : null;
 
                         const inResponseTo_user = inResponseTo_msg
-                            ? thread.members.find((u) => u.id === inResponseTo_msg.authorId)
-                            : undefined;
+                            ? thread.members.find((u) => u.id === inResponseTo_msg.authorId) || null
+                            : null;
 
                         return (
                             <ThreadMessage
@@ -407,13 +407,13 @@ export function ChatThread(props: ChatThreadProps) {
 
 interface ThreadMessageProps {
     message: ThreadMessageT;
-    prevMsg: ThreadMessageT | undefined;
+    prevMsg: ThreadMessageT | null;
     members: ThreadMember[];
     replyingTo: string | null;
     setReplyingTo: (msgId: string) => void;
     inResponseTo: {
-        user: ThreadMember | undefined;
-        msg: ThreadMessageT | undefined;
+        user: ThreadMember | null;
+        msg: ThreadMessageT | null;
     } | null;
     fetchThreadMessages: () => Promise<void>;
 }
@@ -421,7 +421,7 @@ interface ThreadMessageProps {
 function ThreadMessage(props: ThreadMessageProps) {
     const { t } = useTranslation();
     const session = useSession();
-    const msgHighlightTimeoutMap = useRef(new Map<string, number | undefined>());
+    const msgHighlightTimeoutMap = useRef(new Map<string, number | null>());
 
     const msg = props.message;
     const author = props.members.find((m) => m.id === msg.authorId);
@@ -718,8 +718,9 @@ function msgElemId(msgId: string) {
     return `msg-${msgId}`;
 }
 
-function highlightChatMessage(msgId: string, timeoutIdMap: Map<string, number | undefined>) {
-    if (timeoutIdMap.has(msgId)) window.clearTimeout(timeoutIdMap.get(msgId));
+function highlightChatMessage(msgId: string, timeoutIdMap: Map<string, number | null>) {
+    const prevTimeoutId = timeoutIdMap.get(msgId);
+    if (prevTimeoutId) window.clearTimeout(prevTimeoutId);
     document.querySelector(`#${msgElemId(msgId)}`)?.classList.add("msg-highlight");
 
     const timeoutId = window.setTimeout(() => {

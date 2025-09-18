@@ -19,7 +19,7 @@ export async function serveVersionFile(
     projectId: string,
     versionId: string,
     fileName: string,
-    userSession: ContextUserData | undefined,
+    userSession: ContextUserData | null,
     isCdnRequest = true,
 ) {
     const [project, _projectVersions] = await Promise.all([GetProject_ListItem(projectId), GetVersions(projectId)]);

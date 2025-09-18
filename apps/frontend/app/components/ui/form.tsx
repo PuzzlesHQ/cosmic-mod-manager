@@ -141,7 +141,7 @@ function FormMessage({ ref, className, children, ...props }: React.ComponentProp
 FormMessage.displayName = "FormMessage";
 
 interface CharacterCounterProps extends React.ComponentProps<"span"> {
-    currVal: string | undefined;
+    currVal: string | null;
     max: number;
     visibleAfter?: number;
 }

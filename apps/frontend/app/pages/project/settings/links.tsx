@@ -26,10 +26,10 @@ export default function ExternalLinksSettingsPage() {
     const form = useForm<z.infer<typeof updateExternalLinksFormSchema>>({
         resolver: zodResolver(updateExternalLinksFormSchema),
         defaultValues: {
-            issueTracker: projectData?.issueTrackerUrl || undefined,
-            sourceCode: projectData?.projectSourceUrl || undefined,
-            wikiPage: projectData?.projectWikiUrl || undefined,
-            discordServer: projectData?.discordInviteUrl || undefined,
+            issueTracker: projectData?.issueTrackerUrl,
+            sourceCode: projectData?.projectSourceUrl,
+            wikiPage: projectData?.projectWikiUrl,
+            discordServer: projectData?.discordInviteUrl,
         },
     });
     form.watch();

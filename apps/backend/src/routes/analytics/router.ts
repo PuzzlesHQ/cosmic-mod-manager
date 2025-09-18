@@ -45,7 +45,7 @@ async function downloadsAnalytics_get(ctx: Context) {
         const projectIds = decodeStringArray(projectIds_query);
         const startDate = DateFromStr(startDate_query);
         const endDate = DateFromStr(endDate_query);
-        let timeline: TimelineOptions | undefined;
+        let timeline: TimelineOptions | null = null;
         if (timeline_query) {
             if (Object.values(TimelineOptions).includes(timeline_query as TimelineOptions)) {
                 timeline = timeline_query as TimelineOptions;
@@ -85,7 +85,7 @@ async function allProjectsDownloadsAnalytics_get(ctx: Context) {
 
         const startDate = DateFromStr(startDate_query);
         const endDate = DateFromStr(endDate_query);
-        let timeline: TimelineOptions | undefined;
+        let timeline: TimelineOptions | null = null;
         if (timeline_query) {
             if (Object.values(TimelineOptions).includes(timeline_query as TimelineOptions)) {
                 timeline = timeline_query as TimelineOptions;

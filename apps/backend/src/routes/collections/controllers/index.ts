@@ -26,8 +26,8 @@ import { generateDbId } from "~/utils/str";
 import { collectionIconUrl, userFileUrl } from "~/utils/urls";
 import { CanEditCollection, CollectionAccessible } from "../utils";
 
-export async function GetUserCollections(userSlug: string, userSession: ContextUserData | undefined) {
-    let userId: string | undefined;
+export async function GetUserCollections(userSlug: string, userSession: ContextUserData | null) {
+    let userId: string;
     if (userSession?.userName === userSlug || userSession?.id === userSlug) userId = userSession.id;
     else {
         const targetUser = await GetUser_ByIdOrUsername(userSlug, userSlug);
@@ -68,7 +68,7 @@ export async function GetUserCollections(userSlug: string, userSession: ContextU
     };
 }
 
-export async function GetUserCollection_ByCollectionId(collectionId: string, userSession: ContextUserData | undefined) {
+export async function GetUserCollection_ByCollectionId(collectionId: string, userSession: ContextUserData | null) {
     if (collectionId.toLowerCase() === FOLLOWS_COLLECTIONS_ID && userSession?.id) {
         return {
             data: {
@@ -109,7 +109,7 @@ export async function GetUserCollection_ByCollectionId(collectionId: string, use
     };
 }
 
-export async function GetCollectionProjects(collectionId: string, sessionUser: ContextUserData | undefined) {
+export async function GetCollectionProjects(collectionId: string, sessionUser: ContextUserData | null) {
     if (collectionId.toLowerCase() === FOLLOWS_COLLECTIONS_ID && sessionUser?.id) {
         return await getManyProjects(sessionUser, sessionUser.followingProjects);
     }
@@ -122,7 +122,7 @@ export async function GetCollectionProjects(collectionId: string, sessionUser: C
     return await getManyProjects(sessionUser, collection.projects);
 }
 
-export async function GetCollectionOwner(collectionId: string, userSession: ContextUserData | undefined) {
+export async function GetCollectionOwner(collectionId: string, userSession: ContextUserData | null) {
     if (collectionId.toLowerCase() === FOLLOWS_COLLECTIONS_ID && userSession?.id) {
         return {
             data: {

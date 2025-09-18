@@ -49,7 +49,6 @@ async function GetVersions_FromDb(projectId?: string, projectSlug?: string) {
     if (!projectSlug && !projectId) throw new Error("Either the project id or slug is required!");
 
     let data = null;
-
     // If both id and slug are provided, check if any table matches either one
     if (projectId && projectSlug) {
         data = await prisma.project.findFirst({
@@ -230,7 +229,7 @@ async function Set_VersionsCache<T extends SetCache_Data | null>(NAMESPACE: stri
 }
 
 export async function Delete_VersionCache(projectId: string, _projectSlug?: string) {
-    let projectSlug: string | undefined = _projectSlug?.toLowerCase();
+    let projectSlug = _projectSlug?.toLowerCase();
 
     // If slug is not provided, get it from the cache
     if (!projectSlug) {

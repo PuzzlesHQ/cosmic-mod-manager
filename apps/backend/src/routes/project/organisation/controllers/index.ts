@@ -11,7 +11,7 @@ import { generateDbId } from "~/utils/str";
 import { orgIconUrl, userFileUrl } from "~/utils/urls";
 import { getManyProjects } from "../../controllers";
 
-export async function getOrganisationById(userSession: ContextUserData | undefined, slug: string) {
+export async function getOrganisationById(userSession: ContextUserData | null, slug: string) {
     const organisation = await GetOrganization_Data(slug, slug);
     if (!organisation) {
         return notFoundResponseData("Organisation not found");
@@ -45,7 +45,7 @@ export async function getOrganisationById(userSession: ContextUserData | undefin
     return { data: formattedData, status: HTTP_STATUS.OK };
 }
 
-export async function getUserOrganisations(userSession: ContextUserData | undefined, userSlug: string) {
+export async function getUserOrganisations(userSession: ContextUserData | null, userSlug: string) {
     let userId = userSlug.toLowerCase() === userSession?.userName.toLowerCase() ? userSession.id : null;
     if (!userId) {
         const user = await GetUser_ByIdOrUsername(userSlug, userSlug);
@@ -137,7 +137,7 @@ export async function createOrganisation(userSession: ContextUserData, formData:
     };
 }
 
-export async function getOrganisationProjects(userSession: ContextUserData | undefined, slug: string, listedOnly = false) {
+export async function getOrganisationProjects(userSession: ContextUserData | null, slug: string, listedOnly = false) {
     const Org = await GetOrganization_Data(slug, slug);
     if (!Org) return notFoundResponseData("Organisation not found");
     if (!Org.projects) return { data: [], status: HTTP_STATUS.OK };

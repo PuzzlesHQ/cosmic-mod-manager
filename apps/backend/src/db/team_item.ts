@@ -8,31 +8,28 @@ import { TEAM_SELECT_FIELDS } from "./_queries";
 import { GetManyUsers_ByIds } from "./user_item";
 
 export type GetTeam_ReturnType = Awaited<ReturnType<typeof GetTeam_FromDb>>;
-async function GetTeam_FromDb(teamId: string) {
-    const team = await prisma.team.findUnique({
+function GetTeam_FromDb(teamId: string) {
+    return prisma.team.findUnique({
         where: {
             id: teamId,
         },
         select: TEAM_SELECT_FIELDS.select,
     });
-    if (!team) return null;
-
-    return team;
 }
 
 export async function GetTeam(teamId: string) {
-    let Team = await GetData_FromCache<GetTeam_ReturnType>(TEAM_DATA_CACHE_KEY, teamId);
-    if (!Team) Team = await GetTeam_FromDb(teamId);
-    if (!Team) return null;
+    let team = await GetData_FromCache<GetTeam_ReturnType>(TEAM_DATA_CACHE_KEY, teamId);
+    if (!team) team = await GetTeam_FromDb(teamId);
+    if (!team) return null;
 
-    await Set_TeamCache(TEAM_DATA_CACHE_KEY, Team.id, Team);
+    await Set_TeamCache(TEAM_DATA_CACHE_KEY, team.id, team);
 
     // Get all members of the team
-    const TeamMember_UserIds = Team.members.map((member) => member.userId);
+    const TeamMember_UserIds = team.members.map((member) => member.userId);
     const Users = await GetManyUsers_ByIds(TeamMember_UserIds);
 
     const MembersList = [];
-    for (const member of Team.members) {
+    for (const member of team.members) {
         const User = Users.find((user) => user.id === member.userId);
         if (!User) continue;
 
@@ -47,7 +44,7 @@ export async function GetTeam(teamId: string) {
     }
 
     return {
-        ...Team,
+        ...team,
         members: MembersList,
     };
 }

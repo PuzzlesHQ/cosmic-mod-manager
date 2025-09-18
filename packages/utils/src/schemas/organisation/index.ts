@@ -1,6 +1,7 @@
 import { z } from "zod/v4";
 import { MAX_ORGANISATION_DESCRIPTION_LENGTH, MAX_ORGANISATION_NAME_LENGTH } from "~/constants";
 import { createURLSafeSlug } from "~/string";
+import { mustBeURLSafe } from "../utils";
 
 export const orgSlugField = z
     .string()
@@ -11,7 +12,7 @@ export const orgSlugField = z
             if (slug !== createURLSafeSlug(slug)) return false;
             return true;
         },
-        { message: "Slug must be a URL safe string" },
+        { error: mustBeURLSafe("Organization slug") },
     );
 
 export const createOrganisationFormSchema = z.object({

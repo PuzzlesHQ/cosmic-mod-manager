@@ -149,7 +149,7 @@ export async function GetProject_Details(id?: string, slug?: string) {
     ]);
     if (!projectTeam) return null;
 
-    return Object.assign(project, { organisation: org || null, team: projectTeam });
+    return Object.assign(project, { organisation: org, team: projectTeam });
 }
 
 export type GetManyProjects_Details_ReturnType = Awaited<ReturnType<typeof GetManyProjects_Details>>;
@@ -272,20 +272,20 @@ export async function GetProject_ListItem(id?: string, slug?: string) {
 
     await Set_ProjectCache(PROJECT_LIST_ITEM_CACHE_KEY, Project);
 
-    const [Org, ProjectTeam] = await Promise.all([
+    const [org, projectTeam] = await Promise.all([
         Project.organisationId ? GetOrganization_Data(Project.organisationId) : null,
         GetTeam(Project.teamId),
     ]);
-    if (!ProjectTeam) return null;
+    if (!projectTeam) return null;
 
-    return Object.assign(Project, { organisation: Org || null, team: ProjectTeam });
+    return Object.assign(Project, { organisation: org, team: projectTeam });
 }
 
 export type GetManyProjects_ListItem_ReturnType = Awaited<ReturnType<typeof GetManyProjects_ListItem>>;
 export async function GetManyProjects_ListItem(ids: string[]) {
     const ProjectIds = Array.from(new Set(ids));
 
-    const Projects = [];
+    const projects = [];
     const _OrgIds = new Set<string>();
     const _TeamIds = new Set<string>();
 
@@ -305,7 +305,7 @@ export async function GetManyProjects_ListItem(ids: string[]) {
             if (!_project?.id) continue;
 
             ProjectIds_RetrievedFromCache.push(_project.id);
-            Projects.push(_project);
+            projects.push(_project);
             if (_project.organisationId) _OrgIds.add(_project.organisationId);
             _TeamIds.add(_project.teamId);
         }
@@ -332,7 +332,7 @@ export async function GetManyProjects_ListItem(ids: string[]) {
             if (!project?.id) continue;
             _setCache_promises.push(Set_ProjectCache(PROJECT_LIST_ITEM_CACHE_KEY, project));
 
-            Projects.push(project);
+            projects.push(project);
             if (project.organisationId) _OrgIds.add(project.organisationId);
             _TeamIds.add(project.teamId);
         }
@@ -346,8 +346,8 @@ export async function GetManyProjects_ListItem(ids: string[]) {
     ]);
 
     const FormattedProjects = [];
-    for (let i = 0; i < Projects.length; i++) {
-        const project = Projects[i];
+    for (let i = 0; i < projects.length; i++) {
+        const project = projects[i];
         const _project_team = _TeamItems.find((team) => team?.id === project.teamId);
         if (!_project_team) continue;
 
@@ -416,7 +416,7 @@ export async function DeleteProject<T extends Prisma.ProjectDeleteArgs>(args: Pr
 //                  ProjectSlug -> ProjectData
 
 export async function Delete_ProjectCache_All(id: string, slug?: string) {
-    let projectSlug: string | undefined = slug?.toLowerCase();
+    let projectSlug = slug?.toLowerCase();
 
     // If slug is not provided, get it from the cache
     if (!projectSlug) {

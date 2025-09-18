@@ -162,8 +162,8 @@ export interface ProjectListItem {
     featured_gallery: string | null;
     color: string | null;
 
-    author?: string; // The author's username
-    isOrgOwned?: boolean;
+    author: string | null; // The author's username
+    isOrgOwned: boolean | null;
 }
 
 export interface Organisation {
@@ -192,7 +192,7 @@ export interface SearchResult {
     offset: number;
     processingTimeMs: number;
     query: string;
-    projectType?: string;
+    projectType: string | null;
 }
 
 export interface Collection {

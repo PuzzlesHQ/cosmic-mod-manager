@@ -223,7 +223,7 @@ export async function changeUserPassword(
     ctx: Context,
     token: string,
     formData: z.infer<typeof setNewPasswordFormSchema>,
-    userSession: ContextUserData | undefined,
+    userSession: ContextUserData | null,
 ) {
     if (formData.newPassword !== formData.confirmNewPassword) return invalidReqestResponseData("Passwords do not match");
 

@@ -44,7 +44,10 @@ export default function UploadVersionPage() {
             changelog: "",
             releaseChannel: VersionReleaseChannel.RELEASE,
             versionNumber: "",
-            featured: false,
+            additionalFiles: [],
+            dependencies: [],
+            gameVersions: [],
+            loaders: [],
         },
     });
     form.watch();
