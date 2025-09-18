@@ -50,9 +50,15 @@ export function getFileTypeFromFileExtension(fileName: string) {
         case "gif":
             return FileType.GIF;
 
+        case "mp4":
+            return FileType.MP4;
+        case "webm":
+            return FileType.WEBM;
+        case "mkv":
+            return FileType.MKV;
+
         case "jar":
             return FileType.JAR;
-
         case "zip":
             return FileType.ZIP;
         case "7z":

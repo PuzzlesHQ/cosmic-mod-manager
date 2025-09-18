@@ -45,7 +45,7 @@ export const profileUpdateFormSchema = z.object({
         .refine(
             async (file) => {
                 const type = await getFileType(file);
-                if (!type || !(isImageFile(type) || isVideoFile(type))) {
+                if (!isImageFile(type) || !isVideoFile(type)) {
                     return false;
                 }
 

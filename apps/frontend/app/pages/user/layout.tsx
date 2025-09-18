@@ -1,12 +1,13 @@
 import { getProjectTypesFromNames } from "@app/utils/convertors";
 import { FormatCount } from "@app/utils/number";
-import { GlobalUserRole } from "@app/utils/types";
+import { isVideoFile } from "@app/utils/schemas/validation";
+import { type FileType, GlobalUserRole } from "@app/utils/types";
 import type { Collection, Organisation, ProjectListItem } from "@app/utils/types/api";
 import { ReportItemType } from "@app/utils/types/api/report";
 import type { UserProfileData } from "@app/utils/types/api/user";
 import { imageUrl } from "@app/utils/url";
 import { CalendarIcon, ClipboardCopyIcon, DownloadIcon, EditIcon } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Outlet } from "react-router";
 import { CubeIcon, fallbackOrgIcon, fallbackUserIcon } from "~/components/icons";
 import { itemType, MicrodataItemProps, MicrodataItemType } from "~/components/microdata";
@@ -83,12 +84,24 @@ export default function UserPageLayout(props: Props) {
     });
 
     const bgFileUrl = props.userData.profilePageBg;
+    const fileExtension = bgFileUrl?.split(".").pop()?.toLowerCase() || "";
+    const isVideo = isVideoFile(fileExtension as FileType);
+
+    const wrapperStyle = useMemo(() => {
+        if (!bgFileUrl || isVideo) return undefined;
+
+        return {
+            backgroundImage: `url(${bgFileUrl})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backgroundAttachment: "fixed",
+        } satisfies React.CSSProperties;
+    }, [bgFileUrl]);
+
     return (
-        <div className="full_page full-width relative grid">
-            {/* HACKY_THING */}
-            {!!bgFileUrl && (
-                <video src={bgFileUrl} poster={bgFileUrl} muted autoPlay loop playsInline className="absolute inset-0" />
-            )}
+        <div className="full_page full-width relative grid" style={wrapperStyle}>
+            {isVideo && bgFileUrl && <video src={bgFileUrl} muted autoPlay loop playsInline className="absolute inset-0" />}
 
             <main
                 data-showbg="true"
