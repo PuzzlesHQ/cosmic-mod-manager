@@ -149,7 +149,7 @@ export default {
         bioDesc: "A short description to tell everyone a little bit about you.",
         visitYourProfile: "Visit your profile",
         profilePageBg: "Profile page background",
-        profilePageBgDesc: "This image will be used as a custom background for your profile page",
+        profilePageBgDesc: "This image/video will be used as a custom background for your profile page",
 
         showIpAddr: "Show IP addresses",
         sessionsDesc:
