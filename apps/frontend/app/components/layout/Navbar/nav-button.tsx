@@ -60,7 +60,7 @@ export default function NavButton({ session }: NavbuttonProps) {
                         src={imageUrl(session.avatar)}
                         alt={`Profile picture of ${session?.userName}`}
                         fallback={fallbackUserIcon}
-                        className="h-nav-item w-nav-item rounded-full border-none bg-raised-background p-0.5"
+                        className="h-nav-item w-nav-item rounded-full border-none bg-raised-background p-[1px]"
                     />
                 </Button>
             </PopoverTrigger>
