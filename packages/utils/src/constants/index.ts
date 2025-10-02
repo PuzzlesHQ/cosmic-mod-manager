@@ -63,8 +63,8 @@ export const MIN_VERSION_TITLE_LENGTH = 2;
 export const MAX_VERSION_TITLE_LENGTH = 64;
 export const MAX_VERSION_NUMBER_LENGTH = 32;
 export const MAX_VERSION_CHANGELOG_LENGTH = 65256;
-export const MAX_VERSION_FILE_SIZE = 32 * MiB;
-export const MAX_ADDITIONAL_VERSION_FILE_SIZE = 16 * MiB;
+export const MAX_VERSION_FILE_SIZE = 128 * MiB;
+export const MAX_ADDITIONAL_VERSION_FILE_SIZE = 32 * MiB;
 export const MAX_OPTIONAL_FILES = 5;
 
 // Organisation
