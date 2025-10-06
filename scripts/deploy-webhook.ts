@@ -1,4 +1,5 @@
-// github webhook on push event
+let isDeploying = false;
+let needsRedeployment = false;
 
 async function handleWebhook(req: Request): Promise<Response> {
     if (req.method !== "POST") {
@@ -25,8 +26,13 @@ async function handleWebhook(req: Request): Promise<Response> {
         return new Response("Not a push to main branch", { status: 200 });
     }
 
-    console.log("Valid webhook received, pulling latest code and redeploying...");
-    await Bun.$`chmod +x ./scripts/deploy.sh && ./scripts/deploy.sh`;
+    if (isDeploying) {
+        needsRedeployment = true;
+        console.log("Deployment already in progress, scheduling a redeployment");
+    } else {
+        needsRedeployment = false;
+        redeploy();
+    }
 
     return new Response("Webhook received", { status: 200 });
 }
@@ -35,3 +41,21 @@ Bun.serve({
     port: 5507,
     fetch: handleWebhook,
 });
+
+async function redeploy(recursion = 0) {
+    // Prevent infinite recursion
+    if (recursion > 10) {
+        console.error("Too many redeployment attempts, aborting");
+        return;
+    }
+
+    isDeploying = true;
+    console.log("Valid webhook received, pulling latest code and redeploying...");
+    await Bun.$`chmod +x ./scripts/deploy.sh && ./scripts/deploy.sh`;
+    isDeploying = false;
+
+    if (needsRedeployment) {
+        needsRedeployment = false;
+        await redeploy(recursion + 1);
+    }
+}
