@@ -3,6 +3,8 @@ name: Update Game Versions
 on:
     schedule:
       - cron: "0 * * * *" # every hour
+    workflow_dispatch:
+
 
 jobs:
     update:
