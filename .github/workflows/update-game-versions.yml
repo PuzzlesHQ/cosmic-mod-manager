@@ -27,14 +27,14 @@ jobs:
 
           - name: Commit and push changes
             run: |
-                git config user.name "GameVersionBot"
-                git config user.email "bot@users.noreply.github.com"
+                git config user.name "github-actions[bot]"
+                git config user.email "github-actions[bot]@users.noreply.github.com"
 
                 git add packages/utils/src/constants/game-versions.json
 
                 if ! git diff --cached --quiet; then
                     echo "Committing changes..."  
-                    git commit -m "chore: update game versions [bot]"
+                    git commit -m "chore: update game versions (github-actions)"
                     git pull --rebase
                     git push
                 else
