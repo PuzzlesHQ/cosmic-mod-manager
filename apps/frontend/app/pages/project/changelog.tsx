@@ -18,34 +18,29 @@ import { UserProfilePath, VersionPagePath } from "~/utils/urls";
 import VersionFilters from "./version-filters";
 
 const ITEMS_PER_PAGE = 15;
+const pageSearchParamKey = "page";
 
 export default function VersionChangelogs() {
-    const ctx = useProjectData();
     const { t } = useTranslation();
-    const pageSearchParamKey = "page";
+    const { projectType, projectData, allProjectVersions } = useProjectData();
     const [urlSearchParams] = useSearchParams();
-    const page = urlSearchParams.get(pageSearchParamKey) || "1";
-    const pagesCount = Math.ceil((ctx.allProjectVersions?.length || 0) / ITEMS_PER_PAGE);
-    const activePage = ParseInt(page) <= pagesCount ? ParseInt(page) : 1;
-
     const { downloadFile } = use(FileDownloader);
 
+    const page = urlSearchParams.get(pageSearchParamKey) || "1";
+    const pagesCount = Math.ceil((allProjectVersions?.length || 0) / ITEMS_PER_PAGE);
+    const activePage = ParseInt(page) <= pagesCount ? ParseInt(page) : 1;
+
     const filter = VersionFilters({
-        allProjectVersions: ctx.allProjectVersions,
-        supportedGameVersions: ctx.projectData.gameVersions,
+        allProjectVersions: allProjectVersions,
+        supportedGameVersions: projectData.gameVersions,
         showDevVersions_Default: true,
     });
-
-    const Pagination =
-        (filter.filteredItems.length || 0) > ITEMS_PER_PAGE ? (
-            <PaginatedNavigation pagesCount={pagesCount} activePage={activePage} searchParamKey={pageSearchParamKey} />
-        ) : null;
 
     const visibleVersionItems = filter.filteredItems.slice((activePage - 1) * ITEMS_PER_PAGE, activePage * ITEMS_PER_PAGE);
 
     return (
         <>
-            {filter.component}
+            {filter.FilterComponent}
 
             <Card className="flex w-full flex-col items-start justify-start p-5">
                 {visibleVersionItems.map((version, index) => {
@@ -78,7 +73,7 @@ export default function VersionChangelogs() {
                                     {t.version.publishedBy(
                                         <h2 key="version-title" className="leading-tight">
                                             <Link
-                                                to={VersionPagePath(ctx.projectType, ctx.projectData.slug, version.slug)}
+                                                to={VersionPagePath(projectType, projectData.slug, version.slug)}
                                                 className="flex items-baseline gap-2 font-bold text-[1.25rem]"
                                             >
                                                 {version.title}
@@ -114,7 +109,9 @@ export default function VersionChangelogs() {
                 })}
             </Card>
 
-            {Pagination}
+            {(filter.filteredItems.length || 0) > ITEMS_PER_PAGE ? (
+                <PaginatedNavigation pagesCount={pagesCount} activePage={activePage} searchParamKey={pageSearchParamKey} />
+            ) : null}
         </>
     );
 }

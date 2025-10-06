@@ -1,5 +1,6 @@
 import type React from "react";
-import { useNavigate as __useNavigate, type LinkProps, type NavigateOptions, Link as RemixLink, useLocation } from "react-router";
+import { useCallback } from "react";
+import { Link as RemixLink, useLocation, useNavigate as useNavigate_Original, type LinkProps, type NavigateOptions } from "react-router";
 import type { VariantProps } from "~/components/types";
 import { cn } from "~/components/utils";
 import { usePreferences } from "~/hooks/preferences";
@@ -21,10 +22,10 @@ interface CustomLinkProps extends LinkProps {
 
 export default function Link({ ref, escapeUrlWrapper, ...props }: CustomLinkProps) {
     const { locale } = useTranslation();
+    const { viewTransitions } = usePreferences();
 
     let to = props.to?.toString().trim() || "#";
     if (escapeUrlWrapper !== true && !to.startsWith("#")) to = changeHintLocale(locale, to);
-    const { viewTransitions } = usePreferences();
 
     return <RemixLink ref={ref} {...props} to={to} viewTransition={viewTransitions !== false} />;
 }
@@ -116,9 +117,13 @@ export function VariantButtonLink({
 }
 
 export function useNavigate(dontAlterHintLocale?: boolean, initOptions?: NavigateOptions) {
-    const navigate = __useNavigate();
-    const { locale } = useTranslation();
+    const navigate = useNavigate_Original();
+    const { locale, formattedLocaleName } = useTranslation();
     const { viewTransitions } = usePreferences();
+
+    useCallback(() => {}, [
+        viewTransitions, formattedLocaleName
+    ])
 
     function __navigate(_to: string, options?: NavigateOptions): void {
         const to = _to?.trim() || "#";

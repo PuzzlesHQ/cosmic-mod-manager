@@ -77,7 +77,7 @@ export default function VersionFilters(props: VersionFiltersProps) {
         <ChevronDownIcon aria-hidden className="indicator h-btn-icon-md w-btn-icon-md text-foreground-extra-muted" />
     );
 
-    const filterComponent = (
+    const FilterComponent = (
         <>
             {formattedOptions.anyFilterVisible || hasDevVersions ? (
                 <div className="flex flex-wrap items-center justify-start gap-2">
@@ -109,7 +109,10 @@ export default function VersionFilters(props: VersionFiltersProps) {
                         <MultiSelect
                             searchBox={props.supportedGameVersions.length > 5}
                             selectedValues={filters.gameVersions}
-                            options={formattedOptions.gameVersionFilters.map((ver) => ({ label: ver.label, value: ver.value }))}
+                            options={formattedOptions.gameVersionFilters.map((ver) => ({
+                                label: ver.label,
+                                value: ver.value,
+                            }))}
                             onValueChange={(values) => {
                                 setFilters({ ...filters, gameVersions: values });
                             }}
@@ -241,7 +244,7 @@ export default function VersionFilters(props: VersionFiltersProps) {
     );
 
     return {
-        component: filterComponent,
+        FilterComponent,
         anyFilterEnabled: anyFilterEnabled,
         filteredItems: filteredItems,
         showDevVersions: showDevVersions,

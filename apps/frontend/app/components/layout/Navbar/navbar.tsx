@@ -1,6 +1,5 @@
 import { projectTypes } from "@app/utils/config/project";
 import { Capitalize } from "@app/utils/string";
-import type { LoggedInUserData } from "@app/utils/types";
 import { Building2Icon, ChevronDownIcon, LibraryIcon, PlusIcon, SettingsIcon } from "lucide-react";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
@@ -11,6 +10,7 @@ import Link, { ButtonLink, VariantButtonLink } from "~/components/ui/link";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { Separator } from "~/components/ui/separator";
 import { cn } from "~/components/utils";
+import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import CreateNewCollection_Dialog from "~/pages/dashboard/collections/new-collection";
 import CreateNewOrg_Dialog from "~/pages/dashboard/organization/new-organization";
@@ -19,14 +19,11 @@ import Config from "~/utils/config";
 import { HamMenu, MobileNav } from "./mobile-nav";
 import NavButton from "./nav-button";
 
-interface NavbarProps {
-    session: LoggedInUserData | null;
-}
-
-export default function Navbar(props: NavbarProps) {
+export default function Navbar() {
     const closeOtherLinksPopup_timeoudId = useRef<number | undefined>(undefined);
     const navigation = useNavigation();
     const curr_location = useLocation();
+    const session = useSession();
 
     const location = navigation.location || curr_location;
 
@@ -167,12 +164,12 @@ export default function Navbar(props: NavbarProps) {
                     </ul>
                 </div>
                 <div className="flex items-center gap-4">
-                    <div className="hidden lg:flex">{props.session?.id ? <CreateThingsPopup /> : SettingsButton}</div>
+                    <div className="hidden lg:flex">{session?.id ? <CreateThingsPopup /> : SettingsButton}</div>
 
                     <div className="flex lg:hidden">{SettingsButton}</div>
 
                     <div className="hidden lg:flex">
-                        <NavButton session={props.session} />
+                        <NavButton session={session} />
                     </div>
 
                     <div className="flex justify-center align-center lg:hidden">
@@ -181,7 +178,7 @@ export default function Navbar(props: NavbarProps) {
                 </div>
             </nav>
 
-            <MobileNav session={props.session} isNavMenuOpen={isNavMenuOpen} NavLinks={NavLinks} />
+            <MobileNav session={session} isNavMenuOpen={isNavMenuOpen} NavLinks={NavLinks} />
         </header>
     );
 }

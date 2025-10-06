@@ -1,8 +1,7 @@
 import { ArrowUpRightIcon, LanguagesIcon, LinkIcon, Settings2Icon } from "lucide-react";
-import { useEffect, useState } from "react";
 import { type LinkProps, useLocation } from "react-router";
 import { BrandIcon } from "~/components/icons";
-import Link, { LinkPrefetchStrategy, TextLink, useNavigate, VariantButtonLink } from "~/components/ui/link";
+import Link, { LinkPrefetchStrategy, TextLink, VariantButtonLink } from "~/components/ui/link";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { DotSeparator } from "~/components/ui/separator";
 import { usePreferences } from "~/hooks/preferences";
@@ -15,7 +14,8 @@ import { changeHintLocale } from "~/utils/urls";
 export default function Footer() {
     const { updatePreferences } = usePreferences();
     const { t, changeLocale } = useTranslation();
-    const loc = useLocation();
+    const location = useLocation();
+
     const footer = t.footer;
     const legal = t.legal;
 
@@ -115,7 +115,7 @@ export default function Footer() {
                     const title = region ? `${locale.name} - ${region.name}` : locale.name;
 
                     const formattedCode = formatLocaleCode(locale);
-                    const url = changeHintLocale(locale, loc.pathname);
+                    const url = changeHintLocale(locale, location.pathname);
 
                     return (
                         <TextLink
@@ -125,7 +125,9 @@ export default function Footer() {
                             title={title}
                             preventScrollReset
                             escapeUrlWrapper
-                            onClick={() => {
+                            onClick={(e) => {
+                                e.preventDefault();
+
                                 updatePreferences({ locale: formattedCode });
                                 changeLocale(formattedCode);
                             }}
@@ -170,22 +172,17 @@ function LinksColumn({ children, area }: { area: string; children: React.ReactNo
 export function LangSwitcher() {
     const { updatePreferences } = usePreferences();
     const { locale, changeLocale } = useTranslation();
-    const [currLang, setCurrLang] = useState(formatLocaleCode(locale));
-    const navigate = useNavigate();
 
-    useEffect(() => {
-        setCurrLang(formatLocaleCode(locale));
-    }, [locale]);
-
+    const formattedLocale = formatLocaleCode(locale);
     const currLocaleLabel = locale.region ? `${locale.nativeName} (${locale.region.displayName})` : locale.nativeName;
 
     return (
         <Select
             onValueChange={(value: string) => {
                 updatePreferences({ locale: parseLocale(value) });
-                changeLocale(value, navigate);
+                changeLocale(value);
             }}
-            value={currLang}
+            value={formattedLocale}
         >
             <SelectTrigger
                 aria-label={currLocaleLabel}
@@ -200,7 +197,7 @@ export function LangSwitcher() {
                     className="h-btn-icon-md w-btn-icon-md text-foreground-muted"
                     aria-label="Language switcher"
                 />
-                <SelectValue className="flex items-center justify-start" placeholder={<p>{currLang}</p>} />
+                <SelectValue className="flex items-center justify-start" placeholder={<p>{formattedLocale}</p>} />
             </SelectTrigger>
 
             <SelectContent>

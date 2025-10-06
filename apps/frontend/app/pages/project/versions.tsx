@@ -67,7 +67,7 @@ export default function ProjectVersionsPage() {
                 <UploadVersionLinkCard uploadPageUrl={VersionPagePath(ctx.projectType, projectData.slug, "new")} />
             ) : null}
 
-            {versionFilterRes.component}
+            {versionFilterRes.FilterComponent}
 
             <ProjectVersionsListTable
                 projectType={ctx.projectType}

@@ -1,6 +1,5 @@
 import { projectTypes } from "@app/utils/config/project";
 import { prepend, removeLeading } from "@app/utils/string";
-import { createContext, use, useState } from "react";
 import { useLocation } from "react-router";
 import { itemType, MicrodataItemProps, MicrodataItemType } from "~/components/microdata";
 import Link from "~/components/ui/link";
@@ -13,30 +12,8 @@ interface Breadcrumb {
     href: string;
 }
 
-export interface BreadcrumbsContext {
-    breadcrumbs: Breadcrumb[];
-    setBreadcrumbs: (breadcrumbs: Breadcrumb[]) => void;
-}
-
-const BreadcrumbsContext = createContext<BreadcrumbsContext>({
-    breadcrumbs: [],
-    setBreadcrumbs: () => {},
-});
-
-export function BreadcrumbsContextProvider({ children }: { children: React.ReactNode }) {
-    const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
-
-    return <BreadcrumbsContext value={{ breadcrumbs, setBreadcrumbs }}>{children}</BreadcrumbsContext>;
-}
-
-export function useBreadcrumbs() {
-    return use(BreadcrumbsContext);
-}
-
 export function PageBreadCrumbs() {
-    const { breadcrumbs } = useBreadcrumbs();
-    const _url_BreadCrumbs = getBreadCrumbsFromUrl();
-    const breadCrumbsList = breadcrumbs.length ? breadcrumbs : _url_BreadCrumbs;
+    const breadCrumbsList = getBreadCrumbsFromUrl();
 
     if (!breadCrumbsList?.length) return null;
 
@@ -65,7 +42,7 @@ export function PageBreadCrumbs() {
     );
 }
 
-function getBreadCrumbsFromUrl() {
+function getBreadCrumbsFromUrl(): Breadcrumb[] {
     const { t } = useTranslation();
     const loc = useLocation();
     const path = removeLeading("/", changeHintLocale(DefaultLocale, loc.pathname, true));

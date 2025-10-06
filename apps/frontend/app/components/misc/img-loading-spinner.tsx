@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { WanderingCubesSpinner } from "~/components/ui/spinner";
 import { cn } from "~/components/utils";
 
@@ -11,9 +11,8 @@ interface ImgLoaderProps {
     spinner?: React.ReactNode;
 }
 
-const loadedImages = new Set<string>();
-
 export function ImgLoader({ src, alt, className, wrapperClassName, spinner, thumbnailSrc }: ImgLoaderProps) {
+    const loadedImages = useRef(new Set<string>()).current;
     const [isImageLoaded, setIsImageLoaded] = useState(loadedImages.has(src));
 
     useEffect(() => {

@@ -12,7 +12,6 @@ import { MarkdownLinkHandler } from "~/components/md-editor/link-handler";
 import { DownloadRipple } from "~/components/misc/file-downloader";
 import LoaderBar from "~/components/misc/loader-bar";
 import { cn } from "~/components/utils";
-import { PageBreadCrumbs } from "~/hooks/breadcrumb";
 import { getUserConfig } from "~/hooks/preferences/helpers";
 import { getThemeClassName } from "~/hooks/preferences/theme";
 import type { UserPreferences } from "~/hooks/preferences/types";
@@ -98,8 +97,7 @@ function AppSetup(props: { data: RootOutletData }) {
             <div id="hero_section_bg_portal" className="absolute top-0 left-0" aria-hidden />
 
             <div className="relative grid min-h-[100vh] w-full grid-rows-[auto_1fr_auto]">
-                <Navbar session={data.session} />
-                <PageBreadCrumbs />
+                <Navbar />
 
                 <div className="full_page content-container">
                     <Outlet context={data satisfies RootOutletData} />

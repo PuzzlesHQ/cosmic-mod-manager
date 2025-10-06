@@ -11,10 +11,10 @@ import { useTranslation } from "~/locales/provider";
 
 export default function PreferencesPage() {
     const { t } = useTranslation();
-    const ctx = usePreferences();
+    const { viewTransitions, updatePreferences } = usePreferences();
 
     function toggleViewTransitions(checked: boolean) {
-        ctx.updatePreferences({ viewTransitions: checked });
+        updatePreferences({ viewTransitions: checked });
     }
 
     return (
@@ -32,7 +32,7 @@ export default function PreferencesPage() {
                             <span className="my-0 block font-bold text-foreground text-lg">{t.settings.viewTransitions}</span>
                             <span className="my-0 block text-foreground-muted">{t.settings.viewTransitionsDesc}</span>
                         </label>
-                        <Switch id="view-transitions" checked={ctx.viewTransitions} onCheckedChange={toggleViewTransitions} />
+                        <Switch id="view-transitions" checked={viewTransitions} onCheckedChange={toggleViewTransitions} />
                     </div>
                 </CardContent>
             </Card>
@@ -42,31 +42,25 @@ export default function PreferencesPage() {
 
 export function ThemeSwitcher() {
     const { t } = useTranslation();
-    const ctx = usePreferences();
-    const selectedThemeOption = ctx.theme;
+    const { theme: currTheme, systemTheme, prefersOLED, updatePreferences } = usePreferences();
 
-    async function updateThemePreference(e: React.MouseEvent<HTMLButtonElement>, theme: ThemePreference) {
-        let newTheme = theme;
-        let prefersOLED = ctx.prefersOLED;
+    async function updateThemePreference(e: React.MouseEvent<HTMLButtonElement>, newTheme: ThemePreference) {
+        let newOLEDPreference = prefersOLED;
 
-        if (theme === ThemePreference.OLED) {
-            newTheme = ThemePreference.OLED;
-            prefersOLED = true;
-        } else if (theme === ThemePreference.DARK) {
-            newTheme = ThemePreference.DARK;
-            prefersOLED = false;
-        } else {
-            newTheme = theme;
+        if (newTheme === ThemePreference.OLED) {
+            newOLEDPreference = true;
+        } else if (newTheme === ThemePreference.DARK) {
+            newOLEDPreference = false;
         }
 
-        const prevTheme = resolveThemePreference(ctx.theme, ctx.prefersOLED, true);
-        const newEffectiveTheme = resolveThemePreference(newTheme, prefersOLED, true);
+        const prevTheme = resolveThemePreference(currTheme, prefersOLED, true);
+        const newEffectiveTheme = resolveThemePreference(newTheme, newOLEDPreference, true);
 
         const isUpdatedThemeDifferent = prevTheme !== newEffectiveTheme;
 
         document.documentElement.setAttribute("data-view-transition", "theme-switch");
         if (!document.startViewTransition || !isUpdatedThemeDifferent) {
-            ctx.updatePreferences({ theme: newTheme, prefersOLED });
+            updatePreferences({ theme: newTheme, prefersOLED: newOLEDPreference });
         } else {
             const x = e.clientX;
             const y = e.clientY;
@@ -75,7 +69,7 @@ export function ThemeSwitcher() {
             document.documentElement.style.setProperty("--click-y", `${y}px`);
 
             const transition = document.startViewTransition(() => {
-                ctx.updatePreferences({ theme: newTheme, prefersOLED });
+                updatePreferences({ theme: newTheme, prefersOLED: newOLEDPreference });
             });
             await transition.finished;
         }
@@ -89,19 +83,19 @@ export function ThemeSwitcher() {
                 <CardDescription>{t.settings.colorThemeDesc}</CardDescription>
             </CardHeader>
             <CardContent className="grid grid-cols-[repeat(auto-fit,_minmax(14rem,1fr))] gap-panel-cards">
-                {Themes.map((theme) => {
-                    const resolvedTheme = theme.name === ThemePreference.SYSTEM ? ctx.systemTheme : theme.name;
+                {Themes.map((themeItem) => {
+                    const resolvedTheme = themeItem.name === ThemePreference.SYSTEM ? systemTheme : themeItem.name;
                     const label =
-                        theme.name === ThemePreference.SYSTEM ? t.settings.system : CapitalizeAndFormatString(theme.name);
+                        themeItem.name === ThemePreference.SYSTEM ? t.settings.system : CapitalizeAndFormatString(themeItem.name);
 
                     return (
                         <RadioBtnSelector
-                            key={theme.name}
-                            label={theme.label || label}
-                            checked={selectedThemeOption === theme.name}
-                            onClick={(e) => updateThemePreference(e, theme.name)}
+                            key={themeItem.name}
+                            label={themeItem.label || label}
+                            checked={currTheme === themeItem.name}
+                            onClick={(e) => updateThemePreference(e, themeItem.name)}
                         >
-                            <ThemePreview isActive={theme.name === ctx.theme} resolvedTheme={resolvedTheme} />
+                            <ThemePreview isActive={themeItem.name === currTheme} resolvedTheme={resolvedTheme} />
                         </RadioBtnSelector>
                     );
                 })}

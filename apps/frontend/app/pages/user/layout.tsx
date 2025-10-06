@@ -41,8 +41,8 @@ export default function UserPageLayout(props: Props) {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const prefs = usePreferences();
-    const isActiveTheme_Dark = getThemeClassName(prefs.resolvedTheme, prefs.prefersOLED).some((cls) => cls === ThemeVariant.DARK);
+    const { resolvedTheme, prefersOLED } = usePreferences();
+    const isActiveTheme_Dark = getThemeClassName(resolvedTheme, prefersOLED).some((cls) => cls === ThemeVariant.DARK);
 
     const aggregatedDownloads = (props.projectsList || [])?.reduce((acc, project) => acc + project.downloads, 0) || 0;
     const totalProjects = (props.projectsList || [])?.length;
@@ -53,6 +53,7 @@ export default function UserPageLayout(props: Props) {
             aggregatedProjectTypes.add(type);
         }
     }
+
     const projectTypesList = Array.from(aggregatedProjectTypes);
 
     const navLinks = [];

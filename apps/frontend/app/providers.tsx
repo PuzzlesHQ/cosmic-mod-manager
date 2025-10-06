@@ -1,8 +1,9 @@
 import { DownloadProvider } from "~/components/misc/file-downloader";
 import { Toaster } from "~/components/ui/sonner";
-import { BreadcrumbsContextProvider } from "~/hooks/breadcrumb";
 import type { UserPreferences } from "~/hooks/preferences/types";
 import { CollectionsProvider } from "~/pages/collection/provider";
+import { ChangeUrlHintOnLocaleChange } from "./global-effects";
+import { PageBreadCrumbs } from "./hooks/breadcrumb";
 import { UserPreferencesProvider } from "./hooks/preferences";
 
 interface ContextProvidersProps {
@@ -13,12 +14,22 @@ interface ContextProvidersProps {
 export default function ContextProviders({ children, init_userConfig }: ContextProvidersProps) {
     return (
         <UserPreferencesProvider init={init_userConfig}>
-            <BreadcrumbsContextProvider>
-                <DownloadProvider>
-                    <CollectionsProvider>{children}</CollectionsProvider>
-                    <Toaster />
-                </DownloadProvider>
-            </BreadcrumbsContextProvider>
+            <DownloadProvider>
+                <CollectionsProvider>
+                    {children}
+                    <GlobalEffects />
+                </CollectionsProvider>
+            </DownloadProvider>
         </UserPreferencesProvider>
+    );
+}
+
+function GlobalEffects() {
+    return (
+        <>
+            <Toaster />
+            <PageBreadCrumbs />
+            <ChangeUrlHintOnLocaleChange />
+        </>
     );
 }

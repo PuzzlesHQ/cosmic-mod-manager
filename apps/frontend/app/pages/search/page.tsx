@@ -50,8 +50,8 @@ export default function SearchPage() {
         projectType,
         projectType_Coerced,
     } = useSearchContext();
-    const ctx = usePreferences();
-    const viewType = ctx.viewPrefs[projectType_Coerced];
+    const { viewPrefs } = usePreferences();
+    const viewType = viewPrefs[projectType_Coerced];
 
     // Search box focus
     function handleSearchInputFocus(e: KeyboardEvent) {
@@ -260,7 +260,7 @@ function Spinner({ className }: { className?: string }) {
 }
 
 function ViewTypeToggle({ projectType, viewType }: { projectType: ProjectType; viewType: ListViewType }) {
-    const ctx = usePreferences();
+    const { viewPrefs, updatePreferences } = usePreferences();
     const { t } = useTranslation();
 
     function toggleViewType() {
@@ -271,9 +271,9 @@ function ViewTypeToggle({ projectType, viewType }: { projectType: ProjectType; v
             newDisplayType = ListViewType.LIST;
         }
 
-        ctx.updatePreferences({
+        updatePreferences({
             viewPrefs: {
-                ...ctx.viewPrefs,
+                ...viewPrefs,
                 [projectType]: newDisplayType,
             },
         });
