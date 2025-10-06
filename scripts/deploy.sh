@@ -23,6 +23,5 @@ bun run src/routes/cdn/process-downloads.ts
 bun run prisma-generate
 bun run prisma-push
 pm2 reload crmm-backend > /dev/null
-pm2 reload crmm-github-webhook > /dev/null
 
 echo "Deployment complete!"
