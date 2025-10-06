@@ -52,7 +52,7 @@ async function main() {
 }
 
 function parseId(id: string) {
-    const regex = /^(\d+).(\d+)(.)?(\d+)/;
+    const regex = /^(\d+)\.(\d+)(\.)?(\d+)?/;
     const match = id.match(regex);
     if (!match) {
         throw new Error(`Invalid version id: ${id}`);
