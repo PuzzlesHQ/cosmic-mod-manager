@@ -9,7 +9,7 @@ async function handleWebhook(req: Request): Promise<Response> {
     const secret = process.env.GITHUB_WEBHOOK_SECRET;
     if (!secret) {
         console.error("GITHUB_WEBHOOK_SECRET is not set");
-        return new Response("Server Misconfiguration", { status: 500 });
+        return new Response(null, { status: 500 });
     }
 
     const hasher = new Bun.CryptoHasher("sha256", secret);
@@ -17,13 +17,13 @@ async function handleWebhook(req: Request): Promise<Response> {
     hasher.update(reqText);
     const hash = `sha256=${hasher.digest("hex")}`;
     if (req.headers.get("X-Hub-Signature-256") !== hash) {
-        return new Response("Forbidden", { status: 403 });
+        return new Response(null, { status: 403 });
     }
 
     const json = JSON.parse(reqText);
     if (json.ref !== "refs/heads/main") {
         console.log("Push to non-main branch, ignoring");
-        return new Response("Not a push to main branch", { status: 200 });
+        return new Response(null, { status: 200 });
     }
 
     if (isDeploying) {
@@ -34,7 +34,7 @@ async function handleWebhook(req: Request): Promise<Response> {
         redeploy();
     }
 
-    return new Response("Webhook received", { status: 200 });
+    return new Response(null, { status: 200 });
 }
 
 Bun.serve({
