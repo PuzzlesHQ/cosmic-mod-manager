@@ -12,30 +12,23 @@
     },
     "dependencies": {
         "@app/utils": "workspace:*",
-        "@clickhouse/client": "^1.11.2",
+        "@clickhouse/client": "^1.12.1",
         "@oslojs/encoding": "^1.1.0",
-        "@prisma/client": "^6.15.0",
-        "hono": "^4.8.4",
-        "ioredis": "^5.6.1",
-        "isbot": "^5.1.28",
-        "meilisearch": "0.47.0",
-        "nanoid": "^5.1.5",
-        "nodemailer": "^6.10.1",
+        "@prisma/client": "^6.16.3",
+        "hono": "^4.9.10",
+        "ioredis": "^5.8.1",
+        "meilisearch": "^0.53.0",
+        "nanoid": "^5.1.6",
+        "nodemailer": "^7.0.9",
         "semver": "^7.7.2",
-        "sharp": "^0.33.5"
+        "sharp": "^0.34.4"
     },
     "devDependencies": {
-        "@types/ioredis": "^5.0.0",
-        "@types/nodemailer": "^6.4.17",
-        "@types/semver": "^7.7.0",
+        "@types/nodemailer": "^7.0.2",
+        "@types/semver": "^7.7.1",
         "@types/xml2js": "^0.4.14",
-        "cross-env": "^7.0.3",
-        "dotenv": "^16.6.1",
-        "prisma": "^6.15.0",
+        "prisma": "^6.16.3",
         "xml2js": "^0.6.2"
-    },
-    "peerDependencies": {
-        "typescript": "^5.7.3"
     },
     "trustedDependencies": [
         "@biomejs/biome",

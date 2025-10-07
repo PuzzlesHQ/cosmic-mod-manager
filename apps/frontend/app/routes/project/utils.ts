@@ -2,7 +2,7 @@ import { getProjectTypeFromPath } from "~/hooks/project";
 import type { Route } from "./+types/data-wrapper";
 
 export function getProjectLoaderData<T extends Route.MetaArgs["matches"]>(matches: T, pathname: string) {
-    const _data = matches[1].data;
+    const _data = matches[1].loaderData;
     const projectType = getProjectTypeFromPath(pathname);
 
     type RouteData = {
