@@ -17,8 +17,6 @@ jobs:
           - uses: actions/checkout@v4
           - uses: oven-sh/setup-bun@v2
 
-          - run: bun install --frozen-lockfile
-
           - name: Fetching and updating game versions
             id: update
             run: |

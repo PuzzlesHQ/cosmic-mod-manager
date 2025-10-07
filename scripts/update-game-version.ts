@@ -1,5 +1,5 @@
-import GAME_VERSIONS, { type GameVersion } from "@app/utils/src/constants/game-versions";
-import { GameVersionReleaseType } from "@app/utils/src/types";
+import GAME_VERSIONS, { type GameVersion } from "@root/packages/utils/src/constants/game-versions";
+import { GameVersionReleaseType } from "@root/packages/utils/src/types";
 
 const CR_ARCHIVE_VERSION_FILE_URL = "https://raw.githubusercontent.com/PuzzlesHQ/CRArchive/refs/heads/main/versions.json";
 
@@ -49,6 +49,10 @@ async function main() {
 
     const updatedList = newAddedVersions.concat(GAME_VERSIONS);
     await Bun.write("packages/utils/src/constants/game-versions.json", JSON.stringify(updatedList, null, 4));
+    console.log(
+        "Added versions:",
+        newAddedVersions.map((v) => v.value),
+    );
 }
 
 function parseId(id: string) {
