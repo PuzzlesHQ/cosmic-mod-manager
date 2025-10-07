@@ -3,7 +3,7 @@ import { getLast15Days_ProjectDownloads } from "~/services/clickhouse/project-do
 import meilisearch from "~/services/meilisearch";
 import valkey from "~/services/redis";
 import { isProjectIndexable } from "../project/utils";
-import { AwaitEnqueuedTask, FormatSearchDocument, InitialiseSearchDb, MEILISEARCH_PROJECT_INDEX } from "./sync-utils";
+import { FormatSearchDocument, InitialiseSearchDb, MEILISEARCH_PROJECT_INDEX } from "./sync-utils";
 
 const ADDED_ITEMS_QUEUE = "search_projects_sync_queue:added";
 const REMOVED_ITEMS_QUEUE = "search_projects_sync_queue:removed";
@@ -21,9 +21,9 @@ export async function QueueSearchIndexUpdate() {
     isSyncing = true;
 
     try {
-        // @ts-ignore
+        // @ts-expect-error
         if (globalThis.SearchIndexSync_TimeoutId) {
-            // @ts-ignore
+            // @ts-expect-error
             clearTimeout(globalThis.SearchIndexSync_TimeoutId);
         }
 
@@ -39,7 +39,7 @@ export async function QueueSearchIndexUpdate() {
             await UpdateSearchIndex();
         }
 
-        // @ts-ignore
+        // @ts-expect-error
         globalThis.SearchIndexSync_TimeoutId = setTimeout(QueueSearchIndexUpdate, SYNC_INTERVAL);
     } finally {
         isSyncing = false;
@@ -79,12 +79,12 @@ async function Process_AddedProjects(ProjectIds: string[]) {
         documents.push(FormatSearchDocument(Project, recentDownloads_Map.get(Project.id) || 0));
     }
 
-    await AwaitEnqueuedTask(await index.addDocuments(documents));
+    await index.addDocuments(documents).waitTask();
 }
 
 async function Process_RemovedProjects(ProjectIds: string[]) {
     const index = meilisearch.index(MEILISEARCH_PROJECT_INDEX);
-    await AwaitEnqueuedTask(await index.deleteDocuments(ProjectIds));
+    await index.deleteDocuments(ProjectIds).waitTask();
 }
 
 // Getter functions

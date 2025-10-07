@@ -117,10 +117,12 @@ async function apiDetails(ctx: Context) {
     );
 }
 
-// Initialize the queues
-await queueDownloadsCounterQueueProcessing();
-await QueueSearchIndexUpdate();
-await startSitemapGenerator();
+try {
+    // Initialize the queues
+    await queueDownloadsCounterQueueProcessing();
+    await startSitemapGenerator();
+    await QueueSearchIndexUpdate();
+} catch {}
 
 Bun.serve({
     port: 5500,

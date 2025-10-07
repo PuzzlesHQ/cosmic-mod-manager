@@ -16,7 +16,11 @@ export async function startSitemapGenerator() {
 
     queued = true;
 
-    await generateSitemap();
+    try {
+        await generateSitemap();
+    } catch (error) {
+        console.error("Failed to generate sitemap", error);
+    }
     setInterval(generateSitemap, SITEMAP_REFRESH_INTERVAL_s * 1000);
 }
 

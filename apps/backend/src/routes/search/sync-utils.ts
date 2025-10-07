@@ -1,5 +1,4 @@
 import { type EnvironmentSupport, ProjectPublishingStatus, ProjectVisibility } from "@app/utils/types";
-import type { EnqueuedTask } from "meilisearch";
 import { GetManyProjects_Details, type GetProject_Details_ReturnType } from "~/db/project_item";
 import { isProjectIndexable } from "~/routes/project/utils";
 import { getLast15Days_ProjectDownloads } from "~/services/clickhouse/project-downloads";
@@ -15,8 +14,9 @@ export async function InitialiseSearchDb() {
         const index = meilisearch.index(MEILISEARCH_PROJECT_INDEX);
 
         // Setup the search index
-        await AwaitEnqueuedTasks([
-            await index.updateFilterableAttributes([
+
+        await index
+            .updateFilterableAttributes([
                 "categories",
                 "loaders",
                 "type",
@@ -24,14 +24,16 @@ export async function InitialiseSearchDb() {
                 "openSource",
                 "clientSide",
                 "serverSide",
-            ]),
-            await index.updateSortableAttributes(["downloads", "followers", "dateUpdated", "datePublished", "recentDownloads"]),
-            await index.updateRankingRules(["sort", "words", "typo", "proximity", "attribute"]),
-            await index.updateSearchableAttributes(["name", "slug", "summary", "author"]),
+            ])
+            .waitTask();
+        await index
+            .updateSortableAttributes(["downloads", "followers", "dateUpdated", "datePublished", "recentDownloads"])
+            .waitTask();
+        await index.updateRankingRules(["sort", "words", "typo", "proximity", "attribute"]).waitTask();
+        await index.updateSearchableAttributes(["name", "slug", "summary", "author"]).waitTask();
 
-            // Delete existing documents
-            await index.deleteAllDocuments(),
-        ]);
+        // Delete existing documents
+        await index.deleteAllDocuments().waitTask();
 
         let cursor = null;
         while (true) {
@@ -102,7 +104,7 @@ async function _SyncBatch(cursor: null | string) {
             formattedProjectsData.push(FormatSearchDocument(Project, recentDownloadsCount_Map.get(Project.id) || 0));
         }
 
-        await AwaitEnqueuedTask(await index.addDocuments(formattedProjectsData));
+        await index.addDocuments(formattedProjectsData).waitTask();
 
         if (formattedProjectsData.length < SYNC_BATCH_SIZE) return null;
         return _Projects_Ids_Res.at(-1)?.id;
@@ -141,48 +143,4 @@ export function FormatSearchDocument<T extends NonNullable<GetProject_Details_Re
         isOrgOwned: !!project.organisation?.slug,
         visibility: project.visibility as ProjectVisibility,
     } satisfies ProjectSearchDocument;
-}
-
-const PROCESSING_TASK_STATUSES = ["enqueued", "processing"];
-
-export async function AwaitEnqueuedTask(task: EnqueuedTask) {
-    const TIMEOUT = 10_000;
-    let timeElapsed = 0;
-
-    while (true) {
-        const UpdatedTask = await meilisearch.getTask(task.taskUid);
-
-        if (PROCESSING_TASK_STATUSES.includes(UpdatedTask.status)) {
-            await new Promise((resolve) => setTimeout(resolve, 100));
-            timeElapsed += 100;
-        } else break;
-
-        if (timeElapsed >= TIMEOUT) {
-            console.error(`Meilisearch Task :${task.taskUid} took too long to process. Timed out after ${TIMEOUT}ms`);
-            break;
-        }
-    }
-}
-
-export async function AwaitEnqueuedTasks(tasks: EnqueuedTask[], TIMEOUT_ms = 30_000) {
-    let timeElapsed = 0;
-    const TaskdIds: number[] = [];
-    for (const task of tasks) {
-        if (task.taskUid) TaskdIds.push(task.taskUid);
-    }
-
-    while (true) {
-        const UpdatedTasks = await meilisearch.getTasks({ uids: TaskdIds });
-        const anyProcessingTask = UpdatedTasks.results.some((task) => PROCESSING_TASK_STATUSES.includes(task.status));
-
-        if (anyProcessingTask) {
-            await new Promise((resolve) => setTimeout(resolve, 100));
-            timeElapsed += 100;
-        } else break;
-
-        if (timeElapsed >= TIMEOUT_ms) {
-            console.error(`Meilisearch Tasks took too long to process. Timed out after ${TIMEOUT_ms}ms`);
-            break;
-        }
-    }
 }

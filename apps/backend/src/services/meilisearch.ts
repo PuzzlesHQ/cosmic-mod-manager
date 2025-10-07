@@ -13,12 +13,12 @@ let meilisearch: MeiliSearch;
 if (env.NODE_ENV === "production") {
     meilisearch = newMeilisearchClient();
 } else {
-    // @ts-ignore
+    // @ts-expect-error
     if (!global.meilisearch) {
-        // @ts-ignore
+        // @ts-expect-error
         global.meilisearch = newMeilisearchClient();
     }
-    // @ts-ignore
+    // @ts-expect-error
     meilisearch = global.meilisearch;
 }
 
