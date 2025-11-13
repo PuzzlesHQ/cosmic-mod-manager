@@ -19,7 +19,7 @@ export async function resizeImageToWebp(file: File | BunFile, inputFileType: Fil
 
     const metadata = await sharpInstance.metadata();
     // Don't use nearest neighbor for large images
-    if ((metadata.width || 0) > 128 && (metadata.height || 0) > 128) defaultKernel = sharp.kernel.lanczos3;
+    if ((metadata.width || 0) > 256 && (metadata.height || 0) > 256) defaultKernel = sharp.kernel.lanczos3;
 
     const resizedImgBuffer = await sharpInstance
         .resize({
