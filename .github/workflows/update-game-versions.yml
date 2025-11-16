@@ -4,7 +4,8 @@ on:
     schedule:
       - cron: "0 * * * *" # every hour
     workflow_dispatch:
-
+    repository_dispatch:
+        types: [trigger_update_versions]
 
 jobs:
     update:
