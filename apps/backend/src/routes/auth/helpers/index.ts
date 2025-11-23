@@ -112,28 +112,24 @@ export function getUserIpAddress(ctx: Context, strip = true): string | null {
     return stripIp(IPv6).toString(16);
 }
 
-export function generateRandomToken(): string {
-    const bytes = random(32);
+export function generateRandomToken(size = 32): string {
+    const bytes = random(size);
     const token = encodeBase32LowerCaseNoPadding(bytes);
     return token;
 }
 
-export async function hashString(str: string) {
-    return (await new Promise((resolve) => {
+export function hashString(str: string) {
+    return new Promise((resolve) => {
         const hasher = new Bun.CryptoHasher("sha256", env.HASH_SECRET_KEY);
         hasher.update(str);
         resolve(hasher.digest("hex") as string);
-    })) as string;
+    }) as Promise<string>;
 }
 
 export function getUserSessionCookie(ctx: Context) {
-    try {
-        const cookie = getCookie(ctx, AUTHTOKEN_COOKIE_NAMESPACE);
-        if (!cookie) {
-            return null;
-        }
-        return cookie;
-    } catch {}
+    const cookie = getCookie(ctx, AUTHTOKEN_COOKIE_NAMESPACE);
+    if (cookie) return cookie;
+
     return null;
 }
 
@@ -154,4 +150,16 @@ export async function matchPassword(password: string, hash: string) {
     } catch {
         return false;
     }
+}
+
+// PATs
+const PAT_PREFIX = "crp_";
+export async function generatePAT() {
+    const token = generateRandomToken(64);
+
+    return PAT_PREFIX + token;
+}
+
+export function isPAT(token: string) {
+    return token.startsWith(PAT_PREFIX);
 }
