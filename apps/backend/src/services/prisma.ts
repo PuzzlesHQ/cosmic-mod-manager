@@ -1,17 +1,23 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "@prisma/client/extension";
 import env from "~/utils/env";
 
 let prisma: PrismaClient;
 
+function newDbClient() {
+    const adapter = new PrismaPg({ connectionString: env.PG_DATABASE_URL });
+    return new PrismaClient({ adapter });
+}
+
 if (env.NODE_ENV === "production") {
-    prisma = new PrismaClient();
+    prisma = newDbClient();
 } else {
-    // @ts-ignore
+    // @ts-expect-error
     if (!global.prisma) {
-        // @ts-ignore
-        global.prisma = new PrismaClient();
+        // @ts-expect-error
+        global.prisma = newDbClient();
     }
-    // @ts-ignore
+    // @ts-expect-error
     prisma = global.prisma;
 }
 
