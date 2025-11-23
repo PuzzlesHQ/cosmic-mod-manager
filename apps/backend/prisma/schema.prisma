@@ -56,6 +56,17 @@ model Session {
     user User @relation(name: "UserSessions", fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model PersonAccessToken {
+    id          String    @id @db.VarChar(32)
+    userId      String    @db.VarChar(32)
+    tokenHash   String    @unique @db.VarChar(256)
+    name        String    @db.VarChar(64)
+    dateCreated DateTime  @default(now())
+    dateExpires DateTime
+    lastUsed    DateTime?
+    scopes      BigInt    @default(0)
+}
+
 model AuthAccount {
     id                   String  @id @db.VarChar(32)
     userId               String  @db.VarChar(32)
