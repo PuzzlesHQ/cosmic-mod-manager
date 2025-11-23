@@ -9,7 +9,7 @@ import type {
     ProjectVisibility,
 } from "@app/utils/types";
 import type { ProjectDetailsData, ProjectListItem } from "@app/utils/types/api";
-import type { TeamMember as DBTeamMember } from "@prisma/client";
+import type { TeamMember as DBTeamMember } from "@prisma-client";
 import { GetManyProjects_ListItem, GetProject_Details, GetProject_ListItem } from "~/db/project_item";
 import { mapSearchProjectToListItem } from "~/routes/search/_helpers";
 import { MEILISEARCH_PROJECT_INDEX, type ProjectSearchDocument } from "~/routes/search/sync-utils";

@@ -4,7 +4,7 @@ import { ProjectPublishingStatus, type ProjectVisibility } from "@app/utils/type
 import type { ModerationProjectItem } from "@app/utils/types/api/moderation";
 import { NotificationType } from "@app/utils/types/api/notification";
 import { type MessageBody, MessageType } from "@app/utils/types/api/thread";
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma-client";
 import {
     GetManyProjects_ListItem,
     GetProject_Details,

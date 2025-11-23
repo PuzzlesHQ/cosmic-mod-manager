@@ -9,7 +9,7 @@ import {
     reportFilters_defaults,
 } from "@app/utils/types/api/report";
 import { type MessageBody, MessageType, ThreadType } from "@app/utils/types/api/thread";
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma-client";
 import { GetProject_ListItem } from "~/db/project_item";
 import { GetUser_ByIdOrUsername } from "~/db/user_item";
 import { getVersionsData } from "~/routes/versions/handler";

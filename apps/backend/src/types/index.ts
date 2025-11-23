@@ -1,5 +1,5 @@
 import type { GlobalUserRole } from "@app/utils/types";
-import type { User } from "@prisma/client";
+import type { User } from "@prisma-client";
 
 export interface SessionDeviceDetails {
     os: {

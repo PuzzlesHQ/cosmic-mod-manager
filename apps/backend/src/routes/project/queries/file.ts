@@ -1,4 +1,4 @@
-import type { File as DBFile } from "@prisma/client";
+import type { File as DBFile } from "@prisma-client";
 import { GetManyFiles_ByID } from "~/db/file_item";
 
 export async function getFilesFromId(fileIds: string[]) {

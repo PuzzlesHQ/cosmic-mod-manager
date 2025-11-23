@@ -1,6 +1,6 @@
 import { getCurrMember } from "@app/utils/project";
 import type { ProjectVersionData } from "@app/utils/types/api";
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma-client";
 import { GetProject_Details } from "~/db/project_item";
 import { GetVersions } from "~/db/version_item";
 import { getFilesFromId } from "~/routes/project/queries/file";

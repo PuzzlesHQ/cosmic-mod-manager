@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma-client";
 import { cacheKey } from "~/services/cache/utils";
 import prisma from "~/services/prisma";
 import valkey from "~/services/redis";

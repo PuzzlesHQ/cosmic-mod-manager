@@ -18,11 +18,11 @@
         "paths": {
             "~/*": ["./src/*"],
             "@app/utils/*": ["./../../packages/utils/src/*"],
-            "@prisma/client": ["./prisma/client"]
+            "@prisma-client": ["./prisma/client/client.ts"]
         }
     },
     "include": [".", "./../../packages/utils/src"],
-    "exclude": ["node_modules", "dist", "pm2.config.cjs", "prisma/client"],
+    "exclude": ["node_modules", "dist", "pm2.config.cjs"],
     "references": [
         {
             "path": "./../../packages/utils"
