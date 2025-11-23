@@ -15,25 +15,25 @@ import { GetUser_ByIdOrUsername } from "~/db/user_item";
 import { getVersionsData } from "~/routes/versions/handler";
 import prisma from "~/services/prisma";
 import type { ContextUserData } from "~/types";
-import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 
 export async function createReport(data: z.infer<typeof newReportFormSchema>, user: ContextUserData) {
     if (data.body.length < 10) {
-        return invalidReqestResponseData("Pleaes provide a detailed description of the issue.");
+        return invalidRequestResponseData("Pleaes provide a detailed description of the issue.");
     }
 
     const existingReport = await getExistingReport(data.itemType, data.itemId, user);
     if (existingReport?.data?.id) {
-        return invalidReqestResponseData(
+        return invalidRequestResponseData(
             "You have already reported this item. Please wait for the moderators to review your report.",
         );
     }
 
     const itemData = await getReportEntityData(data.itemType, data.itemId);
-    if (!itemData) return invalidReqestResponseData("The item you are trying to report does not exist.");
+    if (!itemData) return invalidRequestResponseData("The item you are trying to report does not exist.");
     if (itemData.itemType === ReportItemType.USER && itemData.data.id === user.id) {
-        return invalidReqestResponseData("You cannot report yourself.");
+        return invalidRequestResponseData("You cannot report yourself.");
     }
 
     const reportId = generateDbId();
@@ -166,7 +166,7 @@ async function getReportEntityData(itemType: ReportItemType, itemId: string) {
 
 export async function getAllUserReports(user: ContextUserData, userId?: string, filters?: ReportFilters) {
     if (!userId && !isModerator(user.role)) {
-        return invalidReqestResponseData("User ID is required to get reports.");
+        return invalidRequestResponseData("User ID is required to get reports.");
     }
 
     if (userId && user.id !== userId && !isModerator(user.role)) {

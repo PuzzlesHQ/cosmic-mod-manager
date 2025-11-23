@@ -10,9 +10,10 @@ export const USER_DATA_CACHE_KEY = "user:data";
 export const USER_ORGANIZATIONS_CACHE_KEY = "user:organizations";
 export const USER_PROJECTS_CACHE_KEY = "user:projects";
 
-export const USER_SESSION_CACHE_KEY = "session:data";
-export const SESSION_TOKENS_CACHE_KEY = "session:tokens";
-export const SESSION_IDS_CACHE_KEY = "session:sids";
+export const USER_PATs_CACHE_KEY = "user:pats";
+export const PAT_CACHE_KEY = "pat:data";
+export const PAT_ID_TO_HASH_CACHE_KEY = "pat:id-to-hash";
+export const USER_SESSION_CACHE_KEY = "user_session:data";
 
 export const STATISTICS_CACHE_KEY = "statistics";
 

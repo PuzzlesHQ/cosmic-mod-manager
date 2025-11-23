@@ -23,7 +23,7 @@ import prisma from "~/services/prisma";
 import { deleteDirectory, deleteProjectFile, deleteProjectVersionDirectory, saveProjectFile } from "~/services/storage";
 import { projectsDir } from "~/services/storage/utils";
 import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
-import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
 import { getAverageColor, resizeImageToWebp } from "~/utils/images";
 import { generateDbId } from "~/utils/str";
 import { isProjectIndexable } from "../../utils";
@@ -49,7 +49,7 @@ export async function updateGeneralProjectData(
     if (formData.slug !== project.slug) {
         // Check if the slug is available
         const existingProjectWithSameSlug = await GetProject_ListItem(formData.slug, formData.slug);
-        if (existingProjectWithSameSlug?.id) return invalidReqestResponseData(`The slug "${formData.slug}" is already taken`);
+        if (existingProjectWithSameSlug?.id) return invalidRequestResponseData(`The slug "${formData.slug}" is already taken`);
     }
 
     // Check if the icon was updated
@@ -269,7 +269,7 @@ export async function updateProjectIcon(userSession: ContextUserData, projectId:
 export async function deleteProjectIcon(userSession: ContextUserData, projectId: string) {
     const project = await GetProject_ListItem(projectId);
     if (!project) return notFoundResponseData("Project not found");
-    if (!project.iconFileId) return invalidReqestResponseData("Project does not have any icon");
+    if (!project.iconFileId) return invalidRequestResponseData("Project does not have any icon");
 
     const memberObj = getCurrMember(userSession.id, project.team?.members || [], project.organisation?.team.members || []);
     const hasEditAccess = doesMemberHaveAccess(

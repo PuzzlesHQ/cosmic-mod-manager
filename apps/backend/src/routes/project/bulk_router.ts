@@ -3,7 +3,7 @@ import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware } from "~/middleware/auth";
 import { getReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
-import { invalidReqestResponse, serverErrorResponse } from "~/utils/http";
+import { invalidRequestResponse, serverErrorResponse } from "~/utils/http";
 import { getUserFromCtx } from "~/utils/router";
 import { getHomePageCarouselProjects, getManyProjects, getRandomProjects } from "./controllers";
 
@@ -19,11 +19,11 @@ async function projects_get(ctx: Context) {
     try {
         const projectIds = ctx.req.query("ids");
         const userSession = getUserFromCtx(ctx);
-        if (!projectIds) return invalidReqestResponse(ctx);
+        if (!projectIds) return invalidRequestResponse(ctx);
 
         const idsArray = decodeStringArray(projectIds);
         if (idsArray.length > 100) {
-            return invalidReqestResponse(ctx, "Maximum of 100 projects can be fetched at once");
+            return invalidRequestResponse(ctx, "Maximum of 100 projects can be fetched at once");
         }
 
         const res = await getManyProjects(userSession, idsArray);

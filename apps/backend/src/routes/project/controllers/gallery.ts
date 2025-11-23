@@ -11,7 +11,7 @@ import { deleteProjectGalleryFile, saveProjectGalleryFile } from "~/services/sto
 import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
 import {
     HTTP_STATUS,
-    invalidReqestResponseData,
+    invalidRequestResponseData,
     notFoundResponseData,
     serverErrorResponseData,
     unauthorizedReqResponseData,
@@ -27,12 +27,12 @@ export async function addNewGalleryImage(
     const project = await GetProject_Details(projectId);
     if (!project?.id) return notFoundResponseData();
     if (project.gallery.length >= MAX_PROJECT_GALLERY_IMAGES_COUNT)
-        return invalidReqestResponseData(`Maximum of ${MAX_PROJECT_GALLERY_IMAGES_COUNT} gallery images allowed!`);
+        return invalidRequestResponseData(`Maximum of ${MAX_PROJECT_GALLERY_IMAGES_COUNT} gallery images allowed!`);
 
     // Check if the order index is not already occupied
     for (const item of project.gallery) {
         if (item.orderIndex === formData.orderIndex) {
-            return invalidReqestResponseData("An image with same order index already exists");
+            return invalidRequestResponseData("An image with same order index already exists");
         }
     }
 
@@ -51,7 +51,7 @@ export async function addNewGalleryImage(
     // Check if there's already a featured image
     if (formData.featured === true) {
         const existingFeaturedImage = project.gallery.some((item) => item.featured === true);
-        if (existingFeaturedImage) return invalidReqestResponseData("A featured gallery image already exists");
+        if (existingFeaturedImage) return invalidRequestResponseData("A featured gallery image already exists");
     }
 
     const storageService = FILE_STORAGE_SERVICE.LOCAL;
@@ -164,7 +164,7 @@ export async function updateGalleryImage(
     for (const item of project.gallery) {
         if (item.id === galleryItemId) continue;
         if (item.id !== galleryItemId && item.orderIndex === formData.orderIndex) {
-            return invalidReqestResponseData("An image with same order index already exists");
+            return invalidRequestResponseData("An image with same order index already exists");
         }
     }
 
@@ -183,7 +183,7 @@ export async function updateGalleryImage(
     // Check if there's already a featured image
     if (formData.featured === true) {
         const ExistingFeaturedImage = project.gallery.some((item) => item.featured === true && item.id !== galleryItemId);
-        if (ExistingFeaturedImage) return invalidReqestResponseData("A featured gallery image already exists");
+        if (ExistingFeaturedImage) return invalidRequestResponseData("A featured gallery image already exists");
     }
 
     await UpdateGalleryItem({

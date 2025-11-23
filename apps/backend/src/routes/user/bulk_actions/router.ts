@@ -3,7 +3,7 @@ import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware } from "~/middleware/auth";
 import { strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
-import { invalidReqestResponse, serverErrorResponse } from "~/utils/http";
+import { invalidRequestResponse, serverErrorResponse } from "~/utils/http";
 import { getManyUsers } from "./controller";
 
 const bulkUserActionsRouter = new Hono()
@@ -15,11 +15,11 @@ const bulkUserActionsRouter = new Hono()
 async function users_get(ctx: Context) {
     try {
         const userIds = ctx.req.query("ids");
-        if (!userIds) return invalidReqestResponse(ctx);
+        if (!userIds) return invalidRequestResponse(ctx);
 
         const idsArray = decodeStringArray(userIds);
         if (idsArray.length > 100) {
-            return invalidReqestResponse(ctx, "Maximum 100 users can be fetched at once");
+            return invalidRequestResponse(ctx, "Maximum 100 users can be fetched at once");
         }
 
         const res = await getManyUsers(idsArray);

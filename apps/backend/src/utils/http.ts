@@ -20,8 +20,8 @@ export function serverErrorResponse(ctx: Context, message?: string) {
     return ctx.json(res.data, res.status);
 }
 
-export function invalidReqestResponse(ctx: Context, message?: string) {
-    const res = invalidReqestResponseData(message);
+export function invalidRequestResponse(ctx: Context, message?: string) {
+    const res = invalidRequestResponseData(message);
     return ctx.json(res.data, res.status);
 }
 
@@ -54,7 +54,7 @@ export function serverErrorResponseData(msg?: string) {
         status: HTTP_STATUS.SERVER_ERROR,
     } as const;
 }
-export function invalidReqestResponseData(message?: string) {
+export function invalidRequestResponseData(message?: string) {
     return {
         data: {
             success: false,

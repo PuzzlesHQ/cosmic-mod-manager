@@ -1,7 +1,7 @@
 import { EnvironmentSupport, type ProjectType, SearchResultSortMethod } from "@app/utils/types";
 import type { ProjectListItem } from "@app/utils/types/api";
 import meilisearch from "~/services/meilisearch";
-import { HTTP_STATUS, invalidReqestResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData } from "~/utils/http";
 import { mapSearchProjectToListItem } from "../_helpers";
 import { MEILISEARCH_PROJECT_INDEX, type ProjectSearchDocument } from "../sync-utils";
 
@@ -20,15 +20,15 @@ interface Props {
 
 export async function searchProjects(props: Props) {
     // Validate the filters
-    if (props.query?.length > 64) return invalidReqestResponseData(`Query string too long: '${props.query}'`);
+    if (props.query?.length > 64) return invalidRequestResponseData(`Query string too long: '${props.query}'`);
 
     const Items = [props.type, ...props.loaders, ...props.gameVersions, ...props.categories];
     for (let i = 0; i < Items.length; i++) {
         const item = Items[i];
         if (!item) continue;
 
-        if (item?.length > 32) return invalidReqestResponseData(`Filter string too long: ${item}`);
-        if (isValidFilterStr(item) === false) return invalidReqestResponseData(`Invalid filter string: ${item}`);
+        if (item?.length > 32) return invalidRequestResponseData(`Filter string too long: ${item}`);
+        if (isValidFilterStr(item) === false) return invalidRequestResponseData(`Invalid filter string: ${item}`);
     }
 
     let sortBy = null;

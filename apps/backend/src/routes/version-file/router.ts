@@ -4,7 +4,7 @@ import { getReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-li
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { HashAlgorithms } from "~/types";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
-import { HTTP_STATUS, invalidReqestResponse, notFoundResponse, serverErrorResponse } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponse, notFoundResponse, serverErrorResponse } from "~/utils/http";
 import { GetReleaseChannelFilter } from "~/utils/project";
 import { versionFileUrl } from "~/utils/urls";
 import {
@@ -25,7 +25,7 @@ const versionFileRouter = new Hono()
 async function versionFromHash_get(ctx: Context, download = false) {
     try {
         const hash = ctx.req.param("fileHash");
-        if (!hash) return invalidReqestResponse(ctx);
+        if (!hash) return invalidRequestResponse(ctx);
 
         let hashAlgorithm = HashAlgorithms.SHA512;
         if (ctx.req.query("algorithm") === HashAlgorithms.SHA1) {
@@ -55,7 +55,7 @@ async function versionFromHash_get(ctx: Context, download = false) {
 async function versionFromHashUpdate_get(ctx: Context) {
     try {
         const hash = ctx.req.param("fileHash");
-        if (!hash) return invalidReqestResponse(ctx);
+        if (!hash) return invalidRequestResponse(ctx);
 
         let body = ctx.get(REQ_BODY_NAMESPACE);
         if (!body) body = {};
@@ -103,10 +103,10 @@ const versionFiles_Router = new Hono()
 async function versionFiles_post(ctx: Context) {
     try {
         const body = ctx.get(REQ_BODY_NAMESPACE);
-        if (!body) return invalidReqestResponse(ctx, "Input body not provided!");
+        if (!body) return invalidRequestResponse(ctx, "Input body not provided!");
 
         const hashes = body?.hashes || [];
-        if (!hashes.length) return invalidReqestResponse(ctx, "Empty hash list provided");
+        if (!hashes.length) return invalidRequestResponse(ctx, "Empty hash list provided");
 
         let hashAlgorithm = HashAlgorithms.SHA512;
         if (body?.algorithm === HashAlgorithms.SHA1) {
@@ -124,10 +124,10 @@ async function versionFiles_post(ctx: Context) {
 async function versionUpdatesFromHashes_post(ctx: Context) {
     try {
         const body = ctx.get(REQ_BODY_NAMESPACE);
-        if (!body) return invalidReqestResponse(ctx, "Input body not provided!");
+        if (!body) return invalidRequestResponse(ctx, "Input body not provided!");
 
         const hashes = body?.hashes || [];
-        if (!hashes.length) return invalidReqestResponse(ctx, "Empty hash list provided");
+        if (!hashes.length) return invalidRequestResponse(ctx, "Empty hash list provided");
 
         let hashAlgorithm = HashAlgorithms.SHA512;
         if (body?.algorithm === HashAlgorithms.SHA1) {
@@ -139,7 +139,7 @@ async function versionUpdatesFromHashes_post(ctx: Context) {
             gameVersions = [];
         }
         for (const version of gameVersions) {
-            if (typeof version !== "string") return invalidReqestResponse(ctx, "Invalid game version");
+            if (typeof version !== "string") return invalidRequestResponse(ctx, "Invalid game version");
         }
 
         let loader = body?.loader;

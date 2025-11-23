@@ -7,7 +7,7 @@ import { getFilesFromId } from "~/routes/project/queries/file";
 import { DELETED_USER_AUTHOR_OBJ } from "~/routes/project/utils";
 import prisma from "~/services/prisma";
 import { HashAlgorithms } from "~/types";
-import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData } from "~/utils/http";
 import { GetReleaseChannelFilter } from "~/utils/project";
 import { userFileUrl, versionFileUrl } from "~/utils/urls";
 
@@ -23,7 +23,7 @@ export async function GetVersionFromFileHash(hash: string, algorithm: HashAlgori
 
 export async function GetVersionsFromFileHashes(hashes: string[], algorithm: HashAlgorithms) {
     const hashList = hashes.filter((hash) => !!hash.length && typeof hash === "string");
-    if (hashList.length > 50) return invalidReqestResponseData("Maximum of 50 versions can be retrieved from hashes at once!");
+    if (hashList.length > 50) return invalidRequestResponseData("Maximum of 50 versions can be retrieved from hashes at once!");
 
     let FilesWhere: Prisma.FileWhereInput = {
         sha512_hash: {
@@ -169,7 +169,7 @@ export async function GetLatestProjectVersionFromHash(hash: string, algorithm: H
 
 export async function GetLatestProjectVersionsFromHashes(hashes: string[], algorithm: HashAlgorithms, filter: VersionFilter) {
     const hashList = hashes.filter((hash) => !!hash.length && typeof hash === "string");
-    if (hashList.length > 50) return invalidReqestResponseData("Maximum of 50 versions can be retrieved from hashes at once!");
+    if (hashList.length > 50) return invalidRequestResponseData("Maximum of 50 versions can be retrieved from hashes at once!");
 
     let FilesWhereInput: Prisma.FileWhereInput = {
         sha512_hash: {

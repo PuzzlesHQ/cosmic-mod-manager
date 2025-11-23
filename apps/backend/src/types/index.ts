@@ -18,6 +18,7 @@ export interface ContextUserData extends User {
     name: string;
     sessionId: string;
     role: GlobalUserRole;
+    // authScopes: bigint;
 }
 
 export enum FILE_STORAGE_SERVICE {

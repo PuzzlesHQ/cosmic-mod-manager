@@ -21,7 +21,7 @@ import { deleteOrgDirectory, deleteOrgFile, saveOrgFile } from "~/services/stora
 import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
 import {
     HTTP_STATUS,
-    invalidReqestResponseData,
+    invalidRequestResponseData,
     notFoundResponseData,
     serverErrorResponseData,
     unauthorizedReqResponseData,
@@ -54,7 +54,7 @@ export async function updateOrg(
     // Check slug validity if it's being updated
     if (formData.slug !== org.slug) {
         const existingOrg = await GetOrganization_Data(formData.slug, formData.slug);
-        if (existingOrg?.id) return invalidReqestResponseData(`The slug "${formData.slug}" is already taken`);
+        if (existingOrg?.id) return invalidRequestResponseData(`The slug "${formData.slug}" is already taken`);
     }
 
     let icon = org.iconFileId;
@@ -119,7 +119,7 @@ export async function updateOrgIcon(
     }
 
     const UploadedImg_Type = await getFileType(icon);
-    if (!UploadedImg_Type) return invalidReqestResponseData("Invalid file type");
+    if (!UploadedImg_Type) return invalidRequestResponseData("Invalid file type");
 
     const savedImg_Type = FileType.WEBP;
     const orgIcon_Webp = await resizeImageToWebp(icon, UploadedImg_Type, {
@@ -162,7 +162,7 @@ export async function updateOrgIcon(
 export async function deleteOrgIcon(ctx: Context, userSession: ContextUserData, orgId: string) {
     const org = await GetOrganization_Data(orgId);
     if (!org) return notFoundResponseData("Organization not found");
-    if (!org.iconFileId) return invalidReqestResponseData("Org does not have any icon");
+    if (!org.iconFileId) return invalidRequestResponseData("Org does not have any icon");
 
     const currMember = org.team.members?.[0];
     const canDeleteIcon = doesOrgMemberHaveAccess(
@@ -304,7 +304,7 @@ export async function addProjectToOrganisation(userSession: ContextUserData, org
 
     const Project = await GetProject_ListItem(projectId);
     if (!Project) return notFoundResponseData("Project not found");
-    if (Project.organisationId) return invalidReqestResponseData("Project is already part of an organization");
+    if (Project.organisationId) return invalidRequestResponseData("Project is already part of an organization");
 
     const projectMembership = Project.team.members?.[0];
     if (!hasRootAccess(projectMembership?.isOwner, userSession.role))

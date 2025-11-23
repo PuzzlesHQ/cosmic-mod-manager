@@ -32,7 +32,7 @@ import {
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import {
     HTTP_STATUS,
-    invalidReqestResponse,
+    invalidRequestResponse,
     serverErrorResponse,
     unauthenticatedReqResponse,
     unauthorizedReqResponse,
@@ -69,7 +69,7 @@ async function user_get(ctx: Context) {
     try {
         const userSession = getUserFromCtx(ctx);
         const slug = ctx.req.param("slug") || userSession?.id;
-        if (!slug) return invalidReqestResponse(ctx);
+        if (!slug) return invalidRequestResponse(ctx);
 
         const res = await getUserProfileData(slug);
         return ctx.json(res.data, res.status);
@@ -86,7 +86,7 @@ async function userFollows_get(ctx: Context) {
         if (!userSession) return unauthenticatedReqResponse(ctx);
 
         const slug = ctx.req.param("slug") || userSession?.id;
-        if (!slug) return invalidReqestResponse(ctx);
+        if (!slug) return invalidRequestResponse(ctx);
 
         const idsOnly = ctx.req.query("idsOnly") === "true";
 
@@ -103,7 +103,7 @@ async function userProjects_get(ctx: Context) {
     try {
         const slug = ctx.req.param("slug");
         const listedProjectsOnly = !!ctx.req.query("listedOnly");
-        if (!slug) return invalidReqestResponse(ctx);
+        if (!slug) return invalidRequestResponse(ctx);
         const userSession = getUserFromCtx(ctx);
 
         const res = await getAllVisibleProjects(userSession, slug, listedProjectsOnly);
@@ -118,7 +118,7 @@ async function userProjects_get(ctx: Context) {
 async function userCollections_get(ctx: Context) {
     try {
         const slug = ctx.req.param("slug");
-        if (!slug) return invalidReqestResponse(ctx);
+        if (!slug) return invalidRequestResponse(ctx);
         const userSession = getUserFromCtx(ctx);
 
         const res = await GetUserCollections(slug, userSession);
@@ -133,7 +133,7 @@ async function userCollections_get(ctx: Context) {
 async function user_patch(ctx: Context) {
     try {
         const userSession = getUserFromCtx(ctx);
-        if (!userSession) return invalidReqestResponse(ctx);
+        if (!userSession) return invalidRequestResponse(ctx);
 
         const formData = ctx.get(REQ_BODY_NAMESPACE);
         const obj = {
@@ -145,7 +145,7 @@ async function user_patch(ctx: Context) {
         } satisfies z.infer<typeof profileUpdateFormSchema>;
 
         const { data, error } = await zodParse(profileUpdateFormSchema, obj);
-        if (error || !data) return invalidReqestResponse(ctx, error);
+        if (error || !data) return invalidRequestResponse(ctx, error);
 
         const res = await updateUserProfile(userSession, data);
         return ctx.json(res.data, res.status);
@@ -161,7 +161,7 @@ async function user_delete(ctx: Context) {
         const token = ctx.get(REQ_BODY_NAMESPACE)?.code;
         if (!token) {
             await addInvalidAuthAttempt(ctx);
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const res = await confirmUserAccountDeletion(token);
@@ -209,7 +209,7 @@ async function addPasswordConfirmation_post(ctx: Context) {
         if (!userSession) return unauthorizedReqResponse(ctx);
 
         const { data, error } = await zodParse(setNewPasswordFormSchema, ctx.get(REQ_BODY_NAMESPACE));
-        if (error || !data) return invalidReqestResponse(ctx, error);
+        if (error || !data) return invalidRequestResponse(ctx, error);
 
         const res = await addNewPassword_ConfirmationEmail(userSession, data);
         return ctx.json(res.data, res.status);
@@ -237,7 +237,7 @@ async function addPasswordConfirmation_put(ctx: Context) {
 async function userPassword_delete(ctx: Context) {
     try {
         const { data, error } = await zodParse(removeAccountPasswordFormSchema, ctx.get(REQ_BODY_NAMESPACE));
-        if (error || !data) return invalidReqestResponse(ctx, error);
+        if (error || !data) return invalidRequestResponse(ctx, error);
 
         const userSession = getUserFromCtx(ctx);
         if (!userSession || !userSession?.password) return ctx.json({}, HTTP_STATUS.BAD_REQUEST);
@@ -254,7 +254,7 @@ async function userPassword_delete(ctx: Context) {
 async function changePasswordConfirmationEmail_post(ctx: Context) {
     try {
         const { data, error } = await zodParse(sendAccoutPasswordChangeLinkFormSchema, ctx.get(REQ_BODY_NAMESPACE));
-        if (error || !data) return invalidReqestResponse(ctx, error);
+        if (error || !data) return invalidRequestResponse(ctx, error);
 
         const res = await sendAccountPasswordChangeLink(ctx, data);
         return ctx.json(res.data, res.status);
@@ -269,10 +269,10 @@ async function userPassword_patch(ctx: Context) {
     try {
         const userSession = getUserFromCtx(ctx);
         const { data, error } = await zodParse(setNewPasswordFormSchema, ctx.get(REQ_BODY_NAMESPACE));
-        if (error || !data) return invalidReqestResponse(ctx, error);
+        if (error || !data) return invalidRequestResponse(ctx, error);
 
         const code = ctx.get(REQ_BODY_NAMESPACE)?.code;
-        if (!code) return invalidReqestResponse(ctx);
+        if (!code) return invalidRequestResponse(ctx);
 
         const res = await changeUserPassword(ctx, code, data, userSession);
         return ctx.json(res.data, res.status);
@@ -288,7 +288,7 @@ async function deleteAccountConfirmation_post(ctx: Context) {
         const userSession = getUserFromCtx(ctx);
         if (!userSession?.id) {
             await addInvalidAuthAttempt(ctx);
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const res = await deleteUserAccountConfirmationEmail(userSession);

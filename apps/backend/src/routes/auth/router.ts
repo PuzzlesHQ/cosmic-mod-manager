@@ -9,7 +9,7 @@ import { getReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-li
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { critModifyReqRateLimiter } from "~/middleware/rate-limit/modify-req";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
-import { HTTP_STATUS, invalidReqestResponse, serverErrorResponse } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponse, serverErrorResponse } from "~/utils/http";
 import { getUserFromCtx } from "~/utils/router";
 import { userFileUrl } from "~/utils/urls";
 import { getLinkedAuthProviders, linkAuthProviderHandler, unlinkAuthProvider } from "./controllers/link-provider";
@@ -73,10 +73,10 @@ async function currSession_get(ctx: Context) {
 async function oAuthUrl_get(ctx: Context, intent: AuthActionIntent) {
     try {
         const userSession = getUserFromCtx(ctx);
-        if (userSession?.id && intent !== AuthActionIntent.LINK) return invalidReqestResponse(ctx, "You are already logged in!");
+        if (userSession?.id && intent !== AuthActionIntent.LINK) return invalidRequestResponse(ctx, "You are already logged in!");
 
         const authProvider = ctx.req.param("authProvider");
-        if (!authProvider) return invalidReqestResponse(ctx, "Invalid auth provider");
+        if (!authProvider) return invalidRequestResponse(ctx, "Invalid auth provider");
 
         const redirect = ctx.req.query("redirect") === "true";
         const url = getOAuthUrl(ctx, authProvider, intent);
@@ -95,7 +95,7 @@ async function oAuthUrl_get(ctx: Context, intent: AuthActionIntent) {
 async function credentialSignin_post(ctx: Context) {
     try {
         const { data, error } = await zodParse(LoginFormSchema, ctx.get(REQ_BODY_NAMESPACE));
-        if (error || !data) return invalidReqestResponse(ctx, error);
+        if (error || !data) return invalidRequestResponse(ctx, error);
 
         const result = await credentialSignIn(ctx, data);
         return ctx.json(result.data, result.status);
@@ -108,14 +108,14 @@ async function credentialSignin_post(ctx: Context) {
 async function oAuthSignIn_post(ctx: Context) {
     try {
         if (getUserFromCtx(ctx)?.id) {
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const authProvider = ctx.req.param("authProvider");
         const code = ctx.get(REQ_BODY_NAMESPACE)?.code;
 
         if (!authProvidersList.includes(authProvider.toLowerCase() as AuthProvider) || !code) {
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const result = await oAuthSignInHandler(ctx, authProvider, code);
@@ -129,13 +129,13 @@ async function oAuthSignIn_post(ctx: Context) {
 async function oAuthSignUp_post(ctx: Context) {
     try {
         if (getUserFromCtx(ctx)?.id) {
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const authProvider = ctx.req.param("authProvider");
         const code = ctx.get(REQ_BODY_NAMESPACE)?.code;
         if (!authProvidersList.includes(authProvider.toLowerCase() as AuthProvider) || !code) {
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const result = await oAuthSignUpHandler(ctx, authProvider, code);
@@ -150,13 +150,13 @@ async function oAuthLinkProvider_post(ctx: Context) {
     try {
         const userSession = getUserFromCtx(ctx);
         if (!userSession?.id) {
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const authProvider = ctx.req.param("authProvider");
         const code = ctx.get(REQ_BODY_NAMESPACE)?.code;
         if (!authProvidersList.includes(getAuthProviderFromString(authProvider)) || !code) {
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const result = await linkAuthProviderHandler(ctx, userSession, authProvider, code);
@@ -171,7 +171,7 @@ async function oAuthLinkProvider_delete(ctx: Context) {
     try {
         const userSession = getUserFromCtx(ctx);
         if (!userSession?.id) {
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const authProvider = ctx.req.param("authProvider");
@@ -199,7 +199,7 @@ async function sessions_get(ctx: Context) {
 async function linkedProviders_get(ctx: Context) {
     try {
         const userSession = getUserFromCtx(ctx);
-        if (!userSession?.id) return invalidReqestResponse(ctx);
+        if (!userSession?.id) return invalidRequestResponse(ctx);
 
         const result = await getLinkedAuthProviders(userSession);
         return ctx.json(result.data, result.status);
@@ -214,7 +214,7 @@ async function session_delete(ctx: Context) {
         const userSession = getUserFromCtx(ctx);
         const targetSessionId = ctx.get(REQ_BODY_NAMESPACE)?.sessionId || userSession?.sessionId;
         if (!userSession?.id || !targetSessionId) {
-            return invalidReqestResponse(ctx, "Session id is required");
+            return invalidRequestResponse(ctx, "Session id is required");
         }
 
         const result = await deleteUserSession(ctx, userSession, targetSessionId);
@@ -228,7 +228,7 @@ async function session_delete(ctx: Context) {
 async function revokeSession_delete(ctx: Context) {
     try {
         const code = ctx.req.param("revokeCode");
-        if (!code) return invalidReqestResponse(ctx);
+        if (!code) return invalidRequestResponse(ctx);
 
         const result = await revokeSessionFromAccessCode(ctx, code);
         return ctx.json(result.data, result.status);

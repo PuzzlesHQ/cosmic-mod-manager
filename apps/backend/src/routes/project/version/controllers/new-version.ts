@@ -20,7 +20,7 @@ import {
 } from "~/routes/project/utils";
 import prisma from "~/services/prisma";
 import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
-import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 import { deleteVersionsData } from "../../controllers/settings";
 
@@ -31,14 +31,14 @@ export async function createNewVersion(
     formData: z.infer<typeof newVersionFormSchema>,
 ) {
     if (!formData?.primaryFile?.name || !(formData.primaryFile instanceof File)) {
-        return invalidReqestResponseData("Primary version file is required");
+        return invalidRequestResponseData("Primary version file is required");
     }
 
     const [project, _projectVersions] = await Promise.all([GetProject_ListItem(projectId), GetVersions(projectId)]);
     if (!project?.id) return notFoundResponseData("Project not found");
 
     if (project.visibility === ProjectVisibility.ARCHIVED)
-        return invalidReqestResponseData("Unarchive the project to upload a new version!");
+        return invalidRequestResponseData("Unarchive the project to upload a new version!");
 
     const memberObj = getCurrMember(userSession.id, project?.team.members || [], project?.organisation?.team.members || []);
     const canUploadVersion = doesMemberHaveAccess(
@@ -56,14 +56,14 @@ export async function createNewVersion(
     // Check if the uploaded file is of valid type
     const primaryFileType = await getFileType(formData.primaryFile);
     if (!primaryFileType || !isVersionPrimaryFileValid(project.type as ProjectType[], primaryFileType)) {
-        return invalidReqestResponseData("Invalid primary file type");
+        return invalidRequestResponseData("Invalid primary file type");
     }
 
     // Check the validity of loaders
     const allowedLoaders = getLoadersByProjectType(project.type as ProjectType[]).map((loader) => loader.name);
     for (const loader of formData.loaders || []) {
         if (!allowedLoaders.includes(loader)) {
-            return invalidReqestResponseData(`Loader ${loader} not supported by current project type.`);
+            return invalidRequestResponseData(`Loader ${loader} not supported by current project type.`);
         }
     }
 
@@ -74,7 +74,7 @@ export async function createNewVersion(
     });
 
     if (duplicateFiles === true) {
-        return invalidReqestResponseData("Duplicate files are not allowed");
+        return invalidRequestResponseData("Duplicate files are not allowed");
     }
 
     const projectVersions = _projectVersions?.versions || [];

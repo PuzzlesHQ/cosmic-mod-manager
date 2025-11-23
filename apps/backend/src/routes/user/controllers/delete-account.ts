@@ -11,7 +11,7 @@ import { deleteCollectionDirectory, deleteUserDirectory } from "~/services/stora
 import { FILE_STORAGE_SERVICE } from "~/types";
 import { isConfirmationCodeValid } from "~/utils";
 import env from "~/utils/env";
-import { HTTP_STATUS, invalidReqestResponseData, serverErrorResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData, serverErrorResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 
 export async function confirmUserAccountDeletion(token: string) {
@@ -27,10 +27,10 @@ export async function confirmUserAccountDeletion(token: string) {
         !confirmationEmail?.id ||
         !isConfirmationCodeValid(confirmationEmail.dateCreated, DELETE_USER_ACCOUNT_EMAIL_VALIDITY_ms)
     ) {
-        return invalidReqestResponseData("Expired or invalid code");
+        return invalidRequestResponseData("Expired or invalid code");
     }
     if (confirmationEmail.userId === env.ARCHIVE_USER_ID) {
-        return invalidReqestResponseData("Cannot delete the archive user, set a different archiver account to delete this one.");
+        return invalidRequestResponseData("Cannot delete the archive user, set a different archiver account to delete this one.");
     }
 
     const user = await GetUser_ByIdOrUsername(undefined, confirmationEmail.userId);

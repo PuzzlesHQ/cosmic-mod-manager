@@ -15,7 +15,7 @@ import { GetProject_Details } from "~/db/project_item";
 import { GetManyUsers_ByIds } from "~/db/user_item";
 import prisma from "~/services/prisma";
 import type { ContextUserData } from "~/types";
-import { HTTP_STATUS, invalidReqestResponseData, unauthorizedReqResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData, unauthorizedReqResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 import { userFileUrl } from "~/utils/urls";
 
@@ -32,7 +32,7 @@ export async function GetThreadMessages(user: ContextUserData, threadId: string)
             },
         },
     });
-    if (!thread?.id) return invalidReqestResponseData("Invalid thread ID");
+    if (!thread?.id) return invalidRequestResponseData("Invalid thread ID");
 
     const hasThreadAccess = await canUserAccessThread(user, thread);
     if (!hasThreadAccess) return unauthorizedReqResponseData();
@@ -139,13 +139,13 @@ export async function CreateThreadMessage(
             id: threadId,
         },
     });
-    if (!thread?.id) return invalidReqestResponseData("Invalid thread ID");
+    if (!thread?.id) return invalidRequestResponseData("Invalid thread ID");
 
     const hasThreadAccess = await canUserAccessThread(user, thread);
     if (!hasThreadAccess) return unauthorizedReqResponseData();
 
     const threadOpen = await isThreadOpen(thread);
-    if (!threadOpen) return invalidReqestResponseData("This thread is closed.");
+    if (!threadOpen) return invalidRequestResponseData("This thread is closed.");
 
     const msg_body: ThreadMessage["body"] = { text: data.message };
     if (data.isPrivate) msg_body.isPrivate = true;
@@ -171,15 +171,15 @@ export async function CreateThreadMessage(
 }
 
 export async function DeleteThreadMessage(user: ContextUserData, messageId: string) {
-    if (!isModerator(user.role)) return invalidReqestResponseData("You can't delete the message!");
+    if (!isModerator(user.role)) return invalidRequestResponseData("You can't delete the message!");
 
     const message = await prisma.threadMessage.findUnique({
         where: {
             id: messageId,
         },
     });
-    if (!message?.id) return invalidReqestResponseData(`No message found with id: ${messageId}`);
-    if (message.type !== MessageType.TEXT) return invalidReqestResponseData();
+    if (!message?.id) return invalidRequestResponseData(`No message found with id: ${messageId}`);
+    if (message.type !== MessageType.TEXT) return invalidRequestResponseData();
     if (message.authorId !== user.id) return unauthorizedReqResponseData();
 
     const msg_data = {
