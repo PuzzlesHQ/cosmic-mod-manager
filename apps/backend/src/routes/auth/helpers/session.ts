@@ -1,4 +1,4 @@
-import { AUTHTOKEN_COOKIE_NAMESPACE, USER_SESSION_VALIDITY, USER_SESSION_VALIDITY_ms } from "@app/utils/constants";
+import { AUTHTOKEN_COOKIE_NAMESPACE, USER_SESSION_VALIDITY_ms, USER_SESSION_VALIDITY_s } from "@app/utils/constants";
 import { getSessionIp, getSessionMetadata } from "@app/utils/headers";
 import { type GlobalUserRole, UserSessionStates } from "@app/utils/types";
 import type { Prisma, Session, User } from "@prisma-client";
@@ -9,12 +9,11 @@ import {
     DeleteManySessions,
     DeleteSession,
     GetManySessions,
-    GetSession_First,
-    GetSession_Unique,
+    GetSession,
+    GetSession_ByTokenHash,
     UpdateSession,
 } from "~/db/session_item";
 import { GetUser_ByIdOrUsername } from "~/db/user_item";
-import { deleteSessionTokenAndIdCache, getSessionCacheFromToken, setSessionTokenCache } from "~/services/cache/session";
 import type { ContextUserData } from "~/types";
 import { sendNewSigninAlertEmail } from "~/utils/email";
 import env from "~/utils/env";
@@ -68,7 +67,7 @@ export async function createUserSession({ userId, providerName, ctx, isFirstSign
     if (isFirstSignIn) return sessionToken;
 
     const significantIp = (sessionMetadata.ipAddr || "")?.slice(0, 9);
-    const similarSession = await GetSession_First({
+    const similarSession = await GetSession({
         where: {
             userId: userId,
             ip: {
@@ -95,21 +94,11 @@ export async function createUserSession({ userId, providerName, ctx, isFirstSign
     return sessionToken;
 }
 
-export async function validateSessionToken(token: string): Promise<ContextUserData | null> {
+async function validateAuthToken(token: string): Promise<ContextUserData | null> {
     const tokenHash = await hashString(token);
-    if (tokenHash.length > 256) {
-        return null;
-    }
+    if (tokenHash.length > 256) return null;
 
-    // Check cache
-    const cachedSession = await getSessionCacheFromToken(tokenHash, true); // SESSION_CACHE : GET
-    if (cachedSession) return cachedSession;
-
-    const session = await GetSession_Unique({
-        where: {
-            tokenHash: tokenHash,
-        },
-    });
+    const session = await GetSession_ByTokenHash(tokenHash);
     if (!session) {
         // TODO: await addInvalidAuthAttempt(ctx);
         return null;
@@ -123,13 +112,7 @@ export async function validateSessionToken(token: string): Promise<ContextUserDa
     const timeToExpire = sessionExpiry - now;
 
     if (timeToExpire <= 0) {
-        await DeleteSession({
-            where: {
-                id: session.id,
-            },
-        });
-
-        await deleteSessionTokenAndIdCache([session.tokenHash], [session.id]); // SESSION_CACHE : DELETE
+        await DeleteSession({ where: { id: session.id } });
         return null;
     }
 
@@ -137,18 +120,14 @@ export async function validateSessionToken(token: string): Promise<ContextUserDa
         dateLastActive: new Date(),
     };
     // If the session is about to expire, extend the session
-    if (timeToExpire < USER_SESSION_VALIDITY_ms / 3) {
+    if (timeToExpire < USER_SESSION_VALIDITY_ms / 4) {
         sessionUpdateData.dateExpires = new Date(now + USER_SESSION_VALIDITY_ms);
     }
 
     await UpdateSession({
-        where: {
-            id: session.id,
-        },
+        where: { id: session.id },
         data: sessionUpdateData,
     });
-
-    await setSessionTokenCache(tokenHash, session.id, session.userId); // SESSION_CACHE : SET
 
     const sessionData: ContextUserData = {
         id: sessionUser.id,
@@ -172,45 +151,32 @@ export async function validateSessionToken(token: string): Promise<ContextUserDa
 }
 
 export async function validateContextSession(ctx: Context): Promise<ContextUserData | null> {
-    try {
-        // Get the current cookie data
-        const cookie = getUserSessionCookie(ctx);
-        if (!cookie) {
-            return null;
-        }
+    const cookie = getUserSessionCookie(ctx);
+    const authorizationHeader = ctx.req.header("Authorization");
 
-        // Get the current logged in user from the cookie data
-        const session = await validateSessionToken(cookie);
-        if (!session?.id) {
-            deleteSessionCookie(ctx);
-            return null;
-        }
+    if (authorizationHeader) {
+        return await validateAuthToken(authorizationHeader);
+    } else if (cookie) {
+        const sessionData = await validateAuthToken(cookie);
+        if (!sessionData) deleteSessionCookie(ctx);
 
-        return session;
-    } catch (error) {
-        deleteSessionCookie(ctx);
-        console.error(error);
+        return sessionData;
+    } else {
         return null;
     }
 }
 
-export async function invalidateSessionFromId(sessionId: string, userId?: string): Promise<Session> {
-    const deletedSession = await DeleteSession({
+export function invalidateSessionFromId(sessionId: string, userId?: string) {
+    return DeleteSession({
         where: userId ? { id: sessionId, userId: userId } : { id: sessionId },
     });
-
-    await deleteSessionTokenAndIdCache([deletedSession.tokenHash], [deletedSession.id]); // SESSION_CACHE : DELETE
-    return deletedSession;
 }
 
 export async function invalidateSessionFromToken(token: string): Promise<Session> {
     const tokenHash = await hashString(token);
-    const deletedSession = await DeleteSession({
+    return await DeleteSession({
         where: { tokenHash: tokenHash },
     });
-
-    await deleteSessionTokenAndIdCache([deletedSession.tokenHash], [deletedSession.id]); // SESSION_CACHE : DELETE
-    return deletedSession;
 }
 
 export async function invalidateAllUserSessions(userId: string) {
@@ -220,13 +186,14 @@ export async function invalidateAllUserSessions(userId: string) {
 
     const tokenHashes = sessionsList.map((session) => session.tokenHash);
     const sessionIds = sessionsList.map((session) => session.id);
-    await DeleteManySessions({
-        where: {
-            id: { in: sessionIds },
+    await DeleteManySessions(
+        {
+            where: {
+                id: { in: sessionIds },
+            },
         },
-    });
-
-    await deleteSessionTokenAndIdCache(tokenHashes, sessionIds); // SESSION_CACHE : DELETE
+        tokenHashes,
+    );
 }
 
 export async function invalidateAllOtherUserSessions(userId: string, currSessionId: string) {
@@ -241,13 +208,14 @@ export async function invalidateAllOtherUserSessions(userId: string, currSession
 
     const tokenHashes = sessionsList.map((session) => session.tokenHash);
     const sessionIds = sessionsList.map((session) => session.id);
-    await DeleteManySessions({
-        where: {
-            id: { in: sessionIds },
+    await DeleteManySessions(
+        {
+            where: {
+                id: { in: sessionIds },
+            },
         },
-    });
-
-    await deleteSessionTokenAndIdCache(tokenHashes, sessionIds); // SESSION_CACHE : DELETE
+        tokenHashes,
+    );
 }
 
 // Cookie things
@@ -255,7 +223,7 @@ export function setSessionCookie(ctx: Context, value: string, options?: CookieOp
     return setCookie(ctx, AUTHTOKEN_COOKIE_NAMESPACE, value, {
         httpOnly: true,
         secure: true,
-        maxAge: USER_SESSION_VALIDITY,
+        maxAge: USER_SESSION_VALIDITY_s,
         ...options,
     });
 }
