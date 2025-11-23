@@ -3,7 +3,7 @@ import { VERSION_SELECT } from "~/db/version_item";
 import { getFilesFromId } from "~/routes/project/queries/file";
 import { formatVersionData } from "~/routes/project/version/controllers/utils";
 import prisma from "~/services/prisma";
-import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData } from "~/utils/http";
 
 export async function getVersionsData(ids: string[]) {
     const emptyRes = { data: [], status: HTTP_STATUS.OK };
@@ -40,7 +40,7 @@ export async function getVersionsData(ids: string[]) {
 }
 
 export async function getVersionById(id: string) {
-    if (!id) return invalidReqestResponseData("No version id provided!");
+    if (!id) return invalidRequestResponseData("No version id provided!");
 
     const version = await getVersionsData([id]);
     if (!version.data.length) return notFoundResponseData("Version not found");

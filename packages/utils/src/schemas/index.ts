@@ -4,8 +4,6 @@ import { getFileType } from "~/convertors";
 import { fileMaxSize_ErrMsg, validImgFileExtensions } from "./utils";
 import { isImageFile } from "./validation";
 
-export { z };
-
 export const iconFieldSchema = z
     .file()
     .max(MAX_ICON_SIZE, fileMaxSize_ErrMsg(MAX_ICON_SIZE))
@@ -18,3 +16,5 @@ export const iconFieldSchema = z
         },
         { error: `Invalid file type! Allowed files: ${validImgFileExtensions.join(", ")}` },
     );
+
+export { z };

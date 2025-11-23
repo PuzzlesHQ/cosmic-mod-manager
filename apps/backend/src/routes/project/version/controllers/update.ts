@@ -20,7 +20,7 @@ import {
 import prisma from "~/services/prisma";
 import { deleteProjectVersionDirectory } from "~/services/storage";
 import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
-import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData } from "~/utils/http";
 import { createVersionDependencies, deleteExcessDevReleases } from "./new-version";
 
 export async function updateVersionData(
@@ -68,7 +68,7 @@ export async function updateVersionData(
     const allowedLoaders = getLoadersByProjectType(project.type as ProjectType[]).map((loader) => loader.name);
     for (const loader of formData.loaders || []) {
         if (!allowedLoaders.includes(loader)) {
-            return invalidReqestResponseData(`Loader ${loader} not supported by current project type.`);
+            return invalidRequestResponseData(`Loader ${loader} not supported by current project type.`);
         }
     }
 
@@ -117,7 +117,7 @@ export async function updateVersionData(
         });
 
         if (isDuplicate === true) {
-            return invalidReqestResponseData("Duplicate files are not allowed");
+            return invalidRequestResponseData("Duplicate files are not allowed");
         }
 
         // Save the new files

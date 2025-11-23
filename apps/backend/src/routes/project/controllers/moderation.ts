@@ -10,15 +10,15 @@ import { Log, Log_SubType } from "~/middleware/logger";
 import { createNotification } from "~/routes/user/notification/controllers/helpers";
 import prisma from "~/services/prisma";
 import type { ContextUserData } from "~/types";
-import { HTTP_STATUS, invalidReqestResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 
 export async function QueueProjectForApproval(projectId: string, userSession: ContextUserData) {
     const project = await GetProject_Details(projectId);
-    if (!project?.id) return invalidReqestResponseData("Project not found");
+    if (!project?.id) return invalidRequestResponseData("Project not found");
 
     const projectOwner = getCurrMember(userSession.id, project.team.members, project.organisation?.team?.members || []);
-    if (!projectOwner?.isOwner) return invalidReqestResponseData("Only the owner can submit the project for review!");
+    if (!projectOwner?.isOwner) return invalidRequestResponseData("Only the owner can submit the project for review!");
 
     const currDate = new Date();
 
@@ -27,7 +27,7 @@ export async function QueueProjectForApproval(projectId: string, userSession: Co
         const queuedOn = DateFromStr(project.dateQueued)?.getTime() || 0;
         const timeRemaining = 10800000 - (currDate.getTime() - queuedOn);
         if (timeRemaining > 0) {
-            return invalidReqestResponseData(
+            return invalidRequestResponseData(
                 `Please wait for ${Math.round(timeRemaining / 60_000)} minutes before trying to resubmit again!`,
             );
         }
@@ -37,16 +37,16 @@ export async function QueueProjectForApproval(projectId: string, userSession: Co
         project.status !== ProjectPublishingStatus.DRAFT &&
         !RejectedStatuses.includes(project.status as ProjectPublishingStatus)
     ) {
-        return invalidReqestResponseData("You cannot request for approval in project's current state!");
+        return invalidRequestResponseData("You cannot request for approval in project's current state!");
     }
 
     // Check if the project is eligible to be queued for approval
     // If project doesn't have any supported game versions, that means it hasn't uploaded any versions yet
     if (project.gameVersions.length <= 0)
-        return invalidReqestResponseData("Project submitted for approval without any initial versions!");
-    if (!project.description?.length) return invalidReqestResponseData("Project submitted for approval without a description!");
+        return invalidRequestResponseData("Project submitted for approval without any initial versions!");
+    if (!project.description?.length) return invalidRequestResponseData("Project submitted for approval without a description!");
     if (!project.licenseId && !project.licenseName)
-        return invalidReqestResponseData("Project submitted for approval without a license!");
+        return invalidRequestResponseData("Project submitted for approval without a license!");
 
     const newStatus = ProjectPublishingStatus.PROCESSING;
 

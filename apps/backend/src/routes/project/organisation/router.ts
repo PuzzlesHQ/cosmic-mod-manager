@@ -9,7 +9,7 @@ import { strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { critModifyReqRateLimiter } from "~/middleware/rate-limit/modify-req";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
-import { invalidReqestResponse, serverErrorResponse, unauthorizedReqResponse } from "~/utils/http";
+import { invalidRequestResponse, serverErrorResponse, unauthorizedReqResponse } from "~/utils/http";
 import { getUserFromCtx } from "~/utils/router";
 import { createOrganisation, getOrganisationById, getOrganisationProjects, getUserOrganisations } from "./controllers";
 import {
@@ -43,7 +43,7 @@ async function userOrganisations_get(ctx: Context) {
         const userSession = getUserFromCtx(ctx);
         const userId = ctx.req.param("userId") || userSession?.id;
         if (!userId) {
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const res = await getUserOrganisations(userSession, userId);
@@ -63,7 +63,7 @@ async function organisation_post(ctx: Context) {
 
         const body = ctx.get(REQ_BODY_NAMESPACE);
         const { data, error } = await zodParse(createOrganisationFormSchema, body);
-        if (!data || error) return invalidReqestResponse(ctx, error);
+        if (!data || error) return invalidRequestResponse(ctx, error);
 
         const res = await createOrganisation(userSession, data);
         return ctx.json(res.data, res.status);
@@ -78,7 +78,7 @@ async function organisation_get(ctx: Context) {
         const orgId = ctx.req.param("orgId");
         const userSession = getUserFromCtx(ctx);
         if (!orgId) {
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const res = await getOrganisationById(userSession, orgId);
@@ -94,7 +94,7 @@ async function organisation_delete(ctx: Context) {
         const orgId = ctx.req.param("orgId");
         const userSession = getUserFromCtx(ctx);
         if (!orgId || !userSession) {
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const res = await deleteOrg(ctx, userSession, orgId);
@@ -110,7 +110,7 @@ async function organisation_patch(ctx: Context) {
         const orgId = ctx.req.param("orgId");
         const userSession = getUserFromCtx(ctx);
         if (!orgId || !userSession) {
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const formData = ctx.get(REQ_BODY_NAMESPACE);
@@ -122,7 +122,7 @@ async function organisation_patch(ctx: Context) {
         } satisfies z.infer<typeof orgSettingsFormSchema>;
 
         const { data, error } = await zodParse(orgSettingsFormSchema, obj);
-        if (error || !data) return invalidReqestResponse(ctx, error);
+        if (error || !data) return invalidRequestResponse(ctx, error);
 
         const res = await updateOrg(ctx, userSession, orgId, data);
         return ctx.json(res.data, res.status);
@@ -138,7 +138,7 @@ async function organisationProjects_get(ctx: Context) {
         const orgId = ctx.req.param("orgId");
         const userSession = getUserFromCtx(ctx);
         if (!orgId) {
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const res = await getOrganisationProjects(userSession, orgId, listedOnly);
@@ -157,10 +157,10 @@ async function organisationIcon_patch(ctx: Context) {
         const formData = ctx.get(REQ_BODY_NAMESPACE);
         const icon = formData.get("icon");
 
-        if (!userSession || !orgId || !icon || !(icon instanceof File)) return invalidReqestResponse(ctx, "Invalid data");
+        if (!userSession || !orgId || !icon || !(icon instanceof File)) return invalidRequestResponse(ctx, "Invalid data");
 
         const { data, error } = await zodParse(iconFieldSchema, icon);
-        if (error || !data) return invalidReqestResponse(ctx, error);
+        if (error || !data) return invalidRequestResponse(ctx, error);
 
         const res = await updateOrgIcon(ctx, userSession, orgId, data);
         return ctx.json(res.data, res.status);
@@ -175,7 +175,7 @@ async function organisationIcon_delete(ctx: Context) {
         const userSession = getUserFromCtx(ctx);
         const orgId = ctx.req.param("orgId");
 
-        if (!userSession || !orgId) return invalidReqestResponse(ctx, "Invalid data");
+        if (!userSession || !orgId) return invalidRequestResponse(ctx, "Invalid data");
         const res = await deleteOrgIcon(ctx, userSession, orgId);
         return ctx.json(res.data, res.status);
     } catch (error) {
@@ -189,12 +189,12 @@ async function organisationProjects_post(ctx: Context) {
         const orgId = ctx.req.param("orgId");
         const userSession = getUserFromCtx(ctx);
         if (!orgId || !userSession) {
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const projectId = ctx.get(REQ_BODY_NAMESPACE)?.projectId;
         if (!projectId || typeof projectId !== "string") {
-            return invalidReqestResponse(ctx, "Invalid data");
+            return invalidRequestResponse(ctx, "Invalid data");
         }
 
         const res = await addProjectToOrganisation(userSession, orgId, projectId);
@@ -212,7 +212,7 @@ async function organisationProjects_delete(ctx: Context) {
         const userSession = getUserFromCtx(ctx);
 
         if (!orgId || !projectId || !userSession) {
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const res = await removeProjectFromOrg(ctx, userSession, orgId, projectId);

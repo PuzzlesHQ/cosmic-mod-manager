@@ -7,7 +7,7 @@ import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-atte
 import { getAuthProviderProfileData } from "~/routes/auth/helpers";
 import { createUserSession, setSessionCookie } from "~/routes/auth/helpers/session";
 import prisma from "~/services/prisma";
-import { HTTP_STATUS, invalidReqestResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData } from "~/utils/http";
 
 export async function oAuthSignInHandler(ctx: Context, authProvider: string, tokenExchangeCode: string) {
     const { data: oAuthData, error } = await zodParse(
@@ -48,11 +48,11 @@ export async function oAuthSignInHandler(ctx: Context, authProvider: string, tok
         });
 
         if (!otherProviderAccount?.id) {
-            return invalidReqestResponseData("The provider you're trying to sign in with is not linked to any crmm account!");
+            return invalidRequestResponseData("The provider you're trying to sign in with is not linked to any crmm account!");
         }
 
         await addInvalidAuthAttempt(ctx);
-        return invalidReqestResponseData(
+        return invalidRequestResponseData(
             `This ${Capitalize(oAuthData.providerName)} account is not linked to your ${SITE_NAME_SHORT} user account. We found a ${CapitalizeAndFormatString(otherProviderAccount.providerName)} account linked to your user account, please sign in using that.\nNOTE: You can manage linked providers in account settings.`,
         );
     }

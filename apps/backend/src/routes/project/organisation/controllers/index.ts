@@ -6,7 +6,7 @@ import type { z } from "zod/v4";
 import { CreateOrganization, GetManyOrganizations_ById, GetOrganization_Data } from "~/db/organization_item";
 import { Get_UserOrganizations, GetUser_ByIdOrUsername } from "~/db/user_item";
 import type { ContextUserData } from "~/types";
-import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 import { orgIconUrl, userFileUrl } from "~/utils/urls";
 import { getManyProjects } from "../../controllers";
@@ -93,7 +93,7 @@ export async function getUserOrganisations(userSession: ContextUserData | null, 
 export async function createOrganisation(userSession: ContextUserData, formData: z.infer<typeof createOrganisationFormSchema>) {
     const existingOrgWithSameSlug = await GetOrganization_Data(formData.slug, formData.slug);
     if (existingOrgWithSameSlug) {
-        return invalidReqestResponseData("Organisation with the same slug already exists");
+        return invalidRequestResponseData("Organisation with the same slug already exists");
     }
 
     const newOrganisation = await CreateOrganization(

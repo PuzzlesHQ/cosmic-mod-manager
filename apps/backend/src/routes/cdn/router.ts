@@ -7,7 +7,7 @@ import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-
 import { getSitemap } from "~/services/sitemap-gen";
 import { getCollectionFile, getOrgFile, getProjectFile, getProjectGalleryFile, getUserFile } from "~/services/storage";
 import env from "~/utils/env";
-import { invalidReqestResponse, notFoundResponse, serverErrorResponse } from "~/utils/http";
+import { invalidRequestResponse, notFoundResponse, serverErrorResponse } from "~/utils/http";
 import { getUserFromCtx } from "~/utils/router";
 import { collectionIconUrl, orgIconUrl, projectGalleryFileUrl, projectIconUrl, userFileUrl } from "~/utils/urls";
 import { serveImageFile, serveVersionFile } from "./controller";
@@ -41,7 +41,7 @@ async function projectFile_get(ctx: Context) {
     try {
         const projectId = ctx.req.param("projectId");
         const fileId = ctx.req.param("file");
-        if (!projectId) return invalidReqestResponse(ctx);
+        if (!projectId) return invalidRequestResponse(ctx);
 
         return await serveImageFile({
             ctx: ctx,
@@ -62,7 +62,7 @@ async function galleryImage_get(ctx: Context) {
         const projectId = ctx.req.param("projectId");
         const fileId = ctx.req.param("file");
         if (!projectId || !fileId) {
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         return await serveImageFile({
@@ -84,10 +84,10 @@ async function versionFile_get(ctx: Context) {
     try {
         const userSession = getUserFromCtx(ctx);
         const { projectId, versionId, fileName } = ctx.req.param();
-        if (!projectId || !versionId || !fileName) return invalidReqestResponse(ctx);
+        if (!projectId || !versionId || !fileName) return invalidRequestResponse(ctx);
 
         const userAgent = ctx.req.header("User-Agent");
-        if (!userAgent) return invalidReqestResponse(ctx, "User-Agent header is missing");
+        if (!userAgent) return invalidRequestResponse(ctx, "User-Agent header is missing");
         const isABot = isbot(userAgent);
         let isExplicitlyAllowed = false;
 
@@ -99,7 +99,7 @@ async function versionFile_get(ctx: Context) {
         }
 
         if (isABot && !isExplicitlyAllowed) {
-            return invalidReqestResponse(ctx, `Error: Possibly bot activity;\nUser-Agent: '${userAgent};`);
+            return invalidRequestResponse(ctx, `Error: Possibly bot activity;\nUser-Agent: '${userAgent};`);
         }
 
         return await serveVersionFile(ctx, projectId, versionId, fileName, userSession, IsCdnRequest(ctx));
@@ -113,7 +113,7 @@ async function orgFile_get(ctx: Context) {
     try {
         const orgId = ctx.req.param("orgId");
         const fileId = ctx.req.param("file");
-        if (!orgId || !fileId) return invalidReqestResponse(ctx);
+        if (!orgId || !fileId) return invalidRequestResponse(ctx);
 
         return await serveImageFile({
             ctx: ctx,
@@ -133,7 +133,7 @@ async function userFile_get(ctx: Context) {
     try {
         const userId = ctx.req.param("userId");
         const fileId = ctx.req.param("file");
-        if (!userId || !fileId) return invalidReqestResponse(ctx);
+        if (!userId || !fileId) return invalidRequestResponse(ctx);
 
         return await serveImageFile({
             ctx: ctx,
@@ -153,7 +153,7 @@ async function collectionIcon_get(ctx: Context) {
     try {
         const collectionId = ctx.req.param("collectionId");
         const iconId = ctx.req.param("file");
-        if (!collectionId || !iconId) return invalidReqestResponse(ctx);
+        if (!collectionId || !iconId) return invalidRequestResponse(ctx);
 
         return await serveImageFile({
             ctx: ctx,
@@ -172,10 +172,10 @@ async function collectionIcon_get(ctx: Context) {
 async function sitemap_get(ctx: Context) {
     try {
         const name = ctx.req.param("name");
-        if (!name) return invalidReqestResponse(ctx);
+        if (!name) return invalidRequestResponse(ctx);
 
         const sitemap = await getSitemap(name);
-        if (!sitemap) return invalidReqestResponse(ctx);
+        if (!sitemap) return invalidRequestResponse(ctx);
         if (!(await sitemap.exists())) return notFoundResponse(ctx, "Sitemap not found");
 
         return new Response(sitemap, {

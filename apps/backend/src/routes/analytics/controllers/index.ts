@@ -7,7 +7,7 @@ import { GetManyProjects_ListItem } from "~/db/project_item";
 import clickhouse, { ANALYTICS_DB } from "~/services/clickhouse";
 import type { Analytics_ProjectDownloads } from "~/services/clickhouse/types";
 import type { ContextUserData } from "~/types";
-import { HTTP_STATUS, invalidReqestResponseData, unauthorizedReqResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData, unauthorizedReqResponseData } from "~/utils/http";
 
 interface getAnalyticsDataProps {
     // Either startDate and endDate or timeline must be provided
@@ -27,12 +27,12 @@ export async function getDownloadsAnalyticsData(user: ContextUserData, props: ge
     } else if (props.timeline) {
         [startDate, endDate] = getTimeRange(props.timeline);
     } else {
-        return invalidReqestResponseData("Either startDate and endDate (YYYY-MM-DD) or timeline query param must be provided");
+        return invalidRequestResponseData("Either startDate and endDate (YYYY-MM-DD) or timeline query param must be provided");
     }
 
     const projectData = await GetManyProjects_ListItem(props.projectIds);
     if (!projectData?.length) {
-        return invalidReqestResponseData("No projects found");
+        return invalidRequestResponseData("No projects found");
     }
 
     const permitted_ProjectIds: string[] = [];
@@ -106,7 +106,7 @@ export async function getAllProjects_DownloadsAnalyticsData(user: ContextUserDat
     } else if (props.timeline) {
         [startDate, endDate] = getTimeRange(props.timeline);
     } else {
-        return invalidReqestResponseData("Either startDate and endDate (YYYY-MM-DD) or timeline query param must be provided");
+        return invalidRequestResponseData("Either startDate and endDate (YYYY-MM-DD) or timeline query param must be provided");
     }
 
     const startDate_String = ISO_DateStr(startDate);

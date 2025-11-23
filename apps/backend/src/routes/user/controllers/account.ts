@@ -20,7 +20,7 @@ import prisma from "~/services/prisma";
 import type { ContextUserData } from "~/types";
 import { isConfirmationCodeValid } from "~/utils";
 import { sendChangePasswordEmail, sendConfirmNewPasswordEmail, sendDeleteUserAccountEmail } from "~/utils/email";
-import { HTTP_STATUS, invalidReqestResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 
 const confirmationEmailValidityDict = {
@@ -36,7 +36,7 @@ export async function addNewPassword_ConfirmationEmail(
     if (formData.newPassword !== formData.confirmNewPassword)
         return { data: { success: false, message: "Passwords do not match" }, status: HTTP_STATUS.BAD_REQUEST };
 
-    if (userSession.password) return invalidReqestResponseData();
+    if (userSession.password) return invalidRequestResponseData();
 
     const hashedPassword = await hashPassword(formData.newPassword);
     const token = generateRandomToken();
@@ -73,10 +73,10 @@ export async function getConfirmActionTypeFromCode(token: string) {
     });
 
     const actionType = getConfirmActionTypeFromStringName(confirmationEmail?.confirmationType || "");
-    if (!confirmationEmail || !actionType) return invalidReqestResponseData("Invalid or expired code");
+    if (!confirmationEmail || !actionType) return invalidRequestResponseData("Invalid or expired code");
 
     if (!isConfirmationCodeValid(confirmationEmail.dateCreated, confirmationEmailValidityDict[actionType]))
-        return invalidReqestResponseData("Invalid or expired code");
+        return invalidRequestResponseData("Invalid or expired code");
 
     return { data: { actionType: actionType, success: true }, status: HTTP_STATUS.OK };
 }
@@ -87,7 +87,7 @@ export async function deleteConfirmationActionCode(token: string) {
         where: { accessCode: tokenHash },
     });
 
-    if (!confirmationEmail?.id) return invalidReqestResponseData("Invalid or expired code");
+    if (!confirmationEmail?.id) return invalidRequestResponseData("Invalid or expired code");
 
     await prisma.userConfirmation.deleteMany({
         where: {
@@ -116,11 +116,11 @@ export async function confirmAddingNewPassword(code: string) {
             },
         },
     });
-    if (!confirmationEmail) return invalidReqestResponseData("Invalid or expired code");
+    if (!confirmationEmail) return invalidRequestResponseData("Invalid or expired code");
 
     if (!isConfirmationCodeValid(confirmationEmail.dateCreated, CONFIRM_NEW_PASSWORD_EMAIL_VALIDITY_ms))
-        return invalidReqestResponseData("Invalid or expired code");
-    if (confirmationEmail.user.password) return invalidReqestResponseData("A password already exists for your account");
+        return invalidRequestResponseData("Invalid or expired code");
+    if (confirmationEmail.user.password) return invalidRequestResponseData("A password already exists for your account");
 
     await UpdateUser({
         where: {
@@ -150,13 +150,13 @@ export async function removeAccountPassword(
 ) {
     if (!userSession.password) {
         await addInvalidAuthAttempt(ctx);
-        return invalidReqestResponseData();
+        return invalidRequestResponseData();
     }
 
     const isCorrectPassword = await matchPassword(formData.password, userSession.password);
     if (!isCorrectPassword) {
         await addInvalidAuthAttempt(ctx);
-        return invalidReqestResponseData("Incorrect password");
+        return invalidRequestResponseData("Incorrect password");
     }
 
     await UpdateUser({
@@ -225,7 +225,7 @@ export async function changeUserPassword(
     formData: z.infer<typeof setNewPasswordFormSchema>,
     userSession: ContextUserData | null,
 ) {
-    if (formData.newPassword !== formData.confirmNewPassword) return invalidReqestResponseData("Passwords do not match");
+    if (formData.newPassword !== formData.confirmNewPassword) return invalidRequestResponseData("Passwords do not match");
 
     const tokenHash = await hashString(token);
     const confirmationEmail = await prisma.userConfirmation.findUnique({
@@ -237,14 +237,14 @@ export async function changeUserPassword(
 
     if (!confirmationEmail?.id) {
         await addInvalidAuthAttempt(ctx);
-        return invalidReqestResponseData();
+        return invalidRequestResponseData();
     }
 
     if (
         !confirmationEmail?.userId ||
         !isConfirmationCodeValid(confirmationEmail.dateCreated, CHANGE_ACCOUNT_PASSWORD_EMAIL_VALIDITY_ms)
     ) {
-        return invalidReqestResponseData();
+        return invalidRequestResponseData();
     }
     const hashedPassword = await hashPassword(formData.newPassword);
 

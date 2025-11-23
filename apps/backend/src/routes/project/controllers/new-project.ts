@@ -9,17 +9,17 @@ import { CreateProject, GetProject_ListItem } from "~/db/project_item";
 import { CreateTeamMember } from "~/db/team-member_item";
 import prisma from "~/services/prisma";
 import type { ContextUserData } from "~/types";
-import { HTTP_STATUS, invalidReqestResponseData, unauthorizedReqResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData, unauthorizedReqResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 
 export async function createNewProject(userSession: ContextUserData, formData: z.infer<typeof newProjectFormSchema>) {
     const existingProjectWithSameUrl = await GetProject_ListItem(formData.slug, formData.slug);
-    if (existingProjectWithSameUrl?.id) return invalidReqestResponseData("Url slug already taken");
+    if (existingProjectWithSameUrl?.id) return invalidRequestResponseData("Url slug already taken");
 
     let orgId: string | null = null;
     if (formData.orgId) {
         const org = await GetOrganization_Data(formData.orgId);
-        if (!org) return invalidReqestResponseData("Organisation not found");
+        if (!org) return invalidRequestResponseData("Organisation not found");
         orgId = org.id;
 
         const currMember = org.team.members.find((member) => member.userId === userSession.id);

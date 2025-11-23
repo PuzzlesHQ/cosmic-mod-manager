@@ -6,7 +6,7 @@ import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth
 import { applyCacheHeaders } from "~/middleware/cache";
 import { strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
-import { invalidReqestResponse, serverErrorResponse, unauthorizedReqResponse } from "~/utils/http";
+import { invalidRequestResponse, serverErrorResponse, unauthorizedReqResponse } from "~/utils/http";
 import { getUserFromCtx } from "~/utils/router";
 import { getAllProjects_DownloadsAnalyticsData, getDownloadsAnalyticsData } from "./controllers";
 
@@ -35,9 +35,9 @@ async function downloadsAnalytics_get(ctx: Context) {
         const timeline_query = ctx.req.query("timeline");
         const projectIds_query = ctx.req.query("projectIds");
 
-        if (!projectIds_query) return invalidReqestResponse(ctx, "projectIds query param is required");
+        if (!projectIds_query) return invalidRequestResponse(ctx, "projectIds query param is required");
         if (!timeline_query && (!startDate_query || !endDate_query))
-            return invalidReqestResponse(
+            return invalidRequestResponse(
                 ctx,
                 "Either startDate and endDate (YYYY-MM-DD) or timeline query param must be provided",
             );
@@ -50,7 +50,7 @@ async function downloadsAnalytics_get(ctx: Context) {
             if (Object.values(TimelineOptions).includes(timeline_query as TimelineOptions)) {
                 timeline = timeline_query as TimelineOptions;
             } else {
-                return invalidReqestResponse(ctx, "timeline query param is not valid");
+                return invalidRequestResponse(ctx, "timeline query param is not valid");
             }
         }
 
@@ -78,7 +78,7 @@ async function allProjectsDownloadsAnalytics_get(ctx: Context) {
         const timeline_query = ctx.req.query("timeline");
 
         if (!timeline_query && (!startDate_query || !endDate_query))
-            return invalidReqestResponse(
+            return invalidRequestResponse(
                 ctx,
                 "Either startDate and endDate (YYYY-MM-DD) or timeline query param must be provided",
             );
@@ -90,7 +90,7 @@ async function allProjectsDownloadsAnalytics_get(ctx: Context) {
             if (Object.values(TimelineOptions).includes(timeline_query as TimelineOptions)) {
                 timeline = timeline_query as TimelineOptions;
             } else {
-                return invalidReqestResponse(ctx, "timeline query param is not valid");
+                return invalidRequestResponse(ctx, "timeline query param is not valid");
             }
         }
 

@@ -10,7 +10,7 @@ import {
     getUserNotifications,
     markNotificationAsRead as markNotificationsAsRead,
 } from "~/routes/user/notification/controllers";
-import { invalidReqestResponse, serverErrorResponse } from "~/utils/http";
+import { invalidRequestResponse, serverErrorResponse } from "~/utils/http";
 import { getUserFromCtx } from "~/utils/router";
 
 const notificationRouter = new Hono()
@@ -30,7 +30,7 @@ async function userNotifications_get(ctx: Context) {
         const userSession = getUserFromCtx(ctx);
         const userSlug = ctx.req.param("userId") || userSession?.id;
         if (!userSession || !userSlug) {
-            return invalidReqestResponse(ctx, "User session not found");
+            return invalidRequestResponse(ctx, "User session not found");
         }
 
         const res = await getUserNotifications(ctx, userSession, userSlug);
@@ -47,7 +47,7 @@ async function notification_get(ctx: Context) {
         const userSession = getUserFromCtx(ctx);
 
         if (!userSession || !notifId) {
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const res = await getNotificationById(ctx, userSession, notifId);
@@ -65,7 +65,7 @@ async function notification_patch(ctx: Context) {
         const notificationId = ctx.req.param("notifId");
 
         if (!userSession || !userSlug || !notificationId) {
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const res = await markNotificationsAsRead(ctx, userSession, [notificationId], userSlug);
@@ -83,7 +83,7 @@ async function bulkNotifications_patch(ctx: Context) {
         const notificationIds = decodeStringArray(ctx.req.query("ids"));
 
         if (!userSession || !userSlug || !notificationIds.length) {
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const res = await markNotificationsAsRead(ctx, userSession, notificationIds, userSlug);
@@ -101,7 +101,7 @@ async function notification_delete(ctx: Context) {
         const notifId = ctx.req.param("notifId");
 
         if (!userSession || !userSlug || !notifId) {
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const res = await deleteNotifications(ctx, userSession, userSlug, [notifId]);
@@ -119,7 +119,7 @@ async function bulkNotifications_delete(ctx: Context) {
         const notificationIds = decodeStringArray(ctx.req.query("ids"));
 
         if (!userSession || !userSlug || !notificationIds.length) {
-            return invalidReqestResponse(ctx);
+            return invalidRequestResponse(ctx);
         }
 
         const res = await deleteNotifications(ctx, userSession, userSlug, notificationIds);

@@ -7,7 +7,7 @@ import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
-import { invalidReqestResponse, serverErrorResponse, unauthorizedReqResponse } from "~/utils/http";
+import { invalidRequestResponse, serverErrorResponse, unauthorizedReqResponse } from "~/utils/http";
 import { getUserFromCtx } from "~/utils/router";
 import { createReport, getExistingReport, getAllUserReports as getManyReports, getReportData, patchReport } from "./controllers";
 
@@ -29,7 +29,7 @@ async function report_post(ctx: Context) {
 
         const { error, data } = await zodParse(newReportFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) {
-            return invalidReqestResponse(ctx, error);
+            return invalidRequestResponse(ctx, error);
         }
 
         const res = await createReport(data, user);
@@ -92,7 +92,7 @@ async function existingReport_get(ctx: Context) {
         const reqUrl = new URL(ctx.req.url);
         const itemType = reqUrl.searchParams.get("itemType");
         const itemId = reqUrl.searchParams.get("itemId");
-        if (!itemType || !itemId) return invalidReqestResponse(ctx, "Item type and item ID are required.");
+        if (!itemType || !itemId) return invalidRequestResponse(ctx, "Item type and item ID are required.");
 
         const user = getUserFromCtx(ctx);
         if (!user?.id) return unauthorizedReqResponse(ctx);
@@ -108,7 +108,7 @@ async function existingReport_get(ctx: Context) {
 async function report_get(ctx: Context) {
     try {
         const reportId = ctx.req.param("reportId");
-        if (!reportId) return invalidReqestResponse(ctx, "Report ID is required.");
+        if (!reportId) return invalidRequestResponse(ctx, "Report ID is required.");
 
         const user = getUserFromCtx(ctx);
         if (!user?.id) return unauthorizedReqResponse(ctx);
@@ -124,7 +124,7 @@ async function report_get(ctx: Context) {
 async function report_patch(ctx: Context) {
     try {
         const reportId = ctx.req.param("reportId");
-        if (!reportId) return invalidReqestResponse(ctx, "Report ID is required.");
+        if (!reportId) return invalidRequestResponse(ctx, "Report ID is required.");
 
         const user = getUserFromCtx(ctx);
         if (!user?.id) return unauthorizedReqResponse(ctx);

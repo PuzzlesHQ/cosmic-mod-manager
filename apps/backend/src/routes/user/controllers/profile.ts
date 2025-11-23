@@ -12,7 +12,7 @@ import { getManyProjects } from "~/routes/project/controllers";
 import { UpdateProjects_SearchIndex } from "~/routes/search/search-db";
 import { deleteUserFile, saveUserFile } from "~/services/storage";
 import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
-import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
 import { resizeImageToWebp } from "~/utils/images";
 import { generateDbId } from "~/utils/str";
 import { userFileUrl } from "~/utils/urls";
@@ -92,7 +92,7 @@ export async function updateUserProfile(userSession: ContextUserData, profileDat
 
     if (profileData.profilePageBg instanceof File) {
         const fileType = await getFileType(profileData.profilePageBg);
-        if (!fileType) return invalidReqestResponseData("Couldn't determine the file type of profilePageBg");
+        if (!fileType) return invalidRequestResponseData("Couldn't determine the file type of profilePageBg");
 
         const bgImgFileId = `${generateDbId()}.${fileType}`;
         const saveUrl = await saveUserFile(FILE_STORAGE_SERVICE.LOCAL, user.id, profileData.profilePageBg, bgImgFileId);

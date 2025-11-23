@@ -2,31 +2,25 @@ import { cacheKey } from "~/services/cache/utils";
 import valkey from "~/services/redis";
 import { parseJson } from "~/utils/str";
 
-// const TIME_1HR = 3600;
 // const TIME_3HR = 10800;
 // const TIME_6HR = 21600;
 const TIME_12HR = 43200; // seconds
 
-// User
 export const USER_DATA_CACHE_EXPIRY_seconds = TIME_12HR;
+export const PAT_CACHE_EXPIRY_seconds = 600; // 10 minutes; short expiry for security reasons
+export const USER_SESSION_CACHE_EXPIRY_seconds = 600;
 
-// Project
 export const PROJECT_CACHE_EXPIRY_seconds = TIME_12HR;
 export const VERSION_CACHE_EXPIRY_seconds = TIME_12HR;
 
-// Organization
 export const ORGANIZATION_DATA_CACHE_EXPIRY_seconds = TIME_12HR;
 
-// Collection
 export const COLLECTION_CACHE_EXPIRY_seconds = TIME_12HR;
 
-// Team
 export const TEAM_DATA_CACHE_EXPIRY_seconds = TIME_12HR;
 
-// File
 export const FILE_ITEM_EXPIRY_seconds = TIME_12HR;
 
-// Statistics
 export const STATISTICS_CACHE_EXPIRY_seconds = TIME_12HR;
 
 export async function GetData_FromCache<T extends object | null>(NAMESPACE: string, key?: string): Promise<T | null> {
@@ -54,4 +48,8 @@ export async function GetRawData_FromCache(NAMESPACE: string, key?: string): Pro
 
 export async function SetCache(NAMESPACE: string, key: string, data: string, expiry_seconds: number) {
     await valkey.set(cacheKey(key, NAMESPACE), data, "EX", expiry_seconds);
+}
+
+export async function DeleteCache(...keys: string[]) {
+    await valkey.del(keys);
 }

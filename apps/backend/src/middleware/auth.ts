@@ -1,4 +1,4 @@
-import { GUEST_SESSION_ID_VALIDITY } from "@app/utils/constants";
+import { GUEST_SESSION_ID_VALIDITY_s } from "@app/utils/constants";
 import type { Context, Next } from "hono";
 import { getCookie } from "hono/cookie";
 import { getUserIpAddress } from "~/routes/auth/helpers";
@@ -19,7 +19,7 @@ export async function AuthenticationMiddleware(ctx: Context, next: Next) {
         // Set a guest session cookie
         if (!getCookie(ctx, "guest-session")) {
             const randomId = generateRandomId(32);
-            setCookie(ctx, "guest-session", randomId, { maxAge: GUEST_SESSION_ID_VALIDITY });
+            setCookie(ctx, "guest-session", randomId, { maxAge: GUEST_SESSION_ID_VALIDITY_s });
             ctx.set("guest-session", randomId);
         } else {
             ctx.set("guest-session", getCookie(ctx, "guest-session"));

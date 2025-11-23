@@ -7,13 +7,13 @@ import type { Context } from "hono";
 import type { z } from "zod/v4";
 import { GetOrganization_Data } from "~/db/organization_item";
 import { GetManyProjects_ListItem, GetProject_ListItem } from "~/db/project_item";
-import { GetTeam } from "~/db/team_item";
 import { CreateTeamMember, Delete_ManyTeamMembers, DeleteTeamMember, UpdateTeamMember } from "~/db/team-member_item";
+import { GetTeam } from "~/db/team_item";
 import { GetUser_ByIdOrUsername } from "~/db/user_item";
 import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { createNotification } from "~/routes/user/notification/controllers/helpers";
 import type { ContextUserData } from "~/types";
-import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 
 export async function inviteMember(ctx: Context, userSession: ContextUserData, userSlug: string, teamId: string) {
@@ -62,8 +62,8 @@ export async function inviteMember(ctx: Context, userSession: ContextUserData, u
     const existingMember = Team.members.find((member) => member.userId === targetUser.id);
     if (existingMember) {
         if (existingMember.accepted === false)
-            return invalidReqestResponseData(`"${targetUser.userName}" has already been invited to this team`);
-        return invalidReqestResponseData(`"${targetUser.userName}" is already a member of this team`);
+            return invalidRequestResponseData(`"${targetUser.userName}" has already been invited to this team`);
+        return invalidRequestResponseData(`"${targetUser.userName}" is already a member of this team`);
     }
 
     let isAlreadyProjectOrgMember = false;
@@ -72,7 +72,7 @@ export async function inviteMember(ctx: Context, userSession: ContextUserData, u
         isAlreadyProjectOrgMember = !!orgMembership?.id && orgMembership.accepted;
 
         if (orgMembership?.isOwner === true) {
-            return invalidReqestResponseData("You cannot override the permissions of organization's owner in a project team");
+            return invalidRequestResponseData("You cannot override the permissions of organization's owner in a project team");
         }
     }
 
@@ -130,7 +130,7 @@ export async function acceptProjectTeamInvite(ctx: Context, userSession: Context
     const TargetMember = Team.members.find((member) => member.userId === userSession.id && member.accepted === false);
     if (!TargetMember?.id || TargetMember.accepted) {
         await addInvalidAuthAttempt(ctx);
-        return invalidReqestResponseData();
+        return invalidRequestResponseData();
     }
 
     await UpdateTeamMember({
@@ -153,9 +153,9 @@ export async function leaveProjectTeam(ctx: Context, userSession: ContextUserDat
     const TargetMember = Team.members.find((member) => member.userId === userSession.id);
     if (!TargetMember?.id) {
         await addInvalidAuthAttempt(ctx);
-        return invalidReqestResponseData("You're not a member of this team");
+        return invalidRequestResponseData("You're not a member of this team");
     }
-    if (TargetMember.isOwner === true) return invalidReqestResponseData("You can't leave the team while you're the owner");
+    if (TargetMember.isOwner === true) return invalidRequestResponseData("You can't leave the team while you're the owner");
 
     // If this is a project team, the project is part of an organization and, the user is also part of the organization
     // Then the user shouldn't be allowed to leave the project team directly, this would cause the overriden permissions to reset to default
@@ -167,7 +167,7 @@ export async function leaveProjectTeam(ctx: Context, userSession: ContextUserDat
             (member) => member.userId === TargetMember.userId,
         );
         if (UserIsPartOf_TeamProjects_Org)
-            return invalidReqestResponseData(
+            return invalidRequestResponseData(
                 "You can't leave the project team directly, please leave the parent organization in order to be removed from this project team!",
             );
     }
@@ -282,7 +282,7 @@ export async function overrideOrgMember(
     if (!Team) return notFoundResponseData();
 
     const TeamProject = Team.project?.id ? await GetProject_ListItem(Team.project.id) : null;
-    if (!TeamProject?.id || !TeamProject.organisation?.id) return invalidReqestResponseData();
+    if (!TeamProject?.id || !TeamProject.organisation?.id) return invalidRequestResponseData();
 
     const currMember = getCurrMember(userSession.id, Team?.members || [], TeamProject?.organisation?.team.members || []);
     const canEditMembers = doesMemberHaveAccess(
@@ -302,11 +302,11 @@ export async function overrideOrgMember(
     // Check if the user is a member of the organisation
     const orgMember = TeamProject.organisation.team.members.find((member) => member.userId === formData.userId);
     if (!orgMember) return notFoundResponseData("User is not a part of this project's organisation");
-    if (!orgMember.accepted) return invalidReqestResponseData("User is still a pending member of the organization");
+    if (!orgMember.accepted) return invalidRequestResponseData("User is still a pending member of the organization");
 
     // Check if the user is already a member of the project team
     const existingMember = Team.members.find((member) => member.userId === formData.userId);
-    if (existingMember) return invalidReqestResponseData("User is already a member of this project's team");
+    if (existingMember) return invalidRequestResponseData("User is already a member of this project's team");
 
     const targetUser = await GetUser_ByIdOrUsername(undefined, formData.userId);
     if (!targetUser) return notFoundResponseData("User not found");
@@ -359,9 +359,9 @@ export async function removeProjectMember(ctx: Context, userSession: ContextUser
     const targetMember = Team.members.find((member) => member.id === targetMemberId);
     if (!targetMember) {
         await addInvalidAuthAttempt(ctx);
-        return invalidReqestResponseData("Member not found");
+        return invalidRequestResponseData("Member not found");
     }
-    if (targetMember.isOwner === true) return invalidReqestResponseData("You can't remove the owner of the team");
+    if (targetMember.isOwner === true) return invalidRequestResponseData("You can't remove the owner of the team");
 
     // Remove the member from the team
     await DeleteTeamMember({

@@ -7,7 +7,7 @@ import { ProjectPermission } from "@app/utils/types";
 import type { z } from "zod/v4";
 import { GetProject_ListItem, UpdateProject } from "~/db/project_item";
 import type { ContextUserData } from "~/types";
-import { HTTP_STATUS, invalidReqestResponseData, notFoundResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData } from "~/utils/http";
 
 export async function updateProjectTags(
     projectId: string,
@@ -104,7 +104,7 @@ export async function updateProjectLicense(
     }
 
     if (!formData.name && !formData.id) {
-        return invalidReqestResponseData("Either license name or a valid SPDX ID is required");
+        return invalidRequestResponseData("Either license name or a valid SPDX ID is required");
     }
 
     let validSpdxData: SPDX_LICENSE | null = null;
@@ -117,7 +117,7 @@ export async function updateProjectLicense(
 
     // If it's a custom license then the license url is required
     if (!validSpdxData && !formData.url) {
-        return invalidReqestResponseData("You must provide a url to your license when using a custom license!");
+        return invalidRequestResponseData("You must provide a url to your license when using a custom license!");
     }
 
     await UpdateProject({

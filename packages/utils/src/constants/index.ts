@@ -10,10 +10,9 @@ export const CSRF_STATE_COOKIE_NAMESPACE = "csrfState";
 export const AUTHTOKEN_COOKIE_NAMESPACE = "auth-token";
 
 // AUTH
-export const USER_SESSION_VALIDITY = 2592000; // 30 days
-export const USER_SESSION_VALIDITY_ms = 2592000000; // 30 days
-export const GUEST_SESSION_ID_VALIDITY = 2592000; // 30 days
-export const GUEST_SESSION_ID_VALIDITY_ms = 2592000000; // 30 days
+export const USER_SESSION_VALIDITY_s = 2592000; // 30 days
+export const USER_SESSION_VALIDITY_ms = USER_SESSION_VALIDITY_s * 1000;
+export const GUEST_SESSION_ID_VALIDITY_s = 2592000; // 30 days
 export const PASSWORD_HASH_SALT_ROUNDS = 8;
 
 // Confirmation email expiry durations

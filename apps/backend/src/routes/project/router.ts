@@ -15,7 +15,7 @@ import { getReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-li
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { critModifyReqRateLimiter, modifyReqRateLimiter } from "~/middleware/rate-limit/modify-req";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
-import { HTTP_STATUS, invalidReqestResponse, serverErrorResponse } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponse, serverErrorResponse } from "~/utils/http";
 import { getUserFromCtx } from "~/utils/router";
 import { getAllVisibleProjects } from "../user/controllers/profile";
 import { checkProjectSlugValidity, getProjectData } from "./controllers";
@@ -79,7 +79,7 @@ async function projects_get(ctx: Context) {
 async function project_get(ctx: Context) {
     try {
         const slug = ctx.req.param("slug");
-        if (!slug) return invalidReqestResponse(ctx);
+        if (!slug) return invalidRequestResponse(ctx);
         const userSession = getUserFromCtx(ctx);
 
         const includeVersions = ctx.req.query("includeVersions") === "true";
@@ -118,7 +118,7 @@ async function projectDependencies_get(ctx: Context) {
     try {
         const slug = ctx.req.param("slug");
         const userSession = getUserFromCtx(ctx);
-        if (!slug) return invalidReqestResponse(ctx);
+        if (!slug) return invalidRequestResponse(ctx);
 
         const res = await getProjectDependencies(slug, userSession);
         return ctx.json(res.data, res.status);
@@ -131,7 +131,7 @@ async function projectDependencies_get(ctx: Context) {
 async function projectCheck_get(ctx: Context) {
     try {
         const slug = ctx.req.param("slug");
-        if (!slug) return invalidReqestResponse(ctx);
+        if (!slug) return invalidRequestResponse(ctx);
 
         const res = await checkProjectSlugValidity(slug);
         return ctx.json(res.data, res.status);
@@ -145,7 +145,7 @@ async function projectFollow_post(ctx: Context) {
     try {
         const projectId = ctx.req.param("projectId");
         const user = getUserFromCtx(ctx);
-        if (!projectId || !user?.id) return invalidReqestResponse(ctx);
+        if (!projectId || !user?.id) return invalidRequestResponse(ctx);
 
         const res = await addProjectsToUserFollows([projectId], user);
         return ctx.json(res.data, res.status);
@@ -159,7 +159,7 @@ async function projectFollow_delete(ctx: Context) {
     try {
         const projectId = ctx.req.param("projectId");
         const user = getUserFromCtx(ctx);
-        if (!projectId || !user?.id) return invalidReqestResponse(ctx);
+        if (!projectId || !user?.id) return invalidRequestResponse(ctx);
 
         const res = await removeProjectsFromUserFollows([projectId], user);
         return ctx.json(res.data, res.status);
@@ -172,10 +172,10 @@ async function projectFollow_delete(ctx: Context) {
 async function project_post(ctx: Context) {
     try {
         const userSession = getUserFromCtx(ctx);
-        if (!userSession) return invalidReqestResponse(ctx);
+        if (!userSession) return invalidRequestResponse(ctx);
 
         const { data, error } = await zodParse(newProjectFormSchema, ctx.get(REQ_BODY_NAMESPACE));
-        if (error || !data) return invalidReqestResponse(ctx, error);
+        if (error || !data) return invalidRequestResponse(ctx, error);
 
         const res = await createNewProject(userSession, data);
         return ctx.json(res.data, res.status);
@@ -188,10 +188,10 @@ async function project_post(ctx: Context) {
 async function project_patch(ctx: Context) {
     try {
         const projectId = ctx.req.param("id");
-        if (!projectId) return invalidReqestResponse(ctx);
+        if (!projectId) return invalidRequestResponse(ctx);
 
         const userSession = getUserFromCtx(ctx);
-        if (!userSession) return invalidReqestResponse(ctx);
+        if (!userSession) return invalidRequestResponse(ctx);
         const formData = ctx.get(REQ_BODY_NAMESPACE);
         const obj = {
             icon: formData.get("icon"),
@@ -205,7 +205,7 @@ async function project_patch(ctx: Context) {
         } satisfies z.infer<typeof generalProjectSettingsFormSchema>;
 
         const { data, error } = await zodParse(generalProjectSettingsFormSchema, obj);
-        if (error || !data) return invalidReqestResponse(ctx, error);
+        if (error || !data) return invalidRequestResponse(ctx, error);
 
         const res = await updateGeneralProjectData(projectId, userSession, data);
         return ctx.json(res.data, res.status);
@@ -219,7 +219,7 @@ async function project_delete(ctx: Context) {
     try {
         const projectId = ctx.req.param("id");
         const userSession = getUserFromCtx(ctx);
-        if (!userSession || !projectId) return invalidReqestResponse(ctx);
+        if (!userSession || !projectId) return invalidRequestResponse(ctx);
 
         const res = await deleteProject(userSession, projectId);
         return ctx.json(res.data, res.status);
@@ -233,7 +233,7 @@ async function project_queueForApproval_post(ctx: Context) {
     try {
         const projectId = ctx.req.param("id");
         const userSession = getUserFromCtx(ctx);
-        if (!userSession || !projectId) return invalidReqestResponse(ctx);
+        if (!userSession || !projectId) return invalidRequestResponse(ctx);
 
         const res = await QueueProjectForApproval(projectId, userSession);
         return ctx.json(res.data, res.status);
@@ -250,11 +250,11 @@ async function projectIcon_patch(ctx: Context) {
         const formData = ctx.get(REQ_BODY_NAMESPACE);
         const icon = formData.get("icon");
 
-        if (!userSession || !projectId || !icon || !(icon instanceof File)) return invalidReqestResponse(ctx, "Invalid data");
+        if (!userSession || !projectId || !icon || !(icon instanceof File)) return invalidRequestResponse(ctx, "Invalid data");
 
         const { data, error } = await zodParse(iconFieldSchema, icon);
         if (error || !data) {
-            return invalidReqestResponse(ctx, error as string);
+            return invalidRequestResponse(ctx, error as string);
         }
 
         const res = await updateProjectIcon(userSession, projectId, data);
@@ -270,7 +270,7 @@ async function projectIcon_delete(ctx: Context) {
         const userSession = getUserFromCtx(ctx);
         const projectId = ctx.req.param("id");
 
-        if (!userSession || !projectId) return invalidReqestResponse(ctx, "Invalid data");
+        if (!userSession || !projectId) return invalidRequestResponse(ctx, "Invalid data");
         const res = await deleteProjectIcon(userSession, projectId);
         return ctx.json(res.data, res.status);
     } catch (error) {
@@ -282,13 +282,13 @@ async function projectIcon_delete(ctx: Context) {
 async function description_patch(ctx: Context) {
     try {
         const projectId = ctx.req.param("id");
-        if (!projectId) return invalidReqestResponse(ctx);
+        if (!projectId) return invalidRequestResponse(ctx);
 
         const userSession = getUserFromCtx(ctx);
-        if (!userSession) return invalidReqestResponse(ctx);
+        if (!userSession) return invalidRequestResponse(ctx);
 
         const { data, error } = await zodParse(updateDescriptionFormSchema, ctx.get(REQ_BODY_NAMESPACE));
-        if (error || !data) return invalidReqestResponse(ctx, error);
+        if (error || !data) return invalidRequestResponse(ctx, error);
 
         const res = await updateProjectDescription(projectId, userSession, data);
         return ctx.json(res.data, res.status);
@@ -302,10 +302,10 @@ async function tags_patch(ctx: Context) {
     try {
         const projectId = ctx.req.param("id");
         const userSession = getUserFromCtx(ctx);
-        if (!projectId || !userSession?.id) return invalidReqestResponse(ctx);
+        if (!projectId || !userSession?.id) return invalidRequestResponse(ctx);
 
         const { data, error } = await zodParse(updateProjectTagsFormSchema, ctx.get(REQ_BODY_NAMESPACE));
-        if (error || !data) return invalidReqestResponse(ctx, error);
+        if (error || !data) return invalidRequestResponse(ctx, error);
 
         const res = await updateProjectTags(projectId, userSession, data);
         return ctx.json(res.data, res.status);
@@ -319,10 +319,10 @@ async function externalLinks_patch(ctx: Context) {
     try {
         const projectId = ctx.req.param("id");
         const userSession = getUserFromCtx(ctx);
-        if (!projectId || !userSession?.id) return invalidReqestResponse(ctx);
+        if (!projectId || !userSession?.id) return invalidRequestResponse(ctx);
 
         const { data, error } = await zodParse(updateExternalLinksFormSchema, ctx.get(REQ_BODY_NAMESPACE));
-        if (error || !data) return invalidReqestResponse(ctx, error);
+        if (error || !data) return invalidRequestResponse(ctx, error);
 
         const res = await updateProjectExternalLinks(userSession, projectId, data);
         return ctx.json(res.data, res.status);
@@ -336,10 +336,10 @@ async function license_patch(ctx: Context) {
     try {
         const projectId = ctx.req.param("id");
         const userSession = getUserFromCtx(ctx);
-        if (!projectId || !userSession?.id) return invalidReqestResponse(ctx);
+        if (!projectId || !userSession?.id) return invalidRequestResponse(ctx);
 
         const { data, error } = await zodParse(updateProjectLicenseFormSchema, ctx.get(REQ_BODY_NAMESPACE));
-        if (error || !data) return invalidReqestResponse(ctx, error);
+        if (error || !data) return invalidRequestResponse(ctx, error);
 
         const res = await updateProjectLicense(userSession, projectId, data);
         return ctx.json(res.data, res.status);
@@ -352,10 +352,10 @@ async function license_patch(ctx: Context) {
 async function gallery_post(ctx: Context) {
     try {
         const projectId = ctx.req.param("id");
-        if (!projectId) return invalidReqestResponse(ctx);
+        if (!projectId) return invalidRequestResponse(ctx);
 
         const userSession = getUserFromCtx(ctx);
-        if (!userSession) return invalidReqestResponse(ctx);
+        if (!userSession) return invalidRequestResponse(ctx);
 
         const formData = ctx.get(REQ_BODY_NAMESPACE);
         const obj = {
@@ -367,7 +367,7 @@ async function gallery_post(ctx: Context) {
         };
 
         const { data, error } = await zodParse(addNewGalleryImageFormSchema, obj);
-        if (error || !data) return invalidReqestResponse(ctx, error);
+        if (error || !data) return invalidRequestResponse(ctx, error);
 
         const res = await addNewGalleryImage(projectId, userSession, data);
         return ctx.json(res.data, res.status);
@@ -382,10 +382,10 @@ async function galleryItem_patch(ctx: Context) {
         const galleryId = ctx.req.param("galleryId");
         const projectId = ctx.req.param("id");
         const userSession = getUserFromCtx(ctx);
-        if (!projectId || !galleryId || !userSession) return invalidReqestResponse(ctx);
+        if (!projectId || !galleryId || !userSession) return invalidRequestResponse(ctx);
 
         const { data, error } = await zodParse(updateGalleryImageFormSchema, ctx.get(REQ_BODY_NAMESPACE));
-        if (error || !data) return invalidReqestResponse(ctx, error);
+        if (error || !data) return invalidRequestResponse(ctx, error);
 
         const res = await updateGalleryImage(projectId, userSession, galleryId, data);
         return ctx.json(res.data, res.status);
@@ -400,7 +400,7 @@ async function galleryItem_delete(ctx: Context) {
         const galleryId = ctx.req.param("galleryId");
         const projectId = ctx.req.param("id");
         const userSession = getUserFromCtx(ctx);
-        if (!projectId || !userSession || !galleryId) return invalidReqestResponse(ctx);
+        if (!projectId || !userSession || !galleryId) return invalidRequestResponse(ctx);
 
         const res = await removeGalleryImage(projectId, userSession, galleryId);
         return ctx.json(res.data, res.status);

@@ -9,7 +9,7 @@ import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-atte
 import { createNewAuthAccount, getAuthProviderProfileData } from "~/routes/auth/helpers";
 import prisma from "~/services/prisma";
 import type { ContextUserData } from "~/types";
-import { HTTP_STATUS, invalidReqestResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData } from "~/utils/http";
 
 export async function linkAuthProviderHandler(
     ctx: Context,
@@ -71,7 +71,7 @@ export async function linkAuthProviderHandler(
     });
     if (existingSameProvider?.id) {
         await addInvalidAuthAttempt(ctx);
-        return invalidReqestResponseData();
+        return invalidRequestResponseData();
     }
 
     await createNewAuthAccount(userSession.id, oAuthData);
@@ -93,7 +93,7 @@ export async function unlinkAuthProvider(ctx: Context, userSession: ContextUserD
     });
 
     if (allLinkedProviders.length < 2) {
-        return invalidReqestResponseData("You can't remove the only remaining auth provider");
+        return invalidRequestResponseData("You can't remove the only remaining auth provider");
     }
 
     const providerName = getAuthProviderFromString(authProvider);
@@ -114,7 +114,7 @@ export async function unlinkAuthProvider(ctx: Context, userSession: ContextUserD
 
     if (!deletedAuthAccount || deletedAuthAccount < 1) {
         await addInvalidAuthAttempt(ctx);
-        return invalidReqestResponseData();
+        return invalidRequestResponseData();
     }
 
     return {
