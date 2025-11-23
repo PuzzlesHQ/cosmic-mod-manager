@@ -1,8 +1,9 @@
+import type { Prisma } from "@prisma-client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client/extension";
 import env from "~/utils/env";
 
-let prisma: PrismaClient;
+let prisma: Prisma.DefaultPrismaClient;
 
 function newDbClient() {
     const adapter = new PrismaPg({ connectionString: env.PG_DATABASE_URL });

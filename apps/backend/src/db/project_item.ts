@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma-client";
 import { isProjectIndexable } from "~/routes/project/utils";
 import { AddProjects_ToSearchIndex, RemoveProjects_FromSearchIndex, UpdateProjects_SearchIndex } from "~/routes/search/search-db";
 import { cacheKey } from "~/services/cache/utils";

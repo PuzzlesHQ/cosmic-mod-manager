@@ -10,7 +10,7 @@ import {
     type ThreadMessage,
     ThreadType,
 } from "@app/utils/types/api/thread";
-import type { Thread as DB_Thread } from "@prisma/client";
+import type { Thread as DB_Thread } from "@prisma-client";
 import { GetProject_Details } from "~/db/project_item";
 import { GetManyUsers_ByIds } from "~/db/user_item";
 import prisma from "~/services/prisma";

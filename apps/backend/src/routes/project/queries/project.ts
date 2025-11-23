@@ -1,5 +1,5 @@
 import type { OrganisationPermission, ProjectPermission } from "@app/utils/types";
-import type { Prisma, TeamMember } from "@prisma/client";
+import type { Prisma, TeamMember } from "@prisma-client";
 
 export function projectDetailsFields() {
     return {

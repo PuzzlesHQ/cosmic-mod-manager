@@ -1,7 +1,7 @@
 import { doesMemberHaveAccess, getCurrMember, getLoadersByProjectType } from "@app/utils/project";
 import type { updateVersionFormSchema, VersionDependencies } from "@app/utils/schemas/project/version";
 import { ProjectPermission, type ProjectType, VersionReleaseChannel } from "@app/utils/types";
-import type { File as DBFile } from "@prisma/client";
+import type { File as DBFile } from "@prisma-client";
 import type { Context } from "hono";
 import type { z } from "zod/v4";
 import { GetManyFiles_ByID } from "~/db/file_item";

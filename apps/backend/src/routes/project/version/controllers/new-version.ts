@@ -5,7 +5,7 @@ import { doesMemberHaveAccess, getCurrMember, getLoadersByProjectType } from "@a
 import type { newVersionFormSchema, VersionDependencies } from "@app/utils/schemas/project/version";
 import { isVersionPrimaryFileValid } from "@app/utils/schemas/validation";
 import { ProjectPermission, type ProjectType, ProjectVisibility, VersionReleaseChannel } from "@app/utils/types";
-import type { Dependency, VersionFile } from "@prisma/client";
+import type { Dependency, VersionFile } from "@prisma-client";
 import type { Context } from "hono";
 import type { z } from "zod/v4";
 import { GetManyProjects_ListItem, GetProject_ListItem, UpdateProject } from "~/db/project_item";

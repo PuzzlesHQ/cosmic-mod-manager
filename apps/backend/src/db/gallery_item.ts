@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma-client";
 import prisma from "~/services/prisma";
 import { Delete_ProjectCache_All } from "./project_item";
 

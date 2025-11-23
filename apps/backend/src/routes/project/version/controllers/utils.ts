@@ -3,7 +3,7 @@ import { sortVersionsWithReference } from "@app/utils/project";
 import type { DependencyType, VersionReleaseChannel } from "@app/utils/types";
 import type { VersionFile } from "@app/utils/types/api";
 import type { UnwrapArray } from "@app/utils/types/helpers";
-import type { File as DBFile } from "@prisma/client";
+import type { File as DBFile } from "@prisma-client";
 import type { GetVersions_ReturnType } from "~/db/version_item";
 import { DELETED_USER_AUTHOR_OBJ } from "~/routes/project/utils";
 import { userFileUrl, versionFileUrl } from "~/utils/urls";

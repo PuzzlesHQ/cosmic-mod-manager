@@ -4,7 +4,7 @@ import { combineProjectMembers, type PartialTeamMember, sortVersionsWithReferenc
 import { gameVersionsList } from "@app/utils/src/constants/game-versions";
 import { isModerator } from "@app/utils/src/constants/roles";
 import { type GlobalUserRole, ProjectPublishingStatus, ProjectVisibility } from "@app/utils/types";
-import type { File as DBFile, VersionFile } from "@prisma/client";
+import type { File as DBFile, VersionFile } from "@prisma-client";
 import { rsort } from "semver";
 import { CreateManyFiles, DeleteManyFiles_ByID, GetManyFiles } from "~/db/file_item";
 import prisma from "~/services/prisma";

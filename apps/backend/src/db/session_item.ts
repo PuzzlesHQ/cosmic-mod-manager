@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma-client";
 import prisma from "~/services/prisma";
 
 export function GetSession_Unique<T extends Prisma.SessionFindUniqueArgs>(

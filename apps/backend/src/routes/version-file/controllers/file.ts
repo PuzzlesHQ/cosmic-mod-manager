@@ -1,6 +1,6 @@
 import type { DependencyType, VersionReleaseChannel } from "@app/utils/types";
 import type { ProjectVersionData, VersionFile } from "@app/utils/types/api";
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma-client";
 import { GetManyFiles } from "~/db/file_item";
 import { GetMany_ProjectsVersions } from "~/db/version_item";
 import { getFilesFromId } from "~/routes/project/queries/file";

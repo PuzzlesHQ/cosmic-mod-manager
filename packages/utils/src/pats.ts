@@ -108,7 +108,7 @@ export function togglePatScope(encoded: bigint, scope: PAT_SCOPE): bigint {
     if (!scopeInfo) return encoded;
 
     // toggle using XOR (just a note for future me)
-    // eg: x1xx ^ x1xx = 1000 (removes the scope)
-    //     x0xx ^ x1xx = 1100 (adds the scope)
+    // eg: x1xx ^ x1xx = x0xx (removes the scope)
+    //     x0xx ^ x1xx = x1xx (adds the scope)
     return encoded ^ scopeInfo.flag;
 }

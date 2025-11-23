@@ -1,7 +1,7 @@
 import { AUTHTOKEN_COOKIE_NAMESPACE, USER_SESSION_VALIDITY, USER_SESSION_VALIDITY_ms } from "@app/utils/constants";
 import { getSessionIp, getSessionMetadata } from "@app/utils/headers";
 import { type GlobalUserRole, UserSessionStates } from "@app/utils/types";
-import type { Prisma, Session, User } from "@prisma/client";
+import type { Prisma, Session, User } from "@prisma-client";
 import type { Context } from "hono";
 import type { CookieOptions } from "hono/utils/cookie";
 import {

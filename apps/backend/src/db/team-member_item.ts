@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma-client";
 import prisma from "~/services/prisma";
 import { Clear_TeamCache } from "./team_item";
 import { Delete_UserOrganizationsCache, Delete_UserProjectsCache } from "./user_item";
