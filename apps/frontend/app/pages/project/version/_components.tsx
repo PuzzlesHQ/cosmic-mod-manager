@@ -94,7 +94,6 @@ interface UploadVersionPageTopCardProps {
     featuredBtn: React.ReactNode;
     submitBtnLabel?: string;
     submitBtnIcon: React.ReactNode;
-    onSubmitBtnClick: () => Promise<void>;
     versionDetailsPage?: string;
 }
 export function UploadVersionPageTopCard({
@@ -106,7 +105,6 @@ export function UploadVersionPageTopCard({
     children,
     submitBtnLabel,
     submitBtnIcon,
-    onSubmitBtnClick,
     versionDetailsPage,
 }: UploadVersionPageTopCardProps) {
     const { t } = useTranslation();
@@ -144,7 +142,7 @@ export function UploadVersionPageTopCard({
             {children}
 
             <div className="flex w-full flex-wrap items-center justify-start gap-x-panel-cards gap-y-2">
-                <Button type="submit" disabled={isLoading} onClick={onSubmitBtnClick}>
+                <Button type="submit" disabled={isLoading}>
                     {isLoading ? <LoadingSpinner size="xs" /> : submitBtnIcon}
                     {submitBtnLabel || t.form.submit}
                 </Button>

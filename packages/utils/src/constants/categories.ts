@@ -429,6 +429,7 @@ export const categories = categories_list as CategoryT[];
 export type CategoriesT = {
     [K in (typeof categories_list)[number]["name"]]: string;
 };
+export type CategoriesUnion = (typeof categories_list)[number]["name"];
 
 export type Keys_ToNotTranslate = "8x-" | "16x" | "32x" | "48x" | "64x" | "128x" | "256x" | "512x+";
 

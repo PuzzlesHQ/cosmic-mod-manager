@@ -2,7 +2,6 @@ import { OrgPermissionsList, ProjectPermissionsList } from "@app/utils/config/pr
 import { doesOrgMemberHaveAccess } from "@app/utils/project";
 import type { z } from "@app/utils/schemas";
 import { updateTeamMemberFormSchema } from "@app/utils/schemas/project/settings/members";
-import { handleFormError } from "@app/utils/schemas/utils";
 import { hasRootAccess } from "@app/utils/src/constants/roles";
 import { type LoggedInUserData, OrganisationPermission } from "@app/utils/types";
 import type { Organisation, TeamMember } from "@app/utils/types/api";
@@ -24,6 +23,7 @@ import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import { RemoveMemberDialog, TransferOwnershipDialog } from "~/pages/project/settings/members/dialogs";
 import clientFetch from "~/utils/client-fetch";
+import { submitFormWithErrorHandling } from "~/utils/form";
 import { UserProfilePath } from "~/utils/urls";
 
 interface OrgTeamMemberProps {
@@ -148,8 +148,8 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
             {detailsOpen && (
                 <Form {...form}>
                     <form
-                        onSubmit={async (e) => {
-                            e.preventDefault();
+                        onSubmit={(e) => {
+                            submitFormWithErrorHandling(e, updateTeamMemberFormSchema, form, updateMemberDetails);
                         }}
                         className="flex w-full flex-col gap-form-elements"
                     >
@@ -265,12 +265,6 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                                 type="submit"
                                 size="sm"
                                 disabled={isLoading || (!canEditMember && !canEditDefaultPermissions) || !form.formState.isDirty}
-                                onClick={async () => {
-                                    await handleFormError(async () => {
-                                        const values = await updateTeamMemberFormSchema.parseAsync(form.getValues());
-                                        await updateMemberDetails(values);
-                                    }, toast.error);
-                                }}
                             >
                                 <SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                 {t.form.saveChanges}

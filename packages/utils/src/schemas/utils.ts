@@ -15,23 +15,6 @@ export async function zodParse<T extends z.Schema, K>(schema: T, data: unknown, 
     }
 }
 
-type ToastFn = (message: string, options?: { description?: string }) => void;
-
-export async function handleFormError(callback: () => unknown, toastFn?: ToastFn) {
-    try {
-        await callback();
-        return true;
-    } catch (error) {
-        const name = error?.issues?.[0]?.path?.[0];
-        const errMsg = error?.issues?.[0]?.message;
-        const errorTitle = name && errMsg ? `Error in "${name}"` : `Form error: ${error}`;
-        const errorDescription = name && errMsg ? errMsg : "";
-
-        if (toastFn) toastFn(errorTitle, { description: errorDescription });
-        return false;
-    }
-}
-
 export function fileMaxSize_ErrMsg(size_bytes: number) {
     return `Too big: expected file to be less than ${parseFileSize(size_bytes)}`;
 }

@@ -20,6 +20,7 @@ import { LoadingSpinner } from "~/components/ui/spinner";
 import { useProjectData } from "~/hooks/project";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
+import { submitFormWithErrorHandling } from "~/utils/form";
 
 export default function LicenseSettingsPage() {
     const { t } = useTranslation();
@@ -111,7 +112,12 @@ export default function LicenseSettingsPage() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(updateLicense)} className="w-full">
+            <form
+                onSubmit={(e) => {
+                    submitFormWithErrorHandling(e, updateProjectLicenseFormSchema, form, updateLicense);
+                }}
+                className="w-full"
+            >
                 <Card className="flex w-full flex-col gap-4 p-card-surround">
                     <CardTitle>{t.search.license}</CardTitle>
                     <div className="flex w-full flex-col items-start justify-between gap-x-6 gap-y-2 md:flex-row">

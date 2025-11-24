@@ -43,6 +43,7 @@ import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";
+import { submitFormWithErrorHandling } from "~/utils/form";
 import { joinPaths, OrgPagePath, ProjectPagePath } from "~/utils/urls";
 import { LeaveTeam } from "./members/page";
 
@@ -113,7 +114,9 @@ export default function GeneralSettingsPage() {
             <ContentCardTemplate title={t.projectSettings.projectInfo}>
                 <Form {...form}>
                     <form
-                        onSubmit={form.handleSubmit(saveSettings)}
+                        onSubmit={(e) => {
+                            submitFormWithErrorHandling(e, generalProjectSettingsFormSchema, form, saveSettings);
+                        }}
                         className="flex w-full flex-col items-start justify-start gap-form-elements"
                     >
                         <FormField

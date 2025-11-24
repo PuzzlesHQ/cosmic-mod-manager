@@ -1,7 +1,7 @@
 import { MAX_DISPLAY_NAME_LENGTH, MAX_USER_BIO_LENGTH, MAX_USERNAME_LENGTH } from "@app/utils/constants";
 import type { z } from "@app/utils/schemas";
 import { profileUpdateFormSchema } from "@app/utils/schemas/settings";
-import { validImgFileExtensions, validVideoFileExtensions, zodParse } from "@app/utils/schemas/utils";
+import { validImgFileExtensions, validVideoFileExtensions } from "@app/utils/schemas/utils";
 import type { LoggedInUserData } from "@app/utils/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FileImageIcon, HelpCircleIcon, SaveIcon, Trash2Icon, UserIcon } from "lucide-react";
@@ -25,6 +25,7 @@ import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";
+import { submitFormWithErrorHandling } from "~/utils/form";
 import { UserProfilePath } from "~/utils/urls";
 
 interface Props {
@@ -94,12 +95,8 @@ export function ProfileSettingsPage({ session }: Props) {
             <CardContent>
                 <Form {...form}>
                     <form
-                        onSubmit={async (e) => {
-                            e.preventDefault();
-                            const { error } = await zodParse(profileUpdateFormSchema, form.getValues());
-                            if (error) toast.error(error);
-
-                            form.handleSubmit(saveSettings)(e);
+                        onSubmit={(e) => {
+                            submitFormWithErrorHandling(e, profileUpdateFormSchema, form, saveSettings);
                         }}
                         className="flex w-full flex-col items-start justify-start gap-form-elements"
                     >

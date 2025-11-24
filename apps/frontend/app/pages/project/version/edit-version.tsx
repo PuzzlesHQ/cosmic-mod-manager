@@ -3,7 +3,6 @@ import { parseFileSize } from "@app/utils/number";
 import { getLoadersByProjectType } from "@app/utils/project";
 import type { z } from "@app/utils/schemas";
 import { updateVersionFormSchema } from "@app/utils/schemas/project/version";
-import { handleFormError } from "@app/utils/schemas/utils";
 import { VersionReleaseChannel } from "@app/utils/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FileIcon, SaveIcon, Trash2Icon } from "lucide-react";
@@ -20,6 +19,7 @@ import { toast } from "~/components/ui/sonner";
 import { useProjectData } from "~/hooks/project";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
+import { submitFormWithErrorHandling } from "~/utils/form";
 import { ProjectPagePath, VersionPagePath } from "~/utils/urls";
 import {
     AddDependencies,
@@ -126,8 +126,7 @@ export default function EditVersionPage() {
         <Form {...form}>
             <form
                 onSubmit={(e) => {
-                    e.preventDefault();
-                    form.handleSubmit(handleSubmit);
+                    submitFormWithErrorHandling(e, updateVersionFormSchema, form, handleSubmit);
                 }}
                 className="flex w-full flex-col items-start justify-start gap-panel-cards"
             >
@@ -139,12 +138,6 @@ export default function EditVersionPage() {
                     versionDetailsPage={currVersionPageUrl}
                     versionTitle={form.getValues().title}
                     backUrl={currVersionPageUrl}
-                    onSubmitBtnClick={async () => {
-                        await handleFormError(async () => {
-                            const formValues = await updateVersionFormSchema.parseAsync(form.getValues());
-                            await handleSubmit(formValues);
-                        }, toast.error);
-                    }}
                     featuredBtn={
                         <FormField
                             control={form.control}

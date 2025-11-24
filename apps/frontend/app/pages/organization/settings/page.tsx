@@ -38,6 +38,7 @@ import { useTranslation } from "~/locales/provider";
 import { LeaveTeam } from "~/pages/project/settings/members/page";
 import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";
+import { submitFormWithErrorHandling } from "~/utils/form";
 import { OrgPagePath } from "~/utils/urls";
 
 function getInitialValues(orgData: Organisation) {
@@ -100,7 +101,9 @@ export default function GeneralOrgSettings() {
             <ContentCardTemplate title={t.organization.orgInfo}>
                 <Form {...form}>
                     <form
-                        onSubmit={form.handleSubmit(saveSettings)}
+                        onSubmit={(e) => {
+                            submitFormWithErrorHandling(e, orgSettingsFormSchema, form, saveSettings);
+                        }}
                         className="flex w-full flex-col items-start justify-start gap-form-elements"
                     >
                         <FormField

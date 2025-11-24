@@ -34,7 +34,7 @@ import { Textarea } from "~/components/ui/textarea";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
-import { VersionPagePath } from "~/utils/urls";
+import { ProjectPagePath } from "~/utils/urls";
 
 interface Props {
     orgId?: string;
@@ -80,7 +80,7 @@ export default function CreateNewProjectDialog({ orgId, trigger }: Props) {
                 return toast.error(result?.message || t.common.error);
             }
 
-            RefreshPage(navigate, VersionPagePath(result?.type?.[0], result?.urlSlug, "new"));
+            RefreshPage(navigate, ProjectPagePath(result?.type?.[0], result?.urlSlug));
             toast.success(result?.message || t.common.success);
         } finally {
             setIsLoading(false);

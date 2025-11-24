@@ -2,7 +2,6 @@ import { getFileType } from "@app/utils/convertors";
 import { disableInteractions, enableInteractions } from "@app/utils/dom";
 import type { z } from "@app/utils/schemas";
 import { newVersionFormSchema } from "@app/utils/schemas/project/version";
-import { handleFormError } from "@app/utils/schemas/utils";
 import { allowedPrimaryFileTypes, isVersionPrimaryFileValid } from "@app/utils/schemas/validation";
 import { VersionReleaseChannel } from "@app/utils/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +17,7 @@ import { toast } from "~/components/ui/sonner";
 import { useProjectData } from "~/hooks/project";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
+import { submitFormWithErrorHandling } from "~/utils/form";
 import { ProjectPagePath, VersionPagePath } from "~/utils/urls";
 import {
     AddDependencies,
@@ -48,6 +48,7 @@ export default function UploadVersionPage() {
             dependencies: [],
             gameVersions: [],
             loaders: [],
+            featured: false,
         },
     });
     form.watch();
@@ -102,7 +103,7 @@ export default function UploadVersionPage() {
         <Form {...form}>
             <form
                 onSubmit={(e) => {
-                    e.preventDefault();
+                    submitFormWithErrorHandling(e, newVersionFormSchema, form, handleSubmit);
                 }}
                 className="flex w-full flex-col items-start justify-start gap-panel-cards"
             >
@@ -113,12 +114,6 @@ export default function UploadVersionPage() {
                     versionsPageUrl={versionsPageUrl}
                     versionTitle={form.getValues().title}
                     backUrl={versionsPageUrl}
-                    onSubmitBtnClick={async () => {
-                        await handleFormError(async () => {
-                            const formValues = await newVersionFormSchema.parseAsync(form.getValues());
-                            await handleSubmit(formValues);
-                        }, toast.error);
-                    }}
                     featuredBtn={
                         <FormField
                             control={form.control}
