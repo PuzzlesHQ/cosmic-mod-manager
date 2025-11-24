@@ -174,6 +174,16 @@ export default {
         colorThemeDesc: "Select your preferred color theme.",
         system: "System",
 
+        create_a_PAT: "Create a PAT",
+        createPAT_long: "Create personal access token",
+        createPAT: "Create PAT",
+        scopes: "Scopes",
+        expirationData: "Expiration Date",
+        editPAT: "Edit PAT",
+        editPAT_long: "Edit personal access token",
+        deletePAT: "Delete PAT",
+        deletePAT_long: "Delete personal access token",
+        sureToDeletePAT: (patName: string) => `Are you sure you want to delete PAT **\`${patName}\`**?`,
         apiScopes: {
             user_read_email: "Read user email",
             user_read: "Read user data",
