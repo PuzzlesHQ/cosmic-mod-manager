@@ -1,3 +1,4 @@
+import { API_SCOPE } from "@app/utils/pats";
 import { newVersionFormSchema, updateVersionFormSchema } from "@app/utils/schemas/project/version";
 import { zodParse } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
@@ -5,7 +6,13 @@ import { LoginProtectedRoute } from "~/middleware/auth";
 import { getReqRateLimiter } from "~/middleware/rate-limit/get-req";
 import { critModifyReqRateLimiter, modifyReqRateLimiter } from "~/middleware/rate-limit/modify-req";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
-import { HTTP_STATUS, invalidRequestResponse, notFoundResponse, serverErrorResponse } from "~/utils/http";
+import {
+    HTTP_STATUS,
+    invalidRequestResponse,
+    notFoundResponse,
+    serverErrorResponse,
+    unauthenticatedReqResponse,
+} from "~/utils/http";
 import { getUserFromCtx } from "~/utils/router";
 import { getAllProjectVersions, getLatestVersion, getProjectVersionData } from "./controllers";
 import { createNewVersion } from "./controllers/new-version";
@@ -29,9 +36,10 @@ versionRouter.delete("/:versionId", critModifyReqRateLimiter, LoginProtectedRout
 
 async function versions_get(ctx: Context) {
     try {
+        const userSession = getUserFromCtx(ctx, API_SCOPE.VERSION_READ);
+
         const projectSlug = ctx.req.param("projectSlug");
         if (!projectSlug) return invalidRequestResponse(ctx);
-        const userSession = getUserFromCtx(ctx);
         const featuredOnly = ctx.req.query("featured") === "true";
 
         const res = await getAllProjectVersions(projectSlug, userSession, featuredOnly);
@@ -49,7 +57,7 @@ async function version_get(ctx: Context, download = false) {
         let versionId = ctx.req.param("versionId");
         if (!versionId?.length) versionId = "latest";
 
-        const userSession = getUserFromCtx(ctx);
+        const userSession = getUserFromCtx(ctx, API_SCOPE.VERSION_READ);
         const releaseChannel = ctx.req.query("releaseChannel");
         const gameVersion = ctx.req.query("gameVersion");
         const loader = ctx.req.query("loader");
@@ -87,9 +95,11 @@ async function version_get(ctx: Context, download = false) {
 
 async function version_post(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx);
+        const user = getUserFromCtx(ctx, API_SCOPE.VERSION_CREATE);
+        if (!user) return unauthenticatedReqResponse(ctx);
+
         const projectId = ctx.req.param("projectSlug");
-        if (!userSession || !projectId) return invalidRequestResponse(ctx);
+        if (!projectId) return invalidRequestResponse(ctx);
 
         const formData = ctx.get(REQ_BODY_NAMESPACE);
         if (!formData) {
@@ -119,7 +129,7 @@ async function version_post(ctx: Context) {
         const { data, error } = await zodParse(newVersionFormSchema, schemaObj);
         if (error || !data) return invalidRequestResponse(ctx, error);
 
-        const res = await createNewVersion(ctx, userSession, projectId, data);
+        const res = await createNewVersion(ctx, user, projectId, data);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.trace(error);
@@ -129,10 +139,12 @@ async function version_post(ctx: Context) {
 
 async function version_patch(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx);
+        const user = getUserFromCtx(ctx, API_SCOPE.VERSION_WRITE);
+        if (!user) return unauthenticatedReqResponse(ctx);
+
         const projectId = ctx.req.param("projectSlug");
         const versionId = ctx.req.param("versionId");
-        if (!userSession || !projectId || !versionId) return invalidRequestResponse(ctx);
+        if (!projectId || !versionId) return invalidRequestResponse(ctx);
 
         const formData = ctx.get(REQ_BODY_NAMESPACE);
         const dependencies = formData.get("dependencies");
@@ -158,7 +170,7 @@ async function version_patch(ctx: Context) {
         const { data, error } = await zodParse(updateVersionFormSchema, schemaObj);
         if (error || !data) return invalidRequestResponse(ctx, error);
 
-        const res = await updateVersionData(ctx, projectId, versionId, userSession, data);
+        const res = await updateVersionData(ctx, projectId, versionId, user, data);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.trace(error);
@@ -168,12 +180,14 @@ async function version_patch(ctx: Context) {
 
 async function version_delete(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx);
+        const user = getUserFromCtx(ctx, API_SCOPE.VERSION_DELETE);
+        if (!user) return unauthenticatedReqResponse(ctx);
+
         const projectId = ctx.req.param("projectSlug");
         const versionId = ctx.req.param("versionId");
-        if (!userSession || !projectId || !versionId) return invalidRequestResponse(ctx);
+        if (!projectId || !versionId) return invalidRequestResponse(ctx);
 
-        const res = await deleteProjectVersion(ctx, projectId, versionId, userSession);
+        const res = await deleteProjectVersion(ctx, projectId, versionId, user);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.trace(error);

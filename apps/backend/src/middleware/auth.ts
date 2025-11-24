@@ -5,7 +5,7 @@ import { getUserIpAddress } from "~/routes/auth/helpers";
 import { validateContextSession } from "~/routes/auth/helpers/session";
 import { CTX_USER_NAMESPACE } from "~/types/namespaces";
 import env from "~/utils/env";
-import { deleteCookie, HTTP_STATUS, serverErrorResponse, setCookie } from "~/utils/http";
+import { deleteCookie, serverErrorResponse, setCookie, unauthenticatedReqResponse } from "~/utils/http";
 import { getUserFromCtx } from "~/utils/router";
 import { generateRandomId } from "~/utils/str";
 
@@ -37,7 +37,7 @@ export async function LoginProtectedRoute(ctx: Context, next: Next) {
     try {
         const session = getUserFromCtx(ctx);
         if (!session?.id) {
-            return ctx.json({ success: false, message: "You're not logged in" }, HTTP_STATUS.UNAUTHENTICATED);
+            return unauthenticatedReqResponse(ctx, "You're not logged in");
         }
 
         await next();

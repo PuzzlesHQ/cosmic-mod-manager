@@ -7,6 +7,7 @@ export enum API_SCOPE {
     USER_AUTH_WRITE = "user_auth_write",
     NOTIFICATION_READ = "notification_read",
     NOTIFICATION_WRITE = "notification_write",
+    NOTIFICATION_DELETE = "notification_delete",
 
     USER_SESSION_READ = "user_session_read",
     USER_SESSION_DELETE = "user_session_delete",
@@ -62,7 +63,7 @@ interface PatScopeInfo {
     id: API_SCOPE;
     flag: bigint;
 }
-export const ALL_API_SCOPES = -1n; // too lazy to set all the corresponding bits
+export const ALL_PAT_SCOPES = -1n; // too lazy to set all the corresponding bits
 const PAT_SCOPES: PatScopeInfo[] = [];
 let flagCounter = 0n;
 
@@ -89,8 +90,11 @@ export function encodePatScopes(scopes: string[]): bigint {
 }
 
 export function decodePatScopes(encoded: bigint): API_SCOPE[] {
-    const scopes: API_SCOPE[] = [];
+    if (encoded === ALL_PAT_SCOPES) {
+        return PAT_SCOPES.map((s) => s.id);
+    }
 
+    const scopes: API_SCOPE[] = [];
     for (const scopeInfo of PAT_SCOPES) {
         if ((encoded & scopeInfo.flag) === scopeInfo.flag) {
             scopes.push(scopeInfo.id);
@@ -100,16 +104,20 @@ export function decodePatScopes(encoded: bigint): API_SCOPE[] {
     return scopes;
 }
 
-export function hasPatScope(encoded: bigint, scope: API_SCOPE): boolean {
+export function hasScope(encoded: bigint, scope: API_SCOPE): boolean {
+    if (encoded === ALL_PAT_SCOPES) return true;
+
     const scopeInfo = PAT_SCOPES.find((s) => s.id === scope);
     if (!scopeInfo) return false;
 
     return (encoded & scopeInfo.flag) === scopeInfo.flag;
 }
 
-export function hasAllPatScopes(encoded: bigint, scopes: API_SCOPE[]): boolean {
+export function hasScopes(encoded: bigint, scopes: API_SCOPE[]): boolean {
+    if (encoded === ALL_PAT_SCOPES) return true;
+
     for (const scope of scopes) {
-        if (!hasPatScope(encoded, scope)) return false;
+        if (!hasScope(encoded, scope)) return false;
     }
 
     return true;
@@ -127,7 +135,7 @@ export function togglePatScope(encoded: bigint, scope: API_SCOPE): bigint {
 
 export function patContainsRestrictedScopes(encoded: bigint) {
     for (const restrictedScope of PAT_RESTRICTED_SCOPES) {
-        if (hasPatScope(encoded, restrictedScope)) return restrictedScope;
+        if (hasScope(encoded, restrictedScope)) return restrictedScope;
     }
 
     return false;

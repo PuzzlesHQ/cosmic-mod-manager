@@ -177,39 +177,40 @@ export default {
         apiScopes: {
             user_read_email: "Read user email",
             user_read: "Read user data",
-            user_write: "Edit user data",
+            user_write: "Write user data",
             user_delete: "Delete user account",
             user_auth_write: "Manage authentication",
             notification_read: "Read notifications",
-            notification_write: "Edit notifications",
-            user_session_read: "View user sessions",
+            notification_write: "Write notifications",
+            notification_delete: "Delete notifications",
+            user_session_read: "Read user sessions",
             user_session_delete: "Delete sessions",
-            analytics_read: "View analytics",
+            analytics_read: "Read analytics",
             project_create: "Create projects",
-            project_read: "View projects",
-            project_write: "Edit projects",
+            project_read: "Read projects",
+            project_write: "Write projects",
             project_delete: "Delete projects",
             version_create: "Upload versions",
-            version_read: "View versions",
-            version_write: "Edit versions",
+            version_read: "Read versions",
+            version_write: "Write versions",
             version_delete: "Delete versions",
             organization_create: "Create organizations",
-            organization_read: "View organizations",
-            organization_write: "Edit organizations",
+            organization_read: "Read organizations",
+            organization_write: "Write organizations",
             organization_delete: "Delete organizations",
             collection_create: "Create collections",
-            collection_read: "View collections",
-            collection_write: "Edit collections",
+            collection_read: "Read collections",
+            collection_write: "Write collections",
             collection_delete: "Delete collections",
             report_create: "Create reports",
             report_read: "Read reports",
-            report_write: "Edit reports",
+            report_write: "Write reports",
             report_delete: "Delete reports",
             thread_read: "Read threads",
             thread_write: "Write threads",
             pat_create: "Create access tokens",
-            pat_read: "View access tokens",
-            pat_write: "Edit access tokens",
+            pat_read: "Read access tokens",
+            pat_write: "Write access tokens",
             pat_delete: "Delete access tokens",
         },
     },
@@ -365,7 +366,8 @@ export default {
         platform: (loader: React.ReactNode) => ["Platform: ", loader],
         selectPlatform: "Select platform",
         onlyAvailableFor: (project: string, platform: string) => `${project} is only available for ${platform}`,
-        noVersionsAvailableFor: (gameVersion: string, loader: string) => `No versions available for ${gameVersion} on ${loader}`,
+        noVersionsAvailableFor: (gameVersion: string, loader: string) =>
+            `No versions available for ${gameVersion} on ${loader}`,
         declinedInvitation: "Declined invitation",
         teamInvitationTitle: (teamType: string) => `Invitation to join ${teamType}`, // teamType = organization | project
         teamInviteDesc: (teamType: string, role: string) =>
@@ -475,7 +477,8 @@ export default {
         selectFiles: "Select files",
         primaryFileRequired: "Primary file is required",
         metadata: "Metadata",
-        devReleasesNote: "NOTE:- Older dev releases will be automatically deleted after a new dev release is published.",
+        devReleasesNote:
+            "NOTE:- Older dev releases will be automatically deleted after a new dev release is published.",
         publicationDate: "Publication date",
         publisher: "Publisher",
         versionID: "Version ID",
@@ -526,7 +529,8 @@ export default {
         selectAtLeastOneCategory: "Select at least one category in order to feature a category.",
         projectInfo: "Project information",
         clientSide: "Client side",
-        clientSideDesc: (projectType: string) => `Select based on if your ${projectType} has functionality on the client side.`,
+        clientSideDesc: (projectType: string) =>
+            `Select based on if your ${projectType} has functionality on the client side.`,
         serverSide: "Server side",
         serverSideDesc: (projectType: string) =>
             `Select based on if your ${projectType} has functionality on the logical server.`,
@@ -565,8 +569,10 @@ export default {
         sureToLeaveTeam: "Are you sure you want to leave this team?",
         cantManageInvites: "You don't have access to manage member invites",
         inviteMember: "Invite a member",
-        inviteProjectMemberDesc: "Enter the username of the person you'd like to invite to be a member of this project.",
-        inviteOrgMemberDesc: "Enter the username of the person you'd like to invite to be a member of this organization.",
+        inviteProjectMemberDesc:
+            "Enter the username of the person you'd like to invite to be a member of this project.",
+        inviteOrgMemberDesc:
+            "Enter the username of the person you'd like to invite to be a member of this organization.",
         invite: "Invite",
         memberUpdated: "Member updated successfully",
         pending: "Pending",
@@ -601,14 +607,16 @@ export default {
         memberRemoved: "Member removed successfully",
         sureToRemoveMember: (memberName: string) => `Are you sure you want to remove ${memberName} from this team?`,
         ownershipTransfered: "Ownership transferred successfully",
-        sureToTransferOwnership: (memberName: string) => `Are you sure you want to transfer ownership to ${memberName}?`,
+        sureToTransferOwnership: (memberName: string) =>
+            `Are you sure you want to transfer ownership to ${memberName}?`,
     },
 
     organization: {
         orgDoesntHaveProjects: "This organization doesn't have any projects yet.",
         manageProjects: "Manage projects",
         orgSettings: "Organization settings",
-        transferProjectsTip: "You can transfer your existing projects to this organization from: Project settings > Members",
+        transferProjectsTip:
+            "You can transfer your existing projects to this organization from: Project settings > Members",
         noProjects_CreateOne: "This organization doesn't have any projects. Click the button above to create one.",
         orgInfo: "Organization information",
         deleteOrg: "Delete organization",
@@ -726,7 +734,8 @@ export default {
         resubmitDesc: {
             _1: (project: string) => `You're submitting ${project} to be reviewed again by the moderators.`,
             _2: "Make sure you have addressed the comments from the moderation team.",
-            warning: "Repeated submissions without addressing the moderators' comments may result in an account suspension.",
+            warning:
+                "Repeated submissions without addressing the moderators' comments may result in an account suspension.",
         },
     },
 
@@ -972,7 +981,8 @@ export default {
         galleryDesc: (numImages: number, project: string, type: string, siteName_short: string) =>
             `View ${numImages} image(s) of '${project}' ${type} on ${siteName_short}`,
 
-        changelogDesc: (project: string, versionsNum: number) => `View the changelog of ${project}'s ${versionsNum} version(s).`,
+        changelogDesc: (project: string, versionsNum: number) =>
+            `View the changelog of ${project}'s ${versionsNum} version(s).`,
 
         versionsListDesc: (project: string, versionsNum: number) => `List of ${project}'s ${versionsNum} version(s).`,
         versionPageDesc: (o: {

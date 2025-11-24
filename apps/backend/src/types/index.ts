@@ -17,7 +17,7 @@ export interface ContextUserData extends User {
     // from the session validation function, the name is user.name if present, otherwise user.userName
     name: string;
     role: GlobalUserRole;
-    authScopes: bigint;
+    apiScopes: bigint;
 
     sessionId: string | null;
     patID: string | null;

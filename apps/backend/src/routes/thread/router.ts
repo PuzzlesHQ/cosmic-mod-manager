@@ -1,3 +1,4 @@
+import { API_SCOPE } from "@app/utils/pats";
 import { createThreadMessage_Schema } from "@app/utils/schemas/thread";
 import { zodParse } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
@@ -22,7 +23,7 @@ async function thread_get(ctx: Context) {
         const threadId = ctx.req.param("threadId");
         if (!threadId) return invalidRequestResponse(ctx);
 
-        const user = getUserFromCtx(ctx);
+        const user = getUserFromCtx(ctx, API_SCOPE.THREAD_READ);
         if (!user) return unauthenticatedReqResponse(ctx);
 
         const res = await GetThreadMessages(user, threadId);
@@ -35,7 +36,7 @@ async function thread_get(ctx: Context) {
 
 async function thread_post(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx);
+        const user = getUserFromCtx(ctx, API_SCOPE.THREAD_WRITE);
         if (!user) return unauthenticatedReqResponse(ctx);
 
         const threadId = ctx.req.param("threadId");
@@ -54,7 +55,7 @@ async function thread_post(ctx: Context) {
 
 async function threadMessage_delete(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx);
+        const user = getUserFromCtx(ctx, API_SCOPE.THREAD_WRITE);
         if (!user) return unauthenticatedReqResponse(ctx);
 
         const messageId = ctx.req.param("messageId");

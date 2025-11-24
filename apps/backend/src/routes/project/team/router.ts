@@ -1,3 +1,4 @@
+import { API_SCOPE } from "@app/utils/pats";
 import { overrideOrgMemberFormSchema, updateTeamMemberFormSchema } from "@app/utils/schemas/project/settings/members";
 import { zodParse } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
@@ -5,7 +6,7 @@ import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { critModifyReqRateLimiter } from "~/middleware/rate-limit/modify-req";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
-import { invalidRequestResponse, serverErrorResponse } from "~/utils/http";
+import { invalidRequestResponse, serverErrorResponse, unauthenticatedReqResponse } from "~/utils/http";
 import { getUserFromCtx } from "~/utils/router";
 import {
     acceptProjectTeamInvite,
@@ -37,12 +38,16 @@ const teamRouter = new Hono()
 
 async function teamInvite_post(ctx: Context) {
     try {
+        // a team can either be a project team or an organization team
+        // so need to check for both scopes
+        const user = getUserFromCtx(ctx, API_SCOPE.PROJECT_WRITE, API_SCOPE.ORGANIZATION_WRITE);
+        if (!user) return unauthenticatedReqResponse(ctx);
+
         const teamId = ctx.req.param("teamId");
         const userName = ctx.get(REQ_BODY_NAMESPACE)?.userName;
-        const userSession = getUserFromCtx(ctx);
-        if (!userName || !userSession || !teamId) return invalidRequestResponse(ctx);
+        if (!userName || !teamId) return invalidRequestResponse(ctx);
 
-        const res = await inviteMember(ctx, userSession, userName, teamId);
+        const res = await inviteMember(ctx, user, userName, teamId);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -52,11 +57,13 @@ async function teamInvite_post(ctx: Context) {
 
 async function teamInvite_patch(ctx: Context) {
     try {
-        const teamId = ctx.req.param("teamId");
-        const userSession = getUserFromCtx(ctx);
-        if (!userSession || !teamId) return invalidRequestResponse(ctx);
+        const user = getUserFromCtx(ctx, API_SCOPE.USER_WRITE);
+        if (!user) return unauthenticatedReqResponse(ctx);
 
-        const res = await acceptProjectTeamInvite(ctx, userSession, teamId);
+        const teamId = ctx.req.param("teamId");
+        if (!teamId) return invalidRequestResponse(ctx);
+
+        const res = await acceptProjectTeamInvite(ctx, user, teamId);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -66,11 +73,13 @@ async function teamInvite_patch(ctx: Context) {
 
 async function teamLeave_post(ctx: Context) {
     try {
-        const teamId = ctx.req.param("teamId");
-        const userSession = getUserFromCtx(ctx);
-        if (!userSession || !teamId) return invalidRequestResponse(ctx);
+        const user = getUserFromCtx(ctx, API_SCOPE.USER_WRITE);
+        if (!user) return unauthenticatedReqResponse(ctx);
 
-        const res = await leaveProjectTeam(ctx, userSession, teamId);
+        const teamId = ctx.req.param("teamId");
+        if (!teamId) return invalidRequestResponse(ctx);
+
+        const res = await leaveProjectTeam(ctx, user, teamId);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -80,12 +89,14 @@ async function teamLeave_post(ctx: Context) {
 
 async function teamOwner_patch(ctx: Context) {
     try {
-        const { teamId } = ctx.req.param();
-        const userSession = getUserFromCtx(ctx);
-        const newOwner = ctx.get(REQ_BODY_NAMESPACE)?.userId;
-        if (!userSession || !teamId || !newOwner) return invalidRequestResponse(ctx);
+        const user = getUserFromCtx(ctx, API_SCOPE.PROJECT_WRITE, API_SCOPE.ORGANIZATION_WRITE);
+        if (!user) return unauthenticatedReqResponse(ctx);
 
-        const res = await changeTeamOwner(ctx, userSession, teamId, newOwner);
+        const { teamId } = ctx.req.param();
+        const newOwner = ctx.get(REQ_BODY_NAMESPACE)?.userId;
+        if (!teamId || !newOwner) return invalidRequestResponse(ctx);
+
+        const res = await changeTeamOwner(ctx, user, teamId, newOwner);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -95,14 +106,16 @@ async function teamOwner_patch(ctx: Context) {
 
 async function teamMembers_post(ctx: Context) {
     try {
+        const user = getUserFromCtx(ctx, API_SCOPE.PROJECT_WRITE, API_SCOPE.ORGANIZATION_WRITE);
+        if (!user) return unauthenticatedReqResponse(ctx);
+
         const { teamId } = ctx.req.param();
-        const userSession = getUserFromCtx(ctx);
-        if (!userSession || !teamId) return invalidRequestResponse(ctx);
+        if (!teamId) return invalidRequestResponse(ctx);
 
         const { data, error } = await zodParse(overrideOrgMemberFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidRequestResponse(ctx, error);
 
-        const res = await overrideOrgMember(ctx, userSession, teamId, data);
+        const res = await overrideOrgMember(ctx, user, teamId, data);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -112,14 +125,16 @@ async function teamMembers_post(ctx: Context) {
 
 async function teamMember_patch(ctx: Context) {
     try {
+        const user = getUserFromCtx(ctx, API_SCOPE.PROJECT_WRITE, API_SCOPE.ORGANIZATION_WRITE);
+        if (!user) return unauthenticatedReqResponse(ctx);
+
         const { teamId, memberId } = ctx.req.param();
-        const userSession = getUserFromCtx(ctx);
-        if (!memberId || !userSession || !teamId) return invalidRequestResponse(ctx);
+        if (!memberId || !teamId) return invalidRequestResponse(ctx);
 
         const { data, error } = await zodParse(updateTeamMemberFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidRequestResponse(ctx, error);
 
-        const res = await editProjectMember(ctx, userSession, memberId, teamId, data);
+        const res = await editProjectMember(ctx, user, memberId, teamId, data);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -129,11 +144,13 @@ async function teamMember_patch(ctx: Context) {
 
 async function teamMember_delete(ctx: Context) {
     try {
-        const { teamId, memberId } = ctx.req.param();
-        const userSession = getUserFromCtx(ctx);
-        if (!memberId || !userSession || !teamId) return invalidRequestResponse(ctx);
+        const user = getUserFromCtx(ctx, API_SCOPE.PROJECT_WRITE, API_SCOPE.ORGANIZATION_WRITE);
+        if (!user) return unauthenticatedReqResponse(ctx);
 
-        const res = await removeProjectMember(ctx, userSession, memberId, teamId);
+        const { teamId, memberId } = ctx.req.param();
+        if (!memberId || !teamId) return invalidRequestResponse(ctx);
+
+        const res = await removeProjectMember(ctx, user, memberId, teamId);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);

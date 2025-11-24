@@ -1,5 +1,6 @@
 import { authProvidersList } from "@app/utils/config/project";
 import { getAuthProviderFromString, getUserRoleFromString } from "@app/utils/convertors";
+import { API_SCOPE, hasScope } from "@app/utils/pats";
 import { LoginFormSchema } from "@app/utils/schemas/auth";
 import { zodParse } from "@app/utils/schemas/utils";
 import { AuthActionIntent, type AuthProvider, type LoggedInUserData } from "@app/utils/types";
@@ -9,7 +10,7 @@ import { getReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-li
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { critModifyReqRateLimiter } from "~/middleware/rate-limit/modify-req";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
-import { HTTP_STATUS, invalidRequestResponse, serverErrorResponse } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponse, serverErrorResponse, unauthenticatedReqResponse } from "~/utils/http";
 import { getUserFromCtx } from "~/utils/router";
 import { userFileUrl } from "~/utils/urls";
 import { getLinkedAuthProviders, linkAuthProviderHandler, unlinkAuthProvider } from "./controllers/link-provider";
@@ -47,8 +48,8 @@ const authRouter = new Hono()
 
 async function currSession_get(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx);
-        if (!userSession) return ctx.json({ success: false, message: "You're not logged in!" }, HTTP_STATUS.OK);
+        const userSession = getUserFromCtx(ctx, API_SCOPE.USER_READ);
+        if (!userSession) return unauthenticatedReqResponse(ctx, "You're not logged in!");
 
         const formattedObject = {
             id: userSession.id,
@@ -63,6 +64,11 @@ async function currSession_get(ctx: Context) {
             sessionId: userSession.sessionId,
             patId: userSession.patID,
         } satisfies LoggedInUserData;
+
+        if (!hasScope(userSession.apiScopes, API_SCOPE.USER_READ_EMAIL)) {
+            formattedObject.email = "";
+            Object.defineProperty(formattedObject, "email", { enumerable: false });
+        }
 
         return ctx.json(formattedObject, HTTP_STATUS.OK);
     } catch (error) {
@@ -170,7 +176,7 @@ async function oAuthLinkProvider_post(ctx: Context) {
 
 async function oAuthLinkProvider_delete(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx);
+        const userSession = getUserFromCtx(ctx, API_SCOPE.USER_AUTH_WRITE);
         if (!userSession?.id) {
             return invalidRequestResponse(ctx);
         }
@@ -186,8 +192,8 @@ async function oAuthLinkProvider_delete(ctx: Context) {
 
 async function sessions_get(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx);
-        if (!userSession) return ctx.json([], HTTP_STATUS.OK);
+        const userSession = getUserFromCtx(ctx, API_SCOPE.USER_SESSION_READ);
+        if (!userSession) return unauthenticatedReqResponse(ctx);
 
         const result = await getUserSessions(userSession);
         return ctx.json(result.data, result.status);
@@ -199,7 +205,7 @@ async function sessions_get(ctx: Context) {
 
 async function linkedProviders_get(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx);
+        const userSession = getUserFromCtx(ctx, API_SCOPE.USER_READ, API_SCOPE.USER_READ_EMAIL);
         if (!userSession?.id) return invalidRequestResponse(ctx);
 
         const result = await getLinkedAuthProviders(userSession);
@@ -212,11 +218,11 @@ async function linkedProviders_get(ctx: Context) {
 
 async function session_delete(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx);
+        const userSession = getUserFromCtx(ctx, API_SCOPE.USER_SESSION_DELETE);
+        if (!userSession) return unauthenticatedReqResponse(ctx);
+
         const targetSessionId = ctx.get(REQ_BODY_NAMESPACE)?.sessionId || userSession?.sessionId;
-        if (!userSession?.id || !targetSessionId) {
-            return invalidRequestResponse(ctx, "Session id is required");
-        }
+        if (!targetSessionId) return invalidRequestResponse(ctx, "Session id is required");
 
         const result = await deleteUserSession(ctx, userSession, targetSessionId);
         return ctx.json(result.data, result.status);

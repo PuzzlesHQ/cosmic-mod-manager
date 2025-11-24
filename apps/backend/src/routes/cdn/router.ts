@@ -1,3 +1,4 @@
+import { API_SCOPE } from "@app/utils/pats";
 import { type Context, Hono } from "hono";
 import { cors } from "hono/cors";
 import { isbot } from "isbot";
@@ -82,7 +83,7 @@ async function galleryImage_get(ctx: Context) {
 const ALLOWED_EXTERNAL_USER_AGENTS = ["CRLauncher/"];
 async function versionFile_get(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx);
+        const userSession = getUserFromCtx(ctx, API_SCOPE.PROJECT_READ, API_SCOPE.VERSION_READ);
         const { projectId, versionId, fileName } = ctx.req.param();
         if (!projectId || !versionId || !fileName) return invalidRequestResponse(ctx);
 
