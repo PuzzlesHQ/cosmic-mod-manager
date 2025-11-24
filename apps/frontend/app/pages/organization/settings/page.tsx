@@ -156,7 +156,9 @@ export default function GeneralOrgSettings() {
                                         />
                                         <span className="px-1 text-foreground-muted text-sm lg:text-base">
                                             {Config.FRONTEND_URL}/organization/
-                                            <em className="font-[500] text-foreground not-italic">{form.getValues().slug}</em>
+                                            <em className="font-[500] text-foreground not-italic">
+                                                {form.getValues().slug}
+                                            </em>
                                         </span>
                                     </div>
                                     <FormMessage />
@@ -171,7 +173,10 @@ export default function GeneralOrgSettings() {
                                 <FormItem className="md:w-fit">
                                     <FormLabel className="font-bold" htmlFor="org-description-input">
                                         {t.form.description}
-                                        <CharacterCounter currVal={field.value} max={MAX_ORGANISATION_DESCRIPTION_LENGTH} />
+                                        <CharacterCounter
+                                            currVal={field.value}
+                                            max={MAX_ORGANISATION_DESCRIPTION_LENGTH}
+                                        />
                                     </FormLabel>
                                     <Textarea
                                         {...field}
@@ -187,7 +192,9 @@ export default function GeneralOrgSettings() {
                         <div className="mt-2 flex w-full items-center justify-end">
                             <Button
                                 type="submit"
-                                disabled={JSON.stringify(initialValues) === JSON.stringify(form.getValues()) || isLoading}
+                                disabled={
+                                    JSON.stringify(initialValues) === JSON.stringify(form.getValues()) || isLoading
+                                }
                             >
                                 {isLoading ? (
                                     <LoadingSpinner size="xs" />
@@ -246,7 +253,10 @@ function DeleteOrgDialog({ name, slug }: { name: string; slug: string }) {
     }
 
     return (
-        <ContentCardTemplate title={t.organization.deleteOrg} className="flex w-full flex-row flex-wrap justify-between gap-4">
+        <ContentCardTemplate
+            title={t.organization.deleteOrg}
+            className="flex w-full flex-row flex-wrap justify-between gap-4"
+        >
             <p className="max-w-[65ch] text-foreground-muted">{t.organization.deleteOrgDesc}</p>
 
             <Dialog>

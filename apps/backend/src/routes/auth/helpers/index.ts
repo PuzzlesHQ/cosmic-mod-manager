@@ -1,4 +1,8 @@
-import { AUTHTOKEN_COOKIE_NAMESPACE, CSRF_STATE_COOKIE_NAMESPACE, PASSWORD_HASH_SALT_ROUNDS } from "@app/utils/constants";
+import {
+    AUTHTOKEN_COOKIE_NAMESPACE,
+    CSRF_STATE_COOKIE_NAMESPACE,
+    PASSWORD_HASH_SALT_ROUNDS,
+} from "@app/utils/constants";
 import { getSessionIp } from "@app/utils/headers";
 import { convertToIPv6, stripIp } from "@app/utils/ip";
 import type { ValidatedOAuthProfile } from "@app/utils/schemas/auth";

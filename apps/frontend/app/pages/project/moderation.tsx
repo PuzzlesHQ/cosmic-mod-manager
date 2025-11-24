@@ -27,7 +27,8 @@ export default function ModerationPage() {
             <div>
                 <MarkdownRenderBox text={t.moderation.rejected_msg("/legal/rules")} />
                 <p className="mt-0.5 font-semibold text-warning-fg">
-                    <TriangleAlertIcon className="inline-block h-btn-icon w-btn-icon" /> {t.moderation.repeatedSubmission_warning}
+                    <TriangleAlertIcon className="inline-block h-btn-icon w-btn-icon" />{" "}
+                    {t.moderation.repeatedSubmission_warning}
                 </p>
             </div>
         );

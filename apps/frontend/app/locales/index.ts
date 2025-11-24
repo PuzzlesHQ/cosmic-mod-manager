@@ -17,7 +17,10 @@ export async function getLocale(locale: string, seenLocales: string[] = []): Pro
         const localeModule = await getLocaleFile(locale);
         return fillEmptyKeys(localeModule.default, default_locale) as Locale;
     } else {
-        const [localeModule, fallback] = await Promise.all([getLocaleFile(locale), getLocale(meta.fallback, seenLocales)]);
+        const [localeModule, fallback] = await Promise.all([
+            getLocaleFile(locale),
+            getLocale(meta.fallback, seenLocales),
+        ]);
         return fillEmptyKeys(fillEmptyKeys(localeModule.default, fallback), default_locale) as Locale;
     }
 }

@@ -205,7 +205,15 @@ export function Navlink({ href, label, children, className, activeClassName }: N
     );
 }
 
-export function NavMenuLink({ href, label, isDisabled = false, tabIndex, className, children, activeClassName }: NavlinkProps) {
+export function NavMenuLink({
+    href,
+    label,
+    isDisabled = false,
+    tabIndex,
+    className,
+    children,
+    activeClassName,
+}: NavlinkProps) {
     return (
         <ButtonLink
             url={href}
@@ -230,11 +238,19 @@ function CreateThingsPopup() {
     return (
         <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
             <PopoverTrigger asChild>
-                <Button variant="ghost" size="sm" aria-label="Create new project or organization" className="bg-background">
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    aria-label="Create new project or organization"
+                    className="bg-background"
+                >
                     <PlusIcon aria-hidden className="h-5 w-5" />
                     <ChevronDownIcon
                         aria-hidden
-                        className={cn("h-5 w-5 text-foreground-extra-muted transition-all", popoverOpen && "rotate-180")}
+                        className={cn(
+                            "h-5 w-5 text-foreground-extra-muted transition-all",
+                            popoverOpen && "rotate-180",
+                        )}
                     />
                 </Button>
             </PopoverTrigger>

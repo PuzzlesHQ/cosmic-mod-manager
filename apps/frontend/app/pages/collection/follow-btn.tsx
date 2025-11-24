@@ -21,7 +21,11 @@ export function FollowProject_Btn(props: { projectId: string }) {
         return (
             <LoginDialog>
                 <Button variant="secondary" className="h-11 w-11 rounded-full p-0">
-                    <HeartIcon aria-hidden className="h-btn-icon-lg w-btn-icon-lg" fill={isFollowing ? "currentColor" : "none"} />
+                    <HeartIcon
+                        aria-hidden
+                        className="h-btn-icon-lg w-btn-icon-lg"
+                        fill={isFollowing ? "currentColor" : "none"}
+                    />
                 </Button>
             </LoginDialog>
         );
@@ -29,7 +33,11 @@ export function FollowProject_Btn(props: { projectId: string }) {
 
     return (
         <Button variant="secondary" className="h-11 w-11 rounded-full p-0" onClick={toggleFollow}>
-            <HeartIcon aria-hidden className="h-btn-icon-lg w-btn-icon-lg" fill={isFollowing ? "currentColor" : "none"} />
+            <HeartIcon
+                aria-hidden
+                className="h-btn-icon-lg w-btn-icon-lg"
+                fill={isFollowing ? "currentColor" : "none"}
+            />
         </Button>
     );
 }

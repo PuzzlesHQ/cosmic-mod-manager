@@ -46,25 +46,35 @@ export async function GetSession_ByTokenHash(tokenHash: string): Promise<GetSess
     return session;
 }
 
-export function GetSession<T extends Prisma.SessionFindFirstArgs>(args: Prisma.SelectSubset<T, Prisma.SessionFindFirstArgs>) {
+export function GetSession<T extends Prisma.SessionFindFirstArgs>(
+    args: Prisma.SelectSubset<T, Prisma.SessionFindFirstArgs>,
+) {
     return prisma.session.findFirst(args);
 }
 
-export function GetManySessions<T extends Prisma.SessionFindManyArgs>(args: Prisma.SelectSubset<T, Prisma.SessionFindManyArgs>) {
+export function GetManySessions<T extends Prisma.SessionFindManyArgs>(
+    args: Prisma.SelectSubset<T, Prisma.SessionFindManyArgs>,
+) {
     return prisma.session.findMany(args);
 }
 
-export function CreateSession<T extends Prisma.SessionCreateArgs>(args: Prisma.SelectSubset<T, Prisma.SessionCreateArgs>) {
+export function CreateSession<T extends Prisma.SessionCreateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.SessionCreateArgs>,
+) {
     return prisma.session.create(args);
 }
 
-export async function UpdateSession<T extends Prisma.SessionUpdateArgs>(args: Prisma.SelectSubset<T, Prisma.SessionUpdateArgs>) {
+export async function UpdateSession<T extends Prisma.SessionUpdateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.SessionUpdateArgs>,
+) {
     const session = await prisma.session.update(args);
     await DeleteCache(cacheKey(session.tokenHash, USER_SESSION_CACHE_KEY));
     return session;
 }
 
-export async function DeleteSession<T extends Prisma.SessionDeleteArgs>(args: Prisma.SelectSubset<T, Prisma.SessionDeleteArgs>) {
+export async function DeleteSession<T extends Prisma.SessionDeleteArgs>(
+    args: Prisma.SelectSubset<T, Prisma.SessionDeleteArgs>,
+) {
     const session = await prisma.session.delete(args);
     await DeleteCache(cacheKey(session.tokenHash, USER_SESSION_CACHE_KEY));
     return session;

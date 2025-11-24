@@ -356,12 +356,14 @@ export default {
             uploadVersion: "Eine Version hochladen",
             uploadVersionDesc: "Mindestens eine Version ist benötigt, um das Projekt zur Prüfung vorzulegen.",
             addDescription: "Beschribung hinzufügen",
-            addDescriptionDesc: "Eine Beschreibung, die den Sinn und die Funktion des Projektes klar darlegt, wird benötigt.",
+            addDescriptionDesc:
+                "Eine Beschreibung, die den Sinn und die Funktion des Projektes klar darlegt, wird benötigt.",
             addIcon: "Ein Icon hinzufügen",
             addIconDesc:
                 "Dein Projekt sollte ein schön-aussehendes Icon haben, um es eindeutig und auf einen Blick identifizieren zu können.",
             featureGalleryImg: "Ein Galleriebild hervorheben",
-            featureGalleryImgDesc: "Hervorgehobene Galleriebilder sind für viele Nutzer der erste Eindruck von deinem Projekt.",
+            featureGalleryImgDesc:
+                "Hervorgehobene Galleriebilder sind für viele Nutzer der erste Eindruck von deinem Projekt.",
             selectTags: "Tags wählen",
             selectTagsDesc: "Wähle alle Tags, die auf dein Projekt zutreffen.",
             addExtLinks: "Externe Links hinzufügen",
@@ -568,7 +570,8 @@ export default {
         orgSettings: "Organizationseinstellungen",
         transferProjectsTip:
             "Du kannst über Projekteinstellungen > Mitglieder existierende Projekte zu dieser Organisation übertragen",
-        noProjects_CreateOne: "Diese Organisation hat noch keine Projekte. Klicke auf den Knopf oben, um eines zu erstellen.",
+        noProjects_CreateOne:
+            "Diese Organisation hat noch keine Projekte. Klicke auf den Knopf oben, um eines zu erstellen.",
         orgInfo: "Organisation",
         deleteOrg: "Organisation löschen",
         deleteOrgDesc:

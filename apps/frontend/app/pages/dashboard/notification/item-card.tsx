@@ -124,7 +124,11 @@ export function TeamInviteNotification({
                                 {invitedBy.userName || notification.body?.invitedBy}
                             </Link>,
 
-                            <Link key="invited-to" to={pageUrl} className="font-semibold text-foreground hover:underline">
+                            <Link
+                                key="invited-to"
+                                to={pageUrl}
+                                className="font-semibold text-foreground hover:underline"
+                            >
                                 {title}
                             </Link>,
                         )}
@@ -256,7 +260,11 @@ export function StatusChangeNotif_Item({ notification, project, ...props }: Stat
                     </Link>
                     <div className="flex flex-wrap items-center justify-start gap-x-1 text-foreground-muted">
                         {t.dashboard.projectStatusUpdated(
-                            <Link key="project" to={projectPageUrl} className="font-semibold text-foreground hover:underline">
+                            <Link
+                                key="project"
+                                to={projectPageUrl}
+                                className="font-semibold text-foreground hover:underline"
+                            >
                                 {projectName}
                             </Link>,
 
@@ -352,7 +360,12 @@ function DeleteNotif(props: DeleteNotifProps) {
     return (
         <Tooltip>
             <TooltipTrigger asChild>
-                <Button size="icon" variant="ghost-destructive" disabled={props.disabled} onClick={props.deleteNotification}>
+                <Button
+                    size="icon"
+                    variant="ghost-destructive"
+                    disabled={props.disabled}
+                    onClick={props.deleteNotification}
+                >
                     <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
                 </Button>
             </TooltipTrigger>

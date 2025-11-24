@@ -107,7 +107,9 @@ export default function GeneralSettingsPage() {
     if (!session?.id) return;
 
     const isProjectTeamMember = projectData.members.some((member) => member.userId === session.id);
-    const isOrgMember = projectData.organisation?.members?.some((member) => member.userId === session.id && member.accepted);
+    const isOrgMember = projectData.organisation?.members?.some(
+        (member) => member.userId === session.id && member.accepted,
+    );
 
     return (
         <>
@@ -142,7 +144,12 @@ export default function GeneralSettingsPage() {
                                         {t.form.name}
                                         <CharacterCounter currVal={field.value} max={MAX_PROJECT_NAME_LENGTH} />
                                     </FormLabel>
-                                    <Input {...field} className="md:w-[32ch]" id="project-name-input" autoComplete="off" />
+                                    <Input
+                                        {...field}
+                                        className="md:w-[32ch]"
+                                        id="project-name-input"
+                                        autoComplete="off"
+                                    />
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -169,7 +176,9 @@ export default function GeneralSettingsPage() {
                                         />
                                         <span className="px-1 text-foreground-muted text-sm lg:text-base">
                                             {Config.FRONTEND_URL}/{form.getValues().type?.[0] || ctx.projectType}/
-                                            <em className="font-[500] text-foreground not-italic">{form.getValues().slug}</em>
+                                            <em className="font-[500] text-foreground not-italic">
+                                                {form.getValues().slug}
+                                            </em>
                                         </span>
                                     </div>
 
@@ -239,14 +248,23 @@ export default function GeneralSettingsPage() {
                                     render={({ field }) => (
                                         <FormItem className="flex w-full flex-row flex-wrap items-end justify-between">
                                             <div className="flex flex-col items-start justify-center gap-y-1.5">
-                                                <FormLabel className="font-bold">{t.projectSettings.clientSide}</FormLabel>
+                                                <FormLabel className="font-bold">
+                                                    {t.projectSettings.clientSide}
+                                                </FormLabel>
                                                 <span className="text-foreground-muted">
                                                     {t.projectSettings.clientSideDesc(t.navbar[projectData.type[0]])}
                                                 </span>
                                             </div>
 
-                                            <Select name={field.name} value={field.value} onValueChange={field.onChange}>
-                                                <SelectTrigger className="w-[15rem] max-w-full" aria-label="Client-side">
+                                            <Select
+                                                name={field.name}
+                                                value={field.value}
+                                                onValueChange={field.onChange}
+                                            >
+                                                <SelectTrigger
+                                                    className="w-[15rem] max-w-full"
+                                                    aria-label="Client-side"
+                                                >
                                                     <SelectValue />
                                                 </SelectTrigger>
                                                 <SelectContent>
@@ -273,14 +291,23 @@ export default function GeneralSettingsPage() {
                                     render={({ field }) => (
                                         <FormItem className="flex w-full flex-row flex-wrap items-end justify-between">
                                             <div className="flex flex-col items-start justify-center gap-y-1.5">
-                                                <FormLabel className="font-bold">{t.projectSettings.serverSide}</FormLabel>
+                                                <FormLabel className="font-bold">
+                                                    {t.projectSettings.serverSide}
+                                                </FormLabel>
                                                 <span className="text-foreground-muted">
                                                     {t.projectSettings.serverSideDesc(t.navbar[projectData.type[0]])}
                                                 </span>
                                             </div>
 
-                                            <Select name={field.name} value={field.value} onValueChange={field.onChange}>
-                                                <SelectTrigger className="w-[15rem] max-w-full" aria-label="Server-side">
+                                            <Select
+                                                name={field.name}
+                                                value={field.value}
+                                                onValueChange={field.onChange}
+                                            >
+                                                <SelectTrigger
+                                                    className="w-[15rem] max-w-full"
+                                                    aria-label="Server-side"
+                                                >
                                                     <SelectValue />
                                                 </SelectTrigger>
                                                 <SelectContent>
@@ -325,7 +352,10 @@ export default function GeneralSettingsPage() {
                                                             className="h-btn-icon w-btn-icon text-success-fg"
                                                         />
                                                     ) : (
-                                                        <XIcon aria-hidden className="h-btn-icon w-btn-icon text-error-fg" />
+                                                        <XIcon
+                                                            aria-hidden
+                                                            className="h-btn-icon w-btn-icon text-error-fg"
+                                                        />
                                                     )}
                                                     {t.projectSettings.visibleInSearch}
                                                 </span>
@@ -337,7 +367,10 @@ export default function GeneralSettingsPage() {
                                                             className="h-btn-icon w-btn-icon text-success-fg"
                                                         />
                                                     ) : (
-                                                        <XIcon aria-hidden className="h-btn-icon w-btn-icon text-error-fg" />
+                                                        <XIcon
+                                                            aria-hidden
+                                                            className="h-btn-icon w-btn-icon text-error-fg"
+                                                        />
                                                     )}
                                                     {t.projectSettings.visibleOnProfile}
                                                 </span>
@@ -398,7 +431,9 @@ export default function GeneralSettingsPage() {
                         <div className="mt-2 flex w-full items-center justify-end">
                             <Button
                                 type="submit"
-                                disabled={JSON.stringify(initialValues) === JSON.stringify(form.getValues()) || isLoading}
+                                disabled={
+                                    JSON.stringify(initialValues) === JSON.stringify(form.getValues()) || isLoading
+                                }
                             >
                                 {isLoading ? (
                                     <LoadingSpinner size="xs" />
@@ -473,7 +508,9 @@ function DeleteProjectDialog({ name, projectId, returnUrl }: { name: string; pro
             title={t.projectSettings.deleteProject}
             className="flex w-full flex-row flex-wrap justify-between gap-4"
         >
-            <p className="max-w-[65ch] text-foreground-muted">{t.projectSettings.deleteProjectDesc(Config.SITE_NAME_SHORT)}</p>
+            <p className="max-w-[65ch] text-foreground-muted">
+                {t.projectSettings.deleteProjectDesc(Config.SITE_NAME_SHORT)}
+            </p>
 
             <Dialog>
                 <DialogTrigger asChild>

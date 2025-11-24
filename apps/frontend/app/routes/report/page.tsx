@@ -14,7 +14,8 @@ export default function () {
 
 export function shouldRevalidate(props: ShouldRevalidateFunctionArgs) {
     if (
-        props.currentUrl.searchParams.get(ITEM_TYPE_PARAM_KEY) !== props.nextUrl.searchParams.get(ITEM_TYPE_PARAM_KEY) ||
+        props.currentUrl.searchParams.get(ITEM_TYPE_PARAM_KEY) !==
+            props.nextUrl.searchParams.get(ITEM_TYPE_PARAM_KEY) ||
         props.currentUrl.searchParams.get(ITEM_ID_PARAM_KEY) !== props.nextUrl.searchParams.get(ITEM_ID_PARAM_KEY)
     ) {
         return true;

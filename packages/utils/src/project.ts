@@ -2,7 +2,13 @@ import { type CategoryT, categories } from "~/constants/categories";
 import { type Loader, loaders } from "~/constants/loaders";
 import { getRolePerms } from "~/constants/roles";
 import { CapitalizeAndFormatString } from "~/string";
-import { GlobalUserRole, type OrganisationPermission, type ProjectPermission, ProjectType, type TagType } from "~/types";
+import {
+    GlobalUserRole,
+    type OrganisationPermission,
+    type ProjectPermission,
+    ProjectType,
+    type TagType,
+} from "~/types";
 
 export function doesMemberHaveAccess(
     requiredPermission: ProjectPermission,
@@ -28,7 +34,11 @@ export function doesOrgMemberHaveAccess(
     return permissions.includes(requiredPermission);
 }
 
-export function getCurrMember<T extends PartialTeamMember>(userId: string | null | undefined, teamMembers: T[], orgMembers: T[]) {
+export function getCurrMember<T extends PartialTeamMember>(
+    userId: string | null | undefined,
+    teamMembers: T[],
+    orgMembers: T[],
+) {
     if (!userId) return null;
     const combinedMembers = combineProjectMembers(teamMembers, orgMembers);
     return combinedMembers.get(userId);
@@ -195,7 +205,8 @@ export function validateProjectTypesCompatibility(types: ProjectType[]) {
     if (types.includes(ProjectType.WORLD)) return filterInCompatibleProjectTypes(ProjectType.WORLD, types);
     if (types.includes(ProjectType.MODPACK)) return filterInCompatibleProjectTypes(ProjectType.MODPACK, types);
     if (types.includes(ProjectType.SHADER)) return filterInCompatibleProjectTypes(ProjectType.SHADER, types);
-    if (types.includes(ProjectType.RESOURCE_PACK)) return filterInCompatibleProjectTypes(ProjectType.RESOURCE_PACK, types);
+    if (types.includes(ProjectType.RESOURCE_PACK))
+        return filterInCompatibleProjectTypes(ProjectType.RESOURCE_PACK, types);
     if (types.includes(ProjectType.DATAMOD)) return filterInCompatibleProjectTypes(ProjectType.DATAMOD, types);
     if (types.includes(ProjectType.MOD)) return filterInCompatibleProjectTypes(ProjectType.MOD, types);
     if (types.includes(ProjectType.PLUGIN)) return filterInCompatibleProjectTypes(ProjectType.PLUGIN, types);

@@ -25,7 +25,8 @@ export class MersenneTwister {
         this.mt[0] = s >>> 0;
         for (this.mti = 1; this.mti < this.N; this.mti++) {
             const s = this.mt[this.mti - 1] ^ (this.mt[this.mti - 1] >>> 30);
-            this.mt[this.mti] = ((((s & 0xffff0000) >>> 16) * 1812433253) << 16) + (s & 0x0000ffff) * 1812433253 + this.mti;
+            this.mt[this.mti] =
+                ((((s & 0xffff0000) >>> 16) * 1812433253) << 16) + (s & 0x0000ffff) * 1812433253 + this.mti;
             this.mt[this.mti] >>>= 0;
         }
     }

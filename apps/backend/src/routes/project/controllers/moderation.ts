@@ -44,7 +44,8 @@ export async function QueueProjectForApproval(projectId: string, userSession: Co
     // If project doesn't have any supported game versions, that means it hasn't uploaded any versions yet
     if (project.gameVersions.length <= 0)
         return invalidRequestResponseData("Project submitted for approval without any initial versions!");
-    if (!project.description?.length) return invalidRequestResponseData("Project submitted for approval without a description!");
+    if (!project.description?.length)
+        return invalidRequestResponseData("Project submitted for approval without a description!");
     if (!project.licenseId && !project.licenseName)
         return invalidRequestResponseData("Project submitted for approval without a license!");
 

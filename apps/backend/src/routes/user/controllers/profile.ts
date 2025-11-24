@@ -12,7 +12,12 @@ import { getManyProjects } from "~/routes/project/controllers";
 import { UpdateProjects_SearchIndex } from "~/routes/search/search-db";
 import { deleteUserFile, saveUserFile } from "~/services/storage";
 import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
-import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
+import {
+    HTTP_STATUS,
+    invalidRequestResponseData,
+    notFoundResponseData,
+    unauthorizedReqResponseData,
+} from "~/utils/http";
 import { resizeImageToWebp } from "~/utils/images";
 import { generateDbId } from "~/utils/str";
 import { userFileUrl } from "~/utils/urls";
@@ -55,7 +60,10 @@ export async function getUserFollowedProjects(userSlug: string, userSession: Con
     return await getManyProjects(userSession, userData.followingProjects);
 }
 
-export async function updateUserProfile(userSession: ContextUserData, profileData: z.infer<typeof profileUpdateFormSchema>) {
+export async function updateUserProfile(
+    userSession: ContextUserData,
+    profileData: z.infer<typeof profileUpdateFormSchema>,
+) {
     const user = await GetUser_Unique({
         where: {
             id: userSession.id,
@@ -84,7 +92,11 @@ export async function updateUserProfile(userSession: ContextUserData, profileDat
     if (user.profilePageBg && (!profileData.profilePageBg || profileData.profilePageBg instanceof File)) {
         try {
             const deleted_ImageFile = await DeleteFile_ByID(user.profilePageBg);
-            await deleteUserFile(deleted_ImageFile.storageService as FILE_STORAGE_SERVICE, user.id, deleted_ImageFile.name);
+            await deleteUserFile(
+                deleted_ImageFile.storageService as FILE_STORAGE_SERVICE,
+                user.id,
+                deleted_ImageFile.name,
+            );
         } catch {}
 
         profilePageBg_FileId = null;
@@ -178,7 +190,11 @@ export async function getUserAvatar(
     return imgFile_Id;
 }
 
-export async function getAllVisibleProjects(userSession: ContextUserData | null, userSlug: string, listedProjectsOnly: boolean) {
+export async function getAllVisibleProjects(
+    userSession: ContextUserData | null,
+    userSlug: string,
+    listedProjectsOnly: boolean,
+) {
     const user = await GetUser_ByIdOrUsername(userSlug, userSlug);
     if (!user) return { data: { success: false, message: "user not found" }, status: HTTP_STATUS.NOT_FOUND };
 

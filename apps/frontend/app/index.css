@@ -7,7 +7,6 @@
 @import "./components/index.css";
 @import "./pages/layouts.css";
 
-
 /* kinda HACKY_THING */
 .content-container:not(:has(> .full-width)) {
     @apply container sm:px-8 mb-16 px-4;

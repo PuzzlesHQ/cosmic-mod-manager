@@ -14,14 +14,19 @@ export async function updateProjectDescription(
     const project = await GetProject_ListItem(projectId);
     if (!project?.id) return notFoundResponseData();
 
-    const memberObj = getCurrMember(userSession.id, project.team?.members || [], project.organisation?.team.members || []);
+    const memberObj = getCurrMember(
+        userSession.id,
+        project.team?.members || [],
+        project.organisation?.team.members || [],
+    );
     const hasEditAccess = doesMemberHaveAccess(
         ProjectPermission.EDIT_DESCRIPTION,
         memberObj?.permissions as ProjectPermission[],
         memberObj?.isOwner,
         userSession.role,
     );
-    if (!hasEditAccess) return unauthorizedReqResponseData("You don't have the permission to update project description");
+    if (!hasEditAccess)
+        return unauthorizedReqResponseData("You don't have the permission to update project description");
 
     await UpdateProject({
         where: { id: project.id },

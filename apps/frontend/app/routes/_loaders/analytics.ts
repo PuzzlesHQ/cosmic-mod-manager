@@ -12,7 +12,11 @@ const MAX_TOP_PROJECTS = 6;
 
 export type GetFetchUrl_Func = (searchParams: URLSearchParams, projectIds: string[]) => string;
 
-export async function projectAnalyticsLoader(ctx: LoaderFunctionArgs, projectIds: string[], getFetchUrl?: GetFetchUrl_Func) {
+export async function projectAnalyticsLoader(
+    ctx: LoaderFunctionArgs,
+    projectIds: string[],
+    getFetchUrl?: GetFetchUrl_Func,
+) {
     const reqUrl = new URL(ctx.request.url);
     const timeline = getValidTimeline(reqUrl.searchParams.get(timelineKey));
     const timeRange = getTimeRange(timeline);

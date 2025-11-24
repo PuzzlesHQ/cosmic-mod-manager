@@ -125,7 +125,12 @@ export function ProfileSettingsPage({ session }: Props) {
                                         {t.form.username}
                                         <CharacterCounter currVal={field.value} max={MAX_USERNAME_LENGTH} />
                                     </FormLabel>
-                                    <Input {...field} className="md:w-[32ch]" id="username-input" autoComplete="username" />
+                                    <Input
+                                        {...field}
+                                        className="md:w-[32ch]"
+                                        id="username-input"
+                                        autoComplete="username"
+                                    />
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -210,7 +215,9 @@ export function ProfileSettingsPage({ session }: Props) {
                                                         name={field.name}
                                                         id="gallery-image-input"
                                                         className="hidden"
-                                                        accept={validImgFileExtensions.concat(validVideoFileExtensions).join(",")}
+                                                        accept={validImgFileExtensions
+                                                            .concat(validVideoFileExtensions)
+                                                            .join(",")}
                                                         onChange={(e) => {
                                                             const file = e.target.files?.[0];
                                                             if (file) field.onChange(file);
@@ -286,7 +293,9 @@ export function ProfileSettingsPage({ session }: Props) {
                         <div className="mt-2 flex w-full flex-wrap items-center gap-x-3 gap-y-2">
                             <Button
                                 type="submit"
-                                disabled={JSON.stringify(initialValues) === JSON.stringify(form.getValues()) || isLoading}
+                                disabled={
+                                    JSON.stringify(initialValues) === JSON.stringify(form.getValues()) || isLoading
+                                }
                             >
                                 {isLoading ? (
                                     <LoadingSpinner size="xs" />

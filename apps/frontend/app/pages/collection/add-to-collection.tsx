@@ -54,7 +54,10 @@ export function AddToCollection_Popup({ projectId }: { projectId: string }) {
                         const checked = collection.projects.includes(projectId);
 
                         return (
-                            <div key={collection.id} className="group/collection-wrapper flex items-center justify-between gap-2">
+                            <div
+                                key={collection.id}
+                                className="group/collection-wrapper flex items-center justify-between gap-2"
+                            >
                                 <LabelledCheckbox
                                     checked={checked}
                                     onCheckedChange={(checked) => {
@@ -106,7 +109,11 @@ function AddToCollection_PopupTrigger(props: TriggerProps) {
             aria-label="Add to collection"
             onClick={props.onClick}
         >
-            <BookmarkIcon aria-hidden className="h-btn-icon-lg w-btn-icon-lg" fill={props.bookmarked ? "currentColor" : "none"} />
+            <BookmarkIcon
+                aria-hidden
+                className="h-btn-icon-lg w-btn-icon-lg"
+                fill={props.bookmarked ? "currentColor" : "none"}
+            />
         </Button>
     );
 }

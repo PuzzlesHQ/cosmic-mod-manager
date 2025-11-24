@@ -6,7 +6,11 @@ import rateLimits from "./limits";
 import { setRateLimitHeaders } from "./utils";
 
 const getReqLimiter = rateLimits.global.GET;
-const getReqLimiterBucket = new TokenBucket(getReqLimiter.namespace, getReqLimiter.max, getReqLimiter.timeWindow_seconds);
+const getReqLimiterBucket = new TokenBucket(
+    getReqLimiter.namespace,
+    getReqLimiter.max,
+    getReqLimiter.timeWindow_seconds,
+);
 
 // Regular get request rate limiter
 export async function getReqRateLimiter(ctx: Context, next: Next) {

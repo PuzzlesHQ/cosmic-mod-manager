@@ -57,7 +57,9 @@ export function CollectionsProvider(props: { children: React.ReactNode }) {
         });
 
         if (!res.ok) {
-            toast.error(action === "add" ? "Failed to add projects to collection" : "Failed to remove projects from collection");
+            toast.error(
+                action === "add" ? "Failed to add projects to collection" : "Failed to remove projects from collection",
+            );
             enableInteractions();
             return;
         }

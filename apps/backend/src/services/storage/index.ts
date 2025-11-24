@@ -59,7 +59,12 @@ export async function deleteDirectory(storageService: FILE_STORAGE_SERVICE, path
 }
 
 // ? User Files
-export async function saveUserFile(storageService: FILE_STORAGE_SERVICE, userId: string, file: WritableFile, fileName: string) {
+export async function saveUserFile(
+    storageService: FILE_STORAGE_SERVICE,
+    userId: string,
+    file: WritableFile,
+    fileName: string,
+) {
     return await saveFile(storageService, file, userDir(userId, fileName));
 }
 
@@ -117,7 +122,11 @@ export async function deleteProjectVersionFile(
     return await deleteFile(storageService, versionsDir(projectId, versionId, fileName));
 }
 
-export async function deleteProjectVersionDirectory(storageService: FILE_STORAGE_SERVICE, projectId: string, versionId: string) {
+export async function deleteProjectVersionDirectory(
+    storageService: FILE_STORAGE_SERVICE,
+    projectId: string,
+    versionId: string,
+) {
     return await deleteDirectory(storageService, versionsDir(projectId, versionId));
 }
 
@@ -146,7 +155,11 @@ export async function saveProjectGalleryFile(
     return await saveFile(storageService, file, projectGalleryDir(projectId, fileName));
 }
 
-export async function deleteProjectGalleryFile(storageService: FILE_STORAGE_SERVICE, projectId: string, fileName: string) {
+export async function deleteProjectGalleryFile(
+    storageService: FILE_STORAGE_SERVICE,
+    projectId: string,
+    fileName: string,
+) {
     if (isUrl(fileName)) return fileName;
     return await deleteFile(storageService, projectGalleryDir(projectId, fileName));
 }

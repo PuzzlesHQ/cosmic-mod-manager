@@ -115,7 +115,14 @@ FormControl.displayName = "FormControl";
 function FormDescription({ ref, className, ...props }: React.ComponentProps<"p">) {
     const { formDescriptionId } = useFormField();
 
-    return <p ref={ref} id={formDescriptionId} className={cn("text-[0.87rem] text-foreground-muted", className)} {...props} />;
+    return (
+        <p
+            ref={ref}
+            id={formDescriptionId}
+            className={cn("text-[0.87rem] text-foreground-muted", className)}
+            {...props}
+        />
+    );
 }
 FormDescription.displayName = "FormDescription";
 
@@ -170,4 +177,14 @@ function CharacterCounter({ ref, currVal, max, visibleAfter, className, ...props
 }
 FormMessage.displayName = "CharacterCounter";
 
-export { CharacterCounter, Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, useFormField };
+export {
+    CharacterCounter,
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+    useFormField,
+};

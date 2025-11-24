@@ -9,14 +9,18 @@ export const buttonVariants = cva(
     {
         variants: {
             variant: {
-                default: "bg-primary-btn-bg font-[600] text-primary-btn-fg hover:brightness-90 dark:hover:brightness-115",
-                destructive: "bg-danger-btn-bg font-[600] text-danger-btn-fg hover:brightness-90 dark:hover:brightness-115",
+                default:
+                    "bg-primary-btn-bg font-[600] text-primary-btn-fg hover:brightness-90 dark:hover:brightness-115",
+                destructive:
+                    "bg-danger-btn-bg font-[600] text-danger-btn-fg hover:brightness-90 dark:hover:brightness-115",
 
                 outline: "border border-border text-foreground-muted hover:bg-raised-background hover:text-foreground",
 
                 secondary: "bg-raised-background text-foreground-muted hover:brightness-95 dark:hover:brightness-115",
-                "secondary-destructive": "bg-error-bg font-[600] text-error-fg hover:brightness-90 dark:hover:brightness-115",
-                "secondary-dark": "bg-card-background text-foreground-muted hover:brightness-95 dark:hover:brightness-115",
+                "secondary-destructive":
+                    "bg-error-bg font-[600] text-error-fg hover:brightness-90 dark:hover:brightness-115",
+                "secondary-dark":
+                    "bg-card-background text-foreground-muted hover:brightness-95 dark:hover:brightness-115",
 
                 ghost: "text-foreground-muted hover:bg-raised-background hover:text-foreground",
                 "ghost-destructive": "text-error-fg hover:bg-error-bg",

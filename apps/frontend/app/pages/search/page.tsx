@@ -25,7 +25,15 @@ import {
     DialogTrigger,
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "~/components/ui/select";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "~/components/ui/select";
 import { TooltipProvider, TooltipTemplate } from "~/components/ui/tooltip";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { cn } from "~/components/utils";
@@ -145,7 +153,9 @@ export default function SearchPage() {
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
-                                <SelectLabel className="font-bold text-foreground-extra-muted">{t.search.sortBy}</SelectLabel>
+                                <SelectLabel className="font-bold text-foreground-extra-muted">
+                                    {t.search.sortBy}
+                                </SelectLabel>
                                 {[
                                     SearchResultSortMethod.RELEVANCE,
                                     SearchResultSortMethod.TRENDING,

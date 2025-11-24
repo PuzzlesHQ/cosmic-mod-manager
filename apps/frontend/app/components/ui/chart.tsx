@@ -125,7 +125,9 @@ function ChartTooltipContent({
         const key = `${labelKey || item?.dataKey || item?.name || "value"}`;
         const itemConfig = getPayloadConfigFromPayload(config, item, key);
         const value =
-            !labelKey && typeof label === "string" ? config[label as keyof typeof config]?.label || label : itemConfig?.label;
+            !labelKey && typeof label === "string"
+                ? config[label as keyof typeof config]?.label || label
+                : itemConfig?.label;
 
         if (labelFormatter) {
             return <div className={cn("font-medium", labelClassName)}>{labelFormatter(value, payload)}</div>;
@@ -179,7 +181,8 @@ function ChartTooltipContent({
                                                 className={cn("shrink-0 rounded-[2px] border-border bg-[--color-bg]", {
                                                     "h-2.5 w-2.5": indicator === "dot",
                                                     "w-1": indicator === "line",
-                                                    "w-0 border-[1.5px] border-dashed bg-transparent": indicator === "dashed",
+                                                    "w-0 border-[1.5px] border-dashed bg-transparent":
+                                                        indicator === "dashed",
                                                     "my-0.5": nestLabel && indicator === "dashed",
                                                 })}
                                                 style={
@@ -199,7 +202,9 @@ function ChartTooltipContent({
                                     >
                                         <div className="grid gap-1.5">
                                             {nestLabel ? tooltipLabel : null}
-                                            <span className="text-foreground-extra-muted">{itemConfig?.label || item.name}</span>
+                                            <span className="text-foreground-extra-muted">
+                                                {itemConfig?.label || item.name}
+                                            </span>
                                         </div>
                                         {item.value && (
                                             <span className="font-medium font-mono text-foreground-bright tabular-nums">
@@ -244,7 +249,11 @@ function ChartLegendContent({
     return (
         <div
             ref={ref}
-            className={cn("flex items-center justify-center gap-4", verticalAlign === "top" ? "pb-3" : "pt-3", className)}
+            className={cn(
+                "flex items-center justify-center gap-4",
+                verticalAlign === "top" ? "pb-3" : "pt-3",
+                className,
+            )}
         >
             {payload.map((item) => {
                 const key = `${nameKey || item.dataKey || "value"}`;
@@ -253,7 +262,9 @@ function ChartLegendContent({
                 return (
                     <div
                         key={item.value}
-                        className={cn("flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-foreground-extra-muted")}
+                        className={cn(
+                            "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-foreground-extra-muted",
+                        )}
                     >
                         {itemConfig?.icon && !hideIcon ? (
                             <itemConfig.icon />
@@ -281,7 +292,9 @@ function getPayloadConfigFromPayload(config: ChartConfig, payload: unknown, key:
     }
 
     const payloadPayload =
-        "payload" in payload && typeof payload.payload === "object" && payload.payload !== null ? payload.payload : undefined;
+        "payload" in payload && typeof payload.payload === "object" && payload.payload !== null
+            ? payload.payload
+            : undefined;
 
     let configLabelKey: string = key;
 

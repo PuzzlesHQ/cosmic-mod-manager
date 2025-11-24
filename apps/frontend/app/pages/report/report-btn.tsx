@@ -21,13 +21,19 @@ export default function ReportButton(props: Props) {
     const navigate = useNavigate();
 
     function handleClick() {
-        navigate(`/report?${ITEM_TYPE_PARAM_KEY}=${props.itemType}&${ITEM_ID_PARAM_KEY}=${encodeURIComponent(props.itemId)}`);
+        navigate(
+            `/report?${ITEM_TYPE_PARAM_KEY}=${props.itemType}&${ITEM_ID_PARAM_KEY}=${encodeURIComponent(props.itemId)}`,
+        );
     }
 
     if (!session?.id) {
         return (
             <LoginDialog>
-                <Button variant={props.btnVariant || "secondary-destructive"} size={props.btnSize} className={props.className}>
+                <Button
+                    variant={props.btnVariant || "secondary-destructive"}
+                    size={props.btnSize}
+                    className={props.className}
+                >
                     <FlagIcon aria-hidden className="h-btn-icon w-btn-icon" />
                     {t.common.report}
                 </Button>

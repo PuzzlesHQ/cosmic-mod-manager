@@ -8,7 +8,10 @@ function Command({ ref, className, ...props }: React.ComponentProps<typeof Comma
     return (
         <CommandPrimitive
             ref={ref}
-            className={cn("flex h-full w-full flex-col overflow-hidden rounded-md bg-card-background text-foreground", className)}
+            className={cn(
+                "flex h-full w-full flex-col overflow-hidden rounded-md bg-card-background text-foreground",
+                className,
+            )}
             {...props}
         />
     );
@@ -96,7 +99,9 @@ function CommandItem({ ref, className, ...props }: React.ComponentProps<typeof C
 CommandItem.displayName = CommandPrimitive.Item.displayName;
 
 function CommandShortcut({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
-    return <span className={cn("ms-auto text-foreground-extra-muted text-tiny tracking-widest", className)} {...props} />;
+    return (
+        <span className={cn("ms-auto text-foreground-extra-muted text-tiny tracking-widest", className)} {...props} />
+    );
 }
 CommandShortcut.displayName = "CommandShortcut";
 

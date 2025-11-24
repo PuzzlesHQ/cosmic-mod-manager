@@ -98,7 +98,10 @@ export default function CreateNewOrg_Dialog({ children }: { children: React.Reac
                                     <FormItem>
                                         <FormLabel htmlFor="org-name-input">
                                             {t.form.name}
-                                            <CharacterCounter currVal={field.value} max={MAX_ORGANISATION_NAME_LENGTH} />
+                                            <CharacterCounter
+                                                currVal={field.value}
+                                                max={MAX_ORGANISATION_NAME_LENGTH}
+                                            />
                                         </FormLabel>
                                         <Input
                                             placeholder={t.dashboard.enterOrgName}
@@ -124,7 +127,10 @@ export default function CreateNewOrg_Dialog({ children }: { children: React.Reac
                                     <FormItem>
                                         <FormLabel htmlFor="org-url-slug-input">
                                             {t.form.url}
-                                            <CharacterCounter currVal={field.value} max={MAX_ORGANISATION_NAME_LENGTH} />
+                                            <CharacterCounter
+                                                currVal={field.value}
+                                                max={MAX_ORGANISATION_NAME_LENGTH}
+                                            />
                                         </FormLabel>
                                         <Input
                                             id="org-url-slug-input"
@@ -148,7 +154,10 @@ export default function CreateNewOrg_Dialog({ children }: { children: React.Reac
                                     <FormItem>
                                         <FormLabel htmlFor="org-description-input">
                                             {t.form.description}
-                                            <CharacterCounter currVal={field.value} max={MAX_ORGANISATION_DESCRIPTION_LENGTH} />
+                                            <CharacterCounter
+                                                currVal={field.value}
+                                                max={MAX_ORGANISATION_DESCRIPTION_LENGTH}
+                                            />
                                         </FormLabel>
                                         <Textarea
                                             placeholder={t.dashboard.enterOrgDescription}

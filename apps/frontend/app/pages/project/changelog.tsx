@@ -36,7 +36,10 @@ export default function VersionChangelogs() {
         showDevVersions_Default: true,
     });
 
-    const visibleVersionItems = filter.filteredItems.slice((activePage - 1) * ITEMS_PER_PAGE, activePage * ITEMS_PER_PAGE);
+    const visibleVersionItems = filter.filteredItems.slice(
+        (activePage - 1) * ITEMS_PER_PAGE,
+        activePage * ITEMS_PER_PAGE,
+    );
 
     return (
         <>
@@ -57,7 +60,10 @@ export default function VersionChangelogs() {
                         <div key={version.id} className="relative mb-4 w-full ps-7 text-foreground-muted">
                             <div className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-1">
                                 <div className="flex flex-wrap items-baseline justify-start gap-x-1.5">
-                                    <ChangelogBar releaseChannel={version.releaseChannel} isDuplicate={isDuplicate === true} />
+                                    <ChangelogBar
+                                        releaseChannel={version.releaseChannel}
+                                        isDuplicate={isDuplicate === true}
+                                    />
 
                                     {version.releaseChannel === VersionReleaseChannel.DEV ? (
                                         <TooltipProvider>
@@ -110,13 +116,23 @@ export default function VersionChangelogs() {
             </Card>
 
             {(filter.filteredItems.length || 0) > ITEMS_PER_PAGE ? (
-                <PaginatedNavigation pagesCount={pagesCount} activePage={activePage} searchParamKey={pageSearchParamKey} />
+                <PaginatedNavigation
+                    pagesCount={pagesCount}
+                    activePage={activePage}
+                    searchParamKey={pageSearchParamKey}
+                />
             ) : null}
         </>
     );
 }
 
-function ChangelogBar({ releaseChannel, isDuplicate }: { releaseChannel: VersionReleaseChannel; isDuplicate: boolean }) {
+function ChangelogBar({
+    releaseChannel,
+    isDuplicate,
+}: {
+    releaseChannel: VersionReleaseChannel;
+    isDuplicate: boolean;
+}) {
     return (
         <div
             className={cn(

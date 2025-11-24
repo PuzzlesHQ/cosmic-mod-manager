@@ -65,7 +65,9 @@ export default function OrgSettingsLayout() {
                     <Breadcrumb>
                         <BreadcrumbList>
                             <BreadcrumbItem>
-                                <BreadcrumbLink href="/dashboard/organizations">{t.dashboard.organizations}</BreadcrumbLink>
+                                <BreadcrumbLink href="/dashboard/organizations">
+                                    {t.dashboard.organizations}
+                                </BreadcrumbLink>
                             </BreadcrumbItem>
 
                             <BreadcrumbSeparator />

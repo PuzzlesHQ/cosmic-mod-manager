@@ -116,7 +116,9 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
                                         <Tooltip>
                                             <TooltipTrigger className="cursor-text">
                                                 <span>
-                                                    {t.settings.lastAccessed(TimePassedSince({ date: session.dateLastActive }))}
+                                                    {t.settings.lastAccessed(
+                                                        TimePassedSince({ date: session.dateLastActive }),
+                                                    )}
                                                 </span>
                                             </TooltipTrigger>
                                             <TooltipContent>
@@ -128,7 +130,9 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
 
                                         <Tooltip>
                                             <TooltipTrigger className="cursor-text">
-                                                <span>{t.settings.created(TimePassedSince({ date: session.dateCreated }))}</span>
+                                                <span>
+                                                    {t.settings.created(TimePassedSince({ date: session.dateCreated }))}
+                                                </span>
                                             </TooltipTrigger>
                                             <TooltipContent>
                                                 <FormattedDate date={session.dateCreated} />

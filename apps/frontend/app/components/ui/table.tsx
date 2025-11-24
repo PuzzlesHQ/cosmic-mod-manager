@@ -23,7 +23,10 @@ function TableFooter({ ref, className, ...props }: React.ComponentProps<"tfoot">
     return (
         <tfoot
             ref={ref}
-            className={cn("border-background border-t bg-raised-background/50 font-medium [&>tr]:last:border-b-0", className)}
+            className={cn(
+                "border-background border-t bg-raised-background/50 font-medium [&>tr]:last:border-b-0",
+                className,
+            )}
             {...props}
         />
     );

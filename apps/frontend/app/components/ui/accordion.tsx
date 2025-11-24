@@ -9,7 +9,12 @@ function AccordionItem({ ref, className, ...props }: React.ComponentProps<typeof
 }
 AccordionItem.displayName = "AccordionItem";
 
-function AccordionTrigger({ ref, className, children, ...props }: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
+function AccordionTrigger({
+    ref,
+    className,
+    children,
+    ...props
+}: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
     return (
         <AccordionPrimitive.Header className="flex">
             <AccordionPrimitive.Trigger
@@ -31,7 +36,12 @@ function AccordionTrigger({ ref, className, children, ...props }: React.Componen
 }
 AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;
 
-function AccordionContent({ ref, className, children, ...props }: React.ComponentProps<typeof AccordionPrimitive.Content>) {
+function AccordionContent({
+    ref,
+    className,
+    children,
+    ...props
+}: React.ComponentProps<typeof AccordionPrimitive.Content>) {
     return (
         <AccordionPrimitive.Content
             ref={ref}

@@ -103,7 +103,14 @@ export default function UserPageLayout(props: Props) {
     return (
         <div className="full_page full-width relative grid" style={wrapperStyle}>
             {isVideo && bgFileUrl && (
-                <video src={bgFileUrl} muted autoPlay loop playsInline className="absolute inset-0 h-full w-full object-cover" />
+                <video
+                    src={bgFileUrl}
+                    muted
+                    autoPlay
+                    loop
+                    playsInline
+                    className="absolute inset-0 h-full w-full object-cover"
+                />
             )}
 
             <main
@@ -117,7 +124,11 @@ export default function UserPageLayout(props: Props) {
                 itemScope
                 itemType={itemType(MicrodataItemType.Person)}
             >
-                <ProfilePageHeader userData={props.userData} totalDownloads={aggregatedDownloads} totalProjects={totalProjects} />
+                <ProfilePageHeader
+                    userData={props.userData}
+                    totalDownloads={aggregatedDownloads}
+                    totalProjects={totalProjects}
+                />
 
                 <div className="page-content grid h-fit grid-cols-1 gap-panel-cards">
                     {navLinks?.length > 1 || navLinks[0]?.href?.length > 0 ? (
@@ -242,7 +253,9 @@ function ProfilePageHeader({ userData, totalProjects, totalDownloads }: ProfileP
             description={userData.bio || ""}
             titleBadge={
                 title ? (
-                    <Chip className={cn("!text-tiny bg-card-background font-semibold uppercase", roleColor)}>{title}</Chip>
+                    <Chip className={cn("!text-tiny bg-card-background font-semibold uppercase", roleColor)}>
+                        {title}
+                    </Chip>
                 ) : null
             }
             threeDotMenu={
@@ -277,7 +290,11 @@ function ProfilePageHeader({ userData, totalProjects, totalDownloads }: ProfileP
             }
             actionBtns={
                 userData.id === session?.id ? (
-                    <VariantButtonLink variant="secondary" to="/settings/profile" prefetch={LinkPrefetchStrategy.Render}>
+                    <VariantButtonLink
+                        variant="secondary"
+                        to="/settings/profile"
+                        prefetch={LinkPrefetchStrategy.Render}
+                    >
                         <EditIcon aria-hidden className="h-btn-icon w-btn-icon" />
                         {t.form.edit}
                     </VariantButtonLink>

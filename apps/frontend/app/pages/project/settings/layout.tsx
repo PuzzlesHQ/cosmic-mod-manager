@@ -155,14 +155,18 @@ function links(t: Locale, base: string): SidePanelSection[] {
                     href: joinPaths(base, "gallery"),
                     icon: <ImageIcon aria-hidden className="h-btn-icon w-btn-icon" />,
                     prefetch: LinkPrefetchStrategy.Render,
-                    icon_2: <ChevronRightIcon aria-hidden className="ms-auto h-btn-icon w-btn-icon text-foreground-muted" />,
+                    icon_2: (
+                        <ChevronRightIcon aria-hidden className="ms-auto h-btn-icon w-btn-icon text-foreground-muted" />
+                    ),
                 },
                 {
                     label: t.project.versions,
                     href: joinPaths(base, "versions"),
                     icon: <GitCommitHorizontalIcon aria-hidden className="h-btn-icon w-btn-icon" />,
                     prefetch: LinkPrefetchStrategy.Render,
-                    icon_2: <ChevronRightIcon aria-hidden className="ms-auto h-btn-icon w-btn-icon text-foreground-muted" />,
+                    icon_2: (
+                        <ChevronRightIcon aria-hidden className="ms-auto h-btn-icon w-btn-icon text-foreground-muted" />
+                    ),
                 },
             ],
         },

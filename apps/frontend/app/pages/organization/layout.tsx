@@ -81,7 +81,9 @@ export default function OrgPageLayout() {
                     <Outlet />
                 ) : (
                     <div className="flex w-full items-center justify-center py-12">
-                        <p className="text-center text-foreground-muted text-lg italic">{t.organization.orgDoesntHaveProjects}</p>
+                        <p className="text-center text-foreground-muted text-lg italic">
+                            {t.organization.orgDoesntHaveProjects}
+                        </p>
                     </div>
                 )}
             </div>
@@ -199,7 +201,10 @@ function OrgInfoHeader({
                 <div className="flex items-center gap-2">
                     <UsersIcon aria-hidden className="h-[1.1rem] w-[1.1rem]" />
                     <span className="font-semibold">
-                        {t.count.members(orgData.members.length, FormatCount(orgData.members.length, formattedLocaleName))}
+                        {t.count.members(
+                            orgData.members.length,
+                            FormatCount(orgData.members.length, formattedLocaleName),
+                        )}
                     </span>
                 </div>
                 <div className="flex items-center gap-2">

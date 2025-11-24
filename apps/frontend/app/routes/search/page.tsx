@@ -15,7 +15,11 @@ export function meta(props: Route.MetaArgs) {
     return MetaTags({
         location: props.location,
         title: t.meta.addContext(t.search[type], Config.SITE_NAME_SHORT),
-        description: t.meta.searchDesc(t.navbar[getProjectTypeFromName(type)], Config.SITE_NAME_SHORT, Config.SITE_NAME_LONG),
+        description: t.meta.searchDesc(
+            t.navbar[getProjectTypeFromName(type)],
+            Config.SITE_NAME_SHORT,
+            Config.SITE_NAME_LONG,
+        ),
         image: Config.SITE_ICON,
         url: undefined,
     });

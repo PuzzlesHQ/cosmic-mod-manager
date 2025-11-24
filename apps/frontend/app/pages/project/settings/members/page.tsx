@@ -46,7 +46,9 @@ export default function ProjectMemberSettingsPage({ userOrgs }: Props) {
     }
 
     const isProjectTeamMember = projectData.members.some((member) => member.userId === session.id);
-    const isOrgMember = projectData.organisation?.members?.some((member) => member.userId === session.id && member.accepted);
+    const isOrgMember = projectData.organisation?.members?.some(
+        (member) => member.userId === session.id && member.accepted,
+    );
 
     return (
         <>
@@ -67,7 +69,10 @@ export default function ProjectMemberSettingsPage({ userOrgs }: Props) {
             </Card>
 
             {projectData.members
-                .filter((member) => !projectData.organisation?.members?.some((orgMember) => orgMember.userId === member.userId))
+                .filter(
+                    (member) =>
+                        !projectData.organisation?.members?.some((orgMember) => orgMember.userId === member.userId),
+                )
                 .map((member) => (
                     <ProjectTeamMember
                         session={session}
@@ -80,11 +85,15 @@ export default function ProjectMemberSettingsPage({ userOrgs }: Props) {
                     />
                 ))}
 
-            {userOrgs?.length && !projectData.organisation && hasRootAccess(currUsersMembership?.isOwner, session.role) ? (
+            {userOrgs?.length &&
+            !projectData.organisation &&
+            hasRootAccess(currUsersMembership?.isOwner, session.role) ? (
                 <TransferProjectManagementCard organisations={userOrgs} projectId={projectData.id} />
             ) : null}
 
-            {projectData.organisation ? <RemoveProjectFromOrg org={projectData.organisation} projectId={projectData.id} /> : null}
+            {projectData.organisation ? (
+                <RemoveProjectFromOrg org={projectData.organisation} projectId={projectData.id} />
+            ) : null}
 
             {projectData.organisation?.members?.map((member) => (
                 <OrgTeamMember

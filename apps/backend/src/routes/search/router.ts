@@ -97,7 +97,10 @@ async function sortByFilters_get(ctx: Context) {
             SearchResultSortMethod.RECENTLY_UPDATED,
             SearchResultSortMethod.RECENTLY_PUBLISHED,
         ];
-        return ctx.json({ success: true, queryKey: sortByParamNamespace, default: defaultSortBy, list: list }, HTTP_STATUS.OK);
+        return ctx.json(
+            { success: true, queryKey: sortByParamNamespace, default: defaultSortBy, list: list },
+            HTTP_STATUS.OK,
+        );
     } catch (error) {
         console.error(error);
         return serverErrorResponse(ctx);
@@ -121,7 +124,10 @@ async function loaders_get(ctx: Context) {
 
 async function gameVersions_get(ctx: Context) {
     try {
-        return ctx.json({ success: true, queryKey: gameVersionFilterParamNamespace, list: GAME_VERSIONS }, HTTP_STATUS.OK);
+        return ctx.json(
+            { success: true, queryKey: gameVersionFilterParamNamespace, list: GAME_VERSIONS },
+            HTTP_STATUS.OK,
+        );
     } catch (error) {
         console.error(error);
         return serverErrorResponse(ctx);
@@ -165,7 +171,9 @@ async function resolutions_get(ctx: Context) {
             return ctx.json({ success: false, message: "Invalid project type" }, HTTP_STATUS.BAD_REQUEST);
         }
 
-        const categories = getValidProjectCategories([projectType], TagType.RESOLUTION).map((category) => category.name);
+        const categories = getValidProjectCategories([projectType], TagType.RESOLUTION).map(
+            (category) => category.name,
+        );
         return ctx.json({ success: true, queryKey: categoryFilterParamNamespace, list: categories }, HTTP_STATUS.OK);
     } catch (error) {
         console.error(error);
@@ -180,7 +188,9 @@ async function performanceImpacts_get(ctx: Context) {
             return ctx.json({ success: false, message: "Invalid project type" }, HTTP_STATUS.BAD_REQUEST);
         }
 
-        const categories = getValidProjectCategories([projectType], TagType.PERFORMANCE_IMPACT).map((category) => category.name);
+        const categories = getValidProjectCategories([projectType], TagType.PERFORMANCE_IMPACT).map(
+            (category) => category.name,
+        );
         return ctx.json({ success: true, queryKey: categoryFilterParamNamespace, list: categories }, HTTP_STATUS.OK);
     } catch (error) {
         console.error(error);

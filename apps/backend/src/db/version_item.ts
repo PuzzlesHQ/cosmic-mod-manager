@@ -165,21 +165,27 @@ export async function GetMany_ProjectsVersions(_ProjectIds: string[]) {
     return Projects;
 }
 
-export async function CreateVersion<T extends Prisma.VersionCreateArgs>(args: Prisma.SelectSubset<T, Prisma.VersionCreateArgs>) {
+export async function CreateVersion<T extends Prisma.VersionCreateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.VersionCreateArgs>,
+) {
     const version = await prisma.version.create(args);
     if (version?.projectId) await Delete_VersionCache(version.projectId);
 
     return version;
 }
 
-export async function UpdateVersion<T extends Prisma.VersionUpdateArgs>(args: Prisma.SelectSubset<T, Prisma.VersionUpdateArgs>) {
+export async function UpdateVersion<T extends Prisma.VersionUpdateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.VersionUpdateArgs>,
+) {
     const version = await prisma.version.update(args);
     if (version?.projectId) await Delete_VersionCache(version.projectId);
 
     return version;
 }
 
-export async function DeleteVersion<T extends Prisma.VersionDeleteArgs>(args: Prisma.SelectSubset<T, Prisma.VersionDeleteArgs>) {
+export async function DeleteVersion<T extends Prisma.VersionDeleteArgs>(
+    args: Prisma.SelectSubset<T, Prisma.VersionDeleteArgs>,
+) {
     const version = await prisma.version.delete(args);
     if (version?.projectId) await Delete_VersionCache(version.projectId);
 

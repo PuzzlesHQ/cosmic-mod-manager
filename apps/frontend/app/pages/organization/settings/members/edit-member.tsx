@@ -95,7 +95,8 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
         currMember?.isOwner,
         session?.role,
     );
-    const canTransferOwnership = hasRootAccess(currMember?.isOwner, session?.role) && member.isOwner === false && member.accepted;
+    const canTransferOwnership =
+        hasRootAccess(currMember?.isOwner, session?.role) && member.isOwner === false && member.accepted;
 
     return (
         <Card className="flex w-full flex-col gap-4 p-card-surround">
@@ -117,7 +118,10 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                         >
                             {member.userName}
                             {member.isOwner && (
-                                <span className="flex shrink-0 items-baseline justify-center" title={t.projectSettings.owner}>
+                                <span
+                                    className="flex shrink-0 items-baseline justify-center"
+                                    title={t.projectSettings.owner}
+                                >
                                     <CrownIcon aria-hidden className="h-4 w-4 text-orange-500 dark:text-orange-400" />
                                 </span>
                             )}
@@ -206,7 +210,9 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                                                                 if (checked === true) {
                                                                     field.onChange([...currList, permission]);
                                                                 } else {
-                                                                    field.onChange(currList.filter((p) => p !== permission));
+                                                                    field.onChange(
+                                                                        currList.filter((p) => p !== permission),
+                                                                    );
                                                                 }
                                                             }}
                                                         >
@@ -239,13 +245,17 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                                                             key={permission}
                                                             name={permission}
                                                             checked={checked}
-                                                            disabled={field.disabled || (!checked && !canAddPermissions)}
+                                                            disabled={
+                                                                field.disabled || (!checked && !canAddPermissions)
+                                                            }
                                                             onCheckedChange={(checked) => {
                                                                 const currList = field.value || [];
                                                                 if (checked === true) {
                                                                     field.onChange([...currList, permission]);
                                                                 } else {
-                                                                    field.onChange(currList.filter((p) => p !== permission));
+                                                                    field.onChange(
+                                                                        currList.filter((p) => p !== permission),
+                                                                    );
                                                                 }
                                                             }}
                                                         >
@@ -264,7 +274,11 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                             <Button
                                 type="submit"
                                 size="sm"
-                                disabled={isLoading || (!canEditMember && !canEditDefaultPermissions) || !form.formState.isDirty}
+                                disabled={
+                                    isLoading ||
+                                    (!canEditMember && !canEditDefaultPermissions) ||
+                                    !form.formState.isDirty
+                                }
                             >
                                 <SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                 {t.form.saveChanges}
@@ -272,7 +286,12 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
 
                             {!member.isOwner && canRemoveMembers && (
                                 <RemoveMemberDialog member={member} refreshData={fetchOrgData}>
-                                    <Button type="button" variant="secondary-destructive" size="sm" disabled={isLoading}>
+                                    <Button
+                                        type="button"
+                                        variant="secondary-destructive"
+                                        size="sm"
+                                        disabled={isLoading}
+                                    >
                                         <UserXIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                         {t.projectSettings.removeMember}
                                     </Button>

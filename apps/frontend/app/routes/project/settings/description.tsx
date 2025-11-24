@@ -18,6 +18,8 @@ export function meta(props: Route.MetaArgs) {
         title: t.meta.addContext(ctx.projectData.name, t.form.description),
         description: t.form.description,
         image: Config.SITE_ICON,
-        url: Config.FRONTEND_URL + ProjectPagePath(ctx.projectData.type[0], ctx.projectData.slug, "settings/description"),
+        url:
+            Config.FRONTEND_URL +
+            ProjectPagePath(ctx.projectData.type[0], ctx.projectData.slug, "settings/description"),
     });
 }

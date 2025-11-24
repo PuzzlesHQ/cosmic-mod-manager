@@ -17,9 +17,19 @@ export function Panel({ children, className }: { children: React.ReactNode; clas
     );
 }
 
-export function PanelContent({ children, className, main }: { children: React.ReactNode; className?: string; main?: boolean }) {
+export function PanelContent({
+    children,
+    className,
+    main,
+}: {
+    children: React.ReactNode;
+    className?: string;
+    main?: boolean;
+}) {
     if (main === true)
-        return <main className={cn("grid w-full grid-cols-1 gap-panel-cards overflow-auto", className)}>{children}</main>;
+        return (
+            <main className={cn("grid w-full grid-cols-1 gap-panel-cards overflow-auto", className)}>{children}</main>
+        );
     return <div className={cn("grid w-full grid-cols-1 gap-panel-cards overflow-auto", className)}>{children}</div>;
 }
 
@@ -80,7 +90,12 @@ interface SidePanelProps {
 
 export function SidePanel(props: SidePanelProps) {
     return (
-        <aside className={cn("grid w-full gap-1 rounded-lg bg-card-background p-card-surround lg:w-sidebar", props.className)}>
+        <aside
+            className={cn(
+                "grid w-full gap-1 rounded-lg bg-card-background p-card-surround lg:w-sidebar",
+                props.className,
+            )}
+        >
             {props.children}
             <h2 className="mb-2 font-semibold text-xl leading-none tracking-tight">{props.header}</h2>
 

@@ -4,7 +4,15 @@ import { getCookie } from "@app/utils/cookie";
 import type { LoggedInUserData } from "@app/utils/types";
 import { useEffect } from "react";
 import type { LinkDescriptor } from "react-router";
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, type ShouldRevalidateFunctionArgs, useLoaderData } from "react-router";
+import {
+    Links,
+    Meta,
+    Outlet,
+    Scripts,
+    ScrollRestoration,
+    type ShouldRevalidateFunctionArgs,
+    useLoaderData,
+} from "react-router";
 import ClientOnly from "~/components/client-only";
 import Footer from "~/components/layout/footer";
 import Navbar from "~/components/layout/Navbar/navbar";

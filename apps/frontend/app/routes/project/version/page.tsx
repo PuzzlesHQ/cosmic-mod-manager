@@ -74,7 +74,9 @@ export function meta(props: Route.MetaArgs) {
         });
     }
 
-    const loaders = version.loaders.length ? version.loaders.map((l) => CapitalizeAndFormatString(l)).join(" & ") : null;
+    const loaders = version.loaders.length
+        ? version.loaders.map((l) => CapitalizeAndFormatString(l)).join(" & ")
+        : null;
     const publishedAt = FormatDate_ToLocaleString(version.datePublished, {
         includeTime: false,
         shortMonthNames: false,

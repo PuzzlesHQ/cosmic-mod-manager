@@ -94,7 +94,11 @@ interface ServeImageFileProps {
     fileId: string;
     isCdnRequest: boolean;
     cdnUrlOfFile: string;
-    getFile: (storageService: FILE_STORAGE_SERVICE, entityId: string, fileSlug: string) => Promise<Bun.BunFile | string | null>;
+    getFile: (
+        storageService: FILE_STORAGE_SERVICE,
+        entityId: string,
+        fileSlug: string,
+    ) => Promise<Bun.BunFile | string | null>;
 }
 
 export async function serveImageFile(props: ServeImageFileProps) {

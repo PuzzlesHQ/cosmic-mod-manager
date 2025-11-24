@@ -21,7 +21,15 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "~/components/ui/dialog";
-import { CharacterCounter, Form, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import {
+    CharacterCounter,
+    Form,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { useNavigate } from "~/components/ui/link";
 import { toast } from "~/components/ui/sonner";
@@ -126,7 +134,11 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
                                     </div>
                                 </div>
                                 <div className="aspect-[2/1] w-full overflow-hidden rounded rounded-t-none bg-zinc-900">
-                                    <img src={imageUrl(galleryItem.image)} alt="img" className="h-full w-full object-contain" />
+                                    <img
+                                        src={imageUrl(galleryItem.image)}
+                                        alt="img"
+                                        className="h-full w-full object-contain"
+                                    />
                                 </div>
                             </div>
 
@@ -152,7 +164,10 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
                                     <FormItem>
                                         <FormLabel htmlFor="gallery-item-description">
                                             {t.form.description}
-                                            <CharacterCounter currVal={field.value} max={MAX_GALLERY_DESCRIPTION_LENGTH} />
+                                            <CharacterCounter
+                                                currVal={field.value}
+                                                max={MAX_GALLERY_DESCRIPTION_LENGTH}
+                                            />
                                         </FormLabel>
                                         <Textarea
                                             value={field.value || ""}

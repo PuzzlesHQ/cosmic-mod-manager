@@ -30,7 +30,9 @@ export async function confirmUserAccountDeletion(token: string) {
         return invalidRequestResponseData("Expired or invalid code");
     }
     if (confirmationEmail.userId === env.ARCHIVE_USER_ID) {
-        return invalidRequestResponseData("Cannot delete the archive user, set a different archiver account to delete this one.");
+        return invalidRequestResponseData(
+            "Cannot delete the archive user, set a different archiver account to delete this one.",
+        );
     }
 
     const user = await GetUser_ByIdOrUsername(undefined, confirmationEmail.userId);

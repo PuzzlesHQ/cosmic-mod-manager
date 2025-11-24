@@ -89,7 +89,10 @@ export function meta(props: Route.MetaArgs) {
         return MetaTags({
             location: props.location,
             title: t.meta.addContext(t.error.projectNotFound, Config.SITE_NAME_SHORT),
-            description: t.error.projectNotFoundDesc(t.navbar[getProjectTypeFromName(data.projectType)], data.projectSlug),
+            description: t.error.projectNotFoundDesc(
+                t.navbar[getProjectTypeFromName(data.projectType)],
+                data.projectSlug,
+            ),
             image: Config.SITE_ICON,
             url: Config.FRONTEND_URL,
         });
@@ -98,13 +101,21 @@ export function meta(props: Route.MetaArgs) {
     const creator = project.members.find((member) => member.isOwner);
     const author = project.organisation?.name || creator?.userName || "<unknown>";
 
-    const authorProfileLink = creator?.userName ? `${Config.FRONTEND_URL}${UserProfilePath(creator.userName)}` : undefined;
+    const authorProfileLink = creator?.userName
+        ? `${Config.FRONTEND_URL}${UserProfilePath(creator.userName)}`
+        : undefined;
     const projectType_translated = t.navbar[getProjectTypeFromName(project.type[0])];
 
     return MetaTags({
         location: props.location,
         title: t.meta.project(project.name, projectType_translated),
-        description: t.meta.projectDesc(project.name, project.summary, projectType_translated, author, Config.SITE_NAME_SHORT),
+        description: t.meta.projectDesc(
+            project.name,
+            project.summary,
+            projectType_translated,
+            author,
+            Config.SITE_NAME_SHORT,
+        ),
         image: project.icon || "",
         url: `${Config.FRONTEND_URL}${ProjectPagePath(project.type?.[0], project.slug)}`,
         authorProfile: authorProfileLink,

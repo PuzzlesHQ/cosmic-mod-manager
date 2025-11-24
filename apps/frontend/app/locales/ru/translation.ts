@@ -94,7 +94,13 @@ export default {
         alreadyHaveAccount: (login) => ["Уже зарегистрированы? ", login],
         forgotPassword: (changePassword) => ["Забыли пароль? ", changePassword],
         signupWithProviders: "Зарегистрируйтесь одним из способов:",
-        agreement: (terms, privacyPolicy) => ["Создавая аккаунт, вы соглашаетесь с нашими ", terms, " и ", privacyPolicy, "."],
+        agreement: (terms, privacyPolicy) => [
+            "Создавая аккаунт, вы соглашаетесь с нашими ",
+            terms,
+            " и ",
+            privacyPolicy,
+            ".",
+        ],
         invalidCode: "Неверный или уже истекший код",
         didntRequest: "Не запрашивали это?",
         checkSessions: "Посмотреть авторизованные сессии",
@@ -287,10 +293,12 @@ export default {
         platform: (loader) => ["Платформа: ", loader],
         selectPlatform: "Выберите платформу",
         onlyAvailableFor: (project: string, platform: string) => `${project} доступен только для ${platform}`,
-        noVersionsAvailableFor: (gameVersion: string, loader: string) => `Версий не найдено для ${gameVersion} на ${loader}`,
+        noVersionsAvailableFor: (gameVersion: string, loader: string) =>
+            `Версий не найдено для ${gameVersion} на ${loader}`,
         declinedInvitation: "Отклонённое приглашение",
         teamInvitationTitle: (teamType: string) => `Приглашение для присоединения к ${teamType}`, // teamType = organization | project
-        teamInviteDesc: (teamType: string, role: string) => `Вы были приглашены стать частью ${teamType} в качестве ${role}.`,
+        teamInviteDesc: (teamType: string, role: string) =>
+            `Вы были приглашены стать частью ${teamType} в качестве ${role}.`,
 
         browse: {
             mod: "Найти моды",
@@ -319,7 +327,8 @@ export default {
             addDescription: "Добавьте описание",
             addDescriptionDesc: "Необходимо понятное описание к проекту.",
             addIcon: "Добавьте иконку",
-            addIconDesc: "Желательно, чтобы ваш проект имел красивую и уникальную иконку, чтобы его можно было легко заметить.",
+            addIconDesc:
+                "Желательно, чтобы ваш проект имел красивую и уникальную иконку, чтобы его можно было легко заметить.",
             featureGalleryImg: "Добавьте лучшее изображение",
             featureGalleryImgDesc: "Лучшие изображения могут создать первое впечатление у пользователей.",
             selectTags: "Выберите теги",
@@ -327,7 +336,8 @@ export default {
             addExtLinks: "Добавьте ссылки",
             addExtLinksDesc: "Любые полезные ссылки, например, на исходный код, вики и так далее.",
             selectLicense: "Выберите лицензию",
-            selectLicenseDesc: (projectType: string) => `Выберите лицензию, под которой вы распространяете ${projectType}.`,
+            selectLicenseDesc: (projectType: string) =>
+                `Выберите лицензию, под которой вы распространяете ${projectType}.`,
             selectEnv: "Выберите поддерживаемые среды",
             selectEnvDesc: (projectType: string) => `Выберите среды, где применяется ваш ${projectType}.`,
             // ? New string
@@ -475,8 +485,10 @@ export default {
         sureToLeaveTeam: "Вы уверены, что хотите покинуть эту команду?",
         cantManageInvites: "У вас нет доступа к управлению приглашениями",
         inviteMember: "Пригласить участника",
-        inviteProjectMemberDesc: "Введите имя пользователя, которого вы хотите пригласить в проект в качестве участника.",
-        inviteOrgMemberDesc: "Введите имя пользователя, которого вы хотите пригласить в организацию в качестве участника.",
+        inviteProjectMemberDesc:
+            "Введите имя пользователя, которого вы хотите пригласить в проект в качестве участника.",
+        inviteOrgMemberDesc:
+            "Введите имя пользователя, которого вы хотите пригласить в организацию в качестве участника.",
         invite: "Пригласить",
         memberUpdated: "Участник успешно обновлён",
         pending: "Ожидает",
@@ -520,10 +532,12 @@ export default {
         manageProjects: "Управлять проектами",
         orgSettings: "Настройки организации",
         transferProjectsTip: "Вы можете перенести свои проекты в организацию через: Настройки проекта > Участники",
-        noProjects_CreateOne: "Эта организация пока что не имеет никаких проектов. Нажмите на кнопку выше, чтобы создать новый.",
+        noProjects_CreateOne:
+            "Эта организация пока что не имеет никаких проектов. Нажмите на кнопку выше, чтобы создать новый.",
         orgInfo: "Информация об организации",
         deleteOrg: "Удалить организацию",
-        deleteOrgDesc: "Удаление организации приведет к переносу всех проектов к её владельцу. Это действие нельзя отменить.",
+        deleteOrgDesc:
+            "Удаление организации приведет к переносу всех проектов к её владельцу. Это действие нельзя отменить.",
         sureToDeleteOrg: "Вы уверены, что хотите удалить эту организацию?",
         deleteOrgNamed: (orgName: string) => `Удалить организацию ${orgName}`,
         deletionWarning: "Это действие удалит организацию навсегда (типо реально навсегда).",

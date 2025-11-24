@@ -1,7 +1,8 @@
 import GAME_VERSIONS, { type GameVersion } from "@root/packages/utils/src/constants/game-versions";
 import { GameVersionReleaseType } from "@root/packages/utils/src/types";
 
-const CR_ARCHIVE_VERSION_FILE_URL = "https://raw.githubusercontent.com/PuzzlesHQ/CRArchive/refs/heads/main/versions.json";
+const CR_ARCHIVE_VERSION_FILE_URL =
+    "https://raw.githubusercontent.com/PuzzlesHQ/CRArchive/refs/heads/main/versions.json";
 
 interface CRArchive {
     latest: Record<string, string>;

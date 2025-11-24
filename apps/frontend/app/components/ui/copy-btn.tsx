@@ -48,7 +48,12 @@ function CopyBtn({ text, label, className, labelClassName, iconClassName, maxLab
             title="Copy"
         >
             {label ? (
-                <span className={cn("font-mono text-foreground text-sm leading-none dark:text-foreground-muted", labelClassName)}>
+                <span
+                    className={cn(
+                        "font-mono text-foreground text-sm leading-none dark:text-foreground-muted",
+                        labelClassName,
+                    )}
+                >
                     {label.slice(0, maxLabelChars || label.length)}
                     {maxLabelChars && label.length > maxLabelChars ? "…" : ""}
                 </span>

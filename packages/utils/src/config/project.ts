@@ -46,7 +46,11 @@ export function isApproved(projectStatus: string) {
 
 export const ShowEnvSupportSettingsForType = [ProjectType.MOD, ProjectType.MODPACK, ProjectType.DATAMOD];
 
-export function GetProjectEnvironment(type: ProjectType[], clientSide?: EnvironmentSupport, serverSide?: EnvironmentSupport) {
+export function GetProjectEnvironment(
+    type: ProjectType[],
+    clientSide?: EnvironmentSupport,
+    serverSide?: EnvironmentSupport,
+) {
     // Shaders and resource packs can only be used client side
     if (type.includes(ProjectType.SHADER) || type.includes(ProjectType.RESOURCE_PACK)) {
         return {

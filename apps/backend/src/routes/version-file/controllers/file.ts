@@ -23,7 +23,8 @@ export async function GetVersionFromFileHash(hash: string, algorithm: HashAlgori
 
 export async function GetVersionsFromFileHashes(hashes: string[], algorithm: HashAlgorithms) {
     const hashList = hashes.filter((hash) => !!hash.length && typeof hash === "string");
-    if (hashList.length > 50) return invalidRequestResponseData("Maximum of 50 versions can be retrieved from hashes at once!");
+    if (hashList.length > 50)
+        return invalidRequestResponseData("Maximum of 50 versions can be retrieved from hashes at once!");
 
     let FilesWhere: Prisma.FileWhereInput = {
         sha512_hash: {
@@ -167,9 +168,14 @@ export async function GetLatestProjectVersionFromHash(hash: string, algorithm: H
     };
 }
 
-export async function GetLatestProjectVersionsFromHashes(hashes: string[], algorithm: HashAlgorithms, filter: VersionFilter) {
+export async function GetLatestProjectVersionsFromHashes(
+    hashes: string[],
+    algorithm: HashAlgorithms,
+    filter: VersionFilter,
+) {
     const hashList = hashes.filter((hash) => !!hash.length && typeof hash === "string");
-    if (hashList.length > 50) return invalidRequestResponseData("Maximum of 50 versions can be retrieved from hashes at once!");
+    if (hashList.length > 50)
+        return invalidRequestResponseData("Maximum of 50 versions can be retrieved from hashes at once!");
 
     let FilesWhereInput: Prisma.FileWhereInput = {
         sha512_hash: {
@@ -247,11 +253,14 @@ export async function GetLatestProjectVersionsFromHashes(hashes: string[], algor
         for (const version of project.versions) {
             if (!version) continue;
 
-            if (filter.gameVersions?.length && !version.gameVersions.some((gv) => filter.gameVersions?.includes(gv))) continue;
+            if (filter.gameVersions?.length && !version.gameVersions.some((gv) => filter.gameVersions?.includes(gv)))
+                continue;
             if (filter.loader && !version.loaders.includes(filter.loader)) continue;
             if (
                 filter.releaseChannel &&
-                !GetReleaseChannelFilter(filter.releaseChannel).includes(version.releaseChannel as VersionReleaseChannel)
+                !GetReleaseChannelFilter(filter.releaseChannel).includes(
+                    version.releaseChannel as VersionReleaseChannel,
+                )
             ) {
                 continue;
             }
