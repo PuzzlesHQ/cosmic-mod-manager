@@ -16,7 +16,12 @@ interface Props {
     includeHashInURL?: boolean;
 }
 
-export default function PaginatedNavigation({ pagesCount, activePage, searchParamKey = "page", includeHashInURL }: Props) {
+export default function PaginatedNavigation({
+    pagesCount,
+    activePage,
+    searchParamKey = "page",
+    includeHashInURL,
+}: Props) {
     const loc = useLocation();
 
     function paginationUrl(page: number) {

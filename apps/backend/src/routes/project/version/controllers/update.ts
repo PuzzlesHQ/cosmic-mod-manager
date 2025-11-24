@@ -52,7 +52,11 @@ export async function updateVersionData(
     if (!project?.id || !targetVersion?.id) return notFoundResponseData("Project not found");
 
     // Check if the user has permission to edit a version
-    const memberObj = getCurrMember(userSession.id, project?.team.members || [], project?.organisation?.team.members || []);
+    const memberObj = getCurrMember(
+        userSession.id,
+        project?.team.members || [],
+        project?.organisation?.team.members || [],
+    );
     const canUpdateVersion = doesMemberHaveAccess(
         ProjectPermission.UPLOAD_VERSION,
         memberObj?.permissions as ProjectPermission[],
@@ -190,7 +194,10 @@ export async function updateVersionData(
 
     let deletedDevVersions: string[] = [];
     // Only update dev releases if the release channel is changed
-    if (formData.releaseChannel === VersionReleaseChannel.DEV && formData.releaseChannel !== targetVersion.releaseChannel) {
+    if (
+        formData.releaseChannel === VersionReleaseChannel.DEV &&
+        formData.releaseChannel !== targetVersion.releaseChannel
+    ) {
         deletedDevVersions = await deleteExcessDevReleases({
             projectId: project.id,
             versions: projectVersions,
@@ -256,7 +263,12 @@ export async function updateVersionData(
     };
 }
 
-export async function deleteProjectVersion(ctx: Context, projectId: string, versionId: string, userSession: ContextUserData) {
+export async function deleteProjectVersion(
+    ctx: Context,
+    projectId: string,
+    versionId: string,
+    userSession: ContextUserData,
+) {
     const project = await GetProject_ListItem(projectId);
     if (!project?.id) return notFoundResponseData("Project not found");
 
@@ -273,7 +285,11 @@ export async function deleteProjectVersion(ctx: Context, projectId: string, vers
     if (!targetVersion?.id) return notFoundResponseData("Project not found");
 
     // Check if the user has permission to delete a version
-    const memberObj = getCurrMember(userSession.id, project?.team.members || [], project?.organisation?.team.members || []);
+    const memberObj = getCurrMember(
+        userSession.id,
+        project?.team.members || [],
+        project?.organisation?.team.members || [],
+    );
     const canDeleteVersion = doesMemberHaveAccess(
         ProjectPermission.DELETE_VERSION,
         memberObj?.permissions as ProjectPermission[],

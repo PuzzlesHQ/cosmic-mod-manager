@@ -38,7 +38,11 @@ function SelectTrigger({
 }
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
 
-function SelectScrollUpButton({ ref, className, ...props }: React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>) {
+function SelectScrollUpButton({
+    ref,
+    className,
+    ...props
+}: React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>) {
     return (
         <SelectPrimitive.ScrollUpButton
             ref={ref}
@@ -51,7 +55,11 @@ function SelectScrollUpButton({ ref, className, ...props }: React.ComponentProps
 }
 SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName;
 
-function SelectScrollDownButton({ ref, className, ...props }: React.ComponentProps<typeof SelectPrimitive.ScrollDownButton>) {
+function SelectScrollDownButton({
+    ref,
+    className,
+    ...props
+}: React.ComponentProps<typeof SelectPrimitive.ScrollDownButton>) {
     return (
         <SelectPrimitive.ScrollDownButton
             ref={ref}
@@ -89,7 +97,8 @@ function SelectContent({
                 <SelectPrimitive.Viewport
                     className={cn(
                         "p-1",
-                        position === "popper" && "h-[--radix-select-trigger-height] w-full min-w-[--radix-select-trigger-width]",
+                        position === "popper" &&
+                            "h-[--radix-select-trigger-height] w-full min-w-[--radix-select-trigger-width]",
                     )}
                 >
                     {children}
@@ -102,7 +111,9 @@ function SelectContent({
 SelectContent.displayName = SelectPrimitive.Content.displayName;
 
 function SelectLabel({ ref, className, ...props }: React.ComponentProps<typeof SelectPrimitive.Label>) {
-    return <SelectPrimitive.Label ref={ref} className={cn("px-2 py-1.5 font-semibold text-sm", className)} {...props} />;
+    return (
+        <SelectPrimitive.Label ref={ref} className={cn("px-2 py-1.5 font-semibold text-sm", className)} {...props} />
+    );
 }
 SelectLabel.displayName = SelectPrimitive.Label.displayName;
 

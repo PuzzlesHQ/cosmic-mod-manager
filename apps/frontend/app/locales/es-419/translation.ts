@@ -82,7 +82,13 @@ export default {
         alreadyHaveAccount: (login) => ["¿Ya tienes una cuenta? ", login],
         forgotPassword: (changePassword) => ["¿Olvidaste tu contraseña? ", changePassword],
         signupWithProviders: "Regístrate usando cualquiera de los proveedores de autenticación:",
-        agreement: (terms, privacyPolicy) => ["Al crear una cuenta, aceptas nuestros ", terms, " y ", privacyPolicy, "."],
+        agreement: (terms, privacyPolicy) => [
+            "Al crear una cuenta, aceptas nuestros ",
+            terms,
+            " y ",
+            privacyPolicy,
+            ".",
+        ],
         invalidCode: "Código inválido o expirado",
         didntRequest: "¿No solicitaste esto?",
         checkSessions: "Revisar sesiones iniciadas",
@@ -116,7 +122,8 @@ export default {
         manageProvidersDesc: "Añade o elimina métodos de inicio de sesión de tu cuenta.",
         removePass: "Eliminar contraseña",
         removePassTitle: "Eliminar la contraseña de tu cuenta",
-        removePassDesc: "Después de eliminar tu contraseña, no podrás usar credenciales para iniciar sesión en tu cuenta",
+        removePassDesc:
+            "Después de eliminar tu contraseña, no podrás usar credenciales para iniciar sesión en tu cuenta",
         enterCurrentPass: "Ingresa tu contraseña actual",
         addPass: "Añadir contraseña",
         addPassDialogDesc: "Podrás usar esta contraseña para iniciar sesión en tu cuenta",
@@ -313,18 +320,21 @@ export default {
             uploadVersion: "Subir una versión",
             uploadVersionDesc: "Se requiere al menos una versión para enviar un proyecto a revisión.",
             addDescription: "Añadir una descripción",
-            addDescriptionDesc: "Se requiere una descripción que explique claramente el propósito y la función del proyecto.",
+            addDescriptionDesc:
+                "Se requiere una descripción que explique claramente el propósito y la función del proyecto.",
             addIcon: "Añadir un icono",
             addIconDesc: "Tu proyecto merece un icono llamativo que lo distinga al instante.",
             featureGalleryImg: "Destacar una imagen en la galería",
-            featureGalleryImgDesc: "Las imágenes destacadas en la galería pueden ser la primera impresión para muchos usuarios.",
+            featureGalleryImgDesc:
+                "Las imágenes destacadas en la galería pueden ser la primera impresión para muchos usuarios.",
             selectTags: "Seleccionar etiquetas",
             selectTagsDesc: "Selecciona todas las etiquetas que correspondan a tu proyecto.",
             addExtLinks: "Añadir enlaces externos",
             addExtLinksDesc:
                 "Añade enlaces relevantes, como fuentes, un sitio web para rastrear errores o una invitación de Discord.",
             selectLicense: "Seleccionar licencia",
-            selectLicenseDesc: (projectType: string) => `Selecciona la licencia bajo la cual se distribuye tu ${projectType}.`,
+            selectLicenseDesc: (projectType: string) =>
+                `Selecciona la licencia bajo la cual se distribuye tu ${projectType}.`,
             selectEnv: "Seleccionar entornos compatibles",
             selectEnvDesc: (projectType: string) =>
                 `Selecciona si el ${projectType} funciona en el lado del cliente o del servidor.`,
@@ -437,9 +447,11 @@ export default {
         selectAtLeastOneCategory: "Selecciona al menos una categoría para destacar.",
         projectInfo: "Información del proyecto",
         clientSide: "Del lado del cliente",
-        clientSideDesc: (projectType: string) => `Selecciona si tu ${projectType} tiene funcionalidad en el lado del cliente.`,
+        clientSideDesc: (projectType: string) =>
+            `Selecciona si tu ${projectType} tiene funcionalidad en el lado del cliente.`,
         serverSide: "Del lado del servidor",
-        serverSideDesc: (projectType: string) => `Selecciona si tu ${projectType} tiene funcionalidad en el servidor lógico.`,
+        serverSideDesc: (projectType: string) =>
+            `Selecciona si tu ${projectType} tiene funcionalidad en el servidor lógico.`,
         unknown: "Desconocido",
         clientOrServer: "Cliente o servidor",
         clientAndServer: "Cliente y servidor",
@@ -475,8 +487,10 @@ export default {
         sureToLeaveTeam: "¿Estás seguro de que quieres salir de este equipo?",
         cantManageInvites: "No tienes acceso para gestionar las invitaciones de miembros",
         inviteMember: "Invitar a un miembro",
-        inviteProjectMemberDesc: "Ingresa el nombre de usuario de la persona que deseas invitar a ser miembro de este proyecto.",
-        inviteOrgMemberDesc: "Ingresa el nombre de usuario de la persona que deseas invitar a ser miembro de esta organización.",
+        inviteProjectMemberDesc:
+            "Ingresa el nombre de usuario de la persona que deseas invitar a ser miembro de este proyecto.",
+        inviteOrgMemberDesc:
+            "Ingresa el nombre de usuario de la persona que deseas invitar a ser miembro de esta organización.",
         invite: "Invitar",
         memberUpdated: "Miembro actualizado con éxito",
         pending: "Pendiente",
@@ -509,9 +523,11 @@ export default {
             `Este proyecto está gestionado por ${orgName}. Los valores predeterminados para los permisos de los miembros se establecen en los ajustes de la organización. Puedes sobrescribirlos a continuación.`,
         removeFromOrg: "Eliminar de la organización",
         memberRemoved: "Miembro eliminado con éxito",
-        sureToRemoveMember: (memberName: string) => `¿Estás seguro de que quieres eliminar a ${memberName} de este equipo?`,
+        sureToRemoveMember: (memberName: string) =>
+            `¿Estás seguro de que quieres eliminar a ${memberName} de este equipo?`,
         ownershipTransfered: "Propiedad transferida con éxito",
-        sureToTransferOwnership: (memberName: string) => `¿Estás seguro de que quieres transferir la propiedad a ${memberName}?`,
+        sureToTransferOwnership: (memberName: string) =>
+            `¿Estás seguro de que quieres transferir la propiedad a ${memberName}?`,
     },
 
     organization: {

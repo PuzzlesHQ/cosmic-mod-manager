@@ -15,7 +15,13 @@ interface Props extends NotificationsData {
     userProjects: ProjectListItem[];
 }
 
-export default function OverviewPage({ userProjects, notifications, relatedProjects, relatedOrgs, relatedUsers }: Props) {
+export default function OverviewPage({
+    userProjects,
+    notifications,
+    relatedProjects,
+    relatedOrgs,
+    relatedUsers,
+}: Props) {
     const { t } = useTranslation();
     const session = useSession();
     const unreadNotifications = notifications?.filter((notification) => !notification.read);
@@ -40,7 +46,10 @@ export default function OverviewPage({ userProjects, notifications, relatedProje
 
                     <div className="flex flex-col items-start justify-center">
                         <span className="font-semibold text-xl">{session.userName}</span>
-                        <TextLink to={UserProfilePath(session.userName)} className="flex items-center justify-center gap-1">
+                        <TextLink
+                            to={UserProfilePath(session.userName)}
+                            className="flex items-center justify-center gap-1"
+                        >
                             {t.settings.visitYourProfile}
                             <ChevronRightIcon aria-hidden className="h-btn-icon w-btn-icon" />
                         </TextLink>
@@ -73,7 +82,11 @@ export default function OverviewPage({ userProjects, notifications, relatedProje
                             <div className="grid gap-4">
                                 <span className="text-foreground-muted">{t.dashboard.noUnreadNotifs}</span>
 
-                                <VariantButtonLink to="/dashboard/notifications/history" className="w-fit" variant="secondary">
+                                <VariantButtonLink
+                                    to="/dashboard/notifications/history"
+                                    className="w-fit"
+                                    variant="secondary"
+                                >
                                     <HistoryIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                     {t.dashboard.viewNotifHistory}
                                 </VariantButtonLink>
@@ -88,12 +101,16 @@ export default function OverviewPage({ userProjects, notifications, relatedProje
                     className="flex w-full flex-row flex-wrap items-start justify-start gap-panel-cards"
                 >
                     <div className="flex w-[14rem] flex-col items-start justify-center rounded bg-background p-4">
-                        <span className="mb-1 font-semibold text-foreground-muted text-lg">{t.dashboard.totalDownloads}</span>
+                        <span className="mb-1 font-semibold text-foreground-muted text-lg">
+                            {t.dashboard.totalDownloads}
+                        </span>
                         <span className="font-semibold text-2xl">{totalDownloads}</span>
                         <span className="text-foreground-muted">{t.dashboard.fromProjects(totalProjects)}</span>
                     </div>
                     <div className="flex w-[14rem] flex-col items-start justify-center rounded bg-background p-4">
-                        <span className="mb-1 font-semibold text-foreground-muted text-lg">{t.dashboard.totalFollowers}</span>
+                        <span className="mb-1 font-semibold text-foreground-muted text-lg">
+                            {t.dashboard.totalFollowers}
+                        </span>
                         <span className="font-semibold text-2xl">{totalFollowers}</span>
                         <span className="text-foreground-muted">{t.dashboard.fromProjects(totalProjects)}</span>
                     </div>

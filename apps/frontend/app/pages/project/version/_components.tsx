@@ -5,7 +5,13 @@ import type { z } from "@app/utils/schemas";
 import type { VersionDependencies } from "@app/utils/schemas/project/version";
 import GAME_VERSIONS, { isExperimentalGameVersion } from "@app/utils/src/constants/game-versions";
 import { CapitalizeAndFormatString, createURLSafeSlug } from "@app/utils/string";
-import { DependencyType, DependsOn, type FileObjectType, type ProjectType, VersionReleaseChannel } from "@app/utils/types";
+import {
+    DependencyType,
+    DependsOn,
+    type FileObjectType,
+    type ProjectType,
+    VersionReleaseChannel,
+} from "@app/utils/types";
 import type { ProjectDetailsData, ProjectVersionData } from "@app/utils/types/api";
 import type { DependencyData } from "@app/utils/types/project";
 import { imageUrl } from "@app/utils/url";
@@ -184,7 +190,10 @@ export function MetadataInputCard({ projectType, formControl }: MetadataInputCar
 
                                 {field.value === VersionReleaseChannel.DEV ? (
                                     <TooltipProvider>
-                                        <TooltipTemplate className="max-w-sm text-start" content={t.version.devReleasesNote}>
+                                        <TooltipTemplate
+                                            className="max-w-sm text-start"
+                                            content={t.version.devReleasesNote}
+                                        >
                                             <CircleAlertIcon
                                                 aria-hidden
                                                 className="ms-auto h-btn-icon w-btn-icon cursor-help text-warning-fg"
@@ -299,7 +308,12 @@ interface AddDependenciesProps {
     currProjectId: string;
     dependenciesData: DependencyData | null;
 }
-export function AddDependencies({ dependencies, setDependencies, currProjectId, dependenciesData }: AddDependenciesProps) {
+export function AddDependencies({
+    dependencies,
+    setDependencies,
+    currProjectId,
+    dependenciesData,
+}: AddDependenciesProps) {
     const { t } = useTranslation();
     const [isfetchingData, setIsFetchingData] = useState(false);
     const [dependsOn, setDependsOn] = useState(DependsOn.PROJECT);
@@ -308,7 +322,9 @@ export function AddDependencies({ dependencies, setDependencies, currProjectId, 
     const [dependencyType, setDependencyType] = useState(DependencyType.REQUIRED);
 
     // Data for the dependencies
-    const [dependencyData, setDependencyData] = useState<DependencyData>(dependenciesData || { projects: [], versions: [] });
+    const [dependencyData, setDependencyData] = useState<DependencyData>(
+        dependenciesData || { projects: [], versions: [] },
+    );
 
     function isDependencyValid(projectId: string) {
         return !dependencies?.some((dependency) => dependency.projectId === projectId);
@@ -390,7 +406,10 @@ export function AddDependencies({ dependencies, setDependencies, currProjectId, 
         if (isfetchingData) return;
         setIsFetchingData(true);
         try {
-            const [project, version] = await Promise.all([fetchProject(projectSlug), fetchVersion(projectSlug, versionSlug)]);
+            const [project, version] = await Promise.all([
+                fetchProject(projectSlug),
+                fetchVersion(projectSlug, versionSlug),
+            ]);
             if (!project || !version) return;
 
             if (!isDependencyValid(project.id)) {
@@ -471,8 +490,12 @@ export function AddDependencies({ dependencies, setDependencies, currProjectId, 
                             <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value={DependsOn.PROJECT}>{CapitalizeAndFormatString(DependsOn.PROJECT)}</SelectItem>
-                            <SelectItem value={DependsOn.VERSION}>{CapitalizeAndFormatString(DependsOn.VERSION)}</SelectItem>
+                            <SelectItem value={DependsOn.PROJECT}>
+                                {CapitalizeAndFormatString(DependsOn.PROJECT)}
+                            </SelectItem>
+                            <SelectItem value={DependsOn.VERSION}>
+                                {CapitalizeAndFormatString(DependsOn.VERSION)}
+                            </SelectItem>
                         </SelectContent>
                     </Select>
 
@@ -536,7 +559,13 @@ interface DependencyItemProps {
     removeDependency: (projectId: string, versionId: string | null) => void;
 }
 
-function DependencyItem({ dependencyData, versionId, projectId, dependencyType, removeDependency }: DependencyItemProps) {
+function DependencyItem({
+    dependencyData,
+    versionId,
+    projectId,
+    dependencyType,
+    removeDependency,
+}: DependencyItemProps) {
     const { t } = useTranslation();
     const dependencyProject = dependencyData.projects.find((project) => project.id === projectId);
     const dependencyVersion = dependencyData.versions.find((version) => version.id === versionId);
@@ -546,7 +575,11 @@ function DependencyItem({ dependencyData, versionId, projectId, dependencyType, 
     return (
         <div className="flex w-full items-center justify-between gap-x-4 gap-y-1 text-foreground-muted">
             <div className="flex items-center justify-start gap-2">
-                <ImgWrapper src={imageUrl(dependencyProject.icon)} alt={dependencyProject.name} className="h-12 w-12 rounded" />
+                <ImgWrapper
+                    src={imageUrl(dependencyProject.icon)}
+                    alt={dependencyProject.name}
+                    className="h-12 w-12 rounded"
+                />
                 <div className="flex flex-col items-start justify-start">
                     <span className="font-bold text-foreground">{dependencyProject.name}</span>
                     <span>
@@ -579,7 +612,10 @@ export function SelectPrimaryFileInput({ children, selectedFile, inputId }: Prim
             {children}
 
             <div>
-                <FileIcon aria-hidden className="me-1.5 inline h-btn-icon w-btn-icon flex-shrink-0 text-foreground-muted" />
+                <FileIcon
+                    aria-hidden
+                    className="me-1.5 inline h-btn-icon w-btn-icon flex-shrink-0 text-foreground-muted"
+                />
                 {selectedFile ? (
                     <span className="inline-flex flex-wrap items-center justify-start gap-x-2">
                         <strong className="font-semibold">{selectedFile.name}</strong>{" "}
@@ -591,7 +627,10 @@ export function SelectPrimaryFileInput({ children, selectedFile, inputId }: Prim
                 )}
             </div>
 
-            <InteractiveLabel htmlFor={inputId} className={cn(buttonVariants({ variant: "secondary-dark" }), "cursor-pointer")}>
+            <InteractiveLabel
+                htmlFor={inputId}
+                className={cn(buttonVariants({ variant: "secondary-dark" }), "cursor-pointer")}
+            >
                 {selectedFile ? t.version.replaceFile : t.version.chooseFile}
             </InteractiveLabel>
         </div>
@@ -672,7 +711,10 @@ function AdditionalFiles({
                     <span className="mb-1 text-foreground-muted text-sm">{t.version.uploadExtraFilesDesc}</span>
                 </div>
 
-                <InteractiveLabel htmlFor={inputId} className={cn(buttonVariants({ variant: "outline" }), "cursor-pointer")}>
+                <InteractiveLabel
+                    htmlFor={inputId}
+                    className={cn(buttonVariants({ variant: "outline" }), "cursor-pointer")}
+                >
                     <UploadIcon aria-hidden className="h-btn-icon w-btn-icon" />
                     {t.version.selectFiles}
                 </InteractiveLabel>
@@ -687,7 +729,10 @@ function AdditionalFiles({
                         >
                             <div className="text-foreground-muted">
                                 {children}
-                                <FileIcon aria-hidden className="me-1.5 inline h-btn-icon w-btn-icon text-foreground-muted" />
+                                <FileIcon
+                                    aria-hidden
+                                    className="me-1.5 inline h-btn-icon w-btn-icon text-foreground-muted"
+                                />
                                 <strong className="text-wrap font-semibold">{file.name}</strong>{" "}
                                 <span className="ms-0.5 whitespace-nowrap">({parseFileSize(file.size)})</span>
                             </div>

@@ -40,7 +40,9 @@ export async function getGoogleUserProfileData(tokenExchangeCode: string) {
         accessToken: accessToken,
         refreshToken: null,
         tokenType: tokenData?.token_type || null,
-        scope: (tokenData?.scope || "").replaceAll("https://www.googleapi.com/auth/userinfo.", "").replaceAll(" ", "+") || null,
+        scope:
+            (tokenData?.scope || "").replaceAll("https://www.googleapi.com/auth/userinfo.", "").replaceAll(" ", "+") ||
+            null,
         avatarImage: userData?.picture || null,
     } satisfies OAuthData;
 

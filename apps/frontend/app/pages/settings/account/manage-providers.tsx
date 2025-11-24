@@ -25,7 +25,11 @@ import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";
 import { resJson } from "~/utils/server-fetch";
 
-export default function ManageAuthProviders({ linkedAuthProviders }: { linkedAuthProviders: LinkedProvidersListData[] }) {
+export default function ManageAuthProviders({
+    linkedAuthProviders,
+}: {
+    linkedAuthProviders: LinkedProvidersListData[];
+}) {
     const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState<{ value: boolean; provider: AuthProvider | null }>({
         value: false,
@@ -91,7 +95,9 @@ export default function ManageAuthProviders({ linkedAuthProviders }: { linkedAut
 
                                         {!!additionalProviderDetails && (
                                             <div className="flex min-h-5 items-center gap-2 text-foreground-muted leading-none">
-                                                <span className="text-sm">{additionalProviderDetails.providerAccountEmail}</span>
+                                                <span className="text-sm">
+                                                    {additionalProviderDetails.providerAccountEmail}
+                                                </span>
 
                                                 <LinkToProviderProfile
                                                     provider={authProvider.name}

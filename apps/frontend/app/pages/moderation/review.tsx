@@ -98,7 +98,11 @@ function ModerationItem({ project }: { project: ModerationProjectItem }) {
                     </Link>
                     by
                     <Link
-                        to={project.author.isOrg ? OrgPagePath(project.author.slug) : UserProfilePath(project.author.slug)}
+                        to={
+                            project.author.isOrg
+                                ? OrgPagePath(project.author.slug)
+                                : UserProfilePath(project.author.slug)
+                        }
                         className="flex items-center justify-start gap-x-1.5 hover:brightness-110"
                     >
                         <ImgWrapper

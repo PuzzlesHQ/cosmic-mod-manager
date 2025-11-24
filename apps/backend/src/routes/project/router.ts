@@ -3,7 +3,10 @@ import { iconFieldSchema } from "@app/utils/schemas";
 import { newProjectFormSchema } from "@app/utils/schemas/project";
 import { updateProjectTagsFormSchema } from "@app/utils/schemas/project/settings/categories";
 import { updateDescriptionFormSchema } from "@app/utils/schemas/project/settings/description";
-import { addNewGalleryImageFormSchema, updateGalleryImageFormSchema } from "@app/utils/schemas/project/settings/gallery";
+import {
+    addNewGalleryImageFormSchema,
+    updateGalleryImageFormSchema,
+} from "@app/utils/schemas/project/settings/gallery";
 import { generalProjectSettingsFormSchema } from "@app/utils/schemas/project/settings/general";
 import { updateProjectLicenseFormSchema } from "@app/utils/schemas/project/settings/license";
 import { updateExternalLinksFormSchema } from "@app/utils/schemas/project/settings/links";

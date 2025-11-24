@@ -70,7 +70,10 @@ DialogBody.displayName = "DialogHeader";
 
 function DialogFooter({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
     return (
-        <div className={cn("flex w-full flex-col-reverse gap-x-2 gap-y-2 sm:flex-row sm:justify-end", className)} {...props} />
+        <div
+            className={cn("flex w-full flex-col-reverse gap-x-2 gap-y-2 sm:flex-row sm:justify-end", className)}
+            {...props}
+        />
     );
 }
 DialogFooter.displayName = "DialogFooter";
@@ -87,7 +90,13 @@ function DialogTitle({ ref, className, ...props }: React.ComponentProps<typeof D
 DialogTitle.displayName = DialogPrimitive.Title.displayName;
 
 function DialogDescription({ ref, className, ...props }: React.ComponentProps<typeof DialogPrimitive.Description>) {
-    return <DialogPrimitive.Description ref={ref} className={cn("pe-8 text-foreground-muted text-sm", className)} {...props} />;
+    return (
+        <DialogPrimitive.Description
+            ref={ref}
+            className={cn("pe-8 text-foreground-muted text-sm", className)}
+            {...props}
+        />
+    );
 }
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
 

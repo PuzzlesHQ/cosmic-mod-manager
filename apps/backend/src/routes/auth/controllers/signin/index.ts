@@ -48,7 +48,9 @@ export async function oAuthSignInHandler(ctx: Context, authProvider: string, tok
         });
 
         if (!otherProviderAccount?.id) {
-            return invalidRequestResponseData("The provider you're trying to sign in with is not linked to any crmm account!");
+            return invalidRequestResponseData(
+                "The provider you're trying to sign in with is not linked to any crmm account!",
+            );
         }
 
         await addInvalidAuthAttempt(ctx);

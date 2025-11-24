@@ -21,7 +21,15 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "~/components/ui/dialog";
-import { CharacterCounter, Form, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import {
+    CharacterCounter,
+    Form,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { InteractiveLabel } from "~/components/ui/label";
 import { useNavigate } from "~/components/ui/link";
@@ -99,7 +107,9 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
 
         const fileExtension = `.${file.name.split(".").pop()}`;
         if (!validImgFileExtensions.includes(fileExtension)) {
-            return toast.error(`Invalid image type: ${fileExtension}. Allowed types: ${validImgFileExtensions.join(", ")}`);
+            return toast.error(
+                `Invalid image type: ${fileExtension}. Allowed types: ${validImgFileExtensions.join(", ")}`,
+            );
         }
         form.setValue("image", file);
     }
@@ -224,7 +234,10 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
                                     <FormItem>
                                         <FormLabel htmlFor="gallery-item-description">
                                             {t.form.description}
-                                            <CharacterCounter currVal={field.value} max={MAX_GALLERY_DESCRIPTION_LENGTH} />
+                                            <CharacterCounter
+                                                currVal={field.value}
+                                                max={MAX_GALLERY_DESCRIPTION_LENGTH}
+                                            />
                                         </FormLabel>
                                         <Textarea
                                             {...field}

@@ -40,7 +40,11 @@ function DropdownMenuSubTrigger({
 }
 DropdownMenuSubTrigger.displayName = DropdownMenuPrimitive.SubTrigger.displayName;
 
-function DropdownMenuSubContent({ ref, className, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.SubContent>) {
+function DropdownMenuSubContent({
+    ref,
+    className,
+    ...props
+}: React.ComponentProps<typeof DropdownMenuPrimitive.SubContent>) {
     return (
         <DropdownMenuPrimitive.SubContent
             ref={ref}
@@ -171,9 +175,17 @@ function DropdownMenuLabel({
 }
 DropdownMenuLabel.displayName = DropdownMenuPrimitive.Label.displayName;
 
-function DropdownMenuSeparator({ ref, className, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
+function DropdownMenuSeparator({
+    ref,
+    className,
+    ...props
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
     return (
-        <DropdownMenuPrimitive.Separator ref={ref} className={cn("-mx-1 my-1 h-px bg-raised-background", className)} {...props} />
+        <DropdownMenuPrimitive.Separator
+            ref={ref}
+            className={cn("-mx-1 my-1 h-px bg-raised-background", className)}
+            {...props}
+        />
     );
 }
 DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName;

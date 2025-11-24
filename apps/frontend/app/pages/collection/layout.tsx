@@ -103,8 +103,16 @@ export default function CollectionPageLayout(props: Props) {
                 }
                 actionBtns={
                     markedProjects.length > 0 ? (
-                        <Button variant="secondary-destructive" onClick={RemoveCollectionProjects} disabled={removingProjects}>
-                            {removingProjects ? <LoadingSpinner size="xs" /> : <Trash2Icon className="h-btn-icon w-btn-icon" />}
+                        <Button
+                            variant="secondary-destructive"
+                            onClick={RemoveCollectionProjects}
+                            disabled={removingProjects}
+                        >
+                            {removingProjects ? (
+                                <LoadingSpinner size="xs" />
+                            ) : (
+                                <Trash2Icon className="h-btn-icon w-btn-icon" />
+                            )}
                             {t.form.remove}
                         </Button>
                     ) : null
@@ -128,7 +136,8 @@ export default function CollectionPageLayout(props: Props) {
                             </Button>
                         </PopoverClose>
 
-                        {!isFollowsCollection && (props.collection.userId === session?.id || isModerator(session?.role)) ? (
+                        {!isFollowsCollection &&
+                        (props.collection.userId === session?.id || isModerator(session?.role)) ? (
                             <>
                                 <Separator />
 
@@ -166,7 +175,11 @@ export default function CollectionPageLayout(props: Props) {
                     )}
 
                     <span className="font-semibold">
-                        {t.projectSettings[props.collection.visibility === CollectionVisibility.PRIVATE ? "private" : "public"]}
+                        {
+                            t.projectSettings[
+                                props.collection.visibility === CollectionVisibility.PRIVATE ? "private" : "public"
+                            ]
+                        }
                     </span>
                 </div>
 

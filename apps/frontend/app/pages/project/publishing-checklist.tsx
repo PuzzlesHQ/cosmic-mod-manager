@@ -2,7 +2,15 @@ import { isRejected, RejectedStatuses, ShowEnvSupportSettingsForType } from "@ap
 import { disableInteractions, enableInteractions } from "@app/utils/dom";
 import { Capitalize, isCurrLinkActive } from "@app/utils/string";
 import { EnvironmentSupport, ProjectPublishingStatus } from "@app/utils/types";
-import { AsteriskIcon, CheckIcon, ChevronDownIcon, ChevronRightIcon, LightbulbIcon, ScaleIcon, SendIcon } from "lucide-react";
+import {
+    AsteriskIcon,
+    CheckIcon,
+    ChevronDownIcon,
+    ChevronRightIcon,
+    LightbulbIcon,
+    ScaleIcon,
+    SendIcon,
+} from "lucide-react";
 import { type ReactNode, useState } from "react";
 import { useLocation } from "react-router";
 import RefreshPage from "~/components/misc/refresh-page";
@@ -43,8 +51,12 @@ export function PublishingChecklist() {
     }
 
     const RequiredIcon = <AsteriskIcon aria-hidden className="inline h-4 w-4 text-[#cb2245] dark:text-[#ff496e]" />;
-    const SuggestionIcon = <LightbulbIcon aria-hidden className="inline h-4 w-4 text-purple-600 dark:text-purple-400" />;
-    const SubmitIcon = <ScaleIcon aria-hidden className="inline h-[1.1rem] w-[1.1rem] text-[#e08325] dark:text-[#ffa347]" />;
+    const SuggestionIcon = (
+        <LightbulbIcon aria-hidden className="inline h-4 w-4 text-purple-600 dark:text-purple-400" />
+    );
+    const SubmitIcon = (
+        <ScaleIcon aria-hidden className="inline h-[1.1rem] w-[1.1rem] text-[#e08325] dark:text-[#ffa347]" />
+    );
     const TickIcon = <CheckIcon aria-hidden className="inline h-4 w-4 text-foreground-muted" />;
 
     function StatusIcon({ status }: { status: string }) {
@@ -144,7 +156,8 @@ export function PublishingChecklist() {
             condition:
                 project.clientSide === EnvironmentSupport.UNKNOWN ||
                 project.serverSide === EnvironmentSupport.UNKNOWN ||
-                (project.clientSide === EnvironmentSupport.UNSUPPORTED && project.serverSide === EnvironmentSupport.UNSUPPORTED),
+                (project.clientSide === EnvironmentSupport.UNSUPPORTED &&
+                    project.serverSide === EnvironmentSupport.UNSUPPORTED),
             id: "select-environments",
             title: pubChecklist.selectEnv,
             description: pubChecklist.selectEnvDesc(t.navbar[project.type[0]]),

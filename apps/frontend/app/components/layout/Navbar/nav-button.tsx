@@ -73,13 +73,25 @@ export default function NavButton({ session }: NavbuttonProps) {
                         matchExactUrl: false,
                     },
                     {
-                        icon: <BellIcon aria-hidden className="h-btn-icon w-btn-icon" aria-label={t.dashboard.notifications} />,
+                        icon: (
+                            <BellIcon
+                                aria-hidden
+                                className="h-btn-icon w-btn-icon"
+                                aria-label={t.dashboard.notifications}
+                            />
+                        ),
                         label: t.dashboard.notifications,
                         url: "/dashboard/notifications",
                         matchExactUrl: false,
                     },
                     {
-                        icon: <Settings2Icon aria-hidden className="h-btn-icon w-btn-icon" aria-label={t.common.settings} />,
+                        icon: (
+                            <Settings2Icon
+                                aria-hidden
+                                className="h-btn-icon w-btn-icon"
+                                aria-label={t.common.settings}
+                            />
+                        ),
                         label: t.common.settings,
                         url: "/settings",
                         matchExactUrl: false,
@@ -97,14 +109,24 @@ export default function NavButton({ session }: NavbuttonProps) {
 
                 {[
                     {
-                        icon: <LayoutListIcon aria-hidden className="h-btn-icon w-btn-icon" aria-label={t.dashboard.projects} />,
+                        icon: (
+                            <LayoutListIcon
+                                aria-hidden
+                                className="h-btn-icon w-btn-icon"
+                                aria-label={t.dashboard.projects}
+                            />
+                        ),
                         label: t.dashboard.projects,
                         url: "/dashboard/projects",
                         matchExactUrl: false,
                     },
                     {
                         icon: (
-                            <Building2Icon aria-hidden className="h-btn-icon w-btn-icon" aria-label={t.dashboard.organizations} />
+                            <Building2Icon
+                                aria-hidden
+                                className="h-btn-icon w-btn-icon"
+                                aria-label={t.dashboard.organizations}
+                            />
                         ),
                         label: t.dashboard.organizations,
                         url: "/dashboard/organizations",

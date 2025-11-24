@@ -146,13 +146,22 @@ function GalleryItemCard({
 
             <div className="grid w-full grid-cols-1 place-content-between gap-2 p-2 pb-1 ">
                 <div className="flex w-full flex-col items-start justify-start ">
-                    <span itemProp={MicrodataItemProps.name} className="flex items-center justify-start gap-2 font-bold text-lg">
+                    <span
+                        itemProp={MicrodataItemProps.name}
+                        className="flex items-center justify-start gap-2 font-bold text-lg"
+                    >
                         {galleryItem.name}
                         {galleryItem.featured === true ? (
-                            <StarIcon aria-hidden className="h-btn-icon w-btn-icon fill-current text-foreground-extra-muted" />
+                            <StarIcon
+                                aria-hidden
+                                className="h-btn-icon w-btn-icon fill-current text-foreground-extra-muted"
+                            />
                         ) : null}
                     </span>
-                    <figcaption itemProp={MicrodataItemProps.description} className="text-foreground-muted leading-tight">
+                    <figcaption
+                        itemProp={MicrodataItemProps.description}
+                        className="text-foreground-muted leading-tight"
+                    >
                         {galleryItem.description}
                     </figcaption>
                 </div>
@@ -243,7 +252,10 @@ function ImageDialog({
                     <DialogTitle>{galleryItem.name}</DialogTitle>
                     <DialogDescription>{galleryItem.description}</DialogDescription>
                 </VisuallyHidden>
-                <div id="image_popup_content" className="relative flex h-[100dvh] w-full flex-col items-center justify-center">
+                <div
+                    id="image_popup_content"
+                    className="relative flex h-[100dvh] w-full flex-col items-center justify-center"
+                >
                     <DialogClose asChild>
                         <div className="absolute top-0 left-0 z-0 h-full w-full" />
                     </DialogClose>

@@ -27,7 +27,9 @@ export async function getDownloadsAnalyticsData(user: ContextUserData, props: ge
     } else if (props.timeline) {
         [startDate, endDate] = getTimeRange(props.timeline);
     } else {
-        return invalidRequestResponseData("Either startDate and endDate (YYYY-MM-DD) or timeline query param must be provided");
+        return invalidRequestResponseData(
+            "Either startDate and endDate (YYYY-MM-DD) or timeline query param must be provided",
+        );
     }
 
     const projectData = await GetManyProjects_ListItem(props.projectIds);
@@ -39,7 +41,9 @@ export async function getDownloadsAnalyticsData(user: ContextUserData, props: ge
 
     // Check user permissions
     for (const project of projectData) {
-        const member = combineProjectMembers(project.team.members, project.organisation?.team.members || []).get(user.id);
+        const member = combineProjectMembers(project.team.members, project.organisation?.team.members || []).get(
+            user.id,
+        );
         const canSeeAnalytics = doesMemberHaveAccess(
             ProjectPermission.VIEW_ANALYTICS,
             member?.permissions as ProjectPermission[],
@@ -106,7 +110,9 @@ export async function getAllProjects_DownloadsAnalyticsData(user: ContextUserDat
     } else if (props.timeline) {
         [startDate, endDate] = getTimeRange(props.timeline);
     } else {
-        return invalidRequestResponseData("Either startDate and endDate (YYYY-MM-DD) or timeline query param must be provided");
+        return invalidRequestResponseData(
+            "Either startDate and endDate (YYYY-MM-DD) or timeline query param must be provided",
+        );
     }
 
     const startDate_String = ISO_DateStr(startDate);

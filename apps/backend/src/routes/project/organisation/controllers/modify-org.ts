@@ -129,7 +129,8 @@ export async function updateOrgIcon(
     });
     const iconImg_Id = `${generateDbId()}_${ICON_WIDTH}.${savedImg_Type}`;
     const icon_SaveUrl = await saveOrgFile(FILE_STORAGE_SERVICE.LOCAL, org.id, orgIcon_Webp, iconImg_Id);
-    if (!icon_SaveUrl) return { data: { success: false, message: "Failed to save the icon" }, status: HTTP_STATUS.SERVER_ERROR };
+    if (!icon_SaveUrl)
+        return { data: { success: false, message: "Failed to save the icon" }, status: HTTP_STATUS.SERVER_ERROR };
 
     await CreateFile({
         data: {
@@ -300,7 +301,8 @@ export async function addProjectToOrganisation(userSession: ContextUserData, org
         currMember?.isOwner,
         userSession.role,
     );
-    if (!canAddProjects) return unauthorizedReqResponseData("You don't have the permission to add projects to the organization");
+    if (!canAddProjects)
+        return unauthorizedReqResponseData("You don't have the permission to add projects to the organization");
 
     const Project = await GetProject_ListItem(projectId);
     if (!Project) return notFoundResponseData("Project not found");
@@ -340,7 +342,12 @@ export async function addProjectToOrganisation(userSession: ContextUserData, org
     return { data: { success: true, message: "Project added to organization" }, status: HTTP_STATUS.OK };
 }
 
-export async function removeProjectFromOrg(ctx: Context, userSession: ContextUserData, orgId: string, projectId: string) {
+export async function removeProjectFromOrg(
+    ctx: Context,
+    userSession: ContextUserData,
+    orgId: string,
+    projectId: string,
+) {
     const org = await GetOrganization_Data(orgId);
     if (!org) return notFoundResponseData("Organization not found");
 

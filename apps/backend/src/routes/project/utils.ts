@@ -159,7 +159,12 @@ export async function deleteVersionFiles(projectId: string, versionId: string, f
 
         fileIds.push(file.id);
         promises.push(
-            deleteProjectVersionFile(file.storageService as FILE_STORAGE_SERVICE, projectId, versionId, `/${file.name}`),
+            deleteProjectVersionFile(
+                file.storageService as FILE_STORAGE_SERVICE,
+                projectId,
+                versionId,
+                `/${file.name}`,
+            ),
         );
     }
 

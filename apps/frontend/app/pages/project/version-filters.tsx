@@ -61,7 +61,11 @@ export default function VersionFilters(props: VersionFiltersProps) {
         updateSearchParams(updateFiltersList(searchParams, newFilters));
     }
 
-    const formattedOptions = formatFilterOptions(props.allProjectVersions, showDevVersions, showExperimentalGameVersions);
+    const formattedOptions = formatFilterOptions(
+        props.allProjectVersions,
+        showDevVersions,
+        showExperimentalGameVersions,
+    );
     const anyFilterEnabled = filters.loaders.length + filters.gameVersions.length + filters.releaseChannels.length > 0;
 
     const filteredItems = useMemo(() => {
@@ -130,7 +134,9 @@ export default function VersionFilters(props: VersionFiltersProps) {
                                         <CommandSeparator />
                                         <LabelledCheckbox
                                             checked={showExperimentalGameVersions}
-                                            onCheckedChange={(checked) => setShowExperimentalGameVersions(checked === true)}
+                                            onCheckedChange={(checked) =>
+                                                setShowExperimentalGameVersions(checked === true)
+                                            }
                                             className="my-1 ps-3.5 pe-2 text-foreground-extra-muted"
                                         >
                                             {t.form.showAllVersions}
@@ -253,14 +259,22 @@ export default function VersionFilters(props: VersionFiltersProps) {
 
 function FilterItemChip(props: { label: string; onClick: () => void; className?: string; style?: CSSProperties }) {
     return (
-        <ChipButton onClick={props.onClick} style={props.style} className={cn("gap-1 pe-1.5 hover:underline", props.className)}>
+        <ChipButton
+            onClick={props.onClick}
+            style={props.style}
+            className={cn("gap-1 pe-1.5 hover:underline", props.className)}
+        >
             {props.label}
             <XIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />
         </ChipButton>
     );
 }
 
-export function filterVersionItems(allProjectVersions: ProjectVersionData[], filters: FilterItems, showDevVersions = false) {
+export function filterVersionItems(
+    allProjectVersions: ProjectVersionData[],
+    filters: FilterItems,
+    showDevVersions = false,
+) {
     const filteredItems: ProjectVersionData[] = [];
 
     for (const version of allProjectVersions || []) {

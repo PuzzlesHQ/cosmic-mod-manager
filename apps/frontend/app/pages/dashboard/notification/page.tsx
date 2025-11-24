@@ -24,7 +24,12 @@ export interface NotificationsData {
     relatedOrgs: OrganisationListItem[];
 }
 
-export default function NotificationsPage({ notifications, relatedProjects, relatedOrgs, relatedUsers }: NotificationsData) {
+export default function NotificationsPage({
+    notifications,
+    relatedProjects,
+    relatedOrgs,
+    relatedUsers,
+}: NotificationsData) {
     const { t } = useTranslation();
     const [markingAsRead, setMarkingAsRead] = useState(false);
     const unreadNotifications = notifications?.filter((notification) => !notification.read);
@@ -78,7 +83,9 @@ export default function NotificationsPage({ notifications, relatedProjects, rela
             </CardHeader>
 
             <CardContent className="grid gap-panel-cards">
-                {!unreadNotifications?.length && <span className="text-foreground-muted">{t.dashboard.noUnreadNotifs}</span>}
+                {!unreadNotifications?.length && (
+                    <span className="text-foreground-muted">{t.dashboard.noUnreadNotifs}</span>
+                )}
 
                 <NotificationsList
                     notifications={unreadNotifications}
@@ -164,8 +171,14 @@ export function NotificationsList(props: NotificationsListProps) {
                                 deleteNotification={deleteNotification}
                                 markingAsRead={markingAsRead}
                                 deletingNotification={deletingNotification}
-                                navigateTo={ProjectPagePath(relatedProject?.type[0] || "project", relatedProject?.slug || "")}
-                                pageUrl={ProjectPagePath(relatedProject?.type[0] || "project", relatedProject?.slug || "")}
+                                navigateTo={ProjectPagePath(
+                                    relatedProject?.type[0] || "project",
+                                    relatedProject?.slug || "",
+                                )}
+                                pageUrl={ProjectPagePath(
+                                    relatedProject?.type[0] || "project",
+                                    relatedProject?.slug || "",
+                                )}
                                 invitedBy={{
                                     userName: relatedUser?.userName || (notification.body?.invitedBy as string),
                                     avatar: relatedUser?.avatar || null,

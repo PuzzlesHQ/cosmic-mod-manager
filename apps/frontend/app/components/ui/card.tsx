@@ -7,7 +7,13 @@ interface CardProps extends React.ComponentProps<"div"> {
 
 function Card({ ref, className, useSectionTag, ...props }: CardProps) {
     const Tag = useSectionTag ? "section" : "div";
-    return <Tag ref={ref} className={cn("rounded-lg bg-card-background text-foreground shadow-sm", className)} {...props} />;
+    return (
+        <Tag
+            ref={ref}
+            className={cn("rounded-lg bg-card-background text-foreground shadow-sm", className)}
+            {...props}
+        />
+    );
 }
 Card.displayName = "Card";
 
@@ -32,7 +38,13 @@ function CardContent({ ref, className, ...props }: React.ComponentProps<"div">) 
 CardContent.displayName = "CardContent";
 
 function CardFooter({ ref, className, ...props }: React.ComponentProps<"div">) {
-    return <div ref={ref} className={cn("flex items-center justify-end gap-3 p-card-surround pt-0", className)} {...props} />;
+    return (
+        <div
+            ref={ref}
+            className={cn("flex items-center justify-end gap-3 p-card-surround pt-0", className)}
+            {...props}
+        />
+    );
 }
 CardFooter.displayName = "CardFooter";
 

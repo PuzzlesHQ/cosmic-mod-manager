@@ -90,7 +90,10 @@ export async function getUserOrganisations(userSession: ContextUserData | null, 
     return { data: organisationsList, status: HTTP_STATUS.OK };
 }
 
-export async function createOrganisation(userSession: ContextUserData, formData: z.infer<typeof createOrganisationFormSchema>) {
+export async function createOrganisation(
+    userSession: ContextUserData,
+    formData: z.infer<typeof createOrganisationFormSchema>,
+) {
     const existingOrgWithSameSlug = await GetOrganization_Data(formData.slug, formData.slug);
     if (existingOrgWithSameSlug) {
         return invalidRequestResponseData("Organisation with the same slug already exists");

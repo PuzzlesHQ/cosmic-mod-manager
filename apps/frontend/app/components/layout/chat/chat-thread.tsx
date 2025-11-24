@@ -6,7 +6,12 @@ import type { z } from "@app/utils/schemas";
 import type { createThreadMessage_Schema } from "@app/utils/schemas/thread/index";
 import { GlobalUserRole, ProjectPublishingStatus } from "@app/utils/types";
 import type { DetailedReport } from "@app/utils/types/api/report";
-import { MessageType, type Thread, type ThreadMember, type ThreadMessage as ThreadMessageT } from "@app/utils/types/api/thread";
+import {
+    MessageType,
+    type Thread,
+    type ThreadMember,
+    type ThreadMessage as ThreadMessageT,
+} from "@app/utils/types/api/thread";
 import {
     BanIcon,
     CheckCircleIcon,
@@ -286,14 +291,22 @@ export function ChatThread(props: ChatThreadProps) {
                                 onClick={() => updateReportStatus(true)}
                                 disabled={updatingReportStatus}
                             >
-                                <LockKeyholeIcon aria-hidden="true" className="h-btn-icon-md w-btn-icon-md" strokeWidth={2.2} />
+                                <LockKeyholeIcon
+                                    aria-hidden="true"
+                                    className="h-btn-icon-md w-btn-icon-md"
+                                    strokeWidth={2.2}
+                                />
                                 {t.chatThread.closeThread}
                             </Button>
                         )}
 
                         {isReportClosed && (
                             <Button onClick={() => updateReportStatus(false)} disabled={updatingReportStatus}>
-                                <CheckCircleIcon aria-hidden="true" className="h-btn-icon-md w-btn-icon-md" strokeWidth={2.2} />
+                                <CheckCircleIcon
+                                    aria-hidden="true"
+                                    className="h-btn-icon-md w-btn-icon-md"
+                                    strokeWidth={2.2}
+                                />
                                 {t.chatThread.reopenThread}
                             </Button>
                         )}
@@ -498,7 +511,12 @@ function ThreadMessage(props: ThreadMessageProps) {
     ) : (
         <TooltipTemplate content={FormattedDate({ date: props.message.createdAt })}>
             <span className={timestamp_class}>
-                <FormattedDate date={props.message.createdAt} includeDay={false} includeMonth={false} includeYear={false} />
+                <FormattedDate
+                    date={props.message.createdAt}
+                    includeDay={false}
+                    includeMonth={false}
+                    includeYear={false}
+                />
             </span>
         </TooltipTemplate>
     );

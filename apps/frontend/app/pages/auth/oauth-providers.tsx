@@ -4,7 +4,12 @@ import { DiscordIcon, GithubIcon, GitlabIcon, GoogleIcon } from "~/components/ic
 import { VariantButtonLink } from "~/components/ui/link";
 import Config from "~/utils/config";
 
-export const ConfiguredAuthProviders = [AuthProvider.GITHUB, AuthProvider.DISCORD, AuthProvider.GOOGLE, AuthProvider.GITLAB];
+export const ConfiguredAuthProviders = [
+    AuthProvider.GITHUB,
+    AuthProvider.DISCORD,
+    AuthProvider.GOOGLE,
+    AuthProvider.GITLAB,
+];
 
 export const authProvidersList = [
     {

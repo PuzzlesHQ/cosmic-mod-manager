@@ -6,7 +6,11 @@ import rateLimits from "./limits";
 import { setRateLimitHeaders } from "./utils";
 
 const cdnAssetLimit = rateLimits.CDN_ASSETS;
-const cdnAssetLimiterBucket = new TokenBucket(cdnAssetLimit.namespace, cdnAssetLimit.max, cdnAssetLimit.timeWindow_seconds);
+const cdnAssetLimiterBucket = new TokenBucket(
+    cdnAssetLimit.namespace,
+    cdnAssetLimit.max,
+    cdnAssetLimit.timeWindow_seconds,
+);
 
 export async function cdnAssetRateLimiter(ctx: Context, next: Next) {
     const ipAddr = getUserIpAddress(ctx);

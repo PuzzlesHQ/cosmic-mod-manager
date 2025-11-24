@@ -21,7 +21,11 @@ export function SearchResults(props: { viewType: ListViewType }) {
 
     const pagination =
         (result?.estimatedTotalHits || 0) > pageLimit ? (
-            <PaginatedNavigation pagesCount={totalPages} activePage={activePage} searchParamKey={pageOffsetParamNamespace} />
+            <PaginatedNavigation
+                pagesCount={totalPages}
+                activePage={activePage}
+                searchParamKey={pageOffsetParamNamespace}
+            />
         ) : null;
 
     return (
@@ -73,7 +77,9 @@ export function SearchResults(props: { viewType: ListViewType }) {
                 </div>
             )}
 
-            {!result?.hits?.length && isFetching && <div className="flex w-full items-center justify-center py-8">...</div>}
+            {!result?.hits?.length && isFetching && (
+                <div className="flex w-full items-center justify-center py-8">...</div>
+            )}
 
             {pagination}
         </>

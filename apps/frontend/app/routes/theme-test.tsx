@@ -79,7 +79,11 @@ export default function () {
                         Normal Checkbox
                     </LabelledCheckbox>
 
-                    <LabelledTernaryCheckbox state={ternaryState} onCheckedChange={setTernaryState} id="ternary-checkbox">
+                    <LabelledTernaryCheckbox
+                        state={ternaryState}
+                        onCheckedChange={setTernaryState}
+                        id="ternary-checkbox"
+                    >
                         Ternary Checkbox
                     </LabelledTernaryCheckbox>
                 </CardContent>

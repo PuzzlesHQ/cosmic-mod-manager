@@ -17,7 +17,11 @@ export async function updateProjectTags(
     const project = await GetProject_ListItem(projectId);
     if (!project?.id) return notFoundResponseData();
 
-    const memberObj = getCurrMember(userSession.id, project.team?.members || [], project.organisation?.team.members || []);
+    const memberObj = getCurrMember(
+        userSession.id,
+        project.team?.members || [],
+        project.organisation?.team.members || [],
+    );
     const hasEditAccess = doesMemberHaveAccess(
         ProjectPermission.EDIT_DETAILS,
         memberObj?.permissions as ProjectPermission[],
@@ -54,7 +58,11 @@ export async function updateProjectExternalLinks(
     const project = await GetProject_ListItem(projectId);
     if (!project?.id) return notFoundResponseData();
 
-    const memberObj = getCurrMember(userSession.id, project.team?.members || [], project.organisation?.team.members || []);
+    const memberObj = getCurrMember(
+        userSession.id,
+        project.team?.members || [],
+        project.organisation?.team.members || [],
+    );
     const hasEditAccess = doesMemberHaveAccess(
         ProjectPermission.EDIT_DETAILS,
         memberObj?.permissions as ProjectPermission[],
@@ -89,7 +97,11 @@ export async function updateProjectLicense(
     const project = await GetProject_ListItem(projectId);
     if (!project?.id) return notFoundResponseData();
 
-    const memberObj = getCurrMember(userSession.id, project.team?.members || [], project.organisation?.team.members || []);
+    const memberObj = getCurrMember(
+        userSession.id,
+        project.team?.members || [],
+        project.organisation?.team.members || [],
+    );
     const hasEditAccess = doesMemberHaveAccess(
         ProjectPermission.EDIT_DETAILS,
         memberObj?.permissions as ProjectPermission[],

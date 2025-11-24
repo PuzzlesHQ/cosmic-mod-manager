@@ -154,7 +154,10 @@ export async function GetCollectionOwner(collectionId: string, userSession: Cont
     };
 }
 
-export async function CreateNewCollection(formData: z.infer<typeof createCollectionFormSchema>, userSession: ContextUserData) {
+export async function CreateNewCollection(
+    formData: z.infer<typeof createCollectionFormSchema>,
+    userSession: ContextUserData,
+) {
     const collection = await CreateCollection({
         data: {
             id: generateDbId(),
@@ -175,7 +178,11 @@ export async function CreateNewCollection(formData: z.infer<typeof createCollect
     };
 }
 
-export async function AddProjectsToCollection(collectionId: string, projectIds: string[], sessionUser: ContextUserData) {
+export async function AddProjectsToCollection(
+    collectionId: string,
+    projectIds: string[],
+    sessionUser: ContextUserData,
+) {
     if (collectionId?.toLowerCase() === FOLLOWS_COLLECTIONS_ID && sessionUser.id) {
         return await addProjectsToUserFollows(projectIds, sessionUser);
     }
@@ -214,7 +221,11 @@ export async function AddProjectsToCollection(collectionId: string, projectIds: 
     };
 }
 
-export async function DeleteProjectsFromCollection(collectionId: string, projectIds: string[], sessionUser: ContextUserData) {
+export async function DeleteProjectsFromCollection(
+    collectionId: string,
+    projectIds: string[],
+    sessionUser: ContextUserData,
+) {
     if (collectionId?.toLowerCase() === FOLLOWS_COLLECTIONS_ID && sessionUser.id) {
         return await removeProjectsFromUserFollows(projectIds, sessionUser);
     }

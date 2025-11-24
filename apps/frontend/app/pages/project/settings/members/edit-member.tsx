@@ -125,7 +125,10 @@ export function ProjectTeamMember({
                         >
                             {member.userName}
                             {member.isOwner && (
-                                <span className="flex shrink-0 items-baseline justify-center" title={t.projectSettings.owner}>
+                                <span
+                                    className="flex shrink-0 items-baseline justify-center"
+                                    title={t.projectSettings.owner}
+                                >
                                     <CrownIcon aria-hidden className="h-4 w-4 text-orange-500 dark:text-orange-400" />
                                 </span>
                             )}
@@ -211,7 +214,9 @@ export function ProjectTeamMember({
                                                             if (checked === true) {
                                                                 field.onChange([...currList, permissionName]);
                                                             } else {
-                                                                field.onChange(currList.filter((p) => p !== permissionName));
+                                                                field.onChange(
+                                                                    currList.filter((p) => p !== permissionName),
+                                                                );
                                                             }
                                                         }}
                                                     >
@@ -229,7 +234,9 @@ export function ProjectTeamMember({
                             <Button
                                 type="submit"
                                 size="sm"
-                                disabled={isLoading || !form.formState.isDirty || (!canEditMember && !canAddPermissions)}
+                                disabled={
+                                    isLoading || !form.formState.isDirty || (!canEditMember && !canAddPermissions)
+                                }
                             >
                                 <SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                 {t.form.saveChanges}
@@ -237,7 +244,12 @@ export function ProjectTeamMember({
 
                             {!member.isOwner && canRemoveMembers && (
                                 <RemoveMemberDialog member={member} refreshData={fetchProjectData}>
-                                    <Button type="button" variant="secondary-destructive" size="sm" disabled={isLoading}>
+                                    <Button
+                                        type="button"
+                                        variant="secondary-destructive"
+                                        size="sm"
+                                        disabled={isLoading}
+                                    >
                                         <UserXIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                         {t.projectSettings.removeMember}
                                     </Button>
@@ -245,7 +257,11 @@ export function ProjectTeamMember({
                             )}
 
                             {canTransferOwnership ? (
-                                <TransferOwnershipDialog member={member} teamId={projectTeamId} refreshData={fetchProjectData}>
+                                <TransferOwnershipDialog
+                                    member={member}
+                                    teamId={projectTeamId}
+                                    refreshData={fetchProjectData}
+                                >
                                     <Button variant="secondary" size="sm" disabled={isLoading}>
                                         <ArrowRightLeftIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                         {t.projectSettings.transferOwnership}
@@ -268,7 +284,13 @@ interface OrgTeamMemberProps {
     fetchProjectData: () => Promise<void>;
 }
 
-export function OrgTeamMember({ session, project, orgMember, fetchProjectData, currUsersMembership }: OrgTeamMemberProps) {
+export function OrgTeamMember({
+    session,
+    project,
+    orgMember,
+    fetchProjectData,
+    currUsersMembership,
+}: OrgTeamMemberProps) {
     const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const [detailsOpen, setDetailsOpen] = useState(false);
@@ -407,12 +429,17 @@ export function OrgTeamMember({ session, project, orgMember, fetchProjectData, c
                         >
                             {effectiveMembership.userName}
                             {orgMember.isOwner && (
-                                <span className="flex shrink-0 items-baseline justify-center" title={t.projectSettings.owner}>
+                                <span
+                                    className="flex shrink-0 items-baseline justify-center"
+                                    title={t.projectSettings.owner}
+                                >
                                     <CrownIcon aria-hidden className="h-4 w-4 text-orange-500 dark:text-orange-400" />
                                 </span>
                             )}
                         </Link>
-                        <span className="text-[0.93rem] text-foreground-muted/80 leading-none">{effectiveMembership.role}</span>
+                        <span className="text-[0.93rem] text-foreground-muted/80 leading-none">
+                            {effectiveMembership.role}
+                        </span>
                     </div>
                 </div>
 
@@ -455,7 +482,10 @@ export function OrgTeamMember({ session, project, orgMember, fetchProjectData, c
                     >
                         <FormItem className="flex-row items-center justify-between gap-x-4 sm:gap-x-8">
                             <div className="flex flex-col items-start justify-center gap-1">
-                                <FormLabel className="font-bold" htmlFor={`override-perms-input_${effectiveMembership.id}`}>
+                                <FormLabel
+                                    className="font-bold"
+                                    htmlFor={`override-perms-input_${effectiveMembership.id}`}
+                                >
                                     {t.projectSettings.overrideValues}
                                     <FormMessage />
                                 </FormLabel>
@@ -478,7 +508,10 @@ export function OrgTeamMember({ session, project, orgMember, fetchProjectData, c
                             render={({ field }) => (
                                 <FormItem className="flex-col justify-between md:flex-row">
                                     <div className="flex flex-col items-start justify-center gap-1">
-                                        <FormLabel className="font-bold" htmlFor={`member-role-input_${effectiveMembership.id}`}>
+                                        <FormLabel
+                                            className="font-bold"
+                                            htmlFor={`member-role-input_${effectiveMembership.id}`}
+                                        >
                                             {t.projectSettings.role}
                                             <FormMessage />
                                         </FormLabel>
@@ -523,7 +556,9 @@ export function OrgTeamMember({ session, project, orgMember, fetchProjectData, c
                                                             if (checked === true) {
                                                                 field.onChange([...currList, permissionName]);
                                                             } else {
-                                                                field.onChange(currList.filter((p) => p !== permissionName));
+                                                                field.onChange(
+                                                                    currList.filter((p) => p !== permissionName),
+                                                                );
                                                             }
                                                         }}
                                                     >

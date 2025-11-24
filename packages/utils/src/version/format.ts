@@ -20,11 +20,13 @@ export function formatVersionsForDisplay(gameVersions: string[]) {
 
     const allReleases = allVersions.filter(
         (version) =>
-            version.releaseType === GameVersionReleaseType.RELEASE || version.releaseType === GameVersionReleaseType.ALPHA,
+            version.releaseType === GameVersionReleaseType.RELEASE ||
+            version.releaseType === GameVersionReleaseType.ALPHA,
     );
     const allSnapshots = allVersions.filter(
         (version) =>
-            version.releaseType === GameVersionReleaseType.SNAPSHOT || version.releaseType === GameVersionReleaseType.PRE_RELEASE,
+            version.releaseType === GameVersionReleaseType.SNAPSHOT ||
+            version.releaseType === GameVersionReleaseType.PRE_RELEASE,
     );
     const allLegacy = allVersions.filter(
         (version) =>
@@ -40,7 +42,8 @@ export function formatVersionsForDisplay(gameVersions: string[]) {
         allSnapshots.some(
             (gameVer) =>
                 gameVer.value === projVer &&
-                (AllGameVersions.indexOf(gameVer.value) < AllGameVersions.indexOf(releaseVersions[0]) || !releaseVersions[0]),
+                (AllGameVersions.indexOf(gameVer.value) < AllGameVersions.indexOf(releaseVersions[0]) ||
+                    !releaseVersions[0]),
         ),
     );
 

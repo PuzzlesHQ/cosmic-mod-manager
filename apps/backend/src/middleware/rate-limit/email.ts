@@ -6,7 +6,11 @@ import rateLimits from "./limits";
 import { setRateLimitHeaders } from "./utils";
 
 const sendEmailLimit = rateLimits.global.EMAIL;
-const sendEmailLimiterBucket = new TokenBucket(sendEmailLimit.namespace, sendEmailLimit.max, sendEmailLimit.timeWindow_seconds);
+const sendEmailLimiterBucket = new TokenBucket(
+    sendEmailLimit.namespace,
+    sendEmailLimit.max,
+    sendEmailLimit.timeWindow_seconds,
+);
 
 // Limiter for requests that modify some data
 export async function sendEmailRateLimiter(ctx: Context, next: Next) {

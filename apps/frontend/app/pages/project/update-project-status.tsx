@@ -69,14 +69,20 @@ export default function UpdateProjectStatusDialog(props: UpdateProjectStatusProp
                 />
             }
             confirmText={props.dialogConfirmBtn?.text || props.trigger.text}
-            confirmIcon={props.dialogConfirmBtn?.icon || props.trigger.icon || <ProjectStatusIcon status={props.newStatus} />}
+            confirmIcon={
+                props.dialogConfirmBtn?.icon || props.trigger.icon || <ProjectStatusIcon status={props.newStatus} />
+            }
             variant={props.dialogConfirmBtn?.variant}
             size={props.dialogConfirmBtn?.size}
             onConfirm={() => {
                 return updateStatus(props.newStatus);
             }}
         >
-            <Button variant={props.trigger.variant} size={props.trigger.size || "sm"} className={props.trigger.className}>
+            <Button
+                variant={props.trigger.variant}
+                size={props.trigger.size || "sm"}
+                className={props.trigger.className}
+            >
                 {props.trigger.icon || <ProjectStatusIcon status={props.newStatus} />}
                 {props.trigger.text}
             </Button>

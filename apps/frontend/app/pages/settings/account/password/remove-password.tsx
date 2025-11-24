@@ -109,7 +109,11 @@ export default function RemovePasswordForm() {
                                 <DialogClose asChild>
                                     <CancelButton disabled={isLoading} />
                                 </DialogClose>
-                                <Button type="submit" variant="destructive" disabled={isLoading || !form.getValues().password}>
+                                <Button
+                                    type="submit"
+                                    variant="destructive"
+                                    disabled={isLoading || !form.getValues().password}
+                                >
                                     {isLoading ? (
                                         <LoadingSpinner size="xs" />
                                     ) : (

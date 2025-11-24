@@ -80,7 +80,8 @@ export default function TagsSettingsPage() {
 
     const isSubmitBtnDisabled =
         JSON.stringify(form.getValues().categories.sort()) === JSON.stringify(projectData.categories.sort()) &&
-        JSON.stringify(form.getValues().featuredCategories.sort()) === JSON.stringify(projectData.featuredCategories.sort());
+        JSON.stringify(form.getValues().featuredCategories.sort()) ===
+            JSON.stringify(projectData.featuredCategories.sort());
 
     const projectType = t.navbar[projectData.type[0]];
 
@@ -99,7 +100,9 @@ export default function TagsSettingsPage() {
                 <Card className="flex w-full flex-col gap-4 p-card-surround">
                     <div className="flex w-full flex-col items-start justify-start gap-1">
                         <CardTitle>{t.projectSettings.tags}</CardTitle>
-                        <span className="text-foreground-muted">{t.projectSettings.tagsDesc(projectType.toLowerCase())}</span>
+                        <span className="text-foreground-muted">
+                            {t.projectSettings.tagsDesc(projectType.toLowerCase())}
+                        </span>
                     </div>
 
                     {availableTags.map(([type, tags]) => {
@@ -125,13 +128,17 @@ export default function TagsSettingsPage() {
                                                             if (e === true) {
                                                                 field.onChange([...field.value, tag.name]);
                                                             } else {
-                                                                field.onChange(field.value.filter((val) => val !== tag.name));
+                                                                field.onChange(
+                                                                    field.value.filter((val) => val !== tag.name),
+                                                                );
 
                                                                 // Also remove the category from featured tags if it was featured
                                                                 const selectedFeaturedTagsList =
                                                                     form.getValues().featuredCategories;
                                                                 if (
-                                                                    selectedFeaturedTagsList.includes(tag.name as CategoriesUnion)
+                                                                    selectedFeaturedTagsList.includes(
+                                                                        tag.name as CategoriesUnion,
+                                                                    )
                                                                 ) {
                                                                     form.setValue(
                                                                         "featuredCategories",
@@ -181,14 +188,17 @@ export default function TagsSettingsPage() {
                                                 className="w-fit"
                                                 checked={field.value.includes(tag)}
                                                 disabled={
-                                                    field.value.length >= MAX_FEATURED_PROJECT_TAGS && !field.value.includes(tag)
+                                                    field.value.length >= MAX_FEATURED_PROJECT_TAGS &&
+                                                    !field.value.includes(tag)
                                                 }
                                                 onCheckedChange={(e) => {
                                                     if (e === true) {
                                                         if (field.value.length >= MAX_FEATURED_PROJECT_TAGS) return;
                                                         field.onChange([...field.value, tag]);
                                                     } else {
-                                                        field.onChange(field.value.filter((selectedTag) => tag !== selectedTag));
+                                                        field.onChange(
+                                                            field.value.filter((selectedTag) => tag !== selectedTag),
+                                                        );
                                                     }
                                                 }}
                                             >

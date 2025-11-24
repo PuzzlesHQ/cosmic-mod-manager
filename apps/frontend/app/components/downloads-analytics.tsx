@@ -210,7 +210,10 @@ export default function DownloadsAnalyticsChart({ data: props }: DownloadsAnalyt
                                 </TextLink>
 
                                 <span className="flex items-center gap-2">
-                                    <DownloadIcon aria-hidden className="h-btn-icon w-btn-icon text-foreground-extra-muted" />{" "}
+                                    <DownloadIcon
+                                        aria-hidden
+                                        className="h-btn-icon w-btn-icon text-foreground-extra-muted"
+                                    />{" "}
                                     <strong>{project.downloads}</strong>
                                 </span>
                             </li>

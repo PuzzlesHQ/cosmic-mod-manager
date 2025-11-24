@@ -85,7 +85,8 @@ export default {
         didntRequest: "これをリクエストしませんでしたか？",
         checkSessions: "ログインされいるセッションを見る",
         confirmNewPass: "新しいパスワードの確認",
-        confirmNewPassDesc: "あなたのアカウントに新しいパスワードが追加されました。ご本人であることを確認してください。",
+        confirmNewPassDesc:
+            "あなたのアカウントに新しいパスワードが追加されました。ご本人であることを確認してください。",
         newPass: "新しいパスワード",
         newPass_label: "新しいパスワードを入力",
         confirmPass: "新しいパスワードの確認",
@@ -426,7 +427,8 @@ export default {
         selectAtLeastOneCategory: "カテゴリーを優先表示するには、少なくとも1つのカテゴリーを選択してください。",
         projectInfo: "プロジェクト情報",
         clientSide: "クライアント側",
-        clientSideDesc: (projectType: string) => `${projectType}にクライアント側の機能があるかどうかで選択してください。`,
+        clientSideDesc: (projectType: string) =>
+            `${projectType}にクライアント側の機能があるかどうかで選択してください。`,
         serverSide: "サーバー側",
         serverSideDesc: (projectType: string) => `${projectType}にサーバー側の機能があるかどうかで選択してください。`,
         unknown: "不明",
@@ -488,7 +490,8 @@ export default {
         removeMember: "メンバーを削除",
         transferOwnership: "所有権の移転",
         overrideValues: "値を上書きする",
-        overrideValuesDesc: "組織のデフォルト値を上書きし、プロジェクトのこのユーザーにカスタム権限と役割を割り当てます。",
+        overrideValuesDesc:
+            "組織のデフォルト値を上書きし、プロジェクトのこのユーザーにカスタム権限と役割を割り当てます。",
         projectNotManagedByOrg:
             "このプロジェクトは組織によって管理されていません。いずれかの組織に所属している場合は、その組織に管理を移管することができます。",
         transferManagementToOrg: "管理を移管",
@@ -510,7 +513,8 @@ export default {
         noProjects_CreateOne: "Tこの組織にはプロジェクトがありません。作成するには上のボタンをクリックしてください。",
         orgInfo: "組織情報",
         deleteOrg: "組織を削除",
-        deleteOrgDesc: "組織を削除すると、組織のすべてのプロジェクトが組織のオーナーに移転されます。この操作は元に戻せません。",
+        deleteOrgDesc:
+            "組織を削除すると、組織のすべてのプロジェクトが組織のオーナーに移転されます。この操作は元に戻せません。",
         sureToDeleteOrg: "本当にこの組織を削除しますか？",
         deleteOrgNamed: (orgName: string) => `組織「${orgName}」を削除`,
         deletionWarning: "これにより、この組織は永久に削除されます（本当に永久です）。",

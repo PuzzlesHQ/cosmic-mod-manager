@@ -26,7 +26,8 @@ export function validateConfig(config?: Partial<UserPreferences>) {
             for (const key of Object.keys(config.viewPrefs)) {
                 const projectType = key as ProjectType;
 
-                if (isValidViewType(config.viewPrefs[projectType])) conf.viewPrefs[projectType] = config.viewPrefs[projectType];
+                if (isValidViewType(config.viewPrefs[projectType]))
+                    conf.viewPrefs[projectType] = config.viewPrefs[projectType];
             }
         }
 

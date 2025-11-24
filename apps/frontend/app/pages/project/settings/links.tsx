@@ -60,7 +60,10 @@ export default function ExternalLinksSettingsPage() {
         <Card className="flex w-full flex-col items-start justify-start gap-6 p-card-surround">
             <CardTitle>{t.projectSettings.externalLinks}</CardTitle>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(updateLinks)} className="flex w-full flex-col items-start justify-start gap-4">
+                <form
+                    onSubmit={form.handleSubmit(updateLinks)}
+                    className="flex w-full flex-col items-start justify-start gap-4"
+                >
                     <FormField
                         control={form.control}
                         name="issueTracker"

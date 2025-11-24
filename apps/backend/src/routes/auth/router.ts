@@ -30,8 +30,12 @@ const authRouter = new Hono()
     .get("/me", getReqRateLimiter, currSession_get)
 
     // Routes to get OAuth URL
-    .get("/signin/:authProvider", strictGetReqRateLimiter, async (ctx: Context) => oAuthUrl_get(ctx, AuthActionIntent.SIGN_IN))
-    .get("/signup/:authProvider", strictGetReqRateLimiter, async (ctx: Context) => oAuthUrl_get(ctx, AuthActionIntent.SIGN_UP))
+    .get("/signin/:authProvider", strictGetReqRateLimiter, async (ctx: Context) =>
+        oAuthUrl_get(ctx, AuthActionIntent.SIGN_IN),
+    )
+    .get("/signup/:authProvider", strictGetReqRateLimiter, async (ctx: Context) =>
+        oAuthUrl_get(ctx, AuthActionIntent.SIGN_UP),
+    )
     .get("/link/:authProvider", strictGetReqRateLimiter, LoginProtectedRoute, async (ctx: Context) =>
         oAuthUrl_get(ctx, AuthActionIntent.LINK),
     )
@@ -80,7 +84,8 @@ async function currSession_get(ctx: Context) {
 async function oAuthUrl_get(ctx: Context, intent: AuthActionIntent) {
     try {
         const userSession = getUserFromCtx(ctx);
-        if (userSession?.id && intent !== AuthActionIntent.LINK) return invalidRequestResponse(ctx, "You are already logged in!");
+        if (userSession?.id && intent !== AuthActionIntent.LINK)
+            return invalidRequestResponse(ctx, "You are already logged in!");
 
         const authProvider = ctx.req.param("authProvider");
         if (!authProvider) return invalidRequestResponse(ctx, "Invalid auth provider");

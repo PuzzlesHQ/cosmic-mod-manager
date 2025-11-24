@@ -66,7 +66,9 @@ export function ProjectsListTable({ projects }: { projects: ProjectListItem[] })
                         <TableHead className="hidden md:table-cell">{t.dashboard.status}</TableHead>
 
                         {/* SETTINGS LINK: VISIBLE ON sm+ width */}
-                        <TableHead className="invisible w-10 pe-table-side-pad-sm sm:pe-table-side-pad md:visible"> </TableHead>
+                        <TableHead className="invisible w-10 pe-table-side-pad-sm sm:pe-table-side-pad md:visible">
+                            {" "}
+                        </TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>

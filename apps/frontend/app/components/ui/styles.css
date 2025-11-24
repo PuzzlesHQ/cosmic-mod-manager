@@ -32,8 +32,8 @@
     }
 
     50% {
-        transform: translatex(calc(var(--frame-size) - var(--cube-size))) translatey(calc(var(--frame-size) - var(--cube-size)))
-            rotate(-180deg);
+        transform: translatex(calc(var(--frame-size) - var(--cube-size)))
+            translatey(calc(var(--frame-size) - var(--cube-size))) rotate(-180deg);
     }
 
     75% {

@@ -16,7 +16,10 @@ export default defineConfig({
             },
         },
     },
-    base: process.env.NODE_ENV === "production" && process.env.VITE_ASSETS_SERVER_URL ? process.env.VITE_ASSETS_SERVER_URL : "/",
+    base:
+        process.env.NODE_ENV === "production" && process.env.VITE_ASSETS_SERVER_URL
+            ? process.env.VITE_ASSETS_SERVER_URL
+            : "/",
     build: {
         rollupOptions: {
             output: {

@@ -132,7 +132,8 @@ export async function CreateThreadMessage(
     threadId: string,
     data: z.infer<typeof createThreadMessage_Schema>,
 ) {
-    if (data.isPrivate && !isModerator(user.role)) return unauthorizedReqResponseData("You cannot send private messages!");
+    if (data.isPrivate && !isModerator(user.role))
+        return unauthorizedReqResponseData("You cannot send private messages!");
 
     const thread = await prisma.thread.findUnique({
         where: {

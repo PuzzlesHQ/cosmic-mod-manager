@@ -7,7 +7,12 @@ import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth
 import { applyCacheHeaders } from "~/middleware/cache";
 import { strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
-import { invalidRequestResponse, serverErrorResponse, unauthenticatedReqResponse, unauthorizedReqResponse } from "~/utils/http";
+import {
+    invalidRequestResponse,
+    serverErrorResponse,
+    unauthenticatedReqResponse,
+    unauthorizedReqResponse,
+} from "~/utils/http";
 import { getUserFromCtx } from "~/utils/router";
 import { getAllProjects_DownloadsAnalyticsData, getDownloadsAnalyticsData } from "./controllers";
 

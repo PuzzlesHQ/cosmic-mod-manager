@@ -1,6 +1,9 @@
 import { getFileType } from "@app/utils/convertors";
 import { doesMemberHaveAccess, getCurrMember } from "@app/utils/project";
-import type { addNewGalleryImageFormSchema, updateGalleryImageFormSchema } from "@app/utils/schemas/project/settings/gallery";
+import type {
+    addNewGalleryImageFormSchema,
+    updateGalleryImageFormSchema,
+} from "@app/utils/schemas/project/settings/gallery";
 import { GALLERY_IMG_THUMBNAIL_WIDTH, MAX_PROJECT_GALLERY_IMAGES_COUNT } from "@app/utils/src/constants";
 import { FileType, ProjectPermission } from "@app/utils/types";
 import type { z } from "zod/v4";
@@ -145,7 +148,11 @@ export async function removeGalleryImage(projectId: string, userSession: Context
         const deletedDbFile = await DeleteFile_ByID(fileId);
 
         // Delete the file from storage
-        await deleteProjectGalleryFile(deletedDbFile.storageService as FILE_STORAGE_SERVICE, project.id, deletedDbFile.name);
+        await deleteProjectGalleryFile(
+            deletedDbFile.storageService as FILE_STORAGE_SERVICE,
+            project.id,
+            deletedDbFile.name,
+        );
     }
 
     return { data: { success: true, message: "Gallery image deleted" }, status: HTTP_STATUS.OK };
@@ -182,7 +189,9 @@ export async function updateGalleryImage(
 
     // Check if there's already a featured image
     if (formData.featured === true) {
-        const ExistingFeaturedImage = project.gallery.some((item) => item.featured === true && item.id !== galleryItemId);
+        const ExistingFeaturedImage = project.gallery.some(
+            (item) => item.featured === true && item.id !== galleryItemId,
+        );
         if (ExistingFeaturedImage) return invalidRequestResponseData("A featured gallery image already exists");
     }
 

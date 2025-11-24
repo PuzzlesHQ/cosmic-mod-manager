@@ -40,7 +40,10 @@ export function TextLink(props: React.ComponentProps<typeof Link>) {
     return (
         <Link
             {...props}
-            className={cn("text-foreground-link underline-offset-3 hover:underline hover:brightness-110", props.className)}
+            className={cn(
+                "text-foreground-link underline-offset-3 hover:underline hover:brightness-110",
+                props.className,
+            )}
         >
             {props.children}
         </Link>
@@ -116,7 +119,13 @@ export function VariantButtonLink({
     ...props
 }: VariantLinkProps & CustomLinkProps) {
     return (
-        <Link to={to} ref={ref} className={cn(buttonVariants({ variant, size }), className)} aria-label={label} {...props}>
+        <Link
+            to={to}
+            ref={ref}
+            className={cn(buttonVariants({ variant, size }), className)}
+            aria-label={label}
+            {...props}
+        >
             {children}
         </Link>
     );

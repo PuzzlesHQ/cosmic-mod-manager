@@ -1,5 +1,8 @@
 import { doesMemberHaveAccess, doesOrgMemberHaveAccess, getCurrMember } from "@app/utils/project";
-import type { overrideOrgMemberFormSchema, updateTeamMemberFormSchema } from "@app/utils/schemas/project/settings/members";
+import type {
+    overrideOrgMemberFormSchema,
+    updateTeamMemberFormSchema,
+} from "@app/utils/schemas/project/settings/members";
 import { hasRootAccess } from "@app/utils/src/constants/roles";
 import { OrganisationPermission, ProjectPermission } from "@app/utils/types";
 import { NotificationType } from "@app/utils/types/api/notification";
@@ -13,7 +16,12 @@ import { GetUser_ByIdOrUsername } from "~/db/user_item";
 import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { createNotification } from "~/routes/user/notification/controllers/helpers";
 import type { ContextUserData } from "~/types";
-import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
+import {
+    HTTP_STATUS,
+    invalidRequestResponseData,
+    notFoundResponseData,
+    unauthorizedReqResponseData,
+} from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 
 export async function inviteMember(ctx: Context, userSession: ContextUserData, userSlug: string, teamId: string) {
@@ -28,7 +36,9 @@ export async function inviteMember(ctx: Context, userSession: ContextUserData, u
     if (!TeamProject && !TeamOrg) return notFoundResponseData();
 
     // Organization associated with the team's project
-    const TeamProjects_Org = TeamProject?.organisationId ? await GetOrganization_Data(TeamProject.organisationId) : null;
+    const TeamProjects_Org = TeamProject?.organisationId
+        ? await GetOrganization_Data(TeamProject.organisationId)
+        : null;
 
     let canManageInvites = false;
     // Handle organiszation team invite
@@ -72,7 +82,9 @@ export async function inviteMember(ctx: Context, userSession: ContextUserData, u
         isAlreadyProjectOrgMember = !!orgMembership?.id && orgMembership.accepted;
 
         if (orgMembership?.isOwner === true) {
-            return invalidRequestResponseData("You cannot override the permissions of organization's owner in a project team");
+            return invalidRequestResponseData(
+                "You cannot override the permissions of organization's owner in a project team",
+            );
         }
     }
 
@@ -155,7 +167,8 @@ export async function leaveProjectTeam(ctx: Context, userSession: ContextUserDat
         await addInvalidAuthAttempt(ctx);
         return invalidRequestResponseData("You're not a member of this team");
     }
-    if (TargetMember.isOwner === true) return invalidRequestResponseData("You can't leave the team while you're the owner");
+    if (TargetMember.isOwner === true)
+        return invalidRequestResponseData("You can't leave the team while you're the owner");
 
     // If this is a project team, the project is part of an organization and, the user is also part of the organization
     // Then the user shouldn't be allowed to leave the project team directly, this would cause the overriden permissions to reset to default
@@ -284,7 +297,11 @@ export async function overrideOrgMember(
     const TeamProject = Team.project?.id ? await GetProject_ListItem(Team.project.id) : null;
     if (!TeamProject?.id || !TeamProject.organisation?.id) return invalidRequestResponseData();
 
-    const currMember = getCurrMember(userSession.id, Team?.members || [], TeamProject?.organisation?.team.members || []);
+    const currMember = getCurrMember(
+        userSession.id,
+        Team?.members || [],
+        TeamProject?.organisation?.team.members || [],
+    );
     const canEditMembers = doesMemberHaveAccess(
         ProjectPermission.EDIT_MEMBER,
         currMember?.permissions as ProjectPermission[],
@@ -328,7 +345,12 @@ export async function overrideOrgMember(
     return { data: { success: true }, status: HTTP_STATUS.OK };
 }
 
-export async function removeProjectMember(ctx: Context, userSession: ContextUserData, targetMemberId: string, teamId: string) {
+export async function removeProjectMember(
+    ctx: Context,
+    userSession: ContextUserData,
+    targetMemberId: string,
+    teamId: string,
+) {
     const Team = await GetTeam(teamId);
     if (!Team) return notFoundResponseData();
 

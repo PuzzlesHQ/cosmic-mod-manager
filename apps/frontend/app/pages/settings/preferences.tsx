@@ -29,10 +29,16 @@ export default function PreferencesPage() {
                 <CardContent>
                     <div className="flex w-full items-center justify-between gap-x-6 gap-y-1">
                         <label htmlFor="view-transitions" className="shrink-[2] grow basis-[min-content]">
-                            <span className="my-0 block font-bold text-foreground text-lg">{t.settings.viewTransitions}</span>
+                            <span className="my-0 block font-bold text-foreground text-lg">
+                                {t.settings.viewTransitions}
+                            </span>
                             <span className="my-0 block text-foreground-muted">{t.settings.viewTransitionsDesc}</span>
                         </label>
-                        <Switch id="view-transitions" checked={viewTransitions} onCheckedChange={toggleViewTransitions} />
+                        <Switch
+                            id="view-transitions"
+                            checked={viewTransitions}
+                            onCheckedChange={toggleViewTransitions}
+                        />
                     </div>
                 </CardContent>
             </Card>
@@ -86,7 +92,9 @@ export function ThemeSwitcher() {
                 {Themes.map((themeItem) => {
                     const resolvedTheme = themeItem.name === ThemePreference.SYSTEM ? systemTheme : themeItem.name;
                     const label =
-                        themeItem.name === ThemePreference.SYSTEM ? t.settings.system : CapitalizeAndFormatString(themeItem.name);
+                        themeItem.name === ThemePreference.SYSTEM
+                            ? t.settings.system
+                            : CapitalizeAndFormatString(themeItem.name);
 
                     return (
                         <RadioBtnSelector

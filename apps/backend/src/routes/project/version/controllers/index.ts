@@ -59,7 +59,11 @@ export async function getAllProjectVersions(slug: string, userSession: ContextUs
     return { data: { success: true, data: versionsList }, status: HTTP_STATUS.OK } as const;
 }
 
-export async function getProjectVersionData(projectSlug: string, versionId: string, userSession: ContextUserData | null) {
+export async function getProjectVersionData(
+    projectSlug: string,
+    versionId: string,
+    userSession: ContextUserData | null,
+) {
     const res = await getAllProjectVersions(projectSlug, userSession, false);
 
     if (("success" in res.data && res.data.success === false) || !("data" in res.data))
@@ -84,7 +88,8 @@ export async function getLatestVersion(
     filters: GetLatestVersionFilters,
 ) {
     const whereInput: Prisma.VersionWhereInput = {};
-    if (filters.releaseChannel?.length) whereInput.releaseChannel = { in: GetReleaseChannelFilter(filters.releaseChannel) };
+    if (filters.releaseChannel?.length)
+        whereInput.releaseChannel = { in: GetReleaseChannelFilter(filters.releaseChannel) };
     if (filters.gameVersion?.length) whereInput.gameVersions = { has: filters.gameVersion };
     if (filters.loader?.length) whereInput.loaders = { has: filters.loader };
 

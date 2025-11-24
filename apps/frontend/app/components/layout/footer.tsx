@@ -56,7 +56,11 @@ export default function Footer() {
                         {footer.about}
                     </FooterLink>
 
-                    <FooterLink to="https://github.com/PuzzlesHQ/cosmic-mod-manager" aria-label="GitHub Repo" target="_blank">
+                    <FooterLink
+                        to="https://github.com/PuzzlesHQ/cosmic-mod-manager"
+                        aria-label="GitHub Repo"
+                        target="_blank"
+                    >
                         Github
                         <OpenInNewTab_Icon />
                     </FooterLink>
@@ -96,7 +100,11 @@ export default function Footer() {
                         variant="outline"
                         className="rounded-full"
                     >
-                        <Settings2Icon aria-hidden className="h-btn-icon-md w-btn-icon-md" aria-label={t.common.settings} />
+                        <Settings2Icon
+                            aria-hidden
+                            className="h-btn-icon-md w-btn-icon-md"
+                            aria-label={t.common.settings}
+                        />
                         {t.common.settings}
                     </VariantButtonLink>
 
@@ -158,7 +166,13 @@ function FooterLink({ children, ...props }: LinkProps) {
 }
 
 function OpenInNewTab_Icon() {
-    return <ArrowUpRightIcon aria-hidden aria-label="Open in new tab" className="inline h-4 w-4 text-foreground-extra-muted" />;
+    return (
+        <ArrowUpRightIcon
+            aria-hidden
+            aria-label="Open in new tab"
+            className="inline h-4 w-4 text-foreground-extra-muted"
+        />
+    );
 }
 
 function LinksColumn({ children, area }: { area: string; children: React.ReactNode }) {
@@ -209,11 +223,15 @@ export function LangSwitcher() {
                         return (
                             <SelectItem key={label} value={formatLocaleCode(locale)} aria-label={label} title={label}>
                                 <div className="flex w-full items-center justify-center gap-1.5 break-words">
-                                    <span className="flex items-end justify-center align-bottom">{locale.nativeName}</span>
+                                    <span className="flex items-end justify-center align-bottom">
+                                        {locale.nativeName}
+                                    </span>
                                     {region ? (
                                         <>
                                             <DotSeparator className="bg-foreground-extra-muted" />
-                                            <span className="text-foreground-muted/85 text-sm">{region.displayName}</span>
+                                            <span className="text-foreground-muted/85 text-sm">
+                                                {region.displayName}
+                                            </span>
                                         </>
                                     ) : null}
                                 </div>

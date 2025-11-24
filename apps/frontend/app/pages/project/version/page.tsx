@@ -78,7 +78,8 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                     <h1 className="font-[700] text-2xl text-foreground leading-tight">{versionData.title}</h1>
                     {versionData.featured ? (
                         <span className="text-foreground-extra-muted italic">
-                            <StarIcon aria-hidden className="-mt-[0.4ch] inline h-btn-icon w-btn-icon" /> {t.version.featured}
+                            <StarIcon aria-hidden className="-mt-[0.4ch] inline h-btn-icon w-btn-icon" />{" "}
+                            {t.version.featured}
                         </span>
                     ) : null}
                 </div>
@@ -89,7 +90,9 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                             <TooltipTrigger asChild>
                                 <Button
                                     variant="default"
-                                    onClick={() => downloadFile(versionData.primaryFile?.url ? versionData.primaryFile?.url : "")}
+                                    onClick={() =>
+                                        downloadFile(versionData.primaryFile?.url ? versionData.primaryFile?.url : "")
+                                    }
                                     rel="nofollow noindex"
                                 >
                                     <DownloadIcon aria-hidden className="h-btn-icon w-btn-icon" />
@@ -103,7 +106,11 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                     </TooltipProvider>
 
                     {!currUsersMembership?.userId ? (
-                        <ReportButton itemType={ReportItemType.VERSION} itemId={versionData.id} btnVariant="secondary" />
+                        <ReportButton
+                            itemType={ReportItemType.VERSION}
+                            itemId={versionData.id}
+                            btnVariant="secondary"
+                        />
                     ) : null}
 
                     {doesMemberHaveAccess(
@@ -160,7 +167,11 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                                     dependencyProject.slug,
                                 );
                                 const dependencyVersionPageUrl = dependencyVersion?.id
-                                    ? VersionPagePath(dependencyProject.type[0], dependencyProject.slug, dependencyVersion.slug)
+                                    ? VersionPagePath(
+                                          dependencyProject.type[0],
+                                          dependencyProject.slug,
+                                          dependencyVersion.slug,
+                                      )
                                     : null;
 
                                 const redirectUrl = dependencyVersionPageUrl || dependencyProjectPageUrl;
@@ -233,7 +244,12 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                         {[
                             {
                                 label: t.version.releaseChannel,
-                                content: <ReleaseChannelChip releaseChannel={versionData.releaseChannel} className="mt-0.5" />,
+                                content: (
+                                    <ReleaseChannelChip
+                                        releaseChannel={versionData.releaseChannel}
+                                        className="mt-0.5"
+                                    />
+                                ),
                             },
                             {
                                 label: t.version.versionNumber,
@@ -243,7 +259,9 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                                 label: t.search.loaders,
                                 content: versionData.loaders.length ? (
                                     <span className="leading-none">
-                                        {versionData.loaders.map((loader) => CapitalizeAndFormatString(loader)).join(", ")}
+                                        {versionData.loaders
+                                            .map((loader) => CapitalizeAndFormatString(loader))
+                                            .join(", ")}
                                     </span>
                                 ) : null,
                             },
@@ -265,7 +283,10 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                                 label: t.project.downloads,
                                 content: (
                                     <span className="leading-none">
-                                        <FormattedCount count={versionData.downloads} options={{ notation: "standard" }} />
+                                        <FormattedCount
+                                            count={versionData.downloads}
+                                            options={{ notation: "standard" }}
+                                        />
                                     </span>
                                 ),
                             },
@@ -297,7 +318,10 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                             if (!item.content) return null;
 
                             return (
-                                <div key={item.label} className="flex w-full flex-col items-start justify-start gap-1.5">
+                                <div
+                                    key={item.label}
+                                    className="flex w-full flex-col items-start justify-start gap-1.5"
+                                >
                                     <span className="font-bold leading-none">{item.label}</span>
                                     {item.content}
                                 </div>

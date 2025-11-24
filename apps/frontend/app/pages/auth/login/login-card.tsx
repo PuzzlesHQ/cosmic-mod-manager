@@ -134,7 +134,12 @@ export function LoginPageCard(props: LoginPageCardProps) {
 
                         {formError && <FormErrorMessage text={formError} />}
 
-                        <Button type="submit" aria-label="Login" className="h-form-submit-btn w-full" disabled={isLoading}>
+                        <Button
+                            type="submit"
+                            aria-label="Login"
+                            className="h-form-submit-btn w-full"
+                            disabled={isLoading}
+                        >
                             {isLoading ? (
                                 <LoadingSpinner size="xs" />
                             ) : (

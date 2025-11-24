@@ -23,7 +23,15 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "~/components/ui/dialog";
-import { CharacterCounter, Form, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import {
+    CharacterCounter,
+    Form,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { useNavigate } from "~/components/ui/link";
 import { MultiSelect } from "~/components/ui/multi-select";
@@ -89,7 +97,8 @@ export default function CreateNewProjectDialog({ orgId, trigger }: Props) {
 
     function isFormSubmittable() {
         const values = form.getValues();
-        const isFormInvalid = !values.name || !values.slug || !values.visibility || !values.summary || !values.type?.length;
+        const isFormInvalid =
+            !values.name || !values.slug || !values.visibility || !values.summary || !values.type?.length;
         return !isFormInvalid;
     }
 

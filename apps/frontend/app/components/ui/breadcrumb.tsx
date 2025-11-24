@@ -9,7 +9,9 @@ function Breadcrumb({
 }: React.ComponentProps<"nav"> & {
     separator?: React.ReactNode;
 }) {
-    return <nav ref={ref} aria-label="breadcrumb" className={cn("max-w-full overflow-x-hidden", className)} {...props} />;
+    return (
+        <nav ref={ref} aria-label="breadcrumb" className={cn("max-w-full overflow-x-hidden", className)} {...props} />
+    );
 }
 Breadcrumb.displayName = "Breadcrumb";
 
@@ -38,7 +40,13 @@ function BreadcrumbLink({
 }: React.ComponentProps<"a"> & {
     asChild?: boolean;
 }) {
-    return <Link to={href || "#"} className={cn("text-accent-text transition-all hover:brightness-110", className)} {...props} />;
+    return (
+        <Link
+            to={href || "#"}
+            className={cn("text-accent-text transition-all hover:brightness-110", className)}
+            {...props}
+        />
+    );
 }
 BreadcrumbLink.displayName = "BreadcrumbLink";
 
@@ -84,4 +92,12 @@ function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps<"span"
 }
 BreadcrumbEllipsis.displayName = "BreadcrumbElipssis";
 
-export { Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator };
+export {
+    Breadcrumb,
+    BreadcrumbEllipsis,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+};

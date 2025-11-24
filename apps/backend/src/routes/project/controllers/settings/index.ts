@@ -23,7 +23,12 @@ import prisma from "~/services/prisma";
 import { deleteDirectory, deleteProjectFile, deleteProjectVersionDirectory, saveProjectFile } from "~/services/storage";
 import { projectsDir } from "~/services/storage/utils";
 import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
-import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
+import {
+    HTTP_STATUS,
+    invalidRequestResponseData,
+    notFoundResponseData,
+    unauthorizedReqResponseData,
+} from "~/utils/http";
 import { getAverageColor, resizeImageToWebp } from "~/utils/images";
 import { generateDbId } from "~/utils/str";
 import { isProjectIndexable } from "../../utils";
@@ -36,7 +41,11 @@ export async function updateGeneralProjectData(
     const project = await GetProject_ListItem(projectId);
     if (!project?.id) return { data: { success: false }, status: HTTP_STATUS.NOT_FOUND };
 
-    const currMember = getCurrMember(userSession.id, project.team?.members || [], project.organisation?.team.members || []);
+    const currMember = getCurrMember(
+        userSession.id,
+        project.team?.members || [],
+        project.organisation?.team.members || [],
+    );
     const canEditProject = doesMemberHaveAccess(
         ProjectPermission.EDIT_DETAILS,
         currMember?.permissions as ProjectPermission[],
@@ -49,7 +58,8 @@ export async function updateGeneralProjectData(
     if (formData.slug !== project.slug) {
         // Check if the slug is available
         const existingProjectWithSameSlug = await GetProject_ListItem(formData.slug, formData.slug);
-        if (existingProjectWithSameSlug?.id) return invalidRequestResponseData(`The slug "${formData.slug}" is already taken`);
+        if (existingProjectWithSameSlug?.id)
+            return invalidRequestResponseData(`The slug "${formData.slug}" is already taken`);
     }
 
     // Check if the icon was updated
@@ -110,7 +120,11 @@ export async function deleteProject(userSession: ContextUserData, projectId: str
     if (!project?.id) return notFoundResponseData("Project not found");
 
     // Check if the user has the permission to delete the project
-    const memberObj = getCurrMember(userSession.id, project.team?.members || [], project.organisation?.team.members || []);
+    const memberObj = getCurrMember(
+        userSession.id,
+        project.team?.members || [],
+        project.organisation?.team.members || [],
+    );
     const hasDeleteAccess = doesMemberHaveAccess(
         ProjectPermission.DELETE_PROJECT,
         memberObj?.permissions as ProjectPermission[],
@@ -188,7 +202,12 @@ export async function deleteProject(userSession: ContextUserData, projectId: str
     };
 }
 
-export async function deleteVersionsData(projectId: string, ids: string[], fileIds: string[], deleteUploadedFiles = true) {
+export async function deleteVersionsData(
+    projectId: string,
+    ids: string[],
+    fileIds: string[],
+    deleteUploadedFiles = true,
+) {
     await Promise.all([
         // Delete all the dbFiles
         DeleteManyFiles_ByID(fileIds),
@@ -200,14 +219,20 @@ export async function deleteVersionsData(projectId: string, ids: string[], fileI
     ]);
 
     if (!deleteUploadedFiles) return;
-    await Promise.all(ids.map((versionId) => deleteProjectVersionDirectory(FILE_STORAGE_SERVICE.LOCAL, projectId, versionId)));
+    await Promise.all(
+        ids.map((versionId) => deleteProjectVersionDirectory(FILE_STORAGE_SERVICE.LOCAL, projectId, versionId)),
+    );
 }
 
 export async function updateProjectIcon(userSession: ContextUserData, projectId: string, icon: File) {
     const Project = await GetProject_ListItem(projectId);
     if (!Project) return { data: { success: false, message: "Project not found" }, status: HTTP_STATUS.NOT_FOUND };
 
-    const memberObj = getCurrMember(userSession.id, Project.team?.members || [], Project.organisation?.team.members || []);
+    const memberObj = getCurrMember(
+        userSession.id,
+        Project.team?.members || [],
+        Project.organisation?.team.members || [],
+    );
     const hasEditAccess = doesMemberHaveAccess(
         ProjectPermission.EDIT_DETAILS,
         memberObj?.permissions as ProjectPermission[],
@@ -223,7 +248,8 @@ export async function updateProjectIcon(userSession: ContextUserData, projectId:
     }
 
     const uploadedImg_Type = await getFileType(icon);
-    if (!uploadedImg_Type) return { data: { success: false, message: "Invalid file type" }, status: HTTP_STATUS.BAD_REQUEST };
+    if (!uploadedImg_Type)
+        return { data: { success: false, message: "Invalid file type" }, status: HTTP_STATUS.BAD_REQUEST };
 
     const iconImg_Type = FileType.WEBP;
     const iconImg_Webp = await resizeImageToWebp(icon, uploadedImg_Type, {
@@ -233,7 +259,8 @@ export async function updateProjectIcon(userSession: ContextUserData, projectId:
     });
     const iconImg_Id = `${generateDbId()}_${ICON_WIDTH}.${iconImg_Type}`;
     const icon_SaveUrl = await saveProjectFile(FILE_STORAGE_SERVICE.LOCAL, Project.id, iconImg_Webp, iconImg_Id);
-    if (!icon_SaveUrl) return { data: { success: false, message: "Failed to save the icon" }, status: HTTP_STATUS.SERVER_ERROR };
+    if (!icon_SaveUrl)
+        return { data: { success: false, message: "Failed to save the icon" }, status: HTTP_STATUS.SERVER_ERROR };
 
     const projectColor = await getAverageColor(iconImg_Webp);
 
@@ -271,7 +298,11 @@ export async function deleteProjectIcon(userSession: ContextUserData, projectId:
     if (!project) return notFoundResponseData("Project not found");
     if (!project.iconFileId) return invalidRequestResponseData("Project does not have any icon");
 
-    const memberObj = getCurrMember(userSession.id, project.team?.members || [], project.organisation?.team.members || []);
+    const memberObj = getCurrMember(
+        userSession.id,
+        project.team?.members || [],
+        project.organisation?.team.members || [],
+    );
     const hasEditAccess = doesMemberHaveAccess(
         ProjectPermission.EDIT_DETAILS,
         memberObj?.permissions as ProjectPermission[],

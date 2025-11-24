@@ -14,7 +14,12 @@ export default function () {
     const data = useLoaderData<typeof loader>();
 
     if (!data.collection?.id || !data.owner) {
-        return <NotFoundPage title={t.meta.collectionNotFound} description={t.meta.collectionNotFoundDesc(data.collectionId)} />;
+        return (
+            <NotFoundPage
+                title={t.meta.collectionNotFound}
+                description={t.meta.collectionNotFoundDesc(data.collectionId)}
+            />
+        );
     }
     return <CollectionPageLayout collection={data.collection} projects={data.projects} owner={data.owner} />;
 }

@@ -1,6 +1,9 @@
 import type { z } from "@app/utils/schemas";
 import { updateProjectLicenseFormSchema } from "@app/utils/schemas/project/settings/license";
-import SPDX_LICENSE_LIST, { CUSTOM_LICENSE_OPTION, FEATURED_LICENSE_INDICES } from "@app/utils/src/constants/license-list";
+import SPDX_LICENSE_LIST, {
+    CUSTOM_LICENSE_OPTION,
+    FEATURED_LICENSE_INDICES,
+} from "@app/utils/src/constants/license-list";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDownIcon, SaveIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -69,7 +72,8 @@ export default function LicenseSettingsPage() {
         () => SPDX_LICENSE_LIST.find((license) => license.licenseId === currLicenseId),
         [currLicenseId],
     );
-    const isCustomLicense = showCustomLicenseInputFields || ((currLicenseId || currLicenseName) && !selectedFeaturedLicense);
+    const isCustomLicense =
+        showCustomLicenseInputFields || ((currLicenseId || currLicenseName) && !selectedFeaturedLicense);
 
     const formValues = form.getValues();
     const hasFormChanged =
@@ -103,7 +107,8 @@ export default function LicenseSettingsPage() {
             options.push({
                 label: license.name,
                 value: license.licenseId,
-                onlyVisibleWhenSearching: !FEATURED_LICENSE_INDICES.includes(index) && currLicenseId !== license.licenseId,
+                onlyVisibleWhenSearching:
+                    !FEATURED_LICENSE_INDICES.includes(index) && currLicenseId !== license.licenseId,
             });
         }
 
@@ -139,7 +144,11 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                             <ComboBox
                                                 noResultsElem={t.common.noResults}
                                                 options={licenseOptions}
-                                                value={isCustomLicense ? CUSTOM_LICENSE_OPTION.licenseId : field.value || ""}
+                                                value={
+                                                    isCustomLicense
+                                                        ? CUSTOM_LICENSE_OPTION.licenseId
+                                                        : field.value || ""
+                                                }
                                                 setValue={(value: string) => {
                                                     if (value === CUSTOM_LICENSE_OPTION.licenseId) {
                                                         setShowCustomLicenseInputFields(true);
@@ -151,11 +160,18 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                                     form.setValue("name", "");
                                                 }}
                                             >
-                                                <Button variant="secondary" className="w-full justify-between overflow-hidden">
+                                                <Button
+                                                    variant="secondary"
+                                                    className="w-full justify-between overflow-hidden"
+                                                >
                                                     {isCustomLicense
                                                         ? t.projectSettings.custom
-                                                        : selectedFeaturedLicense?.name || t.projectSettings.selectLicense}
-                                                    <ChevronDownIcon aria-hidden className="h-btn-icon w-btn-icon shrink-0" />
+                                                        : selectedFeaturedLicense?.name ||
+                                                          t.projectSettings.selectLicense}
+                                                    <ChevronDownIcon
+                                                        aria-hidden
+                                                        className="h-btn-icon w-btn-icon shrink-0"
+                                                    />
                                                 </Button>
                                             </ComboBox>
                                         </FormItem>
@@ -221,7 +237,11 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                     </div>
 
                     <div className="flex justify-end">
-                        <Button type="submit" className="w-fit" disabled={!hasFormChanged || form.formState.isSubmitting}>
+                        <Button
+                            type="submit"
+                            className="w-fit"
+                            disabled={!hasFormChanged || form.formState.isSubmitting}
+                        >
                             {form.formState.isSubmitting ? (
                                 <LoadingSpinner size="xs" />
                             ) : (

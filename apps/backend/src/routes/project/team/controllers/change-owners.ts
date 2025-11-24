@@ -5,9 +5,19 @@ import { GetTeam } from "~/db/team_item";
 import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { UpdateProjects_SearchIndex } from "~/routes/search/search-db";
 import type { ContextUserData } from "~/types";
-import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
+import {
+    HTTP_STATUS,
+    invalidRequestResponseData,
+    notFoundResponseData,
+    unauthorizedReqResponseData,
+} from "~/utils/http";
 
-export async function changeTeamOwner(ctx: Context, userSession: ContextUserData, teamId: string, newOwner_UserId: string) {
+export async function changeTeamOwner(
+    ctx: Context,
+    userSession: ContextUserData,
+    teamId: string,
+    newOwner_UserId: string,
+) {
     const team = await GetTeam(teamId);
     if (!team) return notFoundResponseData();
 
@@ -21,7 +31,8 @@ export async function changeTeamOwner(ctx: Context, userSession: ContextUserData
         return unauthorizedReqResponseData("You don't have access to change the team owner");
     }
 
-    if (currOwner?.id === newOwner.id) return invalidRequestResponseData("The target member is already the owner of the team");
+    if (currOwner?.id === newOwner.id)
+        return invalidRequestResponseData("The target member is already the owner of the team");
 
     // Remove ownership from the current owner
     if (currOwner?.id) {

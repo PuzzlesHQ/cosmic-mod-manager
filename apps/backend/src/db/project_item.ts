@@ -1,6 +1,10 @@
 import type { Prisma } from "@prisma-client";
 import { isProjectIndexable } from "~/routes/project/utils";
-import { AddProjects_ToSearchIndex, RemoveProjects_FromSearchIndex, UpdateProjects_SearchIndex } from "~/routes/search/search-db";
+import {
+    AddProjects_ToSearchIndex,
+    RemoveProjects_FromSearchIndex,
+    UpdateProjects_SearchIndex,
+} from "~/routes/search/search-db";
 import { cacheKey } from "~/services/cache/utils";
 import prisma from "~/services/prisma";
 import valkey from "~/services/redis";
@@ -167,7 +171,9 @@ export async function GetManyProjects_Details(_ProjectIds: string[]) {
         const _cachedDetails_promises = [];
         for (const id of ProjectIds) {
             if (!id) continue;
-            _cachedDetails_promises.push(GetData_FromCache<GetProject_Details_FromDb_ReturnType>(PROJECT_DETAILS_CACHE_KEY, id));
+            _cachedDetails_promises.push(
+                GetData_FromCache<GetProject_Details_FromDb_ReturnType>(PROJECT_DETAILS_CACHE_KEY, id),
+            );
         }
 
         const _cachedDetails = await Promise.all(_cachedDetails_promises);
@@ -296,7 +302,9 @@ export async function GetManyProjects_ListItem(ids: string[]) {
         const _cachedListItems_promises = [];
         for (const id of ProjectIds) {
             if (!id) continue;
-            _cachedListItems_promises.push(GetData_FromCache<GetProject_ListItem_ReturnType>(PROJECT_LIST_ITEM_CACHE_KEY, id));
+            _cachedListItems_promises.push(
+                GetData_FromCache<GetProject_ListItem_ReturnType>(PROJECT_LIST_ITEM_CACHE_KEY, id),
+            );
         }
 
         const _cachedListItems = await Promise.all(_cachedListItems_promises);
@@ -358,7 +366,9 @@ export async function GetManyProjects_ListItem(ids: string[]) {
     return FormattedProjects;
 }
 
-export async function CreateProject<T extends Prisma.ProjectCreateArgs>(args: Prisma.SelectSubset<T, Prisma.ProjectCreateArgs>) {
+export async function CreateProject<T extends Prisma.ProjectCreateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.ProjectCreateArgs>,
+) {
     const project = await prisma.project.create(args);
     if (project.organisationId) await Delete_OrganizationCache_All(project.organisationId);
 
@@ -366,7 +376,9 @@ export async function CreateProject<T extends Prisma.ProjectCreateArgs>(args: Pr
 }
 
 // ? Update and delete project functions
-export async function UpdateProject<T extends Prisma.ProjectUpdateArgs>(args: Prisma.SelectSubset<T, Prisma.ProjectUpdateArgs>) {
+export async function UpdateProject<T extends Prisma.ProjectUpdateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.ProjectUpdateArgs>,
+) {
     const project = await prisma.project.update(args);
     if (project?.id) await Delete_ProjectCache_All(project.id);
     if (isProjectIndexable(project.visibility, project.status)) {
@@ -402,7 +414,9 @@ export async function UpdateManyProjects<T extends Prisma.ProjectUpdateManyArgs>
     return await prisma.project.updateMany(args);
 }
 
-export async function DeleteProject<T extends Prisma.ProjectDeleteArgs>(args: Prisma.SelectSubset<T, Prisma.ProjectDeleteArgs>) {
+export async function DeleteProject<T extends Prisma.ProjectDeleteArgs>(
+    args: Prisma.SelectSubset<T, Prisma.ProjectDeleteArgs>,
+) {
     const Project = await prisma.project.delete(args);
     if (Project?.id) await Delete_ProjectCache_All(Project.id, Project.slug);
     if (Project?.organisationId) await Delete_OrganizationCache_All(Project.organisationId);

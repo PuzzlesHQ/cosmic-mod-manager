@@ -131,7 +131,10 @@ export default function CreateNewCollection_Dialog({
                                     <FormItem>
                                         <FormLabel htmlFor="collection-description-input">
                                             {t.form.description}
-                                            <CharacterCounter currVal={field.value} max={MAX_COLLECTION_DESCRIPTION_LENGTH} />
+                                            <CharacterCounter
+                                                currVal={field.value}
+                                                max={MAX_COLLECTION_DESCRIPTION_LENGTH}
+                                            />
                                         </FormLabel>
                                         <Textarea
                                             {...field}

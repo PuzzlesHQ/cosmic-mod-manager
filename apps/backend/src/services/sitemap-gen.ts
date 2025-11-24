@@ -150,7 +150,11 @@ async function getProjects(offset: number): Promise<ProjectSearchDocument[]> {
 
 function formatDate(_date: Date | string): string {
     const date = new Date(_date);
-    return [date.getFullYear(), String(date.getMonth() + 1).padStart(2, "0"), String(date.getDate()).padStart(2, "0")].join("-");
+    return [
+        date.getFullYear(),
+        String(date.getMonth() + 1).padStart(2, "0"),
+        String(date.getDate()).padStart(2, "0"),
+    ].join("-");
 }
 
 function xmlUrlSet(links: string) {

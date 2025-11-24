@@ -212,7 +212,10 @@ export default function InteractiveDownloadPopup() {
                                     <span className="text-foreground-muted">
                                         {selectedLoader
                                             ? t.project.platform(
-                                                  <em key="download-version-loader" className="text-foreground/90 not-italic">
+                                                  <em
+                                                      key="download-version-loader"
+                                                      className="text-foreground/90 not-italic"
+                                                  >
                                                       {CapitalizeAndFormatString(selectedLoader)}
                                                   </em>,
                                               )
@@ -225,7 +228,10 @@ export default function InteractiveDownloadPopup() {
                     )}
 
                     {selectedGameVersion ? (
-                        <AvailableVersionsList selectedGameVersion={selectedGameVersion} selectedLoader={selectedLoader} />
+                        <AvailableVersionsList
+                            selectedGameVersion={selectedGameVersion}
+                            selectedLoader={selectedLoader}
+                        />
                     ) : null}
                 </DialogBody>
             </DialogContent>
@@ -233,7 +239,11 @@ export default function InteractiveDownloadPopup() {
     );
 }
 
-function getVersionData(gameVersion: string, loader: string, versionsList: ProjectVersionData[]): ProjectVersionData | null {
+function getVersionData(
+    gameVersion: string,
+    loader: string,
+    versionsList: ProjectVersionData[],
+): ProjectVersionData | null {
     let latestVersion = null;
 
     if (!gameVersion) {
@@ -316,7 +326,9 @@ function AvailableVersionsList({ selectedGameVersion, selectedLoader }: Availabl
                                         {version.versionNumber}
                                     </Link>
                                 </DialogClose>
-                                <span className="font-medium text-foreground-muted/85 text-sm leading-none">{version.title}</span>
+                                <span className="font-medium text-foreground-muted/85 text-sm leading-none">
+                                    {version.title}
+                                </span>
                             </div>
                         </div>
 

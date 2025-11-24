@@ -28,7 +28,8 @@ export async function QueueSearchIndexUpdate() {
         }
 
         const CurrentTime = Date.now();
-        const DoFullSync = !Last_FullSearchIndexSync || Date.now() - Last_FullSearchIndexSync >= FULL_SEARCH_INDEX_SYNC_INTERVAL;
+        const DoFullSync =
+            !Last_FullSearchIndexSync || Date.now() - Last_FullSearchIndexSync >= FULL_SEARCH_INDEX_SYNC_INTERVAL;
 
         // Sync the full search index once a day
         if (DoFullSync) {

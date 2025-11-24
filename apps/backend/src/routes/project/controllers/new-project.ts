@@ -29,7 +29,8 @@ export async function createNewProject(userSession: ContextUserData, formData: z
             currMember?.isOwner,
             userSession?.role,
         );
-        if (!canAddProject) return unauthorizedReqResponseData("You do not have permission to add project to this organisation");
+        if (!canAddProject)
+            return unauthorizedReqResponseData("You do not have permission to add project to this organisation");
     }
 
     const newTeam = await prisma.team.create({

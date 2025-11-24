@@ -40,7 +40,11 @@ export async function createNewVersion(
     if (project.visibility === ProjectVisibility.ARCHIVED)
         return invalidRequestResponseData("Unarchive the project to upload a new version!");
 
-    const memberObj = getCurrMember(userSession.id, project?.team.members || [], project?.organisation?.team.members || []);
+    const memberObj = getCurrMember(
+        userSession.id,
+        project?.team.members || [],
+        project?.organisation?.team.members || [],
+    );
     const canUploadVersion = doesMemberHaveAccess(
         ProjectPermission.UPLOAD_VERSION,
         memberObj?.permissions as ProjectPermission[],
@@ -79,7 +83,9 @@ export async function createNewVersion(
 
     const projectVersions = _projectVersions?.versions || [];
     // Just to make sure that no version already exists with the same urlSlug or the urlSlug is a reserved slug
-    const versionWithSameSlug = projectVersions.find((version) => version.slug === formData.versionNumber.toLowerCase());
+    const versionWithSameSlug = projectVersions.find(
+        (version) => version.slug === formData.versionNumber.toLowerCase(),
+    );
     const versionId = generateDbId();
     let newUrlSlug = formData.versionNumber.toLowerCase();
     if (

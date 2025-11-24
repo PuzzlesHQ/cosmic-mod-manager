@@ -29,7 +29,11 @@ export async function modifyReqRateLimiter(ctx: Context, next: Next) {
 }
 
 const critModifyLimit = rateLimits.global.CRITICAL_MODIFY;
-const critModifyLimiter = new TokenBucket(critModifyLimit.namespace, critModifyLimit.max, critModifyLimit.timeWindow_seconds);
+const critModifyLimiter = new TokenBucket(
+    critModifyLimit.namespace,
+    critModifyLimit.max,
+    critModifyLimit.timeWindow_seconds,
+);
 
 export async function critModifyReqRateLimiter(ctx: Context, next: Next) {
     const ipAddr = getUserIpAddress(ctx);

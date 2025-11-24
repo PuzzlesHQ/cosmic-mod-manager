@@ -209,5 +209,8 @@ export async function Delete_OrganizationCache_All(id: string, slug?: string) {
         orgSlug = (await valkey.get(cacheKey(id, ORGANIZATION_DATA_CACHE_KEY))) || "";
     }
 
-    return await valkey.del([cacheKey(id, ORGANIZATION_DATA_CACHE_KEY), cacheKey(orgSlug, ORGANIZATION_DATA_CACHE_KEY)]);
+    return await valkey.del([
+        cacheKey(id, ORGANIZATION_DATA_CACHE_KEY),
+        cacheKey(orgSlug, ORGANIZATION_DATA_CACHE_KEY),
+    ]);
 }

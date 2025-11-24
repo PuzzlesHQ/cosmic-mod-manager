@@ -55,7 +55,9 @@ export default function UserProjectsList(props: Props) {
                                     )}
                                     {
                                         t.projectSettings[
-                                            collection.visibility === CollectionVisibility.PRIVATE ? "private" : "public"
+                                            collection.visibility === CollectionVisibility.PRIVATE
+                                                ? "private"
+                                                : "public"
                                         ]
                                     }
                                 </div>

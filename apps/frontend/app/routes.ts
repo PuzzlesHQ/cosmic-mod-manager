@@ -109,34 +109,39 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
         }
 
         // Organization pages
-        route("organization/:orgSlug", path("organization/data-wrapper.tsx"), { id: "organization-data-wrapper" }, () => {
-            route("settings", path("organization/settings/layout.tsx"), { id: "org-settings" }, () => {
-                route("", path("organization/settings/page.tsx"), {
-                    index: true,
-                    id: "org-general-settings",
+        route(
+            "organization/:orgSlug",
+            path("organization/data-wrapper.tsx"),
+            { id: "organization-data-wrapper" },
+            () => {
+                route("settings", path("organization/settings/layout.tsx"), { id: "org-settings" }, () => {
+                    route("", path("organization/settings/page.tsx"), {
+                        index: true,
+                        id: "org-general-settings",
+                    });
+                    route("projects", path("organization/settings/projects.tsx"), {
+                        id: "org-projects-settings",
+                    });
+                    route("members", path("organization/settings/members.tsx"), {
+                        id: "org-members-settings",
+                    });
+                    route("analytics", path("organization/settings/analytics.tsx"), {
+                        id: "org-analytics-page",
+                    });
+                    route("*", path("$.tsx"), { id: "org-settings-not-found" });
                 });
-                route("projects", path("organization/settings/projects.tsx"), {
-                    id: "org-projects-settings",
-                });
-                route("members", path("organization/settings/members.tsx"), {
-                    id: "org-members-settings",
-                });
-                route("analytics", path("organization/settings/analytics.tsx"), {
-                    id: "org-analytics-page",
-                });
-                route("*", path("$.tsx"), { id: "org-settings-not-found" });
-            });
 
-            route("", path("organization/layout.tsx"), { id: "organization__layout" }, () => {
-                route("", path("organization/page.tsx"), {
-                    index: true,
-                    id: "organization__projects-all",
+                route("", path("organization/layout.tsx"), { id: "organization__layout" }, () => {
+                    route("", path("organization/page.tsx"), {
+                        index: true,
+                        id: "organization__projects-all",
+                    });
+                    route(":projectType", path("organization/page.tsx"), {
+                        id: "organization__projects",
+                    });
                 });
-                route(":projectType", path("organization/page.tsx"), {
-                    id: "organization__projects",
-                });
-            });
-        });
+            },
+        );
 
         // Collections page
         route("collection/:collectionId", path("collection/layout.tsx"), { id: "collection__layout" }, () => {

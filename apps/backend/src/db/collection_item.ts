@@ -136,7 +136,10 @@ export async function DeleteManyCollections_ByUserId(userId: string) {
     const collection_ids = await GetCollections_ByUserId(userId);
     if (!collection_ids) return [];
 
-    await Promise.all([Delete_UserCollectionsListCache(userId), ...collection_ids.map((id) => Delete_CollectionCache(id))]);
+    await Promise.all([
+        Delete_UserCollectionsListCache(userId),
+        ...collection_ids.map((id) => Delete_CollectionCache(id)),
+    ]);
     await prisma.collection.deleteMany({
         where: {
             userId: userId,

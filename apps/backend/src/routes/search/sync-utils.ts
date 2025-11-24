@@ -113,10 +113,15 @@ async function _SyncBatch(cursor: null | string) {
     }
 }
 
-export function FormatSearchDocument<T extends NonNullable<GetProject_Details_ReturnType>>(project: T, recentDownloads: number) {
+export function FormatSearchDocument<T extends NonNullable<GetProject_Details_ReturnType>>(
+    project: T,
+    recentDownloads: number,
+) {
     const author = project.organisation?.slug || project.team.members?.[0]?.user?.userName;
     const FeaturedGalleryItem = project.gallery.find((item) => item.featured === true);
-    const featured_gallery = FeaturedGalleryItem ? projectGalleryFileUrl(project.id, FeaturedGalleryItem.thumbnailFileId) : null;
+    const featured_gallery = FeaturedGalleryItem
+        ? projectGalleryFileUrl(project.id, FeaturedGalleryItem.thumbnailFileId)
+        : null;
 
     return {
         id: project.id,

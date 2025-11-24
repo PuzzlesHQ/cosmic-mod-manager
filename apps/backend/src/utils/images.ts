@@ -10,7 +10,11 @@ interface ResizeProps {
     withoutEnlargement?: sharp.ResizeOptions["withoutEnlargement"];
 }
 
-export async function resizeImageToWebp(file: File | BunFile, inputFileType: FileType, props: ResizeProps): Promise<File> {
+export async function resizeImageToWebp(
+    file: File | BunFile,
+    inputFileType: FileType,
+    props: ResizeProps,
+): Promise<File> {
     let defaultKernel: ResizeProps["kernel"] = sharp.kernel.nearest;
     const isAnimated = [FileType.GIF, FileType.WEBP].includes(inputFileType);
 

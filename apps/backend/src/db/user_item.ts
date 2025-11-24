@@ -169,11 +169,15 @@ export async function Get_UserOrganizations(userId: string) {
     return UserOrgs_Id;
 }
 
-export function GetUser_Unique<T extends Prisma.UserFindUniqueArgs>(args: Prisma.SelectSubset<T, Prisma.UserFindUniqueArgs>) {
+export function GetUser_Unique<T extends Prisma.UserFindUniqueArgs>(
+    args: Prisma.SelectSubset<T, Prisma.UserFindUniqueArgs>,
+) {
     return prisma.user.findUnique(args);
 }
 
-export function GetUser_First<T extends Prisma.UserFindFirstArgs>(args: Prisma.SelectSubset<T, Prisma.UserFindFirstArgs>) {
+export function GetUser_First<T extends Prisma.UserFindFirstArgs>(
+    args: Prisma.SelectSubset<T, Prisma.UserFindFirstArgs>,
+) {
     return prisma.user.findFirst(args);
 }
 
