@@ -4,7 +4,7 @@ import { CapitalizeAndFormatString } from "@app/utils/string";
 import type { PATData } from "@app/utils/types/api/pat";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PencilIcon, PlusIcon, SaveIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 import { toast } from "sonner";
@@ -163,17 +163,27 @@ interface PatInfoFormProps {
     };
 }
 
-export function PatInfoForm({ patData, onSubmit, loading, ...props }: PatInfoFormProps) {
+function defaultFormValues(patData: PATData | null) {
+    return {
+        name: patData?.name ?? "",
+        authScopes: patData ? encodePatScopes(patData.scopes) : 0n,
+        dateExpires: patData ? new Date(patData.dateExpires) : new Date(),
+    };
+}
+
+function PatInfoForm({ patData, onSubmit, loading, ...props }: PatInfoFormProps) {
     const { t } = useTranslation();
 
     const form = useForm({
         resolver: zodResolver(createPAT_FormSchema),
-        defaultValues: {
-            name: patData?.name ?? "",
-            authScopes: patData ? encodePatScopes(patData.scopes) : 0n,
-            dateExpires: patData ? new Date(patData.dateExpires) : new Date(),
-        },
+        defaultValues: defaultFormValues(patData),
     });
+
+    useEffect(() => {
+        if (props.dialogOpen === true) {
+            form.reset(defaultFormValues(patData));
+        }
+    }, [props.dialogOpen]);
 
     return (
         <Dialog open={props.dialogOpen} onOpenChange={props.setDialogOpen}>
