@@ -14,7 +14,7 @@ export function MarkdownLinkHandler() {
         if (!e.target) return;
         if (e.ctrlKey || e.metaKey || e.shiftKey) return;
 
-        // @ts-ignore
+        // @ts-expect-error
         if (!e.target?.closest(".markdown-body")) return;
 
         try {

@@ -36,7 +36,7 @@ interface Props {
 function initFilterState(searchParams: URLSearchParams): Filters {
     const filters = { ...reportFilters_defaults };
     for (const key of Object.keys(reportFilters_defaults)) {
-        // @ts-ignore
+        // @ts-expect-error
         filters[key] = searchParams.get(key) || reportFilters_defaults[key];
     }
 
@@ -90,13 +90,15 @@ export default function Reports_ModerationPage(props: Props) {
 
     const itemId_label =
         filters.itemType !== "all"
-            ? // @ts-ignore
+            ? // @ts-expect-error
               t?.[filters.itemType]?.[filters.itemType] || filters.itemType
             : "";
 
-    const anyChangedFilter = (Object.keys(reportFilters_defaults) as (keyof typeof reportFilters_defaults)[]).some((key) => {
-        return filters[key] && reportFilters_defaults[key] !== filters[key];
-    });
+    const anyChangedFilter = (Object.keys(reportFilters_defaults) as (keyof typeof reportFilters_defaults)[]).some(
+        (key) => {
+            return filters[key] && reportFilters_defaults[key] !== filters[key];
+        },
+    );
 
     return (
         <Card>
@@ -141,7 +143,9 @@ export default function Reports_ModerationPage(props: Props) {
                                 </SelectContent>
                             </Select>
 
-                            <span className="px-0.5 font-medium text-foreground-muted">{t.report.reportedItem("")}</span>
+                            <span className="px-0.5 font-medium text-foreground-muted">
+                                {t.report.reportedItem("")}
+                            </span>
                             <Select
                                 value={filters.itemType}
                                 onValueChange={(val) => updateFilters({ itemType: val as ReportItemType | "all" })}
@@ -157,7 +161,7 @@ export default function Reports_ModerationPage(props: Props) {
                                     {Object.values(ReportItemType).map((item) => {
                                         return (
                                             <SelectItem key={item} value={item}>
-                                                {/* @ts-ignore */}
+                                                {/* @ts-expect-error */}
                                                 {t?.[item]?.[item] || item}
                                             </SelectItem>
                                         );
@@ -178,7 +182,9 @@ export default function Reports_ModerationPage(props: Props) {
                                 </>
                             )}
 
-                            <span className="px-0.5 font-medium text-foreground-muted">{t.report.ruleViolated("")}</span>
+                            <span className="px-0.5 font-medium text-foreground-muted">
+                                {t.report.ruleViolated("")}
+                            </span>
 
                             <MultiSelect
                                 searchBox={false}

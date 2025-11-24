@@ -42,7 +42,11 @@ function ContextMenuSubTrigger({
 }
 ContextMenuSubTrigger.displayName = ContextMenuPrimitive.SubTrigger.displayName;
 
-function ContextMenuSubContent({ ref, className, ...props }: React.ComponentProps<typeof ContextMenuPrimitive.SubContent>) {
+function ContextMenuSubContent({
+    ref,
+    className,
+    ...props
+}: React.ComponentProps<typeof ContextMenuPrimitive.SubContent>) {
     return (
         <ContextMenuPrimitive.SubContent
             ref={ref}
@@ -66,7 +70,7 @@ function ContextMenuContent({ ref, className, ...props }: React.ComponentProps<t
                     className,
                 )}
                 {...props}
-                // @ts-ignore
+                // @ts-expect-error
                 dir="default"
             />
         </ContextMenuPrimitive.Portal>
@@ -171,8 +175,14 @@ function ContextMenuLabel({
 }
 ContextMenuLabel.displayName = ContextMenuPrimitive.Label.displayName;
 
-function ContextMenuSeparator({ ref, className, ...props }: React.ComponentProps<typeof ContextMenuPrimitive.Separator>) {
-    return <ContextMenuPrimitive.Separator ref={ref} className={cn("-mx-1 my-1 h-px bg-border", className)} {...props} />;
+function ContextMenuSeparator({
+    ref,
+    className,
+    ...props
+}: React.ComponentProps<typeof ContextMenuPrimitive.Separator>) {
+    return (
+        <ContextMenuPrimitive.Separator ref={ref} className={cn("-mx-1 my-1 h-px bg-border", className)} {...props} />
+    );
 }
 ContextMenuSeparator.displayName = ContextMenuPrimitive.Separator.displayName;
 

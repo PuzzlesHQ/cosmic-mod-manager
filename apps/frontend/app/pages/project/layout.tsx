@@ -53,7 +53,14 @@ import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import ReportButton from "~/pages/report/report-btn";
-import { isCurrLinkActive, joinPaths, OrgPagePath, ProjectPagePath, UserProfilePath, VersionPagePath } from "~/utils/urls";
+import {
+    isCurrLinkActive,
+    joinPaths,
+    OrgPagePath,
+    ProjectPagePath,
+    UserProfilePath,
+    VersionPagePath,
+} from "~/utils/urls";
 import { AddToCollection_Popup } from "../collection/add-to-collection";
 import { FollowProject_Btn } from "../collection/follow-btn";
 import InteractiveDownloadPopup from "./interactive-download";
@@ -80,7 +87,10 @@ export default function ProjectPageLayout() {
         location.pathname,
         false,
     );
-    const isVersionListPage = isCurrLinkActive(ProjectPagePath(ctx.projectType, projectData.slug, "versions"), location.pathname);
+    const isVersionListPage = isCurrLinkActive(
+        ProjectPagePath(ctx.projectType, projectData.slug, "versions"),
+        location.pathname,
+    );
 
     const projectEnvironments = ProjectSupprotedEnvironments({
         clientSide: projectData.clientSide,
@@ -219,7 +229,10 @@ export default function ProjectPageLayout() {
                                 url={projectData?.discordInviteUrl}
                                 label={t.project.joinDiscord}
                                 icon={
-                                    <DiscordIcon aria-hidden className="h-btn-icon w-btn-icon fill-current dark:fill-current" />
+                                    <DiscordIcon
+                                        aria-hidden
+                                        className="h-btn-icon w-btn-icon fill-current dark:fill-current"
+                                    />
                                 }
                             />
                         ) : null}
@@ -232,7 +245,10 @@ export default function ProjectPageLayout() {
                             <h2 className="font-bold text-lg">{t.project.featuredVersions}</h2>
 
                             {!isVersionListPage && (
-                                <TextLink to={ProjectPagePath(ctx.projectType, projectData.slug, "versions")} className="">
+                                <TextLink
+                                    to={ProjectPagePath(ctx.projectType, projectData.slug, "versions")}
+                                    className=""
+                                >
                                     {t.dashboard.seeAll}
                                     <ChevronRightIcon className="inline h-4 w-4" />
                                 </TextLink>
@@ -251,7 +267,11 @@ export default function ProjectPageLayout() {
                                             // @ts-expect-error
                                             !e.target.closest(".noClickRedirect")
                                         ) {
-                                            const link = VersionPagePath(ctx.projectType, projectData.slug, version.slug);
+                                            const link = VersionPagePath(
+                                                ctx.projectType,
+                                                projectData.slug,
+                                                version.slug,
+                                            );
                                             if (window.location.pathname !== link) {
                                                 navigate(link);
                                             }
@@ -283,7 +303,8 @@ export default function ProjectPageLayout() {
                                                 </Button>
                                             </TooltipTrigger>
                                             <TooltipContent className="hidden group-focus-within/card:flex group-hover/card:flex">
-                                                {version?.primaryFile?.name} ({parseFileSize(version.primaryFile?.size || 0)})
+                                                {version?.primaryFile?.name} (
+                                                {parseFileSize(version.primaryFile?.size || 0)})
                                             </TooltipContent>
                                         </Tooltip>
                                     </div>
@@ -296,7 +317,9 @@ export default function ProjectPageLayout() {
                                             <p className="font-bold leading-tight">{version.title}</p>
                                         </Link>
                                         <p className="text-pretty leading-tight">
-                                            {version.loaders.map((loader) => CapitalizeAndFormatString(loader)).join(", ")}{" "}
+                                            {version.loaders
+                                                .map((loader) => CapitalizeAndFormatString(loader))
+                                                .join(", ")}{" "}
                                             {formatVersionsForDisplay(version.gameVersions).join(", ")}
                                         </p>
                                     </div>
@@ -581,7 +604,7 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
                         <div className="flex items-center gap-2">
                             {projectData.featuredCategories.map((category) => (
                                 <Chip key={category} className="bg-card-background">
-                                    {/* @ts-ignore */}
+                                    {/* @ts-expect-error */}
                                     {t.search.tags[category] || Capitalize(category)}
                                 </Chip>
                             ))}
@@ -597,7 +620,11 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
             ) : null}
 
             {invitedMember && (
-                <TeamInvitationBanner refreshData={fetchProjectData} role={invitedMember.role} teamId={projectData.teamId} />
+                <TeamInvitationBanner
+                    refreshData={fetchProjectData}
+                    role={invitedMember.role}
+                    teamId={projectData.teamId}
+                />
             )}
 
             <PublishingChecklist />

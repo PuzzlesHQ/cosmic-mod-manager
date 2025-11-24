@@ -149,7 +149,11 @@ export function MobIcon(props: React.ComponentProps<"svg">) {
         >
             <path fill="none" d="M0 0h24v24H0z" />
             <path fill="none" stroke="currentColor" strokeWidth="2" d="M3 3h18v18H3z" />
-            <path stroke="currentColor" fill="currentColor" d="M6 6h4v4H6zm8 0h4v4h-4zm-4 4h4v2h2v6h-2v-2h-4v2H8v-6h2v-2Z" />
+            <path
+                stroke="currentColor"
+                fill="currentColor"
+                d="M6 6h4v4H6zm8 0h4v4h-4zm-4 4h4v2h2v6h-2v-2h-4v2H8v-6h2v-2Z"
+            />
         </svg>
     );
 }
@@ -478,7 +482,7 @@ const tagIcons: { [K in IconNames]?: JSX.Element } = {
 export default tagIcons;
 
 export function TagIcon({ name }: { name: string }) {
-    // @ts-ignore
+    // @ts-expect-error
     const icon = tagIcons[name];
     if (!icon) return null;
 

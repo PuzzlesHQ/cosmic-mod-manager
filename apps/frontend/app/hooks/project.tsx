@@ -29,7 +29,7 @@ export function useProjectData(): ProjectContextData {
     // We can safely return incomplete data, because the data-wrapper will handle not found cases
     // So no component using this hook will break
     if (!loaderData?.projectData?.id)
-        // @ts-ignore
+        // @ts-expect-error
         return {
             projectSlug: loaderData?.projectSlug || "",
             projectType: projectType,

@@ -27,7 +27,7 @@ export function InteractiveLabel({ children, htmlFor, ...props }: LabelElemProps
             onKeyDown={(e: React.KeyboardEvent<HTMLLabelElement>) => {
                 if (e.code === "Enter" || e.code === "Space") {
                     e.preventDefault();
-                    // @ts-ignore
+                    // @ts-expect-error
                     e.target.click();
                 }
             }}

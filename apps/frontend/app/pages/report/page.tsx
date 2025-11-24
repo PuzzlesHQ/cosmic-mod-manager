@@ -88,7 +88,9 @@ export default function ReportPage({ data }: { data: LoaderData }) {
         return (
             <Main>
                 <div className="grid gap-3">
-                    <p className="text-foreground-muted">{t.report.alreadyReportedDesc(reportingItemType || t.report.content)}</p>
+                    <p className="text-foreground-muted">
+                        {t.report.alreadyReportedDesc(reportingItemType || t.report.content)}
+                    </p>
                     <div className="flex items-center justify-end gap-3">
                         {reportingItem_link && reportingItemType ? (
                             <VariantButtonLink to={reportingItem_link} variant="secondary">
@@ -165,7 +167,9 @@ export default function ReportPage({ data }: { data: LoaderData }) {
                                     <div key={item.key} className="grid grid-cols-[min-content_1fr] items-center gap-2">
                                         {icon}
                                         <div className="grid">
-                                            <span className="font-semibold text-base text-foreground-bright">{item.title}</span>
+                                            <span className="font-semibold text-base text-foreground-bright">
+                                                {item.title}
+                                            </span>
                                             {!!item.desc && (
                                                 <span className="text-foreground-extra-muted text-sm leading-tight">
                                                     {item.desc}
@@ -181,7 +185,11 @@ export default function ReportPage({ data }: { data: LoaderData }) {
             </div>
 
             {reportingItemId && reportingItemType && data?.itemType && (
-                <ReportSelectedItem itemId={reportingItemId} itemType={data.itemType} itemTypeTranslated={reportingItemType} />
+                <ReportSelectedItem
+                    itemId={reportingItemId}
+                    itemType={data.itemType}
+                    itemTypeTranslated={reportingItemType}
+                />
             )}
 
             {!reportingItemId && <SelectWhatToReport />}
@@ -289,8 +297,16 @@ function ReportSelectedItem(props: { itemId: string; itemType: ReportItemType; i
                         <MarkdownEditor editorValue={reportBody} setEditorValue={setReportBody} />
                     </div>
 
-                    <Button className="justify-self-end" disabled={!reportBody || submittingReport} onClick={submitReport}>
-                        {submittingReport ? <LoadingSpinner size="xs" /> : <SendIcon className="h-btn-icon-md w-btn-icon-md" />}
+                    <Button
+                        className="justify-self-end"
+                        disabled={!reportBody || submittingReport}
+                        onClick={submitReport}
+                    >
+                        {submittingReport ? (
+                            <LoadingSpinner size="xs" />
+                        ) : (
+                            <SendIcon className="h-btn-icon-md w-btn-icon-md" />
+                        )}
                         {t.report.submitReport}
                     </Button>
                 </>
@@ -330,7 +346,7 @@ function SelectWhatToReport() {
                     <ButtonStyleRadioGroup
                         currvalue={itemType}
                         items={Object.values(ReportItemType).map((type) => {
-                            // @ts-ignore
+                            // @ts-expect-error
                             const reportingItemType = t[type][type] || type;
 
                             return {
@@ -345,12 +361,12 @@ function SelectWhatToReport() {
             {!!itemType && (
                 <>
                     <Label className="grid w-full gap-2 sm:w-[24ch]">
-                        {/* @ts-ignore */}
+                        {/* @ts-expect-error */}
                         {t.report.whatIsContentId(!itemType ? t.report.content : t[itemType][itemType] || itemType)}
                         <Input
                             value={itemId}
                             onChange={(e) => setItemId(e.target.value)}
-                            // @ts-ignore
+                            // @ts-expect-error
                             placeholder={!itemType ? t.report.content : t[itemType][itemType] || itemType}
                         />
                     </Label>

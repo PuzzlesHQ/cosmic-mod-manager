@@ -17,7 +17,7 @@ export function useOrgData(): OrgContextData {
 
     // We can safely return incomplete data, because the data-wrapper will handle not found cases
     if (!loaderData?.orgData?.id) {
-        // @ts-ignore
+        // @ts-expect-error
         return {
             orgSlug: loaderData?.orgSlug || "",
         };

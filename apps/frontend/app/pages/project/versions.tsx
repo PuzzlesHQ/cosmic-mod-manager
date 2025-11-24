@@ -172,64 +172,71 @@ function ProjectVersionsListTable({
                         <span> </span>
                     </Row>
 
-                    {allProjectVersions.slice((activePage - 1) * ITEMS_PER_PAGE, activePage * ITEMS_PER_PAGE).map((version) => (
-                        <Row
-                            key={version.id}
-                            className="cursor-pointer"
-                            onClick={(e) => {
-                                //@ts-expect-error
-                                if (!e.target.closest(".noClickRedirect") && e.target.closest(".table_row")) {
-                                    navigate(versionPagePathname(version.slug));
-                                }
-                            }}
-                        >
-                            <ReleaseChannelBadge releaseChannel={version.releaseChannel} />
+                    {allProjectVersions
+                        .slice((activePage - 1) * ITEMS_PER_PAGE, activePage * ITEMS_PER_PAGE)
+                        .map((version) => (
+                            <Row
+                                key={version.id}
+                                className="cursor-pointer"
+                                onClick={(e) => {
+                                    //@ts-expect-error
+                                    if (!e.target.closest(".noClickRedirect") && e.target.closest(".table_row")) {
+                                        navigate(versionPagePathname(version.slug));
+                                    }
+                                }}
+                            >
+                                <ReleaseChannelBadge releaseChannel={version.releaseChannel} />
 
-                            <VersionName
-                                title={version.title}
-                                number={version.versionNumber}
-                                url={versionPagePathname(version.slug)}
-                            />
-
-                            <div className="flex flex-wrap items-start justify-start gap-1.5">
-                                <GameVersions gameVersions={version.gameVersions} verbose={anyFilterEnabled} />
-                                <ProjectLoaders versionLoaders={version.loaders} />
-                            </div>
-
-                            <div className="grid w-fit min-w-max gap-1.5 leading-none">
-                                <DownloadsCount downloads={version.downloads} />
-                                <DatePublished dateStr={version.datePublished} />
-                            </div>
-
-                            <div className="flex items-center justify-end gap-1">
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Button
-                                            variant="outline"
-                                            size="icon"
-                                            className="noClickRedirect !w-10 !h-10 shrink-0 rounded-full"
-                                            aria-label={t.project.downloadItem(version.primaryFile?.name || "")}
-                                            onClick={() => downloadFile(version.primaryFile?.url)}
-                                        >
-                                            <DownloadIcon aria-hidden className="h-btn-icon w-btn-icon" strokeWidth={2.2} />
-                                        </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        {version.primaryFile?.name} ({parseFileSize(version.primaryFile?.size || 0)})
-                                    </TooltipContent>
-                                </Tooltip>
-
-                                <ThreeDotMenu
-                                    canEditVersion={canEditVersion}
-                                    canDeleteVersion={canDeleteVersion}
-                                    versionDetailsPage={versionPagePathname(version.slug)}
-                                    versionsPageUrl={ProjectPagePath(projectType, projectData.slug, "versions")}
-                                    projectId={version.projectId}
-                                    versionId={version.id}
+                                <VersionName
+                                    title={version.title}
+                                    number={version.versionNumber}
+                                    url={versionPagePathname(version.slug)}
                                 />
-                            </div>
-                        </Row>
-                    ))}
+
+                                <div className="flex flex-wrap items-start justify-start gap-1.5">
+                                    <GameVersions gameVersions={version.gameVersions} verbose={anyFilterEnabled} />
+                                    <ProjectLoaders versionLoaders={version.loaders} />
+                                </div>
+
+                                <div className="grid w-fit min-w-max gap-1.5 leading-none">
+                                    <DownloadsCount downloads={version.downloads} />
+                                    <DatePublished dateStr={version.datePublished} />
+                                </div>
+
+                                <div className="flex items-center justify-end gap-1">
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                size="icon"
+                                                className="noClickRedirect !w-10 !h-10 shrink-0 rounded-full"
+                                                aria-label={t.project.downloadItem(version.primaryFile?.name || "")}
+                                                onClick={() => downloadFile(version.primaryFile?.url)}
+                                            >
+                                                <DownloadIcon
+                                                    aria-hidden
+                                                    className="h-btn-icon w-btn-icon"
+                                                    strokeWidth={2.2}
+                                                />
+                                            </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            {version.primaryFile?.name} ({parseFileSize(version.primaryFile?.size || 0)}
+                                            )
+                                        </TooltipContent>
+                                    </Tooltip>
+
+                                    <ThreeDotMenu
+                                        canEditVersion={canEditVersion}
+                                        canDeleteVersion={canDeleteVersion}
+                                        versionDetailsPage={versionPagePathname(version.slug)}
+                                        versionsPageUrl={ProjectPagePath(projectType, projectData.slug, "versions")}
+                                        projectId={version.projectId}
+                                        versionId={version.id}
+                                    />
+                                </div>
+                            </Row>
+                        ))}
                 </div>
             </TooltipProvider>
 
@@ -289,7 +296,7 @@ function ProjectLoaders({ versionLoaders }: { versionLoaders: string[] }) {
             {versionLoaders.map((loader) => {
                 const loaderData = getLoaderFromString(loader);
                 if (!loaderData) return null;
-                // @ts-ignore
+                // @ts-expect-error
                 const loaderIcon: ReactNode = loaderIcons[loaderData.name];
 
                 return (
