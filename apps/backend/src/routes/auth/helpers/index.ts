@@ -155,7 +155,7 @@ export async function matchPassword(password: string, hash: string) {
 // PATs
 const PAT_PREFIX = "crp_";
 export async function generatePAT() {
-    const token = generateRandomToken(64);
+    const token = generateRandomToken(32);
 
     return PAT_PREFIX + token;
 }

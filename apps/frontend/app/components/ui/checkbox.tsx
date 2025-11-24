@@ -8,7 +8,7 @@ function Checkbox({ ref, className, name, ...props }: React.ComponentProps<typeo
         <CheckboxPrimitive.Root
             ref={ref}
             className={cn(
-                "peer relative h-4 w-4 shrink-0 rounded-sm bg-raised-background transition-opacity disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary-btn-bg data-[state=checked]:text-primary-btn-fg",
+                "peer relative h-4 w-4 shrink-0 rounded-sm bg-background transition-opacity disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary-btn-bg data-[state=checked]:text-primary-btn-fg data-[state=unchecked]:ring-1 data-[state=unchecked]:ring-hover-background",
                 className,
             )}
             name={name}

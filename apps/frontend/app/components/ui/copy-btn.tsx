@@ -11,9 +11,10 @@ type Props = {
     labelClassName?: string;
     iconClassName?: string;
     successMessage?: string;
+    onCopy?: () => void;
 };
 
-function CopyBtn({ text, label, className, labelClassName, iconClassName, maxLabelChars }: Props) {
+function CopyBtn({ text, label, className, labelClassName, iconClassName, maxLabelChars, onCopy }: Props) {
     const [showTickIcon, setShowTickIcon] = useState(false);
     const timeoutRef = useRef<number | undefined>(undefined);
 
@@ -29,6 +30,8 @@ function CopyBtn({ text, label, className, labelClassName, iconClassName, maxLab
             setShowTickIcon(false);
         }, 2000);
         timeoutRef.current = timeoutId;
+
+        if (onCopy) onCopy();
     }
 
     return (
@@ -42,6 +45,7 @@ function CopyBtn({ text, label, className, labelClassName, iconClassName, maxLab
                 className,
             )}
             onClick={copyText}
+            title="Copy"
         >
             {label ? (
                 <span className={cn("font-mono text-foreground text-sm leading-none dark:text-foreground-muted", labelClassName)}>
@@ -53,7 +57,7 @@ function CopyBtn({ text, label, className, labelClassName, iconClassName, maxLab
                 {showTickIcon ? (
                     <CheckIcon aria-hidden className={cn("h-btn-icon w-btn-icon text-success-fg", iconClassName)} />
                 ) : (
-                    <CopyIcon aria-hidden className={cn("h-3 w-3 text-foreground-extra-muted", iconClassName)} />
+                    <CopyIcon aria-hidden className={cn("h-3.5 w-3.5 text-foreground-extra-muted", iconClassName)} />
                 )}
             </div>
         </Button>

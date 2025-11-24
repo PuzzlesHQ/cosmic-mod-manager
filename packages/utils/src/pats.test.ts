@@ -1,9 +1,9 @@
 import { describe, expect, test } from "bun:test";
-import { decodePatScopes, encodePatScopes, PAT_SCOPE } from "./pats";
+import { API_SCOPE, decodePatScopes, encodePatScopes } from "./pats";
 
 describe("encodePatScopes", () => {
     test("should correctly encode the scopes", () => {
-        const encoded = encodePatScopes([PAT_SCOPE.USER_READ_EMAIL, PAT_SCOPE.USER_WRITE]);
+        const encoded = encodePatScopes([API_SCOPE.USER_READ_EMAIL, API_SCOPE.USER_WRITE]);
         // user_read_email: 1 << 0
         // user_write: 1 << 2
         expect(encoded).toEqual(0n | (1n << 0n) | (1n << 2n));
@@ -15,21 +15,21 @@ describe("encodePatScopes", () => {
     });
 
     test("should ignore invalid scopes", () => {
-        const encoded = encodePatScopes(["invalid_scope", PAT_SCOPE.USER_READ]);
+        const encoded = encodePatScopes(["invalid_scope", API_SCOPE.USER_READ]);
         const decoded = decodePatScopes(encoded);
-        expect(decoded).toEqual([PAT_SCOPE.USER_READ]);
+        expect(decoded).toEqual([API_SCOPE.USER_READ]);
     });
 
     test("should handle duplicate scopes", () => {
-        const encoded = encodePatScopes([PAT_SCOPE.USER_READ, PAT_SCOPE.USER_READ]);
+        const encoded = encodePatScopes([API_SCOPE.USER_READ, API_SCOPE.USER_READ]);
         const decoded = decodePatScopes(encoded);
-        expect(decoded).toEqual([PAT_SCOPE.USER_READ]);
+        expect(decoded).toEqual([API_SCOPE.USER_READ]);
     });
 });
 
 describe("decodePatScopes", () => {
     test("should decode multiple scopes", () => {
-        const scopes = [PAT_SCOPE.USER_READ, PAT_SCOPE.PROJECT_WRITE, PAT_SCOPE.VERSION_DELETE];
+        const scopes = [API_SCOPE.USER_READ, API_SCOPE.PROJECT_WRITE, API_SCOPE.VERSION_DELETE];
         const encoded = encodePatScopes(scopes);
         const decoded = decodePatScopes(encoded);
         expect(decoded).toEqual(expect.arrayContaining(scopes));
@@ -42,7 +42,7 @@ describe("decodePatScopes", () => {
     });
 
     test("should maintain order consistency", () => {
-        const allScopes = Object.values(PAT_SCOPE);
+        const allScopes = Object.values(API_SCOPE);
         const encoded = encodePatScopes(allScopes);
         const decoded = decodePatScopes(encoded);
 

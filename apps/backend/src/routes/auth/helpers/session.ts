@@ -1,9 +1,11 @@
 import { AUTHTOKEN_COOKIE_NAMESPACE, USER_SESSION_VALIDITY_ms, USER_SESSION_VALIDITY_s } from "@app/utils/constants";
 import { getSessionIp, getSessionMetadata } from "@app/utils/headers";
+import { ALL_API_SCOPES } from "@app/utils/pats";
 import { type GlobalUserRole, UserSessionStates } from "@app/utils/types";
-import type { Prisma, Session, User } from "@prisma-client";
+import type { Session, User } from "@prisma-client";
 import type { Context } from "hono";
 import type { CookieOptions } from "hono/utils/cookie";
+import { GetPAT } from "~/db/pat_item";
 import {
     CreateSession,
     DeleteManySessions,
@@ -11,7 +13,6 @@ import {
     GetManySessions,
     GetSession,
     GetSession_ByTokenHash,
-    UpdateSession,
 } from "~/db/session_item";
 import { GetUser_ByIdOrUsername } from "~/db/user_item";
 import type { ContextUserData } from "~/types";
@@ -94,42 +95,15 @@ export async function createUserSession({ userId, providerName, ctx, isFirstSign
     return sessionToken;
 }
 
-async function validateAuthToken(token: string): Promise<ContextUserData | null> {
+async function getUserFromSessionToken(token: string): Promise<ContextUserData | null> {
     const tokenHash = await hashString(token);
-    if (tokenHash.length > 256) return null;
-
     const session = await GetSession_ByTokenHash(tokenHash);
-    if (!session) {
-        // TODO: await addInvalidAuthAttempt(ctx);
-        return null;
-    }
+    if (!session) return null;
 
     const sessionUser = await GetUser_ByIdOrUsername(undefined, session.userId);
     if (!sessionUser) return null;
 
-    const now = Date.now();
-    const sessionExpiry = session.dateExpires.getTime();
-    const timeToExpire = sessionExpiry - now;
-
-    if (timeToExpire <= 0) {
-        await DeleteSession({ where: { id: session.id } });
-        return null;
-    }
-
-    const sessionUpdateData: Prisma.SessionUpdateInput = {
-        dateLastActive: new Date(),
-    };
-    // If the session is about to expire, extend the session
-    if (timeToExpire < USER_SESSION_VALIDITY_ms / 4) {
-        sessionUpdateData.dateExpires = new Date(now + USER_SESSION_VALIDITY_ms);
-    }
-
-    await UpdateSession({
-        where: { id: session.id },
-        data: sessionUpdateData,
-    });
-
-    const sessionData: ContextUserData = {
+    return {
         id: sessionUser.id,
         email: sessionUser.email,
         avatar: sessionUser.avatar,
@@ -144,10 +118,41 @@ async function validateAuthToken(token: string): Promise<ContextUserData | null>
         followingProjects: sessionUser.followingProjects,
         profilePageBg: sessionUser.profilePageBg,
 
+        authScopes: ALL_API_SCOPES,
         sessionId: session.id,
-    };
+        patID: null,
+    } satisfies ContextUserData;
+}
 
-    return sessionData;
+async function getUserFromPAT(token: string): Promise<ContextUserData | null> {
+    const tokenHash = await hashString(token);
+    const pat = await GetPAT(tokenHash);
+
+    if (!pat) return null;
+    if (new Date(pat.dateExpires).getTime() < Date.now()) return null;
+
+    const patUser = await GetUser_ByIdOrUsername(undefined, pat.userId);
+    if (!patUser) return null;
+
+    return {
+        id: patUser.id,
+        email: patUser.email,
+        avatar: patUser.avatar,
+        userName: patUser.userName,
+        name: patUser.name || patUser.userName,
+        dateJoined: patUser.dateJoined,
+        emailVerified: patUser.emailVerified,
+        role: patUser.role as GlobalUserRole,
+        bio: patUser.bio,
+        password: patUser.password,
+        newSignInAlerts: patUser.newSignInAlerts,
+        followingProjects: patUser.followingProjects,
+        profilePageBg: patUser.profilePageBg,
+
+        authScopes: pat.scopes,
+        sessionId: null,
+        patID: pat.id,
+    } satisfies ContextUserData;
 }
 
 export async function validateContextSession(ctx: Context): Promise<ContextUserData | null> {
@@ -155,9 +160,9 @@ export async function validateContextSession(ctx: Context): Promise<ContextUserD
     const authorizationHeader = ctx.req.header("Authorization");
 
     if (authorizationHeader) {
-        return await validateAuthToken(authorizationHeader);
+        return await getUserFromPAT(authorizationHeader);
     } else if (cookie) {
-        const sessionData = await validateAuthToken(cookie);
+        const sessionData = await getUserFromSessionToken(cookie);
         if (!sessionData) deleteSessionCookie(ctx);
 
         return sessionData;

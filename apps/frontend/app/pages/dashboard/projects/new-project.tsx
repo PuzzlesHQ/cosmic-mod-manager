@@ -114,7 +114,7 @@ export default function CreateNewProjectDialog({ orgId, trigger }: Props) {
             </DialogTrigger>
             <DialogContent
                 onClick={(e) => {
-                    // @ts-ignore
+                    // @ts-expect-error
                     if (e.target.closest(".type-selector-popover")) return;
                     if (typeSelectorOpen) return setTypeSelectorOpen(false);
                 }}

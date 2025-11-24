@@ -27,9 +27,10 @@ export interface LoggedInUserData {
     hasAPassword: boolean;
     avatar: string | null;
     role: GlobalUserRole;
-    sessionId: string;
     bio: string | null;
     profilePageBg: string | null;
+    sessionId: string | null;
+    patId: string | null;
 }
 
 export enum ProjectType {

@@ -16,9 +16,11 @@ export interface ContextUserData extends User {
     // The original type of name field is `string | null` but when the ContextUserData is returned
     // from the session validation function, the name is user.name if present, otherwise user.userName
     name: string;
-    sessionId: string;
     role: GlobalUserRole;
-    // authScopes: bigint;
+    authScopes: bigint;
+
+    sessionId: string | null;
+    patID: string | null;
 }
 
 export enum FILE_STORAGE_SERVICE {
