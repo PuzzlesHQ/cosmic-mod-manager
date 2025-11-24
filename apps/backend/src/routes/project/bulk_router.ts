@@ -1,3 +1,4 @@
+import { API_SCOPE } from "@app/utils/pats";
 import { decodeStringArray } from "@app/utils/string";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware } from "~/middleware/auth";
@@ -18,7 +19,7 @@ const bulkProjectsRouter = new Hono()
 async function projects_get(ctx: Context) {
     try {
         const projectIds = ctx.req.query("ids");
-        const userSession = getUserFromCtx(ctx);
+        const userSession = getUserFromCtx(ctx, API_SCOPE.PROJECT_READ);
         if (!projectIds) return invalidRequestResponse(ctx);
 
         const idsArray = decodeStringArray(projectIds);
@@ -36,8 +37,8 @@ async function projects_get(ctx: Context) {
 
 async function projectsRandom_get(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx);
-        const count = Number.parseInt(ctx.req.query("count") || "");
+        const userSession = getUserFromCtx(ctx, API_SCOPE.PROJECT_READ);
+        const count = Number.parseInt(ctx.req.query("count") || "", 10);
 
         const res = await getRandomProjects(userSession, count);
         return ctx.json(res.data, res.status);
@@ -49,7 +50,7 @@ async function projectsRandom_get(ctx: Context) {
 
 async function homePageCarousel_get(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx);
+        const userSession = getUserFromCtx(ctx, API_SCOPE.PROJECT_READ);
         const res = await getHomePageCarouselProjects(userSession);
         return ctx.json(res.data, res.status);
     } catch (error) {

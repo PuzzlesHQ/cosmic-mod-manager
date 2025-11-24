@@ -49,7 +49,7 @@
         }
     },
     "formatter": {
-        "lineWidth": 130,
+        "lineWidth": 120,
         "indentWidth": 4,
         "indentStyle": "space"
     }

@@ -1,4 +1,5 @@
 import { DateFromStr } from "@app/utils/date";
+import { API_SCOPE } from "@app/utils/pats";
 import { decodeStringArray } from "@app/utils/string";
 import { TimelineOptions } from "@app/utils/types";
 import { type Context, Hono } from "hono";
@@ -6,7 +7,7 @@ import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth
 import { applyCacheHeaders } from "~/middleware/cache";
 import { strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
-import { invalidRequestResponse, serverErrorResponse, unauthorizedReqResponse } from "~/utils/http";
+import { invalidRequestResponse, serverErrorResponse, unauthenticatedReqResponse, unauthorizedReqResponse } from "~/utils/http";
 import { getUserFromCtx } from "~/utils/router";
 import { getAllProjects_DownloadsAnalyticsData, getDownloadsAnalyticsData } from "./controllers";
 
@@ -27,8 +28,8 @@ const AnalyticsRouter = new Hono()
 
 async function downloadsAnalytics_get(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx);
-        if (!user) return unauthorizedReqResponse(ctx);
+        const user = getUserFromCtx(ctx, API_SCOPE.ANALYTICS_READ);
+        if (!user) return unauthenticatedReqResponse(ctx);
 
         const startDate_query = ctx.req.query("startDate");
         const endDate_query = ctx.req.query("endDate");
@@ -70,7 +71,7 @@ async function downloadsAnalytics_get(ctx: Context) {
 
 async function allProjectsDownloadsAnalytics_get(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx);
+        const user = getUserFromCtx(ctx, API_SCOPE.ANALYTICS_READ);
         if (!user) return unauthorizedReqResponse(ctx);
 
         const startDate_query = ctx.req.query("startDate");

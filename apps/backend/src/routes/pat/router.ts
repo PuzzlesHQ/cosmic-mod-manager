@@ -1,3 +1,4 @@
+import { API_SCOPE } from "@app/utils/pats";
 import { createPAT_FormSchema } from "@app/utils/schemas/pat";
 import { zodParse } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
@@ -16,7 +17,7 @@ const patRouter = new Hono()
 
 async function pat_get(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx);
+        const user = getUserFromCtx(ctx, API_SCOPE.PAT_READ);
         if (!user) return invalidRequestResponse(ctx);
 
         const res = await getAllUserPATs(user);
@@ -29,7 +30,7 @@ async function pat_get(ctx: Context) {
 
 async function pat_post(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx);
+        const user = getUserFromCtx(ctx, API_SCOPE.PAT_CREATE);
         if (!user) return invalidRequestResponse(ctx);
 
         const body = ctx.get(REQ_BODY_NAMESPACE);
@@ -50,7 +51,7 @@ async function pat_post(ctx: Context) {
 
 async function pat_delete(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx);
+        const user = getUserFromCtx(ctx, API_SCOPE.PAT_DELETE);
         if (!user) return invalidRequestResponse(ctx);
 
         const patId = ctx.req.param("patId");

@@ -1,3 +1,4 @@
+import { API_SCOPE } from "@app/utils/pats";
 import { MODERATOR_ROLES } from "@app/utils/src/constants/roles";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware } from "~/middleware/auth";
@@ -17,8 +18,8 @@ const moderationRouter = new Hono()
 
 async function moderationProjects_get(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx);
-        if (!userSession?.id || !MODERATOR_ROLES.includes(userSession.role)) {
+        const user = getUserFromCtx(ctx, API_SCOPE.PROJECT_READ);
+        if (!user?.id || !MODERATOR_ROLES.includes(user.role)) {
             await addInvalidAuthAttempt(ctx);
             return unauthorizedReqResponse(ctx);
         }
@@ -33,8 +34,8 @@ async function moderationProjects_get(ctx: Context) {
 
 async function moderationProject_post(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx);
-        if (!userSession?.id || !MODERATOR_ROLES.includes(userSession.role)) {
+        const user = getUserFromCtx(ctx, API_SCOPE.PROJECT_WRITE);
+        if (!user?.id || !MODERATOR_ROLES.includes(user.role)) {
             await addInvalidAuthAttempt(ctx);
             return unauthorizedReqResponse(ctx);
         }
@@ -42,7 +43,7 @@ async function moderationProject_post(ctx: Context) {
         const body = ctx.get(REQ_BODY_NAMESPACE);
         const newStatus = body.status;
 
-        const res = await updateModerationProject(id, newStatus, userSession);
+        const res = await updateModerationProject(id, newStatus, user);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);

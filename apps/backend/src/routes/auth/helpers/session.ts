@@ -1,6 +1,6 @@
 import { AUTHTOKEN_COOKIE_NAMESPACE, USER_SESSION_VALIDITY_ms, USER_SESSION_VALIDITY_s } from "@app/utils/constants";
 import { getSessionIp, getSessionMetadata } from "@app/utils/headers";
-import { ALL_API_SCOPES } from "@app/utils/pats";
+import { ALL_PAT_SCOPES } from "@app/utils/pats";
 import { type GlobalUserRole, UserSessionStates } from "@app/utils/types";
 import type { Session, User } from "@prisma-client";
 import type { Context } from "hono";
@@ -118,7 +118,7 @@ async function getUserFromSessionToken(token: string): Promise<ContextUserData |
         followingProjects: sessionUser.followingProjects,
         profilePageBg: sessionUser.profilePageBg,
 
-        authScopes: ALL_API_SCOPES,
+        apiScopes: ALL_PAT_SCOPES,
         sessionId: session.id,
         patID: null,
     } satisfies ContextUserData;
@@ -149,7 +149,7 @@ async function getUserFromPAT(token: string): Promise<ContextUserData | null> {
         followingProjects: patUser.followingProjects,
         profilePageBg: patUser.profilePageBg,
 
-        authScopes: pat.scopes,
+        apiScopes: pat.scopes,
         sessionId: null,
         patID: pat.id,
     } satisfies ContextUserData;

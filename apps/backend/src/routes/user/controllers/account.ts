@@ -120,7 +120,8 @@ export async function confirmAddingNewPassword(code: string) {
 
     if (!isConfirmationCodeValid(confirmationEmail.dateCreated, CONFIRM_NEW_PASSWORD_EMAIL_VALIDITY_ms))
         return invalidRequestResponseData("Invalid or expired code");
-    if (confirmationEmail.user.password) return invalidRequestResponseData("A password already exists for your account");
+    if (confirmationEmail.user.password)
+        return invalidRequestResponseData("A password already exists for your account");
 
     await UpdateUser({
         where: {
@@ -186,7 +187,8 @@ export async function sendAccountPasswordChangeLink(
         return {
             data: {
                 success: true,
-                message: "You should receive an email with a link to change your password if you entered correct email address.",
+                message:
+                    "You should receive an email with a link to change your password if you entered correct email address.",
             },
             status: HTTP_STATUS.OK,
         };
@@ -213,7 +215,8 @@ export async function sendAccountPasswordChangeLink(
     return {
         data: {
             success: true,
-            message: "You should receive an email with a link to change your password if you entered correct email address.",
+            message:
+                "You should receive an email with a link to change your password if you entered correct email address.",
         },
         status: HTTP_STATUS.OK,
     };
@@ -225,7 +228,8 @@ export async function changeUserPassword(
     formData: z.infer<typeof setNewPasswordFormSchema>,
     userSession: ContextUserData | null,
 ) {
-    if (formData.newPassword !== formData.confirmNewPassword) return invalidRequestResponseData("Passwords do not match");
+    if (formData.newPassword !== formData.confirmNewPassword)
+        return invalidRequestResponseData("Passwords do not match");
 
     const tokenHash = await hashString(token);
     const confirmationEmail = await prisma.userConfirmation.findUnique({
