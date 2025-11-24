@@ -1,6 +1,12 @@
 import type React from "react";
 import { useCallback } from "react";
-import { Link as RemixLink, useLocation, useNavigate as useNavigate_Original, type LinkProps, type NavigateOptions } from "react-router";
+import {
+    type LinkProps,
+    type NavigateOptions,
+    Link as RemixLink,
+    useLocation,
+    useNavigate as useNavigate_Original,
+} from "react-router";
 import type { VariantProps } from "~/components/types";
 import { cn } from "~/components/utils";
 import { usePreferences } from "~/hooks/preferences";
@@ -121,9 +127,7 @@ export function useNavigate(dontAlterHintLocale?: boolean, initOptions?: Navigat
     const { locale, formattedLocaleName } = useTranslation();
     const { viewTransitions } = usePreferences();
 
-    useCallback(() => {}, [
-        viewTransitions, formattedLocaleName
-    ])
+    useCallback(() => {}, [viewTransitions, formattedLocaleName]);
 
     function __navigate(_to: string, options?: NavigateOptions): void {
         const to = _to?.trim() || "#";

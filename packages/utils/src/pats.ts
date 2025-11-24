@@ -1,5 +1,5 @@
 // the order of these scopes should not be changed, as they are used in bitwise operations
-export enum PAT_SCOPE {
+export enum API_SCOPE {
     USER_READ_EMAIL = "user_read_email",
     USER_READ = "user_read",
     USER_WRITE = "user_write",
@@ -46,17 +46,29 @@ export enum PAT_SCOPE {
     PAT_DELETE = "pat_delete",
 }
 
+export const PAT_RESTRICTED_SCOPES = [
+    API_SCOPE.PAT_CREATE,
+    API_SCOPE.PAT_READ,
+    API_SCOPE.PAT_WRITE,
+    API_SCOPE.PAT_DELETE,
+    API_SCOPE.USER_SESSION_READ,
+    API_SCOPE.USER_SESSION_DELETE,
+    API_SCOPE.USER_AUTH_WRITE,
+    API_SCOPE.USER_DELETE,
+    API_SCOPE.ANALYTICS_READ,
+];
+
 interface PatScopeInfo {
-    id: PAT_SCOPE;
+    id: API_SCOPE;
     flag: bigint;
 }
-
+export const ALL_API_SCOPES = -1n; // too lazy to set all the corresponding bits
 const PAT_SCOPES: PatScopeInfo[] = [];
 let flagCounter = 0n;
 
-for (const scope in PAT_SCOPE) {
+for (const scope in API_SCOPE) {
     PAT_SCOPES.push({
-        id: PAT_SCOPE[scope as keyof typeof PAT_SCOPE],
+        id: API_SCOPE[scope as keyof typeof API_SCOPE],
         flag: 1n << flagCounter,
     });
 
@@ -76,8 +88,8 @@ export function encodePatScopes(scopes: string[]): bigint {
     return encoded;
 }
 
-export function decodePatScopes(encoded: bigint): PAT_SCOPE[] {
-    const scopes: PAT_SCOPE[] = [];
+export function decodePatScopes(encoded: bigint): API_SCOPE[] {
+    const scopes: API_SCOPE[] = [];
 
     for (const scopeInfo of PAT_SCOPES) {
         if ((encoded & scopeInfo.flag) === scopeInfo.flag) {
@@ -88,14 +100,14 @@ export function decodePatScopes(encoded: bigint): PAT_SCOPE[] {
     return scopes;
 }
 
-export function hasPatScope(encoded: bigint, scope: PAT_SCOPE): boolean {
+export function hasPatScope(encoded: bigint, scope: API_SCOPE): boolean {
     const scopeInfo = PAT_SCOPES.find((s) => s.id === scope);
     if (!scopeInfo) return false;
 
     return (encoded & scopeInfo.flag) === scopeInfo.flag;
 }
 
-export function hasAllPatScopes(encoded: bigint, scopes: PAT_SCOPE[]): boolean {
+export function hasAllPatScopes(encoded: bigint, scopes: API_SCOPE[]): boolean {
     for (const scope of scopes) {
         if (!hasPatScope(encoded, scope)) return false;
     }
@@ -103,7 +115,7 @@ export function hasAllPatScopes(encoded: bigint, scopes: PAT_SCOPE[]): boolean {
     return true;
 }
 
-export function togglePatScope(encoded: bigint, scope: PAT_SCOPE): bigint {
+export function togglePatScope(encoded: bigint, scope: API_SCOPE): bigint {
     const scopeInfo = PAT_SCOPES.find((s) => s.id === scope);
     if (!scopeInfo) return encoded;
 
@@ -111,4 +123,12 @@ export function togglePatScope(encoded: bigint, scope: PAT_SCOPE): bigint {
     // eg: x1xx ^ x1xx = x0xx (removes the scope)
     //     x0xx ^ x1xx = x1xx (adds the scope)
     return encoded ^ scopeInfo.flag;
+}
+
+export function patContainsRestrictedScopes(encoded: bigint) {
+    for (const restrictedScope of PAT_RESTRICTED_SCOPES) {
+        if (hasPatScope(encoded, restrictedScope)) return restrictedScope;
+    }
+
+    return false;
 }

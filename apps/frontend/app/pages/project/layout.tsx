@@ -261,7 +261,7 @@ export default function ProjectPageLayout() {
                                     <div className="relative flex min-w-10 items-center justify-center">
                                         <ReleaseChannelBadge
                                             releaseChannel={version.releaseChannel}
-                                            className=" group-focus-within/card:hidden group-hover/card:hidden"
+                                            className="group-focus-within/card:hidden group-hover/card:hidden"
                                         />
                                         <Tooltip>
                                             <TooltipTrigger

@@ -25,6 +25,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
             route("profile", path("settings/profile.tsx"), { id: "profile-settings" });
             route("account", path("settings/account.tsx"), { id: "account-settings" });
             route("sessions", path("settings/sessions.tsx"), { id: "sessions-settings" });
+            route("pats", path("settings/pats.tsx"), { id: "personal-access-tokens" });
         });
 
         // Dashboard

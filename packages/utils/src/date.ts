@@ -7,22 +7,22 @@ export function timeSince(pastTime: Date, locale = "en-US"): string {
         const diff = now.getTime() - pastTime.getTime();
 
         const seconds = Math.round(diff / 1000);
-        if (seconds < 60) return formatter.format(-seconds, "second");
+        if (Math.abs(seconds) < 60) return formatter.format(-seconds, "second");
 
         const minutes = Math.floor(seconds / 60);
-        if (minutes < 60) return formatter.format(-minutes, "minute");
+        if (Math.abs(minutes) < 60) return formatter.format(-minutes, "minute");
 
         const hours = Math.floor(minutes / 60);
-        if (hours < 24) return formatter.format(-hours, "hour");
+        if (Math.abs(hours) < 24) return formatter.format(-hours, "hour");
 
         const days = Math.round(hours / 24);
-        if (days < 7) return formatter.format(-days, "day");
+        if (Math.abs(days) < 7) return formatter.format(-days, "day");
 
         const weeks = Math.round(days / 7);
-        if (weeks < 4) return formatter.format(-weeks, "week");
+        if (Math.abs(weeks) < 4) return formatter.format(-weeks, "week");
 
         const months = Math.round(days / 30.4375);
-        if (months < 12) return formatter.format(-months, "month");
+        if (Math.abs(months) < 12) return formatter.format(-months, "month");
 
         const years = Math.round(days / 365.25);
         return formatter.format(-years, "year");

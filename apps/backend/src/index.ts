@@ -26,6 +26,7 @@ import env from "~/utils/env";
 import { HTTP_STATUS, serverErrorResponse } from "~/utils/http";
 import AnalyticsRouter from "./routes/analytics/router";
 import collectionsRouter from "./routes/collections/router";
+import patRouter from "./routes/pat/router";
 import reportRouter from "./routes/report/router";
 import threadRouter from "./routes/thread/router";
 import versionsRouter from "./routes/versions/router";
@@ -64,6 +65,8 @@ const app = new Hono()
 
     .route("/api/user", userRouter)
     .route("/api/users", bulkUserActionsRouter)
+
+    .route("/api/pat", patRouter)
 
     .route("/api/notifications", notificationRouter) // Uses the userSession's userId instead of getting it from the URL
     .route("/api/user/:userId/notifications", notificationRouter)

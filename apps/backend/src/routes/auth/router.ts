@@ -58,9 +58,10 @@ async function currSession_get(ctx: Context) {
             role: getUserRoleFromString(userSession.role),
             hasAPassword: !!userSession.password,
             avatar: userFileUrl(userSession.id, userSession.avatar),
-            sessionId: userSession.sessionId,
             bio: userSession.bio,
             profilePageBg: userFileUrl(userSession.id, userSession.profilePageBg),
+            sessionId: userSession.sessionId,
+            patId: userSession.patID,
         } satisfies LoggedInUserData;
 
         return ctx.json(formattedObject, HTTP_STATUS.OK);

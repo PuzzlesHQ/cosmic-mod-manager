@@ -97,6 +97,10 @@ a:focus-visible .lucide-arrow-up-right {
     translate: 0.1rem -0.1rem;
 }
 
+a svg {
+    flex-shrink: 0;
+}
+
 img {
     vertical-align: center;
     font-style: italic;

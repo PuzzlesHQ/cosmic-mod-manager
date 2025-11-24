@@ -19,6 +19,7 @@ const Config = {
     SECURITY_EMAIL: "security@crmm.tech",
     DISCORD_INVITE: "https://discord.gg/6avTnupc6D",
     REPO_LINK: "https://github.com/PuzzlesHQ/cosmic-mod-manager",
+    DOCS_URL: "https://docs.crmm.tech",
 };
 
 if (isDev === true) {

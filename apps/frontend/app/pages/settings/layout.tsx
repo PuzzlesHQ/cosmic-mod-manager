@@ -1,4 +1,4 @@
-import { MonitorSmartphoneIcon, PaintbrushIcon, ShieldIcon, UserIcon } from "lucide-react";
+import { KeyRoundIcon, MonitorSmartphoneIcon, PaintbrushIcon, ShieldIcon, UserIcon } from "lucide-react";
 import { useMemo } from "react";
 import { Outlet } from "react-router";
 import { Panel, PanelContent, SidePanel, type SidePanelSection } from "~/components/misc/panel";
@@ -44,6 +44,11 @@ export default function SettingsPageLayout() {
                     label: t.settings.sessions,
                     href: "/settings/sessions",
                     icon: <MonitorSmartphoneIcon aria-hidden className="size-4" />,
+                },
+                {
+                    label: t.settings.personalAccessTokens,
+                    href: "/settings/pats",
+                    icon: <KeyRoundIcon aria-hidden className="size-4" />,
                 },
             ],
         });

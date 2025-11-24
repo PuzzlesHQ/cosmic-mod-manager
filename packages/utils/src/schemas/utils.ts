@@ -17,7 +17,7 @@ export async function zodParse<T extends z.Schema, K>(schema: T, data: unknown, 
 
 type ToastFn = (message: string, options?: { description?: string }) => void;
 
-export async function handleFormError(callback: () => void | Promise<void>, toastFn?: ToastFn) {
+export async function handleFormError(callback: () => unknown, toastFn?: ToastFn) {
     try {
         await callback();
         return true;
