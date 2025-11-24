@@ -1,8 +1,7 @@
-import { type CategoryT, tagTypes } from "@app/utils/constants/categories";
+import { type CategoriesUnion, type CategoryT, tagTypes } from "@app/utils/constants/categories";
 import { getValidProjectCategories } from "@app/utils/project";
 import type { z } from "@app/utils/schemas";
 import { updateProjectTagsFormSchema } from "@app/utils/schemas/project/settings/categories";
-import { handleFormError } from "@app/utils/schemas/utils";
 import { MAX_FEATURED_PROJECT_TAGS } from "@app/utils/src/constants";
 import { CapitalizeAndFormatString } from "@app/utils/string";
 import type { TagType } from "@app/utils/types";
@@ -24,6 +23,7 @@ import { LoadingSpinner } from "~/components/ui/spinner";
 import { useProjectData } from "~/hooks/project";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
+import { submitFormWithErrorHandling } from "~/utils/form";
 
 export default function TagsSettingsPage() {
     const { t } = useTranslation();
@@ -37,8 +37,8 @@ export default function TagsSettingsPage() {
     const form = useForm<z.infer<typeof updateProjectTagsFormSchema>>({
         resolver: zodResolver(updateProjectTagsFormSchema),
         defaultValues: {
-            categories: projectData?.categories || [],
-            featuredCategories: projectData?.featuredCategories || [],
+            categories: (projectData?.categories as CategoriesUnion[]) || [],
+            featuredCategories: (projectData?.featuredCategories as CategoriesUnion[]) || [],
         },
     });
     form.watch();
@@ -92,7 +92,7 @@ export default function TagsSettingsPage() {
         <Form {...form}>
             <form
                 onSubmit={(e) => {
-                    e.preventDefault();
+                    submitFormWithErrorHandling(e, updateProjectTagsFormSchema, form, updateTags);
                 }}
                 className="w-full"
             >
@@ -112,7 +112,7 @@ export default function TagsSettingsPage() {
                                     render={({ field }) => (
                                         <div className="autofit-grid grid w-full">
                                             {tags.map((tag) => {
-                                                // @ts-ignore
+                                                // @ts-expect-error
                                                 const tagName = t.search.tags[tag.name] || tag.name;
 
                                                 return (
@@ -120,7 +120,7 @@ export default function TagsSettingsPage() {
                                                         title={`${t.search[tag.type]} / ${CapitalizeAndFormatString(tagName)}`}
                                                         key={tagName}
                                                         name={tagName}
-                                                        checked={field.value.includes(tag.name)}
+                                                        checked={field.value.includes(tag.name as CategoriesUnion)}
                                                         onCheckedChange={(e) => {
                                                             if (e === true) {
                                                                 field.onChange([...field.value, tag.name]);
@@ -130,7 +130,9 @@ export default function TagsSettingsPage() {
                                                                 // Also remove the category from featured tags if it was featured
                                                                 const selectedFeaturedTagsList =
                                                                     form.getValues().featuredCategories;
-                                                                if (selectedFeaturedTagsList.includes(tag.name)) {
+                                                                if (
+                                                                    selectedFeaturedTagsList.includes(tag.name as CategoriesUnion)
+                                                                ) {
                                                                     form.setValue(
                                                                         "featuredCategories",
                                                                         selectedFeaturedTagsList.filter(
@@ -169,7 +171,7 @@ export default function TagsSettingsPage() {
                             render={({ field }) => (
                                 <div className="autofit-grid mt-2 grid w-full">
                                     {form.getValues().categories.map((tag) => {
-                                        // @ts-ignore
+                                        // @ts-expect-error
                                         const tagName = t.search.tags[tag] || tag;
 
                                         return (
@@ -207,16 +209,7 @@ export default function TagsSettingsPage() {
                     </div>
 
                     <div className="flex w-full items-center justify-end">
-                        <Button
-                            type="submit"
-                            disabled={isLoading || isSubmitBtnDisabled}
-                            onClick={async () => {
-                                await handleFormError(async () => {
-                                    const formValues = await updateProjectTagsFormSchema.parseAsync(form.getValues());
-                                    await updateTags(formValues);
-                                }, toast.error);
-                            }}
-                        >
+                        <Button type="submit" disabled={isLoading || isSubmitBtnDisabled}>
                             {isLoading ? (
                                 <LoadingSpinner size="xs" />
                             ) : (

@@ -35,6 +35,7 @@ import { Textarea } from "~/components/ui/textarea";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
+import { submitFormWithErrorHandling } from "~/utils/form";
 import useCollections from "./provider";
 
 interface EditCollectionProps {
@@ -60,7 +61,7 @@ export default function EditCollection(props: EditCollectionProps) {
         },
     });
 
-    async function createCollection(values: z.infer<typeof updateCollectionFormSchema>) {
+    async function updateCollection(values: z.infer<typeof updateCollectionFormSchema>) {
         try {
             if (isLoading || !isFormSubmittable()) return;
             setIsLoading(true);
@@ -115,7 +116,9 @@ export default function EditCollection(props: EditCollectionProps) {
                 <DialogBody>
                     <Form {...form}>
                         <form
-                            onSubmit={form.handleSubmit(createCollection)}
+                            onSubmit={(e) => {
+                                submitFormWithErrorHandling(e, updateCollectionFormSchema, form, updateCollection);
+                            }}
                             className="flex w-full flex-col items-start justify-center gap-form-elements"
                         >
                             <FormField

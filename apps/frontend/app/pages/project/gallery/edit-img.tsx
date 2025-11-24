@@ -30,6 +30,7 @@ import { Textarea } from "~/components/ui/textarea";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
+import { submitFormWithErrorHandling } from "~/utils/form";
 
 interface Props {
     galleryItem: GalleryItem;
@@ -106,7 +107,9 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
                 <DialogBody>
                     <Form {...form}>
                         <form
-                            onSubmit={form.handleSubmit(updateGalleryImage)}
+                            onSubmit={(e) => {
+                                submitFormWithErrorHandling(e, updateGalleryImageFormSchema, form, updateGalleryImage);
+                            }}
                             className="flex w-full flex-col items-start justify-start gap-form-elements"
                         >
                             <div className="flex w-full flex-col items-center justify-center">
@@ -152,7 +155,10 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
                                             <CharacterCounter currVal={field.value} max={MAX_GALLERY_DESCRIPTION_LENGTH} />
                                         </FormLabel>
                                         <Textarea
-                                            {...field}
+                                            value={field.value || ""}
+                                            onChange={field.onChange}
+                                            ref={field.ref}
+                                            name={field.name}
                                             placeholder={t.form.description}
                                             className="h-fit min-h-14 resize-none"
                                             id="gallery-item-description"

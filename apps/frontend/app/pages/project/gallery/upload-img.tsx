@@ -32,6 +32,7 @@ import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
+import { submitFormWithErrorHandling } from "~/utils/form";
 
 interface Props {
     projectData: ProjectDetailsData;
@@ -127,7 +128,9 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
                 <DialogBody>
                     <Form {...form}>
                         <form
-                            onSubmit={form.handleSubmit(uploadGalleryImage)}
+                            onSubmit={(e) => {
+                                submitFormWithErrorHandling(e, addNewGalleryImageFormSchema, form, uploadGalleryImage);
+                            }}
                             className="flex w-full flex-col items-start justify-start gap-form-elements"
                         >
                             <FormField

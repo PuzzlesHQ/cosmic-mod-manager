@@ -2,7 +2,7 @@ import { ProjectPermissionsList } from "@app/utils/config/project";
 import { doesMemberHaveAccess } from "@app/utils/project";
 import type { z } from "@app/utils/schemas";
 import { updateTeamMemberFormSchema } from "@app/utils/schemas/project/settings/members";
-import { handleFormError } from "@app/utils/schemas/utils";
+import { zodParse } from "@app/utils/schemas/utils";
 import { hasRootAccess } from "@app/utils/src/constants/roles";
 import { type LoggedInUserData, ProjectPermission } from "@app/utils/types";
 import type { ProjectDetailsData, TeamMember } from "@app/utils/types/api";
@@ -24,6 +24,7 @@ import { Switch } from "~/components/ui/switch";
 import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
+import { submitFormWithErrorHandling } from "~/utils/form";
 import { UserProfilePath } from "~/utils/urls";
 import { RemoveMemberDialog, TransferOwnershipDialog } from "./dialogs";
 
@@ -156,7 +157,7 @@ export function ProjectTeamMember({
                 <Form {...form}>
                     <form
                         onSubmit={async (e) => {
-                            e.preventDefault();
+                            submitFormWithErrorHandling(e, updateTeamMemberFormSchema, form, updateMemberDetails);
                         }}
                         className="flex w-full flex-col gap-form-elements"
                     >
@@ -229,12 +230,6 @@ export function ProjectTeamMember({
                                 type="submit"
                                 size="sm"
                                 disabled={isLoading || !form.formState.isDirty || (!canEditMember && !canAddPermissions)}
-                                onClick={async () => {
-                                    await handleFormError(async () => {
-                                        const values = await updateTeamMemberFormSchema.parseAsync(form.getValues());
-                                        await updateMemberDetails(values);
-                                    }, toast.error);
-                                }}
                             >
                                 <SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                 {t.form.saveChanges}
@@ -445,6 +440,16 @@ export function OrgTeamMember({ session, project, orgMember, fetchProjectData, c
                     <form
                         onSubmit={async (e) => {
                             e.preventDefault();
+                            if (permsOverridden && !overridePerms) return await removePermissionOverride();
+
+                            const { data, error } = await zodParse(updateTeamMemberFormSchema, form.getValues());
+                            if (!data || error) {
+                                toast.error(error || "Invalid form data!");
+                                return;
+                            }
+
+                            if (permsOverridden && overridePerms) await updateMemberDetails(data);
+                            else if (!permsOverridden && overridePerms) await addPermissionOverride(data);
                         }}
                         className="flex w-full flex-col gap-form-elements"
                     >
@@ -533,20 +538,7 @@ export function OrgTeamMember({ session, project, orgMember, fetchProjectData, c
                         )}
 
                         <div className="flex w-full flex-wrap gap-x-4 gap-y-2">
-                            <Button
-                                type="submit"
-                                size="sm"
-                                disabled={submitButtonDisabled}
-                                onClick={async () => {
-                                    if (permsOverridden && !overridePerms) return await removePermissionOverride();
-
-                                    await handleFormError(async () => {
-                                        const values = await updateTeamMemberFormSchema.parseAsync(form.getValues());
-                                        if (permsOverridden && overridePerms) await updateMemberDetails(values);
-                                        else if (!permsOverridden && overridePerms) await addPermissionOverride(values);
-                                    }, toast.error);
-                                }}
-                            >
+                            <Button type="submit" size="sm" disabled={submitButtonDisabled}>
                                 <SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
                                 {t.form.saveChanges}
                             </Button>
