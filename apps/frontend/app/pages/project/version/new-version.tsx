@@ -119,7 +119,11 @@ export default function UploadVersionPage() {
                             control={form.control}
                             name="featured"
                             render={({ field }) => (
-                                <FeaturedBtn isLoading={isLoading} featured={field.value} setFeatured={field.onChange} />
+                                <FeaturedBtn
+                                    isLoading={isLoading}
+                                    featured={field.value}
+                                    setFeatured={field.onChange}
+                                />
                             )}
                         />
                     }
@@ -149,7 +153,10 @@ export default function UploadVersionPage() {
                                 name="changelog"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <MarkdownEditor editorValue={field.value || ""} setEditorValue={field.onChange} />
+                                        <MarkdownEditor
+                                            editorValue={field.value || ""}
+                                            setEditorValue={field.onChange}
+                                        />
                                     </FormItem>
                                 )}
                             />
@@ -189,7 +196,9 @@ export default function UploadVersionPage() {
                                                     if (!file) return;
                                                     const fileType = await getFileType(file);
                                                     if (!isVersionPrimaryFileValid(projectData.type, fileType)) {
-                                                        const allowedFileTypes = allowedPrimaryFileTypes(projectData.type);
+                                                        const allowedFileTypes = allowedPrimaryFileTypes(
+                                                            projectData.type,
+                                                        );
                                                         return toast.error(
                                                             `Invalid primary file "${file.name}" with type "${fileType}". Allowed types: .${Array.from(allowedFileTypes).join(" | .")}  `,
                                                         );
@@ -212,12 +221,12 @@ export default function UploadVersionPage() {
                                 )}
                             />
 
-                            {/* @ts-ignore */}
+                            {/* @ts-expect-error */}
                             <SelectAdditionalProjectFiles formControl={form.control} />
                         </ContentCardTemplate>
                     </div>
 
-                    {/* @ts-ignore */}
+                    {/* @ts-expect-error */}
                     <MetadataInputCard projectType={projectData.type} formControl={form.control} />
                 </div>
             </form>

@@ -49,11 +49,11 @@ async function addToHistory(item: DownloadsQueueItem) {
 }
 
 function queueDownloadsHistoryRefresh() {
-    // @ts-ignore
+    // @ts-expect-error
     const intervalId = global.historyRefreshIntervalId;
     if (intervalId) clearInterval(intervalId);
 
-    // @ts-ignore
+    // @ts-expect-error
     global.historyRefreshIntervalId = setTimeout(refreshDownloadsHistory, HISTORY_VALIDITY);
 }
 
@@ -101,7 +101,8 @@ export async function processDownloads() {
             for (let j = 0; j < downloadsHistory.length; j++) {
                 const historyItem = downloadsHistory[j];
                 const userDownloads =
-                    userDownloadsHistory.get(userDownloadsHistoryMapKey(queueItem.userId || "", queueItem.projectId)) || 0;
+                    userDownloadsHistory.get(userDownloadsHistoryMapKey(queueItem.userId || "", queueItem.projectId)) ||
+                    0;
                 const ipDownloads =
                     ipDownloadsHistory.get(ipDownloadsHistoryMapKey(queueItem.ipAddress, queueItem.projectId)) || 0;
 
@@ -109,7 +110,10 @@ export async function processDownloads() {
                     userDownloadsHistoryMapKey(historyItem.userId || "", historyItem.projectId),
                     userDownloads + 1,
                 );
-                ipDownloadsHistory.set(ipDownloadsHistoryMapKey(historyItem.ipAddress, historyItem.projectId), ipDownloads + 1);
+                ipDownloadsHistory.set(
+                    ipDownloadsHistoryMapKey(historyItem.ipAddress, historyItem.projectId),
+                    ipDownloads + 1,
+                );
 
                 if (
                     historyItem.id !== queueItem.id &&
@@ -194,11 +198,11 @@ export async function processDownloads() {
 }
 
 export async function queueDownloadsCounterQueueProcessing() {
-    // @ts-ignore
+    // @ts-expect-error
     const intervalId = global.downloadsCounterQueueIntervalId;
     if (intervalId) clearInterval(intervalId);
 
-    // @ts-ignore
+    // @ts-expect-error
     global.downloadsCounterQueueIntervalId = setInterval(processDownloads, QUEUE_PROCESS_INTERVAL);
 }
 

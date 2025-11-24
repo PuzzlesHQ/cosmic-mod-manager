@@ -214,7 +214,7 @@ function BaseView(props: SearchListItemProps) {
                 )}
 
                 {projectCategoriesData.map((category) => {
-                    // @ts-ignore
+                    // @ts-expect-error
                     const tagName = t.search.tags[category.name] || CapitalizeAndFormatString(category.name);
 
                     return (
@@ -246,18 +246,27 @@ function BaseView(props: SearchListItemProps) {
             </div>
 
             <div
-                className={cn("flex flex-wrap justify-end gap-x-4", galleryViewType && "mx-card-surround justify-between")}
+                className={cn(
+                    "flex flex-wrap justify-end gap-x-4",
+                    galleryViewType && "mx-card-surround justify-between",
+                )}
                 style={{
                     gridArea: "stats",
                 }}
             >
                 <div className={cn("flex flex-row flex-wrap gap-x-5 lg:flex-col", galleryViewType && "lg:flex-row")}>
                     <div className="flex h-fit items-center justify-end gap-x-1.5">
-                        <DownloadIcon aria-hidden className="inline h-[1.17rem] w-[1.17rem] text-foreground-extra-muted" />{" "}
+                        <DownloadIcon
+                            aria-hidden
+                            className="inline h-[1.17rem] w-[1.17rem] text-foreground-extra-muted"
+                        />{" "}
                         <p className="text-nowrap">
                             <span
                                 key="downloads-count"
-                                className={cn("inline font-extrabold text-lg-plus sm:hidden", galleryViewType && "sm:inline")}
+                                className={cn(
+                                    "inline font-extrabold text-lg-plus sm:hidden",
+                                    galleryViewType && "sm:inline",
+                                )}
                             >
                                 <FormattedCount count={props.downloads} />
                             </span>
@@ -278,7 +287,10 @@ function BaseView(props: SearchListItemProps) {
                         <p className="text-nowrap">
                             <span
                                 key="downloads-count"
-                                className={cn("inline font-extrabold text-lg-plus sm:hidden", galleryViewType && "sm:inline")}
+                                className={cn(
+                                    "inline font-extrabold text-lg-plus sm:hidden",
+                                    galleryViewType && "sm:inline",
+                                )}
                             >
                                 <FormattedCount count={props.followers} />
                             </span>
@@ -305,7 +317,10 @@ function BaseView(props: SearchListItemProps) {
                     <TooltipProvider>
                         {props.showDatePublished === true ? (
                             <Tooltip>
-                                <CalendarIcon aria-hidden className="h-[1.1rem] w-[1.1rem] text-foreground-extra-muted" />
+                                <CalendarIcon
+                                    aria-hidden
+                                    className="h-[1.1rem] w-[1.1rem] text-foreground-extra-muted"
+                                />
                                 <TooltipTrigger asChild>
                                     <p className="flex items-baseline justify-center gap-1 text-nowrap">
                                         {t.project.publishedAt(TimePassedSince({ date: props.datePublished }))}
@@ -317,7 +332,10 @@ function BaseView(props: SearchListItemProps) {
                             </Tooltip>
                         ) : (
                             <Tooltip>
-                                <RefreshCcwIcon aria-hidden className="h-[1.1rem] w-[1.1rem] text-foreground-extra-muted" />
+                                <RefreshCcwIcon
+                                    aria-hidden
+                                    className="h-[1.1rem] w-[1.1rem] text-foreground-extra-muted"
+                                />
                                 <TooltipTrigger asChild>
                                     <p className="flex items-baseline justify-center gap-1 text-nowrap">
                                         {t.project.updatedAt(TimePassedSince({ date: props.dateUpdated }))}

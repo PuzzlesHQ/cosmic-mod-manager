@@ -112,7 +112,10 @@ export default function EditVersionPage() {
                 return toast.error(result?.message || "Failed to update version");
             }
 
-            RefreshPage(navigate, VersionPagePath(ctx.projectType, projectData.slug, result?.data?.slug || versionData?.slug));
+            RefreshPage(
+                navigate,
+                VersionPagePath(ctx.projectType, projectData.slug, result?.data?.slug || versionData?.slug),
+            );
         } finally {
             setIsLoading(false);
         }
@@ -143,7 +146,11 @@ export default function EditVersionPage() {
                             control={form.control}
                             name="featured"
                             render={({ field }) => (
-                                <FeaturedBtn isLoading={isLoading} featured={field.value} setFeatured={field.onChange} />
+                                <FeaturedBtn
+                                    isLoading={isLoading}
+                                    featured={field.value}
+                                    setFeatured={field.onChange}
+                                />
                             )}
                         />
                     }
@@ -173,7 +180,10 @@ export default function EditVersionPage() {
                                 name="changelog"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <MarkdownEditor editorValue={field.value || ""} setEditorValue={field.onChange} />
+                                        <MarkdownEditor
+                                            editorValue={field.value || ""}
+                                            setEditorValue={field.onChange}
+                                        />
                                     </FormItem>
                                 )}
                             />
@@ -200,7 +210,10 @@ export default function EditVersionPage() {
                             {/* PRIMARY FILE */}
                             <div className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded bg-raised-background px-4 py-2 sm:flex-nowrap">
                                 <div className="flex items-center justify-start gap-1.5">
-                                    <FileIcon aria-hidden className="h-btn-icon w-btn-icon flex-shrink-0 text-foreground-muted" />
+                                    <FileIcon
+                                        aria-hidden
+                                        className="h-btn-icon w-btn-icon flex-shrink-0 text-foreground-muted"
+                                    />
 
                                     <div className="flex flex-wrap items-center justify-start gap-x-2">
                                         <span>
@@ -208,7 +221,9 @@ export default function EditVersionPage() {
                                             <span className="ms-0.5 whitespace-nowrap">
                                                 ({parseFileSize(versionData?.primaryFile?.size || 0)})
                                             </span>{" "}
-                                            <span className="ms-1 text-foreground-muted italic">{t.version.primary}</span>
+                                            <span className="ms-1 text-foreground-muted italic">
+                                                {t.version.primary}
+                                            </span>
                                         </span>
                                     </div>
                                 </div>
@@ -221,7 +236,7 @@ export default function EditVersionPage() {
 
                             <SelectAdditionalProjectFiles
                                 fieldName="existingAdditionalFiles"
-                                // @ts-ignore
+                                // @ts-expect-error
                                 formControl={form.control}
                             />
                         </ContentCardTemplate>
@@ -229,7 +244,7 @@ export default function EditVersionPage() {
 
                     <MetadataInputCard
                         projectType={projectData.type}
-                        // @ts-ignore
+                        // @ts-expect-error
                         formControl={form.control}
                     />
                 </div>

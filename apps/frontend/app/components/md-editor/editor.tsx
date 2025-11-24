@@ -52,7 +52,13 @@ interface Props {
 
 const textSeparatorChar = "{|}";
 
-export default function MarkdownEditor({ editorValue, setEditorValue, placeholder, textAreaClassName, showInfoRow }: Props) {
+export default function MarkdownEditor({
+    editorValue,
+    setEditorValue,
+    placeholder,
+    textAreaClassName,
+    showInfoRow,
+}: Props) {
     const { t } = useTranslation();
     const [previewOpen, setPreviewOn] = useState(false);
     const editorTextarea = useRef<HTMLTextAreaElement>(null);
@@ -92,7 +98,10 @@ export default function MarkdownEditor({ editorValue, setEditorValue, placeholde
                     newSelectedLinesText = `${newSelectedLinesText}${text}${line}\n`;
                 }
 
-                setLastSelectionRange([selectionStart + text.length, selectionEnd + text.length * selectedLines.length]);
+                setLastSelectionRange([
+                    selectionStart + text.length,
+                    selectionEnd + text.length * selectedLines.length,
+                ]);
             } else if (action === "DELETE_FRAGMENT") {
                 // Same way, loop through each line, but check if the text is at the line start before removing anything
                 let charactersDeletedCount = 0;
@@ -122,19 +131,31 @@ export default function MarkdownEditor({ editorValue, setEditorValue, placeholde
             ];
 
             let newText = editorValue;
-            if (editorValueFragments[0].endsWith(textFragments[0]) && editorValueFragments[2].startsWith(textFragments[1])) {
+            if (
+                editorValueFragments[0].endsWith(textFragments[0]) &&
+                editorValueFragments[2].startsWith(textFragments[1])
+            ) {
                 newText = `${editorValue.slice(0, selectionStart - textFragments[0].length)}${editorValueFragments[1] ? editorValueFragments[1] : ""}${editorValue.slice(selectionEnd + textFragments[1].length)}`;
-                setLastSelectionRange([selectionStart - textFragments[0].length, selectionEnd - textFragments[0].length]);
+                setLastSelectionRange([
+                    selectionStart - textFragments[0].length,
+                    selectionEnd - textFragments[0].length,
+                ]);
             } else {
                 newText = `${editorValue.slice(0, selectionStart)}${textFragments[0]}${replaceSelectedText ? replaceSelectedText : editorValueFragments[1] ? editorValueFragments[1] : ""}${textFragments[1]}${editorValue.slice(selectionEnd)}`;
 
                 if (replaceSelectedText !== null) {
                     setLastSelectionRange([
                         selectionStart + textFragments[0].length,
-                        selectionEnd - editorValueFragments[1].length + replaceSelectedText.length + textFragments[0].length,
+                        selectionEnd -
+                            editorValueFragments[1].length +
+                            replaceSelectedText.length +
+                            textFragments[0].length,
                     ]);
                 } else {
-                    setLastSelectionRange([selectionStart + textFragments[0].length, selectionEnd + textFragments[0].length]);
+                    setLastSelectionRange([
+                        selectionStart + textFragments[0].length,
+                        selectionEnd + textFragments[0].length,
+                    ]);
                 }
             }
 
@@ -261,7 +282,11 @@ export default function MarkdownEditor({ editorValue, setEditorValue, placeholde
                         </BtnGroup>
                         <Separator />
                         <BtnGroup>
-                            <IconButton tooltipContent={t.editor.bulletedList} disabled={previewOpen} onClick={unorderedList}>
+                            <IconButton
+                                tooltipContent={t.editor.bulletedList}
+                                disabled={previewOpen}
+                                onClick={unorderedList}
+                            >
                                 <ListIcon aria-hidden className="h-5 w-5" />
                             </IconButton>
                             <IconButton
@@ -284,13 +309,15 @@ export default function MarkdownEditor({ editorValue, setEditorValue, placeholde
                                 modalTitle={t.editor.insertLink}
                                 getMarkdownString={(url: string, altText: string, isPreview?: boolean) => {
                                     let selectedText = "";
-                                    if (editorTextarea.current) selectedText = getTextareaSelectedText(editorTextarea.current);
+                                    if (editorTextarea.current)
+                                        selectedText = getTextareaSelectedText(editorTextarea.current);
                                     const linkLabel = altText || selectedText || url;
                                     return `[${isPreview === true ? linkLabel : ""}${textSeparatorChar}](${url})`;
                                 }}
                                 insertFragmentFunc={(markdownString: string, url: string, altText: string) => {
                                     let selectedText = "";
-                                    if (editorTextarea.current) selectedText = getTextareaSelectedText(editorTextarea.current);
+                                    if (editorTextarea.current)
+                                        selectedText = getTextareaSelectedText(editorTextarea.current);
                                     const linkLabel = altText || selectedText || url;
                                     toggleTextAtCursorsLine(markdownString, false, "ADD_FRAGMENT", linkLabel);
                                 }}
@@ -311,13 +338,15 @@ export default function MarkdownEditor({ editorValue, setEditorValue, placeholde
                                 modalTitle={t.editor.insertImage}
                                 getMarkdownString={(url: string, altText: string, isPreview = false) => {
                                     let selectedText = "";
-                                    if (editorTextarea.current) selectedText = getTextareaSelectedText(editorTextarea.current);
+                                    if (editorTextarea.current)
+                                        selectedText = getTextareaSelectedText(editorTextarea.current);
                                     const linkLabel = altText || selectedText || url;
                                     return `![${isPreview ? linkLabel : ""}${textSeparatorChar}](${url})`;
                                 }}
                                 insertFragmentFunc={(markdownString: string, url: string, altText: string) => {
                                     let selectedText = "";
-                                    if (editorTextarea.current) selectedText = getTextareaSelectedText(editorTextarea.current);
+                                    if (editorTextarea.current)
+                                        selectedText = getTextareaSelectedText(editorTextarea.current);
                                     const linkLabel = altText || selectedText || url;
                                     toggleTextAtCursorsLine(markdownString, false, "ADD_FRAGMENT", linkLabel);
                                 }}
@@ -354,7 +383,11 @@ export default function MarkdownEditor({ editorValue, setEditorValue, placeholde
                         </BtnGroup>
                     </div>
                     <div className="flex items-center justify-center gap-2">
-                        <Switch id="markdown-editor-preview-toggle-switch" checked={previewOpen} onCheckedChange={setPreviewOn} />
+                        <Switch
+                            id="markdown-editor-preview-toggle-switch"
+                            checked={previewOpen}
+                            onCheckedChange={setPreviewOn}
+                        />
                         <Label htmlFor="markdown-editor-preview-toggle-switch" className="text-base">
                             {t.editor.preview}
                         </Label>
@@ -364,7 +397,10 @@ export default function MarkdownEditor({ editorValue, setEditorValue, placeholde
                 <div className="mt-2 flex w-full items-start justify-center gap-2">
                     {/* Editor area */}
                     <div
-                        className={cn("flex w-full flex-col items-center justify-center gap-2", previewOpen === true && "hidden")}
+                        className={cn(
+                            "flex w-full flex-col items-center justify-center gap-2",
+                            previewOpen === true && "hidden",
+                        )}
                     >
                         <Textarea
                             name="markdown-textarea"
@@ -537,7 +573,16 @@ interface EditorModalProps {
     t: Locale;
 }
 
-function EditorModal({ disabled, title, trigger, children, modalOpen, t, setModalOpen, insertFragmentFunc }: EditorModalProps) {
+function EditorModal({
+    disabled,
+    title,
+    trigger,
+    children,
+    modalOpen,
+    t,
+    setModalOpen,
+    insertFragmentFunc,
+}: EditorModalProps) {
     return (
         <Dialog
             open={modalOpen}
@@ -625,7 +670,7 @@ function LinkInsertionModal({
             if (isValidUrl(cleanUrl(url))) setUrlValidationError(null);
             else setUrlValidationError("Invlid URL");
         } catch (error) {
-            // @ts-ignore
+            // @ts-expect-error
             setUrlValidationError((error?.message as string) || "");
         }
     }, [url]);
@@ -652,7 +697,9 @@ function LinkInsertionModal({
                 <div className="flex w-full flex-col items-start justify-center gap-1.5">
                     <Label htmlFor="markdown-editor-link-label-input" className="flex items-center justify-center">
                         {altTextInputLabel}{" "}
-                        {isAltTextRequired && <span className="flex h-full items-start justify-center text-accent-text">*</span>}
+                        {isAltTextRequired && (
+                            <span className="flex h-full items-start justify-center text-accent-text">*</span>
+                        )}
                     </Label>
                     <Input
                         type="text"
@@ -693,10 +740,14 @@ function LinkInsertionModal({
                 <Label>{t.editor.preview}</Label>
                 <div
                     tabIndex={-1}
-                    className={cn("flex min-h-24 w-full items-start justify-start rounded border border-border px-4 py-3")}
+                    className={cn(
+                        "flex min-h-24 w-full items-start justify-start rounded border border-border px-4 py-3",
+                    )}
                 >
                     {url && !urlValidationError ? (
-                        <MarkdownRenderBox text={getMarkdownString(url, urlAltText, true).split(textSeparatorChar).join("")} />
+                        <MarkdownRenderBox
+                            text={getMarkdownString(url, urlAltText, true).split(textSeparatorChar).join("")}
+                        />
                     ) : null}
                 </div>
             </div>

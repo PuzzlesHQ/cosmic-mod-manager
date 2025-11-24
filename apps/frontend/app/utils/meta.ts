@@ -100,7 +100,7 @@ function mergeMetaTagsList(originalList: MetaDescriptor[], newItems: MetaDescrip
         for (const existingItem of combinedList) {
             let isItemDuplicate = true;
             for (const key of matchKeys) {
-                // @ts-ignore
+                // @ts-expect-error
                 if (originalItem[key] !== existingItem[key]) {
                     isItemDuplicate = false;
                 }

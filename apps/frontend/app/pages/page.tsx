@@ -88,7 +88,7 @@ export default function HomePage({ projects }: Props) {
                                                     "flex h-12 items-center justify-center whitespace-nowrap text-nowrap bg-clip-text font-bold text-4xl leading-loose lg:h-[4.5rem] lg:text-6xl",
                                                     "bg-accent-bg bg-cover bg-gradient-to-b from-foreground-bright via-accent-bg to-accent-bg text-transparent",
                                                 )}
-                                                // @ts-ignore
+                                                // @ts-expect-error
                                                 style={{ "--index": index + 1 }}
                                             >
                                                 {item}
@@ -129,7 +129,11 @@ export default function HomePage({ projects }: Props) {
                                 className="px-6"
                                 prefetch={LinkPrefetchStrategy.Render}
                             >
-                                <LogInIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" aria-label={t.form.signup} />
+                                <LogInIcon
+                                    aria-hidden
+                                    className="h-btn-icon-md w-btn-icon-md"
+                                    aria-label={t.form.signup}
+                                />
                                 {t.form.signup}
                             </VariantButtonLink>
                         ) : (
@@ -216,7 +220,15 @@ function MarqueeScroll({ items, reverse = false, index }: MarqueeScrollProps) {
     );
 }
 
-function ShowcaseItem({ className, item, ...props }: { className?: string; item: ProjectListItem; style?: CSSProperties }) {
+function ShowcaseItem({
+    className,
+    item,
+    ...props
+}: {
+    className?: string;
+    item: ProjectListItem;
+    style?: CSSProperties;
+}) {
     return (
         <Link
             aria-label={item.name}

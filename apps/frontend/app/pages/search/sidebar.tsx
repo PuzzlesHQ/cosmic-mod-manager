@@ -86,7 +86,9 @@ function SearchFilters({ type, searchParams, sectionsDefaultOpen }: Props) {
         });
 
     // Environment filters
-    const environmentFilterOptions = ["client", "server"].filter((env) => matchesSearch([env, environmentFilterLabel], query));
+    const environmentFilterOptions = ["client", "server"].filter((env) =>
+        matchesSearch([env, environmentFilterLabel], query),
+    );
 
     // Category filters
     const categoryFilterOptions = getValidProjectCategories(type, TagType.CATEGORY)
@@ -399,7 +401,7 @@ function FilterCategory({
                     const itemValue = typeof item === "string" ? item : item.value;
                     let _itemLabel = typeof item === "string" ? item : item.label;
 
-                    // @ts-ignore
+                    // @ts-expect-error
                     const tagTranslation = t.search.tags[itemValue];
                     if (tagTranslation) {
                         _itemLabel = tagTranslation;

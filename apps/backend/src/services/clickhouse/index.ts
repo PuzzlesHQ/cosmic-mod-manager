@@ -1,14 +1,14 @@
-import env from "~/utils/env";
 import { type ClickHouseClient, createClient } from "@clickhouse/client";
+import env from "~/utils/env";
 
 let clickhouse: ClickHouseClient;
 
 if (env.NODE_ENV === "production") {
     clickhouse = newClickhouseClient();
 } else {
-    // @ts-ignore
+    // @ts-expect-error
     if (!global.clickhouse) global.clickhouse = newClickhouseClient();
-    // @ts-ignore
+    // @ts-expect-error
     clickhouse = global.clickhouse;
 }
 

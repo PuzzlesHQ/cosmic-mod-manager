@@ -41,7 +41,15 @@ const DimWhite = "\x1b[37m";
 const BrightBlue = "\x1b[34m";
 const Reset = "\x1b[0m";
 
-function log(fn: PrintFunc, prefix: string, method: string, path: string, status?: number, ipAddress = "", elapsed?: string) {
+function log(
+    fn: PrintFunc,
+    prefix: string,
+    method: string,
+    path: string,
+    status?: number,
+    ipAddress = "",
+    elapsed?: string,
+) {
     const statusFormatted = !status ? " " : colorStatus(status, `${status}`);
     const prefixColored = `${DimWhite}${prefix}${Reset}`;
     const elapsedColored = elapsed ? `${BrightBlue}${elapsed}${Reset}` : "";
@@ -57,7 +65,7 @@ function log(fn: PrintFunc, prefix: string, method: string, path: string, status
 
 export function logger(fn: PrintFunc = console.log) {
     return async function logger(ctx: Context, next: Next) {
-        // @ts-ignore
+        // @ts-expect-error
         const method = HTTP_VERB[ctx.req?.method] || ctx.req?.method;
         const path = getPath(ctx.req.raw);
         const ipAddress = getUserIpAddress(ctx, false) || "";

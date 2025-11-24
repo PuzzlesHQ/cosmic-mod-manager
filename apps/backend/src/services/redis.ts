@@ -7,12 +7,12 @@ const redisPort = 5501;
 if (env.NODE_ENV === "production") {
     valkey = newValkeyClient();
 } else {
-    // @ts-ignore
+    // @ts-expect-error
     if (!global.valkey) {
-        // @ts-ignore
+        // @ts-expect-error
         global.valkey = newValkeyClient();
     }
-    // @ts-ignore
+    // @ts-expect-error
     valkey = global.valkey;
 }
 
