@@ -3,7 +3,7 @@ import { useLoaderData } from "react-router";
 import Redirect from "~/components/ui/redirect";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
-import PersonalAccessTokensSettingsPage from "~/pages/settings/pats";
+import PersonalAccessTokensSettingsPage from "~/pages/settings/pats/pats";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
 import { resJson, serverFetch } from "~/utils/server-fetch";

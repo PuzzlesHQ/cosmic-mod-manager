@@ -90,6 +90,17 @@ export async function GetManyPATs_ByIDs(ids: string[]) {
     });
 }
 
+export async function GetPAT_ById(id: string): Promise<GetPAT_ReturnType> {
+    const pat = await getPAT_FromCache(id);
+    if (pat) return pat;
+
+    const dbPat = await prisma.personalAccessToken.findUnique({
+        where: { id: id },
+    });
+    if (dbPat) await setPAT_Cache(dbPat);
+    return dbPat;
+}
+
 export async function CreatePAT<T extends Prisma.PersonalAccessTokenCreateArgs>(
     args: Prisma.SelectSubset<T, Prisma.PersonalAccessTokenCreateArgs>,
 ) {
