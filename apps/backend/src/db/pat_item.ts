@@ -5,28 +5,27 @@ import { PAT_CACHE_KEY as PAT_DATA_CACHE_KEY, PAT_ID_TO_HASH_CACHE_KEY, USER_PAT
 import { DeleteCache, GetData_FromCache, PAT_CACHE_EXPIRY_seconds, SetCache } from "./_cache";
 
 export type GetPAT_ReturnType = Awaited<ReturnType<typeof GetPAT_FromDb>>;
-function GetPAT_FromDb(tokenHash: string) {
-    return prisma.personalAccessToken.findFirst({
-        where: { tokenHash: tokenHash },
-    });
+async function GetPAT_FromDb(tokenHash: string) {
+    try {
+        return await prisma.personalAccessToken.update({
+            where: {
+                tokenHash: tokenHash,
+            },
+            data: {
+                dateLastUsed: new Date(),
+            },
+        });
+    } catch {
+        return null;
+    }
 }
 
 export async function GetPAT(tokenHash: string): Promise<GetPAT_ReturnType> {
-    let pat = await getPAT_FromCache(tokenHash);
+    const cachedPat = await getPAT_FromCache(tokenHash);
+    if (cachedPat) return cachedPat;
 
-    if (!pat) {
-        pat = await GetPAT_FromDb(tokenHash);
-        if (pat) await setPAT_Cache(pat);
-    }
-
-    // Update last used date if not used in the last 5 minutes; this is to prevent excessive writes
-    if (pat && (!pat?.dateLastUsed || Date.now() - new Date(pat.dateLastUsed).getTime() > 300_000)) {
-        await UpdatePAT({
-            where: { id: pat.id },
-            data: { dateLastUsed: new Date() },
-        });
-    }
-
+    const pat = await GetPAT_FromDb(tokenHash);
+    if (pat) await setPAT_Cache(pat);
     return pat;
 }
 
