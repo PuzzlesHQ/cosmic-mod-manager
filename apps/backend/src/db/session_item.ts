@@ -6,9 +6,9 @@ import { USER_SESSION_CACHE_KEY } from "~/types/namespaces";
 import { DeleteCache, GetData_FromCache, SetCache, USER_SESSION_CACHE_EXPIRY_seconds } from "./_cache";
 
 export type GetSession_ReturnType = Awaited<ReturnType<typeof GetSession_ByTokenHash_FromDb>>;
-function GetSession_ByTokenHash_FromDb(tokenHash: string) {
+async function GetSession_ByTokenHash_FromDb(tokenHash: string) {
     try {
-        return prisma.session.update({
+        return await prisma.session.update({
             where: { tokenHash: tokenHash },
             data: {
                 dateLastActive: new Date(),
