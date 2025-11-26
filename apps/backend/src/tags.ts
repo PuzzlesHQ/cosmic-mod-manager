@@ -1,4 +1,5 @@
 import { projectTypes } from "@app/utils/config/project";
+import { API_SCOPE } from "@app/utils/pats";
 import { getAllLoaderCategories, getValidProjectCategories } from "@app/utils/project";
 import GAME_VERSIONS from "@app/utils/src/constants/game-versions";
 import SPDX_LICENSE_LIST, { FEATURED_LICENSE_OPTIONS } from "@app/utils/src/constants/license-list";
@@ -23,7 +24,8 @@ const tagsRouter = new Hono()
     .get("/licenses", licenses_get)
     .get("/licenses/featured", featuredLicenses_get)
     .get("/licenses/:id", licenses_get)
-    .get("/project-types", projectTypes_get);
+    .get("/project-types", projectTypes_get)
+    .get("/api-scopes", apiScopes_get);
 
 function getCategories({
     projectType,
@@ -105,6 +107,15 @@ async function licenses_get(ctx: Context) {
 async function projectTypes_get(ctx: Context) {
     try {
         return ctx.json(projectTypes, HTTP_STATUS.OK);
+    } catch (error) {
+        console.error(error);
+        return serverErrorResponse(ctx);
+    }
+}
+
+async function apiScopes_get(ctx: Context) {
+    try {
+        return ctx.json(Object.values(API_SCOPE), HTTP_STATUS.OK);
     } catch (error) {
         console.error(error);
         return serverErrorResponse(ctx);
