@@ -31,7 +31,9 @@ export default function Link({ ref, escapeUrlWrapper, ...props }: CustomLinkProp
     const { viewTransitions } = usePreferences();
 
     let to = props.to?.toString().trim() || "#";
-    if (escapeUrlWrapper !== true && !to.startsWith("#")) to = changeHintLocale(locale, to);
+    if (escapeUrlWrapper !== true && (to.startsWith("/") || to.startsWith("https://"))) {
+        to = changeHintLocale(locale, to);
+    }
 
     return <RemixLink ref={ref} {...props} to={to} viewTransition={viewTransitions !== false} />;
 }
