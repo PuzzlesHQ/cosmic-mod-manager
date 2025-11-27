@@ -11,7 +11,7 @@ export default async function bodyParserMiddleware(ctx: Context, next: Next) {
         } else if (contentType.includes("multipart/form-data")) {
             body = await ctx.req.formData();
         } else {
-            body = null;
+            body = await ctx.req.text();
         }
 
         ctx.set(REQ_BODY_NAMESPACE, body || null);

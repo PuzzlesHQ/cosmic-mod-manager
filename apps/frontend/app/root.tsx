@@ -66,7 +66,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Links />
                 <script
                     defer
-                    src={`${Config.BACKEND_URL_PUBLIC}/cdn/scripts/cf-beacon.js`}
+                    src="https://static.cloudflareinsights.com/beacon.min.js"
                     data-cf-beacon='{"token": "17f7926d0f21488c8e26cb18e384aa2a"}'
                 ></script>
             </head>

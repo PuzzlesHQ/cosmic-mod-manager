@@ -35,13 +35,7 @@ const cdnRouter = new Hono()
     .get("/data/user/:userId/:file", cdnAssetRateLimiter, userFile_get)
     .get("/data/collection/:collectionId/:file", cdnAssetRateLimiter, collectionIcon_get)
 
-    .get("/sitemap/:name", cdnAssetRateLimiter, sitemap_get)
-
-    .get(
-        "/scripts/cf-beacon.js",
-        applyCacheHeaders({ browserTTL_s: 24 * 3600, cdnTTL_s: 24 * 3600 }),
-        cfBeaconScript_get,
-    );
+    .get("/sitemap/:name", cdnAssetRateLimiter, sitemap_get);
 
 async function projectFile_get(ctx: Context) {
     try {
@@ -198,22 +192,6 @@ async function sitemap_get(ctx: Context) {
 function IsCdnRequest(ctx: Context) {
     if (env.NODE_ENV === "development") return true;
     return ctx.req.header("CDN-Secret") === env.CDN_SECRET;
-}
-
-async function cfBeaconScript_get(ctx: Context) {
-    try {
-        const scriptContent = await fetch("https://static.cloudflareinsights.com/beacon.min.js");
-        if (!scriptContent.ok) return serverErrorResponse(ctx);
-
-        return new Response(scriptContent.body, {
-            headers: {
-                "Content-Type": "application/javascript",
-            },
-        });
-    } catch (error) {
-        console.error(error);
-        return serverErrorResponse(ctx);
-    }
 }
 
 export default cdnRouter;
