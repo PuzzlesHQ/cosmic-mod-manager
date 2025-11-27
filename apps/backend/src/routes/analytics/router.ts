@@ -20,13 +20,7 @@ const AnalyticsRouter = new Hono()
     .use(strictGetReqRateLimiter)
     .use(invalidAuthAttemptLimiter)
     .use(AuthenticationMiddleware)
-    .use(
-        // cache analytics responses for 6 hours on CDN but not on browser
-        applyCacheHeaders({
-            maxAge_s: 0,
-            sMaxAge_s: 21600,
-        }),
-    )
+    .use(applyCacheHeaders({ browserTTL_s: 600, cdnTTL_s: 6 * 3600 }))
 
     .get("/downloads", LoginProtectedRoute, downloadsAnalytics_get)
     .get("/downloads/all", LoginProtectedRoute, allProjectsDownloadsAnalytics_get);

@@ -98,7 +98,7 @@ const app = new Hono()
 
     .get("/", apiDetails)
     .get("/api", apiDetails)
-    .get("/api/statistics", applyCacheHeaders({ maxAge_s: 600, sMaxAge_s: 7200 }), async (ctx: Context) => {
+    .get("/api/statistics", applyCacheHeaders({ browserTTL_s: 600, cdnTTL_s: 12 * 3600 }), async (ctx: Context) => {
         try {
             const stats = await getStatistics();
             return ctx.json(stats, HTTP_STATUS.OK);

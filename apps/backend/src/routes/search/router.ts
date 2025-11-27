@@ -23,9 +23,12 @@ import { searchProjects } from "./controllers";
 
 const searchRouter = new Hono()
     .use(searchReqRateLimiter)
-    .use(applyCacheHeaders({ maxAge_s: 0, sMaxAge_s: 1800 }))
 
-    .get("/", search_get)
+    // shorter TTL for search results
+    .get("/", applyCacheHeaders({ browserTTL_s: 3600, cdnTTL_s: 7200 }), search_get)
+
+    // longer TTL for things that aren't likely to change often
+    .use(applyCacheHeaders({ browserTTL_s: 24 * 3600, cdnTTL_s: 24 * 3600 }))
     .get("/filters/sort-by", sortByFilters_get)
     .get("/filters/loaders", loaders_get)
     .get("/filters/game-versions", gameVersions_get)

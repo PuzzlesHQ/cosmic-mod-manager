@@ -66,11 +66,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Links />
                 <script
                     defer
-                    src={`${ASSETS_SERVER_URL || "/"}telemetry.js`}
-                    data-website-id="1bbb8989-cc84-4b4c-bfca-51e53779f587"
-                    data-exclude-search="true"
-                    data-exclude-hash="true"
-                />
+                    src={`${Config.BACKEND_URL_PUBLIC}/cdn/scripts/cf-beacon.js`}
+                    data-cf-beacon='{"token": "17f7926d0f21488c8e26cb18e384aa2a"}'
+                ></script>
             </head>
             <body className="antialiased">
                 {children}

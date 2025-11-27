@@ -11,12 +11,7 @@ import { HTTP_STATUS, serverErrorResponse } from "~/utils/http";
 
 const tagsRouter = new Hono()
     .use(searchReqRateLimiter)
-    .use(
-        applyCacheHeaders({
-            maxAge_s: 7200,
-            sMaxAge_s: 7200,
-        }),
-    )
+    .use(applyCacheHeaders({ browserTTL_s: 24 * 3600, cdnTTL_s: 24 * 3600 }))
 
     .get("/categories", categories_get)
     .get("/game-versions", gameVersions_get)

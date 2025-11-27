@@ -3,6 +3,7 @@ import { type Context, Hono } from "hono";
 import { cors } from "hono/cors";
 import { isbot } from "isbot";
 import { AuthenticationMiddleware } from "~/middleware/auth";
+import { applyCacheHeaders, IMMUTABLE_TTL } from "~/middleware/cache";
 import { cdnAssetRateLimiter, cdnLargeFileRateLimiter } from "~/middleware/rate-limit/cdn";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { getSitemap } from "~/services/sitemap-gen";
@@ -15,10 +16,9 @@ import { serveImageFile, serveVersionFile } from "./controller";
 
 const cdnRouter = new Hono()
     .use(
-        cors({
-            origin: "*",
-            credentials: true,
-        }),
+        cors({ origin: "*", credentials: true }),
+        // files can't be changed once uploaded so there can't be stale content
+        applyCacheHeaders({ browserTTL_s: IMMUTABLE_TTL, cdnTTL_s: IMMUTABLE_TTL }),
     )
 
     .get("/data/project/:projectId/:file", cdnAssetRateLimiter, projectFile_get)
@@ -35,8 +35,13 @@ const cdnRouter = new Hono()
     .get("/data/user/:userId/:file", cdnAssetRateLimiter, userFile_get)
     .get("/data/collection/:collectionId/:file", cdnAssetRateLimiter, collectionIcon_get)
 
-    // Sitemaps
-    .get("/sitemap/:name", cdnAssetRateLimiter, sitemap_get);
+    .get("/sitemap/:name", cdnAssetRateLimiter, sitemap_get)
+
+    .get(
+        "/scripts/cf-beacon.js",
+        applyCacheHeaders({ browserTTL_s: 24 * 3600, cdnTTL_s: 24 * 3600 }),
+        cfBeaconScript_get,
+    );
 
 async function projectFile_get(ctx: Context) {
     try {
@@ -193,6 +198,22 @@ async function sitemap_get(ctx: Context) {
 function IsCdnRequest(ctx: Context) {
     if (env.NODE_ENV === "development") return true;
     return ctx.req.header("CDN-Secret") === env.CDN_SECRET;
+}
+
+async function cfBeaconScript_get(ctx: Context) {
+    try {
+        const scriptContent = await fetch("https://static.cloudflareinsights.com/beacon.min.js");
+        if (!scriptContent.ok) return serverErrorResponse(ctx);
+
+        return new Response(scriptContent.body, {
+            headers: {
+                "Content-Type": "application/javascript",
+            },
+        });
+    } catch (error) {
+        console.error(error);
+        return serverErrorResponse(ctx);
+    }
 }
 
 export default cdnRouter;

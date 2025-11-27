@@ -40,10 +40,7 @@ export default function PersonalAccessTokensSettingsPage({ pats: _pats }: { pats
             for (const pat of _pats) {
                 const existingPat = prev.find((p) => p.id === pat.id);
                 if (existingPat) {
-                    updatedList.push({
-                        ...existingPat,
-                        ...pat,
-                    });
+                    updatedList.push({ ...existingPat, ...pat });
                 } else {
                     updatedList.push(pat);
                 }
