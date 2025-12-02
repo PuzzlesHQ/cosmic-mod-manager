@@ -36,7 +36,7 @@ export function TernaryCheckbox(props: ThreeStateCheckboxProps) {
             onClick={handleClick}
             className={cn(
                 "flex h-4 w-4 cursor-pointer items-center justify-center rounded-sm",
-                props.state === TernaryStates.UNCHECKED && "bg-background ring-1 ring-hover-background",
+                props.state === TernaryStates.UNCHECKED && "bg-background/50 ring-1 ring-hover-background",
                 props.state === TernaryStates.INCLUDED && "bg-primary-btn-bg text-primary-btn-fg",
                 props.state === TernaryStates.EXCLUDED && "bg-danger-btn-bg text-danger-btn-fg",
                 props.className,
