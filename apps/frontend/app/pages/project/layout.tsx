@@ -308,6 +308,7 @@ export default function ProjectPageLayout() {
                                             </TooltipContent>
                                         </Tooltip>
                                     </div>
+
                                     <div className="flex h-full w-fit grow select-text flex-col">
                                         <Link
                                             prefetch={LinkPrefetchStrategy.Render}
