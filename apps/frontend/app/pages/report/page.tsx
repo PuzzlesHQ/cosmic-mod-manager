@@ -66,6 +66,7 @@ export default function ReportPage({ data }: { data: LoaderData }) {
             break;
     }
 
+    // biome-ignore lint/correctness/noNestedComponentDefinitions: --
     function Main(props: { children: React.ReactNode }) {
         return (
             <main className="mx-auto grid w-full max-w-4xl gap-4 p-card-surround">
