@@ -64,11 +64,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <meta name="google-site-verification" content="saVDIhLaNSit_2LnqK9Zz-yxY2hMGTEC_Vud5v7-Tug" />
                 <Meta />
                 <Links />
-                <script
-                    defer
-                    src="https://static.cloudflareinsights.com/beacon.min.js"
-                    data-cf-beacon='{"token": "17f7926d0f21488c8e26cb18e384aa2a"}'
-                ></script>
+                {!import.meta.env.DEV && (
+                    <script
+                        defer
+                        src="https://static.cloudflareinsights.com/beacon.min.js"
+                        data-cf-beacon='{"token": "17f7926d0f21488c8e26cb18e384aa2a"}'
+                    ></script>
+                )}
             </head>
             <body className="antialiased">
                 {children}
