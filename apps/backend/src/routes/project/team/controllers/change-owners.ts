@@ -1,4 +1,4 @@
-import { hasRootAccess } from "@app/utils/constants/roles";
+import { hasFullItemAccess } from "@app/utils/constants/roles";
 import type { Context } from "hono";
 import { UpdateTeamMember } from "~/db/team-member_item";
 import { GetTeam } from "~/db/team_item";
@@ -26,7 +26,7 @@ export async function changeTeamOwner(
 
     const currOwner = team.members.find((member) => member.isOwner);
     const currMember = team.members.find((member) => member.userId === userSession.id);
-    if (!hasRootAccess(currMember?.isOwner, userSession.role)) {
+    if (!hasFullItemAccess(currMember?.isOwner, userSession.role)) {
         await addInvalidAuthAttempt(ctx);
         return unauthorizedReqResponseData("You don't have access to change the team owner");
     }

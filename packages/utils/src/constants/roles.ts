@@ -64,7 +64,7 @@ export function getRolePerms(userRole: string) {
     }
 }
 
-export function hasRootAccess(isItemOwner: boolean | undefined | null, userRole?: string) {
+export function hasFullItemAccess(isItemOwner: boolean | undefined | null, userRole?: string) {
     return isItemOwner === true || userRole === GlobalUserRole.ADMIN;
 }
 

@@ -2,7 +2,7 @@ import { OrgPermissionsList, ProjectPermissionsList } from "@app/utils/config/pr
 import { doesOrgMemberHaveAccess } from "@app/utils/project";
 import type { z } from "@app/utils/schemas";
 import { updateTeamMemberFormSchema } from "@app/utils/schemas/project/settings/members";
-import { hasRootAccess } from "@app/utils/src/constants/roles";
+import { hasFullItemAccess } from "@app/utils/src/constants/roles";
 import { type LoggedInUserData, OrganisationPermission } from "@app/utils/types";
 import type { Organisation, TeamMember } from "@app/utils/types/api";
 import { imageUrl } from "@app/utils/url";
@@ -88,7 +88,7 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
         currMember?.isOwner,
         session?.role,
     );
-    const canAddPermissions = hasRootAccess(currMember?.isOwner, session?.role);
+    const canAddPermissions = hasFullItemAccess(currMember?.isOwner, session?.role);
     const canRemoveMembers = doesOrgMemberHaveAccess(
         OrganisationPermission.REMOVE_MEMBER,
         currMember?.organisationPermissions,
@@ -96,7 +96,7 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
         session?.role,
     );
     const canTransferOwnership =
-        hasRootAccess(currMember?.isOwner, session?.role) && member.isOwner === false && member.accepted;
+        hasFullItemAccess(currMember?.isOwner, session?.role) && member.isOwner === false && member.accepted;
 
     return (
         <Card className="flex w-full flex-col gap-4 p-card-surround">

@@ -3,7 +3,7 @@ import type {
     overrideOrgMemberFormSchema,
     updateTeamMemberFormSchema,
 } from "@app/utils/schemas/project/settings/members";
-import { hasRootAccess } from "@app/utils/src/constants/roles";
+import { hasFullItemAccess } from "@app/utils/src/constants/roles";
 import { OrganisationPermission, ProjectPermission } from "@app/utils/types";
 import { NotificationType } from "@app/utils/types/api/notification";
 import type { Context } from "hono";
@@ -241,7 +241,7 @@ export async function editProjectMember(
     if (!targetMember?.id) return notFoundResponseData("Member not found");
 
     // Only owner can add permissions to the member
-    if (!hasRootAccess(currMember?.isOwner, userSession.role)) {
+    if (!hasFullItemAccess(currMember?.isOwner, userSession.role)) {
         for (const permission of formData.permissions || []) {
             if (!targetMember.permissions.includes(permission)) {
                 // If this is an org team, check if the user has access to edit default permissions
@@ -313,7 +313,7 @@ export async function overrideOrgMember(
         return unauthorizedReqResponseData("You don't have access to override members");
     }
 
-    if (!hasRootAccess(currMember?.isOwner, userSession.role) && formData.permissions?.length)
+    if (!hasFullItemAccess(currMember?.isOwner, userSession.role) && formData.permissions?.length)
         return unauthorizedReqResponseData("You don't have access to add permissions to a member");
 
     // Check if the user is a member of the organisation

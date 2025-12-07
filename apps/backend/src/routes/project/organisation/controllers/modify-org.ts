@@ -2,7 +2,7 @@ import { getFileType } from "@app/utils/convertors";
 import { doesOrgMemberHaveAccess, getCurrMember } from "@app/utils/project";
 import type { orgSettingsFormSchema } from "@app/utils/schemas/organisation/settings/general";
 import { ICON_WIDTH } from "@app/utils/src/constants";
-import { hasRootAccess } from "@app/utils/src/constants/roles";
+import { hasFullItemAccess } from "@app/utils/src/constants/roles";
 import { FileType, OrganisationPermission } from "@app/utils/types";
 import type { Context } from "hono";
 import type { z } from "zod/v4";
@@ -309,7 +309,7 @@ export async function addProjectToOrganisation(userSession: ContextUserData, org
     if (Project.organisationId) return invalidRequestResponseData("Project is already part of an organization");
 
     const projectMembership = Project.team.members?.[0];
-    if (!hasRootAccess(projectMembership?.isOwner, userSession.role))
+    if (!hasFullItemAccess(projectMembership?.isOwner, userSession.role))
         return unauthorizedReqResponseData("You are not the owner of the project");
 
     const memberUserIds = Project.team.members.map((member) => member.userId);

@@ -3,7 +3,7 @@ import { doesMemberHaveAccess } from "@app/utils/project";
 import type { z } from "@app/utils/schemas";
 import { updateTeamMemberFormSchema } from "@app/utils/schemas/project/settings/members";
 import { zodParse } from "@app/utils/schemas/utils";
-import { hasRootAccess } from "@app/utils/src/constants/roles";
+import { hasFullItemAccess } from "@app/utils/src/constants/roles";
 import { type LoggedInUserData, ProjectPermission } from "@app/utils/types";
 import type { ProjectDetailsData, TeamMember } from "@app/utils/types/api";
 import { imageUrl } from "@app/utils/url";
@@ -85,7 +85,7 @@ export function ProjectTeamMember({
         currUsersMembership?.isOwner,
         session?.role,
     );
-    const canAddPermissions = hasRootAccess(currUsersMembership?.isOwner, session?.role);
+    const canAddPermissions = hasFullItemAccess(currUsersMembership?.isOwner, session?.role);
     const canRemoveMembers = doesMemberHaveAccess(
         ProjectPermission.REMOVE_MEMBER,
         currUsersMembership?.permissions,
@@ -93,7 +93,7 @@ export function ProjectTeamMember({
         session?.role,
     );
     const canTransferOwnership =
-        hasRootAccess(currUsersMembership?.isOwner, session?.role) &&
+        hasFullItemAccess(currUsersMembership?.isOwner, session?.role) &&
         member.isOwner === false &&
         member.accepted &&
         !doesProjectHaveOrg;
@@ -306,7 +306,7 @@ export function OrgTeamMember({
         currUsersMembership?.isOwner,
         session?.role,
     );
-    const canAddPermissions = hasRootAccess(currUsersMembership?.isOwner, session?.role);
+    const canAddPermissions = hasFullItemAccess(currUsersMembership?.isOwner, session?.role);
     const canRemoveMembers = doesMemberHaveAccess(
         ProjectPermission.REMOVE_MEMBER,
         currUsersMembership?.permissions || [],

@@ -1,5 +1,5 @@
 import { doesMemberHaveAccess } from "@app/utils/project";
-import { hasRootAccess } from "@app/utils/src/constants/roles";
+import { hasFullItemAccess } from "@app/utils/src/constants/roles";
 import { type LoggedInUserData, ProjectPermission } from "@app/utils/types";
 import type { Organisation, TeamMember } from "@app/utils/types/api";
 import { UserXIcon } from "lucide-react";
@@ -87,7 +87,7 @@ export default function ProjectMemberSettingsPage({ userOrgs }: Props) {
 
             {userOrgs?.length &&
             !projectData.organisation &&
-            hasRootAccess(currUsersMembership?.isOwner, session.role) ? (
+            hasFullItemAccess(currUsersMembership?.isOwner, session.role) ? (
                 <TransferProjectManagementCard organisations={userOrgs} projectId={projectData.id} />
             ) : null}
 
