@@ -40,7 +40,7 @@ export async function addNewPassword_ConfirmationEmail(
 
     const hashedPassword = await hashPassword(formData.newPassword);
     const token = generateRandomToken();
-    const tokenHash = await hashString(token);
+    const tokenHash = hashString(token);
 
     await prisma.userConfirmation.create({
         data: {
@@ -65,7 +65,7 @@ export async function addNewPassword_ConfirmationEmail(
 }
 
 export async function getConfirmActionTypeFromCode(token: string) {
-    const tokenHash = await hashString(token);
+    const tokenHash = hashString(token);
     const confirmationEmail = await prisma.userConfirmation.findUnique({
         where: {
             accessCode: tokenHash,
@@ -82,7 +82,7 @@ export async function getConfirmActionTypeFromCode(token: string) {
 }
 
 export async function deleteConfirmationActionCode(token: string) {
-    const tokenHash = await hashString(token);
+    const tokenHash = hashString(token);
     const confirmationEmail = await prisma.userConfirmation.findUnique({
         where: { accessCode: tokenHash },
     });
@@ -100,7 +100,7 @@ export async function deleteConfirmationActionCode(token: string) {
 }
 
 export async function confirmAddingNewPassword(code: string) {
-    const tokenHash = await hashString(code);
+    const tokenHash = hashString(code);
 
     const confirmationEmail = await prisma.userConfirmation.findUnique({
         where: { accessCode: tokenHash, confirmationType: ConfirmationType.CONFIRM_NEW_PASSWORD },
@@ -195,7 +195,7 @@ export async function sendAccountPasswordChangeLink(
     }
 
     const token = generateRandomToken();
-    const tokenHash = await hashString(token);
+    const tokenHash = hashString(token);
 
     await prisma.userConfirmation.create({
         data: {
@@ -231,7 +231,7 @@ export async function changeUserPassword(
     if (formData.newPassword !== formData.confirmNewPassword)
         return invalidRequestResponseData("Passwords do not match");
 
-    const tokenHash = await hashString(token);
+    const tokenHash = hashString(token);
     const confirmationEmail = await prisma.userConfirmation.findUnique({
         where: {
             accessCode: tokenHash,
@@ -279,7 +279,7 @@ export async function changeUserPassword(
 
 export async function deleteUserAccountConfirmationEmail(userSession: ContextUserData) {
     const token = generateRandomToken();
-    const tokenHash = await hashString(token);
+    const tokenHash = hashString(token);
 
     await prisma.userConfirmation.create({
         data: {

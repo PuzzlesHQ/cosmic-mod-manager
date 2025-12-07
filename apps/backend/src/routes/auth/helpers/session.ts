@@ -36,10 +36,10 @@ export async function createUserSession({ userId, providerName, ctx, isFirstSign
     }
 
     const sessionToken = generateRandomToken();
-    const tokenHash = await hashString(sessionToken);
+    const tokenHash = hashString(sessionToken);
 
     const revokeAccessCode = generateRandomId(32);
-    const revokeAccessCodeHash = await hashString(revokeAccessCode);
+    const revokeAccessCodeHash = hashString(revokeAccessCode);
 
     const sessionIp = getSessionIp(getHeader, {
         fallbackIp: ctx.env?.ip?.address || "::1",
@@ -96,7 +96,7 @@ export async function createUserSession({ userId, providerName, ctx, isFirstSign
 }
 
 async function getUserFromSessionToken(token: string): Promise<ContextUserData | null> {
-    const tokenHash = await hashString(token);
+    const tokenHash = hashString(token);
     const session = await GetSession_ByTokenHash(tokenHash);
     if (!session) return null;
 
@@ -125,7 +125,7 @@ async function getUserFromSessionToken(token: string): Promise<ContextUserData |
 }
 
 async function getUserFromPAT(token: string): Promise<ContextUserData | null> {
-    const tokenHash = await hashString(token);
+    const tokenHash = hashString(token);
     const pat = await GetPAT(tokenHash);
 
     if (!pat) return null;
@@ -178,7 +178,7 @@ export function invalidateSessionFromId(sessionId: string, userId?: string) {
 }
 
 export async function invalidateSessionFromToken(token: string): Promise<Session> {
-    const tokenHash = await hashString(token);
+    const tokenHash = hashString(token);
     return await DeleteSession({
         where: { tokenHash: tokenHash },
     });

@@ -41,7 +41,7 @@ export async function createPersonalAccessToken(user: ContextUserData, formData:
     }
 
     const token = await generatePAT();
-    const tokenHash = await hashString(token);
+    const tokenHash = hashString(token);
 
     const pat = await CreatePAT({
         data: {

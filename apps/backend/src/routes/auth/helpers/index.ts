@@ -123,11 +123,9 @@ export function generateRandomToken(size = 32): string {
 }
 
 export function hashString(str: string) {
-    return new Promise((resolve) => {
-        const hasher = new Bun.CryptoHasher("sha256", env.HASH_SECRET_KEY);
-        hasher.update(str);
-        resolve(hasher.digest("hex") as string);
-    }) as Promise<string>;
+    const hasher = new Bun.CryptoHasher("sha256", env.HASH_SECRET_KEY);
+    hasher.update(str);
+    return hasher.digest("hex") as string;
 }
 
 export function getUserSessionCookie(ctx: Context) {

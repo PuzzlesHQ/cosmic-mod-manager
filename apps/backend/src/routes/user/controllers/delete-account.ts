@@ -15,7 +15,7 @@ import { HTTP_STATUS, invalidRequestResponseData, serverErrorResponseData } from
 import { generateDbId } from "~/utils/str";
 
 export async function confirmUserAccountDeletion(token: string) {
-    const tokenHash = await hashString(token);
+    const tokenHash = hashString(token);
     // Deleting instead of Getting the code, because if it's valid
     // the operation is proceed normally otherwise the expired token will get deleted and the function will return;
     // No need to separately delete the confirmation token :P

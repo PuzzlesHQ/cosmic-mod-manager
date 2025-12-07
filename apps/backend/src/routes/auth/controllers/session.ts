@@ -60,7 +60,7 @@ export async function deleteUserSession(ctx: Context, userSession: ContextUserDa
 }
 
 export async function revokeSessionFromAccessCode(ctx: Context, code: string) {
-    const revokeAccessCodeHash = await hashString(code);
+    const revokeAccessCodeHash = hashString(code);
     const targetSession = await GetSession({
         where: {
             revokeAccessCode: revokeAccessCodeHash,
