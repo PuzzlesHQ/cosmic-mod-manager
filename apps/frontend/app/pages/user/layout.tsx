@@ -246,7 +246,7 @@ function ProfilePageHeader({ userData, totalProjects, totalDownloads }: ProfileP
         <PageHeader
             vtId={userData.id}
             icon={imageUrl(userData.avatar)}
-            className={cn("blurred", userData.profilePageBg && "px-4 py-4")}
+            className={cn("blurred", userData.profilePageBg && "rounded-lg border-transparent px-4 py-4")}
             iconClassName="rounded-full"
             fallbackIcon={fallbackUserIcon}
             title={userData.name}
