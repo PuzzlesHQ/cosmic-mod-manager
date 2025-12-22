@@ -39,9 +39,9 @@ export default function LicenseSettingsPage() {
     const form = useForm<z.infer<typeof updateProjectLicenseFormSchema>>({
         resolver: zodResolver(updateProjectLicenseFormSchema),
         defaultValues: {
-            id: projectData?.licenseId || "",
-            name: projectData?.licenseName || "",
-            url: projectData?.licenseUrl || "",
+            id: projectData?.licenseId,
+            name: projectData?.licenseName,
+            url: projectData?.licenseUrl,
         },
     });
 
@@ -77,9 +77,9 @@ export default function LicenseSettingsPage() {
 
     const formValues = form.getValues();
     const hasFormChanged =
-        formValues.id !== (projectData?.licenseId || "") ||
-        formValues.name !== (projectData?.licenseName || "") ||
-        formValues.url !== (projectData?.licenseUrl || "");
+        formValues.id !== projectData?.licenseId ||
+        formValues.name !== projectData?.licenseName ||
+        formValues.url !== projectData?.licenseUrl;
 
     useEffect(() => {
         if (projectData?.licenseName && !projectData?.licenseId) {
@@ -114,6 +114,9 @@ export default function LicenseSettingsPage() {
 
         return options;
     }, []);
+
+    // TODO: provide a default empty string value to inputs if the form value is undefined
+    // to stop react from yelling about controlled and uncontrolled inputs
 
     return (
         <Form {...form}>
@@ -152,7 +155,7 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                                 setValue={(value: string) => {
                                                     if (value === CUSTOM_LICENSE_OPTION.licenseId) {
                                                         setShowCustomLicenseInputFields(true);
-                                                        field.onChange("");
+                                                        field.onChange(undefined);
                                                     } else {
                                                         field.onChange(value);
                                                         setShowCustomLicenseInputFields(false);
@@ -187,9 +190,9 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                         onCheckedChange={(value) => {
                                             setDoesNotHaveASpdxId(value === true);
                                             if (value === true) {
-                                                form.setValue("id", "");
+                                                form.setValue("id", undefined);
                                             } else {
-                                                form.setValue("name", "");
+                                                form.setValue("name", undefined);
                                             }
                                         }}
                                     >
