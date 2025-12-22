@@ -6,7 +6,7 @@ import SPDX_LICENSE_LIST, {
 } from "@app/utils/src/constants/license-list";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDownIcon, SaveIcon } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { type ChangeEvent, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 import MarkdownRenderBox from "~/components/md-editor/md-renderer";
@@ -107,9 +107,6 @@ export default function LicenseSettingsPage() {
 
         return options;
     }, []);
-
-    // TODO: provide a default empty string value to inputs if the form value is undefined
-    // to stop react from yelling about controlled and uncontrolled inputs
 
     return (
         <Form {...form}>
@@ -240,6 +237,10 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                             {...{
                                                 ...field,
                                                 value: field.value || "",
+                                                onChange: (e: ChangeEvent<HTMLInputElement>) => {
+                                                    const inputVal = e.target.value;
+                                                    field.onChange(inputVal.length > 0 ? inputVal : null);
+                                                },
                                             }}
                                             placeholder={t.projectSettings.licenseUrl}
                                         />
