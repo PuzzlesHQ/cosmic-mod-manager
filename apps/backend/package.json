@@ -12,25 +12,25 @@
     },
     "dependencies": {
         "@app/utils": "workspace:*",
-        "@clickhouse/client": "^1.12.1",
+        "@clickhouse/client": "^1.15.0",
         "@oslojs/encoding": "^1.1.0",
-        "@prisma/adapter-pg": "^7.0.0",
-        "@prisma/client": "^7.0.0",
-        "hono": "^4.9.10",
-        "ioredis": "^5.8.1",
+        "@prisma/adapter-pg": "^7.2.0",
+        "@prisma/client": "^7.2.0",
+        "hono": "^4.11.1",
+        "ioredis": "^5.8.2",
         "meilisearch": "^0.53.0",
         "nanoid": "^5.1.6",
-        "nodemailer": "^7.0.9",
+        "nodemailer": "^7.0.12",
         "pg": "^8.16.3",
-        "semver": "^7.7.2",
-        "sharp": "^0.34.4"
+        "semver": "^7.7.3",
+        "sharp": "^0.34.5"
     },
     "devDependencies": {
-        "@types/nodemailer": "^7.0.2",
-        "@types/pg": "^8.15.6",
+        "@types/nodemailer": "^7.0.4",
+        "@types/pg": "^8.16.0",
         "@types/semver": "^7.7.1",
         "@types/xml2js": "^0.4.14",
-        "prisma": "^7.0.0",
+        "prisma": "^7.2.0",
         "xml2js": "^0.6.2"
     }
 }
