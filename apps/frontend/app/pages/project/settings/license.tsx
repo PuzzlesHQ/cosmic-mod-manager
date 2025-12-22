@@ -31,7 +31,7 @@ export default function LicenseSettingsPage() {
     const projectData = ctx.projectData;
 
     const [showCustomLicenseInputFields, setShowCustomLicenseInputFields] = useState(false);
-    const [doesNotHaveASpdxId, setDoesNotHaveASpdxId] = useState(false);
+    const [doesNotHaveASpdxId, setDoesNotHaveASpdxId] = useState(!!projectData?.licenseName && !projectData?.licenseId);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -39,9 +39,9 @@ export default function LicenseSettingsPage() {
     const form = useForm<z.infer<typeof updateProjectLicenseFormSchema>>({
         resolver: zodResolver(updateProjectLicenseFormSchema),
         defaultValues: {
-            id: projectData?.licenseId || "",
-            name: projectData?.licenseName || "",
-            url: projectData?.licenseUrl || "",
+            id: projectData?.licenseId,
+            name: projectData?.licenseName,
+            url: projectData?.licenseUrl,
         },
     });
 
@@ -72,27 +72,20 @@ export default function LicenseSettingsPage() {
         () => SPDX_LICENSE_LIST.find((license) => license.licenseId === currLicenseId),
         [currLicenseId],
     );
-    const isCustomLicense =
-        showCustomLicenseInputFields || ((currLicenseId || currLicenseName) && !selectedFeaturedLicense);
 
     const formValues = form.getValues();
     const hasFormChanged =
-        formValues.id !== (projectData?.licenseId || "") ||
-        formValues.name !== (projectData?.licenseName || "") ||
-        formValues.url !== (projectData?.licenseUrl || "");
+        formValues.id !== projectData?.licenseId ||
+        formValues.name !== projectData?.licenseName ||
+        formValues.url !== projectData?.licenseUrl;
 
-    useEffect(() => {
-        if (projectData?.licenseName && !projectData?.licenseId) {
-            setDoesNotHaveASpdxId(true);
-        }
-    }, [projectData]);
-
+    const isCustomLicense =
+        showCustomLicenseInputFields || ((currLicenseId || currLicenseName) && !selectedFeaturedLicense);
     useEffect(() => {
         if (isCustomLicense && !showCustomLicenseInputFields) setShowCustomLicenseInputFields(true);
     }, [isCustomLicense]);
 
     const projectType = t.navbar[projectData.type[0]];
-
     const licenseOptions = useMemo(() => {
         const options: ComboBoxItem[] = [
             {
@@ -152,12 +145,12 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                                 setValue={(value: string) => {
                                                     if (value === CUSTOM_LICENSE_OPTION.licenseId) {
                                                         setShowCustomLicenseInputFields(true);
-                                                        field.onChange("");
+                                                        field.onChange(null);
                                                     } else {
                                                         field.onChange(value);
                                                         setShowCustomLicenseInputFields(false);
                                                     }
-                                                    form.setValue("name", "");
+                                                    form.setValue("name", null);
                                                 }}
                                             >
                                                 <Button
@@ -187,9 +180,9 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                         onCheckedChange={(value) => {
                                             setDoesNotHaveASpdxId(value === true);
                                             if (value === true) {
-                                                form.setValue("id", "");
+                                                form.setValue("id", null);
                                             } else {
-                                                form.setValue("name", "");
+                                                form.setValue("name", null);
                                             }
                                         }}
                                     >
@@ -201,7 +194,13 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                             name="name"
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <Input {...field} placeholder={t.projectSettings.licenseName} />
+                                                    <Input
+                                                        {...{
+                                                            ...field,
+                                                            value: field.value || "",
+                                                        }}
+                                                        placeholder={t.projectSettings.licenseName}
+                                                    />
                                                     <FormMessage />
                                                 </FormItem>
                                             )}
@@ -214,7 +213,13 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                             name="id"
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <Input {...field} placeholder={t.projectSettings.spdxId} />
+                                                    <Input
+                                                        {...{
+                                                            ...field,
+                                                            value: field.value || "",
+                                                        }}
+                                                        placeholder={t.projectSettings.spdxId}
+                                                    />
                                                     <FormMessage />
                                                 </FormItem>
                                             )}
@@ -228,7 +233,13 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                 name="url"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <Input {...field} placeholder={t.projectSettings.licenseUrl} />
+                                        <Input
+                                            {...{
+                                                ...field,
+                                                value: field.value || "",
+                                            }}
+                                            placeholder={t.projectSettings.licenseUrl}
+                                        />
                                         <FormMessage />
                                     </FormItem>
                                 )}
