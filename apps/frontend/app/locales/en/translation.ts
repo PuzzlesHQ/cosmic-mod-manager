@@ -733,11 +733,10 @@ export default {
         pageDesc:
             "This is a private conversation thread with the moderators. They may message you with issues concerning this project. This thread is only checked when you submit your project for review.",
         approved_msg: "Your project has been approved by the moderators.",
-        underReview_msg: (discord_invite: string) => `Your project is currently under review. 
-            If it takes more than 48 hours feel free to contact us on our [Discord server](${discord_invite}).`,
-        rejected_msg: (contentRules_url: string) => `Your project does not currently meet our
-            [content rules](${contentRules_url}) and the moderators have requested you make changes before it can be approved. 
-            Read the messages from the moderators below and address their comments before resubmitting.`,
+        underReview_msg: (discord_invite: string) =>
+            `Your project is currently under review. If it takes more than 48 hours feel free to contact us on our [Discord server](${discord_invite}).`,
+        rejected_msg: (contentRules_url: string) =>
+            `Your project does not currently meet our [content rules](${contentRules_url}) and the moderators have requested you make changes before it can be approved. Read the messages from the moderators below and address their comments before resubmitting.`,
         repeatedSubmission_warning:
             "Repeated submissions without addressing the moderators' comments may result in an account suspension.",
         messages: "Messages",
