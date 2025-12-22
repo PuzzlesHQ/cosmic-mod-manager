@@ -527,6 +527,7 @@ export default {
         customLicenseDesc:
             "Enter a valid [SPDX license identifier](https://spdx.org/licenses) in the marked area. If your license does not have a SPDX identifier (for example, if you created the license yourself or if the license is Cosmic Reach specific), simply check the box and enter the name of the license instead.",
         selectLicense: "Select license",
+        searchAllLicenses: (count: number) => `Search all ${count} licenses`,
         custom: "Custom",
         licenseName: "License name",
         licenseUrl: "License URL (optional)",

@@ -281,12 +281,13 @@ export default function ProjectPageLayout() {
                                     <div className="relative flex min-w-10 items-center justify-center">
                                         <ReleaseChannelBadge
                                             releaseChannel={version.releaseChannel}
-                                            className="group-focus-within/card:hidden group-hover/card:hidden"
+                                            className="absolute group-focus-within/card:invisible group-hover/card:invisible"
                                         />
+
                                         <Tooltip>
                                             <TooltipTrigger
                                                 asChild
-                                                className="hidden group-focus-within/card:flex group-hover/card:flex"
+                                                className="invisible group-focus-within/card:visible group-hover/card:visible"
                                             >
                                                 <Button
                                                     className="noClickRedirect !w-10 !h-10 flex-shrink-0 rounded-full"
@@ -302,7 +303,8 @@ export default function ProjectPageLayout() {
                                                     />
                                                 </Button>
                                             </TooltipTrigger>
-                                            <TooltipContent className="hidden group-focus-within/card:flex group-hover/card:flex">
+
+                                            <TooltipContent>
                                                 {version?.primaryFile?.name} (
                                                 {parseFileSize(version.primaryFile?.size || 0)})
                                             </TooltipContent>

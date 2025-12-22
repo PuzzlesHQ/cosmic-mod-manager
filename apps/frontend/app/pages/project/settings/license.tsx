@@ -140,7 +140,7 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                                 value={
                                                     isCustomLicense
                                                         ? CUSTOM_LICENSE_OPTION.licenseId
-                                                        : field.value || ""
+                                                        : (field.value ?? "")
                                                 }
                                                 setValue={(value: string) => {
                                                     if (value === CUSTOM_LICENSE_OPTION.licenseId) {
@@ -152,6 +152,8 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                                     }
                                                     form.setValue("name", null);
                                                 }}
+                                                showOptionValueTooltip
+                                                inputLabel={t.projectSettings.searchAllLicenses(licenseOptions.length)}
                                             >
                                                 <Button
                                                     variant="secondary"
@@ -159,8 +161,8 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                                 >
                                                     {isCustomLicense
                                                         ? t.projectSettings.custom
-                                                        : selectedFeaturedLicense?.name ||
-                                                          t.projectSettings.selectLicense}
+                                                        : (selectedFeaturedLicense?.name ??
+                                                          t.projectSettings.selectLicense)}
                                                     <ChevronDownIcon
                                                         aria-hidden
                                                         className="h-btn-icon w-btn-icon shrink-0"
@@ -197,7 +199,7 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                                     <Input
                                                         {...{
                                                             ...field,
-                                                            value: field.value || "",
+                                                            value: field.value ?? "",
                                                         }}
                                                         placeholder={t.projectSettings.licenseName}
                                                     />
@@ -216,7 +218,7 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                                     <Input
                                                         {...{
                                                             ...field,
-                                                            value: field.value || "",
+                                                            value: field.value ?? "",
                                                         }}
                                                         placeholder={t.projectSettings.spdxId}
                                                     />
@@ -236,7 +238,7 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                         <Input
                                             {...{
                                                 ...field,
-                                                value: field.value || "",
+                                                value: field.value ?? "",
                                                 onChange: (e: ChangeEvent<HTMLInputElement>) => {
                                                     const inputVal = e.target.value;
                                                     field.onChange(inputVal.length > 0 ? inputVal : null);

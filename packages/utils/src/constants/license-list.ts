@@ -1430,7 +1430,7 @@ const SPDX_LICENSE_LIST: SPDX_LICENSE[] = [
         link: licenseRefLink("gnuplot"),
     },
     {
-        name: "GNU General Public License v1.0 only",
+        name: "GNU General Public License v1.0",
         licenseId: "GPL-1.0",
         link: licenseRefLink("GPL-1.0"),
     },
@@ -1450,7 +1450,7 @@ const SPDX_LICENSE_LIST: SPDX_LICENSE[] = [
         link: licenseRefLink("GPL-1.0-or-later"),
     },
     {
-        name: "GNU General Public License v2.0 only",
+        name: "GNU General Public License v2.0",
         licenseId: "GPL-2.0",
         link: licenseRefLink("GPL-2.0"),
     },
@@ -1495,7 +1495,7 @@ const SPDX_LICENSE_LIST: SPDX_LICENSE[] = [
         link: licenseRefLink("GPL-2.0-with-GCC-exception"),
     },
     {
-        name: "GNU General Public License v3.0 only",
+        name: "GNU General Public License v3.0",
         licenseId: "GPL-3.0",
         link: licenseRefLink("GPL-3.0"),
     },
@@ -1850,7 +1850,7 @@ const SPDX_LICENSE_LIST: SPDX_LICENSE[] = [
         link: licenseRefLink("Leptonica"),
     },
     {
-        name: "GNU Library General Public License v2 only",
+        name: "GNU Library General Public License v2",
         licenseId: "LGPL-2.0",
         link: licenseRefLink("LGPL-2.0"),
     },
@@ -1870,7 +1870,7 @@ const SPDX_LICENSE_LIST: SPDX_LICENSE[] = [
         link: licenseRefLink("LGPL-2.0-or-later"),
     },
     {
-        name: "GNU Lesser General Public License v2.1 only",
+        name: "GNU Lesser General Public License v2.1",
         licenseId: "LGPL-2.1",
         link: licenseRefLink("LGPL-2.1"),
     },
@@ -1890,7 +1890,7 @@ const SPDX_LICENSE_LIST: SPDX_LICENSE[] = [
         link: licenseRefLink("LGPL-2.1-or-later"),
     },
     {
-        name: "GNU Lesser General Public License v3.0 only",
+        name: "GNU Lesser General Public License v3.0",
         licenseId: "LGPL-3.0",
         link: licenseRefLink("LGPL-3.0"),
     },

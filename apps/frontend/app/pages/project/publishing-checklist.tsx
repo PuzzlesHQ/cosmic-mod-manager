@@ -222,11 +222,11 @@ export function PublishingChecklist() {
                     <CardTitle className="text-foreground-muted/85">{pubChecklist.title}</CardTitle>
 
                     <div className="flex flex-wrap items-center gap-1">
-                        <TooltipProvider delayDuration={200}>
+                        <TooltipProvider>
                             <span className="me-2 font-bold text-foreground-muted/85">{pubChecklist.progress}</span>
 
                             {steps.map((step) => {
-                                if (step.hide) return;
+                                if (step.hide) return null;
 
                                 return (
                                     <TooltipTemplate key={step.id} content={step.title}>
@@ -249,7 +249,7 @@ export function PublishingChecklist() {
                 <CardContent className="grid grid-cols-1 gap-panel-cards sm:grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))]">
                     <TooltipProvider delayDuration={200}>
                         {steps.map((step) => {
-                            if (!step.condition || step.hide === true) return;
+                            if (!step.condition || step.hide === true) return null;
 
                             let link: ChecklistCardProps["link"] | undefined;
                             if (step.link) {

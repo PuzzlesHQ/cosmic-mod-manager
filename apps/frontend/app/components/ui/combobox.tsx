@@ -23,6 +23,7 @@ interface ComboBoxProps {
     setValue: (value: string) => void;
     footerItem?: React.ReactNode;
     noResultsElem?: React.ReactNode;
+    showOptionValueTooltip?: boolean;
 }
 
 function ComboBox(props: ComboBoxProps) {
@@ -43,7 +44,8 @@ function ComboBox(props: ComboBoxProps) {
     const commandItems = useMemo(() => {
         return props.options.map((option) => {
             if (!searchVal?.trim() && option.onlyVisibleWhenSearching) return null;
-            return (
+
+            const item = (
                 <CommandItem
                     key={option.value}
                     value={`${option.value} ${option.label}`}
@@ -58,6 +60,7 @@ function ComboBox(props: ComboBoxProps) {
                 >
                     <Check className={cn("me-2 h-4 w-4", props.value === option.value ? "opacity-100" : "opacity-0")} />
                     {option.label}
+
                     {option?.disabled === true ? (
                         <Tooltip>
                             <TooltipTrigger asChild>
@@ -69,8 +72,24 @@ function ComboBox(props: ComboBoxProps) {
                     ) : null}
                 </CommandItem>
             );
+
+            if (props.showOptionValueTooltip && !option.disabled) {
+                return (
+                    <Tooltip key={option.value}>
+                        <TooltipTrigger asChild>
+                            <div key={option.value}>{item}</div>
+                        </TooltipTrigger>
+
+                        <TooltipContent side="left" className="font-mono text-sm">
+                            {option.value}
+                        </TooltipContent>
+                    </Tooltip>
+                );
+            }
+
+            return item;
         });
-    }, [props.options, !!searchVal?.trim()]);
+    }, [props.value, props.options, !!searchVal?.trim()]);
 
     return (
         <Popover open={open} onOpenChange={setOpen} modal={true}>
@@ -84,9 +103,9 @@ function ComboBox(props: ComboBoxProps) {
                             placeholder={props.inputLabel || t.common.search}
                         />
                     )}
-                    <TooltipProvider delayDuration={200}>
+                    <TooltipProvider delayDuration={100} skipDelayDuration={200}>
                         <CommandList>
-                            <CommandEmpty>{props.noResultsElem || "No results"}</CommandEmpty>
+                            <CommandEmpty>{props.noResultsElem || t.common.noResults}</CommandEmpty>
                             <CommandGroup>{commandItems}</CommandGroup>
                         </CommandList>
                     </TooltipProvider>
