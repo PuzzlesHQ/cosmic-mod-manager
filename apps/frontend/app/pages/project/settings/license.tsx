@@ -108,6 +108,9 @@ export default function LicenseSettingsPage() {
         return options;
     }, []);
 
+    // TODO: provide a default empty string value to inputs if the form value is undefined
+    // to stop react from yelling about controlled and uncontrolled inputs
+
     return (
         <Form {...form}>
             <form
