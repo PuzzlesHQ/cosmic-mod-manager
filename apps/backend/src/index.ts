@@ -140,3 +140,5 @@ Bun.serve({
         return app.fetch(req, { ip: server.requestIP(req) });
     },
 });
+
+export { app };

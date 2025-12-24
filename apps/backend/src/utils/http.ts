@@ -1,7 +1,7 @@
 import type { Context } from "hono";
 import { deleteCookie as honoDeleteCookie, setCookie as honoSetCookie } from "hono/cookie";
 import type { CookieOptions } from "hono/utils/cookie";
-import env from "./env";
+import env from "~/utils/env";
 
 export const HTTP_STATUS = {
     OK: 200,

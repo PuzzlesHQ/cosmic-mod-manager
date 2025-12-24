@@ -1,12 +1,10 @@
 {
     "compilerOptions": {
-        "lib": ["ESNext", "DOM"],
+        "lib": ["ESNext"],
         "composite": true,
         "target": "ESNext",
         "module": "ESNext",
         "moduleDetection": "force",
-        "jsx": "react-jsx",
-        "jsxImportSource": "hono/jsx",
         "allowJs": true,
         "moduleResolution": "bundler",
         "strict": true,
