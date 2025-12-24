@@ -16,7 +16,7 @@ let isSyncing = false;
 let Last_FullSearchIndexSync: number | null = null;
 
 // Start the sync interval
-export async function QueueSearchIndexUpdate() {
+export async function queueSearchIndexUpdate() {
     if (isSyncing) return;
     isSyncing = true;
 
@@ -41,7 +41,7 @@ export async function QueueSearchIndexUpdate() {
         }
 
         // @ts-expect-error
-        globalThis.SearchIndexSync_TimeoutId = setTimeout(QueueSearchIndexUpdate, SYNC_INTERVAL);
+        globalThis.SearchIndexSync_TimeoutId = setTimeout(queueSearchIndexUpdate, SYNC_INTERVAL);
     } finally {
         isSyncing = false;
     }

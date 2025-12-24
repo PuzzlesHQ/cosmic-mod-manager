@@ -18,7 +18,7 @@ const versionFileRouter = new Hono()
     .use(invalidAuthAttemptLimiter)
     .use(AuthenticationMiddleware)
 
-    .get("/:fileHash", getReqRateLimiter, (ctx) => versionFromHash_get(ctx, false))
+    .get("/:fileHash", getReqRateLimiter, (ctx) => versionFromHash_get(ctx))
     .get("/:fileHash/download", getReqRateLimiter, (ctx) => versionFromHash_get(ctx, true))
     .post("/:fileHash/update", strictGetReqRateLimiter, versionFromHashUpdate_get);
 

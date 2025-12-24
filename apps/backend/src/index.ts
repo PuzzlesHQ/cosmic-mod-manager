@@ -1,38 +1,46 @@
 import { type Context, Hono } from "hono";
 import { cors } from "hono/cors";
+import env from "~/utils/env";
+import { HTTP_STATUS, serverErrorResponse } from "~/utils/http";
+
+// __
+
+import { queueDownloadsCounterQueueProcessing } from "~/routes/cdn/downloads-counter";
+import { queueSearchIndexUpdate } from "~/routes/search/search-db";
+
+// Middlewares
+
 import bodyParserMiddleware from "~/middleware/body-parser";
 import { applyCacheHeaders } from "~/middleware/cache";
 import { logger } from "~/middleware/http-logger";
 import { ddosProtectionRateLimiter } from "~/middleware/rate-limit/ddos";
+import { startSitemapGenerator } from "~/services/sitemap-gen";
+
+// Routes
+
+import analyticsRouter from "~/routes/analytics/router";
 import authRouter from "~/routes/auth/router";
-import { queueDownloadsCounterQueueProcessing } from "~/routes/cdn/downloads-counter";
 import cdnRouter from "~/routes/cdn/router";
+import collectionsRouter from "~/routes/collections/router";
+import patRouter from "~/routes/pat/router";
 import bulkProjectsRouter from "~/routes/project/bulk_router";
 import moderationRouter from "~/routes/project/moderation/router";
 import bulkOrgsRouter from "~/routes/project/organisation/bulk_router";
 import orgRouter from "~/routes/project/organisation/router";
 import projectRouter from "~/routes/project/router";
 import teamRouter from "~/routes/project/team/router";
+import reportRouter from "~/routes/report/router";
 import searchRouter from "~/routes/search/router";
-import { QueueSearchIndexUpdate } from "~/routes/search/search-db";
+import { getStatistics } from "~/routes/statistics";
+import tagsRouter from "~/routes/tags";
+import threadRouter from "~/routes/thread/router";
 import bulkUserActionsRouter from "~/routes/user/bulk_actions/router";
 import notificationRouter from "~/routes/user/notification/router";
 import userRouter from "~/routes/user/router";
 import { versionFileRouter, versionFiles_Router } from "~/routes/version-file/router";
-import { startSitemapGenerator } from "~/services/sitemap-gen";
-import { getStatistics } from "~/statistics";
-import tagsRouter from "~/tags";
-import env from "~/utils/env";
-import { HTTP_STATUS, serverErrorResponse } from "~/utils/http";
-import AnalyticsRouter from "./routes/analytics/router";
-import collectionsRouter from "./routes/collections/router";
-import patRouter from "./routes/pat/router";
-import reportRouter from "./routes/report/router";
-import threadRouter from "./routes/thread/router";
-import versionsRouter from "./routes/versions/router";
+import versionsRouter from "~/routes/versions/router";
 
 const corsAllowedOrigins = env.CORS_ALLOWED_URLS.split(" ");
-
 const app = new Hono()
     .use(ddosProtectionRateLimiter)
     .use(logger())
@@ -58,7 +66,6 @@ const app = new Hono()
     )
     .use(bodyParserMiddleware)
 
-    // Routes
     .route("/api/auth", authRouter)
     .route("/api/search", searchRouter)
     .route("/api/tags", tagsRouter)
@@ -87,7 +94,7 @@ const app = new Hono()
     .route("/api/report", reportRouter)
 
     .route("/api/collections", collectionsRouter)
-    .route("/api/analytics", AnalyticsRouter)
+    .route("/api/analytics", analyticsRouter)
 
     .route("/cdn", cdnRouter)
 
@@ -124,7 +131,7 @@ try {
     // Initialize the queues
     await queueDownloadsCounterQueueProcessing();
     await startSitemapGenerator();
-    await QueueSearchIndexUpdate();
+    await queueSearchIndexUpdate();
 } catch {}
 
 Bun.serve({
@@ -133,5 +140,3 @@ Bun.serve({
         return app.fetch(req, { ip: server.requestIP(req) });
     },
 });
-
-export { app };

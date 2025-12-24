@@ -16,7 +16,7 @@ import {
 import { getUserFromCtx } from "~/utils/router";
 import { getAllProjects_DownloadsAnalyticsData, getDownloadsAnalyticsData } from "./controllers";
 
-const AnalyticsRouter = new Hono()
+const analyticsRouter = new Hono()
     .use(strictGetReqRateLimiter)
     .use(invalidAuthAttemptLimiter)
     .use(AuthenticationMiddleware)
@@ -108,4 +108,4 @@ async function allProjectsDownloadsAnalytics_get(ctx: Context) {
     }
 }
 
-export default AnalyticsRouter;
+export default analyticsRouter;
