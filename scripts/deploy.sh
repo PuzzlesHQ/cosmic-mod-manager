@@ -11,14 +11,12 @@ bun install --frozen-lockfile
 # deploy frontend
 echo "Deploying frontend..."
 cd "$FRONTEND_DIR" || exit 1
-bun install
 bun run build > /dev/null 2>&1
 pm2 reload crmm-frontend -s
 
 # deploy backend
 echo "Deploying backend..."
 cd "$BACKEND_DIR" || exit 1
-bun install
 bun run src/routes/cdn/process-downloads.ts
 bun run prisma-generate
 bun run prisma-push
