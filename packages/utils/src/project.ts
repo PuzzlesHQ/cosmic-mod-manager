@@ -211,7 +211,7 @@ export function validateProjectTypesCompatibility(types: ProjectType[]) {
     if (types.includes(ProjectType.MOD)) return filterInCompatibleProjectTypes(ProjectType.MOD, types);
     if (types.includes(ProjectType.PLUGIN)) return filterInCompatibleProjectTypes(ProjectType.PLUGIN, types);
 
-    return ["project"];
+    return [ProjectType.MOD];
 }
 
 export function FormatProjectTypes(types: string[]) {

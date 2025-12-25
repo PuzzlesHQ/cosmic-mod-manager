@@ -18,7 +18,7 @@ import { type Context, Hono } from "hono";
 import { applyCacheHeaders } from "~/middleware/cache";
 import { searchReqRateLimiter } from "~/middleware/rate-limit/get-req";
 import { isNumber } from "~/utils";
-import { HTTP_STATUS, serverErrorResponse } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponse, serverErrorResponse } from "~/utils/http";
 import { searchProjects } from "./controllers";
 
 const searchRouter = new Hono()
@@ -59,14 +59,14 @@ async function search_get(ctx: Context) {
                   ? "!true"
                   : null;
 
-        let limit = Number.parseInt(limitStr);
+        let limit = Number.parseInt(limitStr, 10);
         if (!isNumber(limit)) limit = defaultSearchLimit;
         else if (limit > MAX_SEARCH_LIMIT) limit = MAX_SEARCH_LIMIT;
         else if (limit <= 0) limit = 1;
 
-        const page = Number.parseInt(pageStr);
+        const page = Number.parseInt(pageStr, 10);
 
-        let offset = Number.parseInt(offsetStr);
+        let offset = Number.parseInt(offsetStr, 10);
         if (!isNumber(offset)) {
             if (isNumber(page)) offset = (page - 1) * limit;
             else offset = 0;
@@ -114,7 +114,7 @@ async function loaders_get(ctx: Context) {
     try {
         const projectType = getProjectTypeFromName(ctx.req.query("type") || "");
         if (!projectType) {
-            return ctx.json({ success: false, message: "Invalid project type" }, HTTP_STATUS.BAD_REQUEST);
+            return invalidRequestResponse(ctx, "Invalid project type");
         }
 
         const loaderFilters = getAllLoaderCategories(projectType);
@@ -141,7 +141,7 @@ async function categories_get(ctx: Context) {
     try {
         const projectType = getProjectTypeFromName(ctx.req.query("type") || "");
         if (!projectType) {
-            return ctx.json({ success: false, message: "Invalid project type" }, HTTP_STATUS.BAD_REQUEST);
+            return invalidRequestResponse(ctx, "Invalid project type");
         }
 
         const categories = getValidProjectCategories([projectType], TagType.CATEGORY).map((category) => category.name);
@@ -156,7 +156,7 @@ async function features_get(ctx: Context) {
     try {
         const projectType = getProjectTypeFromName(ctx.req.query("type") || "");
         if (!projectType) {
-            return ctx.json({ success: false, message: "Invalid project type" }, HTTP_STATUS.BAD_REQUEST);
+            return invalidRequestResponse(ctx, "Invalid project type");
         }
 
         const categories = getValidProjectCategories([projectType], TagType.FEATURE).map((category) => category.name);
@@ -171,7 +171,7 @@ async function resolutions_get(ctx: Context) {
     try {
         const projectType = getProjectTypeFromName(ctx.req.query("type") || "");
         if (!projectType) {
-            return ctx.json({ success: false, message: "Invalid project type" }, HTTP_STATUS.BAD_REQUEST);
+            return invalidRequestResponse(ctx, "Invalid project type");
         }
 
         const categories = getValidProjectCategories([projectType], TagType.RESOLUTION).map(
@@ -188,7 +188,7 @@ async function performanceImpacts_get(ctx: Context) {
     try {
         const projectType = getProjectTypeFromName(ctx.req.query("type") || "");
         if (!projectType) {
-            return ctx.json({ success: false, message: "Invalid project type" }, HTTP_STATUS.BAD_REQUEST);
+            return invalidRequestResponse(ctx, "Invalid project type");
         }
 
         const categories = getValidProjectCategories([projectType], TagType.PERFORMANCE_IMPACT).map(
