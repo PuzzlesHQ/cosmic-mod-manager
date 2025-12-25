@@ -16,6 +16,7 @@ import { useLocation } from "react-router";
 import RefreshPage from "~/components/misc/refresh-page";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { collapsibleBoxClassName } from "~/components/ui/collapsible";
 import { TextLink, useNavigate } from "~/components/ui/link";
 import { toast } from "~/components/ui/sonner";
 import { TooltipProvider, TooltipTemplate } from "~/components/ui/tooltip";
@@ -245,62 +246,64 @@ export function PublishingChecklist() {
                 </Button>
             </CardHeader>
 
-            {dropdownOpen && (
-                <CardContent className="grid grid-cols-1 gap-panel-cards sm:grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))]">
-                    <TooltipProvider delayDuration={200}>
-                        {steps.map((step) => {
-                            if (!step.condition || step.hide === true) return null;
+            <div className={collapsibleBoxClassName(dropdownOpen)}>
+                <div>
+                    <CardContent className="grid grid-cols-1 gap-panel-cards sm:grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))]">
+                        <TooltipProvider delayDuration={200}>
+                            {steps.map((step) => {
+                                if (!step.condition || step.hide === true) return null;
 
-                            let link: ChecklistCardProps["link"] | undefined;
-                            if (step.link) {
-                                const href = ProjectPagePath(project.type[0], project.slug, step.link.path);
-                                link = {
-                                    label: step.link.title,
-                                    hidden: isCurrLinkActive(href, currLoc.pathname),
-                                    href: href,
-                                };
-                            }
+                                let link: ChecklistCardProps["link"] | undefined;
+                                if (step.link) {
+                                    const href = ProjectPagePath(project.type[0], project.slug, step.link.path);
+                                    link = {
+                                        label: step.link.title,
+                                        hidden: isCurrLinkActive(href, currLoc.pathname),
+                                        href: href,
+                                    };
+                                }
 
-                            return (
-                                <ChecklistCard
-                                    key={step.id}
-                                    icon={
-                                        <TooltipTemplate content={Capitalize(step.status)}>
-                                            <span>
-                                                <StatusIcon status={step.status} />
-                                            </span>
-                                        </TooltipTemplate>
-                                    }
-                                    label={step.title}
-                                    desc={step.description}
-                                    link={link}
-                                >
-                                    {step.action ? (
-                                        <>
-                                            {!readyToSubmit && (
-                                                <span className="text-foreground-muted leading-tight">
-                                                    {pubChecklist.requiredStepsDesc}
+                                return (
+                                    <ChecklistCard
+                                        key={step.id}
+                                        icon={
+                                            <TooltipTemplate content={Capitalize(step.status)}>
+                                                <span>
+                                                    <StatusIcon status={step.status} />
                                                 </span>
-                                            )}
+                                            </TooltipTemplate>
+                                        }
+                                        label={step.title}
+                                        desc={step.description}
+                                        link={link}
+                                    >
+                                        {step.action ? (
+                                            <>
+                                                {!readyToSubmit && (
+                                                    <span className="text-foreground-muted leading-tight">
+                                                        {pubChecklist.requiredStepsDesc}
+                                                    </span>
+                                                )}
 
-                                            <Button
-                                                disabled={!readyToSubmit}
-                                                onClick={step.action.onClick}
-                                                className="w-fit"
-                                                variant="moderation"
-                                                size="sm"
-                                            >
-                                                <SendIcon aria-hidden className="h-btn-icon w-iconh-btn-icon" />{" "}
-                                                {step.action.title}
-                                            </Button>
-                                        </>
-                                    ) : null}
-                                </ChecklistCard>
-                            );
-                        })}
-                    </TooltipProvider>
-                </CardContent>
-            )}
+                                                <Button
+                                                    disabled={!readyToSubmit}
+                                                    onClick={step.action.onClick}
+                                                    className="w-fit"
+                                                    variant="moderation"
+                                                    size="sm"
+                                                >
+                                                    <SendIcon aria-hidden className="h-btn-icon w-iconh-btn-icon" />{" "}
+                                                    {step.action.title}
+                                                </Button>
+                                            </>
+                                        ) : null}
+                                    </ChecklistCard>
+                                );
+                            })}
+                        </TooltipProvider>
+                    </CardContent>
+                </div>
+            </div>
         </Card>
     );
 }

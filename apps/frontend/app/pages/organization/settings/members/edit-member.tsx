@@ -15,6 +15,7 @@ import { ImgWrapper } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { LabelledCheckbox } from "~/components/ui/checkbox";
+import { collapsibleBoxClassName } from "~/components/ui/collapsible";
 import { Form, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import Link from "~/components/ui/link";
@@ -99,7 +100,7 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
         hasFullItemAccess(currMember?.isOwner, session?.role) && member.isOwner === false && member.accepted;
 
     return (
-        <Card className="flex w-full flex-col gap-4 p-card-surround">
+        <Card className="flex w-full flex-col p-card-surround">
             {/* Head */}
             <div className="flex w-full flex-wrap items-center justify-between">
                 {/* Member profile details */}
@@ -149,13 +150,13 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
             </div>
 
             {/* Body */}
-            {detailsOpen && (
+            <div className={collapsibleBoxClassName(detailsOpen, "pt-4", "pt-0")}>
                 <Form {...form}>
                     <form
                         onSubmit={(e) => {
                             submitFormWithErrorHandling(e, updateTeamMemberFormSchema, form, updateMemberDetails);
                         }}
-                        className="flex w-full flex-col gap-form-elements"
+                        className="grid w-full gap-form-elements"
                     >
                         <FormField
                             control={form.control}
@@ -309,7 +310,7 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                         </div>
                     </form>
                 </Form>
-            )}
+            </div>
         </Card>
     );
 }

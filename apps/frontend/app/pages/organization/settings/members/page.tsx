@@ -38,8 +38,6 @@ export default function OrgMemberSettings() {
 
     return (
         <>
-            <title>{`Members - ${orgData.name}`}</title>
-
             <Card useSectionTag className="flex w-full flex-col gap-4 p-card-surround">
                 <CardTitle>{t.projectSettings.manageMembers}</CardTitle>
                 <InviteMemberForm

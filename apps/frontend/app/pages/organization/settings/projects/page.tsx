@@ -13,40 +13,34 @@ export default function OrgProjectsSettings() {
     const projects = ctx.orgProjects;
 
     return (
-        <>
-            <title>{`Projects - ${orgData.name}`}</title>
+        <Card className="w-full overflow-hidden">
+            <CardHeader className="flex w-full flex-row flex-wrap items-start justify-between gap-x-6 gap-y-2">
+                <CardTitle>{t.dashboard.projects}</CardTitle>
+                <div className="flex items-center justify-center gap-3">
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <BadgeInfoIcon
+                                    aria-hidden
+                                    className="h-btn-icon-md w-btn-icon-md text-foreground-muted"
+                                />
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-md">{t.organization.transferProjectsTip}</TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
 
-            <Card className="w-full overflow-hidden">
-                <CardHeader className="flex w-full flex-row flex-wrap items-start justify-between gap-x-6 gap-y-2">
-                    <CardTitle>{t.dashboard.projects}</CardTitle>
-                    <div className="flex items-center justify-center gap-3">
-                        <TooltipProvider>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <BadgeInfoIcon
-                                        aria-hidden
-                                        className="h-btn-icon-md w-btn-icon-md text-foreground-muted"
-                                    />
-                                </TooltipTrigger>
-                                <TooltipContent className="max-w-md">
-                                    {t.organization.transferProjectsTip}
-                                </TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
-
-                        <CreateNewProjectDialog orgId={orgData.id} />
+                    <CreateNewProjectDialog orgId={orgData.id} />
+                </div>
+            </CardHeader>
+            <CardContent className="p-0">
+                {!projects?.length ? (
+                    <div className="flex w-full items-center justify-start p-6">
+                        <p>{t.organization.noProjects_CreateOne}</p>
                     </div>
-                </CardHeader>
-                <CardContent className="p-0">
-                    {!projects?.length ? (
-                        <div className="flex w-full items-center justify-start p-6">
-                            <p>{t.organization.noProjects_CreateOne}</p>
-                        </div>
-                    ) : (
-                        <ProjectsListTable projects={projects} />
-                    )}
-                </CardContent>
-            </Card>
-        </>
+                ) : (
+                    <ProjectsListTable projects={projects} />
+                )}
+            </CardContent>
+        </Card>
     );
 }

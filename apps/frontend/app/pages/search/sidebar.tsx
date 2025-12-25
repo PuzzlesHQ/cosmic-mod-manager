@@ -16,6 +16,7 @@ import { useSearchParams } from "react-router";
 import { TagIcon } from "~/components/icons/tag-icons";
 import { Button } from "~/components/ui/button";
 import { LabelledCheckbox } from "~/components/ui/checkbox";
+import { collapsibleBoxClassName } from "~/components/ui/collapsible";
 import { Input } from "~/components/ui/input";
 import { SkipNav } from "~/components/ui/skip-nav";
 import { LabelledTernaryCheckbox, TernaryStates } from "~/components/ui/ternary-checkbox";
@@ -370,6 +371,8 @@ function FilterCategory({
         setIsOpen((prev) => !prev);
     }
 
+    const isVisible = isOpen || !collapsible;
+
     return (
         <section className={cn("filterCategory grid grid-cols-1", className)}>
             {/** biome-ignore lint/a11y/noStaticElementInteractions: -- */}
@@ -396,42 +399,48 @@ function FilterCategory({
                     </button>
                 )}
             </div>
-            <div className={cn("flex w-full flex-col", !isOpen && collapsible && "hidden", listWrapperClassName)}>
-                {items.map((item) => {
-                    const itemValue = typeof item === "string" ? item : item.value;
-                    let _itemLabel = typeof item === "string" ? item : item.label;
 
-                    // @ts-expect-error
-                    const tagTranslation = t.search.tags[itemValue];
-                    if (tagTranslation) {
-                        _itemLabel = tagTranslation;
-                    }
+            <div className={cn("grid ps-1", collapsibleBoxClassName(isVisible))}>
+                <div>
+                    <div className={cn("grid", listWrapperClassName)}>
+                        {items.map((item) => {
+                            const itemValue = typeof item === "string" ? item : item.value;
+                            let _itemLabel = typeof item === "string" ? item : item.label;
 
-                    const itemLabel = formatLabel ? CapitalizeAndFormatString(_itemLabel) || "" : _itemLabel;
-                    const state = selectedItems.includes(itemValue)
-                        ? TernaryStates.INCLUDED
-                        : selectedItems.includes(NOT(itemValue))
-                          ? TernaryStates.EXCLUDED
-                          : TernaryStates.UNCHECKED;
+                            // @ts-expect-error
+                            const tagTranslation = t.search.tags[itemValue];
+                            if (tagTranslation) {
+                                _itemLabel = tagTranslation;
+                            }
 
-                    return (
-                        <LabelledTernaryCheckbox
-                            state={state}
-                            onCheckedChange={() => {
-                                const params = filterToggledUrl(itemValue);
-                                setSearchParams(params, { preventScrollReset: true });
-                            }}
-                            key={itemValue}
-                        >
-                            <span className="flex items-center justify-center gap-1">
-                                <TagIcon name={itemValue} />
-                                {itemLabel}
-                            </span>
-                        </LabelledTernaryCheckbox>
-                    );
-                })}
+                            const itemLabel = formatLabel ? CapitalizeAndFormatString(_itemLabel) || "" : _itemLabel;
+                            const state = selectedItems.includes(itemValue)
+                                ? TernaryStates.INCLUDED
+                                : selectedItems.includes(NOT(itemValue))
+                                  ? TernaryStates.EXCLUDED
+                                  : TernaryStates.UNCHECKED;
+
+                            return (
+                                <LabelledTernaryCheckbox
+                                    state={state}
+                                    onCheckedChange={() => {
+                                        const params = filterToggledUrl(itemValue);
+                                        setSearchParams(params, { preventScrollReset: true });
+                                    }}
+                                    key={itemValue}
+                                >
+                                    <span className="flex items-center justify-center gap-1">
+                                        <TagIcon name={itemValue} />
+                                        {itemLabel}
+                                    </span>
+                                </LabelledTernaryCheckbox>
+                            );
+                        })}
+                    </div>
+
+                    {footerItem}
+                </div>
             </div>
-            {!isOpen && collapsible ? null : footerItem}
         </section>
     );
 }

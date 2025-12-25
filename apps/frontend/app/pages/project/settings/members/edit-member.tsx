@@ -16,6 +16,7 @@ import { ImgWrapper } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { LabelledCheckbox } from "~/components/ui/checkbox";
+import { collapsibleBoxClassName } from "~/components/ui/collapsible";
 import { Form, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import Link from "~/components/ui/link";
@@ -106,7 +107,7 @@ export function ProjectTeamMember({
     }, [member]);
 
     return (
-        <Card className="flex w-full flex-col gap-4 p-card-surround">
+        <Card className="grid w-full p-card-surround">
             {/* Head */}
             <div className="flex w-full flex-wrap items-center justify-between">
                 {/* Member profile details */}
@@ -156,13 +157,13 @@ export function ProjectTeamMember({
             </div>
 
             {/* Body */}
-            {detailsOpen && (
+            <div className={collapsibleBoxClassName(detailsOpen, "pt-4", "pt-0")}>
                 <Form {...form}>
                     <form
                         onSubmit={async (e) => {
                             submitFormWithErrorHandling(e, updateTeamMemberFormSchema, form, updateMemberDetails);
                         }}
-                        className="flex w-full flex-col gap-form-elements"
+                        className="grid gap-form-elements"
                     >
                         <FormField
                             control={form.control}
@@ -271,7 +272,7 @@ export function ProjectTeamMember({
                         </div>
                     </form>
                 </Form>
-            )}
+            </div>
         </Card>
     );
 }
@@ -410,7 +411,7 @@ export function OrgTeamMember({
     }
 
     return (
-        <Card className="flex w-full flex-col gap-4 p-card-surround">
+        <Card className="grid w-full p-card-surround">
             {/* Head */}
             <div className="flex w-full flex-wrap items-center justify-between">
                 {/* Member profile details */}
@@ -462,7 +463,7 @@ export function OrgTeamMember({
             </div>
 
             {/* Body */}
-            {detailsOpen && (
+            <div className={collapsibleBoxClassName(detailsOpen, "pt-4", "pt-0")}>
                 <Form {...form}>
                     <form
                         onSubmit={async (e) => {
@@ -478,7 +479,7 @@ export function OrgTeamMember({
                             if (permsOverridden && overridePerms) await updateMemberDetails(data);
                             else if (!permsOverridden && overridePerms) await addPermissionOverride(data);
                         }}
-                        className="flex w-full flex-col gap-form-elements"
+                        className="grid w-full gap-form-elements"
                     >
                         <FormItem className="flex-row items-center justify-between gap-x-4 sm:gap-x-8">
                             <div className="flex flex-col items-start justify-center gap-1">
@@ -580,7 +581,7 @@ export function OrgTeamMember({
                         </div>
                     </form>
                 </Form>
-            )}
+            </div>
         </Card>
     );
 }
