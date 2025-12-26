@@ -1,14 +1,18 @@
 import { isModerator } from "@app/utils/constants/roles";
-import { CollectionVisibility } from "@app/utils/types";
-import type { ContextUserData } from "~/types";
+import { CollectionVisibility, type GlobalUserRole } from "@app/utils/types";
 
-export function CollectionAccessible(visibility: string, ownerId: string, user: ContextUserData | null) {
+interface User_T {
+    id: string;
+    role: GlobalUserRole;
+}
+
+export function CollectionAccessible(visibility: string, ownerId: string, user: User_T | null) {
     if (visibility !== CollectionVisibility.PRIVATE) return true;
     if (!user) return false;
     return user.id === ownerId;
 }
 
-export function CanEditCollection(ownerId: string, user: ContextUserData | null) {
+export function CanEditCollection(ownerId: string, user: User_T | null) {
     if (!user) return false;
     // @MOD-PRIVILEGE
     if (isModerator(user.role)) return true;

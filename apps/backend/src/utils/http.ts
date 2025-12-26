@@ -5,6 +5,8 @@ import env from "~/utils/env";
 
 export const HTTP_STATUS = {
     OK: 200,
+    CREATED: 201,
+    NO_CONTENT: 204,
     BAD_REQUEST: 400,
     UNAUTHENTICATED: 401,
     UNAUTHORIZED: 403,

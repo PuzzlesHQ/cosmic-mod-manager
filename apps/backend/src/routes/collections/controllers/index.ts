@@ -8,12 +8,13 @@ import type { Collection, CollectionOwner } from "@app/utils/types/api";
 import {
     CreateCollection,
     DeleteCollection,
+    DeleteManyCollections_ByUserId,
     GetCollection,
     GetCollections_ByUserId,
     GetManyCollections_ById,
     UpdateCollection,
 } from "~/db/collection_item";
-import { CreateFile, DeleteFile_ByID } from "~/db/file_item";
+import { CreateFile, DeleteFile_ByID, DeleteManyFiles_ByID } from "~/db/file_item";
 import { GetManyProjects_ListItem } from "~/db/project_item";
 import { GetUser_ByIdOrUsername } from "~/db/user_item";
 import { getManyProjects } from "~/routes/project/controllers";
@@ -283,6 +284,33 @@ export async function deleteUserCollection(collectionId: string, sessionUser: Co
             message: "Collection deleted!",
         },
         status: HTTP_STATUS.OK,
+    };
+}
+
+export async function deleteAllUserCollections(user_id: string, sessionUser: Pick<ContextUserData, "id" | "role">) {
+    const collections = await GetCollections_ByUserId(user_id);
+    if (!CanEditCollection(user_id, sessionUser)) {
+        return unauthorizedReqResponseData("You don't have permission to delete these collections!");
+    }
+
+    const collectionDetails = await GetManyCollections_ById(collections);
+    const iconFiles = [];
+    for (const collection of collectionDetails) {
+        if (collection.iconFileId) {
+            iconFiles.push(collection.iconFileId);
+        }
+    }
+
+    await DeleteManyFiles_ByID(iconFiles);
+    await Promise.all(
+        collectionDetails.map((collection) => deleteCollectionDirectory(FILE_STORAGE_SERVICE.LOCAL, collection.id)),
+    );
+
+    await DeleteManyCollections_ByUserId(user_id);
+
+    return {
+        data: null,
+        status: HTTP_STATUS.NO_CONTENT,
     };
 }
 

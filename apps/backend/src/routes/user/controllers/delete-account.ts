@@ -1,14 +1,15 @@
 import { DELETE_USER_ACCOUNT_EMAIL_VALIDITY_ms, SITE_NAME_SHORT } from "@app/utils/constants";
 import { ConfirmationType } from "@app/utils/types";
-import { DeleteManyCollections_ByUserId } from "~/db/collection_item";
+import { DeleteFile_ByID } from "~/db/file_item";
 import { DeleteManyOrganizations, GetManyOrganizations } from "~/db/organization_item";
 import { GetManyProjects_ListItem, UpdateManyProjects } from "~/db/project_item";
 import { CreateTeamMember, UpdateTeamMember } from "~/db/team-member_item";
 import { DeleteUser, Get_UserProjects, GetUser_ByIdOrUsername } from "~/db/user_item";
 import { DeleteUserConfirmation } from "~/db/userConfirmation_item";
 import { hashString } from "~/routes/auth/helpers";
-import { deleteCollectionDirectory, deleteUserDirectory } from "~/services/storage";
-import { FILE_STORAGE_SERVICE } from "~/types";
+import { deleteAllUserCollections } from "~/routes/collections/controllers";
+import { deleteUserDirectory } from "~/services/storage";
+import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
 import { isConfirmationCodeValid } from "~/utils";
 import env from "~/utils/env";
 import { HTTP_STATUS, invalidRequestResponseData, serverErrorResponseData } from "~/utils/http";
@@ -86,12 +87,7 @@ export async function confirmUserAccountDeletion(token: string) {
     );
 
     // Delete user collections
-    const collectionIds = await DeleteManyCollections_ByUserId(user.id);
-    await Promise.all(
-        collectionIds.map((id) => {
-            return deleteCollectionDirectory(FILE_STORAGE_SERVICE.LOCAL, id);
-        }),
-    );
+    await deleteAllUserCollections(user.id, user as Pick<ContextUserData, "id" | "role">);
 
     // Move user projects to the archive user
     const userProjects = await Get_UserProjects(user.id);
@@ -113,6 +109,10 @@ export async function confirmUserAccountDeletion(token: string) {
     await DeleteUser({
         where: { id: user.id },
     });
+
+    if (user.profilePageBg) await DeleteFile_ByID(user.profilePageBg);
+    if (user.avatar) await DeleteFile_ByID(user.avatar);
+
     await deleteUserDirectory(FILE_STORAGE_SERVICE.LOCAL, user.id);
 
     return {

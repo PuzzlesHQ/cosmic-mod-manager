@@ -149,12 +149,6 @@ export async function DeleteManyCollections_ByUserId(userId: string) {
     return collection_ids;
 }
 
-// export function DeleteManyCollections<T extends Prisma.CollectionDeleteManyArgs>(
-//     args: Prisma.SelectSubset<T, Prisma.CollectionDeleteManyArgs>,
-// ) {
-//     return prisma.collection.deleteMany(args);
-// }
-
 // Cache things
 interface SetCache_Data {
     id: string;
