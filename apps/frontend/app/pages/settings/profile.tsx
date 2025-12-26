@@ -34,10 +34,10 @@ interface Props {
 
 function initForm(user: LoggedInUserData) {
     return {
-        name: user.name || "",
+        name: user.name,
         userName: user.userName,
-        avatar: user.avatar || "",
-        bio: user.bio || "",
+        avatar: user.avatar,
+        bio: user.bio,
         profilePageBg: user.profilePageBg,
     };
 }
@@ -54,7 +54,6 @@ export function ProfileSettingsPage({ session }: Props) {
         resolver: zodResolver(profileUpdateFormSchema),
         defaultValues: initialValues,
     });
-    form.watch();
 
     async function saveSettings(values: z.infer<typeof profileUpdateFormSchema>) {
         if (isLoading) return;
@@ -146,7 +145,7 @@ export function ProfileSettingsPage({ session }: Props) {
                                     </FormLabel>
                                     <Input
                                         {...field}
-                                        value={field.value || ""}
+                                        value={field.value ?? ""}
                                         className="md:w-[32ch]"
                                         id="displayname-input"
                                         autoComplete="name"
@@ -169,7 +168,7 @@ export function ProfileSettingsPage({ session }: Props) {
 
                                     <Textarea
                                         {...field}
-                                        value={field.value || ""}
+                                        value={field.value ?? ""}
                                         className="min-h-16 resize-none md:w-[48ch]"
                                         spellCheck="false"
                                         id="user-description-input"
@@ -290,12 +289,7 @@ export function ProfileSettingsPage({ session }: Props) {
                         />
 
                         <div className="mt-2 flex w-full flex-wrap items-center gap-x-3 gap-y-2">
-                            <Button
-                                type="submit"
-                                disabled={
-                                    JSON.stringify(initialValues) === JSON.stringify(form.getValues()) || isLoading
-                                }
-                            >
+                            <Button type="submit" disabled={!form.formState.isDirty || isLoading}>
                                 {isLoading ? (
                                     <LoadingSpinner size="xs" />
                                 ) : (

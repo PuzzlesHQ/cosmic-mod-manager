@@ -2,7 +2,7 @@ import type { GlobalUserRole } from "./../index";
 
 export interface UserProfileData {
     id: string;
-    name: string;
+    name: string | null;
     userName: string;
     role: GlobalUserRole;
     avatar: string | null;

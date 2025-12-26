@@ -79,7 +79,7 @@ export default function UserPageLayout(props: Props) {
 
     // Using the JSX syntax returns an Element object which is not easy to check if it's null or not, so using the function syntax
     const sidebar = PageSidebar({
-        displayName: props.userData.name,
+        displayName: props.userData.name || props.userData.userName,
         userId: props.userData.id,
         orgsList: props.orgsList || [],
     });
@@ -142,7 +142,7 @@ export default function UserPageLayout(props: Props) {
                     {navLinks.length < 1 ? (
                         <div className="flex w-full items-center justify-center py-12">
                             <p className="text-center text-foreground-muted text-lg italic">
-                                {t.user.doesntHaveProjects(props.userData.name)}
+                                {t.user.doesntHaveProjects(props.userData.name || props.userData.userName)}
                             </p>
                         </div>
                     ) : (
@@ -249,7 +249,7 @@ function ProfilePageHeader({ userData, totalProjects, totalDownloads }: ProfileP
             className={cn("blurred", userData.profilePageBg && "rounded-lg border-transparent px-4 py-4")}
             iconClassName="rounded-full"
             fallbackIcon={fallbackUserIcon}
-            title={userData.name}
+            title={userData.name || userData.userName}
             description={userData.bio || ""}
             titleBadge={
                 title ? (

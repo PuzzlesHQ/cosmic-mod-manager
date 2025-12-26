@@ -37,14 +37,8 @@ function AddPasswordForm({ email }: { email: string }) {
         },
     });
 
-    form.watch();
-    const isFormSubmittable =
-        !!form.getValues().confirmNewPassword &&
-        !!form.getValues()?.newPassword &&
-        form.getValues().newPassword === form.getValues().confirmNewPassword;
-
     async function addNewPassword(values: z.infer<typeof setNewPasswordFormSchema>) {
-        if (isLoading || !isFormSubmittable) return;
+        if (isLoading) return;
         setIsLoading(true);
         disableInteractions();
 
@@ -131,7 +125,7 @@ function AddPasswordForm({ email }: { email: string }) {
                                 <DialogClose asChild>
                                     <CancelButton />
                                 </DialogClose>
-                                <Button disabled={!isFormSubmittable || isLoading}>
+                                <Button disabled={!form.formState.isDirty || isLoading}>
                                     {isLoading ? (
                                         <LoadingSpinner size="xs" />
                                     ) : (

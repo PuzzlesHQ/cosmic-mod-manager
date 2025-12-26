@@ -108,7 +108,7 @@ async function getUserFromSessionToken(token: string): Promise<ContextUserData |
         email: sessionUser.email,
         avatar: sessionUser.avatar,
         userName: sessionUser.userName,
-        name: sessionUser.name || sessionUser.userName,
+        name: sessionUser.name,
         dateJoined: sessionUser.dateJoined,
         emailVerified: sessionUser.emailVerified,
         role: sessionUser.role as GlobalUserRole,
