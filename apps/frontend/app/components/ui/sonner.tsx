@@ -11,7 +11,7 @@ export function Toaster(props: React.ComponentProps<typeof Sonner>) {
             toastOptions={{
                 classNames: {
                     toast: "text-base group toast group-[.toaster]:bg-card-background group-[.toaster]:text-foreground-bright group-[.toaster]:border group-[.toaster]:border-border",
-                    title: "leading-tight",
+                    title: "leading-tight text-sm",
                     description: "text-sm !text-foreground-muted",
                     actionButton: "!bg-accent-bg !text-accent-bg-foreground",
                     cancelButton: "!bg-raised-background !text-foreground-muted",

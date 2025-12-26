@@ -7,9 +7,12 @@ export async function zodParse<T extends z.Schema, K>(schema: T, data: unknown, 
     if (parsedData.success) {
         return { data: parsedData.data, error: null };
     } else {
+        const error = parsedData.error;
+        const errorMsg = error?.issues?.[0]?.message;
+        const errorPath = error?.issues?.[0]?.path?.[0];
         return {
             data: null,
-            error: z.prettifyError(parsedData.error),
+            error: errorMsg && (errorPath as string) ? `${String(errorPath)}: ${errorMsg}` : z.prettifyError(error),
         };
     }
 }

@@ -49,7 +49,6 @@ export default function UploadVersionPage() {
             featured: false,
         },
     });
-    form.watch();
 
     const versionsPageUrl = ProjectPagePath(ctx.projectType, projectData.slug, "versions");
 
