@@ -2,13 +2,17 @@ import { getFileType } from "@app/utils/convertors";
 import { parseFileSize } from "@app/utils/number";
 import { getLoadersByProjectType } from "@app/utils/project";
 import type { z } from "@app/utils/schemas";
-import type { VersionDependencies } from "@app/utils/schemas/project/version";
+import type {
+    updateVersionFormSchema,
+    VersionDependencies,
+    VersionMetadataSchemaT,
+} from "@app/utils/schemas/project/version";
 import GAME_VERSIONS, { isExperimentalGameVersion } from "@app/utils/src/constants/game-versions";
 import { CapitalizeAndFormatString, createURLSafeSlug } from "@app/utils/string";
 import {
     DependencyType,
     DependsOn,
-    type FileObjectType,
+    type FileObjectType as FileObject_T,
     type ProjectType,
     VersionReleaseChannel,
 } from "@app/utils/types";
@@ -17,7 +21,7 @@ import type { DependencyData } from "@app/utils/types/project";
 import { imageUrl } from "@app/utils/url";
 import { CircleAlertIcon, FileIcon, PlusIcon, StarIcon, Trash2Icon, UploadIcon } from "lucide-react";
 import { useState } from "react";
-import type { Control, FieldValues, RefCallBack } from "react-hook-form";
+import type { Control, Path, RefCallBack } from "react-hook-form";
 import { CancelButtonIcon } from "~/components/icons";
 import { ContentCardTemplate } from "~/components/misc/panel";
 import { ImgWrapper } from "~/components/ui/avatar";
@@ -164,14 +168,15 @@ export function UploadVersionPageTopCard({
     );
 }
 
-interface MetadataInputCardProps {
+export function MetadataInputCard<FieldsT extends {}>(props: {
     projectType: ProjectType[];
-    formControl: Control<FieldValues>;
-}
-export function MetadataInputCard({ projectType, formControl }: MetadataInputCardProps) {
+    formControl: Control<FieldsT>;
+}) {
     const { t } = useTranslation();
     const [showAllVersions, setShowAllVersions] = useState(false);
-    const availableLoaders = getLoadersByProjectType(projectType);
+    const availableLoaders = getLoadersByProjectType(props.projectType);
+
+    const formControl = props.formControl as unknown as Control<VersionMetadataSchemaT>;
 
     return (
         <ContentCardTemplate
@@ -600,7 +605,7 @@ function DependencyItem({
 
 interface PrimaryFileInputProps {
     children: React.ReactNode;
-    selectedFile?: File | FileObjectType;
+    selectedFile?: File | FileObject_T;
     inputId: string;
 }
 
@@ -637,49 +642,49 @@ export function SelectPrimaryFileInput({ children, selectedFile, inputId }: Prim
     );
 }
 
-export function SelectAdditionalProjectFiles({ formControl }: { formControl: Control<FieldValues> }) {
+type AdditionalFiles_T = z.input<typeof updateVersionFormSchema>["additionalFiles"][number];
+
+export function SelectAdditionalProjectFiles(props: {
+    fieldName: Path<z.input<typeof updateVersionFormSchema>>;
+    value: AdditionalFiles_T[];
+    onChange: (value: AdditionalFiles_T[]) => void;
+}) {
     return (
-        <FormField
-            control={formControl}
-            name="additionalFiles"
-            render={({ field }) => (
-                <AdditionalFiles inputId="additional-files-input" selectedFiles={field.value} onChange={field.onChange}>
-                    <input
-                        type="file"
-                        hidden
-                        name={field.name}
-                        multiple
-                        id="additional-files-input"
-                        className="hidden"
-                        onChange={async (e) => {
-                            e.preventDefault();
+        <AdditionalFiles inputId="additional-files-input" selectedFiles={props.value} onChange={props.onChange}>
+            <input
+                type="file"
+                hidden
+                multiple
+                name={props.fieldName}
+                id="additional-files-input"
+                className="hidden"
+                onChange={async (e) => {
+                    e.preventDefault();
 
-                            const newFiles: File[] = [];
-                            mainLoop: for (let i = 0; i < (e.target.files?.length || 0); i++) {
-                                const file = e.target.files?.[i];
-                                if (!file?.name) continue;
+                    const newFiles: File[] = [];
+                    mainLoop: for (let i = 0; i < (e.target.files?.length || 0); i++) {
+                        const file = e.target.files?.[i];
+                        if (!file?.name) continue;
 
-                                const fileType = await getFileType(file);
-                                if (!fileType) {
-                                    toast.error(`Invalid file "${file.name}" with type "${fileType}"`);
-                                    continue;
-                                }
+                        const fileType = await getFileType(file);
+                        if (!fileType) {
+                            toast.error(`Invalid file "${file.name}" with type "${fileType}"`);
+                            continue;
+                        }
 
-                                for (const existingFile of field.value || []) {
-                                    if (existingFile.name.toLowerCase() === file.name.toLowerCase()) {
-                                        toast.error(`Cannot add duplicate file. Adding "${file.name}"`);
-                                        continue mainLoop;
-                                    }
-                                }
-
-                                newFiles.push(file);
+                        for (const existingFile of props.value) {
+                            if (existingFile.name.toLowerCase() === file.name.toLowerCase()) {
+                                toast.error(`Cannot add duplicate file. Adding "${file.name}"`);
+                                continue mainLoop;
                             }
-                            field.onChange([...(field.value || []), ...newFiles]);
-                        }}
-                    />
-                </AdditionalFiles>
-            )}
-        />
+                        }
+
+                        newFiles.push(file);
+                    }
+                    props.onChange([...props.value, ...newFiles]);
+                }}
+            />
+        </AdditionalFiles>
     );
 }
 
@@ -690,9 +695,9 @@ function AdditionalFiles({
     onChange,
 }: {
     children: React.ReactNode;
-    selectedFiles?: (File | FileObjectType)[];
+    selectedFiles?: AdditionalFiles_T[];
     inputId: string;
-    onChange: (...event: unknown[]) => void;
+    onChange: (newList: AdditionalFiles_T[]) => void;
 }) {
     const { t } = useTranslation();
 

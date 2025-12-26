@@ -4,10 +4,8 @@ import type { z } from "@app/utils/schemas";
 import { newVersionFormSchema } from "@app/utils/schemas/project/version";
 import { allowedPrimaryFileTypes, isVersionPrimaryFileValid } from "@app/utils/schemas/validation";
 import { VersionReleaseChannel } from "@app/utils/types";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import MarkdownEditor from "~/components/md-editor/editor";
 import { ContentCardTemplate } from "~/components/misc/panel";
 import RefreshPage from "~/components/misc/refresh-page";
@@ -15,6 +13,7 @@ import { Form, FormField, FormItem } from "~/components/ui/form";
 import { useNavigate } from "~/components/ui/link";
 import { toast } from "~/components/ui/sonner";
 import { useProjectData } from "~/hooks/project";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import { submitFormWithErrorHandling } from "~/utils/form";
@@ -37,8 +36,7 @@ export default function UploadVersionPage() {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
-    const form = useForm<z.infer<typeof newVersionFormSchema>>({
-        resolver: zodResolver(newVersionFormSchema),
+    const form = useFormHook(newVersionFormSchema, {
         defaultValues: {
             title: "",
             changelog: "",
@@ -221,12 +219,20 @@ export default function UploadVersionPage() {
                                 )}
                             />
 
-                            {/* @ts-expect-error */}
-                            <SelectAdditionalProjectFiles formControl={form.control} />
+                            <FormField
+                                control={form.control}
+                                name="additionalFiles"
+                                render={({ field }) => (
+                                    <SelectAdditionalProjectFiles
+                                        fieldName={field.name}
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                    />
+                                )}
+                            />
                         </ContentCardTemplate>
                     </div>
 
-                    {/* @ts-expect-error */}
                     <MetadataInputCard projectType={projectData.type} formControl={form.control} />
                 </div>
             </form>

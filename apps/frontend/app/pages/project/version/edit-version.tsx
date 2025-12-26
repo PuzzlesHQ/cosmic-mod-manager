@@ -4,11 +4,9 @@ import { getLoadersByProjectType } from "@app/utils/project";
 import type { z } from "@app/utils/schemas";
 import { updateVersionFormSchema } from "@app/utils/schemas/project/version";
 import { VersionReleaseChannel } from "@app/utils/types";
-import { zodResolver } from "@hookform/resolvers/zod";
+import type { ProjectVersionData } from "@app/utils/types/api";
 import { FileIcon, SaveIcon, Trash2Icon } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useParams } from "react-router";
 import MarkdownEditor from "~/components/md-editor/editor";
 import { ContentCardTemplate } from "~/components/misc/panel";
 import RefreshPage from "~/components/misc/refresh-page";
@@ -17,6 +15,7 @@ import { Form, FormField, FormItem } from "~/components/ui/form";
 import { useNavigate } from "~/components/ui/link";
 import { toast } from "~/components/ui/sonner";
 import { useProjectData } from "~/hooks/project";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import { submitFormWithErrorHandling } from "~/utils/form";
@@ -30,53 +29,49 @@ import {
     VersionTitleInput,
 } from "./_components";
 
-export default function EditVersionPage() {
-    const { t } = useTranslation();
-    const { versionSlug } = useParams();
+interface EditVersionPageProps {
+    versionData: ProjectVersionData;
+}
+
+export default function EditVersionPage({ versionData }: EditVersionPageProps) {
     const ctx = useProjectData();
     const projectData = ctx.projectData;
 
-    const [isLoading, setIsLoading] = useState(false);
+    const { t } = useTranslation();
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
-    const availableLoaders = getLoadersByProjectType(projectData.type);
-    let versionData = ctx.allProjectVersions?.find((v) => v.slug === versionSlug || v.id === versionSlug);
-    if (versionSlug === "latest") versionData = ctx.allProjectVersions[0];
-
-    const versionAdditionalFiles = [];
-    if (versionData?.files) {
-        for (const file of versionData.files) {
-            if (file.isPrimary === true) continue;
-            versionAdditionalFiles.push({
+    const versionAdditionalFiles = versionData.files
+        .filter((file) => file.isPrimary !== true)
+        .map((file) => {
+            return {
                 id: file.id,
                 name: file.name,
                 size: file.size,
                 type: file.type,
-            });
-        }
-    }
+            };
+        });
 
-    const initialLoaders = availableLoaders.length ? versionData?.loaders || [] : [];
-    const form = useForm<z.infer<typeof updateVersionFormSchema>>({
-        resolver: zodResolver(updateVersionFormSchema),
+    const availableLoaders = getLoadersByProjectType(projectData.type);
+    const initialLoaders = availableLoaders.length ? versionData.loaders || [] : [];
+
+    const form = useFormHook(updateVersionFormSchema, {
         defaultValues: {
-            title: versionData?.title || "",
-            changelog: versionData?.changelog || "" || "",
-            releaseChannel: versionData?.releaseChannel || VersionReleaseChannel.RELEASE,
-            featured: versionData?.featured || false,
-            versionNumber: versionData?.versionNumber || "",
+            title: versionData.title,
+            changelog: versionData.changelog,
+            releaseChannel: versionData.releaseChannel || VersionReleaseChannel.RELEASE,
+            featured: versionData.featured,
+            versionNumber: versionData.versionNumber,
             loaders: initialLoaders,
-            gameVersions: versionData?.gameVersions || [],
+            gameVersions: versionData.gameVersions,
             additionalFiles: versionAdditionalFiles,
-            dependencies:
-                versionData?.dependencies.map((dep) => ({
-                    projectId: dep.projectId,
-                    versionId: dep.versionId,
-                    dependencyType: dep.dependencyType,
-                })) || [],
+            dependencies: versionData.dependencies.map((dep) => ({
+                projectId: dep.projectId,
+                versionId: dep.versionId,
+                dependencyType: dep.dependencyType,
+            })),
         },
     });
-    form.watch();
 
     async function handleSubmit(values: z.infer<typeof updateVersionFormSchema>) {
         if (isLoading || !projectData || !versionData) return;
@@ -114,14 +109,13 @@ export default function EditVersionPage() {
 
             RefreshPage(
                 navigate,
-                VersionPagePath(ctx.projectType, projectData.slug, result?.data?.slug || versionData?.slug),
+                VersionPagePath(ctx.projectType, projectData.slug, result?.data?.slug || versionData.slug),
             );
         } finally {
             setIsLoading(false);
         }
     }
 
-    if (!projectData || !versionData?.id) return null;
     const versionsPageUrl = ProjectPagePath(ctx.projectType, projectData.slug, "versions");
     const currVersionPageUrl = VersionPagePath(ctx.projectType, projectData.slug, versionData.slug);
 
@@ -217,9 +211,9 @@ export default function EditVersionPage() {
 
                                     <div className="flex flex-wrap items-center justify-start gap-x-2">
                                         <span>
-                                            <strong className="font-semibold">{versionData?.primaryFile?.name}</strong>{" "}
+                                            <strong className="font-semibold">{versionData.primaryFile?.name}</strong>{" "}
                                             <span className="ms-0.5 whitespace-nowrap">
-                                                ({parseFileSize(versionData?.primaryFile?.size || 0)})
+                                                ({parseFileSize(versionData.primaryFile?.size || 0)})
                                             </span>{" "}
                                             <span className="ms-1 text-foreground-muted italic">
                                                 {t.version.primary}
@@ -234,19 +228,21 @@ export default function EditVersionPage() {
                                 </Button>
                             </div>
 
-                            <SelectAdditionalProjectFiles
-                                fieldName="existingAdditionalFiles"
-                                // @ts-expect-error
-                                formControl={form.control}
+                            <FormField
+                                control={form.control}
+                                name="additionalFiles"
+                                render={({ field }) => (
+                                    <SelectAdditionalProjectFiles
+                                        fieldName={field.name}
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                    />
+                                )}
                             />
                         </ContentCardTemplate>
                     </div>
 
-                    <MetadataInputCard
-                        projectType={projectData.type}
-                        // @ts-expect-error
-                        formControl={form.control}
-                    />
+                    <MetadataInputCard projectType={projectData.type} formControl={form.control} />
                 </div>
             </form>
         </Form>

@@ -2,7 +2,6 @@ import { getProjectTypeFromName } from "@app/utils/convertors";
 import { FormatDate_ToLocaleString } from "@app/utils/date";
 import { FormatCount } from "@app/utils/number";
 import { CapitalizeAndFormatString } from "@app/utils/string";
-import type { ProjectVersionData } from "@app/utils/types/api";
 import { formatVersionsForDisplay } from "@app/utils/version/format";
 import { useEffect } from "react";
 import { useParams, useSearchParams } from "react-router";
@@ -16,6 +15,7 @@ import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
 import { ProjectPagePath, VersionPagePath } from "~/utils/urls";
 import type { Route } from "./+types/page";
+import { findProjectVersion } from "./find-version";
 
 export default function () {
     const { t } = useTranslation();
@@ -23,7 +23,7 @@ export default function () {
     const { projectSlug, versionSlug } = useParams();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
-    const versionData = filterGameVersion(ctx.allProjectVersions, versionSlug, searchParams);
+    const versionData = findProjectVersion(ctx.allProjectVersions, versionSlug, searchParams);
 
     useEffect(() => {
         if (versionSlug !== "latest" || !projectSlug || !versionData) return;
@@ -57,7 +57,7 @@ export function meta(props: Route.MetaArgs) {
     const project = ctx?.projectData;
     const versionSlug = props.params?.versionSlug;
 
-    const version = filterGameVersion(ctx.versions, versionSlug, new URLSearchParams(props.location.search));
+    const version = findProjectVersion(ctx.versions, versionSlug, new URLSearchParams(props.location.search));
 
     if (!project?.id) {
         return null;
@@ -104,31 +104,4 @@ export function meta(props: Route.MetaArgs) {
         url: Config.FRONTEND_URL + ProjectPagePath(project.type?.[0], project.slug, `version/${version.slug}`),
         parentMetaTags: props.matches[1].meta,
     });
-}
-
-function filterGameVersion(
-    gameVersions: ProjectVersionData[] | undefined,
-    slug: string | undefined,
-    searchParams: URLSearchParams,
-) {
-    if (!slug || !gameVersions?.length) return null;
-    if (slug !== "latest") return gameVersions.find((version) => version.slug === slug || version.id === slug);
-
-    const gameVersion = searchParams.get("gameVersion");
-    const loader = searchParams.get("loader");
-    const releaseChannel = searchParams.get("releaseChannel");
-
-    if (!gameVersion && !loader && !releaseChannel) return gameVersions[0];
-
-    for (let i = 0; i < gameVersions.length; i++) {
-        const version = gameVersions[i];
-
-        if (gameVersion?.length && !version.gameVersions.includes(gameVersion)) continue;
-        if (loader?.length && !version.loaders.includes(loader)) continue;
-        if (releaseChannel?.length && version.releaseChannel !== releaseChannel.toLowerCase()) continue;
-
-        return version;
-    }
-
-    return null;
 }

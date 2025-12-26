@@ -14,6 +14,8 @@ import { fileMaxSize_ErrMsg, mustBeURLSafe } from "~/schemas/utils";
 import { createURLSafeSlug } from "~/string";
 import { DependencyType, VersionReleaseChannel } from "~/types";
 
+const releaseChannelSchema = z.enum(VersionReleaseChannel).default(VersionReleaseChannel.RELEASE);
+
 const VersionNumber = z
     .string()
     .min(1)
@@ -52,26 +54,24 @@ export const VersionDependencies = z
 export const newVersionFormSchema = z.object({
     title: z.string().min(MIN_VERSION_TITLE_LENGTH).max(MAX_VERSION_TITLE_LENGTH),
     changelog: z.string().max(MAX_VERSION_CHANGELOG_LENGTH).nullable(),
-    releaseChannel: z.enum(VersionReleaseChannel).default(VersionReleaseChannel.RELEASE).nullish(),
     featured: z.boolean(),
+
+    releaseChannel: releaseChannelSchema,
     versionNumber: VersionNumber,
     loaders: ProjectLoaders,
     gameVersions: SupportedGameVersions,
-    dependencies: VersionDependencies,
 
+    dependencies: VersionDependencies,
     primaryFile: z.file().max(MAX_VERSION_FILE_SIZE, fileMaxSize_ErrMsg(MAX_VERSION_FILE_SIZE)),
     additionalFiles: z
-        .file()
-        .max(MAX_ADDITIONAL_VERSION_FILE_SIZE, fileMaxSize_ErrMsg(MAX_ADDITIONAL_VERSION_FILE_SIZE))
-        .array()
-        .max(MAX_OPTIONAL_FILES, `You can upload up to ${MAX_OPTIONAL_FILES} additional files only.`)
-        .nullable(),
+        .array(z.file().max(MAX_ADDITIONAL_VERSION_FILE_SIZE, fileMaxSize_ErrMsg(MAX_ADDITIONAL_VERSION_FILE_SIZE)))
+        .max(MAX_OPTIONAL_FILES, `You can upload up to ${MAX_OPTIONAL_FILES} additional files only.`),
 });
 
 export const updateVersionFormSchema = z.object({
     title: z.string().min(MIN_VERSION_TITLE_LENGTH).max(MAX_VERSION_TITLE_LENGTH),
     changelog: z.string().max(MAX_VERSION_CHANGELOG_LENGTH).nullable(),
-    releaseChannel: z.enum(VersionReleaseChannel).default(VersionReleaseChannel.RELEASE).nullish(),
+    releaseChannel: releaseChannelSchema,
     featured: z.boolean(),
     versionNumber: VersionNumber,
     loaders: ProjectLoaders,
@@ -91,3 +91,13 @@ export const updateVersionFormSchema = z.object({
         .array()
         .max(MAX_OPTIONAL_FILES),
 });
+
+// just used as a type
+const versionMetadataFormSchema = z.object({
+    releaseChannel: releaseChannelSchema,
+    versionNumber: VersionNumber,
+    loaders: ProjectLoaders,
+    gameVersions: SupportedGameVersions,
+});
+
+export type VersionMetadataSchemaT = z.infer<typeof versionMetadataFormSchema>;
