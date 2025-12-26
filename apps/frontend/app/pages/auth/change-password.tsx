@@ -1,9 +1,6 @@
-import type { z } from "@app/utils/schemas";
 import { sendAccoutPasswordChangeLinkFormSchema } from "@app/utils/schemas/settings";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRightIcon } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
 import { Form, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
@@ -12,6 +9,7 @@ import { Input } from "~/components/ui/input";
 import { LinkPrefetchStrategy, TextLink } from "~/components/ui/link";
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 
@@ -19,8 +17,7 @@ export default function ChangePasswordPage() {
     const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
 
-    const form = useForm<z.infer<typeof sendAccoutPasswordChangeLinkFormSchema>>({
-        resolver: zodResolver(sendAccoutPasswordChangeLinkFormSchema),
+    const form = useFormHook(sendAccoutPasswordChangeLinkFormSchema, {
         defaultValues: {
             email: "",
         },

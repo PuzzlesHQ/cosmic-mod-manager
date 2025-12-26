@@ -2,11 +2,8 @@ import { MAX_ORGANISATION_DESCRIPTION_LENGTH, MAX_ORGANISATION_NAME_LENGTH } fro
 import type { z } from "@app/utils/schemas";
 import { orgSettingsFormSchema } from "@app/utils/schemas/organisation/settings/general";
 import { createURLSafeSlug } from "@app/utils/string";
-import type { Organisation } from "@app/utils/types/api";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { SaveIcon, Trash2Icon } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import IconPicker from "~/components/icon-picker";
 import { fallbackProjectIcon } from "~/components/icons";
 import MarkdownRenderBox from "~/components/md-editor/md-renderer";
@@ -34,21 +31,13 @@ import { Textarea } from "~/components/ui/textarea";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { useOrgData } from "~/hooks/org";
 import { useSession } from "~/hooks/session";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import { LeaveTeam } from "~/pages/project/settings/members/page";
 import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";
 import { submitFormWithErrorHandling } from "~/utils/form";
 import { OrgPagePath } from "~/utils/urls";
-
-function getInitialValues(orgData: Organisation) {
-    return {
-        icon: orgData.icon || "",
-        name: orgData.name,
-        slug: orgData.slug,
-        description: orgData.description || "",
-    };
-}
 
 export default function GeneralOrgSettings() {
     const { t } = useTranslation();
@@ -59,13 +48,14 @@ export default function GeneralOrgSettings() {
     const navigate = useNavigate();
 
     const orgMembership = orgData.members.find((m) => m.userId === session?.id);
-
-    const initialValues = getInitialValues(orgData);
-    const form = useForm<z.infer<typeof orgSettingsFormSchema>>({
-        resolver: zodResolver(orgSettingsFormSchema),
-        defaultValues: initialValues,
+    const form = useFormHook(orgSettingsFormSchema, {
+        values: {
+            icon: orgData.icon,
+            name: orgData.name,
+            slug: orgData.slug,
+            description: orgData.description ?? "",
+        },
     });
-    form.watch();
 
     async function saveSettings(values: z.infer<typeof orgSettingsFormSchema>) {
         if (isLoading) return;
@@ -73,7 +63,7 @@ export default function GeneralOrgSettings() {
 
         try {
             const formData = new FormData();
-            formData.append("icon", values.icon || "");
+            formData.append("icon", values.icon ?? "");
             formData.append("name", values.name);
             formData.append("slug", values.slug);
             formData.append("description", values.description);
@@ -190,12 +180,7 @@ export default function GeneralOrgSettings() {
                         />
 
                         <div className="mt-2 flex w-full items-center justify-end">
-                            <Button
-                                type="submit"
-                                disabled={
-                                    JSON.stringify(initialValues) === JSON.stringify(form.getValues()) || isLoading
-                                }
-                            >
+                            <Button type="submit" disabled={!form.formState.isDirty || isLoading}>
                                 {isLoading ? (
                                     <LoadingSpinner size="xs" />
                                 ) : (

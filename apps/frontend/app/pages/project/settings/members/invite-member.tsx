@@ -1,14 +1,13 @@
 import type { z } from "@app/utils/schemas";
 import { inviteTeamMemberFormSchema } from "@app/utils/schemas/project/settings/members";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { UserPlusIcon } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { Button } from "~/components/ui/button";
 import { Form, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 
@@ -23,8 +22,7 @@ export default function InviteMemberForm({ teamId, canInviteMembers, dataRefetch
     const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
 
-    const form = useForm<z.infer<typeof inviteTeamMemberFormSchema>>({
-        resolver: zodResolver(inviteTeamMemberFormSchema),
+    const form = useFormHook(inviteTeamMemberFormSchema, {
         defaultValues: {
             userName: "",
         },
@@ -80,7 +78,10 @@ export default function InviteMemberForm({ teamId, canInviteMembers, dataRefetch
                                     placeholder={t.form.username}
                                     id="username-input"
                                 />
-                                <Button type="submit" disabled={!canInviteMembers || isLoading}>
+                                <Button
+                                    type="submit"
+                                    disabled={!form.formState.isDirty || !canInviteMembers || isLoading}
+                                >
                                     {isLoading ? (
                                         <LoadingSpinner size="xs" />
                                     ) : (

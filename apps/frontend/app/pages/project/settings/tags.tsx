@@ -5,10 +5,8 @@ import { updateProjectTagsFormSchema } from "@app/utils/schemas/project/settings
 import { MAX_FEATURED_PROJECT_TAGS } from "@app/utils/src/constants";
 import { CapitalizeAndFormatString } from "@app/utils/string";
 import type { TagType } from "@app/utils/types";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { SaveIcon, StarIcon } from "lucide-react";
 import { useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 import { TagIcon } from "~/components/icons/tag-icons";
 import RefreshPage from "~/components/misc/refresh-page";
@@ -21,6 +19,7 @@ import { useNavigate } from "~/components/ui/link";
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
 import { useProjectData } from "~/hooks/project";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import { submitFormWithErrorHandling } from "~/utils/form";
@@ -28,20 +27,19 @@ import { submitFormWithErrorHandling } from "~/utils/form";
 export default function TagsSettingsPage() {
     const { t } = useTranslation();
     const projectData = useProjectData().projectData;
-
     const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
     const location = useLocation();
 
-    const form = useForm<z.infer<typeof updateProjectTagsFormSchema>>({
-        resolver: zodResolver(updateProjectTagsFormSchema),
-        defaultValues: {
+    const form = useFormHook(updateProjectTagsFormSchema, {
+        values: {
             categories: (projectData?.categories as CategoriesUnion[]) || [],
             featuredCategories: (projectData?.featuredCategories as CategoriesUnion[]) || [],
         },
     });
-    form.watch();
+    const selectedCategoriesList = form.watch("categories");
+    const selectedFeaturedTagsList = form.watch("featuredCategories");
 
     async function updateTags(values: z.infer<typeof updateProjectTagsFormSchema>) {
         if (isLoading) return;
@@ -78,13 +76,7 @@ export default function TagsSettingsPage() {
         return _tags;
     }, [projectData.type.toString()]);
 
-    const isSubmitBtnDisabled =
-        JSON.stringify(form.getValues().categories.sort()) === JSON.stringify(projectData.categories.sort()) &&
-        JSON.stringify(form.getValues().featuredCategories.sort()) ===
-            JSON.stringify(projectData.featuredCategories.sort());
-
     const projectType = t.navbar[projectData.type[0]];
-
     if (!availableTags[0]?.[1]?.length) {
         return <FormErrorMessage text="No categories available for the selected project type!" />;
     }
@@ -128,13 +120,7 @@ export default function TagsSettingsPage() {
                                                             if (e === true) {
                                                                 field.onChange([...field.value, tag.name]);
                                                             } else {
-                                                                field.onChange(
-                                                                    field.value.filter((val) => val !== tag.name),
-                                                                );
-
                                                                 // Also remove the category from featured tags if it was featured
-                                                                const selectedFeaturedTagsList =
-                                                                    form.getValues().featuredCategories;
                                                                 if (
                                                                     selectedFeaturedTagsList.includes(
                                                                         tag.name as CategoriesUnion,
@@ -147,6 +133,10 @@ export default function TagsSettingsPage() {
                                                                         ),
                                                                     );
                                                                 }
+
+                                                                field.onChange(
+                                                                    field.value.filter((val) => val !== tag.name),
+                                                                );
                                                             }
                                                         }}
                                                     >
@@ -177,7 +167,7 @@ export default function TagsSettingsPage() {
                             name="featuredCategories"
                             render={({ field }) => (
                                 <div className="autofit-grid mt-2 grid w-full">
-                                    {form.getValues().categories.map((tag) => {
+                                    {selectedCategoriesList.map((tag) => {
                                         // @ts-expect-error
                                         const tagName = t.search.tags[tag] || tag;
 
@@ -213,13 +203,13 @@ export default function TagsSettingsPage() {
                             )}
                         />
 
-                        {!form.getValues().categories?.length ? (
+                        {!selectedCategoriesList?.length ? (
                             <span className="text-foreground-muted">{t.projectSettings.selectAtLeastOneCategory}</span>
                         ) : null}
                     </div>
 
                     <div className="flex w-full items-center justify-end">
-                        <Button type="submit" disabled={isLoading || isSubmitBtnDisabled}>
+                        <Button type="submit" disabled={isLoading || !form.formState.isDirty}>
                             {isLoading ? (
                                 <LoadingSpinner size="xs" />
                             ) : (

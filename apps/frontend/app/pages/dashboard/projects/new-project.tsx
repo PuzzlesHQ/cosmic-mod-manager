@@ -6,10 +6,8 @@ import type { z } from "@app/utils/schemas";
 import { newProjectFormSchema } from "@app/utils/schemas/project";
 import { Capitalize, createURLSafeSlug } from "@app/utils/string";
 import { ProjectVisibility } from "@app/utils/types";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRightIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import RefreshPage from "~/components/misc/refresh-page";
 import { Button, CancelButton } from "~/components/ui/button";
 import {
@@ -40,6 +38,7 @@ import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
 import { Textarea } from "~/components/ui/textarea";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import { ProjectPagePath } from "~/utils/urls";
@@ -59,8 +58,7 @@ export default function CreateNewProjectDialog({ orgId, trigger }: Props) {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
-    const form = useForm<z.infer<typeof newProjectFormSchema>>({
-        resolver: zodResolver(newProjectFormSchema),
+    const form = useFormHook(newProjectFormSchema, {
         defaultValues: {
             name: "",
             slug: "",
@@ -73,7 +71,7 @@ export default function CreateNewProjectDialog({ orgId, trigger }: Props) {
 
     async function createProject(values: z.infer<typeof newProjectFormSchema>) {
         try {
-            if (isLoading || !isFormSubmittable()) return;
+            if (isLoading) return;
             setIsLoading(true);
             disableInteractions();
 
@@ -93,13 +91,6 @@ export default function CreateNewProjectDialog({ orgId, trigger }: Props) {
         } finally {
             setIsLoading(false);
         }
-    }
-
-    function isFormSubmittable() {
-        const values = form.getValues();
-        const isFormInvalid =
-            !values.name || !values.slug || !values.visibility || !values.summary || !values.type?.length;
-        return !isFormInvalid;
     }
 
     return (
@@ -155,10 +146,11 @@ export default function CreateNewProjectDialog({ orgId, trigger }: Props) {
                                             type="text"
                                             {...field}
                                             onChange={(e) => {
+                                                if (autoFillUrlSlug) {
+                                                    const name = e.target.value;
+                                                    form.setValue("slug", createURLSafeSlug(name));
+                                                }
                                                 field.onChange(e);
-                                                if (!autoFillUrlSlug) return;
-                                                const name = e.target.value;
-                                                form.setValue("slug", createURLSafeSlug(name));
                                             }}
                                         />
                                         <FormMessage />
@@ -285,7 +277,7 @@ export default function CreateNewProjectDialog({ orgId, trigger }: Props) {
                                 <DialogClose asChild>
                                     <CancelButton type="button" />
                                 </DialogClose>
-                                <Button disabled={isLoading || !isFormSubmittable()} type="submit">
+                                <Button disabled={isLoading || !form.formState.isDirty} type="submit">
                                     {isLoading ? (
                                         <LoadingSpinner size="xs" />
                                     ) : (

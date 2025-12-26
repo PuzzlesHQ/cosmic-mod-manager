@@ -1,7 +1,7 @@
 import { authProvidersList } from "@app/utils/config/project";
 import { getAuthProviderFromString, getUserRoleFromString } from "@app/utils/convertors";
 import { API_SCOPE, hasScope } from "@app/utils/pats";
-import { LoginFormSchema } from "@app/utils/schemas/auth";
+import { loginFormSchema } from "@app/utils/schemas/auth";
 import { zodParse } from "@app/utils/schemas/utils";
 import { AuthActionIntent, type AuthProvider, type LoggedInUserData } from "@app/utils/types";
 import { type Context, Hono } from "hono";
@@ -106,7 +106,7 @@ async function oAuthUrl_get(ctx: Context, intent: AuthActionIntent) {
 
 async function credentialSignin_post(ctx: Context) {
     try {
-        const { data, error } = await zodParse(LoginFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+        const { data, error } = await zodParse(loginFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidRequestResponse(ctx, error);
 
         const result = await credentialSignIn(ctx, data);

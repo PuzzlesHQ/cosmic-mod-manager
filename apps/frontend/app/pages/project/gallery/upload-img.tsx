@@ -3,10 +3,8 @@ import type { z } from "@app/utils/schemas";
 import { addNewGalleryImageFormSchema } from "@app/utils/schemas/project/settings/gallery";
 import { validImgFileExtensions } from "@app/utils/schemas/utils";
 import type { ProjectDetailsData } from "@app/utils/types/api";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { FileIcon, PlusIcon, StarIcon, UploadIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 import RefreshPage from "~/components/misc/refresh-page";
 import { Button, buttonVariants, CancelButton } from "~/components/ui/button";
@@ -38,6 +36,7 @@ import { LoadingSpinner } from "~/components/ui/spinner";
 import { Textarea } from "~/components/ui/textarea";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { cn } from "~/components/utils";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import { submitFormWithErrorHandling } from "~/utils/form";
@@ -53,8 +52,7 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const form = useForm<z.infer<typeof addNewGalleryImageFormSchema>>({
-        resolver: zodResolver(addNewGalleryImageFormSchema),
+    const form = useFormHook(addNewGalleryImageFormSchema, {
         defaultValues: {
             title: "",
             description: "",
@@ -62,7 +60,6 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
             featured: false,
         },
     });
-    form.watch();
 
     async function uploadGalleryImage(values: z.infer<typeof addNewGalleryImageFormSchema>) {
         if (isLoading) return;
@@ -315,10 +312,7 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
                                     <CancelButton disabled={isLoading} />
                                 </DialogClose>
 
-                                <Button
-                                    type="submit"
-                                    // disabled={isLoading}
-                                >
+                                <Button type="submit" disabled={isLoading}>
                                     {isLoading ? (
                                         <LoadingSpinner size="xs" />
                                     ) : (

@@ -5,10 +5,8 @@ import { updateCollectionFormSchema } from "@app/utils/schemas/collections";
 import { Capitalize } from "@app/utils/string";
 import { CollectionVisibility } from "@app/utils/types";
 import type { Collection } from "@app/utils/types/api";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { EditIcon, SaveIcon } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 import IconPicker from "~/components/icon-picker";
 import { fallbackProjectIcon } from "~/components/icons";
@@ -33,6 +31,7 @@ import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
 import { Textarea } from "~/components/ui/textarea";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import { submitFormWithErrorHandling } from "~/utils/form";
@@ -51,19 +50,18 @@ export default function EditCollection(props: EditCollectionProps) {
     const navigate = useNavigate();
     const collectionsCtx = useCollections();
 
-    const form = useForm<z.infer<typeof updateCollectionFormSchema>>({
-        resolver: zodResolver(updateCollectionFormSchema),
-        defaultValues: {
+    const form = useFormHook(updateCollectionFormSchema, {
+        values: {
             name: props.collection.name,
-            description: props.collection.description || "",
-            icon: props.collection.icon || "",
+            description: props.collection.description,
+            icon: props.collection.icon,
             visibility: props.collection.visibility,
         },
     });
 
     async function updateCollection(values: z.infer<typeof updateCollectionFormSchema>) {
         try {
-            if (isLoading || !isFormSubmittable()) return;
+            if (isLoading) return;
             setIsLoading(true);
             disableInteractions();
 
@@ -90,12 +88,6 @@ export default function EditCollection(props: EditCollectionProps) {
         } finally {
             setIsLoading(false);
         }
-    }
-
-    function isFormSubmittable() {
-        const values = form.getValues();
-        const isFormInvalid = !values.name;
-        return !isFormInvalid;
     }
 
     return (
@@ -212,7 +204,7 @@ export default function EditCollection(props: EditCollectionProps) {
                                 <DialogClose asChild>
                                     <CancelButton type="button" />
                                 </DialogClose>
-                                <Button disabled={isLoading || !isFormSubmittable()}>
+                                <Button disabled={isLoading || !form.formState.isDirty}>
                                     {isLoading ? (
                                         <LoadingSpinner size="xs" />
                                     ) : (

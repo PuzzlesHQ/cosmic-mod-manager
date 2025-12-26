@@ -1,8 +1,6 @@
 import type { z } from "@app/utils/schemas";
 import { updateExternalLinksFormSchema } from "@app/utils/schemas/project/settings/links";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { SaveIcon } from "lucide-react";
-import { useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 import RefreshPage from "~/components/misc/refresh-page";
 import { Button } from "~/components/ui/button";
@@ -13,6 +11,7 @@ import { useNavigate } from "~/components/ui/link";
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
 import { useProjectData } from "~/hooks/project";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 
@@ -23,8 +22,7 @@ export default function ExternalLinksSettingsPage() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const form = useForm<z.infer<typeof updateExternalLinksFormSchema>>({
-        resolver: zodResolver(updateExternalLinksFormSchema),
+    const form = useFormHook(updateExternalLinksFormSchema, {
         values: {
             issueTracker: projectData.issueTrackerUrl,
             sourceCode: projectData.projectSourceUrl,

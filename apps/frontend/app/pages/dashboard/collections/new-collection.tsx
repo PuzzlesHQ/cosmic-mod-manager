@@ -2,11 +2,9 @@ import { MAX_COLLECTION_DESCRIPTION_LENGTH, MAX_COLLECTION_NAME_LENGTH } from "@
 import { disableInteractions, enableInteractions } from "@app/utils/dom";
 import type { z } from "@app/utils/schemas";
 import { createCollectionFormSchema } from "@app/utils/schemas/collections";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { Button, CancelButton } from "~/components/ui/button";
 import {
     Dialog,
@@ -26,6 +24,7 @@ import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
 import { Textarea } from "~/components/ui/textarea";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import useCollections from "~/pages/collection/provider";
 import clientFetch from "~/utils/client-fetch";
@@ -45,8 +44,7 @@ export default function CreateNewCollection_Dialog({
     const navigate = useNavigate();
     const collectionsCtx = useCollections();
 
-    const form = useForm<z.infer<typeof createCollectionFormSchema>>({
-        resolver: zodResolver(createCollectionFormSchema),
+    const form = useFormHook(createCollectionFormSchema, {
         defaultValues: {
             name: "",
             description: "",
@@ -55,7 +53,7 @@ export default function CreateNewCollection_Dialog({
 
     async function createCollection(values: z.infer<typeof createCollectionFormSchema>) {
         try {
-            if (isLoading || !isFormSubmittable()) return;
+            if (isLoading) return;
             setIsLoading(true);
             disableInteractions();
 
@@ -79,12 +77,6 @@ export default function CreateNewCollection_Dialog({
             enableInteractions();
             setIsLoading(false);
         }
-    }
-
-    function isFormSubmittable() {
-        const values = form.getValues();
-        const isFormInvalid = !values.name;
-        return !isFormInvalid;
     }
 
     return (
@@ -152,7 +144,7 @@ export default function CreateNewCollection_Dialog({
                                 <DialogClose asChild>
                                     <CancelButton type="button" />
                                 </DialogClose>
-                                <Button disabled={isLoading || !isFormSubmittable()}>
+                                <Button disabled={isLoading || !form.formState.isDirty} type="submit">
                                     {isLoading ? (
                                         <LoadingSpinner size="xs" />
                                     ) : (

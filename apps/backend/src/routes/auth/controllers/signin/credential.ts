@@ -1,4 +1,4 @@
-import type { LoginFormSchema } from "@app/utils/schemas/auth";
+import type { loginFormSchema } from "@app/utils/schemas/auth";
 import { AuthProvider } from "@app/utils/types";
 import type { Context } from "hono";
 import type { z } from "zod/v4";
@@ -10,7 +10,7 @@ import { HTTP_STATUS } from "~/utils/http";
 
 const RESPONSE_DELAY_ms = 2000;
 
-async function credentialSignIn(ctx: Context, formData: z.infer<typeof LoginFormSchema>) {
+async function credentialSignIn(ctx: Context, formData: z.infer<typeof loginFormSchema>) {
     const wrongCredsMsg = "Incorrect email or password";
 
     const user = await GetUser_Unique({

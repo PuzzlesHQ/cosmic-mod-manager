@@ -2,7 +2,7 @@ import { z } from "zod/v4";
 import { MAX_EMAIL_LENGTH, MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from "~/constants";
 import { AuthProvider } from "~/types";
 
-export const LoginFormSchema = z.object({
+export const loginFormSchema = z.object({
     email: z.email().max(MAX_EMAIL_LENGTH),
     password: z
         .string()

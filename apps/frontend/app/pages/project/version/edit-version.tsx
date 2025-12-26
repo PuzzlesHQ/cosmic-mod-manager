@@ -56,7 +56,7 @@ export default function EditVersionPage({ versionData }: EditVersionPageProps) {
     const initialLoaders = availableLoaders.length ? versionData.loaders || [] : [];
 
     const form = useFormHook(updateVersionFormSchema, {
-        defaultValues: {
+        values: {
             title: versionData.title,
             changelog: versionData.changelog,
             releaseChannel: versionData.releaseChannel || VersionReleaseChannel.RELEASE,

@@ -1,12 +1,10 @@
 import { disableInteractions, enableInteractions } from "@app/utils/dom";
 import type { z } from "@app/utils/schemas";
-import { LoginFormSchema } from "@app/utils/schemas/auth";
+import { loginFormSchema } from "@app/utils/schemas/auth";
 import { AuthActionIntent, AuthProvider } from "@app/utils/types";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { LogInIcon } from "lucide-react";
 import { Slot } from "radix-ui";
 import { useId, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
 import { useLocation, useSearchParams } from "react-router";
 import RefreshPage from "~/components/misc/refresh-page";
 import { Button } from "~/components/ui/button";
@@ -20,6 +18,7 @@ import { LinkPrefetchStrategy, TextLink, useNavigate } from "~/components/ui/lin
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import OAuthProvidersWidget, { setReturnUrl } from "../oauth-providers";
@@ -36,15 +35,14 @@ export function LoginPageCard(props: LoginPageCardProps) {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const loginForm = useForm<z.infer<typeof LoginFormSchema>>({
-        resolver: zodResolver(LoginFormSchema),
+    const form = useFormHook(loginFormSchema, {
         defaultValues: {
             email: "",
             password: "",
         },
     });
 
-    async function handleCredentialLogin(formData: z.infer<typeof LoginFormSchema>) {
+    async function handleCredentialLogin(formData: z.infer<typeof loginFormSchema>) {
         try {
             if (isLoading === true) return;
             setIsLoading(true);
@@ -74,14 +72,14 @@ export function LoginPageCard(props: LoginPageCardProps) {
                 <CardTitle>{t.form.login_withSpace}</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4">
-                <Form {...loginForm}>
+                <Form {...form}>
                     <form
-                        onSubmit={loginForm.handleSubmit(handleCredentialLogin)}
+                        onSubmit={form.handleSubmit(handleCredentialLogin)}
                         name="Login"
                         className="flex w-full flex-col items-center justify-center gap-form-elements"
                     >
                         <FormField
-                            control={loginForm.control}
+                            control={form.control}
                             name="email"
                             render={({ field }) => {
                                 const emailInputId = `${props.id}-email-input`;
@@ -107,7 +105,7 @@ export function LoginPageCard(props: LoginPageCardProps) {
                         />
 
                         <FormField
-                            control={loginForm.control}
+                            control={form.control}
                             name="password"
                             render={({ field }) => {
                                 const passInputId = `${props.id}-password-input`;
@@ -138,7 +136,7 @@ export function LoginPageCard(props: LoginPageCardProps) {
                             type="submit"
                             aria-label="Login"
                             className="h-form-submit-btn w-full"
-                            disabled={isLoading}
+                            disabled={!form.formState.isDirty || isLoading}
                         >
                             {isLoading ? (
                                 <LoadingSpinner size="xs" />

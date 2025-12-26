@@ -5,11 +5,8 @@ import type { z } from "@app/utils/schemas";
 import { generalProjectSettingsFormSchema } from "@app/utils/schemas/project/settings/general";
 import { Capitalize, createURLSafeSlug } from "@app/utils/string";
 import { EnvironmentSupport, ProjectPublishingStatus, type ProjectType, ProjectVisibility } from "@app/utils/types";
-import type { ProjectDetailsData } from "@app/utils/types/api";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckIcon, SaveIcon, Trash2Icon, TriangleAlertIcon, XIcon } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import IconPicker from "~/components/icon-picker";
 import { fallbackProjectIcon } from "~/components/icons";
 import MarkdownRenderBox from "~/components/md-editor/md-renderer";
@@ -40,6 +37,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/comp
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";
@@ -56,12 +54,18 @@ export default function GeneralSettingsPage() {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
-    const initialValues = getInitialValues(projectData);
-    const form = useForm<z.infer<typeof generalProjectSettingsFormSchema>>({
-        resolver: zodResolver(generalProjectSettingsFormSchema),
-        defaultValues: initialValues,
+    const form = useFormHook(generalProjectSettingsFormSchema, {
+        values: {
+            icon: projectData.icon,
+            name: projectData.name,
+            slug: projectData.slug,
+            visibility: getProjectVisibilityFromString(projectData.visibility),
+            type: projectData.type as ProjectType[],
+            clientSide: projectData.clientSide as EnvironmentSupport,
+            serverSide: projectData.serverSide as EnvironmentSupport,
+            summary: projectData.summary,
+        },
     });
-    form.watch();
 
     let showEnvSettings = false;
     for (const type of projectData.type) {
@@ -218,25 +222,26 @@ export default function GeneralSettingsPage() {
                                         <span className="text-foreground-muted">{t.dashboard.projectTypeDesc}</span>
                                     </div>
 
-                                    <MultiSelect
-                                        defaultMinWidth={false}
-                                        searchBox={false}
-                                        options={projectTypes.map((type) => ({
-                                            label: Capitalize(t.navbar[type]),
-                                            value: type,
-                                        }))}
-                                        selectedValues={field.value || []}
-                                        onValueChange={(values: string[]) => {
-                                            field.onChange(getProjectTypesFromNames(values));
-                                        }}
-                                        placeholder={t.dashboard.chooseProjectType}
-                                        className="w-fit sm:w-fit sm:min-w-[15rem] sm:max-w-[20rem]"
-                                        popoverClassname="min-w-[15rem]"
-                                        noResultsElement={t.common.noResults}
-                                        inputPlaceholder={t.common.search}
-                                    />
-
-                                    <FormMessage />
+                                    <div>
+                                        <MultiSelect
+                                            defaultMinWidth={false}
+                                            searchBox={false}
+                                            options={projectTypes.map((type) => ({
+                                                label: Capitalize(t.navbar[type]),
+                                                value: type,
+                                            }))}
+                                            selectedValues={field.value || []}
+                                            onValueChange={(values: string[]) => {
+                                                field.onChange(getProjectTypesFromNames(values));
+                                            }}
+                                            placeholder={t.dashboard.chooseProjectType}
+                                            className="w-fit sm:w-fit sm:min-w-[15rem] sm:max-w-[20rem]"
+                                            popoverClassname="min-w-[15rem]"
+                                            noResultsElement={t.common.noResults}
+                                            inputPlaceholder={t.common.search}
+                                        />
+                                        <FormMessage />
+                                    </div>
                                 </FormItem>
                             )}
                         />
@@ -254,6 +259,7 @@ export default function GeneralSettingsPage() {
                                                 <span className="text-foreground-muted">
                                                     {t.projectSettings.clientSideDesc(t.navbar[projectData.type[0]])}
                                                 </span>
+                                                <FormMessage />
                                             </div>
 
                                             <Select
@@ -279,8 +285,6 @@ export default function GeneralSettingsPage() {
                                                     </SelectItem>
                                                 </SelectContent>
                                             </Select>
-
-                                            <FormMessage />
                                         </FormItem>
                                     )}
                                 />
@@ -297,6 +301,7 @@ export default function GeneralSettingsPage() {
                                                 <span className="text-foreground-muted">
                                                     {t.projectSettings.serverSideDesc(t.navbar[projectData.type[0]])}
                                                 </span>
+                                                <FormMessage />
                                             </div>
 
                                             <Select
@@ -322,8 +327,6 @@ export default function GeneralSettingsPage() {
                                                     </SelectItem>
                                                 </SelectContent>
                                             </Select>
-
-                                            <FormMessage />
                                         </FormItem>
                                     )}
                                 />
@@ -429,12 +432,7 @@ export default function GeneralSettingsPage() {
                         />
 
                         <div className="mt-2 flex w-full items-center justify-end">
-                            <Button
-                                type="submit"
-                                disabled={
-                                    JSON.stringify(initialValues) === JSON.stringify(form.getValues()) || isLoading
-                                }
-                            >
+                            <Button type="submit" disabled={!form.formState.isDirty || isLoading}>
                                 {isLoading ? (
                                     <LoadingSpinner size="xs" />
                                 ) : (
@@ -562,17 +560,4 @@ function DeleteProjectDialog({ name, projectId, returnUrl }: { name: string; pro
             </Dialog>
         </ContentCardTemplate>
     );
-}
-
-function getInitialValues(projectData: ProjectDetailsData) {
-    return {
-        icon: projectData.icon || "",
-        name: projectData.name,
-        slug: projectData.slug,
-        visibility: getProjectVisibilityFromString(projectData.visibility),
-        type: projectData.type as ProjectType[],
-        clientSide: projectData.clientSide as EnvironmentSupport,
-        serverSide: projectData.serverSide as EnvironmentSupport,
-        summary: projectData.summary,
-    };
 }

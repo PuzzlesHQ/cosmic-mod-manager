@@ -1,10 +1,7 @@
 import { disableInteractions } from "@app/utils/dom";
-import type { z } from "@app/utils/schemas";
 import { removeAccountPasswordFormSchema } from "@app/utils/schemas/settings";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash2Icon } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 import RefreshPage from "~/components/misc/refresh-page";
 import { Button, CancelButton } from "~/components/ui/button";
@@ -24,6 +21,7 @@ import { Input } from "~/components/ui/input";
 import { useNavigate } from "~/components/ui/link";
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 
@@ -35,8 +33,7 @@ export default function RemovePasswordForm() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const form = useForm<z.infer<typeof removeAccountPasswordFormSchema>>({
-        resolver: zodResolver(removeAccountPasswordFormSchema),
+    const form = useFormHook(removeAccountPasswordFormSchema, {
         defaultValues: {
             password: "",
         },
@@ -112,7 +109,7 @@ export default function RemovePasswordForm() {
                                 <Button
                                     type="submit"
                                     variant="destructive"
-                                    disabled={isLoading || !form.getValues().password}
+                                    disabled={isLoading || !form.formState.isDirty}
                                 >
                                     {isLoading ? (
                                         <LoadingSpinner size="xs" />

@@ -3,10 +3,8 @@ import type { z } from "@app/utils/schemas";
 import { profileUpdateFormSchema } from "@app/utils/schemas/settings";
 import { validImgFileExtensions, validVideoFileExtensions } from "@app/utils/schemas/utils";
 import type { LoggedInUserData } from "@app/utils/types";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { FileImageIcon, HelpCircleIcon, SaveIcon, Trash2Icon, UserIcon } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 import IconPicker from "~/components/icon-picker";
 import { fallbackUserIcon } from "~/components/icons";
@@ -22,6 +20,7 @@ import { LoadingSpinner } from "~/components/ui/spinner";
 import { Textarea } from "~/components/ui/textarea";
 import { TooltipProvider, TooltipTemplate } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";
@@ -32,16 +31,6 @@ interface Props {
     session: LoggedInUserData;
 }
 
-function initForm(user: LoggedInUserData) {
-    return {
-        name: user.name,
-        userName: user.userName,
-        avatar: user.avatar,
-        bio: user.bio,
-        profilePageBg: user.profilePageBg,
-    };
-}
-
 export function ProfileSettingsPage({ session }: Props) {
     const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
@@ -49,10 +38,14 @@ export function ProfileSettingsPage({ session }: Props) {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const initialValues = initForm(session);
-    const form = useForm<z.infer<typeof profileUpdateFormSchema>>({
-        resolver: zodResolver(profileUpdateFormSchema),
-        defaultValues: initialValues,
+    const form = useFormHook(profileUpdateFormSchema, {
+        defaultValues: {
+            name: session.name,
+            userName: session.userName,
+            avatar: session.avatar,
+            bio: session.bio,
+            profilePageBg: session.profilePageBg,
+        },
     });
 
     async function saveSettings(values: z.infer<typeof profileUpdateFormSchema>) {

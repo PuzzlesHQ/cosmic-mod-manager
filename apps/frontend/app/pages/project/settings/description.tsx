@@ -1,9 +1,7 @@
 import type { z } from "@app/utils/schemas";
 import { updateDescriptionFormSchema } from "@app/utils/schemas/project/settings/description";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { SaveIcon } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 import MarkdownEditor from "~/components/md-editor/editor";
 import { ContentCardTemplate } from "~/components/misc/panel";
@@ -14,6 +12,7 @@ import { useNavigate } from "~/components/ui/link";
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
 import { useProjectData } from "~/hooks/project";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 
@@ -25,13 +24,11 @@ export default function DescriptionSettings() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const form = useForm<z.infer<typeof updateDescriptionFormSchema>>({
-        resolver: zodResolver(updateDescriptionFormSchema),
-        defaultValues: {
-            description: ctx.projectData?.description || "",
+    const form = useFormHook(updateDescriptionFormSchema, {
+        values: {
+            description: ctx.projectData.description || "",
         },
     });
-    form.watch();
 
     async function updateDescription(values: z.infer<typeof updateDescriptionFormSchema>) {
         if (isLoading) return;
@@ -77,10 +74,7 @@ export default function DescriptionSettings() {
                     />
 
                     <div className="flex w-full items-center justify-end">
-                        <Button
-                            type="submit"
-                            disabled={(ctx.projectData.description || "") === form.getValues().description || isLoading}
-                        >
+                        <Button type="submit" disabled={!form.formState.isDirty || isLoading}>
                             {isLoading ? (
                                 <LoadingSpinner size="xs" />
                             ) : (

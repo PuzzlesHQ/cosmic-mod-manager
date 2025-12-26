@@ -2,10 +2,8 @@ import { API_SCOPE, decodePatScopes, encodePatScopes, PAT_RESTRICTED_SCOPES, tog
 import { createPAT_FormSchema } from "@app/utils/schemas/pat";
 import { CapitalizeAndFormatString } from "@app/utils/string";
 import type { PATData } from "@app/utils/types/api/pat";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { PencilIcon, PlusIcon, SaveIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 import { toast } from "sonner";
 import type { z } from "zod/v4";
@@ -26,6 +24,7 @@ import { Form, FormField, FormItem, FormLabel, FormMessage } from "~/components/
 import { Input } from "~/components/ui/input";
 import { useNavigate } from "~/components/ui/link";
 import { LoadingSpinner } from "~/components/ui/spinner";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import { submitFormWithErrorHandling } from "~/utils/form";
@@ -174,8 +173,7 @@ function defaultFormValues(patData: PATData | null) {
 function PatInfoForm({ patData, onSubmit, loading, ...props }: PatInfoFormProps) {
     const { t } = useTranslation();
 
-    const form = useForm({
-        resolver: zodResolver(createPAT_FormSchema),
+    const form = useFormHook(createPAT_FormSchema, {
         defaultValues: defaultFormValues(patData),
     });
 
@@ -286,7 +284,7 @@ function PatInfoForm({ patData, onSubmit, loading, ...props }: PatInfoFormProps)
                                     <CancelButton />
                                 </DialogClose>
 
-                                <Button type="submit" disabled={loading}>
+                                <Button type="submit" disabled={loading || !form.formState.isDirty}>
                                     {loading ? <LoadingSpinner size="xs" /> : props.dialog.submitBtnIcon}
                                     {props.dialog.submitText}
                                 </Button>

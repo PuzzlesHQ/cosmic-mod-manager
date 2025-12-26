@@ -3,10 +3,8 @@ import { disableInteractions, enableInteractions } from "@app/utils/dom";
 import type { z } from "@app/utils/schemas";
 import { createOrganisationFormSchema } from "@app/utils/schemas/organisation";
 import { createURLSafeSlug } from "@app/utils/string";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { Button, CancelButton } from "~/components/ui/button";
 import {
     Dialog,
@@ -26,6 +24,7 @@ import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
 import { Textarea } from "~/components/ui/textarea";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";
@@ -37,8 +36,7 @@ export default function CreateNewOrg_Dialog({ children }: { children: React.Reac
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
-    const form = useForm<z.infer<typeof createOrganisationFormSchema>>({
-        resolver: zodResolver(createOrganisationFormSchema),
+    const form = useFormHook(createOrganisationFormSchema, {
         defaultValues: {
             name: "",
             slug: "",
@@ -48,7 +46,7 @@ export default function CreateNewOrg_Dialog({ children }: { children: React.Reac
 
     async function createOrganisation(values: z.infer<typeof createOrganisationFormSchema>) {
         try {
-            if (isLoading || !isFormSubmittable()) return;
+            if (isLoading) return;
             setIsLoading(true);
             disableInteractions();
 
@@ -67,12 +65,6 @@ export default function CreateNewOrg_Dialog({ children }: { children: React.Reac
         } finally {
             setIsLoading(false);
         }
-    }
-
-    function isFormSubmittable() {
-        const values = form.getValues();
-        const isFormInvalid = !values.name || !values.slug || !values.description;
-        return !isFormInvalid;
     }
 
     return (
@@ -109,10 +101,12 @@ export default function CreateNewOrg_Dialog({ children }: { children: React.Reac
                                             type="text"
                                             {...field}
                                             onChange={(e) => {
+                                                if (autoFillUrlSlug) {
+                                                    const name = e.target.value;
+                                                    form.setValue("slug", createURLSafeSlug(name));
+                                                }
+
                                                 field.onChange(e);
-                                                if (!autoFillUrlSlug) return;
-                                                const name = e.target.value;
-                                                form.setValue("slug", createURLSafeSlug(name));
                                             }}
                                         />
                                         <FormMessage />
@@ -174,7 +168,7 @@ export default function CreateNewOrg_Dialog({ children }: { children: React.Reac
                                 <DialogClose asChild>
                                     <CancelButton type="button" />
                                 </DialogClose>
-                                <Button disabled={isLoading || !isFormSubmittable()}>
+                                <Button disabled={isLoading || !form.formState.isDirty}>
                                     {isLoading ? (
                                         <LoadingSpinner size="xs" />
                                     ) : (

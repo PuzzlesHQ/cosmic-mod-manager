@@ -4,10 +4,8 @@ import SPDX_LICENSE_LIST, {
     CUSTOM_LICENSE_OPTION,
     FEATURED_LICENSE_INDICES,
 } from "@app/utils/src/constants/license-list";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDownIcon, SaveIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 import MarkdownRenderBox from "~/components/md-editor/md-renderer";
 import RefreshPage from "~/components/misc/refresh-page";
@@ -21,6 +19,7 @@ import { useNavigate } from "~/components/ui/link";
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
 import { useProjectData } from "~/hooks/project";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import { submitFormWithErrorHandling } from "~/utils/form";
@@ -36,8 +35,7 @@ export default function LicenseSettingsPage() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const form = useForm<z.infer<typeof updateProjectLicenseFormSchema>>({
-        resolver: zodResolver(updateProjectLicenseFormSchema),
+    const form = useFormHook(updateProjectLicenseFormSchema, {
         values: {
             id: projectData?.licenseId,
             name: projectData?.licenseName,

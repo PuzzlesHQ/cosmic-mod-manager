@@ -1,10 +1,8 @@
 import { disableInteractions, enableInteractions } from "@app/utils/dom";
 import type { z } from "@app/utils/schemas";
 import { setNewPasswordFormSchema } from "@app/utils/schemas/settings";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { KeyRoundIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { Button, CancelButton } from "~/components/ui/button";
 import {
     Dialog,
@@ -21,6 +19,7 @@ import { Form, FormField, FormItem, FormLabel, FormMessage } from "~/components/
 import { Input } from "~/components/ui/input";
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 
@@ -29,8 +28,7 @@ function AddPasswordForm({ email }: { email: string }) {
     const [isLoading, setIsLoading] = useState(false);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    const form = useForm<z.infer<typeof setNewPasswordFormSchema>>({
-        resolver: zodResolver(setNewPasswordFormSchema),
+    const form = useFormHook(setNewPasswordFormSchema, {
         defaultValues: {
             newPassword: "",
             confirmNewPassword: "",

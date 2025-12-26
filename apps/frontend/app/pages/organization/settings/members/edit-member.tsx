@@ -6,10 +6,8 @@ import { hasFullItemAccess } from "@app/utils/src/constants/roles";
 import { type LoggedInUserData, OrganisationPermission } from "@app/utils/types";
 import type { Organisation, TeamMember } from "@app/utils/types/api";
 import { imageUrl } from "@app/utils/url";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRightLeftIcon, ChevronDownIcon, CrownIcon, RefreshCcwIcon, SaveIcon, UserXIcon } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { fallbackUserIcon } from "~/components/icons";
 import { ImgWrapper } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
@@ -21,6 +19,7 @@ import { Input } from "~/components/ui/input";
 import Link from "~/components/ui/link";
 import { toast } from "~/components/ui/sonner";
 import { cn } from "~/components/utils";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import { RemoveMemberDialog, TransferOwnershipDialog } from "~/pages/project/settings/members/dialogs";
 import clientFetch from "~/utils/client-fetch";
@@ -40,17 +39,13 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
     const [isLoading, setIsLoading] = useState(false);
     const [detailsOpen, setDetailsOpen] = useState(false);
 
-    const defaultValues = {
-        role: member.role,
-        permissions: member.permissions,
-        organisationPermissions: member.organisationPermissions,
-    };
-
-    const form = useForm<z.infer<typeof updateTeamMemberFormSchema>>({
-        resolver: zodResolver(updateTeamMemberFormSchema),
-        defaultValues: defaultValues,
+    const form = useFormHook(updateTeamMemberFormSchema, {
+        values: {
+            role: member.role,
+            permissions: member.permissions,
+            organisationPermissions: member.organisationPermissions,
+        },
     });
-    form.watch();
 
     async function updateMemberDetails(values: z.infer<typeof updateTeamMemberFormSchema>) {
         if (isLoading || !currMember) return;
@@ -72,10 +67,6 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
             setIsLoading(false);
         }
     }
-
-    useEffect(() => {
-        form.reset(defaultValues);
-    }, [member]);
 
     const canEditMember = doesOrgMemberHaveAccess(
         OrganisationPermission.EDIT_MEMBER,

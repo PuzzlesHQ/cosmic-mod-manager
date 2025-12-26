@@ -7,10 +7,8 @@ import { hasFullItemAccess } from "@app/utils/src/constants/roles";
 import { type LoggedInUserData, ProjectPermission } from "@app/utils/types";
 import type { ProjectDetailsData, TeamMember } from "@app/utils/types/api";
 import { imageUrl } from "@app/utils/url";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRightLeftIcon, ChevronDownIcon, CrownIcon, RefreshCcwIcon, SaveIcon, UserXIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { fallbackUserIcon } from "~/components/icons";
 import { ImgWrapper } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
@@ -23,6 +21,7 @@ import Link from "~/components/ui/link";
 import { toast } from "~/components/ui/sonner";
 import { Switch } from "~/components/ui/switch";
 import { cn } from "~/components/utils";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import { submitFormWithErrorHandling } from "~/utils/form";
@@ -50,14 +49,12 @@ export function ProjectTeamMember({
     const [detailsOpen, setDetailsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    const form = useForm<z.infer<typeof updateTeamMemberFormSchema>>({
-        resolver: zodResolver(updateTeamMemberFormSchema),
-        defaultValues: {
+    const form = useFormHook(updateTeamMemberFormSchema, {
+        values: {
             role: member.role,
             permissions: member.permissions,
         },
     });
-    form.watch();
 
     async function updateMemberDetails(values: z.infer<typeof updateTeamMemberFormSchema>) {
         if (isLoading) return;
@@ -98,13 +95,6 @@ export function ProjectTeamMember({
         member.isOwner === false &&
         member.accepted &&
         !doesProjectHaveOrg;
-
-    useEffect(() => {
-        form.reset({
-            role: member.role,
-            permissions: member.permissions,
-        });
-    }, [member]);
 
     return (
         <Card className="grid w-full p-card-surround">
@@ -315,16 +305,12 @@ export function OrgTeamMember({
         session?.role,
     );
 
-    const defaultValues = {
-        role: effectiveMembership.role,
-        permissions: effectiveMembership.permissions,
-    };
-
-    const form = useForm<z.infer<typeof updateTeamMemberFormSchema>>({
-        resolver: zodResolver(updateTeamMemberFormSchema),
-        defaultValues: defaultValues,
+    const form = useFormHook(updateTeamMemberFormSchema, {
+        values: {
+            role: effectiveMembership.role,
+            permissions: effectiveMembership.permissions,
+        },
     });
-    form.watch();
 
     async function updateMemberDetails(values: z.infer<typeof updateTeamMemberFormSchema>) {
         if (isLoading || !projectMembership) return;
@@ -390,13 +376,6 @@ export function OrgTeamMember({
             setIsLoading(false);
         }
     }
-
-    useEffect(() => {
-        form.reset({
-            role: effectiveMembership.role,
-            permissions: effectiveMembership.permissions,
-        });
-    }, [effectiveMembership]);
 
     useEffect(() => {
         setOverridePerms(!!permsOverridden);

@@ -3,10 +3,8 @@ import type { z } from "@app/utils/schemas";
 import { updateGalleryImageFormSchema } from "@app/utils/schemas/project/settings/gallery";
 import type { GalleryItem, ProjectDetailsData } from "@app/utils/types/api";
 import { imageUrl } from "@app/utils/url";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Edit3Icon, FileIcon, SaveIcon, StarIcon } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { useLocation } from "react-router";
 import RefreshPage from "~/components/misc/refresh-page";
 import { Button, CancelButton } from "~/components/ui/button";
@@ -36,6 +34,7 @@ import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
 import { Textarea } from "~/components/ui/textarea";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
+import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import { submitFormWithErrorHandling } from "~/utils/form";
@@ -52,16 +51,14 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const form = useForm<z.infer<typeof updateGalleryImageFormSchema>>({
-        resolver: zodResolver(updateGalleryImageFormSchema),
-        defaultValues: {
-            title: "",
-            description: "",
-            orderIndex: 0,
-            featured: false,
+    const form = useFormHook(updateGalleryImageFormSchema, {
+        values: {
+            title: galleryItem.name,
+            description: galleryItem.description || "",
+            orderIndex: galleryItem.orderIndex,
+            featured: galleryItem.featured,
         },
     });
-    form.watch();
 
     async function updateGalleryImage(values: z.infer<typeof updateGalleryImageFormSchema>) {
         if (isLoading) return;
@@ -86,15 +83,6 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
             setIsLoading(false);
         }
     }
-
-    useEffect(() => {
-        if (galleryItem) {
-            form.setValue("title", galleryItem.name);
-            form.setValue("description", galleryItem.description || "");
-            form.setValue("orderIndex", galleryItem.orderIndex);
-            form.setValue("featured", galleryItem.featured);
-        }
-    }, [galleryItem]);
 
     return (
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -197,7 +185,7 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
                                         <Input
                                             {...field}
                                             onChange={(e) => {
-                                                const parsedNumber = Number.parseInt(e.target.value);
+                                                const parsedNumber = Number.parseInt(e.target.value, 10);
                                                 if (!Number.isNaN(parsedNumber)) {
                                                     field.onChange(parsedNumber);
                                                 } else {
@@ -252,7 +240,7 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
                                     <CancelButton disabled={isLoading} />
                                 </DialogClose>
 
-                                <Button type="submit" disabled={isLoading}>
+                                <Button type="submit" disabled={!form.formState.isDirty || isLoading}>
                                     {isLoading ? (
                                         <LoadingSpinner size="xs" />
                                     ) : (
