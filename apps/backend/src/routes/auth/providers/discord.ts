@@ -21,6 +21,8 @@ export async function getDiscordUserProfileData(tokenExchangeCode: string) {
         body: formData.toString(),
     });
 
+    // TODO: use zod to validate this properly
+
     const tokenData = await authTokenRes.json();
     const accessToken = tokenData?.access_token;
     const accessTokenType = tokenData?.token_type;

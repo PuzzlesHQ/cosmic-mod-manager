@@ -20,6 +20,8 @@ export async function getGoogleUserProfileData(tokenExchangeCode: string) {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: params,
     });
+
+    // TODO: use zod to validate this properly
     const tokenData = await authTokenRes.json();
     const accessToken = tokenData?.access_token;
 

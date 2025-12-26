@@ -19,6 +19,8 @@ export async function getGitlabUserProfileData(tokenExchangeCode: string) {
         },
     });
 
+    // TODO: use zod to validate this properly
+
     const tokenData = await authTokenRes.json();
     const accessToken = tokenData?.access_token;
     const accessTokenType = tokenData?.token_type;

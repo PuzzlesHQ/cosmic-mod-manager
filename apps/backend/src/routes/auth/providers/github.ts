@@ -50,6 +50,8 @@ export async function getGithubUserProfileData(tokenExchangeCode: string) {
         },
     );
 
+    // TODO: use zod to validate this properly
+
     const tokenData = await authTokenRes.json();
     const accessToken = tokenData?.access_token;
     if (!accessToken) return null;
