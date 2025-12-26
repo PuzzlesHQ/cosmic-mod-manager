@@ -139,7 +139,7 @@ async function getUserFromPAT(token: string): Promise<ContextUserData | null> {
         email: patUser.email,
         avatar: patUser.avatar,
         userName: patUser.userName,
-        name: patUser.name || patUser.userName,
+        name: patUser.name,
         dateJoined: patUser.dateJoined,
         emailVerified: patUser.emailVerified,
         role: patUser.role as GlobalUserRole,
