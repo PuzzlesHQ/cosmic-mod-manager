@@ -179,15 +179,13 @@ const headLinks: LinkDescriptor[] = [
         href: "/icon.png",
     },
     {
-        rel: "preload",
-        as: "font",
-        href: "https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7SUc.woff2",
+        rel: "preconnect",
+        href: "https://fonts.googleapis.com",
         crossOrigin: "anonymous",
     },
     {
-        rel: "preload",
-        as: "font",
-        href: "https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
+        rel: "preconnect",
+        href: "https://fonts.gstatic.com",
         crossOrigin: "anonymous",
     },
 ];

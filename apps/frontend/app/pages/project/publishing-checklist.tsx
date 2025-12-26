@@ -241,7 +241,12 @@ export function PublishingChecklist() {
                     </div>
                 </div>
 
-                <Button variant="secondary" size="icon" onClick={() => setDropdownOpen((prev) => !prev)}>
+                <Button
+                    variant="secondary"
+                    size="icon"
+                    onClick={() => setDropdownOpen((prev) => !prev)}
+                    className="shrink-0"
+                >
                     <ChevronDownIcon aria-hidden className={cn("transition-all", dropdownOpen && "rotate-180")} />
                 </Button>
             </CardHeader>

@@ -44,8 +44,14 @@
                 "useKeyWithClickEvents": "info"
             },
             "suspicious": {
-                "noArrayIndexKey": "info"
+                "noArrayIndexKey": "info",
+                "noUnknownAtRules": "off"
             }
+        }
+    },
+    "css": {
+        "parser": {
+            "tailwindDirectives": true
         }
     },
     "formatter": {
