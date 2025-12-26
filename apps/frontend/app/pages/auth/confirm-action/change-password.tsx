@@ -30,16 +30,15 @@ export default function ChangePasswordCard({ code }: { code: string }) {
             confirmNewPassword: "",
         },
     });
-    form.watch();
 
-    async function setNewPassword() {
+    async function setNewPassword(values: z.infer<typeof setNewPasswordFormSchema>) {
         try {
             if (isLoading.value === true) return;
             setIsLoading({ value: true, action: "set" });
 
             const response = await clientFetch("/api/user/password", {
                 method: "PATCH",
-                body: JSON.stringify({ code: code, ...form.getValues() }),
+                body: JSON.stringify({ code: code, ...values }),
             });
             const result = await response.json();
 
@@ -100,11 +99,11 @@ export default function ChangePasswordCard({ code }: { code: string }) {
                                 <FormItem>
                                     <FormLabel htmlFor="new-password-input">{t.auth.newPass}</FormLabel>
                                     <Input
+                                        {...field}
                                         type="password"
                                         autoComplete="new-password"
                                         id="new-password-input"
                                         placeholder={t.auth.newPass_label}
-                                        {...field}
                                     />
                                     <FormMessage />
                                 </FormItem>
@@ -118,11 +117,11 @@ export default function ChangePasswordCard({ code }: { code: string }) {
                                 <FormItem>
                                     <FormLabel htmlFor="confirm-new-password-input">{t.auth.confirmPass}</FormLabel>
                                     <Input
+                                        {...field}
                                         type="password"
                                         autoComplete="new-password"
                                         placeholder={t.auth.confirmPass_label}
                                         id="confirm-new-password-input"
-                                        {...field}
                                     />
                                     <FormMessage />
                                 </FormItem>
@@ -138,15 +137,7 @@ export default function ChangePasswordCard({ code }: { code: string }) {
                                 icon={isLoading.action === "cancel" ? <LoadingSpinner size="xs" /> : null}
                             />
 
-                            <Button
-                                type="submit"
-                                disabled={
-                                    isLoading.value ||
-                                    !form.getValues().newPassword ||
-                                    !form.getValues().confirmNewPassword ||
-                                    form.getValues().newPassword !== form.getValues().confirmNewPassword
-                                }
-                            >
+                            <Button type="submit" disabled={isLoading.value || !form.formState.isDirty}>
                                 {isLoading.action === "set" ? <LoadingSpinner size="xs" /> : null}
                                 {t.auth.changePassword}
                             </Button>

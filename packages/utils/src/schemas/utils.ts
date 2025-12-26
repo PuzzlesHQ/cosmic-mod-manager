@@ -1,16 +1,15 @@
-import type z from "zod/v4";
+import z from "zod/v4";
 import { parseFileSize } from "~/number";
 
 export async function zodParse<T extends z.Schema, K>(schema: T, data: unknown, params?: K) {
-    try {
-        const parsedData = (await schema.parseAsync(data, params)) as z.infer<typeof schema>;
-        return { data: parsedData, error: null };
-    } catch (error) {
-        const errorMsg = error?.issues?.[0]?.message;
-        const errorPath = error?.issues?.[0]?.path?.[0];
+    const parsedData = await schema.safeParseAsync(data, params);
+
+    if (parsedData.success) {
+        return { data: parsedData.data, error: null };
+    } else {
         return {
             data: null,
-            error: errorMsg && (errorPath as string) ? `${errorPath}: ${errorMsg}` : (error as string),
+            error: z.prettifyError(parsedData.error),
         };
     }
 }

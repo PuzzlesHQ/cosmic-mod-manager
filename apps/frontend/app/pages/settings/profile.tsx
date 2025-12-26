@@ -62,11 +62,10 @@ export function ProfileSettingsPage({ session }: Props) {
 
         try {
             const formData = new FormData();
-            formData.append("name", values.name || "");
-            formData.append("userName", values.userName);
-            formData.append("avatar", values.avatar || "");
-            formData.append("bio", values.bio || "");
-            formData.append("profilePageBg", values.profilePageBg || "");
+            for (const key in values) {
+                const value = values[key as keyof typeof values];
+                formData.append(key, value ?? "");
+            }
 
             const response = await clientFetch("/api/user", {
                 method: "PATCH",
@@ -75,11 +74,11 @@ export function ProfileSettingsPage({ session }: Props) {
             const result = await response.json();
 
             if (!response.ok || !result?.success) {
-                return toast.error(result?.message || t.common.error);
+                return toast.error(result?.message ?? t.common.error);
             }
 
             RefreshPage(navigate, location);
-            toast.success(result?.message || t.common.success);
+            toast.success(result?.message ?? t.common.success);
         } finally {
             setIsLoading(false);
         }

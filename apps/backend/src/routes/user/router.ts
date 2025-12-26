@@ -7,7 +7,6 @@ import {
 } from "@app/utils/schemas/settings";
 import { zodParse } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
-import type { z } from "zod/v4";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
 import { sendEmailRateLimiter } from "~/middleware/rate-limit/email";
 import { getReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
@@ -130,17 +129,14 @@ async function user_patch(ctx: Context) {
         const user = getUserFromCtx(ctx, API_SCOPE.USER_WRITE);
         if (!user) return unauthenticatedReqResponse(ctx);
 
-        const formData = ctx.get(REQ_BODY_NAMESPACE);
-        const obj = {
-            avatar: formData.get("avatar"),
-            name: formData.get("name"),
-            userName: formData.get("userName"),
-            bio: formData.get("bio"),
-            profilePageBg: formData.get("profilePageBg"),
-        } satisfies z.infer<typeof profileUpdateFormSchema>;
+        const formData: FormData = ctx.get(REQ_BODY_NAMESPACE);
+        const obj: Record<string, unknown> = {};
+        for (const key of formData.keys()) {
+            obj[key] = formData.get(key);
+        }
 
-        const { data, error } = await zodParse(profileUpdateFormSchema, obj);
-        if (error || !data) return invalidRequestResponse(ctx, error);
+        const { error, data } = await zodParse(profileUpdateFormSchema, obj);
+        if (!data) return invalidRequestResponse(ctx, error);
 
         const res = await updateUserProfile(user, data);
         return ctx.json(res.data, res.status);

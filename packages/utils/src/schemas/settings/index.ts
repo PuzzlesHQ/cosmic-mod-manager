@@ -40,34 +40,44 @@ export const profileUpdateFormSchema = z.object({
     userName: userNameSchema,
     bio: z.string().max(MAX_USER_BIO_LENGTH).nullable(),
     profilePageBg: z
-        .file()
-        .max(MAX_PROFILE_PAGE_BG_SIZE, fileMaxSize_ErrMsg(MAX_PROFILE_PAGE_BG_SIZE))
-        .refine(
-            async (file) => {
-                const type = await getFileType(file);
-                if (!isImageFile(type) && !isVideoFile(type)) {
-                    return false;
-                }
+        .union([
+            // either a file (to set a new bg)
+            z
+                .file()
+                .max(MAX_PROFILE_PAGE_BG_SIZE, fileMaxSize_ErrMsg(MAX_PROFILE_PAGE_BG_SIZE))
+                .refine(
+                    async (file) => {
+                        const type = await getFileType(file);
+                        if (!isImageFile(type) && !isVideoFile(type)) {
+                            return false;
+                        }
 
-                return true;
-            },
-            { error: "Invalid file type, only image/video files allowed" },
-        )
-        .or(z.string())
+                        return true;
+                    },
+                    { error: "Invalid file type, only image/video files allowed" },
+                ),
+
+            // or any non empty string (to keep existing bg)
+            // or an empty string (to remove existing bg)
+            z.string(),
+        ])
         .nullable(),
 });
 
-export const setNewPasswordFormSchema = z.object({
-    newPassword: z
-        .string()
-        .min(MIN_PASSWORD_LENGTH, `Your password must be atleast ${MIN_PASSWORD_LENGTH} characters`)
-        .max(MAX_PASSWORD_LENGTH, `Your password can only have a maximum of ${MAX_PASSWORD_LENGTH} characters`),
+const passwordSchema = z
+    .string()
+    .min(MIN_PASSWORD_LENGTH, `Your password must be atleast ${MIN_PASSWORD_LENGTH} characters`)
+    .max(MAX_PASSWORD_LENGTH, `Your password can only have a maximum of ${MAX_PASSWORD_LENGTH} characters`);
 
-    confirmNewPassword: z
-        .string()
-        .min(MIN_PASSWORD_LENGTH, `Your password must be atleast ${MIN_PASSWORD_LENGTH} characters`)
-        .max(MAX_PASSWORD_LENGTH, `Your password can only have a maximum of ${MAX_PASSWORD_LENGTH} characters`),
-});
+export const setNewPasswordFormSchema = z
+    .object({
+        newPassword: passwordSchema,
+        confirmNewPassword: passwordSchema,
+    })
+    .refine((data) => data.newPassword === data.confirmNewPassword, {
+        error: "Passwords do not match",
+        path: ["confirmNewPassword"],
+    });
 
 export const removeAccountPasswordFormSchema = z.object({
     password: z.string().min(MIN_PASSWORD_LENGTH).max(MAX_PASSWORD_LENGTH),
