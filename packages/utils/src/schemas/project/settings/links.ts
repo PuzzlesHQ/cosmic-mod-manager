@@ -1,9 +1,9 @@
 import { z } from "zod/v4";
-import { formLink } from "../index";
+import { nullableStringUrl } from "../index";
 
 export const updateExternalLinksFormSchema = z.object({
-    issueTracker: formLink.nullable(),
-    sourceCode: formLink.nullable(),
-    wikiPage: formLink.nullable(),
-    discordServer: formLink.nullable(),
+    issueTracker: nullableStringUrl,
+    sourceCode: nullableStringUrl,
+    wikiPage: nullableStringUrl,
+    discordServer: nullableStringUrl,
 });

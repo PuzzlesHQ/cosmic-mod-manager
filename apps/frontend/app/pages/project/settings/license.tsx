@@ -6,7 +6,7 @@ import SPDX_LICENSE_LIST, {
 } from "@app/utils/src/constants/license-list";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDownIcon, SaveIcon } from "lucide-react";
-import { type ChangeEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 import MarkdownRenderBox from "~/components/md-editor/md-renderer";
@@ -38,7 +38,7 @@ export default function LicenseSettingsPage() {
 
     const form = useForm<z.infer<typeof updateProjectLicenseFormSchema>>({
         resolver: zodResolver(updateProjectLicenseFormSchema),
-        defaultValues: {
+        values: {
             id: projectData?.licenseId,
             name: projectData?.licenseName,
             url: projectData?.licenseUrl,
@@ -72,12 +72,6 @@ export default function LicenseSettingsPage() {
         () => SPDX_LICENSE_LIST.find((license) => license.licenseId === currLicenseId),
         [currLicenseId],
     );
-
-    const formValues = form.getValues();
-    const hasFormChanged =
-        formValues.id !== projectData?.licenseId ||
-        formValues.name !== projectData?.licenseName ||
-        formValues.url !== projectData?.licenseUrl;
 
     const isCustomLicense =
         showCustomLicenseInputFields || ((currLicenseId || currLicenseName) && !selectedFeaturedLicense);
@@ -197,10 +191,8 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <Input
-                                                        {...{
-                                                            ...field,
-                                                            value: field.value ?? "",
-                                                        }}
+                                                        {...field}
+                                                        value={field.value ?? ""}
                                                         placeholder={t.projectSettings.licenseName}
                                                     />
                                                     <FormMessage />
@@ -216,10 +208,8 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <Input
-                                                        {...{
-                                                            ...field,
-                                                            value: field.value ?? "",
-                                                        }}
+                                                        {...field}
+                                                        value={field.value ?? ""}
                                                         placeholder={t.projectSettings.spdxId}
                                                     />
                                                     <FormMessage />
@@ -236,14 +226,8 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                 render={({ field }) => (
                                     <FormItem>
                                         <Input
-                                            {...{
-                                                ...field,
-                                                value: field.value ?? "",
-                                                onChange: (e: ChangeEvent<HTMLInputElement>) => {
-                                                    const inputVal = e.target.value;
-                                                    field.onChange(inputVal.length > 0 ? inputVal : null);
-                                                },
-                                            }}
+                                            {...field}
+                                            value={field.value ?? ""}
                                             placeholder={t.projectSettings.licenseUrl}
                                         />
                                         <FormMessage />
@@ -257,7 +241,7 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                         <Button
                             type="submit"
                             className="w-fit"
-                            disabled={!hasFormChanged || form.formState.isSubmitting}
+                            disabled={!form.formState.isDirty || form.formState.isSubmitting}
                         >
                             {form.formState.isSubmitting ? (
                                 <LoadingSpinner size="xs" />

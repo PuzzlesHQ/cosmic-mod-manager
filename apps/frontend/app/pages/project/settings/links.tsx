@@ -25,14 +25,13 @@ export default function ExternalLinksSettingsPage() {
 
     const form = useForm<z.infer<typeof updateExternalLinksFormSchema>>({
         resolver: zodResolver(updateExternalLinksFormSchema),
-        defaultValues: {
-            issueTracker: projectData?.issueTrackerUrl,
-            sourceCode: projectData?.projectSourceUrl,
-            wikiPage: projectData?.projectWikiUrl,
-            discordServer: projectData?.discordInviteUrl,
+        values: {
+            issueTracker: projectData.issueTrackerUrl,
+            sourceCode: projectData.projectSourceUrl,
+            wikiPage: projectData.projectWikiUrl,
+            discordServer: projectData.discordInviteUrl,
         },
     });
-    form.watch();
 
     async function updateLinks(values: z.infer<typeof updateExternalLinksFormSchema>) {
         const res = await clientFetch(`/api/project/${projectData.id}/external-links`, {
@@ -48,13 +47,6 @@ export default function ExternalLinksSettingsPage() {
         RefreshPage(navigate, location);
         return toast.success(data?.message);
     }
-
-    const formValues = form.getValues();
-    const hasFormChanged =
-        (projectData?.issueTrackerUrl || "") !== (formValues.issueTracker || "") ||
-        (projectData?.projectSourceUrl || "") !== (formValues.sourceCode || "") ||
-        (projectData?.projectWikiUrl || "") !== (formValues.wikiPage || "") ||
-        (projectData?.discordInviteUrl || "") !== (formValues.discordServer || "");
 
     return (
         <Card className="flex w-full flex-col items-start justify-start gap-6 p-card-surround">
@@ -81,10 +73,10 @@ export default function ExternalLinksSettingsPage() {
 
                                 <Input
                                     {...field}
+                                    value={field.value ?? ""}
                                     type="url"
                                     autoComplete="on"
                                     id="issue-tracker-url-input"
-                                    value={field.value || ""}
                                     placeholder="Enter a valid URL"
                                     className="w-full md:w-[48ch] lg:w-[36ch] xl:w-[48ch]"
                                 />
@@ -109,10 +101,10 @@ export default function ExternalLinksSettingsPage() {
 
                                 <Input
                                     {...field}
+                                    value={field.value ?? ""}
                                     type="url"
                                     autoComplete="on"
                                     id="source-code-url-input"
-                                    value={field.value || ""}
                                     placeholder="Enter a valid URL"
                                     className="w-full md:w-[48ch] lg:w-[36ch] xl:w-[48ch]"
                                 />
@@ -137,10 +129,10 @@ export default function ExternalLinksSettingsPage() {
 
                                 <Input
                                     {...field}
+                                    value={field.value ?? ""}
                                     type="url"
                                     autoComplete="on"
                                     id="wiki-page-url-input"
-                                    value={field.value || ""}
                                     placeholder="Enter a valid URL"
                                     className="w-full md:w-[48ch] lg:w-[36ch] xl:w-[48ch]"
                                 />
@@ -165,19 +157,19 @@ export default function ExternalLinksSettingsPage() {
 
                                 <Input
                                     {...field}
+                                    value={field.value ?? ""}
                                     type="url"
                                     autoComplete="on"
                                     id="discord-invite-url-input"
-                                    value={field.value || ""}
                                     placeholder="Enter a valid URL"
-                                    className="w-full md:w-[48ch]"
+                                    className="w-full md:w-[48ch] lg:w-[36ch] xl:w-[48ch]"
                                 />
                             </FormItem>
                         )}
                     />
 
                     <div className="flex w-full items-center justify-end">
-                        <Button type="submit" disabled={!hasFormChanged || form.formState.isSubmitting}>
+                        <Button type="submit" disabled={!form.formState.isDirty || form.formState.isSubmitting}>
                             {form.formState.isSubmitting ? (
                                 <LoadingSpinner size="xs" />
                             ) : (
