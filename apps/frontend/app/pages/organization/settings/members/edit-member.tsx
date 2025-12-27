@@ -184,9 +184,9 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                                         <FormItem>
                                             <FormLabel className="font-bold">Project permissions</FormLabel>
                                             <div
-                                                className="grid w-full gap-x-4 gap-y-1"
+                                                className="grid w-full gap-x-4 gap-y-1 ps-1"
                                                 style={{
-                                                    gridTemplateColumns: "repeat(auto-fit, minmax(12rem, 1fr))",
+                                                    gridTemplateColumns: "repeat(auto-fit, minmax(11rem, 1fr))",
                                                 }}
                                             >
                                                 {ProjectPermissionsList.map((permission) => {
@@ -225,9 +225,9 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                                         <FormItem>
                                             <FormLabel className="font-bold">Organization permissions</FormLabel>
                                             <div
-                                                className="grid w-full gap-x-4 gap-y-1"
+                                                className="grid w-full gap-x-4 gap-y-1 ps-1"
                                                 style={{
-                                                    gridTemplateColumns: "repeat(auto-fit, minmax(12rem, 1fr))",
+                                                    gridTemplateColumns: "repeat(auto-fit, minmax(11rem, 1fr))",
                                                 }}
                                             >
                                                 {OrgPermissionsList.map((permission) => {

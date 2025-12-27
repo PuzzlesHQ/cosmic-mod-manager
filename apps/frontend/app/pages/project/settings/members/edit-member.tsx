@@ -187,9 +187,9 @@ export function ProjectTeamMember({
                                     <FormItem>
                                         <FormLabel className="font-bold">{t.projectSettings.permissions}</FormLabel>
                                         <div
-                                            className="grid w-full gap-x-4 gap-y-1"
+                                            className="grid w-full gap-x-4 gap-y-1 ps-1"
                                             style={{
-                                                gridTemplateColumns: "repeat(auto-fit, minmax(12rem, 1fr))",
+                                                gridTemplateColumns: "repeat(auto-fit, minmax(11rem, 1fr))",
                                             }}
                                         >
                                             {ProjectPermissionsList.map((permissionName: ProjectPermission) => {
@@ -518,9 +518,9 @@ export function OrgTeamMember({
                                     <FormItem>
                                         <FormLabel className="font-bold">Permissions</FormLabel>
                                         <div
-                                            className="grid w-full gap-x-4 gap-y-1"
+                                            className="grid w-full gap-x-4 gap-y-1 ps-1"
                                             style={{
-                                                gridTemplateColumns: "repeat(auto-fit, minmax(12rem, 1fr))",
+                                                gridTemplateColumns: "repeat(auto-fit, minmax(11rem, 1fr))",
                                             }}
                                         >
                                             {ProjectPermissionsList.map((permissionName: ProjectPermission) => {
