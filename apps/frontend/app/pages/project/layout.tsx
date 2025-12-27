@@ -109,7 +109,7 @@ export default function ProjectPageLayout() {
             projectLicenseData.name = license.name;
             projectLicenseData.text = license?.text || "";
             if (!projectLicenseData.url) {
-                projectLicenseData.url = license.link;
+                projectLicenseData.url = license.url;
             }
             break;
         }
