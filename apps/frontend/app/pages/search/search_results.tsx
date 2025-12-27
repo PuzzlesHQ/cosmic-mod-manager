@@ -16,7 +16,7 @@ export function SearchResults(props: { viewType: ListViewType }) {
     const totalPages = Math.ceil((result?.estimatedTotalHits || 0) / pageLimit);
 
     const pageOffsetParamValue = params.get(pageOffsetParamNamespace);
-    let activePage = pageOffsetParamValue ? Number.parseInt(pageOffsetParamValue || "1") : 1;
+    let activePage = pageOffsetParamValue ? Number.parseInt(pageOffsetParamValue || "1", 10) : 1;
     if (!isNumber(activePage)) activePage = 1;
 
     const pagination =
@@ -65,7 +65,7 @@ export function SearchResults(props: { viewType: ListViewType }) {
                         datePublished={new Date(project.datePublished)}
                         showDatePublished={sortBy === SearchResultSortMethod.RECENTLY_PUBLISHED}
                         author={project?.author || ""}
-                        isOrgOwned={project.isOrgOwned}
+                        isOrgOwned={project.isOrgOwned ?? false}
                         visibility={project.visibility}
                     />
                 ))}

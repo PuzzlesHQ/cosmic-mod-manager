@@ -22,13 +22,12 @@ import { SkipNav } from "~/components/ui/skip-nav";
 import { LabelledTernaryCheckbox, TernaryStates } from "~/components/ui/ternary-checkbox";
 import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
-import { NOT, removePageOffsetSearchParam, updateSearchParam, updateTernaryState_SearchParam } from "./provider";
+import { NOT, removePageOffsetSearchParam, toggleSearchParam, updateTernaryState_SearchParam } from "./provider";
 
 const SHOW_ENV_FILTER_FOR_TYPES = [ProjectType.MOD, ProjectType.MODPACK /*, ProjectType.DATAMOD */];
 
 interface Props {
     type: ProjectType[];
-    searchParams: URLSearchParams;
     sectionsDefaultOpen?: boolean;
 }
 
@@ -52,9 +51,9 @@ const filtersKeyList = [
     licenseFilterParamNamespace,
 ];
 
-function SearchFilters({ type, searchParams, sectionsDefaultOpen }: Props) {
+function SearchFilters({ type, sectionsDefaultOpen }: Props) {
     const { t } = useTranslation();
-    const [, setSearchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
     const [showAllVersions, setShowAllVersions] = useState(false);
     const [query, setQuery] = useState("");
 
@@ -186,10 +185,10 @@ function SearchFilters({ type, searchParams, sectionsDefaultOpen }: Props) {
                 filterToggledUrl={(version) => {
                     const params = new URLSearchParams(searchParams);
 
-                    return updateTernaryState_SearchParam({
-                        searchParams: params,
+                    return toggleSearchParam({
                         key: gameVersionFilterParamNamespace,
                         value: version,
+                        searchParams: params,
                         searchParamModifier: removePageOffsetSearchParam,
                     });
                 }}
@@ -216,15 +215,12 @@ function SearchFilters({ type, searchParams, sectionsDefaultOpen }: Props) {
                     filterToggledUrl={(env) => {
                         const params = new URLSearchParams(searchParams);
 
-                        return removePageOffsetSearchParam(
-                            updateSearchParam({
-                                searchParams: params,
-                                key: environmentFilterParamNamespace,
-                                value: env,
-                                deleteIfExists: true,
-                                deleteParamsWithMatchingValueOnly: true,
-                            }),
-                        );
+                        return toggleSearchParam({
+                            key: environmentFilterParamNamespace,
+                            value: env,
+                            searchParams: params,
+                            searchParamModifier: removePageOffsetSearchParam,
+                        });
                     }}
                     defaultOpen={sectionsDefaultOpen ?? defaultOpenAdditionalFilters}
                     overrideOpenState={isFilteredThroughSearch(environmentFilterOptions)}

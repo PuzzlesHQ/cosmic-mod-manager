@@ -45,19 +45,12 @@ import SearchFilters from "./sidebar";
 
 export default function SearchPage() {
     const { t } = useTranslation();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [, setSearchParams] = useSearchParams();
     const searchInput = useRef<HTMLInputElement>(null);
     const [filtersDialogOpen, setFiltersDialogOpen] = useState(false);
 
-    const {
-        searchTerm,
-        setSearchTerm,
-        sortBy,
-        numProjectsLimit_Param,
-
-        projectType,
-        projectType_Coerced,
-    } = useSearchContext();
+    const { searchTerm, setSearchTerm, sortBy, numProjectsLimit_Param, projectType, projectType_Coerced } =
+        useSearchContext();
     const { viewPrefs } = usePreferences();
     const viewType = viewPrefs[projectType_Coerced];
 
@@ -78,16 +71,14 @@ export default function SearchPage() {
     }, []);
 
     const searchLabel = t.search[projectType];
-
     const filtersComponent = useCallback(
         (defaultOpen?: boolean) => (
             <SearchFilters
                 type={projectType_Coerced === projectType ? [projectType_Coerced] : projectTypes}
-                searchParams={searchParams}
                 sectionsDefaultOpen={defaultOpen}
             />
         ),
-        [searchParams, projectType],
+        [projectType],
     );
 
     return (
@@ -131,18 +122,14 @@ export default function SearchPage() {
                         value={sortBy || defaultSortBy}
                         onValueChange={(val) => {
                             setSearchParams(
-                                (prev) => {
+                                (prev) =>
                                     updateSearchParam({
-                                        searchParams: prev,
                                         key: sortByParamNamespace,
                                         value: val,
-                                        deleteIfEqualsThis: defaultSortBy,
-                                        newParamsInsertionMode: "replace",
-                                    });
-
-                                    removePageOffsetSearchParam(prev);
-                                    return prev;
-                                },
+                                        searchParams: prev,
+                                        deleteKeyWhenEquals: defaultSortBy,
+                                        searchParamModifier: removePageOffsetSearchParam,
+                                    }),
                                 { preventScrollReset: true },
                             );
                         }}
@@ -178,18 +165,14 @@ export default function SearchPage() {
                         value={numProjectsLimit_Param.toString()}
                         onValueChange={(val) => {
                             setSearchParams(
-                                (prev) => {
+                                (prev) =>
                                     updateSearchParam({
-                                        searchParams: prev,
                                         key: searchLimitParamNamespace,
                                         value: val,
-                                        deleteIfEqualsThis: `${defaultSearchLimit}`,
-                                        newParamsInsertionMode: "replace",
-                                    });
-                                    removePageOffsetSearchParam(prev);
-
-                                    return prev;
-                                },
+                                        searchParams: prev,
+                                        deleteKeyWhenEquals: `${defaultSearchLimit}`,
+                                        searchParamModifier: removePageOffsetSearchParam,
+                                    }),
                                 { preventScrollReset: true },
                             );
                         }}

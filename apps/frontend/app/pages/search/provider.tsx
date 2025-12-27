@@ -84,11 +84,10 @@ export function SearchProvider(props: SearchProviderProps) {
         setSearchParams(
             (prev) => {
                 updateSearchParam({
-                    searchParams: prev,
                     key: searchQueryParamNamespace,
                     value: q,
-                    deleteIfFalsyValue: true,
-                    newParamsInsertionMode: "replace",
+                    searchParams: prev,
+                    deleteKeyWhenEquals: "",
                 });
                 removePageOffsetSearchParam(prev);
                 return prev;
@@ -159,41 +158,42 @@ interface UpdateSearchParamProps {
     key: string;
     value: string;
     searchParams: URLSearchParams;
-    newParamsInsertionMode?: "replace" | "append";
-    deleteIfEqualsThis?: string;
-    deleteIfExists?: boolean;
-    deleteIfFalsyValue?: boolean;
-    deleteParamsWithMatchingValueOnly?: boolean;
+    deleteKeyWhenEquals?: string;
+    searchParamModifier?: (searchParams: URLSearchParams) => URLSearchParams;
 }
 
 export function updateSearchParam({
     key,
     value,
     searchParams,
-    deleteIfEqualsThis,
-    deleteIfFalsyValue,
-    deleteIfExists,
-    deleteParamsWithMatchingValueOnly = false,
-    newParamsInsertionMode = "append",
+    deleteKeyWhenEquals,
+    searchParamModifier,
 }: UpdateSearchParamProps) {
-    if (
-        // If deleteIfExists is true and the key already exists
-        (deleteIfExists === true && searchParams.has(key, value)) ||
-        // If deleteIfFalsyValue is true and value is falsy
-        (deleteIfFalsyValue === true && !value) ||
-        // deleteIfEqualsThis is provided and equals the curr value
-        (deleteIfEqualsThis !== undefined && deleteIfEqualsThis === value)
-    ) {
-        if (deleteParamsWithMatchingValueOnly === true) searchParams.delete(key, value);
-        else searchParams.delete(key);
-    }
-    //
-    else {
-        if (newParamsInsertionMode === "replace") searchParams.set(key, value);
-        else searchParams.append(key, value);
+    if (deleteKeyWhenEquals === value || !value) {
+        searchParams.delete(key);
+    } else {
+        searchParams.set(key, value);
     }
 
-    return searchParams;
+    return searchParamModifier ? searchParamModifier(searchParams) : searchParams;
+}
+
+export function toggleSearchParam(props: {
+    key: string;
+    value: string;
+    searchParams: URLSearchParams;
+    searchParamModifier?: (searchParams: URLSearchParams) => URLSearchParams;
+}) {
+    const searchParams = props.searchParams;
+    const alreadyExists = searchParams.has(props.key, props.value);
+
+    if (alreadyExists) {
+        searchParams.delete(props.key, props.value);
+    } else {
+        searchParams.append(props.key, props.value);
+    }
+
+    return props.searchParamModifier ? props.searchParamModifier(searchParams) : searchParams;
 }
 
 export function updateTernaryState_SearchParam(props: {
