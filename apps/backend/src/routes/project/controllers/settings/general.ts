@@ -2,7 +2,7 @@ import { doesMemberHaveAccess, getCurrMember, getValidProjectCategories } from "
 import type { updateProjectTagsFormSchema } from "@app/utils/schemas/project/settings/categories";
 import type { updateProjectLicenseFormSchema } from "@app/utils/schemas/project/settings/license";
 import type { updateExternalLinksFormSchema } from "@app/utils/schemas/project/settings/links";
-import SPDX_LICENSE_LIST, { type SPDX_LICENSE } from "@app/utils/src/constants/license-list";
+import SPDX_LICENSE_LIST from "@app/utils/src/constants/license-list";
 import { ProjectPermission } from "@app/utils/types";
 import type { z } from "zod/v4";
 import { GetProject_ListItem, UpdateProject } from "~/db/project_item";
@@ -119,27 +119,23 @@ export async function updateProjectLicense(
         return invalidRequestResponseData("Either license name or a valid SPDX ID is required");
     }
 
-    let validSpdxData: SPDX_LICENSE | null = null;
-    for (const license of SPDX_LICENSE_LIST) {
-        if (license.licenseId === formData.id) {
-            validSpdxData = license;
-            break;
-        }
+    const spdxLicenseData = SPDX_LICENSE_LIST.find((license) => license.licenseId === formData.id);
+    if (formData.id && !spdxLicenseData) {
+        return invalidRequestResponseData("The provided SPDX ID is not valid");
+    } else if (formData.name && !formData.url) {
+        return invalidRequestResponseData("License URL is required when providing a custom license name");
     }
 
-    // If it's a custom license then the license url is required
-    if (!validSpdxData && !formData.url) {
-        return invalidRequestResponseData("You must provide a url to your license when using a custom license!");
-    }
+    const licenseId = spdxLicenseData ? spdxLicenseData.licenseId : null;
+    const licenseName = spdxLicenseData ? null : formData.name;
+    const licenseUrl = formData.url;
 
     await UpdateProject({
-        where: {
-            id: project.id,
-        },
+        where: { id: project.id },
         data: {
-            licenseName: validSpdxData?.name || formData.name,
-            licenseId: formData.id,
-            licenseUrl: !formData.name && !formData.id ? "" : formData.url,
+            licenseName: licenseName,
+            licenseId: licenseId,
+            licenseUrl: licenseUrl,
         },
     });
 
