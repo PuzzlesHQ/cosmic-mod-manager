@@ -32,6 +32,11 @@ export function timeSince(pastTime: Date, locale = "en-US"): string {
     }
 }
 
+export function date(date: string | Date) {
+    if (date instanceof Date) return date;
+    return DateFromStr(date);
+}
+
 export function DateFromStr(date: string | Date | undefined) {
     if (!date) return null;
 
@@ -43,11 +48,6 @@ export function DateFromStr(date: string | Date | undefined) {
     } catch {
         return null;
     }
-}
-
-export function date(date: string | Date) {
-    if (date instanceof Date) return date;
-    return new Date(date);
 }
 
 export function ISO_DateStr(date?: string | null | Date, utc = false): string {
@@ -108,43 +108,41 @@ export function GetTimestamp() {
 
 // Date operations functions
 
-export function SubtractDays(date: Date, days: number): Date {
-    if (!days) return date;
-
-    const result = new Date(date);
-    result.setDate(result.getDate() - days);
-    return result;
-}
-
 export function AddDays(date: Date, days: number): Date {
-    return SubtractDays(date, -days);
+    const result = new Date(date);
+    if (!days) return result;
+
+    result.setDate(result.getDate() + days);
+    return result;
 }
 
-export function SubtractMonths(date: Date, months: number, resetDate = false): Date {
-    if (!months) return date;
-
-    const result = new Date(date);
-    // Set the date to the first of the month if resetDate is true
-    if (resetDate) result.setDate(1);
-
-    result.setMonth(result.getMonth() - months);
-    return result;
+export function SubtractDays(date: Date, days: number): Date {
+    return AddDays(date, -days);
 }
 
 export function AddMonths(date: Date, months: number, resetDate?: boolean): Date {
-    return SubtractMonths(date, -months, resetDate);
-}
-
-export function SubtractYears(date: Date, years: number): Date {
-    if (!years) return date;
-
     const result = new Date(date);
-    result.setFullYear(result.getFullYear() - years);
+    if (!months) return result;
+
+    // Set the date to the first of the month if resetDate is true
+    if (resetDate) result.setDate(1);
+    result.setMonth(result.getMonth() + months);
     return result;
 }
 
+export function SubtractMonths(date: Date, months: number, resetDate = false): Date {
+    return AddMonths(date, -months, resetDate);
+}
+
 export function AddYears(date: Date, years: number): Date {
-    return SubtractYears(date, -years);
+    const result = new Date(date);
+    if (!years) return result;
+
+    result.setFullYear(result.getFullYear() + years);
+    return result;
+}
+export function SubtractYears(date: Date, years: number): Date {
+    return AddYears(date, -years);
 }
 
 export function getTimeRange(timeline: TimelineOptions): [Date, Date] {
