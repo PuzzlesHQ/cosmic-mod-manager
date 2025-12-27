@@ -78,7 +78,7 @@ export function SearchProvider(props: SearchProviderProps) {
     }
 
     const searchResult = query.data;
-    const numProjectsLimit_Param = Number.parseInt(pageSize || "0") || defaultSearchLimit;
+    const numProjectsLimit_Param = Number.parseInt(pageSize || "0", 10) || defaultSearchLimit;
 
     function updateSearchTerm_Param(q: string) {
         setSearchParams(
@@ -109,10 +109,12 @@ export function SearchProvider(props: SearchProviderProps) {
         }, 250);
     }, [searchTerm_state]);
 
+    const prevContextRef = useRef(projectType);
     // Reset search term and query data when navigating away from curr page
     useEffect(() => {
-        if (!location.pathname) return;
-        setSearchTerm_state("");
+        if (!projectType || projectType === prevContextRef.current) return;
+        prevContextRef.current = projectType;
+        if (searchTerm_state) setSearchTerm_state("");
 
         // If the user navigates to a different project type search page, reset the query data
         if (query.data?.projectType !== projectType) {
