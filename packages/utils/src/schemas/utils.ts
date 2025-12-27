@@ -12,7 +12,7 @@ export async function zodParse<T extends z.Schema, K>(schema: T, data: unknown, 
         const errorPath = error?.issues?.[0]?.path?.[0];
         return {
             data: null,
-            error: errorMsg && (errorPath as string) ? `${String(errorPath)}: ${errorMsg}` : z.prettifyError(error),
+            error: errorMsg && (errorPath as string) ? `[${String(errorPath)}] ${errorMsg}` : z.prettifyError(error),
         };
     }
 }

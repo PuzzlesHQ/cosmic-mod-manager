@@ -40,11 +40,7 @@ async function pat_post(ctx: Context) {
         if (!user) return invalidRequestResponse(ctx);
 
         const body = ctx.get(REQ_BODY_NAMESPACE);
-        const { data, error } = await zodParse(createPAT_FormSchema, {
-            ...body,
-            dateExpires: new Date(body.dateExpires),
-            authScopes: BigInt(body.authScopes),
-        });
+        const { data, error } = await zodParse(createPAT_FormSchema, body);
         if (error || !data) return invalidRequestResponse(ctx, error);
 
         const res = await createPersonalAccessToken(user, data);
@@ -64,11 +60,7 @@ async function pat_patch(ctx: Context) {
         if (!patId) return invalidRequestResponse(ctx, "PAT ID is required");
 
         const body = ctx.get(REQ_BODY_NAMESPACE);
-        const { data, error } = await zodParse(createPAT_FormSchema, {
-            ...body,
-            dateExpires: new Date(body.dateExpires),
-            authScopes: BigInt(body.authScopes),
-        });
+        const { data, error } = await zodParse(createPAT_FormSchema, body);
         if (error || !data) return invalidRequestResponse(ctx, error);
 
         const res = await editPersonalAccessToken(user, patId, data);

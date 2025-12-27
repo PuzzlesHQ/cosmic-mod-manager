@@ -1,4 +1,4 @@
-import { decodePatScopes, patContainsRestrictedScopes } from "@app/utils/pats";
+import { decodePatScopes, encodePatScopes, patContainsRestrictedScopes } from "@app/utils/pats";
 import type { createPAT_FormSchema } from "@app/utils/schemas/pat";
 import type { PATData } from "@app/utils/types/api/pat";
 import type z from "zod";
@@ -31,13 +31,17 @@ export async function getAllUserPATs(user: ContextUserData) {
 }
 
 export async function createPersonalAccessToken(user: ContextUserData, formData: z.infer<typeof createPAT_FormSchema>) {
-    if (formData.dateExpires.getTime() <= Date.now()) {
-        return invalidRequestResponseData("Expiration date must be in the future");
+    const dateExpires = new Date(formData.dateExpires);
+    if (dateExpires.getTime() <= Date.now()) {
+        return invalidRequestResponseData("[dateExpires] Expiration date must be in the future");
     }
 
-    const restrictedScope = patContainsRestrictedScopes(formData.authScopes);
+    const authScopes = encodePatScopes(formData.authScopes);
+    const restrictedScope = patContainsRestrictedScopes(authScopes);
     if (restrictedScope) {
-        return invalidRequestResponseData(`Requested scopes include restricted scopes: '${restrictedScope}'`);
+        return invalidRequestResponseData(
+            `[authScopes] Requested scopes include restricted scopes: '${restrictedScope}'`,
+        );
     }
 
     const token = await generatePAT();
@@ -48,8 +52,8 @@ export async function createPersonalAccessToken(user: ContextUserData, formData:
             id: generateDbId(),
             userId: user.id,
             name: formData.name,
-            dateExpires: formData.dateExpires,
-            scopes: formData.authScopes,
+            dateExpires: dateExpires,
+            scopes: authScopes,
             tokenHash: tokenHash,
         },
     });
@@ -77,21 +81,25 @@ export async function editPersonalAccessToken(
     if (!pat) return invalidRequestResponseData("PAT not found");
     if (pat.userId !== user.id) return unauthorizedReqResponseData("You do not have permission to edit this PAT");
 
-    if (formData.dateExpires.getTime() <= Date.now()) {
-        return invalidRequestResponseData("Expiration date must be in the future");
+    const dateExpires = new Date(formData.dateExpires);
+    if (dateExpires.getTime() <= Date.now()) {
+        return invalidRequestResponseData("[dateExpires] Expiration date must be in the future");
     }
 
-    const restrictedScope = patContainsRestrictedScopes(formData.authScopes);
+    const authScopes = encodePatScopes(formData.authScopes);
+    const restrictedScope = patContainsRestrictedScopes(authScopes);
     if (restrictedScope) {
-        return invalidRequestResponseData(`Requested scopes include restricted scopes: '${restrictedScope}'`);
+        return invalidRequestResponseData(
+            `[authScopes] Requested scopes include restricted scopes: '${restrictedScope}'`,
+        );
     }
 
     await UpdatePAT({
         where: { id: patId },
         data: {
             name: formData.name,
-            dateExpires: formData.dateExpires,
-            scopes: formData.authScopes,
+            dateExpires: dateExpires,
+            scopes: authScopes,
         },
     });
 

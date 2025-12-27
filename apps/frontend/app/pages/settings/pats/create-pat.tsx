@@ -1,4 +1,5 @@
-import { API_SCOPE, decodePatScopes, encodePatScopes, PAT_RESTRICTED_SCOPES, togglePatScope } from "@app/utils/pats";
+import { AddDays, DateFromStr } from "@app/utils/date";
+import { API_SCOPE, PAT_RESTRICTED_SCOPES } from "@app/utils/pats";
 import { createPAT_FormSchema } from "@app/utils/schemas/pat";
 import { CapitalizeAndFormatString } from "@app/utils/string";
 import type { PATData } from "@app/utils/types/api/pat";
@@ -15,6 +16,7 @@ import {
     DialogBody,
     DialogClose,
     DialogContent,
+    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
@@ -24,6 +26,7 @@ import { Form, FormField, FormItem, FormLabel, FormMessage } from "~/components/
 import { Input } from "~/components/ui/input";
 import { useNavigate } from "~/components/ui/link";
 import { LoadingSpinner } from "~/components/ui/spinner";
+import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
@@ -45,10 +48,7 @@ export function CreatePAT_Dialog({ setPats }: { setPats: React.Dispatch<React.Se
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                    ...data,
-                    authScopes: data.authScopes.toString(),
-                }),
+                body: JSON.stringify(data),
             });
 
             if (!response.ok) {
@@ -107,10 +107,7 @@ export function EditPAT_Dialog({ pat }: { pat: PATData }) {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                    ...data,
-                    authScopes: data.authScopes.toString(),
-                }),
+                body: JSON.stringify(data),
             });
 
             if (!response.ok) {
@@ -165,8 +162,8 @@ interface PatInfoFormProps {
 function defaultFormValues(patData: PATData | null) {
     return {
         name: patData?.name ?? "",
-        authScopes: patData ? encodePatScopes(patData.scopes) : 0n,
-        dateExpires: patData ? new Date(patData.dateExpires) : new Date(),
+        authScopes: patData ? patData.scopes : [],
+        dateExpires: patData ? dateIsoString(new Date(patData.dateExpires)) : "",
     };
 }
 
@@ -192,6 +189,9 @@ function PatInfoForm({ patData, onSubmit, loading, ...props }: PatInfoFormProps)
             <DialogContent className="max-w-3xl">
                 <DialogHeader>
                     <DialogTitle>{props.dialog.title}</DialogTitle>
+                    <VisuallyHidden>
+                        <DialogDescription>{props.dialog.title}</DialogDescription>
+                    </VisuallyHidden>
                 </DialogHeader>
 
                 <DialogBody className="grid gap-4">
@@ -235,10 +235,15 @@ function PatInfoForm({ patData, onSubmit, loading, ...props }: PatInfoFormProps)
                                                     return (
                                                         <LabelledCheckbox
                                                             key={scope}
-                                                            checked={decodePatScopes(field.value).includes(scope)}
-                                                            onCheckedChange={() => {
-                                                                field.onChange(togglePatScope(field.value, scope));
-                                                                console.log(field.value.toString(2));
+                                                            checked={field.value.includes(scope)}
+                                                            onCheckedChange={(checked) => {
+                                                                if (checked === true) {
+                                                                    field.onChange([...field.value, scope]);
+                                                                } else {
+                                                                    field.onChange(
+                                                                        field.value.filter((item) => item !== scope),
+                                                                    );
+                                                                }
                                                             }}
                                                             className="py-1.5"
                                                         >
@@ -266,14 +271,17 @@ function PatInfoForm({ patData, onSubmit, loading, ...props }: PatInfoFormProps)
                                         <Input
                                             className="w-fit"
                                             name={field.name}
-                                            value={field.value?.toISOString().split("T")[0]}
+                                            value={field.value}
                                             id="pat-expiration-input"
                                             type="date"
-                                            min={new Date().toISOString().split("T")[0]}
-                                            max={new Date("2100-01-01").toISOString().split("T")[0]}
+                                            min={dateIsoString(AddDays(new Date(), 1))}
+                                            max="2100-01-01"
                                             onChange={(e) => {
-                                                field.onChange(new Date(e.target.value));
+                                                const date = DateFromStr(e.target.value);
+                                                if (!e.target.value || !date) field.onChange("");
+                                                else field.onChange(dateIsoString(date));
                                             }}
+                                            required
                                         />
                                     </FormItem>
                                 )}
@@ -295,4 +303,8 @@ function PatInfoForm({ patData, onSubmit, loading, ...props }: PatInfoFormProps)
             </DialogContent>
         </Dialog>
     );
+}
+
+function dateIsoString(date: Date) {
+    return date.toISOString().split("T")[0];
 }

@@ -37,9 +37,9 @@ export default function LicenseSettingsPage() {
 
     const form = useFormHook(updateProjectLicenseFormSchema, {
         values: {
-            id: projectData?.licenseId,
-            name: projectData?.licenseName,
-            url: projectData?.licenseUrl,
+            id: projectData.licenseId,
+            name: projectData.licenseName,
+            url: projectData.licenseUrl,
         },
     });
 
@@ -135,6 +135,7 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                                         : (field.value ?? "")
                                                 }
                                                 setValue={(value: string) => {
+                                                    form.setValue("name", null);
                                                     if (value === CUSTOM_LICENSE_OPTION.licenseId) {
                                                         setShowCustomLicenseInputFields(true);
                                                         field.onChange(null);
@@ -142,7 +143,6 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                                         field.onChange(value);
                                                         setShowCustomLicenseInputFields(false);
                                                     }
-                                                    form.setValue("name", null);
                                                 }}
                                                 showOptionValueTooltip
                                                 inputLabel={t.projectSettings.searchAllLicenses(licenseOptions.length)}
