@@ -1,4 +1,3 @@
-import { OAuthProfileDataSchema } from "@app/utils/schemas/auth";
 import { zodParse } from "@app/utils/schemas/utils";
 import { createURLSafeSlug } from "@app/utils/string";
 import { GlobalUserRole } from "@app/utils/types";
@@ -7,6 +6,7 @@ import { CreateUser, GetUser_ByIdOrUsername, GetUser_Unique } from "~/db/user_it
 import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { createNewAuthAccount, getAuthProviderProfileData } from "~/routes/auth/helpers";
 import { createUserSession, setSessionCookie } from "~/routes/auth/helpers/session";
+import { OAuthProfileDataSchema } from "~/routes/auth/providers/_schema";
 import { getUserAvatar } from "~/routes/user/controllers/profile";
 import prisma from "~/services/prisma";
 import { getImageFromHttpUrl } from "~/utils/file";

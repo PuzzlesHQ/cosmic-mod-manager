@@ -1,4 +1,8 @@
 
+[x] add schema validation for the api responses from oAuth providers
+
+---
+
 [x] Remove explicit usage of FormatUrlWithHintLocale and use that inside the ui component instead
 
 ~~[\_] Replace Media Queries with Container Queries~~

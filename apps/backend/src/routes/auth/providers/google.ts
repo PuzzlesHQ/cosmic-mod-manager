@@ -1,5 +1,4 @@
 import { AuthProvider } from "@app/utils/types";
-import type { OAuthData } from "~/types/oAuth";
 import env from "~/utils/env";
 
 export async function getGoogleUserProfileData(tokenExchangeCode: string) {
@@ -21,17 +20,17 @@ export async function getGoogleUserProfileData(tokenExchangeCode: string) {
         body: params,
     });
 
-    // TODO: use zod to validate this properly
-    const tokenData = await authTokenRes.json();
+    // biome-ignore lint/suspicious/noExplicitAny: see ./github.ts
+    const tokenData = (await authTokenRes.json()) as any;
     const accessToken = tokenData?.access_token;
 
     // Fetch the user data using exchanged token
     const userDataRes = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`, {
         headers: { Authorization: `token ${accessToken}` },
     });
-    const userData = await userDataRes.json();
 
-    // Construct the user profile
+    // biome-ignore lint/suspicious/noExplicitAny: ^^
+    const userData = (await userDataRes.json()) as any;
     const profile = {
         name: userData?.name || "",
         email: userData?.email?.toLowerCase() || null,
@@ -46,7 +45,8 @@ export async function getGoogleUserProfileData(tokenExchangeCode: string) {
             (tokenData?.scope || "").replaceAll("https://www.googleapi.com/auth/userinfo.", "").replaceAll(" ", "+") ||
             null,
         avatarImage: userData?.picture || null,
-    } satisfies OAuthData;
+    };
 
-    return profile;
+    // see ./github.ts for explanation on the type assertion
+    return profile as object;
 }

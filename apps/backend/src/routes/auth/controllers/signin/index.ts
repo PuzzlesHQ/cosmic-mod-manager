@@ -1,11 +1,11 @@
 import { SITE_NAME_SHORT } from "@app/utils/constants";
-import { OAuthProfileDataSchema } from "@app/utils/schemas/auth";
 import { zodParse } from "@app/utils/schemas/utils";
 import { Capitalize, CapitalizeAndFormatString } from "@app/utils/string";
 import type { Context } from "hono";
 import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { getAuthProviderProfileData } from "~/routes/auth/helpers";
 import { createUserSession, setSessionCookie } from "~/routes/auth/helpers/session";
+import { OAuthProfileDataSchema } from "~/routes/auth/providers/_schema";
 import prisma from "~/services/prisma";
 import { HTTP_STATUS, invalidRequestResponseData } from "~/utils/http";
 

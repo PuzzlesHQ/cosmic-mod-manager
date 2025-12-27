@@ -5,12 +5,12 @@ import {
 } from "@app/utils/constants";
 import { getSessionIp } from "@app/utils/headers";
 import { convertToIPv6, stripIp } from "@app/utils/ip";
-import type { ValidatedOAuthProfile } from "@app/utils/schemas/auth";
 import { type AuthActionIntent, AuthProvider } from "@app/utils/types";
 import { encodeBase32LowerCaseNoPadding } from "@oslojs/encoding";
 import type { Context } from "hono";
 import { getCookie } from "hono/cookie";
 import { random } from "nanoid";
+import type { ValidatedOAuthProfile } from "~/routes/auth/providers/_schema";
 import { getDiscordUserProfileData } from "~/routes/auth/providers/discord";
 import { getGithubUserProfileData } from "~/routes/auth/providers/github";
 import { getGitlabUserProfileData } from "~/routes/auth/providers/gitlab";

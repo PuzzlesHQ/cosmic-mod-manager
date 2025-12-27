@@ -1,5 +1,4 @@
 import { AuthProvider } from "@app/utils/types";
-import type { OAuthData } from "~/types/oAuth";
 import env from "~/utils/env";
 
 export async function getGitlabUserProfileData(tokenExchangeCode: string) {
@@ -19,9 +18,8 @@ export async function getGitlabUserProfileData(tokenExchangeCode: string) {
         },
     });
 
-    // TODO: use zod to validate this properly
-
-    const tokenData = await authTokenRes.json();
+    // biome-ignore lint/suspicious/noExplicitAny: see ./github.ts
+    const tokenData = (await authTokenRes.json()) as any;
     const accessToken = tokenData?.access_token;
     const accessTokenType = tokenData?.token_type;
 
@@ -30,8 +28,9 @@ export async function getGitlabUserProfileData(tokenExchangeCode: string) {
             Authorization: `${accessTokenType} ${accessToken}`,
         },
     });
-    const userProfile = await userDataRes.json();
 
+    // biome-ignore lint/suspicious/noExplicitAny: ^^
+    const userProfile = (await userDataRes.json()) as any;
     const profile = {
         name: userProfile?.name || null,
         email: userProfile?.email?.toLowerCase() || null,
@@ -45,7 +44,8 @@ export async function getGitlabUserProfileData(tokenExchangeCode: string) {
         tokenType: accessTokenType || null,
         scope: tokenData?.scope || null,
         avatarImage: userProfile?.avatar_url || null,
-    } satisfies OAuthData;
+    };
 
-    return profile;
+    // see ./github.ts for explanation on the type assertion
+    return profile as object;
 }
