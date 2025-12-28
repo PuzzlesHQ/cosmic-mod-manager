@@ -81,7 +81,7 @@ export function FormatDate_ToLocaleString(_date: string | Date, _options: Format
     const options: Intl.DateTimeFormatOptions = {};
 
     if (_options.includeTime !== false) {
-        options.hourCycle = "h24";
+        options.hourCycle = "h23";
         options.hour = "numeric";
         options.minute = "numeric";
     }
