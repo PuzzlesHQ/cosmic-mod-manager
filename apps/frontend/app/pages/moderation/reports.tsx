@@ -188,7 +188,6 @@ export default function Reports_ModerationPage(props: Props) {
 
                             <MultiSelect
                                 searchBox={false}
-                                defaultMinWidth={false}
                                 selectedValues={filters.ruleViolated}
                                 options={Object.values(RuleViolationType).map((type) => ({
                                     label: t.report.violationType[type],

@@ -219,7 +219,7 @@ export default function MarkdownEditor({
     }, []);
 
     return (
-        <TooltipProvider>
+        <TooltipProvider delayDuration={300}>
             <div className="flex w-full flex-col items-start justify-center gap-1">
                 {/* TOOLBAR */}
                 <div className="flex w-full flex-wrap items-center justify-between gap-x-6 gap-y-1">

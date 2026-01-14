@@ -96,7 +96,6 @@ export default function VersionFilters(props: VersionFiltersProps) {
                                 setFilters({ ...filters, loaders: values });
                             }}
                             searchBox={false}
-                            defaultMinWidth={false}
                             customTrigger={
                                 <Button variant="secondary">
                                     <FilterIcon aria-hidden className="h-btn-icon w-btn-icon" />
@@ -120,7 +119,6 @@ export default function VersionFilters(props: VersionFiltersProps) {
                             onValueChange={(values) => {
                                 setFilters({ ...filters, gameVersions: values });
                             }}
-                            defaultMinWidth={false}
                             customTrigger={
                                 <Button variant="secondary">
                                     <FilterIcon aria-hidden className="h-btn-icon w-btn-icon" />
@@ -152,7 +150,6 @@ export default function VersionFilters(props: VersionFiltersProps) {
                     {formattedOptions.releaseChannelsFilterVisible ? (
                         <MultiSelect
                             searchBox={false}
-                            defaultMinWidth={false}
                             selectedValues={[...filters.releaseChannels]}
                             options={formattedOptions.releaseChannelFilters.map((channel) => ({
                                 label: CapitalizeAndFormatString(channel) || "",

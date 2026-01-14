@@ -28,7 +28,6 @@ interface MultiSelectProps extends React.ButtonHTMLAttributes<HTMLButtonElement>
     asChild?: boolean;
     className?: string;
     searchBox?: boolean;
-    defaultMinWidth?: boolean;
     // A footer item displayed at the bottom of the popover
     // Fixed, because it won't scroll with the rest of the list
     fixedFooter?: React.ReactNode;
@@ -57,7 +56,6 @@ export const MultiSelect = ({
     asChild = false,
     className,
     searchBox,
-    defaultMinWidth,
     fixedFooter,
     customTrigger,
     open,
@@ -169,8 +167,9 @@ export const MultiSelect = ({
                     </Button>
                 )}
             </PopoverTrigger>
+
             <PopoverContent
-                className={cn("w-max border-none p-0", defaultMinWidth === false && "min-w-48", popoverClassname)}
+                className={cn("w-max min-w-[var(--radix-popover-trigger-width)] border-none p-0", popoverClassname)}
                 align="start"
                 onEscapeKeyDown={() => handleTogglePopover(false)}
             >

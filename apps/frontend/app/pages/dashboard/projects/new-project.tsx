@@ -194,7 +194,6 @@ export default function CreateNewProjectDialog({ orgId, trigger }: Props) {
 
                                         <MultiSelect
                                             searchBox={false}
-                                            defaultMinWidth={false}
                                             open={typeSelectorOpen}
                                             onOpenChange={setTypeSelectorOpen}
                                             selectedValues={field.value || []}
