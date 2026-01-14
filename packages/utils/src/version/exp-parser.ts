@@ -3,17 +3,17 @@ import { gameVersionsList } from "~/constants/game-versions";
 /**
  * Accepted formats:
  * 1. `(SUFFIX?)VERSION`:
- *    - no suffix: include VERSION
- *    - `!`, `!=`: exclude VERSION
- *    - `>`, `>=`, `<`, `<=`: include versions in the specified range
+ *    - no suffix : include VERSION
+ *    - `!` : exclude VERSION
+ *    - `>`, `>=`, `<`, `<=` : include versions in the specified range
  *
  * 1. `START-END`:
  *    - include versions in the specified range
  *
- * 1. `!START-END` or `!=START-END`:
+ * 1. `!START-END`:
  *    - exclude versions in the specified range
  *
- * Example: `>=0.1.0, <0.2.0, !=0.1.5`
+ * Example: `>=0.1.0, <0.2.0, !0.1.5`
  */
 export function parseVersionExpression(expr: string): ExprAction[] {
     const exprUnits = expr.split(",").map((unit) => unit.trim());
@@ -62,20 +62,15 @@ function resolveExpressions(exprs: string[]) {
     const rangeActions: ExprAction[] = [];
     const absoluteActions: ExprAction[] = [];
 
-    for (const expr of exprs) {
-        // exclude
-        if ((expr.startsWith("!=") || expr.startsWith("!")) && !expr.includes("-")) {
-            const version = expr.replace("!=", "").replace("!", "").trim();
-            absoluteActions.push({ action: "exclude", version: version });
-        }
+    for (const _expr of exprs) {
+        let expr = _expr.trim();
+        const isExclusiveExpr = expr.startsWith("!");
+        if (isExclusiveExpr) expr = expr.slice(1).trim();
 
-        // resolve hyphen range
-        else if (expr.includes("-")) {
-            const exclusive = expr.startsWith("!") || expr.startsWith("!=");
-            const hyphenRangeExpr = exclusive ? expr.replace("!=", "").replace("!", "").trim() : expr;
-            if (hyphenRangeExpr.split("-").length !== 2) continue;
-
-            let [start, end] = hyphenRangeExpr.split("-").map((v) => v.trim());
+        const hyphenRangeStart = getHyphenRangeStart(expr);
+        if (hyphenRangeStart) {
+            const start = hyphenRangeStart;
+            let end = expr.slice(hyphenRangeStart.length).trim().slice(1).trim();
             if (!end || end.toLowerCase() === "latest") end = gameVersionsList[0];
 
             const startIndex = gameVersionsList.indexOf(start);
@@ -84,10 +79,15 @@ function resolveExpressions(exprs: string[]) {
 
             for (let i = endIndex; i <= startIndex; i++) {
                 absoluteActions.push({
-                    action: exclusive ? "exclude" : "include",
+                    action: isExclusiveExpr ? "exclude" : "include",
                     version: gameVersionsList[i],
                 });
             }
+        }
+
+        // normal exclusive expression
+        else if (isExclusiveExpr) {
+            absoluteActions.push({ action: "exclude", version: expr });
         }
 
         // resolve range
@@ -95,10 +95,9 @@ function resolveExpressions(exprs: string[]) {
             rangeActions.push(...resolveRangeExpression(expr));
         }
 
-        // include, overrides exclusions
-        else if (expr.trim()) {
-            const version = expr.trim();
-            absoluteActions.push({ action: "include", version: version });
+        //
+        else if (expr) {
+            absoluteActions.push({ action: "include", version: expr });
         }
     }
 
@@ -140,6 +139,31 @@ function resolveRangeExpression(unit: string): ExprAction[] {
     }
 
     return actions;
+}
+
+function getHyphenRangeStart(unit: string) {
+    const startMatches: string[] = [];
+
+    // if the expression matches a full version, it's not a hyphen range
+    // even if it contains hyphens and probably startsWith a valid version followed by hyphen
+    // eg: 1.19.2-rc1 is not a hyphen range
+    // but it will match `1.19.2` as a starting version
+    if (gameVersionsList.indexOf(unit) !== -1) return null;
+
+    for (const v of gameVersionsList) {
+        if (unit.startsWith(`${v}-`)) {
+            startMatches.push(v);
+        }
+    }
+
+    let matchingStart: string | null = null;
+    for (const item of startMatches) {
+        if (!matchingStart || matchingStart.length < item.length) {
+            matchingStart = item;
+        }
+    }
+
+    return matchingStart;
 }
 
 interface ExprAction {
