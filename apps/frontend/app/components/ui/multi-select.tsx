@@ -35,10 +35,18 @@ interface MultiSelectProps extends React.ButtonHTMLAttributes<HTMLButtonElement>
     open?: boolean;
     onOpenChange?: React.Dispatch<React.SetStateAction<boolean>>;
     popoverClassname?: string;
-    noResultsElement?: React.ReactNode;
     inputPlaceholder?: string;
 
+    noResultsElement?: React.ReactNode | ((props: noResultsElementProps) => React.ReactNode);
+
     ref?: React.ComponentProps<"button">["ref"];
+}
+
+export interface noResultsElementProps {
+    searchTerm: string;
+    setSearchTerm: (val: string) => void;
+    selectedvalues: string[];
+    setSelectedValues: (vals: string[]) => void;
 }
 
 export const MultiSelect = ({
@@ -61,10 +69,11 @@ export const MultiSelect = ({
     open,
     onOpenChange,
     popoverClassname,
-    noResultsElement,
+    noResultsElement: NoResultsElement,
     inputPlaceholder,
     ...props
 }: MultiSelectProps) => {
+    const [searchVal, setSearchVal] = useState("");
     const [localOpen, setLocalOpen] = useState(false);
     const isPopoverOpen = open === undefined ? localOpen : open;
 
@@ -80,7 +89,6 @@ export const MultiSelect = ({
             const newSelectedValues = [...selectedValues];
             newSelectedValues.pop();
             setSelectedValues(newSelectedValues);
-            onValueChange(newSelectedValues);
         }
     }
 
@@ -89,7 +97,6 @@ export const MultiSelect = ({
             ? selectedValues.filter((value) => value !== option)
             : [...selectedValues, option];
         setSelectedValues(newSelectedValues);
-        onValueChange(newSelectedValues);
     }
 
     function handleTogglePopover(value: boolean) {
@@ -100,7 +107,6 @@ export const MultiSelect = ({
     function clearExtraOptions() {
         const newSelectedValues = selectedValues.slice(0, maxCount);
         setSelectedValues(newSelectedValues);
-        onValueChange(newSelectedValues);
     }
 
     return (
@@ -169,21 +175,37 @@ export const MultiSelect = ({
             </PopoverTrigger>
 
             <PopoverContent
-                className={cn("w-max min-w-[var(--radix-popover-trigger-width)] border-none p-0", popoverClassname)}
+                className={cn("w-min min-w-[var(--radix-popover-trigger-width)] border-none p-0", popoverClassname)}
                 align="start"
                 onEscapeKeyDown={() => handleTogglePopover(false)}
             >
                 <Command className="border border-border">
-                    <CommandInput
-                        placeholder={inputPlaceholder || "Search..."}
-                        onKeyDown={handleInputKeyDown}
-                        size={1}
-                        className="w-full"
-                        wrapperClassName={cn(searchBox === false && "h-0 w-0 overflow-hidden opacity-0")}
-                        {...(searchBox === false ? { readOnly: true } : {})}
-                    />
+                    {searchBox !== false && (
+                        <CommandInput
+                            placeholder={inputPlaceholder || "Search..."}
+                            onKeyDown={handleInputKeyDown}
+                            size={1}
+                            className="w-full"
+                            value={searchVal}
+                            onValueChange={setSearchVal}
+                        />
+                    )}
+
                     <CommandList className="grid gap-y-1">
-                        <CommandEmpty>{noResultsElement || "No results"}</CommandEmpty>
+                        <CommandEmpty>
+                            {(NoResultsElement &&
+                                (typeof NoResultsElement === "function" ? (
+                                    <NoResultsElement
+                                        searchTerm={searchVal}
+                                        setSearchTerm={setSearchVal}
+                                        selectedvalues={selectedValues}
+                                        setSelectedValues={setSelectedValues}
+                                    />
+                                ) : (
+                                    NoResultsElement
+                                ))) ||
+                                "No results"}
+                        </CommandEmpty>
                         <CommandGroup>
                             {options.map((option) => {
                                 const isSelected = selectedValues.includes(option.value);

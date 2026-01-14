@@ -16,7 +16,10 @@ import { gameVersionsList } from "~/constants/game-versions";
  * Example: `>=0.1.0, <0.2.0, !0.1.5`
  */
 export function parseVersionExpression(expr: string): ExprAction[] {
-    const exprUnits = expr.split(",").map((unit) => unit.trim());
+    const exprUnits = expr
+        .replaceAll("latest", gameVersionsList[0])
+        .split(",")
+        .map((unit) => unit.trim());
 
     const includedVersions = new Set<string>();
     const excludedVersions = new Set<string>();
@@ -169,4 +172,39 @@ function getHyphenRangeStart(unit: string) {
 interface ExprAction {
     action: "include" | "exclude";
     version: string;
+}
+
+export function getDiff(currentList: string[], actions: ExprAction[]) {
+    const includedSet = new Set<string>();
+    const excludedSet = new Set<string>();
+
+    for (const action of actions) {
+        if (action.action === "include") {
+            includedSet.add(action.version);
+            excludedSet.delete(action.version);
+        } else {
+            excludedSet.add(action.version);
+            includedSet.delete(action.version);
+        }
+    }
+
+    const toAdd: string[] = [];
+    const toRemove: string[] = [];
+
+    for (const v of includedSet) {
+        if (!currentList.includes(v)) {
+            toAdd.push(v);
+        }
+    }
+
+    for (const v of currentList) {
+        if (excludedSet.has(v)) {
+            toRemove.push(v);
+        }
+    }
+
+    return {
+        toAdd,
+        toRemove,
+    };
 }

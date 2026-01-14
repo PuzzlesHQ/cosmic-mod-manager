@@ -19,6 +19,8 @@ import {
 import type { ProjectDetailsData, ProjectVersionData } from "@app/utils/types/api";
 import type { DependencyData } from "@app/utils/types/project";
 import { imageUrl } from "@app/utils/url";
+import { getDiff, parseVersionExpression } from "@app/utils/version/exp-parser";
+import { formatVersionsForDisplay } from "@app/utils/version/format";
 import { CircleAlertIcon, FileIcon, PlusIcon, StarIcon, Trash2Icon, UploadIcon } from "lucide-react";
 import { useState } from "react";
 import type { Control, Path, RefCallBack } from "react-hook-form";
@@ -41,7 +43,7 @@ import { FormField, FormItem, FormLabel } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { InteractiveLabel } from "~/components/ui/label";
 import { LinkPrefetchStrategy, VariantButtonLink } from "~/components/ui/link";
-import { MultiSelect } from "~/components/ui/multi-select";
+import { MultiSelect, type noResultsElementProps } from "~/components/ui/multi-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
@@ -297,13 +299,71 @@ export function MetadataInputCard<FieldsT extends {}>(props: {
                                     </LabelledCheckbox>
                                 </>
                             }
-                            noResultsElement={t.common.noResults}
-                            inputPlaceholder={t.common.search}
+                            inputPlaceholder={t.version.searchOrEnterRange}
+                            noResultsElement={NoResultsComponent}
                         />
                     </FormItem>
                 )}
             />
         </ContentCardTemplate>
+    );
+}
+
+function NoResultsComponent({ searchTerm, setSearchTerm, selectedvalues, setSelectedValues }: noResultsElementProps) {
+    const { t } = useTranslation();
+    const expandedExpr = parseVersionExpression(searchTerm || "");
+    const diff = getDiff(selectedvalues, expandedExpr);
+
+    function expandExpr() {
+        const newSelectedValues = new Set(selectedvalues);
+        for (const v of diff.toRemove) {
+            newSelectedValues.delete(v);
+        }
+        for (const v of diff.toAdd) {
+            newSelectedValues.add(v);
+        }
+        setSelectedValues(Array.from(newSelectedValues));
+        setSearchTerm("");
+    }
+
+    if (expandedExpr.length > 0 && diff.toAdd.length === 0 && diff.toRemove.length === 0) {
+        return (
+            <div className="p-4">
+                <span>{t.version.currExprHasNoEffect}</span>
+            </div>
+        );
+    }
+
+    return (
+        <div>
+            {expandedExpr.length > 0 ? (
+                <div>
+                    <Button variant="secondary" size="sm" onClick={expandExpr}>
+                        {t.version.applyChanges}
+                    </Button>
+
+                    <div className="grid place-content-center p-2 text-base">
+                        {diff.toAdd.length > 0 &&
+                            formatVersionsForDisplay(diff.toAdd).map((v) => (
+                                <span key={v} className="text-start text-success-fg">
+                                    <em className="text-foreground-muted not-italic">+</em>
+                                    {v}
+                                </span>
+                            ))}
+
+                        {diff.toRemove.length > 0 &&
+                            formatVersionsForDisplay(diff.toRemove).map((v) => (
+                                <span key={v} className="text-start text-error-fg">
+                                    <em className="text-foreground-muted not-italic">-</em>
+                                    {v}
+                                </span>
+                            ))}
+                    </div>
+                </div>
+            ) : (
+                <span>{t.common.noResults}</span>
+            )}
+        </div>
     );
 }
 

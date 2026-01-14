@@ -489,6 +489,10 @@ export default {
         metadata: "Metadata",
         devReleasesNote:
             "NOTE:- Older dev releases will be automatically deleted after a new dev release is published.",
+        searchOrEnterRange: "Search or enter a range...",
+        applyChanges: "Apply changes",
+        currExprHasNoEffect: "Current expression has no effect on the selected values!",
+
         publicationDate: "Publication date",
         publisher: "Publisher",
         versionID: "Version ID",
