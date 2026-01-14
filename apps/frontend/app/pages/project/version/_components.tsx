@@ -8,6 +8,7 @@ import type {
     VersionMetadataSchemaT,
 } from "@app/utils/schemas/project/version";
 import GAME_VERSIONS, { isExperimentalGameVersion } from "@app/utils/src/constants/game-versions";
+import { getDiff, parseVersionExpression } from "@app/utils/src/version/expr-parser";
 import { CapitalizeAndFormatString, createURLSafeSlug } from "@app/utils/string";
 import {
     DependencyType,
@@ -19,7 +20,6 @@ import {
 import type { ProjectDetailsData, ProjectVersionData } from "@app/utils/types/api";
 import type { DependencyData } from "@app/utils/types/project";
 import { imageUrl } from "@app/utils/url";
-import { getDiff, parseVersionExpression } from "@app/utils/version/exp-parser";
 import { formatVersionsForDisplay } from "@app/utils/version/format";
 import { CircleAlertIcon, FileIcon, PlusIcon, StarIcon, Trash2Icon, UploadIcon } from "lucide-react";
 import { useState } from "react";

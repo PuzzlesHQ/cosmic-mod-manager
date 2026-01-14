@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "bun:test";
-import { parseVersionExpression } from "./exp-parser";
+import { parseVersionExpression } from "./expr-parser";
 
 // Mock the gameVersionsList
 const mockGameVersionsList = [
