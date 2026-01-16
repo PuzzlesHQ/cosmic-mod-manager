@@ -1,4 +1,4 @@
-import { gameVersionsList } from "~/constants/game-versions";
+import { gameVersionsList as defaultGameVersionsList } from "~/constants/game-versions";
 
 /**
  * Accepted formats:
@@ -15,7 +15,10 @@ import { gameVersionsList } from "~/constants/game-versions";
  *
  * Example: `>=0.1.0, <0.2.0, !0.1.5`
  */
-export function parseVersionExpression(expr: string): ExprAction[] {
+export function parseVersionExpression(
+    expr: string,
+    gameVersionsList: string[] = defaultGameVersionsList,
+): ExprAction[] {
     const exprUnits = expr
         .replaceAll("latest", gameVersionsList[0])
         .split(",")
@@ -24,7 +27,7 @@ export function parseVersionExpression(expr: string): ExprAction[] {
     const includedVersions = new Set<string>();
     const excludedVersions = new Set<string>();
 
-    const { rangeActions, absoluteActions } = resolveExpressions(exprUnits);
+    const { rangeActions, absoluteActions } = resolveExpressions(exprUnits, gameVersionsList);
 
     // range actions are overriddable by absolute actions
     // that's why these are applied first
@@ -61,7 +64,7 @@ export function parseVersionExpression(expr: string): ExprAction[] {
     return result;
 }
 
-function resolveExpressions(exprs: string[]) {
+function resolveExpressions(exprs: string[], gameVersionsList: string[]) {
     const rangeActions: ExprAction[] = [];
     const absoluteActions: ExprAction[] = [];
 
@@ -70,7 +73,7 @@ function resolveExpressions(exprs: string[]) {
         const isExclusiveExpr = expr.startsWith("!");
         if (isExclusiveExpr) expr = expr.slice(1).trim();
 
-        const hyphenRangeStart = getHyphenRangeStart(expr);
+        const hyphenRangeStart = getHyphenRangeStart(expr, gameVersionsList);
         if (hyphenRangeStart) {
             const start = hyphenRangeStart;
             let end = expr.slice(hyphenRangeStart.length).trim().slice(1).trim();
@@ -95,7 +98,7 @@ function resolveExpressions(exprs: string[]) {
 
         // resolve range
         else if (expr.startsWith(">") || expr.startsWith("<")) {
-            rangeActions.push(...resolveRangeExpression(expr));
+            rangeActions.push(...resolveRangeExpression(expr, gameVersionsList));
         }
 
         //
@@ -110,7 +113,7 @@ function resolveExpressions(exprs: string[]) {
     };
 }
 
-function resolveRangeExpression(unit: string): ExprAction[] {
+function resolveRangeExpression(unit: string, gameVersionsList: string[]): ExprAction[] {
     const actions: ExprAction[] = [];
 
     if (unit.startsWith(">")) {
@@ -144,7 +147,7 @@ function resolveRangeExpression(unit: string): ExprAction[] {
     return actions;
 }
 
-function getHyphenRangeStart(unit: string) {
+function getHyphenRangeStart(unit: string, gameVersionsList: string[]) {
     const startMatches: string[] = [];
 
     // if the expression matches a full version, it's not a hyphen range

@@ -1,30 +1,32 @@
-import { describe, expect, it, mock } from "bun:test";
-import { parseVersionExpression } from "./expr-parser";
+import { describe, expect, it } from "bun:test";
+import { parseVersionExpression as __parseVersionExpression } from "./expr-parser";
 
 describe("parseVersionExpression", () => {
-    // mocking the game-versions list for convenience
-    mock.module("~/constants/game-versions", () => ({
-        gameVersionsList: [
-            "1.21.1",
-            "1.21.0",
-            "1.20.6",
-            "1.20.5",
-            "1.20.4",
-            "1.20.3",
-            "1.20.2",
-            "1.20.1",
-            "1.20.0",
-            "1.19.4",
-            "1.19.3",
-            "1.19.2-rc4",
-            "1.19.2-rc3",
-            "1.19.2-rc2",
-            "1.19.2-rc1",
-            "1.19.2",
-            "1.19.1",
-            "1.19.0",
-        ],
-    }));
+    // test game-versions list
+    const testGameVersions = [
+        "1.21.1",
+        "1.21.0",
+        "1.20.6",
+        "1.20.5",
+        "1.20.4",
+        "1.20.3",
+        "1.20.2",
+        "1.20.1",
+        "1.20.0",
+        "1.19.4",
+        "1.19.3",
+        "1.19.2-rc4",
+        "1.19.2-rc3",
+        "1.19.2-rc2",
+        "1.19.2-rc1",
+        "1.19.2",
+        "1.19.1",
+        "1.19.0",
+    ];
+
+    function parseVersionExpression(expr: string) {
+        return __parseVersionExpression(expr, testGameVersions);
+    }
 
     function includedVersions(result: ReturnType<typeof parseVersionExpression>) {
         return result.filter((r) => r.action === "include").map((r) => r.version);
