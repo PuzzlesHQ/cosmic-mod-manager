@@ -82,10 +82,10 @@ export async function getDownloadsAnalyticsData(user: ContextUserData, props: ge
         const projectDownloads = downloadsData_Map[record.project_id];
         if (!projectDownloads) {
             downloadsData_Map[record.project_id] = {
-                [record.date]: Number.parseInt(record.downloads_count),
+                [record.date]: Number.parseInt(record.downloads_count, 10),
             };
         } else {
-            projectDownloads[record.date] = Number.parseInt(record.downloads_count);
+            projectDownloads[record.date] = Number.parseInt(record.downloads_count, 10);
             downloadsData_Map[record.project_id] = projectDownloads;
         }
     }
@@ -139,10 +139,10 @@ export async function getAllProjects_DownloadsAnalyticsData(user: ContextUserDat
         const projectDownloads = downloadsData_Map[record.project_id];
         if (!projectDownloads) {
             downloadsData_Map[record.project_id] = {
-                [record.date]: Number.parseInt(record.downloads_count),
+                [record.date]: Number.parseInt(record.downloads_count, 10),
             };
         } else {
-            projectDownloads[record.date] = Number.parseInt(record.downloads_count);
+            projectDownloads[record.date] = Number.parseInt(record.downloads_count, 10);
             downloadsData_Map[record.project_id] = projectDownloads;
         }
     }

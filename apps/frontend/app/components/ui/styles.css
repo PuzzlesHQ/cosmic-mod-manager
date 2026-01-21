@@ -32,8 +32,7 @@
     }
 
     50% {
-        transform: translatex(calc(var(--frame-size) - var(--cube-size)))
-            translatey(calc(var(--frame-size) - var(--cube-size))) rotate(-180deg);
+        transform: translatex(calc(var(--frame-size) - var(--cube-size))) translatey(calc(var(--frame-size) - var(--cube-size))) rotate(-180deg);
     }
 
     75% {
@@ -45,28 +44,23 @@
     }
 }
 
-/* biome-ignore lint/correctness/noUnknownTypeSelector: -_- */
+/* THEME SWITCH VIEW TRANSITION */
 [data-view-transition="theme-switch"]::view-transition-group(root) {
     animation-duration: 0.6s;
 }
 
-/* biome-ignore lint/correctness/noUnknownTypeSelector: -_- */
 [data-view-transition="theme-switch"]::view-transition-new(root),
-/* biome-ignore lint/correctness/noUnknownTypeSelector: -_- */
-    [data-view-transition="theme-switch"]::view-transition-old(root) {
+[data-view-transition="theme-switch"]::view-transition-old(root) {
     mix-blend-mode: normal;
 }
 
-/* biome-ignore lint/correctness/noUnknownTypeSelector: -_- */
 [data-view-transition="theme-switch"]::view-transition-new(root) {
     animation-timing-function: ease-in;
     animation-name: reveal-theme;
 }
 
-/* biome-ignore lint/correctness/noUnknownTypeSelector: -_- */
 [data-view-transition="theme-switch"]::view-transition-old(root),
-/* biome-ignore lint/correctness/noUnknownTypeSelector: -_- */
-    .dark[data-view-transition="theme-switch"]::view-transition-old(root) {
+.dark[data-view-transition="theme-switch"]::view-transition-old(root) {
     animation: none;
 }
 

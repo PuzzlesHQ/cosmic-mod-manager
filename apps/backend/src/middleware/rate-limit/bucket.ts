@@ -54,7 +54,7 @@ export class TokenBucket {
     }
 
     private async getBucket(bucketKey: string): Promise<number> {
-        let used = Number.parseInt((await valkey.get(bucketKey)) || "-1");
+        let used = Number.parseInt((await valkey.get(bucketKey)) || "-1", 10);
         if (Number.isNaN(used) || used < 0) {
             used = 1;
             await valkey.set(bucketKey, 1, "EX", this.timeWindow_seconds);

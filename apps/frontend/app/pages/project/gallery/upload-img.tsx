@@ -261,7 +261,7 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
                                         </FormLabel>
                                         <Input
                                             {...field}
-                                            onChange={(e) => field.onChange(Number.parseInt(e.target.value))}
+                                            onChange={(e) => field.onChange(Number.parseInt(e.target.value, 10))}
                                             placeholder="1"
                                             min={0}
                                             type="number"

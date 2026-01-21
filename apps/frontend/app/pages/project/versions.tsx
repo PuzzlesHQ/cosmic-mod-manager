@@ -38,8 +38,8 @@ import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
 import { joinPaths, ProjectPagePath, VersionPagePath } from "~/utils/urls";
-import VersionFilters from "./version-filters";
 import DeleteVersionDialog from "./version/delete-version";
+import VersionFilters from "./version-filters";
 
 export default function ProjectVersionsPage() {
     const session = useSession();
@@ -132,7 +132,7 @@ function ProjectVersionsListTable({
     const ITEMS_PER_PAGE = 15;
     const page = urlSearchParams.get(pageSearchParamKey) || "1";
     const pagesCount = Math.ceil((allProjectVersions?.length || 0) / ITEMS_PER_PAGE);
-    const activePage = Number.parseInt(page) <= pagesCount ? Number.parseInt(page) : 1;
+    const activePage = Number.parseInt(page, 10) <= pagesCount ? Number.parseInt(page, 10) : 1;
 
     const navigate = useNavigate();
     const { downloadFile } = use(FileDownloader);

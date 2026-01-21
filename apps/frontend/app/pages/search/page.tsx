@@ -112,7 +112,7 @@ export default function SearchPage() {
                                 aria-label={searchLabel}
                             />
 
-                            <kbd className="-translate-y-1/2 absolute end-3 top-1/2 rounded-[0.3rem] border border-hover-background bg-raised-background px-1">
+                            <kbd className="absolute end-3 top-1/2 -translate-y-1/2 rounded-[0.3rem] border border-hover-background bg-raised-background px-1">
                                 /
                             </kbd>
                         </label>

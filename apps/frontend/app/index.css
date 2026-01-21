@@ -68,7 +68,6 @@ body.no-scrollbar {
 
     .full_page:not(.no_full_page) {
         min-height: min(100vh, 68rem);
-        /* biome-ignore lint/suspicious/noDuplicateProperties: The above one is a fallback if clamp is not supported  */
         min-height: clamp(45rem, 100vh, 68rem);
     }
 

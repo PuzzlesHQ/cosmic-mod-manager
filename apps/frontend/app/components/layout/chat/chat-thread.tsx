@@ -495,7 +495,7 @@ function ThreadMessage(props: ThreadMessageProps) {
 
         case MessageType.THREAD_REOPEN:
             msgText = (
-                <p className="text-foreground-extra-muted ">
+                <p className="text-foreground-extra-muted">
                     <CheckCircleIcon aria-hidden="true" className="inline h-4 w-4" /> {t.chatThread.reopenedTheThread}
                 </p>
             );

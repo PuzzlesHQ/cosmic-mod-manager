@@ -1,4 +1,5 @@
 import { FOLLOWS_COLLECTIONS_ID, ICON_WIDTH } from "@app/utils/constants";
+import { hasFullItemAccess } from "@app/utils/constants/roles";
 import { getFileType } from "@app/utils/convertors";
 import { date } from "@app/utils/date";
 import type { z } from "@app/utils/schemas";
@@ -26,7 +27,6 @@ import { resizeImageToWebp } from "~/utils/images";
 import { generateDbId } from "~/utils/str";
 import { collectionIconUrl, userFileUrl } from "~/utils/urls";
 import { CanEditCollection, CollectionAccessible } from "../utils";
-import { hasFullItemAccess } from "@app/utils/constants/roles";
 
 export async function GetUserCollections(userSlug: string, userSession: ContextUserData | null) {
     let userId: string;

@@ -1,4 +1,5 @@
 import { SITE_NAME_SHORT } from "@app/utils/constants";
+import { DateFromStr } from "@app/utils/date";
 import type { PATData } from "@app/utils/types/api/pat";
 import { Trash2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -28,7 +29,6 @@ import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";
 import { CreatePAT_Dialog, EditPAT_Dialog } from "./create-pat";
-import { DateFromStr } from "@app/utils/date";
 
 export default function PersonalAccessTokensSettingsPage({ pats: _pats }: { pats: PATData[] }) {
     const { t } = useTranslation();

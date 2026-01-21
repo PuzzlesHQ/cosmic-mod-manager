@@ -121,7 +121,7 @@ function BaseView(props: SearchListItemProps) {
                 to={projectPageUrl}
                 className={cn(
                     "relative flex h-fit w-max shrink-0 items-start justify-center",
-                    galleryViewType && "-mt-12 ms-card-surround",
+                    galleryViewType && "ms-card-surround -mt-12",
                 )}
                 aria-label={props.projectName}
                 tabIndex={-1}

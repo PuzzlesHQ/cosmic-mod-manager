@@ -170,7 +170,6 @@ export default function InteractiveDownloadPopup() {
                             ) : null
                         }
                     >
-                        {/** biome-ignore lint/a11y/useSemanticElements: -- */}
                         <Button
                             variant="outline"
                             role="combobox"
@@ -201,7 +200,6 @@ export default function InteractiveDownloadPopup() {
                             setValue={setSelectedLoader}
                             inputBox={false}
                         >
-                            {/** biome-ignore lint/a11y/useSemanticElements: -- */}
                             <Button
                                 variant="outline"
                                 role="combobox"

@@ -99,7 +99,7 @@ function PageSidebar({ members }: { members: TeamMember[] }) {
         <aside className="page-sidebar flex w-full flex-col gap-panel-cards lg:w-sidebar">
             <Card>
                 <CardHeader className="pb-2">
-                    <CardTitle className="text-lg ">{t.projectSettings.members}</CardTitle>
+                    <CardTitle className="text-lg">{t.projectSettings.members}</CardTitle>
                 </CardHeader>
                 <CardContent className="grid gap-1">
                     {members.map((member) => {

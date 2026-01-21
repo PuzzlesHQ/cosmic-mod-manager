@@ -144,8 +144,8 @@ function GalleryItemCard({
                 <link itemProp={MicrodataItemProps.contentUrl} href={imageUrl(galleryItem.image)} />
             </button>
 
-            <div className="grid w-full grid-cols-1 place-content-between gap-2 p-2 pb-1 ">
-                <div className="flex w-full flex-col items-start justify-start ">
+            <div className="grid w-full grid-cols-1 place-content-between gap-2 p-2 pb-1">
+                <div className="flex w-full flex-col items-start justify-start">
                     <span
                         itemProp={MicrodataItemProps.name}
                         className="flex items-center justify-start gap-2 font-bold text-lg"

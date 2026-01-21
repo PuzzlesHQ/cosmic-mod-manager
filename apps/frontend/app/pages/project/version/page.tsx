@@ -66,7 +66,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator className="flex items-center justify-center">
-                            <ChevronRightIcon aria-hidden size="1rem" className=" text-foreground" />
+                            <ChevronRightIcon aria-hidden size="1rem" className="text-foreground" />
                         </BreadcrumbSeparator>
                         <BreadcrumbItem>
                             <BreadcrumbPage className="text-base">{versionData?.title}</BreadcrumbPage>
@@ -180,7 +180,7 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                                     <Link
                                         to={redirectUrl}
                                         key={`${dependencyProject.id}-${dependencyVersion?.id}`}
-                                        className="bg_hover_stagger flex w-full cursor-pointer items-center justify-start gap-3 rounded-lg p-2 text-foreground-muted hover:bg-background/75 "
+                                        className="bg_hover_stagger flex w-full cursor-pointer items-center justify-start gap-3 rounded-lg p-2 text-foreground-muted hover:bg-background/75"
                                     >
                                         <ImgWrapper
                                             vtId={dependencyProject.id}
