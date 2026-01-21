@@ -39,7 +39,7 @@ export function ProfileSettingsPage({ session }: Props) {
     const location = useLocation();
 
     const form = useFormHook(profileUpdateFormSchema, {
-        defaultValues: {
+        values: {
             name: session.name,
             userName: session.userName,
             avatar: session.avatar,
@@ -162,7 +162,7 @@ export function ProfileSettingsPage({ session }: Props) {
                                     <Textarea
                                         {...field}
                                         value={field.value ?? ""}
-                                        className="min-h-16 resize-none md:w-[48ch]"
+                                        className="min-h-16 resize-none md:min-w-[48ch]"
                                         spellCheck="false"
                                         id="user-description-input"
                                         placeholder={t.settings.bioDesc}

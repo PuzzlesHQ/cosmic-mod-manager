@@ -26,6 +26,7 @@ import { resizeImageToWebp } from "~/utils/images";
 import { generateDbId } from "~/utils/str";
 import { collectionIconUrl, userFileUrl } from "~/utils/urls";
 import { CanEditCollection, CollectionAccessible } from "../utils";
+import { hasFullItemAccess } from "@app/utils/constants/roles";
 
 export async function GetUserCollections(userSlug: string, userSession: ContextUserData | null) {
     let userId: string;
@@ -40,14 +41,24 @@ export async function GetUserCollections(userSlug: string, userSession: ContextU
     const collections = await GetCollections_ByUserId(userId);
     if (!collections) return { data: [], status: HTTP_STATUS.OK };
 
-    const collectionsData = (await GetManyCollections_ById(collections)).sort(
-        (a, b) => date(b.dateCreated)?.getTime() - date(a.dateCreated)?.getTime(),
-    );
-    const formattedData = [];
+    const collectionsData = (await GetManyCollections_ById(collections)).sort((a, b) => {
+        const created_A = date(a.dateCreated)?.getTime();
+        const created_B = date(b.dateCreated)?.getTime();
+        if (!created_A || !created_B) return 0;
 
+        return created_B - created_A;
+    });
+
+    const formattedData = [];
     for (let i = 0; i < collectionsData.length; i++) {
         const collection = collectionsData[i];
         if (!CollectionAccessible(collection.visibility, collection.userId, userSession)) continue;
+        if (
+            collection.visibility === CollectionVisibility.UNLISTED &&
+            !hasFullItemAccess(collection.userId === userSession?.id, userSession?.role)
+        ) {
+            continue;
+        }
 
         formattedData.push({
             id: collection.id,

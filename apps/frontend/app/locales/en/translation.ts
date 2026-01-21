@@ -168,6 +168,7 @@ export default {
         revokeToken: "Revoke token",
         neverUsed: "Never used",
         expires: (when: string) => `Expires ${when}`,
+        expired: (when: string) => `Expired ${when}`,
 
         // Preferences
         colorTheme: "Color theme",

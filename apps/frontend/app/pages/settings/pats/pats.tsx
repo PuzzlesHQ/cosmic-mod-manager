@@ -28,6 +28,7 @@ import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";
 import { CreatePAT_Dialog, EditPAT_Dialog } from "./create-pat";
+import { DateFromStr } from "@app/utils/date";
 
 export default function PersonalAccessTokensSettingsPage({ pats: _pats }: { pats: PATData[] }) {
     const { t } = useTranslation();
@@ -88,7 +89,7 @@ export default function PersonalAccessTokensSettingsPage({ pats: _pats }: { pats
                                                     </span>
                                                 </TooltipTrigger>
                                                 <TooltipContent>
-                                                    <FormattedDate date={pat.dateExpires} />
+                                                    <FormattedDate date={pat.dateLastUsed} />
                                                 </TooltipContent>
                                             </Tooltip>
                                         ) : (
@@ -99,9 +100,15 @@ export default function PersonalAccessTokensSettingsPage({ pats: _pats }: { pats
 
                                         <Tooltip>
                                             <TooltipTrigger className="cursor-text" asChild>
-                                                <span>
-                                                    {t.settings.expires(TimePassedSince({ date: pat.dateExpires }))}
-                                                </span>
+                                                {Date.now() > (DateFromStr(pat.dateExpires)?.getTime() ?? 0) ? (
+                                                    <span className="text-error-fg">
+                                                        {t.settings.expired(TimePassedSince({ date: pat.dateExpires }))}
+                                                    </span>
+                                                ) : (
+                                                    <span>
+                                                        {t.settings.expires(TimePassedSince({ date: pat.dateExpires }))}
+                                                    </span>
+                                                )}
                                             </TooltipTrigger>
                                             <TooltipContent>
                                                 <FormattedDate date={pat.dateExpires} />

@@ -40,6 +40,7 @@ export default function CreateNewCollection_Dialog({
     redirectToCollectionPage = true,
 }: CreateNewCollection_Dialog_Props) {
     const { t } = useTranslation();
+    const [dialogOpen, setDialogOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const collectionsCtx = useCollections();
@@ -72,15 +73,17 @@ export default function CreateNewCollection_Dialog({
                 navigate(CollectionPagePath(result.collectionId));
             } else {
                 await collectionsCtx.refetchCollections();
+                setDialogOpen(false);
             }
         } finally {
             enableInteractions();
             setIsLoading(false);
+            form.reset();
         }
     }
 
     return (
-        <Dialog>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>{children}</DialogTrigger>
             <DialogContent>
                 <DialogHeader>
