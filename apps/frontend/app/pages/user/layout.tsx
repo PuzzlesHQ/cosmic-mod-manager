@@ -117,7 +117,7 @@ export default function UserPageLayout(props: Props) {
                 data-showbg="true"
                 className={cn(
                     "header-content-sidebar-layout gap-y-panel-cards pb-12 content-container",
-                    !isActiveTheme_Dark && [DefaultTheme.variant, DefaultTheme.name],
+                    bgFileUrl && !isActiveTheme_Dark && [DefaultTheme.variant, DefaultTheme.name],
                     bgFileUrl && "has-bg-image",
                     sidebar && "gap-x-panel-cards",
                 )}
