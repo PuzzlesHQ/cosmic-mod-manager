@@ -14,8 +14,8 @@ model User {
     email           String   @unique @db.VarChar(64)
     avatar          String?  @db.VarChar(32) // @File.id
     name            String?  @db.VarChar(32)
-    userName        String   @db.VarChar(32)
-    userNameLower   String   @unique @db.VarChar(32)
+    userName        String   @unique @db.VarChar(32)
+    userNameLower   String   @default("") @db.VarChar(32)
     dateJoined      DateTime @default(now())
     emailVerified   Boolean
     role            String   @db.VarChar(32)
