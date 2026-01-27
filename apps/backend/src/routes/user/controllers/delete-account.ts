@@ -9,7 +9,7 @@ import { DeleteUserConfirmation } from "~/db/userConfirmation_item";
 import { hashString } from "~/routes/auth/helpers";
 import { deleteAllUserCollections } from "~/routes/collections/controllers";
 import { deleteUserDirectory } from "~/services/storage";
-import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
+import { FILE_STORAGE_SERVICE, type UserSessionData } from "~/types";
 import { isConfirmationCodeValid } from "~/utils";
 import env from "~/utils/env";
 import { HTTP_STATUS, invalidRequestResponseData, serverErrorResponseData } from "~/utils/http";
@@ -87,7 +87,7 @@ export async function confirmUserAccountDeletion(token: string) {
     );
 
     // Delete user collections
-    await deleteAllUserCollections(user.id, user as Pick<ContextUserData, "id" | "role">);
+    await deleteAllUserCollections(user.id, user as Pick<UserSessionData, "id" | "role">);
 
     // Move user projects to the archive user
     const userProjects = await Get_UserProjects(user.id);

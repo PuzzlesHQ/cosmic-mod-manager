@@ -14,7 +14,7 @@ import {
 import { Log, Log_SubType } from "~/middleware/logger";
 import { createNotification } from "~/routes/user/notification/controllers/helpers";
 import prisma from "~/services/prisma";
-import type { ContextUserData } from "~/types";
+import type { UserSessionData } from "~/types";
 import { HTTP_STATUS, notFoundResponseData, serverErrorResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 import { orgIconUrl, projectIconUrl, userFileUrl } from "~/utils/urls";
@@ -82,7 +82,7 @@ export async function getModerationProjects() {
     };
 }
 
-export async function updateModerationProject(id: string, status: string, userSession: ContextUserData) {
+export async function updateModerationProject(id: string, status: string, userSession: UserSessionData) {
     const project = await GetProject_Details(id);
     if (!project) return notFoundResponseData("Project not found");
 

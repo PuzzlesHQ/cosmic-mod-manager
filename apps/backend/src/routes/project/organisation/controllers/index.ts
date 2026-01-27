@@ -5,13 +5,13 @@ import type { Organisation } from "@app/utils/types/api";
 import type { z } from "zod/v4";
 import { CreateOrganization, GetManyOrganizations_ById, GetOrganization_Data } from "~/db/organization_item";
 import { Get_UserOrganizations, GetUser_ByIdOrUsername } from "~/db/user_item";
-import type { ContextUserData } from "~/types";
+import type { UserSessionData } from "~/types";
 import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 import { orgIconUrl, userFileUrl } from "~/utils/urls";
 import { getManyProjects } from "../../controllers";
 
-export async function getOrganisationById(userSession: ContextUserData | null, slug: string) {
+export async function getOrganisationById(userSession: UserSessionData | null, slug: string) {
     const organisation = await GetOrganization_Data(slug, slug);
     if (!organisation) {
         return notFoundResponseData("Organisation not found");
@@ -45,7 +45,7 @@ export async function getOrganisationById(userSession: ContextUserData | null, s
     return { data: formattedData, status: HTTP_STATUS.OK };
 }
 
-export async function getUserOrganisations(userSession: ContextUserData | null, userSlug: string) {
+export async function getUserOrganisations(userSession: UserSessionData | null, userSlug: string) {
     let userId = userSlug.toLowerCase() === userSession?.userName.toLowerCase() ? userSession.id : null;
     if (!userId) {
         const user = await GetUser_ByIdOrUsername(userSlug, userSlug);
@@ -91,7 +91,7 @@ export async function getUserOrganisations(userSession: ContextUserData | null, 
 }
 
 export async function createOrganisation(
-    userSession: ContextUserData,
+    userSession: UserSessionData,
     formData: z.infer<typeof createOrganisationFormSchema>,
 ) {
     const existingOrgWithSameSlug = await GetOrganization_Data(formData.slug, formData.slug);
@@ -140,7 +140,7 @@ export async function createOrganisation(
     };
 }
 
-export async function getOrganisationProjects(userSession: ContextUserData | null, slug: string, listedOnly = false) {
+export async function getOrganisationProjects(userSession: UserSessionData | null, slug: string, listedOnly = false) {
     const Org = await GetOrganization_Data(slug, slug);
     if (!Org) return notFoundResponseData("Organisation not found");
     if (!Org.projects) return { data: [], status: HTTP_STATUS.OK };

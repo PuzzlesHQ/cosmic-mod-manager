@@ -6,12 +6,12 @@ import SPDX_LICENSE_LIST from "@app/utils/src/constants/license-list";
 import { ProjectPermission } from "@app/utils/types";
 import type { z } from "zod/v4";
 import { GetProject_ListItem, UpdateProject } from "~/db/project_item";
-import type { ContextUserData } from "~/types";
+import type { UserSessionData } from "~/types";
 import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData } from "~/utils/http";
 
 export async function updateProjectTags(
     projectId: string,
-    userSession: ContextUserData,
+    userSession: UserSessionData,
     formData: z.infer<typeof updateProjectTagsFormSchema>,
 ) {
     const project = await GetProject_ListItem(projectId);
@@ -51,7 +51,7 @@ export async function updateProjectTags(
 }
 
 export async function updateProjectExternalLinks(
-    userSession: ContextUserData,
+    userSession: UserSessionData,
     projectId: string,
     formData: z.infer<typeof updateExternalLinksFormSchema>,
 ) {
@@ -90,7 +90,7 @@ export async function updateProjectExternalLinks(
 }
 
 export async function updateProjectLicense(
-    userSession: ContextUserData,
+    userSession: UserSessionData,
     projectId: string,
     formData: z.infer<typeof updateProjectLicenseFormSchema>,
 ) {

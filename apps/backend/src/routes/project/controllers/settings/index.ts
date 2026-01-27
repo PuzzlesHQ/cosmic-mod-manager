@@ -22,7 +22,7 @@ import { UpdateProjects_SearchIndex } from "~/routes/search/search-db";
 import prisma from "~/services/prisma";
 import { deleteDirectory, deleteProjectFile, deleteProjectVersionDirectory, saveProjectFile } from "~/services/storage";
 import { projectsDir } from "~/services/storage/utils";
-import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
+import { FILE_STORAGE_SERVICE, type UserSessionData } from "~/types";
 import {
     HTTP_STATUS,
     invalidRequestResponseData,
@@ -35,7 +35,7 @@ import { isProjectIndexable } from "../../utils";
 
 export async function updateGeneralProjectData(
     projectId: string,
-    userSession: ContextUserData,
+    userSession: UserSessionData,
     formData: z.infer<typeof generalProjectSettingsFormSchema>,
 ) {
     const project = await GetProject_ListItem(projectId);
@@ -115,7 +115,7 @@ export async function updateGeneralProjectData(
     };
 }
 
-export async function deleteProject(userSession: ContextUserData, projectId: string) {
+export async function deleteProject(userSession: UserSessionData, projectId: string) {
     const project = await GetProject_Details(projectId);
     if (!project?.id) return notFoundResponseData("Project not found");
 
@@ -224,7 +224,7 @@ export async function deleteVersionsData(
     );
 }
 
-export async function updateProjectIcon(userSession: ContextUserData, projectId: string, icon: File) {
+export async function updateProjectIcon(userSession: UserSessionData, projectId: string, icon: File) {
     const Project = await GetProject_ListItem(projectId);
     if (!Project) return { data: { success: false, message: "Project not found" }, status: HTTP_STATUS.NOT_FOUND };
 
@@ -293,7 +293,7 @@ export async function updateProjectIcon(userSession: ContextUserData, projectId:
     return { data: { success: true, message: "Project icon updated" }, status: HTTP_STATUS.OK };
 }
 
-export async function deleteProjectIcon(userSession: ContextUserData, projectId: string) {
+export async function deleteProjectIcon(userSession: UserSessionData, projectId: string) {
     const project = await GetProject_ListItem(projectId);
     if (!project) return notFoundResponseData("Project not found");
     if (!project.iconFileId) return invalidRequestResponseData("Project does not have any icon");

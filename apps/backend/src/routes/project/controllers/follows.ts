@@ -1,12 +1,12 @@
 import { GetManyProjects_ListItem, UpdateManyProjects } from "~/db/project_item";
 import { GetUser_ByIdOrUsername, UpdateUser } from "~/db/user_item";
 import { UpdateProjects_SearchIndex } from "~/routes/search/search-db";
-import type { ContextUserData } from "~/types";
+import type { UserSessionData } from "~/types";
 import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData } from "~/utils/http";
 import { isProjectPublic } from "../utils";
 
 // Bulk actions
-export async function addProjectsToUserFollows(projectIds: string[], userSession: ContextUserData) {
+export async function addProjectsToUserFollows(projectIds: string[], userSession: UserSessionData) {
     const projects = await GetManyProjects_ListItem(projectIds);
     if (!projects.length) return invalidRequestResponseData("No projects found!");
 
@@ -65,7 +65,7 @@ export async function addProjectsToUserFollows(projectIds: string[], userSession
     };
 }
 
-export async function removeProjectsFromUserFollows(projectIds: string[], userSession: ContextUserData) {
+export async function removeProjectsFromUserFollows(projectIds: string[], userSession: UserSessionData) {
     if (!projectIds.length) return invalidRequestResponseData("No projects found!");
 
     const userData = await GetUser_ByIdOrUsername(undefined, userSession.id);

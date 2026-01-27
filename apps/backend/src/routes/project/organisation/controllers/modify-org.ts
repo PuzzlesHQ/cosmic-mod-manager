@@ -18,7 +18,7 @@ import { Create_ManyTeamMembers, CreateTeamMember, Delete_ManyTeamMembers } from
 import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { UpdateProjects_SearchIndex } from "~/routes/search/search-db";
 import { deleteOrgDirectory, deleteOrgFile, saveOrgFile } from "~/services/storage";
-import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
+import { FILE_STORAGE_SERVICE, type UserSessionData } from "~/types";
 import {
     HTTP_STATUS,
     invalidRequestResponseData,
@@ -31,7 +31,7 @@ import { generateDbId } from "~/utils/str";
 
 export async function updateOrg(
     ctx: Context,
-    userSession: ContextUserData,
+    userSession: UserSessionData,
     orgId: string,
     formData: z.infer<typeof orgSettingsFormSchema>,
 ) {
@@ -92,7 +92,7 @@ export async function updateOrg(
 
 export async function updateOrgIcon(
     ctx: Context,
-    userSession: ContextUserData,
+    userSession: UserSessionData,
     orgId: string,
     icon: File,
     dontUpdateOrg = false,
@@ -160,7 +160,7 @@ export async function updateOrgIcon(
     };
 }
 
-export async function deleteOrgIcon(ctx: Context, userSession: ContextUserData, orgId: string) {
+export async function deleteOrgIcon(ctx: Context, userSession: UserSessionData, orgId: string) {
     const org = await GetOrganization_Data(orgId);
     if (!org) return notFoundResponseData("Organization not found");
     if (!org.iconFileId) return invalidRequestResponseData("Org does not have any icon");
@@ -192,7 +192,7 @@ export async function deleteOrgIcon(ctx: Context, userSession: ContextUserData, 
     return { data: { success: true, message: "Organization icon deleted" }, status: HTTP_STATUS.OK };
 }
 
-export async function deleteOrg(ctx: Context, userSession: ContextUserData, orgId: string) {
+export async function deleteOrg(ctx: Context, userSession: UserSessionData, orgId: string) {
     const org = await GetOrganization_Data(orgId);
     if (!org?.id) return notFoundResponseData();
 
@@ -290,7 +290,7 @@ export async function deleteOrg(ctx: Context, userSession: ContextUserData, orgI
     return { data: { success: true, message: "Organization deleted" }, status: HTTP_STATUS.OK };
 }
 
-export async function addProjectToOrganisation(userSession: ContextUserData, orgId: string, projectId: string) {
+export async function addProjectToOrganisation(userSession: UserSessionData, orgId: string, projectId: string) {
     const org = await GetOrganization_Data(orgId);
     if (!org) return notFoundResponseData("Organization not found");
 
@@ -344,7 +344,7 @@ export async function addProjectToOrganisation(userSession: ContextUserData, org
 
 export async function removeProjectFromOrg(
     ctx: Context,
-    userSession: ContextUserData,
+    userSession: UserSessionData,
     orgId: string,
     projectId: string,
 ) {

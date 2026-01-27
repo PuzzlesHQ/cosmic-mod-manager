@@ -11,7 +11,7 @@ import { CreateManyFiles, DeleteFile_ByID } from "~/db/file_item";
 import { CreateGalleryItem, DeleteGalleryItem, UpdateGalleryItem } from "~/db/gallery_item";
 import { GetProject_Details } from "~/db/project_item";
 import { deleteProjectGalleryFile, saveProjectGalleryFile } from "~/services/storage";
-import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
+import { FILE_STORAGE_SERVICE, type UserSessionData } from "~/types";
 import {
     HTTP_STATUS,
     invalidRequestResponseData,
@@ -24,7 +24,7 @@ import { generateDbId } from "~/utils/str";
 
 export async function addNewGalleryImage(
     projectId: string,
-    userSession: ContextUserData,
+    userSession: UserSessionData,
     formData: z.infer<typeof addNewGalleryImageFormSchema>,
 ) {
     const project = await GetProject_Details(projectId);
@@ -116,7 +116,7 @@ export async function addNewGalleryImage(
     return { data: { success: true, message: "Added the new gallery image" }, status: HTTP_STATUS.OK };
 }
 
-export async function removeGalleryImage(projectId: string, userSession: ContextUserData, galleryItemId: string) {
+export async function removeGalleryImage(projectId: string, userSession: UserSessionData, galleryItemId: string) {
     const project = await GetProject_Details(projectId);
     if (!project?.id) return notFoundResponseData();
 
@@ -160,7 +160,7 @@ export async function removeGalleryImage(projectId: string, userSession: Context
 
 export async function updateGalleryImage(
     projectId: string,
-    userSession: ContextUserData,
+    userSession: UserSessionData,
     galleryItemId: string,
     formData: z.infer<typeof updateGalleryImageFormSchema>,
 ) {

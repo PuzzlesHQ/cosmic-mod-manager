@@ -12,7 +12,7 @@ export interface SessionDeviceDetails {
     country: string;
 }
 
-export interface ContextUserData extends NonNullable<GetUser_ReturnType> {
+export interface UserSessionData extends NonNullable<GetUser_ReturnType> {
     role: GlobalUserRole;
     apiScopes: bigint;
 

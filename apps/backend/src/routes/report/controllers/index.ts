@@ -14,7 +14,7 @@ import { GetProject_ListItem } from "~/db/project_item";
 import { GetUser_ByIdOrUsername } from "~/db/user_item";
 import { getVersionsData } from "~/routes/versions/handler";
 import prisma from "~/services/prisma";
-import type { ContextUserData } from "~/types";
+import type { UserSessionData } from "~/types";
 import {
     HTTP_STATUS,
     invalidRequestResponseData,
@@ -23,7 +23,7 @@ import {
 } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 
-export async function createReport(data: z.infer<typeof newReportFormSchema>, user: ContextUserData) {
+export async function createReport(data: z.infer<typeof newReportFormSchema>, user: UserSessionData) {
     if (data.body.length < 10) {
         return invalidRequestResponseData("Pleaes provide a detailed description of the issue.");
     }
@@ -72,7 +72,7 @@ export async function createReport(data: z.infer<typeof newReportFormSchema>, us
     };
 }
 
-export async function getReportData(reportId: string, user: ContextUserData) {
+export async function getReportData(reportId: string, user: UserSessionData) {
     const report = await prisma.report.findUnique({
         where: {
             id: reportId,
@@ -100,7 +100,7 @@ export async function getReportData(reportId: string, user: ContextUserData) {
     };
 }
 
-export async function getExistingReport(itemType: ReportItemType, itemId: string, user: ContextUserData) {
+export async function getExistingReport(itemType: ReportItemType, itemId: string, user: UserSessionData) {
     const existingReport = await prisma.report.findFirst({
         where: {
             itemType: itemType,
@@ -169,7 +169,7 @@ async function getReportEntityData(itemType: ReportItemType, itemId: string) {
     }
 }
 
-export async function getAllUserReports(user: ContextUserData, userId?: string, filters?: ReportFilters) {
+export async function getAllUserReports(user: UserSessionData, userId?: string, filters?: ReportFilters) {
     if (!userId && !isModerator(user.role)) {
         return invalidRequestResponseData("User ID is required to get reports.");
     }
@@ -235,7 +235,7 @@ export async function getAllUserReports(user: ContextUserData, userId?: string, 
     };
 }
 
-export async function patchReport(reportId: string, closed: boolean, user: ContextUserData) {
+export async function patchReport(reportId: string, closed: boolean, user: UserSessionData) {
     const report = await prisma.report.findUnique({
         where: {
             id: reportId,

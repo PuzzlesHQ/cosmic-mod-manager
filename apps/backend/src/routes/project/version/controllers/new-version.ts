@@ -19,14 +19,14 @@ import {
     isProjectPublic,
 } from "~/routes/project/utils";
 import prisma from "~/services/prisma";
-import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
+import { FILE_STORAGE_SERVICE, type UserSessionData } from "~/types";
 import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 import { deleteVersionsData } from "../../controllers/settings";
 
 export async function createNewVersion(
     ctx: Context,
-    userSession: ContextUserData,
+    userSession: UserSessionData,
     projectId: string,
     formData: z.infer<typeof newVersionFormSchema>,
 ) {

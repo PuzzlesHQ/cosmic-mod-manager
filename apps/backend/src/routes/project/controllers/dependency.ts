@@ -3,12 +3,12 @@ import type { DependencyListData, ProjectListItem } from "@app/utils/types/api";
 import { GetManyProjects_ListItem, GetProject_ListItem } from "~/db/project_item";
 import { GetVersions } from "~/db/version_item";
 import prisma from "~/services/prisma";
-import type { ContextUserData } from "~/types";
+import type { UserSessionData } from "~/types";
 import { HTTP_STATUS } from "~/utils/http";
 import { projectIconUrl } from "~/utils/urls";
 import { isProjectAccessible } from "../utils";
 
-export async function getProjectDependencies(slug: string, userSession: ContextUserData | null) {
+export async function getProjectDependencies(slug: string, userSession: UserSessionData | null) {
     const [project, _projectVersions] = await Promise.all([GetProject_ListItem(slug, slug), GetVersions(slug, slug)]);
     if (!project?.id) {
         return { data: { success: false, message: "Project not found" }, status: HTTP_STATUS.NOT_FOUND };

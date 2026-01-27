@@ -6,7 +6,7 @@ import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { invalidRequestResponse, serverErrorResponse, unauthenticatedReqResponse } from "~/utils/http";
-import { getUserFromCtx } from "~/utils/router";
+import { getSessionUser } from "~/utils/router";
 import { CreateThreadMessage, DeleteThreadMessage, GetThreadMessages } from "./controllers";
 
 const threadRouter = new Hono()
@@ -23,10 +23,10 @@ async function thread_get(ctx: Context) {
         const threadId = ctx.req.param("threadId");
         if (!threadId) return invalidRequestResponse(ctx);
 
-        const user = getUserFromCtx(ctx, API_SCOPE.THREAD_READ);
-        if (!user) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.THREAD_READ);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-        const res = await GetThreadMessages(user, threadId);
+        const res = await GetThreadMessages(sessionUser, threadId);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -36,8 +36,8 @@ async function thread_get(ctx: Context) {
 
 async function thread_post(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.THREAD_WRITE);
-        if (!user) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.THREAD_WRITE);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
         const threadId = ctx.req.param("threadId");
         if (!threadId) return invalidRequestResponse(ctx);
@@ -45,7 +45,7 @@ async function thread_post(ctx: Context) {
         const { data, error } = await zodParse(createThreadMessage_Schema, ctx.get(REQ_BODY_NAMESPACE));
         if (!data || error) return invalidRequestResponse(ctx, error);
 
-        const res = await CreateThreadMessage(user, threadId, data);
+        const res = await CreateThreadMessage(sessionUser, threadId, data);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -55,13 +55,13 @@ async function thread_post(ctx: Context) {
 
 async function threadMessage_delete(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.THREAD_WRITE);
-        if (!user) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.THREAD_WRITE);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
         const messageId = ctx.req.param("messageId");
         if (!messageId) return invalidRequestResponse(ctx);
 
-        const res = await DeleteThreadMessage(user, messageId);
+        const res = await DeleteThreadMessage(sessionUser, messageId);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);

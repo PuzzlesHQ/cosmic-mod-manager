@@ -2,12 +2,12 @@ import { isModerator } from "@app/utils/constants/roles";
 import type { Context } from "hono";
 import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-attempt";
 import prisma from "~/services/prisma";
-import type { ContextUserData } from "~/types";
+import type { UserSessionData } from "~/types";
 import { HTTP_STATUS, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
 
 export async function getUserNotifications(
     ctx: Context,
-    userSession: ContextUserData,
+    userSession: UserSessionData,
     notifUserSlug: string | undefined,
 ) {
     if (!hasNotificationAccess(userSession, notifUserSlug || userSession.id)) {
@@ -33,7 +33,7 @@ export async function getUserNotifications(
     return { data: notifications, status: HTTP_STATUS.OK };
 }
 
-export async function getNotificationById(ctx: Context, userSession: ContextUserData, notifId: string) {
+export async function getNotificationById(ctx: Context, userSession: UserSessionData, notifId: string) {
     const notification = await prisma.notification.findFirst({
         where: { id: notifId },
     });
@@ -53,7 +53,7 @@ export async function getNotificationById(ctx: Context, userSession: ContextUser
 
 export async function markNotificationAsRead(
     ctx: Context,
-    sessionUser: ContextUserData,
+    sessionUser: UserSessionData,
     notificationIds: string[],
     notifUserSlug: string | undefined,
 ) {
@@ -101,7 +101,7 @@ export async function markNotificationAsRead(
 
 export async function deleteNotifications(
     ctx: Context,
-    userSession: ContextUserData,
+    userSession: UserSessionData,
     userSlug: string | undefined,
     notificationIds: string[],
 ) {
@@ -137,7 +137,7 @@ export async function deleteNotifications(
 }
 
 // Helpers
-export function hasNotificationAccess(session: ContextUserData, notificationUser: string) {
+export function hasNotificationAccess(session: UserSessionData, notificationUser: string) {
     return (
         session.id === notificationUser ||
         session.userName.toLowerCase() === notificationUser.toLowerCase() ||

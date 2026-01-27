@@ -31,7 +31,7 @@ import {
 } from "~/routes/user/controllers/profile";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { HTTP_STATUS, invalidRequestResponse, serverErrorResponse, unauthenticatedReqResponse } from "~/utils/http";
-import { getUserFromCtx } from "~/utils/router";
+import { getSessionUser } from "~/utils/router";
 import { confirmUserAccountDeletion } from "./controllers/delete-account";
 
 const userRouter = new Hono()
@@ -61,8 +61,8 @@ const userRouter = new Hono()
 // Get currently logged in user
 async function user_get(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.USER_READ);
-        const slug = ctx.req.param("slug") || user?.id;
+        const sessionUser = getSessionUser(ctx, API_SCOPE.USER_READ);
+        const slug = ctx.req.param("slug") || sessionUser?.id;
         if (!slug) return invalidRequestResponse(ctx);
 
         const res = await getUserProfileData(slug);
@@ -76,15 +76,15 @@ async function user_get(ctx: Context) {
 // Get the list of projects the user follows
 async function userFollows_get(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.USER_READ);
-        if (!user) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.USER_READ);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-        const slug = ctx.req.param("slug") || user?.id;
+        const slug = ctx.req.param("slug") || sessionUser?.id;
         if (!slug) return invalidRequestResponse(ctx);
 
         const idsOnly = ctx.req.query("idsOnly") === "true";
 
-        const res = await getUserFollowedProjects(slug, user, idsOnly);
+        const res = await getUserFollowedProjects(slug, sessionUser, idsOnly);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -98,9 +98,9 @@ async function userProjects_get(ctx: Context) {
         const slug = ctx.req.param("slug");
         const listedProjectsOnly = !!ctx.req.query("listedOnly");
         if (!slug) return invalidRequestResponse(ctx);
-        const user = getUserFromCtx(ctx, API_SCOPE.USER_READ, API_SCOPE.PROJECT_READ);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.USER_READ, API_SCOPE.PROJECT_READ);
 
-        const res = await getAllVisibleProjects(user, slug, listedProjectsOnly);
+        const res = await getAllVisibleProjects(sessionUser, slug, listedProjectsOnly);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -113,9 +113,9 @@ async function userCollections_get(ctx: Context) {
     try {
         const slug = ctx.req.param("slug");
         if (!slug) return invalidRequestResponse(ctx);
-        const user = getUserFromCtx(ctx, API_SCOPE.USER_READ, API_SCOPE.COLLECTION_READ);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.USER_READ, API_SCOPE.COLLECTION_READ);
 
-        const res = await GetUserCollections(slug, user);
+        const res = await GetUserCollections(slug, sessionUser);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -126,8 +126,8 @@ async function userCollections_get(ctx: Context) {
 // Update user profile
 async function user_patch(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.USER_WRITE);
-        if (!user) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.USER_WRITE);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
         const formData: FormData = ctx.get(REQ_BODY_NAMESPACE);
         const obj: Record<string, unknown> = {};
@@ -138,7 +138,7 @@ async function user_patch(ctx: Context) {
         const { error, data } = await zodParse(profileUpdateFormSchema, obj);
         if (!data) return invalidRequestResponse(ctx, error);
 
-        const res = await updateUserProfile(user, data);
+        const res = await updateUserProfile(sessionUser, data);
         return ctx.json(res.data, res.status);
     } catch (err) {
         console.error(err);
@@ -196,13 +196,13 @@ async function userConfirmationAction_delete(ctx: Context) {
 // Send new password confirmation email
 async function addPasswordConfirmation_post(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.USER_AUTH_WRITE);
-        if (!user) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.USER_AUTH_WRITE);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
         const { data, error } = await zodParse(setNewPasswordFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidRequestResponse(ctx, error);
 
-        const res = await addNewPassword_ConfirmationEmail(user, data);
+        const res = await addNewPassword_ConfirmationEmail(sessionUser, data);
         return ctx.json(res.data, res.status);
     } catch (err) {
         console.error(err);
@@ -230,11 +230,11 @@ async function userPassword_delete(ctx: Context) {
         const { data, error } = await zodParse(removeAccountPasswordFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidRequestResponse(ctx, error);
 
-        const user = getUserFromCtx(ctx, API_SCOPE.USER_AUTH_WRITE);
-        if (!user) return unauthenticatedReqResponse(ctx);
-        if (!user?.password) return invalidRequestResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.USER_AUTH_WRITE);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
+        if (!sessionUser?.password) return invalidRequestResponse(ctx);
 
-        const res = await removeAccountPassword(ctx, user, data);
+        const res = await removeAccountPassword(ctx, sessionUser, data);
         return ctx.json(res.data, res.status);
     } catch (err) {
         console.error(err);
@@ -259,14 +259,14 @@ async function changePasswordConfirmationEmail_post(ctx: Context) {
 // Change user password
 async function userPassword_patch(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx);
+        const sessionUser = getSessionUser(ctx);
         const { data, error } = await zodParse(setNewPasswordFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidRequestResponse(ctx, error);
 
         const code = ctx.get(REQ_BODY_NAMESPACE)?.code;
         if (!code) return invalidRequestResponse(ctx);
 
-        const res = await changeUserPassword(ctx, code, data, user);
+        const res = await changeUserPassword(ctx, code, data, sessionUser);
         return ctx.json(res.data, res.status);
     } catch (err) {
         console.error(err);
@@ -277,13 +277,13 @@ async function userPassword_patch(ctx: Context) {
 // Send delete account confirmation email
 async function deleteAccountConfirmation_post(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.USER_DELETE);
-        if (!user?.id) {
+        const sessionUser = getSessionUser(ctx, API_SCOPE.USER_DELETE);
+        if (!sessionUser?.id) {
             await addInvalidAuthAttempt(ctx);
             return unauthenticatedReqResponse(ctx);
         }
 
-        const res = await deleteUserAccountConfirmationEmail(user);
+        const res = await deleteUserAccountConfirmationEmail(sessionUser);
         return ctx.json(res.data, res.status);
     } catch (err) {
         console.error(err);

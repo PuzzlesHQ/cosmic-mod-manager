@@ -13,7 +13,7 @@ import {
     unauthenticatedReqResponse,
     unauthorizedReqResponse,
 } from "~/utils/http";
-import { getUserFromCtx } from "~/utils/router";
+import { getSessionUser } from "~/utils/router";
 import { getAllProjects_DownloadsAnalyticsData, getDownloadsAnalyticsData } from "./controllers";
 
 const analyticsRouter = new Hono()
@@ -27,8 +27,8 @@ const analyticsRouter = new Hono()
 
 async function downloadsAnalytics_get(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.ANALYTICS_READ);
-        if (!user) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.ANALYTICS_READ);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
         const startDate_query = ctx.req.query("startDate");
         const endDate_query = ctx.req.query("endDate");
@@ -54,7 +54,7 @@ async function downloadsAnalytics_get(ctx: Context) {
             }
         }
 
-        const res = await getDownloadsAnalyticsData(user, {
+        const res = await getDownloadsAnalyticsData(sessionUser, {
             projectIds: projectIds as string[],
             startDate: startDate,
             endDate: endDate,
@@ -70,8 +70,8 @@ async function downloadsAnalytics_get(ctx: Context) {
 
 async function allProjectsDownloadsAnalytics_get(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.ANALYTICS_READ);
-        if (!user) return unauthorizedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.ANALYTICS_READ);
+        if (!sessionUser) return unauthorizedReqResponse(ctx);
 
         const startDate_query = ctx.req.query("startDate");
         const endDate_query = ctx.req.query("endDate");
@@ -94,7 +94,7 @@ async function allProjectsDownloadsAnalytics_get(ctx: Context) {
             }
         }
 
-        const res = await getAllProjects_DownloadsAnalyticsData(user, {
+        const res = await getAllProjects_DownloadsAnalyticsData(sessionUser, {
             projectIds: [],
             startDate: startDate,
             endDate: endDate,

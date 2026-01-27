@@ -5,7 +5,7 @@ import { AuthenticationMiddleware } from "~/middleware/auth";
 import { getReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
 import { invalidRequestResponse, serverErrorResponse } from "~/utils/http";
-import { getUserFromCtx } from "~/utils/router";
+import { getSessionUser } from "~/utils/router";
 import { getHomePageCarouselProjects, getManyProjects, getRandomProjects } from "./controllers";
 
 const bulkProjectsRouter = new Hono()
@@ -19,7 +19,7 @@ const bulkProjectsRouter = new Hono()
 async function projects_get(ctx: Context) {
     try {
         const projectIds = ctx.req.query("ids");
-        const userSession = getUserFromCtx(ctx, API_SCOPE.PROJECT_READ);
+        const userSession = getSessionUser(ctx, API_SCOPE.PROJECT_READ);
         if (!projectIds) return invalidRequestResponse(ctx);
 
         const idsArray = decodeStringArray(projectIds);
@@ -37,7 +37,7 @@ async function projects_get(ctx: Context) {
 
 async function projectsRandom_get(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx, API_SCOPE.PROJECT_READ);
+        const userSession = getSessionUser(ctx, API_SCOPE.PROJECT_READ);
         const count = Number.parseInt(ctx.req.query("count") || "", 10);
 
         const res = await getRandomProjects(userSession, count);
@@ -50,7 +50,7 @@ async function projectsRandom_get(ctx: Context) {
 
 async function homePageCarousel_get(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx, API_SCOPE.PROJECT_READ);
+        const userSession = getSessionUser(ctx, API_SCOPE.PROJECT_READ);
         const res = await getHomePageCarouselProjects(userSession);
         return ctx.json(res.data, res.status);
     } catch (error) {

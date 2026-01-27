@@ -11,7 +11,7 @@ import { Get_UserProjects, GetUser_ByIdOrUsername, GetUser_Unique, UpdateUser } 
 import { getManyProjects } from "~/routes/project/controllers";
 import { UpdateProjects_SearchIndex } from "~/routes/search/search-db";
 import { deleteUserFile, saveUserFile } from "~/services/storage";
-import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
+import { FILE_STORAGE_SERVICE, type UserSessionData } from "~/types";
 import {
     HTTP_STATUS,
     invalidRequestResponseData,
@@ -40,7 +40,7 @@ export async function getUserProfileData(slug: string) {
     return { data: dataObj, status: HTTP_STATUS.OK };
 }
 
-export async function getUserFollowedProjects(userSlug: string, userSession: ContextUserData | null, idsOnly = true) {
+export async function getUserFollowedProjects(userSlug: string, userSession: UserSessionData | null, idsOnly = true) {
     // If it's the current user's profile, return their following projects directly
     if (userSession && (userSlug === userSession.userName || userSlug === userSession.id)) {
         if (idsOnly) return { data: userSession.followingProjects, status: HTTP_STATUS.OK };
@@ -61,7 +61,7 @@ export async function getUserFollowedProjects(userSlug: string, userSession: Con
 }
 
 export async function updateUserProfile(
-    userSession: ContextUserData,
+    userSession: UserSessionData,
     profileData: z.infer<typeof profileUpdateFormSchema>,
 ) {
     const user = await GetUser_Unique({
@@ -192,7 +192,7 @@ export async function getUserAvatar(
 }
 
 export async function getAllVisibleProjects(
-    userSession: ContextUserData | null,
+    userSession: UserSessionData | null,
     userSlug: string,
     listedProjectsOnly: boolean,
 ) {

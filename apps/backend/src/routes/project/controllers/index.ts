@@ -16,14 +16,14 @@ import { MEILISEARCH_PROJECT_INDEX, type ProjectSearchDocument } from "~/routes/
 import meilisearch from "~/services/meilisearch";
 import prisma from "~/services/prisma";
 import valkey from "~/services/redis";
-import type { ContextUserData } from "~/types";
+import type { UserSessionData } from "~/types";
 import { isNumber } from "~/utils";
 import { HTTP_STATUS } from "~/utils/http";
 import { parseJson } from "~/utils/str";
 import { orgIconUrl, projectGalleryFileUrl, projectIconUrl, userFileUrl } from "~/utils/urls";
 import { isProjectAccessible, isProjectListed } from "../utils";
 
-export async function getProjectData(slug: string, userSession: ContextUserData | null) {
+export async function getProjectData(slug: string, userSession: UserSessionData | null) {
     const project = await GetProject_Details(slug, slug);
     if (!project?.id) {
         return { data: { success: false, message: "Project not found" }, status: HTTP_STATUS.NOT_FOUND };
@@ -149,7 +149,7 @@ export async function checkProjectSlugValidity(slug: string) {
     return { data: { id: project.id }, status: HTTP_STATUS.OK };
 }
 
-export async function getManyProjects(userSession: ContextUserData | null, projectIds: string[], listedOnly = false) {
+export async function getManyProjects(userSession: UserSessionData | null, projectIds: string[], listedOnly = false) {
     const list = await GetManyProjects_ListItem(projectIds);
     const projectsList: ProjectListItem[] = [];
 
@@ -206,7 +206,7 @@ export async function getManyProjects(userSession: ContextUserData | null, proje
     };
 }
 
-export async function getRandomProjects(userSession: ContextUserData | null, count: number) {
+export async function getRandomProjects(userSession: UserSessionData | null, count: number) {
     let projectsCount = 20;
     if (isNumber(count) && count > 0 && count <= 100) {
         projectsCount = count;
@@ -230,7 +230,7 @@ function homePageProjects_CacheKey(count: number) {
     return `homepage-carousel-projects:${count}`;
 }
 
-export async function getHomePageCarouselProjects(userSession: ContextUserData | null) {
+export async function getHomePageCarouselProjects(userSession: UserSessionData | null) {
     const projectsCount = 30;
 
     const cache = await valkey.get(homePageProjects_CacheKey(projectsCount));

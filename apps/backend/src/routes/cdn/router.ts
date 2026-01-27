@@ -10,7 +10,7 @@ import { getSitemap } from "~/services/sitemap-gen";
 import { getCollectionFile, getOrgFile, getProjectFile, getProjectGalleryFile, getUserFile } from "~/services/storage";
 import env from "~/utils/env";
 import { invalidRequestResponse, notFoundResponse, serverErrorResponse } from "~/utils/http";
-import { getUserFromCtx } from "~/utils/router";
+import { getSessionUser } from "~/utils/router";
 import { collectionIconUrl, orgIconUrl, projectGalleryFileUrl, projectIconUrl, userFileUrl } from "~/utils/urls";
 import { serveImageFile, serveVersionFile } from "./controller";
 
@@ -82,7 +82,7 @@ async function galleryImage_get(ctx: Context) {
 const ALLOWED_EXTERNAL_USER_AGENTS = ["CRLauncher/"];
 async function versionFile_get(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx, API_SCOPE.PROJECT_READ, API_SCOPE.VERSION_READ);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_READ, API_SCOPE.VERSION_READ);
         const { projectId, versionId, fileName } = ctx.req.param();
         if (!projectId || !versionId || !fileName) return invalidRequestResponse(ctx);
 
@@ -102,7 +102,7 @@ async function versionFile_get(ctx: Context) {
             return invalidRequestResponse(ctx, `Error: Possibly bot activity;\nUser-Agent: '${userAgent};`);
         }
 
-        return await serveVersionFile(ctx, projectId, versionId, fileName, userSession, IsCdnRequest(ctx));
+        return await serveVersionFile(ctx, projectId, versionId, fileName, sessionUser, IsCdnRequest(ctx));
     } catch (error) {
         console.error(error);
         return serverErrorResponse(ctx);

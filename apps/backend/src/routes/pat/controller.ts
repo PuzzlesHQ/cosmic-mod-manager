@@ -3,12 +3,12 @@ import type { createPAT_FormSchema } from "@app/utils/schemas/pat";
 import type { PATData } from "@app/utils/types/api/pat";
 import type z from "zod";
 import { CreatePAT, DeletePAT, GetManyPATs_ByUserID, GetPAT_ById, UpdatePAT } from "~/db/pat_item";
-import type { ContextUserData } from "~/types";
+import type { UserSessionData } from "~/types";
 import { HTTP_STATUS, invalidRequestResponseData, unauthorizedReqResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 import { generatePAT, hashString } from "../auth/helpers";
 
-export async function getAllUserPATs(user: ContextUserData) {
+export async function getAllUserPATs(user: UserSessionData) {
     const pats = await GetManyPATs_ByUserID(user.id);
 
     const res = pats.map(
@@ -30,7 +30,7 @@ export async function getAllUserPATs(user: ContextUserData) {
     };
 }
 
-export async function createPersonalAccessToken(user: ContextUserData, formData: z.infer<typeof createPAT_FormSchema>) {
+export async function createPersonalAccessToken(user: UserSessionData, formData: z.infer<typeof createPAT_FormSchema>) {
     const dateExpires = new Date(formData.dateExpires);
     if (dateExpires.getTime() <= Date.now()) {
         return invalidRequestResponseData("[dateExpires] Expiration date must be in the future");
@@ -73,7 +73,7 @@ export async function createPersonalAccessToken(user: ContextUserData, formData:
 }
 
 export async function editPersonalAccessToken(
-    user: ContextUserData,
+    user: UserSessionData,
     patId: string,
     formData: z.infer<typeof createPAT_FormSchema>,
 ) {
@@ -112,7 +112,7 @@ export async function editPersonalAccessToken(
     };
 }
 
-export async function deletePersonalAccessToken(user: ContextUserData, patId: string) {
+export async function deletePersonalAccessToken(user: UserSessionData, patId: string) {
     const pat = await GetPAT_ById(patId);
     if (!pat) return invalidRequestResponseData("PAT not found");
     if (pat.userId !== user.id) return unauthorizedReqResponseData("You do not have permission to delete this PAT");

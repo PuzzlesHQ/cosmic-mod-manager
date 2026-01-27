@@ -14,7 +14,7 @@ import {
     unauthenticatedReqResponse,
     unauthorizedReqResponse,
 } from "~/utils/http";
-import { getUserFromCtx } from "~/utils/router";
+import { getSessionUser } from "~/utils/router";
 import {
     createReport,
     getExistingReport,
@@ -36,15 +36,15 @@ const reportRouter = new Hono()
 
 async function report_post(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.REPORT_CREATE);
-        if (!user) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.REPORT_CREATE);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
         const { error, data } = await zodParse(newReportFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) {
             return invalidRequestResponse(ctx, error);
         }
 
-        const res = await createReport(data, user);
+        const res = await createReport(data, sessionUser);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -54,13 +54,13 @@ async function report_post(ctx: Context) {
 
 async function userReports_get(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.REPORT_READ);
-        if (!user?.id) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.REPORT_READ);
+        if (!sessionUser?.id) return unauthenticatedReqResponse(ctx);
 
         const url = new URL(ctx.req.url);
         const userId = url.searchParams.get("userId");
 
-        const res = await getManyReports(user, userId || user.id);
+        const res = await getManyReports(sessionUser, userId || sessionUser.id);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -70,8 +70,8 @@ async function userReports_get(ctx: Context) {
 
 async function getAllReports(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.REPORT_READ);
-        if (!user?.id || !isModerator(user.role)) return unauthorizedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.REPORT_READ);
+        if (!sessionUser?.id || !isModerator(sessionUser.role)) return unauthorizedReqResponse(ctx);
 
         const filters = { ...reportFilters_defaults };
         const reqUrl = new URL(ctx.req.url);
@@ -91,7 +91,7 @@ async function getAllReports(ctx: Context) {
             }
         }
 
-        const res = await getManyReports(user, undefined, filters);
+        const res = await getManyReports(sessionUser, undefined, filters);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -101,15 +101,15 @@ async function getAllReports(ctx: Context) {
 
 async function existingReport_get(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.REPORT_READ);
-        if (!user) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.REPORT_READ);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
         const reqUrl = new URL(ctx.req.url);
         const itemType = reqUrl.searchParams.get("itemType");
         const itemId = reqUrl.searchParams.get("itemId");
         if (!itemType || !itemId) return invalidRequestResponse(ctx, "Item type and item ID are required.");
 
-        const res = await getExistingReport(itemType as ReportItemType, itemId, user);
+        const res = await getExistingReport(itemType as ReportItemType, itemId, sessionUser);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -119,13 +119,13 @@ async function existingReport_get(ctx: Context) {
 
 async function report_get(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.REPORT_READ);
-        if (!user) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.REPORT_READ);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
         const reportId = ctx.req.param("reportId");
         if (!reportId) return invalidRequestResponse(ctx, "Report ID is required.");
 
-        const res = await getReportData(reportId, user);
+        const res = await getReportData(reportId, sessionUser);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -135,13 +135,13 @@ async function report_get(ctx: Context) {
 
 async function report_patch(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.REPORT_WRITE);
-        if (!user) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.REPORT_WRITE);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
         const reportId = ctx.req.param("reportId");
         if (!reportId) return invalidRequestResponse(ctx, "Report ID is required.");
 
-        const res = await patchReport(reportId, ctx.get(REQ_BODY_NAMESPACE).closed === true, user);
+        const res = await patchReport(reportId, ctx.get(REQ_BODY_NAMESPACE).closed === true, sessionUser);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);

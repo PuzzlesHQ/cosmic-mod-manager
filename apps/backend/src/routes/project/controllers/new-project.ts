@@ -8,11 +8,11 @@ import { GetOrganization_Data } from "~/db/organization_item";
 import { CreateProject, GetProject_ListItem } from "~/db/project_item";
 import { CreateTeamMember } from "~/db/team-member_item";
 import prisma from "~/services/prisma";
-import type { ContextUserData } from "~/types";
+import type { UserSessionData } from "~/types";
 import { HTTP_STATUS, invalidRequestResponseData, unauthorizedReqResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 
-export async function createNewProject(userSession: ContextUserData, formData: z.infer<typeof newProjectFormSchema>) {
+export async function createNewProject(userSession: UserSessionData, formData: z.infer<typeof newProjectFormSchema>) {
     const existingProjectWithSameUrl = await GetProject_ListItem(formData.slug, formData.slug);
     if (existingProjectWithSameUrl?.id) return invalidRequestResponseData("Url slug already taken");
 

@@ -8,12 +8,12 @@ import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-atte
 import { createNewAuthAccount, getAuthProviderProfileData } from "~/routes/auth/helpers";
 import { OAuthProfileDataSchema } from "~/routes/auth/providers/_schema";
 import prisma from "~/services/prisma";
-import type { ContextUserData } from "~/types";
+import type { UserSessionData } from "~/types";
 import { HTTP_STATUS, invalidRequestResponseData } from "~/utils/http";
 
 export async function linkAuthProviderHandler(
     ctx: Context,
-    userSession: ContextUserData,
+    userSession: UserSessionData,
     authProvider: string,
     tokenExchangeCode: string,
 ) {
@@ -85,7 +85,7 @@ export async function linkAuthProviderHandler(
     };
 }
 
-export async function unlinkAuthProvider(ctx: Context, userSession: ContextUserData, authProvider: string) {
+export async function unlinkAuthProvider(ctx: Context, userSession: UserSessionData, authProvider: string) {
     const allLinkedProviders = await prisma.authAccount.findMany({
         where: {
             userId: userSession.id,
@@ -123,7 +123,7 @@ export async function unlinkAuthProvider(ctx: Context, userSession: ContextUserD
     };
 }
 
-export async function getLinkedAuthProviders(userSession: ContextUserData) {
+export async function getLinkedAuthProviders(userSession: UserSessionData) {
     const linkedProviders = await prisma.authAccount.findMany({
         where: {
             userId: userSession.id,

@@ -8,7 +8,7 @@ import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-
 import { critModifyReqRateLimiter } from "~/middleware/rate-limit/modify-req";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { invalidRequestResponse, serverErrorResponse, unauthenticatedReqResponse } from "~/utils/http";
-import { getUserFromCtx } from "~/utils/router";
+import { getSessionUser } from "~/utils/router";
 import {
     AddProjectsToCollection,
     CreateNewCollection,
@@ -39,10 +39,10 @@ const collectionsRouter = new Hono()
 
 async function collections_get(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.COLLECTION_READ);
-        if (!user?.id) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.COLLECTION_READ);
+        if (!sessionUser?.id) return unauthenticatedReqResponse(ctx);
 
-        const res = await GetUserCollections(user.id, user);
+        const res = await GetUserCollections(sessionUser.id, sessionUser);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -52,13 +52,13 @@ async function collections_get(ctx: Context) {
 
 async function collection_post(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.COLLECTION_CREATE);
-        if (!user?.id) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.COLLECTION_CREATE);
+        if (!sessionUser?.id) return unauthenticatedReqResponse(ctx);
 
         const { data, error } = await zodParse(createCollectionFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (!data || error) return invalidRequestResponse(ctx, error);
 
-        const res = await CreateNewCollection(data, user);
+        const res = await CreateNewCollection(data, sessionUser);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -71,8 +71,8 @@ async function collection_byID_get(ctx: Context) {
         const collectionId = ctx.req.param("collectionId");
         if (!collectionId) return invalidRequestResponse(ctx);
 
-        const user = getUserFromCtx(ctx, API_SCOPE.COLLECTION_READ);
-        const res = await GetUserCollection_ByCollectionId(collectionId, user);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.COLLECTION_READ);
+        const res = await GetUserCollection_ByCollectionId(collectionId, sessionUser);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -85,8 +85,8 @@ async function collection_byID_patch(ctx: Context) {
         const collectionId = ctx.req.param("collectionId");
         if (!collectionId) return invalidRequestResponse(ctx);
 
-        const user = getUserFromCtx(ctx, API_SCOPE.COLLECTION_WRITE);
-        if (!user?.id) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.COLLECTION_WRITE);
+        if (!sessionUser?.id) return unauthenticatedReqResponse(ctx);
 
         const formData = ctx.get(REQ_BODY_NAMESPACE);
         if (!formData) return invalidRequestResponse(ctx);
@@ -100,7 +100,7 @@ async function collection_byID_patch(ctx: Context) {
         const { data, error } = await zodParse(updateCollectionFormSchema, obj);
         if (!data || error) return invalidRequestResponse(ctx, error);
 
-        const res = await editUserCollectionDetails(data, collectionId, user);
+        const res = await editUserCollectionDetails(data, collectionId, sessionUser);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -113,10 +113,10 @@ async function collection_byID_delete(ctx: Context) {
         const collectionId = ctx.req.param("collectionId");
         if (!collectionId) return invalidRequestResponse(ctx);
 
-        const user = getUserFromCtx(ctx, API_SCOPE.COLLECTION_DELETE);
-        if (!user?.id) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.COLLECTION_DELETE);
+        if (!sessionUser?.id) return unauthenticatedReqResponse(ctx);
 
-        const res = await deleteUserCollection(collectionId, user);
+        const res = await deleteUserCollection(collectionId, sessionUser);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -129,9 +129,9 @@ async function collectionProjects_get(ctx: Context) {
         const collectionId = ctx.req.param("collectionId");
         if (!collectionId) return invalidRequestResponse(ctx);
 
-        const user = getUserFromCtx(ctx, API_SCOPE.COLLECTION_READ);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.COLLECTION_READ);
 
-        const res = await GetCollectionProjects(collectionId, user);
+        const res = await GetCollectionProjects(collectionId, sessionUser);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -144,9 +144,9 @@ async function collectionOwner_get(ctx: Context) {
         const collectionId = ctx.req.param("collectionId");
         if (!collectionId) return invalidRequestResponse(ctx);
 
-        const user = getUserFromCtx(ctx, API_SCOPE.COLLECTION_READ);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.COLLECTION_READ);
 
-        const res = await GetCollectionOwner(collectionId, user);
+        const res = await GetCollectionOwner(collectionId, sessionUser);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -159,13 +159,13 @@ async function collectionProjects_patch(ctx: Context) {
         const collectionId = ctx.req.param("collectionId");
         if (!collectionId) return invalidRequestResponse(ctx);
 
-        const user = getUserFromCtx(ctx, API_SCOPE.COLLECTION_WRITE);
-        if (!user?.id) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.COLLECTION_WRITE);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
         const projects = ctx.get(REQ_BODY_NAMESPACE).projects as string[];
         if (!projects?.length) return invalidRequestResponse(ctx);
 
-        const res = await AddProjectsToCollection(collectionId, projects, user);
+        const res = await AddProjectsToCollection(collectionId, projects, sessionUser);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -178,13 +178,13 @@ async function collectionProjects_delete(ctx: Context) {
         const collectionId = ctx.req.param("collectionId");
         if (!collectionId) return invalidRequestResponse(ctx);
 
-        const user = getUserFromCtx(ctx, API_SCOPE.COLLECTION_WRITE);
-        if (!user?.id) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.COLLECTION_WRITE);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
         const projects = ctx.get(REQ_BODY_NAMESPACE).projects as string[];
         if (!projects?.length) return invalidRequestResponse(ctx);
 
-        const res = await DeleteProjectsFromCollection(collectionId, projects, user);
+        const res = await DeleteProjectsFromCollection(collectionId, projects, sessionUser);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);

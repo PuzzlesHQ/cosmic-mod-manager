@@ -6,7 +6,7 @@ import type { ProjectDownloads_Analytics } from "@app/utils/types/api/stats";
 import { GetManyProjects_ListItem } from "~/db/project_item";
 import clickhouse, { ANALYTICS_DB } from "~/services/clickhouse";
 import type { Analytics_ProjectDownloads } from "~/services/clickhouse/types";
-import type { ContextUserData } from "~/types";
+import type { UserSessionData } from "~/types";
 import { HTTP_STATUS, invalidRequestResponseData, unauthorizedReqResponseData } from "~/utils/http";
 
 interface getAnalyticsDataProps {
@@ -17,7 +17,7 @@ interface getAnalyticsDataProps {
     timeline: TimelineOptions | null;
 }
 
-export async function getDownloadsAnalyticsData(user: ContextUserData, props: getAnalyticsDataProps) {
+export async function getDownloadsAnalyticsData(user: UserSessionData, props: getAnalyticsDataProps) {
     let startDate: Date;
     let endDate: Date;
 
@@ -96,7 +96,7 @@ export async function getDownloadsAnalyticsData(user: ContextUserData, props: ge
     };
 }
 
-export async function getAllProjects_DownloadsAnalyticsData(user: ContextUserData, props: getAnalyticsDataProps) {
+export async function getAllProjects_DownloadsAnalyticsData(user: UserSessionData, props: getAnalyticsDataProps) {
     // Only mods and admins are allowed to access this
     const isMod = isModerator(user.role);
     if (!isMod) return unauthorizedReqResponseData();

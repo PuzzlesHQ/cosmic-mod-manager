@@ -5,12 +5,12 @@ import { GetProject_Details } from "~/db/project_item";
 import { GetVersions } from "~/db/version_item";
 import { getFilesFromId } from "~/routes/project/queries/file";
 import { isProjectAccessible } from "~/routes/project/utils";
-import type { ContextUserData } from "~/types";
+import type { UserSessionData } from "~/types";
 import { HTTP_STATUS, notFoundResponseData } from "~/utils/http";
 import { GetReleaseChannelFilter } from "~/utils/project";
 import { formatVersionData } from "./utils";
 
-export async function getAllProjectVersions(slug: string, userSession: ContextUserData | null, featuredOnly = false) {
+export async function getAllProjectVersions(slug: string, userSession: UserSessionData | null, featuredOnly = false) {
     const [project, _projectVersions] = await Promise.all([GetProject_Details(slug, slug), GetVersions(slug, slug)]);
     if (!project) return notFoundResponseData("Project not found");
 
@@ -62,7 +62,7 @@ export async function getAllProjectVersions(slug: string, userSession: ContextUs
 export async function getProjectVersionData(
     projectSlug: string,
     versionId: string,
-    userSession: ContextUserData | null,
+    userSession: UserSessionData | null,
 ) {
     const res = await getAllProjectVersions(projectSlug, userSession, false);
 
@@ -84,7 +84,7 @@ interface GetLatestVersionFilters {
 
 export async function getLatestVersion(
     projectSlug: string,
-    userSession: ContextUserData | null,
+    userSession: UserSessionData | null,
     filters: GetLatestVersionFilters,
 ) {
     const whereInput: Prisma.VersionWhereInput = {};

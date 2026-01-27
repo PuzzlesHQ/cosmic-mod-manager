@@ -12,7 +12,7 @@ import {
     markNotificationAsRead as markNotificationsAsRead,
 } from "~/routes/user/notification/controllers";
 import { invalidRequestResponse, serverErrorResponse, unauthenticatedReqResponse } from "~/utils/http";
-import { getUserFromCtx } from "~/utils/router";
+import { getSessionUser } from "~/utils/router";
 
 const notificationRouter = new Hono()
     .use(invalidAuthAttemptLimiter)
@@ -28,7 +28,7 @@ const notificationRouter = new Hono()
 
 async function userNotifications_get(ctx: Context) {
     try {
-        const sessionUser = getUserFromCtx(ctx, API_SCOPE.USER_READ, API_SCOPE.NOTIFICATION_READ);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.USER_READ, API_SCOPE.NOTIFICATION_READ);
         if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
         const userSlug = ctx.req.param("userId") as string | undefined;
@@ -42,7 +42,7 @@ async function userNotifications_get(ctx: Context) {
 
 async function notification_get(ctx: Context) {
     try {
-        const sessionUser = getUserFromCtx(ctx, API_SCOPE.NOTIFICATION_READ);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.NOTIFICATION_READ);
         if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
         const notifId = ctx.req.param("notifId");
@@ -58,14 +58,14 @@ async function notification_get(ctx: Context) {
 
 async function notification_patch(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx, API_SCOPE.NOTIFICATION_WRITE);
-        if (!userSession) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.NOTIFICATION_WRITE);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
         const userSlug = ctx.req.param("userId") as string | undefined;
         const notificationId = ctx.req.param("notifId");
         if (!notificationId) return invalidRequestResponse(ctx);
 
-        const res = await markNotificationsAsRead(ctx, userSession, [notificationId], userSlug);
+        const res = await markNotificationsAsRead(ctx, sessionUser, [notificationId], userSlug);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -75,7 +75,7 @@ async function notification_patch(ctx: Context) {
 
 async function bulkNotifications_patch(ctx: Context) {
     try {
-        const sessionUser = getUserFromCtx(ctx, API_SCOPE.NOTIFICATION_WRITE);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.NOTIFICATION_WRITE);
         if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
         const userSlug = ctx.req.param("userId");
@@ -92,7 +92,7 @@ async function bulkNotifications_patch(ctx: Context) {
 
 async function notification_delete(ctx: Context) {
     try {
-        const sessionUser = getUserFromCtx(ctx, API_SCOPE.NOTIFICATION_DELETE);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.NOTIFICATION_DELETE);
         if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
         const userSlug = ctx.req.param("userId");
@@ -109,7 +109,7 @@ async function notification_delete(ctx: Context) {
 
 async function bulkNotifications_delete(ctx: Context) {
     try {
-        const sessionUser = getUserFromCtx(ctx, API_SCOPE.NOTIFICATION_DELETE);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.NOTIFICATION_DELETE);
         if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
         const userSlug = ctx.req.param("userId");

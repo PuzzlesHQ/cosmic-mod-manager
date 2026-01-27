@@ -17,7 +17,7 @@ import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-atte
 import { generateRandomToken, hashPassword, hashString, matchPassword } from "~/routes/auth/helpers";
 import { invalidateAllOtherUserSessions } from "~/routes/auth/helpers/session";
 import prisma from "~/services/prisma";
-import type { ContextUserData } from "~/types";
+import type { UserSessionData } from "~/types";
 import { isConfirmationCodeValid } from "~/utils";
 import { sendChangePasswordEmail, sendConfirmNewPasswordEmail, sendDeleteUserAccountEmail } from "~/utils/email";
 import { HTTP_STATUS, invalidRequestResponseData } from "~/utils/http";
@@ -30,7 +30,7 @@ const confirmationEmailValidityDict = {
 };
 
 export async function addNewPassword_ConfirmationEmail(
-    userSession: ContextUserData,
+    userSession: UserSessionData,
     formData: z.infer<typeof setNewPasswordFormSchema>,
 ) {
     if (formData.newPassword !== formData.confirmNewPassword)
@@ -146,7 +146,7 @@ export async function confirmAddingNewPassword(code: string) {
 
 export async function removeAccountPassword(
     ctx: Context,
-    userSession: ContextUserData,
+    userSession: UserSessionData,
     formData: z.infer<typeof removeAccountPasswordFormSchema>,
 ) {
     if (!userSession.password) {
@@ -232,7 +232,7 @@ export async function changeUserPassword(
     ctx: Context,
     token: string,
     formData: z.infer<typeof setNewPasswordFormSchema>,
-    userSession: ContextUserData | null,
+    userSession: UserSessionData | null,
 ) {
     if (formData.newPassword !== formData.confirmNewPassword)
         return invalidRequestResponseData("Passwords do not match");
@@ -289,7 +289,7 @@ export async function changeUserPassword(
     };
 }
 
-export async function deleteUserAccountConfirmationEmail(userSession: ContextUserData) {
+export async function deleteUserAccountConfirmationEmail(userSession: UserSessionData) {
     const token = generateRandomToken();
     const tokenHash = hashString(token);
 

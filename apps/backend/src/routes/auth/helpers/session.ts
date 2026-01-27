@@ -15,7 +15,7 @@ import {
     GetSession_ByTokenHash,
 } from "~/db/session_item";
 import { GetUser_ByIdOrUsername } from "~/db/user_item";
-import type { ContextUserData } from "~/types";
+import type { UserSessionData } from "~/types";
 import { sendNewSigninAlertEmail } from "~/utils/email";
 import env from "~/utils/env";
 import { deleteCookie, setCookie } from "~/utils/http";
@@ -95,7 +95,7 @@ export async function createUserSession({ userId, providerName, ctx, isFirstSign
     return sessionToken;
 }
 
-async function getUserFromSessionToken(token: string): Promise<ContextUserData | null> {
+async function getUserFromSessionToken(token: string): Promise<UserSessionData | null> {
     const tokenHash = hashString(token);
     const session = await GetSession_ByTokenHash(tokenHash);
     if (!session) return null;
@@ -121,10 +121,10 @@ async function getUserFromSessionToken(token: string): Promise<ContextUserData |
         apiScopes: ALL_PAT_SCOPES,
         sessionId: session.id,
         patID: null,
-    } satisfies ContextUserData;
+    } satisfies UserSessionData;
 }
 
-async function getUserFromPAT(token: string): Promise<ContextUserData | null> {
+async function getUserFromPAT(token: string): Promise<UserSessionData | null> {
     const tokenHash = hashString(token);
     const pat = await GetPAT(tokenHash);
 
@@ -152,10 +152,10 @@ async function getUserFromPAT(token: string): Promise<ContextUserData | null> {
         apiScopes: pat.scopes,
         sessionId: null,
         patID: pat.id,
-    } satisfies ContextUserData;
+    } satisfies UserSessionData;
 }
 
-export async function validateContextSession(ctx: Context): Promise<ContextUserData | null> {
+export async function validateContextSession(ctx: Context): Promise<UserSessionData | null> {
     const cookie = getUserSessionCookie(ctx);
     const authorizationHeader = ctx.req.header("Authorization");
 

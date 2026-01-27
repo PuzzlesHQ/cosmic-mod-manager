@@ -14,12 +14,12 @@ import type { Thread as DB_Thread } from "@prisma-client";
 import { GetProject_Details } from "~/db/project_item";
 import { GetManyUsers_ByIds } from "~/db/user_item";
 import prisma from "~/services/prisma";
-import type { ContextUserData } from "~/types";
+import type { UserSessionData } from "~/types";
 import { HTTP_STATUS, invalidRequestResponseData, unauthorizedReqResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 import { userFileUrl } from "~/utils/urls";
 
-export async function GetThreadMessages(user: ContextUserData, threadId: string) {
+export async function GetThreadMessages(user: UserSessionData, threadId: string) {
     const thread = await prisma.thread.findUnique({
         where: {
             id: threadId,
@@ -128,7 +128,7 @@ export async function GetThreadMessages(user: ContextUserData, threadId: string)
 }
 
 export async function CreateThreadMessage(
-    user: ContextUserData,
+    user: UserSessionData,
     threadId: string,
     data: z.infer<typeof createThreadMessage_Schema>,
 ) {
@@ -171,7 +171,7 @@ export async function CreateThreadMessage(
     };
 }
 
-export async function DeleteThreadMessage(user: ContextUserData, messageId: string) {
+export async function DeleteThreadMessage(user: UserSessionData, messageId: string) {
     if (!isModerator(user.role)) return invalidRequestResponseData("You can't delete the message!");
 
     const message = await prisma.threadMessage.findUnique({
@@ -215,7 +215,7 @@ export async function DeleteThreadMessage(user: ContextUserData, messageId: stri
     };
 }
 
-async function canUserAccessThread(user: ContextUserData, thread: DB_Thread) {
+async function canUserAccessThread(user: UserSessionData, thread: DB_Thread) {
     if (thread.members.includes(user.id)) return true;
     if (isModerator(user.role)) return true;
 

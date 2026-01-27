@@ -19,7 +19,7 @@ import {
 } from "~/routes/project/utils";
 import prisma from "~/services/prisma";
 import { deleteProjectVersionDirectory } from "~/services/storage";
-import { type ContextUserData, FILE_STORAGE_SERVICE } from "~/types";
+import { FILE_STORAGE_SERVICE, type UserSessionData } from "~/types";
 import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData } from "~/utils/http";
 import { createVersionDependencies, deleteExcessDevReleases } from "./new-version";
 
@@ -27,7 +27,7 @@ export async function updateVersionData(
     ctx: Context,
     projectId: string,
     versionId: string,
-    userSession: ContextUserData,
+    userSession: UserSessionData,
     formData: z.infer<typeof updateVersionFormSchema>,
 ) {
     const project = await GetProject_Details(projectId);
@@ -267,7 +267,7 @@ export async function deleteProjectVersion(
     ctx: Context,
     projectId: string,
     versionId: string,
-    userSession: ContextUserData,
+    userSession: UserSessionData,
 ) {
     const project = await GetProject_ListItem(projectId);
     if (!project?.id) return notFoundResponseData("Project not found");

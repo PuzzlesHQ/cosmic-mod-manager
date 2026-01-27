@@ -3,12 +3,12 @@ import type { z } from "@app/utils/schemas";
 import type { updateDescriptionFormSchema } from "@app/utils/schemas/project/settings/description";
 import { ProjectPermission } from "@app/utils/types";
 import { GetProject_ListItem, UpdateProject } from "~/db/project_item";
-import type { ContextUserData } from "~/types";
+import type { UserSessionData } from "~/types";
 import { HTTP_STATUS, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
 
 export async function updateProjectDescription(
     projectId: string,
-    userSession: ContextUserData,
+    userSession: UserSessionData,
     form: z.infer<typeof updateDescriptionFormSchema>,
 ) {
     const project = await GetProject_ListItem(projectId);

@@ -11,7 +11,7 @@ import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-
 import { critModifyReqRateLimiter } from "~/middleware/rate-limit/modify-req";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { HTTP_STATUS, invalidRequestResponse, serverErrorResponse, unauthenticatedReqResponse } from "~/utils/http";
-import { getUserFromCtx } from "~/utils/router";
+import { getSessionUser } from "~/utils/router";
 import { userFileUrl } from "~/utils/urls";
 import { getLinkedAuthProviders, linkAuthProviderHandler, unlinkAuthProvider } from "./controllers/link-provider";
 import { deleteUserSession, getUserSessions, revokeSessionFromAccessCode } from "./controllers/session";
@@ -52,24 +52,24 @@ const authRouter = new Hono()
 
 async function currSession_get(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx, API_SCOPE.USER_READ);
-        if (!userSession) return unauthenticatedReqResponse(ctx, "You're not logged in!");
+        const sessionUser = getSessionUser(ctx, API_SCOPE.USER_READ);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx, "You're not logged in!");
 
         const formattedObject = {
-            id: userSession.id,
-            email: userSession.email,
-            userName: userSession.userName,
-            name: userSession.name,
-            role: getUserRoleFromString(userSession.role),
-            hasAPassword: !!userSession.password,
-            avatar: userFileUrl(userSession.id, userSession.avatar),
-            bio: userSession.bio,
-            profilePageBg: userFileUrl(userSession.id, userSession.profilePageBg),
-            sessionId: userSession.sessionId,
-            patId: userSession.patID,
+            id: sessionUser.id,
+            email: sessionUser.email,
+            userName: sessionUser.userName,
+            name: sessionUser.name,
+            role: getUserRoleFromString(sessionUser.role),
+            hasAPassword: !!sessionUser.password,
+            avatar: userFileUrl(sessionUser.id, sessionUser.avatar),
+            bio: sessionUser.bio,
+            profilePageBg: userFileUrl(sessionUser.id, sessionUser.profilePageBg),
+            sessionId: sessionUser.sessionId,
+            patId: sessionUser.patID,
         } satisfies LoggedInUserData;
 
-        if (!hasScope(userSession.apiScopes, API_SCOPE.USER_READ_EMAIL)) {
+        if (!hasScope(sessionUser.apiScopes, API_SCOPE.USER_READ_EMAIL)) {
             formattedObject.email = "";
             Object.defineProperty(formattedObject, "email", { enumerable: false });
         }
@@ -83,8 +83,8 @@ async function currSession_get(ctx: Context) {
 
 async function oAuthUrl_get(ctx: Context, intent: AuthActionIntent) {
     try {
-        const userSession = getUserFromCtx(ctx);
-        if (userSession?.id && intent !== AuthActionIntent.LINK)
+        const sessionUser = getSessionUser(ctx);
+        if (sessionUser?.id && intent !== AuthActionIntent.LINK)
             return invalidRequestResponse(ctx, "You are already logged in!");
 
         const authProvider = ctx.req.param("authProvider");
@@ -119,7 +119,7 @@ async function credentialSignin_post(ctx: Context) {
 
 async function oAuthSignIn_post(ctx: Context) {
     try {
-        if (getUserFromCtx(ctx)?.id) {
+        if (getSessionUser(ctx)?.id) {
             return invalidRequestResponse(ctx);
         }
 
@@ -140,7 +140,7 @@ async function oAuthSignIn_post(ctx: Context) {
 
 async function oAuthSignUp_post(ctx: Context) {
     try {
-        if (getUserFromCtx(ctx)?.id) {
+        if (getSessionUser(ctx)?.id) {
             return invalidRequestResponse(ctx);
         }
 
@@ -160,8 +160,8 @@ async function oAuthSignUp_post(ctx: Context) {
 
 async function oAuthLinkProvider_post(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx);
-        if (!userSession?.id) {
+        const sessionUser = getSessionUser(ctx);
+        if (!sessionUser?.id) {
             return invalidRequestResponse(ctx);
         }
 
@@ -171,7 +171,7 @@ async function oAuthLinkProvider_post(ctx: Context) {
             return invalidRequestResponse(ctx);
         }
 
-        const result = await linkAuthProviderHandler(ctx, userSession, authProvider, code);
+        const result = await linkAuthProviderHandler(ctx, sessionUser, authProvider, code);
         return ctx.json(result.data, result.status);
     } catch (error) {
         console.error(error);
@@ -181,13 +181,13 @@ async function oAuthLinkProvider_post(ctx: Context) {
 
 async function oAuthLinkProvider_delete(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx, API_SCOPE.USER_AUTH_WRITE);
-        if (!userSession?.id) {
+        const sessionUser = getSessionUser(ctx, API_SCOPE.USER_AUTH_WRITE);
+        if (!sessionUser?.id) {
             return invalidRequestResponse(ctx);
         }
 
         const authProvider = ctx.req.param("authProvider");
-        const result = await unlinkAuthProvider(ctx, userSession, authProvider);
+        const result = await unlinkAuthProvider(ctx, sessionUser, authProvider);
         return ctx.json(result.data, result.status);
     } catch (error) {
         console.error(error);
@@ -197,10 +197,10 @@ async function oAuthLinkProvider_delete(ctx: Context) {
 
 async function sessions_get(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx, API_SCOPE.USER_SESSION_READ);
-        if (!userSession) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.USER_SESSION_READ);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-        const result = await getUserSessions(userSession);
+        const result = await getUserSessions(sessionUser);
         return ctx.json(result.data, result.status);
     } catch (error) {
         console.error(error);
@@ -210,10 +210,10 @@ async function sessions_get(ctx: Context) {
 
 async function linkedProviders_get(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx, API_SCOPE.USER_READ, API_SCOPE.USER_READ_EMAIL);
-        if (!userSession?.id) return invalidRequestResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.USER_READ, API_SCOPE.USER_READ_EMAIL);
+        if (!sessionUser?.id) return invalidRequestResponse(ctx);
 
-        const result = await getLinkedAuthProviders(userSession);
+        const result = await getLinkedAuthProviders(sessionUser);
         return ctx.json(result.data, result.status);
     } catch (err) {
         console.error(err);
@@ -223,13 +223,13 @@ async function linkedProviders_get(ctx: Context) {
 
 async function session_delete(ctx: Context) {
     try {
-        const userSession = getUserFromCtx(ctx, API_SCOPE.USER_SESSION_DELETE);
-        if (!userSession) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getSessionUser(ctx, API_SCOPE.USER_SESSION_DELETE);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-        const targetSessionId = ctx.get(REQ_BODY_NAMESPACE)?.sessionId || userSession?.sessionId;
+        const targetSessionId = ctx.get(REQ_BODY_NAMESPACE)?.sessionId || sessionUser?.sessionId;
         if (!targetSessionId) return invalidRequestResponse(ctx, "Session id is required");
 
-        const result = await deleteUserSession(ctx, userSession, targetSessionId);
+        const result = await deleteUserSession(ctx, sessionUser, targetSessionId);
         return ctx.json(result.data, result.status);
     } catch (error) {
         console.error(error);
