@@ -101,7 +101,7 @@ export default function UserPageLayout(props: Props) {
     }, [bgFileUrl]);
 
     return (
-        <div className="full_page full-width relative grid" style={wrapperStyle}>
+        <div className="full_page full-width relative isolate grid" style={wrapperStyle}>
             {isVideo && bgFileUrl && (
                 <video
                     src={bgFileUrl}
@@ -109,7 +109,7 @@ export default function UserPageLayout(props: Props) {
                     autoPlay
                     loop
                     playsInline
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className="absolute inset-0 h-full w-full object-cover [z-index:-1]"
                 />
             )}
 
