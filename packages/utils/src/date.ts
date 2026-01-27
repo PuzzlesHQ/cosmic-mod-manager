@@ -50,7 +50,9 @@ export function DateFromStr(date: string | Date | undefined) {
     }
 }
 
-export function ISO_DateStr(date?: string | null | Date, utc = false): string {
+export function ISO_DateStr(date: null | undefined | string | Date, utc = false): string {
+    if (!date) return "";
+
     try {
         const _date = date ? new Date(date) : new Date();
         if (utc === false) {

@@ -1,6 +1,6 @@
 import { isRejected, isUnderReview } from "@app/utils/config/project";
 import { isModerator } from "@app/utils/constants/roles";
-import { DateFromStr, FormatDate_ToLocaleString } from "@app/utils/date";
+import { DateFromStr, FormatDate_ToLocaleString, ISO_DateStr } from "@app/utils/date";
 import { scrollElementIntoView } from "@app/utils/dom";
 import type { z } from "@app/utils/schemas";
 import type { createThreadMessage_Schema } from "@app/utils/schemas/thread/index";
@@ -449,8 +449,7 @@ function ThreadMessage(props: ThreadMessageProps) {
         props.prevMsg &&
         props.prevMsg.authorId === props.message.authorId && // Is from the same user,
         (createdAt?.getTime() || 0) - (prevMsgCreatedAt?.getTime() || 0) < 1000 * 60 * 10 && // was sent within next 10 minutes
-        createdAt?.getDate() === prevMsgCreatedAt?.getDate() && // and was sent on the same day
-        !(props.message.type === MessageType.TEXT && props.message.body.replying_to) &&
+        !(props.message.type === MessageType.TEXT && props.message.body.replying_to) && // is not a reply to another message
         isSameMessageType(props.message.type, props.prevMsg.type);
 
     const authorUsername = author?.id && !msgAuthorHidden ? author.userName : t.user.moderator;
@@ -502,13 +501,11 @@ function ThreadMessage(props: ThreadMessageProps) {
             break;
     }
 
-    const showFullDate = now.getDate() !== createdAt?.getDate() && !isContinuationMessage;
+    const showShortTimestamp = isContinuationMessage || ISO_DateStr(now) === ISO_DateStr(createdAt);
     const fullDate = FormatDate_ToLocaleString(props.message.createdAt, { shortMonthNames: true });
 
     const timestamp_class = "text-foreground-muted text-xs leading-none cursor-default whitespace-nowrap";
-    const timestamp = showFullDate ? (
-        <span className={timestamp_class}>{fullDate}</span>
-    ) : (
+    const timestamp = showShortTimestamp ? (
         <TooltipTemplate content={FormattedDate({ date: props.message.createdAt })}>
             <span className={timestamp_class}>
                 <FormattedDate
@@ -519,6 +516,8 @@ function ThreadMessage(props: ThreadMessageProps) {
                 />
             </span>
         </TooltipTemplate>
+    ) : (
+        <span className={timestamp_class}>{fullDate}</span>
     );
 
     const avatar =
@@ -748,12 +747,13 @@ function highlightChatMessage(msgId: string, timeoutIdMap: Map<string, number | 
     timeoutIdMap.set(msgId, timeoutId);
 }
 
+const TEXT_EQUIV = [MessageType.TEXT, MessageType.DELETED];
+const THREAD_STATUS_EQUIV = [MessageType.THREAD_CLOSURE, MessageType.THREAD_REOPEN];
+
 function isSameMessageType(type1: MessageType, type2: MessageType): boolean {
     return (
         type1 === type2 ||
-        (type1 === MessageType.TEXT && type2 === MessageType.DELETED) ||
-        (type1 === MessageType.DELETED && type2 === MessageType.TEXT) ||
-        (type1 === MessageType.THREAD_CLOSURE && type2 === MessageType.THREAD_REOPEN) ||
-        (type1 === MessageType.THREAD_REOPEN && type2 === MessageType.THREAD_CLOSURE)
+        (TEXT_EQUIV.includes(type1) && TEXT_EQUIV.includes(type2)) ||
+        (THREAD_STATUS_EQUIV.includes(type1) && THREAD_STATUS_EQUIV.includes(type2))
     );
 }

@@ -156,7 +156,7 @@ export async function processDownloads() {
 
         // Update all the projects
         const projectIds = Array.from(projectDownloadsMap.keys());
-        const today = ISO_DateStr();
+        const today = ISO_DateStr(new Date());
 
         for (const projectId of projectIds) {
             const downloadsCount = projectDownloadsMap.get(projectId) || 0;
@@ -226,7 +226,7 @@ function ipDownloadsHistoryMapKey(ipAddr: string, projectId: string) {
 }
 
 async function pushOldDownloadsToAnalytics() {
-    const today = ISO_DateStr();
+    const today = ISO_DateStr(new Date());
 
     const stats = await prisma.projectDailyStats.findMany({
         where: {

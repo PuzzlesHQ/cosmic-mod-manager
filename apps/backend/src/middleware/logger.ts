@@ -11,7 +11,7 @@ const LogDebugMessages = false;
 
 export function Log(msg: string, level = LogType.INFO, subType?: string) {
     if (level === LogType.DEBUG && !LogDebugMessages) return;
-    const timestamp = ISO_DateStr();
+    const timestamp = ISO_DateStr(new Date());
 
     if (subType) return console.log(`[${level}] ${subType}: ${msg} - ${timestamp}`);
     console.log(`[${level}] ${msg} - ${timestamp}`);
