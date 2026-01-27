@@ -5,40 +5,37 @@ import prisma from "~/services/prisma";
 import type { ContextUserData } from "~/types";
 import { HTTP_STATUS, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
 
-export async function getUserNotifications(ctx: Context, userSession: ContextUserData, notifUserId: string) {
+export async function getUserNotifications(
+    ctx: Context,
+    userSession: ContextUserData,
+    notifUserSlug: string | undefined,
+) {
+    if (!hasNotificationAccess(userSession, notifUserSlug || userSession.id)) {
+        await addInvalidAuthAttempt(ctx);
+        return unauthorizedReqResponseData();
+    }
+
     const notifications = await prisma.notification.findMany({
         where: {
-            user: {
-                OR: [
-                    {
-                        userName: {
-                            equals: notifUserId,
-                            mode: "insensitive",
-                        },
-                    },
-                    { id: notifUserId },
-                ],
-            },
+            // if the user identifier comes from the URL, it could be either the username or the id
+            // otherwise, use the session user's id
+            user: notifUserSlug
+                ? {
+                      OR: [{ userNameLower: notifUserSlug.toLowerCase() }, { id: notifUserSlug }],
+                  }
+                : { id: userSession.id },
         },
         orderBy: {
             dateCreated: "desc",
         },
     });
 
-    // Check if the user has access to the notifications
-    if (!hasNotificationAccess(userSession, notifUserId)) {
-        await addInvalidAuthAttempt(ctx);
-        return unauthorizedReqResponseData();
-    }
-
     return { data: notifications, status: HTTP_STATUS.OK };
 }
 
 export async function getNotificationById(ctx: Context, userSession: ContextUserData, notifId: string) {
     const notification = await prisma.notification.findFirst({
-        where: {
-            id: notifId,
-        },
+        where: { id: notifId },
     });
 
     if (!notification) {
@@ -56,36 +53,29 @@ export async function getNotificationById(ctx: Context, userSession: ContextUser
 
 export async function markNotificationAsRead(
     ctx: Context,
-    userSession: ContextUserData,
+    sessionUser: ContextUserData,
     notificationIds: string[],
-    notifUserId: string,
+    notifUserSlug: string | undefined,
 ) {
+    if (!hasNotificationAccess(sessionUser, notifUserSlug || sessionUser.id)) {
+        await addInvalidAuthAttempt(ctx);
+        return unauthorizedReqResponseData();
+    }
+
     const notifications = await prisma.notification.findMany({
         where: {
             id: {
                 in: notificationIds,
             },
-            user: {
-                OR: [
-                    {
-                        userName: {
-                            equals: notifUserId,
-                            mode: "insensitive",
-                        },
-                    },
-                    { id: notifUserId },
-                ],
-            },
+            user: notifUserSlug
+                ? {
+                      OR: [{ userNameLower: notifUserSlug }, { id: notifUserSlug }],
+                  }
+                : { id: sessionUser.id },
         },
     });
     if (!notifications.length) {
         return notFoundResponseData("Notification not found");
-    }
-
-    // Check permission
-    if (!hasNotificationAccess(userSession, notifUserId)) {
-        await addInvalidAuthAttempt(ctx);
-        return unauthorizedReqResponseData();
     }
 
     await prisma.notification.updateMany({
@@ -100,16 +90,22 @@ export async function markNotificationAsRead(
         },
     });
 
-    return { data: { success: true, message: "Notifications marked as read." }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Notifications marked as read.",
+        },
+        status: HTTP_STATUS.OK,
+    };
 }
 
 export async function deleteNotifications(
     ctx: Context,
     userSession: ContextUserData,
-    userSlug: string,
+    userSlug: string | undefined,
     notificationIds: string[],
 ) {
-    if (!hasNotificationAccess(userSession, userSlug)) {
+    if (!hasNotificationAccess(userSession, userSlug || userSession.id)) {
         await addInvalidAuthAttempt(ctx);
         return unauthorizedReqResponseData();
     }
@@ -120,22 +116,24 @@ export async function deleteNotifications(
                 id: {
                     in: notificationIds,
                 },
-                user: {
-                    OR: [
-                        {
-                            userName: {
-                                equals: userSlug,
-                                mode: "insensitive",
-                            },
-                        },
-                        { id: userSlug },
-                    ],
-                },
+                user: userSlug
+                    ? {
+                          OR: [{ userNameLower: userSlug.toLowerCase() }, { id: userSlug }],
+                      }
+                    : {
+                          id: userSession.id,
+                      },
             },
         });
     } catch {}
 
-    return { data: { success: true, message: "Notifications deleted." }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Notifications deleted.",
+        },
+        status: HTTP_STATUS.OK,
+    };
 }
 
 // Helpers

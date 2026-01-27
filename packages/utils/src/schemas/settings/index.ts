@@ -28,7 +28,7 @@ const userNameSchema = z
     )
     .refine(
         (userName) => {
-            if (RESERVED_USERNAMES.includes(userName)) return false;
+            if (RESERVED_USERNAMES.includes(createURLSafeSlug(userName))) return false;
             return true;
         },
         { error: "Can't use a reserved username, please choose something else." },

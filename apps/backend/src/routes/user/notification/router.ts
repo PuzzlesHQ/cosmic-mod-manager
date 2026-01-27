@@ -28,13 +28,11 @@ const notificationRouter = new Hono()
 
 async function userNotifications_get(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.USER_READ, API_SCOPE.NOTIFICATION_READ);
-        if (!user) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getUserFromCtx(ctx, API_SCOPE.USER_READ, API_SCOPE.NOTIFICATION_READ);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-        const userSlug = ctx.req.param("userId") || user?.id;
-        if (!userSlug) return invalidRequestResponse(ctx, "User session not found");
-
-        const res = await getUserNotifications(ctx, user, userSlug);
+        const userSlug = ctx.req.param("userId") as string | undefined;
+        const res = await getUserNotifications(ctx, sessionUser, userSlug);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -44,13 +42,13 @@ async function userNotifications_get(ctx: Context) {
 
 async function notification_get(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.NOTIFICATION_READ);
-        if (!user) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getUserFromCtx(ctx, API_SCOPE.NOTIFICATION_READ);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
         const notifId = ctx.req.param("notifId");
         if (!notifId) return invalidRequestResponse(ctx);
 
-        const res = await getNotificationById(ctx, user, notifId);
+        const res = await getNotificationById(ctx, sessionUser, notifId);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -60,17 +58,14 @@ async function notification_get(ctx: Context) {
 
 async function notification_patch(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.NOTIFICATION_WRITE);
-        if (!user) return unauthenticatedReqResponse(ctx);
+        const userSession = getUserFromCtx(ctx, API_SCOPE.NOTIFICATION_WRITE);
+        if (!userSession) return unauthenticatedReqResponse(ctx);
 
-        const userSlug = ctx.req.param("userId") || user?.id;
+        const userSlug = ctx.req.param("userId") as string | undefined;
         const notificationId = ctx.req.param("notifId");
+        if (!notificationId) return invalidRequestResponse(ctx);
 
-        if (!userSlug || !notificationId) {
-            return invalidRequestResponse(ctx);
-        }
-
-        const res = await markNotificationsAsRead(ctx, user, [notificationId], userSlug);
+        const res = await markNotificationsAsRead(ctx, userSession, [notificationId], userSlug);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -80,14 +75,14 @@ async function notification_patch(ctx: Context) {
 
 async function bulkNotifications_patch(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.NOTIFICATION_WRITE);
-        if (!user) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getUserFromCtx(ctx, API_SCOPE.NOTIFICATION_WRITE);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-        const userSlug = ctx.req.param("userId") || user?.id;
+        const userSlug = ctx.req.param("userId");
         const notificationIds = decodeStringArray(ctx.req.query("ids"));
-        if (!userSlug || !notificationIds.length) return invalidRequestResponse(ctx);
+        if (!notificationIds.length) return invalidRequestResponse(ctx);
 
-        const res = await markNotificationsAsRead(ctx, user, notificationIds, userSlug);
+        const res = await markNotificationsAsRead(ctx, sessionUser, notificationIds, userSlug);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -97,14 +92,14 @@ async function bulkNotifications_patch(ctx: Context) {
 
 async function notification_delete(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.NOTIFICATION_DELETE);
-        if (!user) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getUserFromCtx(ctx, API_SCOPE.NOTIFICATION_DELETE);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-        const userSlug = ctx.req.param("userId") || user?.id;
+        const userSlug = ctx.req.param("userId");
         const notifId = ctx.req.param("notifId");
-        if (!userSlug || !notifId) return invalidRequestResponse(ctx);
+        if (!notifId) return invalidRequestResponse(ctx);
 
-        const res = await deleteNotifications(ctx, user, userSlug, [notifId]);
+        const res = await deleteNotifications(ctx, sessionUser, userSlug, [notifId]);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);
@@ -114,14 +109,14 @@ async function notification_delete(ctx: Context) {
 
 async function bulkNotifications_delete(ctx: Context) {
     try {
-        const user = getUserFromCtx(ctx, API_SCOPE.NOTIFICATION_DELETE);
-        if (!user) return unauthenticatedReqResponse(ctx);
+        const sessionUser = getUserFromCtx(ctx, API_SCOPE.NOTIFICATION_DELETE);
+        if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-        const userSlug = ctx.req.param("userId") || user?.id;
+        const userSlug = ctx.req.param("userId");
         const notificationIds = decodeStringArray(ctx.req.query("ids"));
-        if (!userSlug || !notificationIds.length) return invalidRequestResponse(ctx);
+        if (!notificationIds.length) return invalidRequestResponse(ctx);
 
-        const res = await deleteNotifications(ctx, user, userSlug, notificationIds);
+        const res = await deleteNotifications(ctx, sessionUser, userSlug, notificationIds);
         return ctx.json(res.data, res.status);
     } catch (error) {
         console.error(error);

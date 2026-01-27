@@ -1,5 +1,5 @@
 import type { GlobalUserRole } from "@app/utils/types";
-import type { User } from "@prisma-client";
+import type { GetUser_ReturnType } from "~/db/user_item";
 
 export interface SessionDeviceDetails {
     os: {
@@ -12,7 +12,7 @@ export interface SessionDeviceDetails {
     country: string;
 }
 
-export interface ContextUserData extends User {
+export interface ContextUserData extends NonNullable<GetUser_ReturnType> {
     role: GlobalUserRole;
     apiScopes: bigint;
 

@@ -53,7 +53,7 @@ export async function addNewPassword_ConfirmationEmail(
     });
 
     sendConfirmNewPasswordEmail({
-        fullName: userSession.name,
+        fullName: userSession.name || userSession.userName,
         code: token,
         receiverEmail: userSession.email,
     });
@@ -169,7 +169,13 @@ export async function removeAccountPassword(
         },
     });
 
-    return { data: { success: true, message: "Account password removed successfully" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Account password removed successfully",
+        },
+        status: HTTP_STATUS.OK,
+    };
 }
 
 export async function sendAccountPasswordChangeLink(
@@ -274,7 +280,13 @@ export async function changeUserPassword(
     // Logout all other sessions
     await invalidateAllOtherUserSessions(confirmationEmail.userId, userSession?.sessionId || "");
 
-    return { data: { success: true, message: "Successfully changed account password" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Successfully changed account password",
+        },
+        status: HTTP_STATUS.OK,
+    };
 }
 
 export async function deleteUserAccountConfirmationEmail(userSession: ContextUserData) {
@@ -290,7 +302,11 @@ export async function deleteUserAccountConfirmationEmail(userSession: ContextUse
         },
     });
 
-    sendDeleteUserAccountEmail({ fullName: userSession.name, code: token, receiverEmail: userSession.email });
+    sendDeleteUserAccountEmail({
+        fullName: userSession.name || userSession.userName,
+        code: token,
+        receiverEmail: userSession.email,
+    });
     return {
         data: { success: true, message: "You should receive a confirmation email shortly" },
         status: HTTP_STATUS.OK,

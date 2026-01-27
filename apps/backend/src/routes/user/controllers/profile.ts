@@ -133,6 +133,7 @@ export async function updateUserProfile(
             name: profileData.name,
             avatar: avatarFileId,
             userName: profileData.userName,
+            userNameLower: profileData.userName.toLowerCase(),
             bio: profileData.bio,
             profilePageBg: profilePageBg_FileId,
         },

@@ -33,10 +33,7 @@ async function GetUser_FromDb(userName?: string, id?: string) {
                 OR: [
                     { id: id },
                     {
-                        userName: {
-                            equals: userName,
-                            mode: "insensitive",
-                        },
+                        userNameLower: userName,
                     },
                 ],
             },
@@ -49,13 +46,10 @@ async function GetUser_FromDb(userName?: string, id?: string) {
             },
             select: USER_DATA_SELECT_FIELDS,
         });
-    } else {
+    } else if (userName) {
         data = await prisma.user.findFirst({
             where: {
-                userName: {
-                    equals: userName,
-                    mode: "insensitive",
-                },
+                userNameLower: userName,
             },
             select: USER_DATA_SELECT_FIELDS,
         });
@@ -66,11 +60,12 @@ async function GetUser_FromDb(userName?: string, id?: string) {
 
 export async function GetUser_ByIdOrUsername(userName?: string, id?: string) {
     if (!userName && !id) throw new Error("Either userName or id is required!");
+    const userNameLower = userName?.toLowerCase();
 
-    const cachedData = await GetData_FromCache<GetUser_ReturnType>(USER_DATA_CACHE_KEY, userName?.toLowerCase() || id);
+    const cachedData = await GetData_FromCache<GetUser_ReturnType>(USER_DATA_CACHE_KEY, userNameLower || id);
     if (cachedData) return cachedData;
 
-    const user = await GetUser_FromDb(userName, id);
+    const user = await GetUser_FromDb(userNameLower, id);
     if (user) await Set_UserCache(user);
 
     return user;
@@ -226,10 +221,10 @@ interface SetCache_Data {
 async function Set_UserCache<T extends SetCache_Data | null>(user: T) {
     if (!user?.id) return;
     const json_string = JSON.stringify(user);
-    const userName = user.userName.toLowerCase();
+    const userNameLower = user.userName.toLowerCase();
 
-    const p1 = SetCache(USER_DATA_CACHE_KEY, user.id, userName, USER_DATA_CACHE_EXPIRY_seconds);
-    const p2 = SetCache(USER_DATA_CACHE_KEY, userName, json_string, USER_DATA_CACHE_EXPIRY_seconds);
+    const p1 = SetCache(USER_DATA_CACHE_KEY, user.id, userNameLower, USER_DATA_CACHE_EXPIRY_seconds);
+    const p2 = SetCache(USER_DATA_CACHE_KEY, userNameLower, json_string, USER_DATA_CACHE_EXPIRY_seconds);
     await Promise.all([p1, p2]);
 }
 

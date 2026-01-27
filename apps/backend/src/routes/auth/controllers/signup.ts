@@ -68,7 +68,7 @@ export async function oAuthSignUpHandler(ctx: Context, authProvider: string, tok
 
     // Check if the username is available
     const existingUserWithSameUserName = userName?.length > 0 ? await GetUser_ByIdOrUsername(userName) : null;
-    if (existingUserWithSameUserName) userName = `${userName}-${userId}`;
+    if (existingUserWithSameUserName) userName = createURLSafeSlug(`${userName}-${userId}`);
 
     // If the provider didn't provide a name, just set userName equal to the userId
     if (!userName) userName = userId;
@@ -89,6 +89,7 @@ export async function oAuthSignUpHandler(ctx: Context, authProvider: string, tok
             id: userId,
             email: oAuthData.email,
             userName: userName,
+            userNameLower: userName.toLowerCase(),
             name: oAuthData?.name || "",
             emailVerified: oAuthData.emailVerified === true,
             role: GlobalUserRole.USER,
