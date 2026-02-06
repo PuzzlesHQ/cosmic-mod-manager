@@ -5,8 +5,7 @@ export interface CopyrightProps {
     siteName_Long: string;
 }
 
-export function CopyrightPolicy(props: CopyrightProps) {
-    return `
+export const CopyrightPolicy = (props: CopyrightProps) => `
 # ${props.title}
 
 *Last modified: May 3, 2025*
@@ -88,4 +87,3 @@ ${props.siteName_Short} Admin Team
 
 We may update this Copyright Policy from time to time, without notice. Any changes will be posted on this page and will take effect immediately upon posting. We do not guarantee this page will always be up-to-date.
 `;
-}

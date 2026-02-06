@@ -1,7 +1,6 @@
 import type { RulesProps } from "~/locales/en/legal/rules";
 
-export function Rules(props: RulesProps) {
-    return `
+export const Rules = (props: RulesProps) => `
 # ${props.title}
 
 Si encuentras alguna violación de estas reglas en nuestro sitio web, te pedimos que nos lo hagas saber. Puedes usar el botón reportar en cualquier proyecto, versión o página de usuario, o enviarnos un correo electrónico a [${props.supportEmail}](mailto:${props.supportEmail}).
@@ -66,4 +65,3 @@ Existen ciertos aspectos menores relacionados con la creación de proyectos que 
 6. Todas las dependencias deben especificarse en la sección de «Dependencias» de cada versión.
 7. Los «archivos adicionales» solo deben usarse para fines especiales designados, como archivos JAR de origen. Es decir, se deben utilizar versiones y proyectos separados cuando corresponda en lugar de archivos adicionales.
 `;
-}

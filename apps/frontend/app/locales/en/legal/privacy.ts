@@ -9,8 +9,7 @@ export interface PrivacyProps {
     sessionSettings_PageUrl: string;
 }
 
-export function PrivacyPolicy(props: PrivacyProps) {
-    return `
+export const PrivacyPolicy = (props: PrivacyProps) => `
 # ${props.title}
 
 *Last modified: May 3, 2025*
@@ -107,4 +106,3 @@ We may update this privacy policy from time to time. We will post any changes on
 
 If you have any questions about this privacy policy or how we handle your data, please contact us at [${props.supportEmail}](mailto:${props.supportEmail})
 `;
-}

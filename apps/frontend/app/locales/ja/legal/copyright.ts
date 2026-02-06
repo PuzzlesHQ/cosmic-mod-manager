@@ -1,7 +1,5 @@
 // import type { CopyrightProps } from "~/locales/en/legal/copyright";
 
-// export function CopyrightPolicy(props: CopyrightProps) {
-//     return `
+// export const CopyrightPolicy = (props: CopyrightProps) => `
 // # ${props.title}
 // `;
-// }

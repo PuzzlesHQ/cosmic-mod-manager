@@ -1,7 +1,5 @@
 // import type { PrivacyProps } from "~/locales/en/legal/privacy";
 
-// export function PrivacyPolicy(props: PrivacyProps) {
-//     return `
+// export const PrivacyPolicy = (props: PrivacyProps) => `
 // # ${props.title}
 // `;
-// }

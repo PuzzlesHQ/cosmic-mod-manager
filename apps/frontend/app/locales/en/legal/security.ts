@@ -4,8 +4,7 @@ export interface SecurityProps {
     siteName_Short: string;
 }
 
-export function SecurityNotice(props: SecurityProps) {
-    return `
+export const SecurityNotice = (props: SecurityProps) => `
 # ${props.title}
 
 **Version 2025-05**
@@ -44,4 +43,3 @@ If you’re unsure whether your findings are in scope, feel free to reach out re
 
 We ask that all security researchers follow a **coordinated disclosure process**. Please give us the opportunity to assess and resolve reported issues before any public disclosure.
 `;
-}

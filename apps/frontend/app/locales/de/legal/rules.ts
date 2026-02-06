@@ -1,7 +1,6 @@
 import type { RulesProps } from "~/locales/en/legal/rules";
 
-export function Rules(props: RulesProps) {
-    return `
+export const Rules = (props: RulesProps) => `
 # ${props.title}
 
 Diese Übersetzung nicht rechtlich bindend! Es gilt die englische Originalversion, dieses Dokument soll lediglich das Verständnis für deutschsprachige Nutzer vereinfachen.
@@ -68,4 +67,3 @@ Es gibt weitere kleine Aspekte, die das Erstellen von Projekten betreffen und di
 6. Alle Abhängigkeiten müssen in dem für diese vorgesehenen Bereich für jede Version festgelegt werden.
 7. "Zusätzliche Dateien" werden nur für ihren speziell angedachten Zweck, wie zum Beispiel Quell-JAR-Dateien benutzt. In anderen Worten, separate Versionen und/oder Projekte werden wen angebracht statt zusätzlichen Dateien genutzt.
 `;
-}

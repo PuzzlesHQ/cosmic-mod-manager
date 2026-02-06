@@ -6,8 +6,7 @@ export interface RulesProps {
     siteName_Short: string;
 }
 
-export function Rules(props: RulesProps) {
-    return `
+export const Rules = (props: RulesProps) => `
 # ${props.title}
 
 *Last modified: May 3, 2025*
@@ -74,4 +73,3 @@ There are certain other small aspects to creating projects that all authors shou
 6. All dependencies must be specified in the Dependencies section of each version.
 7. "Additional files" are only used for special designated purposes, such as source JAR files. In other words, separate versions and/or projects are used where appropriate instead of additional files.
 `;
-}
