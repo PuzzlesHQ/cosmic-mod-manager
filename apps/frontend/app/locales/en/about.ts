@@ -3,9 +3,7 @@ export interface AboutUsProps {
     repoLink: string;
 }
 
-export function AboutUs(props: AboutUsProps) {
-    return `
-
+export const AboutUs = (props: AboutUsProps) => `
 # About Us
 
 Welcome to **CRMM** – the **Cosmic Reach Mod Manager**.
@@ -75,4 +73,3 @@ It's still the early days here, but big things are upon the horizon. From **mode
 Thank **YOU** for being a part of the CRMM community, and making all of this possible.
 We can’t wait to see what you create ;). Happy Cosmic Reaching!
 `;
-}

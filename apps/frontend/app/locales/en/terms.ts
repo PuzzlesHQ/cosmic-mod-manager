@@ -3,8 +3,7 @@ export interface TermsProps {
     supportEmail: string;
 }
 
-export function TermsOfUse(props: TermsProps) {
-    return `
+export const TermsOfUse = (props: TermsProps) => `
 # ${props.title}
 
 *Last modified: May 3, 2025*
@@ -110,4 +109,3 @@ For questions or concerns regarding these Terms, please contact us at [${props.s
 
 Thank you for using CRMM.
 `;
-}
