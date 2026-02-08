@@ -21,8 +21,8 @@ async function handleWebhook(req: Request): Promise<Response> {
     }
 
     const json = JSON.parse(reqText);
-    if (json.ref !== "refs/heads/main") {
-        console.log("Push to non-main branch, ignoring");
+    if (json.ref !== "refs/heads/deploy") {
+        console.log("Push to non-deploy branch, ignoring");
         return new Response(null, { status: 200 });
     }
 
