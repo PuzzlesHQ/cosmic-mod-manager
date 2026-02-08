@@ -23,4 +23,6 @@ bun run prisma-generate > /dev/null
 bun run prisma-push > /dev/null
 pm2 reload crmm-backend -s
 
+pm2 reload crmm-github-webhook -s
+
 echo "Deployment complete!"
