@@ -1,9 +1,6 @@
 import type { z } from "@app/utils/schemas";
 import { updateProjectLicenseFormSchema } from "@app/utils/schemas/project/settings/license";
-import SPDX_LICENSE_LIST, {
-    CUSTOM_LICENSE_OPTION,
-    FEATURED_LICENSE_INDICES,
-} from "@app/utils/src/constants/license-list";
+import SPDX_LICENSE_LIST, { CUSTOM_LICENSE_OPTION, FEATURED_LICENSE_IDS } from "@app/utils/src/constants/license-list";
 import { ChevronDownIcon, SaveIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router";
@@ -86,14 +83,12 @@ export default function LicenseSettingsPage() {
             },
         ];
 
-        for (let index = 0; index < SPDX_LICENSE_LIST.length; index++) {
-            const license = SPDX_LICENSE_LIST[index];
-
+        for (const license of SPDX_LICENSE_LIST) {
             options.push({
                 label: license.name,
                 value: license.licenseId,
                 onlyVisibleWhenSearching:
-                    !FEATURED_LICENSE_INDICES.includes(index) && currLicenseId !== license.licenseId,
+                    !FEATURED_LICENSE_IDS.includes(license.licenseId) && currLicenseId !== license.licenseId,
             });
         }
 

@@ -382,18 +382,19 @@ export async function UpdateProject<T extends Prisma.ProjectUpdateArgs>(
     const project = await prisma.project.update(args);
     if (project?.id) await Delete_ProjectCache_All(project.id);
     if (isProjectIndexable(project.visibility, project.status)) {
-        const shouldUpdateIndex =
-            IsSome(args.data.gameVersions) ||
-            IsSome(args.data.loaders) ||
-            IsSome(args.data.featuredCategories) ||
-            IsSome(args.data.categories) ||
-            IsSome(args.data.visibility) ||
-            IsSome(args.data.status) ||
-            IsSome(args.data.dateUpdated) ||
-            IsSome(args.data.downloads) ||
-            IsSome(args.data.type) ||
-            IsSome(args.data.iconFileId) ||
-            IsSome(args.data.organisationId);
+        const shouldUpdateIndex = [
+            args.data.gameVersions,
+            args.data.loaders,
+            args.data.featuredCategories,
+            args.data.categories,
+            args.data.visibility,
+            args.data.status,
+            args.data.dateUpdated,
+            args.data.downloads,
+            args.data.type,
+            args.data.iconFileId,
+            args.data.organisationId,
+        ].some(isNonEmpty);
 
         if (shouldUpdateIndex) UpdateProjects_SearchIndex([project.id]);
     }
@@ -486,6 +487,6 @@ export async function UpdateOrRemoveProject_FromSearchIndex(
     else if (wasPreviouslyIndexable && isNowIndexable) await UpdateProjects_SearchIndex([ProjectId]);
 }
 
-function IsSome<T>(value: T | undefined): boolean {
+function isNonEmpty<T>(value: T | undefined): boolean {
     return value !== undefined;
 }

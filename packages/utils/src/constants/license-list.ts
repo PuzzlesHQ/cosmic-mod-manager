@@ -100,11 +100,6 @@ const SPDX_LICENSE_LIST = [
         url: licenseRefLink("Afmparse"),
     },
     {
-        name: "Affero General Public License v1.0",
-        licenseId: "AGPL-1.0",
-        url: licenseRefLink("AGPL-1.0"),
-    },
-    {
         name: "Affero General Public License v1.0 only",
         licenseId: "AGPL-1.0-only",
         url: licenseRefLink("AGPL-1.0-only"),
@@ -113,11 +108,6 @@ const SPDX_LICENSE_LIST = [
         name: "Affero General Public License v1.0 or later",
         licenseId: "AGPL-1.0-or-later",
         url: licenseRefLink("AGPL-1.0-or-later"),
-    },
-    {
-        name: "GNU Affero General Public License v3.0",
-        licenseId: "AGPL-3.0",
-        url: licenseRefLink("AGPL-3.0"),
     },
     {
         name: "GNU Affero General Public License v3.0 only",
@@ -355,16 +345,6 @@ const SPDX_LICENSE_LIST = [
         url: licenseRefLink("BSD-2-Clause-first-lines"),
     },
     {
-        name: "BSD 2-Clause FreeBSD License",
-        licenseId: "BSD-2-Clause-FreeBSD",
-        url: licenseRefLink("BSD-2-Clause-FreeBSD"),
-    },
-    {
-        name: "BSD 2-Clause NetBSD License",
-        licenseId: "BSD-2-Clause-NetBSD",
-        url: licenseRefLink("BSD-2-Clause-NetBSD"),
-    },
-    {
         name: "BSD-2-Clause Plus Patent License",
         licenseId: "BSD-2-Clause-Patent",
         url: licenseRefLink("BSD-2-Clause-Patent"),
@@ -518,11 +498,6 @@ const SPDX_LICENSE_LIST = [
         name: "Business Source License 1.1",
         licenseId: "BUSL-1.1",
         url: licenseRefLink("BUSL-1.1"),
-    },
-    {
-        name: "bzip2 and libbzip2 License v1.0.5",
-        licenseId: "bzip2-1.0.5",
-        url: licenseRefLink("bzip2-1.0.5"),
     },
     {
         name: "bzip2 and libbzip2 License v1.0.6",
@@ -1295,11 +1270,6 @@ const SPDX_LICENSE_LIST = [
         url: licenseRefLink("GD"),
     },
     {
-        name: "GNU Free Documentation License v1.1",
-        licenseId: "GFDL-1.1",
-        url: licenseRefLink("GFDL-1.1"),
-    },
-    {
         name: "GNU Free Documentation License v1.1 only - invariants",
         licenseId: "GFDL-1.1-invariants-only",
         url: licenseRefLink("GFDL-1.1-invariants-only"),
@@ -1330,11 +1300,6 @@ const SPDX_LICENSE_LIST = [
         url: licenseRefLink("GFDL-1.1-or-later"),
     },
     {
-        name: "GNU Free Documentation License v1.2",
-        licenseId: "GFDL-1.2",
-        url: licenseRefLink("GFDL-1.2"),
-    },
-    {
         name: "GNU Free Documentation License v1.2 only - invariants",
         licenseId: "GFDL-1.2-invariants-only",
         url: licenseRefLink("GFDL-1.2-invariants-only"),
@@ -1363,11 +1328,6 @@ const SPDX_LICENSE_LIST = [
         name: "GNU Free Documentation License v1.2 or later",
         licenseId: "GFDL-1.2-or-later",
         url: licenseRefLink("GFDL-1.2-or-later"),
-    },
-    {
-        name: "GNU Free Documentation License v1.3",
-        licenseId: "GFDL-1.3",
-        url: licenseRefLink("GFDL-1.3"),
     },
     {
         name: "GNU Free Documentation License v1.3 only - invariants",
@@ -1430,16 +1390,6 @@ const SPDX_LICENSE_LIST = [
         url: licenseRefLink("gnuplot"),
     },
     {
-        name: "GNU General Public License v1.0",
-        licenseId: "GPL-1.0",
-        url: licenseRefLink("GPL-1.0"),
-    },
-    {
-        name: "GNU General Public License v1.0 or later",
-        licenseId: "GPL-1.0+",
-        url: licenseRefLink("GPL-1.0+"),
-    },
-    {
         name: "GNU General Public License v1.0 only",
         licenseId: "GPL-1.0-only",
         url: licenseRefLink("GPL-1.0-only"),
@@ -1450,16 +1400,6 @@ const SPDX_LICENSE_LIST = [
         url: licenseRefLink("GPL-1.0-or-later"),
     },
     {
-        name: "GNU General Public License v2.0",
-        licenseId: "GPL-2.0",
-        url: licenseRefLink("GPL-2.0"),
-    },
-    {
-        name: "GNU General Public License v2.0 or later",
-        licenseId: "GPL-2.0+",
-        url: licenseRefLink("GPL-2.0+"),
-    },
-    {
         name: "GNU General Public License v2.0 only",
         licenseId: "GPL-2.0-only",
         url: licenseRefLink("GPL-2.0-only"),
@@ -1468,16 +1408,6 @@ const SPDX_LICENSE_LIST = [
         name: "GNU General Public License v2.0 or later",
         licenseId: "GPL-2.0-or-later",
         url: licenseRefLink("GPL-2.0-or-later"),
-    },
-    {
-        name: "GNU General Public License v3.0",
-        licenseId: "GPL-3.0",
-        url: licenseRefLink("GPL-3.0"),
-    },
-    {
-        name: "GNU General Public License v3.0 or later",
-        licenseId: "GPL-3.0+",
-        url: licenseRefLink("GPL-3.0+"),
     },
     {
         name: "GNU General Public License v3.0 only",
@@ -1815,16 +1745,6 @@ const SPDX_LICENSE_LIST = [
         url: licenseRefLink("Leptonica"),
     },
     {
-        name: "GNU Library General Public License v2",
-        licenseId: "LGPL-2.0",
-        url: licenseRefLink("LGPL-2.0"),
-    },
-    {
-        name: "GNU Library General Public License v2 or later",
-        licenseId: "LGPL-2.0+",
-        url: licenseRefLink("LGPL-2.0+"),
-    },
-    {
         name: "GNU Library General Public License v2 only",
         licenseId: "LGPL-2.0-only",
         url: licenseRefLink("LGPL-2.0-only"),
@@ -1835,16 +1755,6 @@ const SPDX_LICENSE_LIST = [
         url: licenseRefLink("LGPL-2.0-or-later"),
     },
     {
-        name: "GNU Lesser General Public License v2.1",
-        licenseId: "LGPL-2.1",
-        url: licenseRefLink("LGPL-2.1"),
-    },
-    {
-        name: "GNU Lesser General Public License v2.1 or later",
-        licenseId: "LGPL-2.1+",
-        url: licenseRefLink("LGPL-2.1+"),
-    },
-    {
         name: "GNU Lesser General Public License v2.1 only",
         licenseId: "LGPL-2.1-only",
         url: licenseRefLink("LGPL-2.1-only"),
@@ -1853,16 +1763,6 @@ const SPDX_LICENSE_LIST = [
         name: "GNU Lesser General Public License v2.1 or later",
         licenseId: "LGPL-2.1-or-later",
         url: licenseRefLink("LGPL-2.1-or-later"),
-    },
-    {
-        name: "GNU Lesser General Public License v3.0",
-        licenseId: "LGPL-3.0",
-        url: licenseRefLink("LGPL-3.0"),
-    },
-    {
-        name: "GNU Lesser General Public License v3.0 or later",
-        licenseId: "LGPL-3.0+",
-        url: licenseRefLink("LGPL-3.0+"),
     },
     {
         name: "GNU Lesser General Public License v3.0 only",
@@ -3311,33 +3211,33 @@ const SPDX_LICENSE_LIST = [
     },
 ] as const satisfies SPDX_LICENSE[];
 
+export const LICENSE_IDS_LIST = SPDX_LICENSE_LIST.map((license) => license.licenseId);
 export type LicenseIds_T = (typeof SPDX_LICENSE_LIST)[number]["licenseId"];
-
 export default SPDX_LICENSE_LIST;
 
-export const FEATURED_LICENSE_INDICES = [
-    0, // All Rights Reserved
-    34, // Apache License 2.0
-    65, // BSD 2-Clause "Simplified" License
-    72, // BSD 3-Clause "New" or "Revised" License
-    121, // Creative Commons Attribution 4.0 International
-    160, // Creative Commons Attribution Share Alike 4.0 International
-    127, // Creative Commons Attribution Non Commercial 4.0 International
-    144, // Creative Commons Attribution Non Commercial Share Alike 4.0 International
-    150, // Creative Commons Attribution No Derivatives 4.0 International
-    134, // Creative Commons Attribution Non Commercial No Derivatives 4.0 International
-    20, // GNU Affero General Public License v3.0
-    371, // GNU Lesser General Public License v2.1
-    375, // GNU Lesser General Public License v3.0
-    287, // GNU General Public License v2.0
-    296, // GNU General Public License v3.0
-    352, // ISC License
-    416, // MIT License
-    437, // Mozilla Public License 2.0
-    665, // zlib License
+export const FEATURED_LICENSE_IDS = [
+    "all-rights-reserved",
+    "Apache-2.0",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "CC-BY-4.0",
+    "CC-BY-SA-4.0",
+    "CC-BY-NC-4.0",
+    "CC-BY-NC-SA-4.0",
+    "CC-BY-ND-4.0",
+    "CC-BY-NC-ND-4.0",
+    "AGPL-3.0-only",
+    "LGPL-2.1-only",
+    "LGPL-3.0-only",
+    "GPL-2.0-only",
+    "GPL-3.0-only",
+    "MIT",
+    "MPL-2.0",
+    "Zlib",
 ];
-
-export const FEATURED_LICENSE_OPTIONS = FEATURED_LICENSE_INDICES.map((index) => SPDX_LICENSE_LIST[index]);
+export const FEATURED_LICENSE_OPTIONS = SPDX_LICENSE_LIST.filter((license) =>
+    FEATURED_LICENSE_IDS.includes(license.licenseId),
+);
 
 export const CUSTOM_LICENSE_OPTION: SPDX_LICENSE = {
     name: "Custom",
