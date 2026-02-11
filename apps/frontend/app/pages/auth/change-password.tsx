@@ -9,17 +9,19 @@ import { Input } from "~/components/ui/input";
 import { LinkPrefetchStrategy, TextLink } from "~/components/ui/link";
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
+import { useSession } from "~/hooks/session";
 import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 
 export default function ChangePasswordPage() {
+    const user = useSession();
     const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
 
     const form = useFormHook(sendAccoutPasswordChangeLinkFormSchema, {
         defaultValues: {
-            email: "",
+            email: user ? user.email : "",
         },
     });
 
