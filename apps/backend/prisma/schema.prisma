@@ -20,7 +20,7 @@ model User {
     emailVerified   Boolean
     role            String   @db.VarChar(32)
     bio             String?  @db.VarChar(256)
-    password        String?
+    password        String? // password hash
     newSignInAlerts Boolean  @default(true)
     profilePageBg   String?  @db.VarChar(32) // @File.id
 

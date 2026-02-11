@@ -92,8 +92,14 @@ export async function unlinkAuthProvider(ctx: Context, userSession: UserSessionD
         },
     });
 
-    if (allLinkedProviders.length < 2) {
-        return invalidRequestResponseData("You can't remove the only remaining auth provider");
+    if (!allLinkedProviders || allLinkedProviders.length < 1) {
+        return invalidRequestResponseData("You haven't linked any auth providers to your account");
+    }
+
+    if (allLinkedProviders.length === 1 && !userSession.password) {
+        return invalidRequestResponseData(
+            "You can't remove the only remaining auth provider. Please add a new auth provider or set a password before removing this one.",
+        );
     }
 
     const providerName = getAuthProviderFromString(authProvider);

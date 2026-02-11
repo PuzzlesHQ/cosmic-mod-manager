@@ -154,6 +154,18 @@ export async function removeAccountPassword(
         return invalidRequestResponseData();
     }
 
+    const userAuthProviders = await prisma.authAccount.findMany({
+        where: {
+            userId: userSession.id,
+        },
+    });
+
+    if (!userAuthProviders || userAuthProviders.length < 1) {
+        return invalidRequestResponseData(
+            "You don't have any linked auth providers. Please link at least one auth provider before removing your password",
+        );
+    }
+
     const isCorrectPassword = await matchPassword(formData.password, userSession.password);
     if (!isCorrectPassword) {
         await addInvalidAuthAttempt(ctx);

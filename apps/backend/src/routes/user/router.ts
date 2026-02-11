@@ -163,7 +163,7 @@ async function user_delete(ctx: Context) {
     }
 }
 
-// Get confirmation action type
+// Get confirmation_action_type
 async function userConfirmationAction_post(ctx: Context) {
     try {
         const token = ctx.get(REQ_BODY_NAMESPACE)?.code;
@@ -178,7 +178,7 @@ async function userConfirmationAction_post(ctx: Context) {
     }
 }
 
-// Delete confirmation action code
+// Delete confirmation_action_code
 async function userConfirmationAction_delete(ctx: Context) {
     try {
         const code = ctx.get(REQ_BODY_NAMESPACE)?.code;
