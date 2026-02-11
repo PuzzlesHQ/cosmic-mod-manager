@@ -75,7 +75,7 @@ model AuthAccount {
     providerAccountId    String  @db.VarChar(64)
     providerAccountEmail String  @db.VarChar(128)
     tokenType            String? @db.VarChar(32)
-    accessToken          String  @db.VarChar(256)
+    accessToken          String  @db.VarChar(512)
     refreshToken         String? @db.VarChar(256)
     authType             String? @db.VarChar(32)
     authorizationScope   String? @db.VarChar(256)
