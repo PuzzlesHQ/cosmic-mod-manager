@@ -1,3 +1,4 @@
+import type { API_SCOPE } from "@app/utils/pats";
 import type { FixedStringArray } from "@app/utils/types/helpers";
 import type React from "react";
 import type { Translation } from "~/locales/types";
@@ -187,6 +188,7 @@ export default {
         sureToDeletePAT: (patName: string) => `Are you sure you want to delete PAT **\`${patName}\`**?`,
         apiScopes: {
             user_read_email: "Read user email",
+            user_write_email: "Change user email",
             user_read: "Read user data",
             user_write: "Write user data",
             user_delete: "Delete user account",
@@ -223,7 +225,7 @@ export default {
             pat_read: "Read access tokens",
             pat_write: "Write access tokens",
             pat_delete: "Delete access tokens",
-        },
+        } satisfies Record<API_SCOPE, string>,
     },
 
     dashboard: {

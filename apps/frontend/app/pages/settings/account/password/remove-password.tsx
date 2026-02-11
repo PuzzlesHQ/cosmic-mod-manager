@@ -1,5 +1,5 @@
 import { disableInteractions } from "@app/utils/dom";
-import { removeAccountPasswordFormSchema } from "@app/utils/schemas/settings";
+import { passwordFormSchema } from "@app/utils/schemas/settings";
 import { Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "react-router";
@@ -33,7 +33,7 @@ export default function RemovePasswordForm() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const form = useFormHook(removeAccountPasswordFormSchema, {
+    const form = useFormHook(passwordFormSchema, {
         defaultValues: {
             password: "",
         },

@@ -1,4 +1,4 @@
-import { sendAccoutPasswordChangeLinkFormSchema } from "@app/utils/schemas/settings";
+import { emailFormSchema } from "@app/utils/schemas/settings";
 import { ArrowRightIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
@@ -19,7 +19,7 @@ export default function ChangePasswordPage() {
     const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
 
-    const form = useFormHook(sendAccoutPasswordChangeLinkFormSchema, {
+    const form = useFormHook(emailFormSchema, {
         defaultValues: {
             email: user ? user.email : "",
         },

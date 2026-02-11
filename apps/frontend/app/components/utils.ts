@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-const properties = ["p", "px", "py", "pt", "pb", "ps", "pe"];
+const properties = ["p", "px", "py", "pt", "pb", "ps", "pe", "h", "min-h", "w", "min-w"];
 
 export function cn(...inputs: ClassValue[]) {
     const reversedInputs = clsx(inputs).split(" ").reverse();

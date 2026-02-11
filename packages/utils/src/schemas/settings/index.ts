@@ -79,10 +79,10 @@ export const setNewPasswordFormSchema = z
         path: ["confirmNewPassword"],
     });
 
-export const removeAccountPasswordFormSchema = z.object({
+export const passwordFormSchema = z.object({
     password: z.string().min(MIN_PASSWORD_LENGTH).max(MAX_PASSWORD_LENGTH),
 });
 
-export const sendAccoutPasswordChangeLinkFormSchema = z.object({
+export const emailFormSchema = z.object({
     email: z.email().max(MAX_EMAIL_LENGTH),
 });

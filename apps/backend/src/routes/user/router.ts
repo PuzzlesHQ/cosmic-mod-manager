@@ -1,8 +1,8 @@
 import { API_SCOPE } from "@app/utils/pats";
 import {
+    emailFormSchema,
+    passwordFormSchema,
     profileUpdateFormSchema,
-    removeAccountPasswordFormSchema,
-    sendAccoutPasswordChangeLinkFormSchema,
     setNewPasswordFormSchema,
 } from "@app/utils/schemas/settings";
 import { zodParse } from "@app/utils/schemas/utils";
@@ -57,6 +57,8 @@ const userRouter = new Hono()
 
     .post("/change-password", sendEmailRateLimiter, changePasswordConfirmationEmail_post)
     .patch("/password", critModifyReqRateLimiter, userPassword_patch);
+
+// .post("/email/confirmation-code", sendEmailRateLimiter, LoginProtectedRoute, sendEmailChangeConfirmationCode_post);
 
 // Get currently logged in user
 async function user_get(ctx: Context) {
@@ -227,7 +229,7 @@ async function addPasswordConfirmation_put(ctx: Context) {
 // Remove user password
 async function userPassword_delete(ctx: Context) {
     try {
-        const { data, error } = await zodParse(removeAccountPasswordFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+        const { data, error } = await zodParse(passwordFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidRequestResponse(ctx, error);
 
         const sessionUser = getSessionUser(ctx, API_SCOPE.USER_AUTH_WRITE);
@@ -245,7 +247,7 @@ async function userPassword_delete(ctx: Context) {
 // Send change password confirmation email
 async function changePasswordConfirmationEmail_post(ctx: Context) {
     try {
-        const { data, error } = await zodParse(sendAccoutPasswordChangeLinkFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+        const { data, error } = await zodParse(emailFormSchema, ctx.get(REQ_BODY_NAMESPACE));
         if (error || !data) return invalidRequestResponse(ctx, error);
 
         const res = await sendAccountPasswordChangeLink(ctx, data);
@@ -290,5 +292,18 @@ async function deleteAccountConfirmation_post(ctx: Context) {
         return serverErrorResponse(ctx);
     }
 }
+
+// async function sendEmailChangeConfirmationCode_post(ctx: Context) {
+//     try {
+//         const sessionUser = getSessionUser(ctx, API_SCOPE.USER_WRITE_EMAIL);
+//         if (!sessionUser?.id) {
+//             await addInvalidAuthAttempt(ctx);
+//             return unauthenticatedReqResponse(ctx);
+//         }
+//     } catch (error) {
+//         console.error(error);
+//         return serverErrorResponse(ctx);
+//     }
+// }
 
 export default userRouter;

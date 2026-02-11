@@ -4,11 +4,7 @@ import {
     DELETE_USER_ACCOUNT_EMAIL_VALIDITY_ms,
 } from "@app/utils/constants";
 import { getConfirmActionTypeFromStringName } from "@app/utils/convertors";
-import type {
-    removeAccountPasswordFormSchema,
-    sendAccoutPasswordChangeLinkFormSchema,
-    setNewPasswordFormSchema,
-} from "@app/utils/schemas/settings";
+import type { emailFormSchema, passwordFormSchema, setNewPasswordFormSchema } from "@app/utils/schemas/settings";
 import { ConfirmationType } from "@app/utils/types";
 import type { Context } from "hono";
 import type { z } from "zod/v4";
@@ -147,7 +143,7 @@ export async function confirmAddingNewPassword(code: string) {
 export async function removeAccountPassword(
     ctx: Context,
     userSession: UserSessionData,
-    formData: z.infer<typeof removeAccountPasswordFormSchema>,
+    formData: z.infer<typeof passwordFormSchema>,
 ) {
     if (!userSession.password) {
         await addInvalidAuthAttempt(ctx);
@@ -190,10 +186,7 @@ export async function removeAccountPassword(
     };
 }
 
-export async function sendAccountPasswordChangeLink(
-    ctx: Context,
-    formData: z.infer<typeof sendAccoutPasswordChangeLinkFormSchema>,
-) {
+export async function sendAccountPasswordChangeLink(ctx: Context, formData: z.infer<typeof emailFormSchema>) {
     const targetUser = await GetUser_Unique({
         where: {
             email: formData.email,

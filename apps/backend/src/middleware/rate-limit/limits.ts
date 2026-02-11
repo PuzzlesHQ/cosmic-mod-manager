@@ -24,7 +24,7 @@ export default {
             namespace: "global_CRITICAL_MODIFY",
         },
         EMAIL: {
-            max: 3,
+            max: 10,
             timeWindow_seconds: 7200,
             namespace: "global_EMAIL",
         },

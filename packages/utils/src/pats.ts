@@ -45,6 +45,8 @@ export enum API_SCOPE {
     PAT_READ = "pat_read",
     PAT_WRITE = "pat_write",
     PAT_DELETE = "pat_delete",
+
+    USER_WRITE_EMAIL = "user_write_email",
 }
 
 export const PAT_RESTRICTED_SCOPES = [

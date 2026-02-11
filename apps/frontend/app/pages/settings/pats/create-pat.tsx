@@ -4,7 +4,7 @@ import { createPAT_FormSchema } from "@app/utils/schemas/pat";
 import { CapitalizeAndFormatString } from "@app/utils/string";
 import type { PATData } from "@app/utils/types/api/pat";
 import { PencilIcon, PlusIcon, SaveIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { toast } from "sonner";
 import type { z } from "zod/v4";
@@ -174,7 +174,7 @@ function PatInfoForm({ patData, onSubmit, loading, ...props }: PatInfoFormProps)
         defaultValues: defaultFormValues(patData),
     });
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (props.dialogOpen === true) {
             form.reset(defaultFormValues(patData));
         }
