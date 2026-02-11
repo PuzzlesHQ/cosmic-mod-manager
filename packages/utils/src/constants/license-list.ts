@@ -12,7 +12,7 @@ export interface SPDX_LICENSE {
     url: string | null;
 }
 
-const SPDX_LICENSE_LIST: SPDX_LICENSE[] = [
+const SPDX_LICENSE_LIST = [
     {
         name: "All Rights Reserved",
         licenseId: "all-rights-reserved",
@@ -1470,31 +1470,6 @@ const SPDX_LICENSE_LIST: SPDX_LICENSE[] = [
         url: licenseRefLink("GPL-2.0-or-later"),
     },
     {
-        name: "GNU General Public License v2.0 w/Autoconf exception",
-        licenseId: "GPL-2.0-with-autoconf-exception",
-        url: licenseRefLink("GPL-2.0-with-autoconf-exception"),
-    },
-    {
-        name: "GNU General Public License v2.0 w/Bison exception",
-        licenseId: "GPL-2.0-with-bison-exception",
-        url: licenseRefLink("GPL-2.0-with-bison-exception"),
-    },
-    {
-        name: "GNU General Public License v2.0 w/Classpath exception",
-        licenseId: "GPL-2.0-with-classpath-exception",
-        url: licenseRefLink("GPL-2.0-with-classpath-exception"),
-    },
-    {
-        name: "GNU General Public License v2.0 w/Font exception",
-        licenseId: "GPL-2.0-with-font-exception",
-        url: licenseRefLink("GPL-2.0-with-font-exception"),
-    },
-    {
-        name: "GNU General Public License v2.0 w/GCC Runtime Library exception",
-        licenseId: "GPL-2.0-with-GCC-exception",
-        url: licenseRefLink("GPL-2.0-with-GCC-exception"),
-    },
-    {
         name: "GNU General Public License v3.0",
         licenseId: "GPL-3.0",
         url: licenseRefLink("GPL-3.0"),
@@ -1513,16 +1488,6 @@ const SPDX_LICENSE_LIST: SPDX_LICENSE[] = [
         name: "GNU General Public License v3.0 or later",
         licenseId: "GPL-3.0-or-later",
         url: licenseRefLink("GPL-3.0-or-later"),
-    },
-    {
-        name: "GNU General Public License v3.0 w/Autoconf exception",
-        licenseId: "GPL-3.0-with-autoconf-exception",
-        url: licenseRefLink("GPL-3.0-with-autoconf-exception"),
-    },
-    {
-        name: "GNU General Public License v3.0 w/GCC Runtime Library exception",
-        licenseId: "GPL-3.0-with-GCC-exception",
-        url: licenseRefLink("GPL-3.0-with-GCC-exception"),
     },
     {
         name: "Graphics Gems License",
@@ -2295,11 +2260,6 @@ const SPDX_LICENSE_LIST: SPDX_LICENSE[] = [
         url: licenseRefLink("NCSA"),
     },
     {
-        name: "Net-SNMP License",
-        licenseId: "Net-SNMP",
-        url: licenseRefLink("Net-SNMP"),
-    },
-    {
         name: "NetCDF license",
         licenseId: "NetCDF",
         url: licenseRefLink("NetCDF"),
@@ -2393,11 +2353,6 @@ const SPDX_LICENSE_LIST: SPDX_LICENSE[] = [
         name: "NTP No Attribution",
         licenseId: "NTP-0",
         url: licenseRefLink("NTP-0"),
-    },
-    {
-        name: "Nunit License",
-        licenseId: "Nunit",
-        url: licenseRefLink("Nunit"),
     },
     {
         name: "Open Use of Data Agreement v1.0",
@@ -2990,11 +2945,6 @@ const SPDX_LICENSE_LIST: SPDX_LICENSE[] = [
         url: licenseRefLink("SSPL-1.0"),
     },
     {
-        name: "Standard ML of New Jersey License",
-        licenseId: "StandardML-NJ",
-        url: licenseRefLink("StandardML-NJ"),
-    },
-    {
         name: "SugarCRM Public License v1.1.3",
         licenseId: "SugarCRM-1.1.3",
         url: licenseRefLink("SugarCRM-1.1.3"),
@@ -3230,11 +3180,6 @@ const SPDX_LICENSE_LIST: SPDX_LICENSE[] = [
         url: licenseRefLink("WTFPL"),
     },
     {
-        name: "wxWindows Library License",
-        licenseId: "wxWindows",
-        url: licenseRefLink("wxWindows"),
-    },
-    {
         name: "X11 License",
         licenseId: "X11",
         url: licenseRefLink("X11"),
@@ -3364,7 +3309,9 @@ const SPDX_LICENSE_LIST: SPDX_LICENSE[] = [
         licenseId: "ZPL-2.1",
         url: licenseRefLink("ZPL-2.1"),
     },
-];
+] as const satisfies SPDX_LICENSE[];
+
+export type LicenseIds_T = (typeof SPDX_LICENSE_LIST)[number]["licenseId"];
 
 export default SPDX_LICENSE_LIST;
 
