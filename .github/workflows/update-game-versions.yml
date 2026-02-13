@@ -35,7 +35,8 @@ jobs:
                     echo "Committing changes..."  
                     git commit -m "chore: update game versions (github-actions)"
                     git pull --rebase
-                    git push
+                    git push origin main
+                    git push origin main:deploy
                 else
                     echo "No changes to commit."
                 fi
