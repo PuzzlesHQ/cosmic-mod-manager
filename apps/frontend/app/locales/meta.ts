@@ -22,6 +22,13 @@ const SupportedLocales = defineLocales([
     },
 
     {
+        code: "fr",
+        name: "French",
+        nativeName: "Français",
+        dir: "ltr",
+    },
+
+    {
         code: "ru",
         name: "Russian",
         nativeName: "Русский",
