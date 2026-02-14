@@ -34,9 +34,9 @@ jobs:
                 if ! git diff --cached --quiet; then
                     echo "Committing changes..."  
                     git commit -m "chore: update game versions (github-actions)"
-                    git pull --rebase
+                    git pull origin main --rebase
                     git push origin main
-                    git push origin main:deploy
+                    git push origin main:deploy --force
                 else
                     echo "No changes to commit."
                 fi
