@@ -13,7 +13,6 @@ function Pluralize(count: number, singular: string, plural: string) {
     return count === 1 ? singular : plural;
 }
 
-
 export default {
     common: {
         settings: "Paramètres",
@@ -44,7 +43,7 @@ export default {
         },
         followers: (count, formattedCount) => {
             const followers = Pluralize(count, "abonné", "abonnés");
-            return [formattedCount, " ", followers]
+            return [formattedCount, " ", followers];
         },
         projects: (count, formattedCount) => {
             const projects = Pluralize(count, "projet", "projets");
@@ -75,11 +74,7 @@ export default {
         skipToMainContent: "Sauter au contenu principal",
     },
     homePage: {
-        title: (projectType) => [
-            "Le lieu des ",
-            projectType,
-            "de Cosmic Reach",
-        ],
+        title: (projectType) => ["Le lieu des ", projectType, " de Cosmic Reach"],
         desc: "Le meilleur endroit pour vos mods de Cosmic Reach. Découvrez, jouez et créez du contenu, tout en un même lieu.",
         exploreMods: "Explorer les mods",
     },
@@ -88,23 +83,14 @@ export default {
         password: "Mot de passe",
         changePassword: "Changer le mot de passe",
         loginUsing: "Se connecter avec :",
-        dontHaveAccount: (signup) => [
-            "Sans compte ?",
-            signup,
-        ],
-        alreadyHaveAccount: (login) => [
-            "Avez-vous déjà un compte ?",
-            login,
-        ],
-        forgotPassword: (changePassword) => [
-            "Oublié votre mot de passe ?",
-            changePassword,
-        ],
+        dontHaveAccount: (signup) => ["Sans compte ? ", signup],
+        alreadyHaveAccount: (login) => ["Avez-vous déjà un compte ? ", login],
+        forgotPassword: (changePassword) => ["Oublié votre mot de passe ? ", changePassword],
         signupWithProviders: "S'inscrire avec un des fournisseurs d'authentification :",
         agreement: (terms, privacyPolicy) => [
             "En créant un compte, vous acceptez nos ",
             terms,
-            "et",
+            " et ",
             privacyPolicy,
             ".",
         ],
@@ -112,13 +98,15 @@ export default {
         didntRequest: "Pas votre demande ?",
         checkSessions: "Vérifier les sessions connectés",
         confirmNewPass: "Confirmer le nouveau mot de passe",
-        confirmNewPassDesc: "Un nouveau mot de passe a récemment été ajouté à votre compte et est en attente de confirmation. Confirmez ici-bas si c'était vous.",
+        confirmNewPassDesc:
+            "Un nouveau mot de passe a récemment été ajouté à votre compte et est en attente de confirmation. Confirmez ici-bas si c'était vous.",
         newPass: "Nouveau mot de passe",
         newPass_label: "Entrez votre mot de passe",
         confirmPass: "Confirmer le mot de passe",
         confirmPass_label: "Entreze de nouveau votre mot de passe",
         deleteAccount: "Supprimer le compte",
-        deleteAccountDesc: "L'action de supprimer votre compte supprimera toutes vos donnée dès nos serveurs. Il est impossible de faire demi-tour après que votre compte se fait supprimer.",
+        deleteAccountDesc:
+            "L'action de supprimer votre compte supprimera toutes vos donnée dès nos serveurs. Il est impossible de faire demi-tour après que votre compte se fait supprimer.",
         enterEmail: "Entrez votre addresse courriel",
     },
     settings: {
@@ -139,7 +127,8 @@ export default {
         manageProvidersDesc: "Ajouter ou supprimer les méthodes se connexion à votre compte.",
         removePass: "Supprimer le mot de passe",
         removePassTitle: "Supprimer le mot de passe de votre compte",
-        removePassDesc: "Après avoir supprimé votre mot de passe, vous ne pourrez plus utiliser vos identifiants de connexion afin de vous connecter à votre compte",
+        removePassDesc:
+            "Après avoir supprimé votre mot de passe, vous ne pourrez plus utiliser vos identifiants de connexion afin de vous connecter à votre compte",
         enterCurrentPass: "Entrez votre mot de passe actuel",
         addPass: "Ajouter un mot de passe",
         addPassDialogDesc: "Vous pourrez utiliser ce mot de passe afin de vous connecter à votre compte",
@@ -155,16 +144,19 @@ export default {
         bioDesc: "Une description briève pour racconter à tous un peu sur vous. ",
         visitYourProfile: "Visiter votre profil",
         profilePageBg: "Image de fond de la page de profil",
-        profilePageBgDesc: "Cette image/vidéo sera utilisée comme image de fond personnalisée pour votre page de profil",
+        profilePageBgDesc:
+            "Cette image/vidéo sera utilisée comme image de fond personnalisée pour votre page de profil",
         showIpAddr: "Montrer les addresses IP",
-        sessionsDesc: "Ces appareils sont présentement connectés à votre compte. Vous pouvez révoquer n'importe quelle session à n'importe quel moment. Si vous voyez quelque chose dont vous ne reconnaissez pas, révoquez la session immédiatement et changer le mot de passe du fournisseur d'authentification associé.",
+        sessionsDesc:
+            "Ces appareils sont présentement connectés à votre compte. Vous pouvez révoquer n'importe quelle session à n'importe quel moment. Si vous voyez quelque chose dont vous ne reconnaissez pas, révoquez la session immédiatement et changer le mot de passe du fournisseur d'authentification associé.",
         ipHidden: "IP cachée",
         lastAccessed: (when) => `Dernier accès ${when}`,
-        created: (when) => `Créé {when}`,
-        sessionCreatedUsing: (providerName) => `Session créée utilisant {providerName}`,
+        created: (when) => `Créé ${when}`,
+        sessionCreatedUsing: (providerName) => `Session créée utilisant ${providerName}`,
         currSession: "Session actuelle",
         revokeSession: "Révoquer la session",
-        personalAccessTokensDesc: (siteName_short, docsUrl) => `Des PATs peuvent être utilisés afin d'accéder à l'API de ${siteName_short}. Pour plus de renseignements, voir [la documentation de l'API de ${siteName_short}](${docsUrl}). Ils peuvent être créés et révoqués à n'importe quel moment.`,
+        personalAccessTokensDesc: (siteName_short, docsUrl) =>
+            `Des PATs peuvent être utilisés afin d'accéder à l'API de ${siteName_short}. Pour plus de renseignements, voir [la documentation de l'API de ${siteName_short}](${docsUrl}). Ils peuvent être créés et révoqués à n'importe quel moment.`,
         editToken: "Modifier le jeton",
         revokeToken: "Révoquer le jeton",
         neverUsed: "Jamais utilisé",
@@ -252,18 +244,14 @@ export default {
         received: "Reçu",
         history: "Historique",
         notifHistory: "Historique des notifications",
-        invitedToJoin: (user, team) => [
-            user,
-            " vous a invité à joindre ",
-            team,
-        ],
+        invitedToJoin: (user, team) => [user, " vous a invité à joindre ", team],
         projectStatusUpdated: (project, oldStatus, newStatus) => [
             project,
             " à été mis à jour de ",
             oldStatus,
             " à ",
             newStatus,
-            "par les modérateurs.",
+            " par les modérateurs.",
         ],
         createProjectInfo: "Vous n'avez pas de projets. Cliquez le boutton ci-haut afin d'en créer.",
         type: "Type",
@@ -316,11 +304,7 @@ export default {
         clearFilters: "Éffacer les filtres",
 
         tags: tags,
-        searchItemAuthor: (project, author) => [
-            project,
-            " par ",
-            author,
-        ],
+        searchItemAuthor: (project, author) => [project, " par ", author],
     },
     project: {
         compatibility: "Compatabilité",
@@ -334,11 +318,7 @@ export default {
         organization: "Organisation",
         project: "Projet",
         details: "Détails",
-        licensed: (license) => [
-            "SOUS LA LICENCE",
-            license,
-            "",
-        ],
+        licensed: (license) => ["SOUS LA LICENCE ", license, ""],
         updatedAt: (when) => `Mise à jour ${when}`,
         publishedAt: (when) => `Publié ${when}`,
         gallery: "Galerie",
@@ -348,12 +328,14 @@ export default {
         uploadNewImg: "Téléverser une nouvelle image de galerie",
         uploadImg: "Téléverser une image de galerie",
         galleryOrderingDesc: "L'image ayant l'ordre le plus élevé sera placée en premier.",
-        featuredGalleryImgDesc: "Une image de galerie en vedette se présentera lors de recherches et dans la carte de votre projet. Seule une image de galerie peut être en vedette.",
+        featuredGalleryImgDesc:
+            "Une image de galerie en vedette se présentera lors de recherches et dans la carte de votre projet. Seule une image de galerie peut être en vedette.",
         addGalleryImg: "Ajouter une image de galerie",
         featureImg: "Image en vedette",
         unfeatureImg: "Ôter le vedettariat de l'image",
         sureToDeleteImg: "Êtes-vous sûr de vouloir supprimer cette image de galerie ?",
-        deleteImgDesc: "Cela supprimera cette image de galerie pour toujours (vraiment, et incorrigeablement, pour l'éternité).",
+        deleteImgDesc:
+            "Cela supprimera cette image de galerie pour toujours (vraiment, et incorrigeablement, pour l'éternité).",
         editGalleryImg: "Modifier l'image de galerie",
         currImage: "Image actuelle",
         uploadVersion: "Téléverser une version",
@@ -365,26 +347,19 @@ export default {
         downloads: "Téléchargements",
         openInNewTab: "Ouvrir dans un nouvel onglet",
         copyLink: "Copier le lien",
-        doesNotSupport: (project, version, loader) => {
-            return `${project} ne supporte pas ${version} pour ${loader}`;
-            
-        },
+        doesNotSupport: (project, version, loader) => `${project} ne supporte pas ${version} pour ${loader}`,
         downloadItem: (project) => `Télécharger ${project}`,
-        gameVersion: (version) => [
-            "Version du jeu : ",
-            version,
-        ],
+        gameVersion: (version) => ["Version du jeu : ", version],
         selectGameVersion: "Sélectionner la version du jeu",
-        platform: (loader) => [
-            "Plateforme : ",
-            loader,
-        ],
+        platform: (loader) => ["Plateforme : ", loader],
         selectPlatform: "Sélectionner la plateforme",
         onlyAvailableFor: (project, platform) => `${project} est seulement disponible pour ${platform}`,
-        noVersionsAvailableFor: (gameVersion, loader) => `Auncune version n'est disponible pour ${gameVersion} sur ${loader}`,
+        noVersionsAvailableFor: (gameVersion, loader) =>
+            `Auncune version n'est disponible pour ${gameVersion} sur ${loader}`,
         declinedInvitation: "Refusé l'invitation",
         teamInvitationTitle: (teamType) => `Invitation à joindre ${teamType}`,
-        teamInviteDesc: (teamType, role) => `Vous étiez invités à devenir membre de ce ${teamType} avec le rôle de '${role}'.`,
+        teamInviteDesc: (teamType, role) =>
+            `Vous étiez invités à devenir membre de ce ${teamType} avec le rôle de '${role}'.`,
         browse: {
             mod: "Parcourir des mods",
             datamod: "Parcourir des datamods",
@@ -396,9 +371,11 @@ export default {
         },
         rejected: "Rejeté",
         withheld: "Retenu",
-        archivedMessage: (project) => `${project} a été archivé. Il ne recevra plus de mises à jour à moins que l'auteur décide de désarchiver le projet.`,
+        archivedMessage: (project) =>
+            `${project} a été archivé. Il ne recevra plus de mises à jour à moins que l'auteur décide de désarchiver le projet.`,
         updateProjectStatus: "Mettre à jour le statut du projet",
-        sureToUpdateStatus: (projectName, projectType, prevStatus, newStatus) => `Êtes-vous sûr de vouloir mettre à jour le statut de **${projectName}** ${projectType} de **${prevStatus}** à **${newStatus}** ?`,
+        sureToUpdateStatus: (projectName, projectType, prevStatus, newStatus) =>
+            `Êtes-vous sûr de vouloir mettre à jour le statut de **${projectName}** ${projectType} de **${prevStatus}** à **${newStatus}** ?`,
         publishingChecklist: {
             required: "Obligatoire",
             suggestion: "Suggestion",
@@ -408,25 +385,34 @@ export default {
             uploadVersion: "Téléverser une version",
             uploadVersionDesc: "Au moins une version est requise afin qu'un projet puisse être soumis à la revue.",
             addDescription: "Ajouter une description",
-            addDescriptionDesc: "Une description qui décrit clairement le bût et la fonction de votre projet est requise.",
+            addDescriptionDesc:
+                "Une description qui décrit clairement le bût et la fonction de votre projet est requise.",
             addIcon: "Ajouter une icône",
-            addIconDesc: "Votre projet devrait avoir une icône attrayante afin d'identifier uniquement votre projet d'un coup d'œuil.",
+            addIconDesc:
+                "Votre projet devrait avoir une icône attrayante afin d'identifier uniquement votre projet d'un coup d'œuil.",
             featureGalleryImg: "Mettre un image de galerie en vedette",
-            featureGalleryImgDesc: "L'image de galerie en vedette pourrait être la première impression de nombreux utilisateurs.",
+            featureGalleryImgDesc:
+                "L'image de galerie en vedette pourrait être la première impression de nombreux utilisateurs.",
             selectTags: "Sélectionner des étiquettes",
             selectTagsDesc: "Sélectionnez toutes les étiquettes qui correspondent à votre projet.",
             addExtLinks: "Ajouter des liens externes",
-            addExtLinksDesc: "Ajouter tous les liens pertinents, tels que des sources, des problèmes ou une invitation Discord.",
+            addExtLinksDesc:
+                "Ajouter tous les liens pertinents, tels que des sources, des problèmes ou une invitation Discord.",
             selectLicense: "Sélectionner une licence",
-            selectLicenseDesc: (projectType) => `Sélectionnez la licence sous laquelle votre ${projectType} sera distribué.`,
+            selectLicenseDesc: (projectType) =>
+                `Sélectionnez la licence sous laquelle votre ${projectType} sera distribué.`,
             selectEnv: "Sélectionnez les environnements supportés",
-            selectEnvDesc: (projectType) => `Sélectionnez si le ${projectType} fonctionne sur le côté du client et/ou le côté du serveur.`,
+            selectEnvDesc: (projectType) =>
+                `Sélectionnez si le ${projectType} fonctionne sur le côté du client et/ou le côté du serveur.`,
             requiredStepsDesc: "Tous marqués par un astérix(*) sont obligatoires",
             submitForReview: "Soumettre à la revue",
-            submitForReviewDesc: "Votre projet n'est que visible aux autres membre du projet. Il devra être revue par les modérateurs afin d'être publié.",
+            submitForReviewDesc:
+                "Votre projet n'est que visible aux autres membre du projet. Il devra être revue par les modérateurs afin d'être publié.",
             resubmitForReview: "Soumettre de nouveau à la revue",
-            resubmit_ApprovalRejected: "Votre projet a été rejeté par notre modérateur. Dans la majorité des cas, vous pouvez soumettre de nouveau à la revue après avoir adressé le commentaire du modérateur.",
-            resubmit_ProjectWithheld: "Votre projet a été retenu par notre modérateur. Dans la majorité des cas, vous pouvez soumettre de nouveau à la revue après avoir adressé le commentaire du modérateur.",
+            resubmit_ApprovalRejected:
+                "Votre projet a été rejeté par notre modérateur. Dans la majorité des cas, vous pouvez soumettre de nouveau à la revue après avoir adressé le commentaire du modérateur.",
+            resubmit_ProjectWithheld:
+                "Votre projet a été retenu par notre modérateur. Dans la majorité des cas, vous pouvez soumettre de nouveau à la revue après avoir adressé le commentaire du modérateur.",
             visit: {
                 versionsPage: "Visiter la page des versions",
                 descriptionSettings: "Visiter les paramètres de description",
@@ -478,7 +464,8 @@ export default {
         selectFiles: "Sélectionner des fichiers",
         primaryFileRequired: "Le fichier primaire est requis",
         metadata: "Métadonnées",
-        devReleasesNote: "REMARQUE:- Les anciennes versions de développement seront automatiquement supprimées après la publication d'une nouvelle version de développement.",
+        devReleasesNote:
+            "REMARQUE:- Les anciennes versions de développement seront automatiquement supprimées après la publication d'une nouvelle version de développement.",
         searchOrEnterRange: "Recherchez ou saisissez une intervalle...",
         applyChanges: "Appliquer les changements",
         currExprHasNoEffect: "L'expression actuelle n'a aucun effet sur les valeurs sélectionnées !",
@@ -488,13 +475,7 @@ export default {
         copySha1: "Copier le condensat SHA-1",
         copySha512: "Copier le condensat SHA-512",
         copyFileUrl: "Copier l'URL du fichier",
-        publishedBy: (version, author, publish_date) => [
-            version,
-            " par ",
-            author,
-            " le ",
-            publish_date,
-        ],
+        publishedBy: (version, author, publish_date) => [version, " par ", author, " le ", publish_date],
     },
     projectSettings: {
         settings: "Paramètres du projet",
@@ -506,15 +487,18 @@ export default {
         upload: "Téléverser",
         externalLinks: "Liens externes",
         issueTracker: "Gestionneur de problèmes",
-        issueTrackerDesc: "Un endroit où les utilisateurs peuvent signaler des bogues, des problèmes et des préoccupations concernat votre projet.",
+        issueTrackerDesc:
+            "Un endroit où les utilisateurs peuvent signaler des bogues, des problèmes et des préoccupations concernat votre projet.",
         sourceCode: "Code source",
         sourceCodeDesc: "Une page ou un répertoire contenant le code source de votre projet.",
         wikiPage: "Page wiki",
         wikiPageDesc: "Une page contenant de l'information, de la documentation et de l'aide pour le projet.",
         discordInvite: "Invitation Discord",
         discordInviteDesc: "Un lien d'invitation à votre serveur Discord.",
-        licenseDesc: (projectType) => `Il est très important de choisir une licence appropriée pour votre ${projectType}. Vous pouvez en choisir une depuis notre liste ou fournir une licence personalisée. Vous pouvez également fournir un URL personalisé pour la licence choisie ; autrement, le texte de la licence sera affiché.`,
-        customLicenseDesc: "Saisissez un [identifian de licence SPDX](https://spdx.org/licenses) valide dans la zone indiquée. Si votre licence n'a pas d'identifiant SPDX (par exemple, si vous avez créé votre propre licence ou si la licence est spécifique à Cosmic Reach), cochez simplement la case et saisissez le nom de la licence au lieu.",
+        licenseDesc: (projectType) =>
+            `Il est très important de choisir une licence appropriée pour votre ${projectType}. Vous pouvez en choisir une depuis notre liste ou fournir une licence personalisée. Vous pouvez également fournir un URL personalisé pour la licence choisie ; autrement, le texte de la licence sera affiché.`,
+        customLicenseDesc:
+            "Saisissez un [identifian de licence SPDX](https://spdx.org/licenses) valide dans la zone indiquée. Si votre licence n'a pas d'identifiant SPDX (par exemple, si vous avez créé votre propre licence ou si la licence est spécifique à Cosmic Reach), cochez simplement la case et saisissez le nom de la licence au lieu.",
         selectLicense: "Sélectionner une licence",
         searchAllLicenses: (count) => `Rechercher toutes les ${count} licences`,
         custom: "Personnalisé",
@@ -522,22 +506,27 @@ export default {
         licenseUrl: "URL de licence (optionnel)",
         spdxId: "Identifiant SPDX",
         doesntHaveSpdxId: "La licence n'a pas d'identifiant SPDX",
-        tagsDesc: (projectType) => `L'étiquettage exacte est important afin de faciliter la découverte de votre ${projectType}. Assurez-vous de sélectionner toutes les étiquettes qui s'appliquent.`,
+        tagsDesc: (projectType) =>
+            `L'étiquettage exacte est important afin de faciliter la découverte de votre ${projectType}. Assurez-vous de sélectionner toutes les étiquettes qui s'appliquent.`,
         featuredCategories: "Catégories en vedette",
-        featuredCategoriesDesc: (count) => `Vous pouvez mettre en vedette jusqu'à ${count} de vos étiquettes les plus pertinentes.`,
+        featuredCategoriesDesc: (count) =>
+            `Vous pouvez mettre en vedette jusqu'à ${count} de vos étiquettes les plus pertinentes.`,
         selectAtLeastOneCategory: "Sélectionnez au moins une catégorie afin de mettre en vedette une catégorie.",
         projectInfo: "Information du projet",
         clientSide: "Côté client",
-        clientSideDesc: (projectType) => `Sélectionner en fonction si votre ${projectType} possède de la fonctionnalité du côté client.`,
+        clientSideDesc: (projectType) =>
+            `Sélectionner en fonction si votre ${projectType} possède de la fonctionnalité du côté client.`,
         serverSide: "Côté serveur",
-        serverSideDesc: (projectType) => `Sélectionner en fonction si votre ${projectType} possède de la fonctionnalité sur le serveur logique.`,
+        serverSideDesc: (projectType) =>
+            `Sélectionner en fonction si votre ${projectType} possède de la fonctionnalité sur le serveur logique.`,
         unknown: "Inconnu",
         clientOrServer: "Client our serveur",
         clientAndServer: "Client et serveur",
         required: "Obligatoire",
         optional: "Optionnel",
         unsupported: "Non supporté",
-        visibilityDesc: "Les projets listés et archivés sont visibles dans les recherches. Les projets non listés sont publiés, mais ne sont ni visible dans les recherches, ni sur les profils d'utilisateur. Les projets privés ne sont qu'accessible par des membre du projet.",
+        visibilityDesc:
+            "Les projets listés et archivés sont visibles dans les recherches. Les projets non listés sont publiés, mais ne sont ni visible dans les recherches, ni sur les profils d'utilisateur. Les projets privés ne sont qu'accessible par des membre du projet.",
         ifApproved: "Si approuvé par les modérateurs :",
         visibleInSearch: "Visible dans les recherches",
         visibleOnProfile: "Visible sur profil",
@@ -549,9 +538,11 @@ export default {
         unlisted: "Non listé",
         archived: "Archivé",
         deleteProject: "Supprimer le projet",
-        deleteProjectDesc: (site) => `Supprime votre projet des serveurs de ${site} et des recherches. L'appuie de celui-ci supprimera votre projet, donc soyez super prudent !`,
+        deleteProjectDesc: (site) =>
+            `Supprime votre projet des serveurs de ${site} et des recherches. L'appuie de celui-ci supprimera votre projet, donc soyez super prudent !`,
         sureToDeleteProject: "Êtes vous sûr de vouloir supprimer ce projet ?",
-        deleteProjectDesc2: "Si vous procédez, toutes les versions et toutes les données rattachées seront supprimées dès nos serveurs. Cela pourrait casser d'autres projets, donc soyez prudent.",
+        deleteProjectDesc2:
+            "Si vous procédez, toutes les versions et toutes les données rattachées seront supprimées dès nos serveurs. Cela pourrait casser d'autres projets, donc soyez prudent.",
         typeToVerify: (projectName) => `Afin de vérifier, tapez **${projectName}** ci-dessous :`,
         typeHere: "Tapez ici...",
         manageMembers: "Gérer les membres",
@@ -563,8 +554,10 @@ export default {
         sureToLeaveTeam: "Êtes vous sûr de vouloir quitter cette équipe ?",
         cantManageInvites: "Vous n'avez pas accès à gérer l'invitation de membres",
         inviteMember: "Inviter un membre",
-        inviteProjectMemberDesc: "Saisir le nom d'utilisateur de la personne que vous aimeriez inviter à être membre de ce projet.",
-        inviteOrgMemberDesc: "Saisir le nom d'utilisateur de la personne que vous aimeriez inviter à être membre de cet organisation.",
+        inviteProjectMemberDesc:
+            "Saisir le nom d'utilisateur de la personne que vous aimeriez inviter à être membre de ce projet.",
+        inviteOrgMemberDesc:
+            "Saisir le nom d'utilisateur de la personne que vous aimeriez inviter à être membre de cet organisation.",
         invite: "Inviter",
         memberUpdated: "Succès dans la mis à jour du membre",
         pending: "En attente",
@@ -587,29 +580,36 @@ export default {
         removeMember: "Supprimer un membre",
         transferOwnership: "Tranférer la propriété",
         overrideValues: "Remplacer des valeurs",
-        overrideValuesDesc: "Remplacer des valeurs par défaut de l'organisation et assigner des permissions personnalisées et des rôles à cet utilisateur sur ce projet.",
-        projectNotManagedByOrg: "Ce projet n'est pas géré par une organisationé Si vous êtes membre d'une organisation, vous pouvez tranférer la gestion à l'une d'entres elles.",
+        overrideValuesDesc:
+            "Remplacer des valeurs par défaut de l'organisation et assigner des permissions personnalisées et des rôles à cet utilisateur sur ce projet.",
+        projectNotManagedByOrg:
+            "Ce projet n'est pas géré par une organisationé Si vous êtes membre d'une organisation, vous pouvez tranférer la gestion à l'une d'entres elles.",
         transferManagementToOrg: "Tranférer la gestion",
         selectOrg: "Sélectionner une organisation",
-        projectManagedByOrg: (orgName) => `Ce projet est géré par ${orgName}. Les paramètres par défaut pour les permissions des membres sont assignés dans les paramètres de l'organisation. Vous pouvez les remplacer ci-dessous.`,
+        projectManagedByOrg: (orgName) =>
+            `Ce projet est géré par ${orgName}. Les paramètres par défaut pour les permissions des membres sont assignés dans les paramètres de l'organisation. Vous pouvez les remplacer ci-dessous.`,
         removeFromOrg: "Supprimer de l'organisation",
         memberRemoved: "Membre supprimé avec succès",
         sureToRemoveMember: (memberName) => `Êtes-vous sûr de vouloir supprimer ${memberName} de cette équipe ?`,
         ownershipTransfered: "Propriété transférée avec succès",
-        sureToTransferOwnership: (memberName) => `Êtes-vous sûr de vouloir transférer la propriété vers ${memberName} ?`,
+        sureToTransferOwnership: (memberName) =>
+            `Êtes-vous sûr de vouloir transférer la propriété vers ${memberName} ?`,
     },
     organization: {
         orgDoesntHaveProjects: "Cette organisation n'a aucun projet à date.",
         manageProjects: "Gérer les projets",
         orgSettings: "Paramètres d'organisation",
-        transferProjectsTip: "Vous pouvez tranférer vos projets éxistants vers cette organisation depuis : Paramètres de projet > Membres",
+        transferProjectsTip:
+            "Vous pouvez tranférer vos projets éxistants vers cette organisation depuis : Paramètres de projet > Membres",
         noProjects_CreateOne: "Cette organisation n'a aucun projet. Clickez le bouton ci-haut afin d'en créer un.",
         orgInfo: "Information de l'organisation",
         deleteOrg: "Supprimer l'organisation",
-        deleteOrgDesc: "La suppréssion de votre organisation transféra tous ses projets au propriétaire de l'organisation. Cette action est irréversible.",
+        deleteOrgDesc:
+            "La suppréssion de votre organisation transféra tous ses projets au propriétaire de l'organisation. Cette action est irréversible.",
         sureToDeleteOrg: "Êtes-vous sûr de vouloir supprimer cette organisation ?",
         deleteOrgNamed: (orgName) => `Supprimer l'organisation ${orgName}`,
-        deletionWarning: "Cela supprimera cette organisation pour toujours (vraiment, et incorrigeablement, pour l'éternité).",
+        deletionWarning:
+            "Cela supprimera cette organisation pour toujours (vraiment, et incorrigeablement, pour l'éternité).",
         perms: {
             edit_details: "Modifier les détails",
             manage_invites: "Gérer les invitations",
@@ -688,25 +688,27 @@ export default {
             rejected: "Rejeté",
             unknown: "Inconnu",
         },
-        pageDesc: "Ceci est un fil de conversation privé avec les modérateurs. Ils pourraient vous communiquer en rapport de problèmes concernant ce projet. Ce fil n'est vérifié que lorsque vous soumettez votre projet pour révision.",
+        pageDesc:
+            "Ceci est un fil de conversation privé avec les modérateurs. Ils pourraient vous communiquer en rapport de problèmes concernant ce projet. Ce fil n'est vérifié que lorsque vous soumettez votre projet pour révision.",
         approved_msg: "Votre projet a été approuvé par les modérateurs.",
-        underReview_msg: (discord_invite) => `Votre projet est actuellement en revue. Si vous attendiez plus de 48 heures, sentez-vous libre de nous communiquer sur notre [serveur Discord](${discord_invite}).`,
-        rejected_msg: (contentRules_url) => `Votre projet n'atteint actuellement pas à nos [rules du contenu](${contentRules_url}) et les modérateurs vous ont fait demande de modifications avec que ça puisse être approuvé. Lisez les messages des modérateur ci-dessous et adressez leurs commentaires avant de soumettre de nouveau.`,
-        repeatedSubmission_warning: "La soumission répétée sans tenir compte des commentaires des modérateurs peut entraîner la suspension de votre compte.",
+        underReview_msg: (discord_invite) =>
+            `Votre projet est actuellement en revue. Si vous attendiez plus de 48 heures, sentez-vous libre de nous communiquer sur notre [serveur Discord](${discord_invite}).`,
+        rejected_msg: (contentRules_url) =>
+            `Votre projet n'atteint actuellement pas à nos [rules du contenu](${contentRules_url}) et les modérateurs vous ont fait demande de modifications avec que ça puisse être approuvé. Lisez les messages des modérateur ci-dessous et adressez leurs commentaires avant de soumettre de nouveau.`,
+        repeatedSubmission_warning:
+            "La soumission répétée sans tenir compte des commentaires des modérateurs peut entraîner la suspension de votre compte.",
         messages: "Messages",
         resubmitDesc: {
             _1: (project) => `Vous soumettez ${project} à être revue de nouveau par les modérateurs.`,
             _2: "Assurez-vous d'adresser les commentaires fournis par l'équipe de modération.",
-            warning: "La soumission répétée sans tenir compte des commentaires des modérateurs peut entraîner la suspension de votre compte.",
+            warning:
+                "La soumission répétée sans tenir compte des commentaires des modérateurs peut entraîner la suspension de votre compte.",
         },
     },
     chatThread: {
         messagePlaceholder: "Message...",
         noMessages: "Aucun message pour le moment !",
-        replyingTo: (user) => [
-            "Répondre à",
-            user,
-        ],
+        replyingTo: (user) => ["Répondre à", user],
         addPrivateNote: "Ajouter une note privée",
         messageDeleted: "Ce message a été supprimé",
         projectSubmittedForReview: "Le projet à été soumis à la revue.",
@@ -762,19 +764,22 @@ export default {
     },
     error: {
         sthWentWrong: "Oups ! Une erreur est survenue",
-        errorDesc: "Il semble que quelque chose s'est cassé. Pendant que nous essayons de résoudre ce problème, essayez de rafraîchir la page.",
+        errorDesc:
+            "Il semble que quelque chose s'est cassé. Pendant que nous essayons de résoudre ce problème, essayez de rafraîchir la page.",
         refresh: "Rafraîchir",
         pageNotFound: "404 | Page introuvable.",
         pageNotFoundDesc: "Désolé, nous n'avons pas pu trouver la page que vous recherchiez.",
         projectNotFound: "Page introuvable",
         projectNotFoundDesc: (projectType, slug) => `Aucnun ${projectType} n'existe avec le slug/ID '${slug}'`,
         versionNotFound: "Version introuvable",
-        versionNotFoundDesc: (project, type) => `La version de '${project}' ${type} que vour recherchiez est introuvable.`,
+        versionNotFoundDesc: (project, type) =>
+            `La version de '${project}' ${type} que vour recherchiez est introuvable.`,
         gotoVersionsList: "Aller à la liste des versions",
         oraganizationNotFound: "Organisation introuvable",
         oraganizationNotFoundDesc: (slug) => `Aucune organisatoin n'existe avec le slug/ID '${slug}'`,
         userNotFound: "Utilisateur introuvable",
-        userNotFoundDesc: (userName) => `Aucun utilisateur n'existe ni avec le nom d'utilisateur ni avec l'ID '${userName}'`,
+        userNotFoundDesc: (userName) =>
+            `Aucun utilisateur n'existe ni avec le nom d'utilisateur ni avec l'ID '${userName}'`,
     },
     editor: {
         heading1: "Titre 1",
@@ -815,28 +820,21 @@ export default {
         content: "contenu",
         reportToMods: (itemName) => `Signaler ${itemName} aux modérateurs`,
         alreadyReported: (itemName) => `Vous avez déjà signalé ${itemName}`,
-        alreadyReportedDesc: (itemType) => `Vous avez déjà un signalement ouvert pour ce ${itemType}. Vous pouvez ajouter plus de détails à votre signalement si vous avez plus de précisions à y ajouter.`,
+        alreadyReportedDesc: (itemType) =>
+            `Vous avez déjà un signalement ouvert pour ce ${itemType}. Vous pouvez ajouter plus de détails à votre signalement si vous avez plus de précisions à y ajouter.`,
         backToContent: (itemType) => `Retourner à ${itemType}`,
         goToReport: "Visiter le signalement",
         whatTypeOfContent: "Quel type de contenu signalez-vous ?",
         whatIsContentId: (item) => `Quel est l'ID du ${item.toLowerCase()}?`,
         pleaseReport: "Veuillez signaler :",
         itsNotFor: "Ce formulaire n'est pas pour :",
-        rulesViolation: (siteName_short, rules, tos) => [
-            `Violation de ${siteName_short} `,
-            rules,
-            " ou ",
-            tos,
-        ],
+        rulesViolation: (siteName_short, rules, tos) => [`Violation de ${siteName_short} `, rules, " ou ", tos],
         violationExamples: "Des exemples comptent du contenu malicieux, pourriel, offensif, trompeur et illégal.",
         bugReports: "Rapports de bogues",
         dmcaTakedowns: "Retraits DMCA",
-        seeCopyrightPolicy: (copyrightPolicy) => [
-            "Voir nos ",
-            copyrightPolicy,
-            ".",
-        ],
-        whichRuleIsBeingViolated: (siteName_short, item) => `Laquelle des règles de ${siteName_short} ce ${item.toLowerCase()} viole-t-il ?`,
+        seeCopyrightPolicy: (copyrightPolicy) => ["Voir nos ", copyrightPolicy, "."],
+        whichRuleIsBeingViolated: (siteName_short, item) =>
+            `Laquelle des règles de ${siteName_short} ce ${item.toLowerCase()} viole-t-il ?`,
         violationType: {
             spam: "Pourriel",
             reuploaded_work: "Téléverser de nouveau le travail",
@@ -860,27 +858,16 @@ export default {
             other: "Autre",
         },
         provideAdditionalContext: "Veuillez fournir du context additionel sur votre signalement",
-        additionalContextDesc: "Inclure des liens et des images si possible et pertinent. Des signalements vides out insuffisants seront fermés et ignorés.",
+        additionalContextDesc:
+            "Inclure des liens et des images si possible et pertinent. Des signalements vides out insuffisants seront fermés et ignorés.",
         submitReport: "Soumettre le signalement",
         noOpenReports: "Vous n'avez aucun signalement ouvert.",
         viewReport: "Voir le signalement",
-        reportedBy: (reporter) => [
-            "Signalé par ",
-            reporter,
-        ],
+        reportedBy: (reporter) => ["Signalé par ", reporter],
         reportDetails: "Détails du signalement",
-        status: (status) => [
-            "Statut : ",
-            status,
-        ],
-        reportedItem: (itemType) => [
-            "Item signalé : ",
-            itemType,
-        ],
-        ruleViolated: (ruleType) => [
-            "Règle violée : ",
-            ruleType,
-        ],
+        status: (status) => ["Statut : ", status],
+        reportedItem: (itemType) => ["Item signalé : ", itemType],
+        ruleViolated: (ruleType) => ["Règle violée : ", ruleType],
     },
     graph: {
         noDataAvailable: "Aucune donnée disponible pour l'intervalle de dates sélectionnée.",
@@ -901,26 +888,38 @@ export default {
     },
     meta: {
         addContext: (title, name) => `${title} - ${name}`,
-        siteDesc: (siteName_long, siteName_short) => `Téléchargez des mods, plugiciels, datamods, nuanceurs, packs de ressources, et modpacks pour Cosmic Reach sur ${siteName_short} (${siteName_long}). Découvrez et publiez des projets sur ${siteName_short} avec une interface et une API moderne et facile à utiliser.`,
-        searchDesc: (projectType, siteName_short, siteName_long) => `Recherchez et téléchargez vos ${projectType} de Cosmic Reach favoris aisément ici sur ${siteName_short} (${siteName_long}).`,
+        siteDesc: (siteName_long, siteName_short) =>
+            `Téléchargez des mods, plugiciels, datamods, nuanceurs, packs de ressources, et modpacks pour Cosmic Reach sur ${siteName_short} (${siteName_long}). Découvrez et publiez des projets sur ${siteName_short} avec une interface et une API moderne et facile à utiliser.`,
+        searchDesc: (projectType, siteName_short, siteName_long) =>
+            `Recherchez et téléchargez vos ${projectType} de Cosmic Reach favoris aisément ici sur ${siteName_short} (${siteName_long}).`,
         about: "À propos de nous",
         loginDesc: (siteName_short) => `Connectez-vous à votre compte ${siteName_short}.`,
         signupDesc: (siteName_short) => `S'enregistrer pour un compte ${siteName_short}.`,
         changePassDesc: (siteName_short) => `Changer votre mot de passe de compte ${siteName_short}.`,
-        userPageDesc: (userBio, userName, siteName_short) => `${userBio} - Téléchargez les projets de ${userName} sur ${siteName_short}`,
+        userPageDesc: (userBio, userName, siteName_short) =>
+            `${userBio} - Téléchargez les projets de ${userName} sur ${siteName_short}`,
         collection: (name) => `${name} - Collection`,
-        collectionDesc: (userProvidedDesc, name, siteName_short) => `${userProvidedDesc} - Voir la collection ${name} sur ${siteName_short}`,
+        collectionDesc: (userProvidedDesc, name, siteName_short) =>
+            `${userProvidedDesc} - Voir la collection ${name} sur ${siteName_short}`,
         collectionNotFound: "Collection non trouvée",
         collectionNotFoundDesc: (collectionId) => `Aucune collection trouvée avec l'ID : ${collectionId}`,
-        copyrightPolicyPageDesc: (siteName_short) => `La Politique des droits d'auteur de ${siteName_short}, une plateforme de modding code source ouvert axée sur Cosmic Reach`,
-        privacyPolicyPageDesc: (siteName_short) => `La Politique de confidentialité de ${siteName_short}, une plateforme de modding code source ouvert axée sur Cosmic Reach`,
-        contentRulesPageDesc: (siteName_short) => `Les Règles du contenu de ${siteName_short}, une plateforme de modding code source ouvert axée sur Cosmic Reach`,
-        securityNoticePageDesc: (siteName_short) => `La Notice de sécurité de ${siteName_short}, une plateforme de modding code source ouvert axée sur Cosmic Reach`,
-        tosPageDesc: (siteName_short) => `Les Conditions d'utilisation de ${siteName_short}, une plateforme de modding code source ouvert axée sur Cosmic Reach`,
+        copyrightPolicyPageDesc: (siteName_short) =>
+            `La Politique des droits d'auteur de ${siteName_short}, une plateforme de modding code source ouvert axée sur Cosmic Reach`,
+        privacyPolicyPageDesc: (siteName_short) =>
+            `La Politique de confidentialité de ${siteName_short}, une plateforme de modding code source ouvert axée sur Cosmic Reach`,
+        contentRulesPageDesc: (siteName_short) =>
+            `Les Règles du contenu de ${siteName_short}, une plateforme de modding code source ouvert axée sur Cosmic Reach`,
+        securityNoticePageDesc: (siteName_short) =>
+            `La Notice de sécurité de ${siteName_short}, une plateforme de modding code source ouvert axée sur Cosmic Reach`,
+        tosPageDesc: (siteName_short) =>
+            `Les Conditions d'utilisation de ${siteName_short}, une plateforme de modding code source ouvert axée sur Cosmic Reach`,
         project: (project, type) => `${project} - ${type} de Cosmic Reach`,
-        projectDesc: (project, summary, type, author, siteName_short) => `${summary} - Téléchargez le ${type} '${project}' de Cosmic Reach par ${author} sur ${siteName_short}`,
-        galleryDesc: (numImages, project, type, siteName_short) => `Voir ${numImages} image(s) du ${type} '${project}' sur ${siteName_short}`,
-        changelogDesc: (project, versionsNum) => `Voir le journal des modifications des ${versionsNum} versions de ${project}.`,
+        projectDesc: (project, summary, type, author, siteName_short) =>
+            `${summary} - Téléchargez le ${type} '${project}' de Cosmic Reach par ${author} sur ${siteName_short}`,
+        galleryDesc: (numImages, project, type, siteName_short) =>
+            `Voir ${numImages} image(s) du ${type} '${project}' sur ${siteName_short}`,
+        changelogDesc: (project, versionsNum) =>
+            `Voir le journal des modifications des ${versionsNum} versions de ${project}.`,
         versionsListDesc: (project, versionsNum) => `Liste des ${versionsNum} versions de ${project}.`,
         versionPageDesc: (o) => {
             let string = `Téléchargez ${o.project} ${o.versionNumber} sur ${o.siteName_short}. Supporte Cosmic Reach ${o.supportedGameVersions}`;
@@ -929,6 +928,7 @@ export default {
             return string;
         },
         organization: (name) => `${name} - Organisation`,
-        organizationDesc: (orgDesc, name, siteName_short) => `${orgDesc} - Voir l'organisation ${name} sur ${siteName_short}`,
+        organizationDesc: (orgDesc, name, siteName_short) =>
+            `${orgDesc} - Voir l'organisation ${name} sur ${siteName_short}`,
     },
 } satisfies Locale;
