@@ -25,31 +25,20 @@ export async function getLocale(locale: string, seenLocales: string[] = []): Pro
     }
 }
 
-function getLocaleFile(locale: string) {
-    switch (parseLocale(locale)) {
-        case "es-419":
-            return import("./es-419/translation");
+async function getLocaleFile(locale: string) {
+    try {
+        const translationExport = await import(`./../locales/${locale}/translation.ts`);
+        if (translationExport) return translationExport;
+    } catch {}
 
-        case "ru":
-            return import("./ru/translation");
-
-        case "de":
-            return import("./de/translation");
-
-        case "ja":
-            return import("./ja/translation");
-
-        // case "en":
-        default:
-            return import("./en/translation");
-    }
+    return await import(`./../locales/${formatLocaleCode(DefaultLocale)}/translation.ts`);
 }
 
 export function parseLocale(code: string | undefined | null) {
     for (const locale of SupportedLocales) {
-        const localeCode = formatLocaleCode(locale);
-        if (localeCode === code) return localeCode;
-        if (locale.code === code) return localeCode;
+        const fullCode = formatLocaleCode(locale);
+        if (fullCode === code) return fullCode;
+        else if (!("region" in locale) && locale.code === code) return fullCode;
     }
 
     return formatLocaleCode(DefaultLocale);
