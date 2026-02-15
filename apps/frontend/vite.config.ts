@@ -89,6 +89,12 @@ export default defineConfig({
                         return `vendor/${parts[0]}`;
                     }
 
+                    // Locales
+                    if (id.includes("/app/locales/")) {
+                        const match = id.match(/app\/+locales\/+([^\/]+)\//);
+                        if (match) return `${match[1]}-locale`;
+                    }
+
                     // Utils package
                     if (id.includes("packages/utils/src")) return "pkg-utils";
 
