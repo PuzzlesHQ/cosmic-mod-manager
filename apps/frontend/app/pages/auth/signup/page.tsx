@@ -10,7 +10,7 @@ export default function SignUpPage() {
 
     return (
         <aside className="flex min-h-[100vh] w-full items-center justify-center py-12">
-            <Card className="relative w-full max-w-md">
+            <Card className="relative w-full max-w-lg">
                 <CardHeader className="mb-1">
                     <CardTitle>{t.form.signup}</CardTitle>
                 </CardHeader>

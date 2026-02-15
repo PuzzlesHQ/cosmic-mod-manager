@@ -67,7 +67,7 @@ export function LoginPageCard(props: LoginPageCardProps) {
     }
 
     return (
-        <Card className="relative w-full max-w-md">
+        <Card className="relative w-full max-w-lg">
             <CardHeader className="mb-1">
                 <CardTitle>{t.form.login_withSpace}</CardTitle>
             </CardHeader>
@@ -231,7 +231,7 @@ export function LoginDialog(props: LoginDialogProps) {
 
     return (
         <Dialog open={dialogOpen} onOpenChange={toggleDialog}>
-            <DialogContent className="max-w-md py-0">
+            <DialogContent className="max-w-lg py-0">
                 <VisuallyHidden>
                     <DialogTitle>{t.form.login}</DialogTitle>
                     <DialogDescription>{t.form.login}</DialogDescription>
