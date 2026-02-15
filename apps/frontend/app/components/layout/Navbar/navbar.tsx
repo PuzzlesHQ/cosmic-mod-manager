@@ -33,13 +33,13 @@ export default function Navbar() {
     const nav = t.navbar;
 
     function toggleNavMenu(newState?: boolean) {
-        setIsNavMenuOpen((current) => (newState === true || newState === false ? newState : !current));
+        setIsNavMenuOpen((current) => newState ?? !current);
     }
 
     const NavLinks = projectTypes.map((type) => {
         return {
             label: Capitalize(nav[`${type}s`]),
-            href: `${type}s`,
+            href: `/${type}s`,
         };
     });
 
@@ -47,7 +47,7 @@ export default function Navbar() {
     const Other_NavLinks = NavLinks.slice(4);
     Other_NavLinks.push({
         label: t.common.all,
-        href: "projects",
+        href: "/projects",
     });
 
     function OpenOtherLinksPopup() {
