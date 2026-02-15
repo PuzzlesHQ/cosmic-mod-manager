@@ -107,7 +107,7 @@ export default function ProjectPageLayout() {
     for (const license of SPDX_LICENSE_LIST) {
         if (license.licenseId === projectData.licenseId) {
             projectLicenseData.name = license.name;
-            projectLicenseData.text = license?.text || "";
+            projectLicenseData.text = "text" in license ? license.text : "";
             if (!projectLicenseData.url) {
                 projectLicenseData.url = license.url;
             }
@@ -241,7 +241,7 @@ export default function ProjectPageLayout() {
 
                 {(ctx.featuredProjectVersions?.length || 0) > 0 ? (
                     <Card className="grid grid-cols-1 gap-1 p-card-surround">
-                        <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                        <div className="mb-2 flex flex-wrap items-center justify-between gap-x-2">
                             <h2 className="font-bold text-lg">{t.project.featuredVersions}</h2>
 
                             {!isVersionListPage && (

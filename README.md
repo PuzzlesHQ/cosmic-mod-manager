@@ -11,9 +11,13 @@ See [TRANSLATING.md](https://docs.crmm.tech/translating.html) if you wish to add
 
 
 <!-- Make sure to update credits in docs site also -->
-### Special thanks to:
+### Special thanks to the following contributors for their translations:
 
-- [@Weeesly](https://github.com/Weeesly) for the [Spanish](/apps/frontend/app/locales/es-419/translation.ts) translation,
-- [@TheEntropyShard](https://github.com/TheEntropyShard) for the [Russian](/apps/frontend/app/locales/ru/translation.ts) translation,
-- [@J0J0HA](https://github.com/J0J0HA) for the [German](/apps/frontend/app/locales/de/translation.ts) translation _and_
-- [@Penpen](https://github.com/penpen-uwu) for the [Japanese](/apps/frontend/app/locales/ja/translation.ts) translation.
+
+| Contributor | Translation |
+|-- |-- |
+| @[Weeesly](https://github.com/Weeesly) | [Spanish](/apps/frontend/app/locales/es-419) |
+| @[TheEntropyShard](https://github.com/TheEntropyShard) | [Russian](/apps/frontend/app/locales/ru) |
+| @[J0J0HA](https://github.com/J0J0HA) | [German](/apps/frontend/app/locales/de) |
+| @[Penpen](https://github.com/penpen-uwu) | [Japanese](/apps/frontend/app/locales/ja) |
+| @[DarkMattrMaestro](https://github.com/DarkMattrMaestro) | [French](/apps/frontend/app/locales/fr) |
