@@ -1,9 +1,13 @@
 # Adding your translations
 
-Thank you for wanting to help translate! Translations are always welcome! There are two ways to contribute:
+Thank you for wanting to help translate! There are two ways to contribute:
 
 - **[Using the web editor](#using-the-web-editor)**
 - **[Using a code/text editor](#editing-files-with-a-text-editor)** (if you're comfortable with a code editor and git)
+
+:::tip Where to start
+Focus on **`translation.ts`** and **`tags.ts`** first because these two contain translations for most of the parts a regular user will interface with.
+:::
 
 ---
 

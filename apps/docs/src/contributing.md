@@ -1,5 +1,9 @@
 # Setting up dev environment
 
+:::info Looking to translate the site?
+You don't need a dev environment for that, check out the [translation guide](/translating.html) instead.
+:::
+
 NOTE: See [`Running the app frontend`](#running-the-app-frontend) section below if you wish to work only on the frontend.
 
 ## Installation
