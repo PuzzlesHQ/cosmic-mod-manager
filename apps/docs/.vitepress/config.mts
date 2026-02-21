@@ -6,6 +6,7 @@ export default defineConfig({
     sitemap: {
         hostname: "https://docs.crmm.tech",
     },
+    srcDir: "src",
 
     metaChunk: true,
     lastUpdated: true,
