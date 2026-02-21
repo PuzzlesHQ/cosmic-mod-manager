@@ -25,7 +25,21 @@ export default defineConfig({
         },
 
         sidebar: [
-            { text: "Introduction", link: "/" },
+            {
+                text: "Introduction",
+                items: [
+                    { text: "Getting Started", link: "/" },
+                    { text: "Contributing", link: "/contributing" },
+                    { text: "Translating", link: "/translating" },
+                    { text: "API Endpoints", link: "/endpoints" },
+                    { text: "Credits", link: "/credits" },
+                ],
+            },
+
+            {
+                text: "Authentication",
+                items: [{ text: "Personal Access Tokens", link: "/auth/pat" }],
+            },
             {
                 text: "Project",
                 items: [
@@ -52,11 +66,28 @@ export default defineConfig({
                     { text: "Get latest versions from hashes", link: "/version-files/latest-versions-from-hashes" },
                 ],
             },
-
-            { text: "CONTRIBUTING.md", link: "/contributing" },
-            { text: "TRANSLATING.md", link: "/translating" },
-            { text: "ENDPOINTS.md", link: "/endpoints" },
-            { text: "CREDITS.md", link: "/credits" },
+            {
+                text: "User",
+                items: [
+                    { text: "Get a user", link: "/user/get" },
+                    { text: "Update profile", link: "/user/update" },
+                ],
+            },
+            {
+                text: "Organization",
+                items: [
+                    { text: "Get an organization", link: "/organization/get" },
+                    { text: "Modify an organization", link: "/organization/modify" },
+                ],
+            },
+            {
+                text: "Team",
+                items: [{ text: "Manage team members", link: "/team/manage" }],
+            },
+            {
+                text: "Tags",
+                items: [{ text: "Tags", link: "/tags/tags" }],
+            },
         ],
 
         socialLinks: [{ icon: "github", link: "https://github.com/PuzzlesHQ/cosmic-mod-manager" }],
