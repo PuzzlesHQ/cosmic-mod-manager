@@ -1,6 +1,7 @@
 # CRMM (Cosmic Reach Mod Manager)
 A repository for Cosmic Reach mods, like modrinth for minecraft.
 
+Checkout the docs at https://docs.crmm.tech
 
 ## If you wish to contribute:
 See [CONTRIBUTING.md](https://docs.crmm.tech/contributing.html) for dev environment setup instructions.
