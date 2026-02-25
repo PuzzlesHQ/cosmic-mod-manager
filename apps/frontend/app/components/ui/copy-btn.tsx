@@ -50,7 +50,7 @@ function CopyBtn({ text, label, className, labelClassName, iconClassName, maxLab
             {label ? (
                 <span
                     className={cn(
-                        "font-mono text-foreground text-sm leading-none dark:text-foreground-muted",
+                        "trim-both font-mono text-foreground text-sm leading-none dark:text-foreground-muted",
                         labelClassName,
                     )}
                 >

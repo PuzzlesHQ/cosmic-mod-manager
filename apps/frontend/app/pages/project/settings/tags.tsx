@@ -142,7 +142,9 @@ export default function TagsSettingsPage() {
                                                     >
                                                         <span className="flex items-center justify-start gap-1">
                                                             <TagIcon name={tag.name} />
-                                                            {CapitalizeAndFormatString(tagName)}
+                                                            <span className="trim-both">
+                                                                {CapitalizeAndFormatString(tagName)}
+                                                            </span>
                                                         </span>
                                                     </LabelledCheckbox>
                                                 );
@@ -194,7 +196,9 @@ export default function TagsSettingsPage() {
                                             >
                                                 <span className="flex items-center justify-start gap-1">
                                                     <TagIcon name={tag} />
-                                                    {CapitalizeAndFormatString(tagName)}
+                                                    <span className="trim-both">
+                                                        {CapitalizeAndFormatString(tagName)}
+                                                    </span>
                                                 </span>
                                             </LabelledCheckbox>
                                         );

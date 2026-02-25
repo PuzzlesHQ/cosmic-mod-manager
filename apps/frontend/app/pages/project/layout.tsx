@@ -169,7 +169,9 @@ export default function ProjectPageLayout() {
                                                 }}
                                             >
                                                 {loaderIcon ? loaderIcon : null}
-                                                {CapitalizeAndFormatString(loader.name)}
+                                                <span className="trim-both">
+                                                    {CapitalizeAndFormatString(loader.name)}
+                                                </span>
                                             </Chip>
                                         );
                                     })}
@@ -198,8 +200,9 @@ export default function ProjectPageLayout() {
                 projectData?.projectSourceUrl ||
                 projectData?.projectWikiUrl ||
                 projectData?.discordInviteUrl ? (
-                    <Card className="grid grid-cols-1 gap-1 p-card-surround">
-                        <h2 className="pb-2 font-bold text-lg">{t.projectSettings.links}</h2>
+                    <Card className="grid grid-cols-1 gap-3 p-card-surround">
+                        <h2 className="pb-2 font-bold text-lg leading-none">{t.projectSettings.links}</h2>
+
                         {projectData?.issueTrackerUrl ? (
                             <ExternalLink
                                 url={projectData?.issueTrackerUrl}
@@ -367,13 +370,13 @@ export default function ProjectPageLayout() {
                     })}
                 </Card>
 
-                <Card className="grid grid-cols-1 items-start justify-start gap-1 p-card-surround">
-                    <h2 className="pb-2 font-bold text-lg">{t.project.details}</h2>
+                <Card className="grid grid-cols-1 items-start justify-start gap-3 p-card-surround">
+                    <h2 className="pb-2 font-bold text-lg leading-none">{t.project.details}</h2>
 
                     {projectLicenseData?.id || projectLicenseData?.name ? (
                         <div className="flex items-center justify-start gap-2 text-foreground-muted">
                             <BookTextIcon aria-hidden className="h-btn-icon w-btn-icon shrink-0" />
-                            <p>
+                            <p className="trim-both">
                                 <TextSpacer text={licensed_str[0]} />
                                 {projectLicenseData.url ? (
                                     <TextLink
@@ -400,7 +403,9 @@ export default function ProjectPageLayout() {
                             <TooltipTrigger asChild className="cursor-text">
                                 <p className="flex w-fit max-w-full items-center justify-start gap-2 text-foreground-muted">
                                     <CalendarIcon aria-hidden className="h-btn-icon w-btn-icon" />
-                                    {t.settings.created(TimePassedSince({ date: projectData.datePublished }))}
+                                    <span className="trim-both">
+                                        {t.settings.created(TimePassedSince({ date: projectData.datePublished }))}
+                                    </span>
                                 </p>
                             </TooltipTrigger>
                             <TooltipContent>
@@ -413,7 +418,9 @@ export default function ProjectPageLayout() {
                                 <TooltipTrigger asChild className="cursor-text">
                                     <p className="flex w-fit max-w-full items-center justify-start gap-2 text-foreground-muted">
                                         <GitCommitHorizontalIcon aria-hidden className="h-btn-icon w-btn-icon" />
-                                        {t.project.updatedAt(TimePassedSince({ date: projectData.dateUpdated }))}
+                                        <span className="trim-both">
+                                            {t.project.updatedAt(TimePassedSince({ date: projectData.dateUpdated }))}
+                                        </span>
                                     </p>
                                 </TooltipTrigger>
                                 <TooltipContent>
@@ -590,13 +597,13 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
             >
                 <div className="flex items-center gap-3">
                     <DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                    <span className="font-semibold">
+                    <span className="trim-both font-semibold">
                         <FormattedCount count={projectData.downloads} />
                     </span>
                 </div>
                 <div className="flex items-center gap-3">
                     <HeartIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                    <span className="font-semibold">
+                    <span className="trim-both font-semibold">
                         <FormattedCount count={projectData.followers} />
                     </span>
                 </div>
@@ -709,8 +716,8 @@ function ExternalLink({ url, label, icon }: { url: string; icon: React.ReactNode
             rel="noopener noreferrer"
         >
             {icon}
-            <span>
-                {label}
+            <span className="trim-both">
+                <span className="trim-both">{label}</span>
                 <ArrowUpRightIcon aria-hidden className="ms-1 inline h-4 w-4 text-foreground-extra-muted" />
             </span>
         </Link>

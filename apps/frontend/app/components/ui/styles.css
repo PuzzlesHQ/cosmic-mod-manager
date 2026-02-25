@@ -1,5 +1,4 @@
 /* LOADING SPINNER */
-
 .wandering_cubes_animation {
     --frame-size: 2.1rem;
     --cube-size: 0.5rem;
@@ -32,8 +31,7 @@
     }
 
     50% {
-        transform: translatex(calc(var(--frame-size) - var(--cube-size)))
-            translatey(calc(var(--frame-size) - var(--cube-size))) rotate(-180deg);
+        transform: translatex(calc(var(--frame-size) - var(--cube-size))) translatey(calc(var(--frame-size) - var(--cube-size))) rotate(-180deg);
     }
 
     75% {

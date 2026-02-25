@@ -10,14 +10,11 @@ function ClientSide({ className }: Props) {
     const { t } = useTranslation();
     return (
         <span
-            className={cn(
-                "flex cursor-help items-center justify-start gap-x-1 font-semibold text-foreground-muted",
-                className,
-            )}
+            className={cn("flex cursor-help items-center gap-x-1 font-semibold text-foreground-muted", className)}
             title="Needs to be installed on the game client"
         >
             <MonitorIcon aria-hidden className="h-btn-icon w-btn-icon" />
-            {t.projectSettings.clientSide}
+            <span className="trim-both">{t.projectSettings.clientSide}</span>
         </span>
     );
 }
@@ -26,14 +23,11 @@ function ServerSide({ className }: Props) {
     const { t } = useTranslation();
     return (
         <span
-            className={cn(
-                "flex cursor-help items-center justify-start gap-x-1 font-semibold text-foreground-muted",
-                className,
-            )}
+            className={cn("flex cursor-help items-center gap-x-1 font-semibold text-foreground-muted", className)}
             title="Needs to be installed on the game server"
         >
             <HardDriveIcon aria-hidden className="h-btn-icon w-btn-icon" />
-            {t.projectSettings.serverSide}
+            <span className="trim-both">{t.projectSettings.serverSide}</span>
         </span>
     );
 }
@@ -42,14 +36,11 @@ function ClientOrServerSide({ className }: Props) {
     const { t } = useTranslation();
     return (
         <span
-            className={cn(
-                "flex cursor-help items-center justify-start gap-x-1 font-semibold text-foreground-muted",
-                className,
-            )}
+            className={cn("flex cursor-help items-center gap-x-1 font-semibold text-foreground-muted", className)}
             title="Needs to be installed on either the game client or the server"
         >
             <GlobeIcon aria-hidden className="h-btn-icon w-btn-icon" />
-            {t.projectSettings.clientOrServer}
+            <span className="trim-both">{t.projectSettings.clientOrServer}</span>
         </span>
     );
 }
@@ -58,14 +49,11 @@ function ClientAndServerSide({ className }: Props) {
     const { t } = useTranslation();
     return (
         <span
-            className={cn(
-                "flex cursor-help items-center justify-start gap-x-1 font-semibold text-foreground-muted",
-                className,
-            )}
+            className={cn("flex cursor-help items-center gap-x-1 font-semibold text-foreground-muted", className)}
             title="Needs to be installed on both the game client and the server"
         >
             <GlobeIcon aria-hidden className="h-btn-icon w-btn-icon" />
-            {t.projectSettings.clientAndServer}
+            <span className="trim-both">{t.projectSettings.clientAndServer}</span>
         </span>
     );
 }
@@ -73,9 +61,9 @@ function ClientAndServerSide({ className }: Props) {
 function Unsupported({ className }: Props) {
     const { t } = useTranslation();
     return (
-        <span className={cn("flex items-center justify-start gap-x-1 font-semibold text-foreground-muted", className)}>
+        <span className={cn("flex items-center gap-x-1 font-semibold text-foreground-muted", className)}>
             <GlobeIcon aria-hidden className="h-btn-icon w-btn-icon" />
-            {t.projectSettings.unsupported}
+            <span className="trim-both">{t.projectSettings.unsupported}</span>
         </span>
     );
 }

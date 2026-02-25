@@ -224,7 +224,9 @@ function BaseView(props: SearchListItemProps) {
                             title={`${t.search[category.type]} / ${tagName}`}
                         >
                             <TagIcon name={category.name} />
-                            <span itemProp={MicrodataItemProps.name}>{tagName}</span>
+                            <span className="trim-both" itemProp={MicrodataItemProps.name}>
+                                {tagName}
+                            </span>
                         </span>
                     );
                 })}
@@ -239,7 +241,7 @@ function BaseView(props: SearchListItemProps) {
                             title={`${t.search.loaders} / ${loaderName}`}
                         >
                             <TagIcon name={loader.name} />
-                            {loaderName}
+                            <span className="trim-both">{loaderName}</span>
                         </span>
                     );
                 })}

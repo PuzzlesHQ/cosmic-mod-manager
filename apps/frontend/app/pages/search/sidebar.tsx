@@ -427,7 +427,7 @@ function FilterCategory({
                                 >
                                     <span className="flex items-center justify-center gap-1">
                                         <TagIcon name={itemValue} />
-                                        {itemLabel}
+                                        <span className="trim-both">{itemLabel}</span>
                                     </span>
                                 </LabelledTernaryCheckbox>
                             );

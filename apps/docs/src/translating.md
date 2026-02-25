@@ -28,7 +28,7 @@ It shows translation strings side by side. Pick any existing locale as the refer
 4. **Translate**: fill in each string (excluding the quotes). Check the **hide translated** checkbox at the bottom to show only keys with missing translation.
 
 5. **Fork the repo** if you haven't already — [github.com/PuzzlesHQ/cosmic-mod-manager/fork](https://github.com/PuzzlesHQ/cosmic-mod-manager/fork) \
-   _(A free GitHub account is required. Forking is needed to submit a pull request.)_
+   _(A GitHub account is required. Forking is needed to submit a pull request.)_
 
 6. **Save your changes**: copy the output from the editor (or download the file), then paste it into the corresponding file on your fork (create it under your locale's folder if it doesn't exist). \
    _(You can edit files directly on GitHub in your browser — no need to download anything)_

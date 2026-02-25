@@ -31,11 +31,12 @@ export function ProjectStatusBadge(props: ProjectStatusBadge) {
         <span
             title={props.title === false ? undefined : ProjectStatusDesc(props.status)}
             className={cn(
-                "inline-block cursor-help gap-x-space rounded-full px-2 py-[0.15em] font-semibold text-sm leading-[0]",
+                "flex cursor-help items-center gap-x-space rounded-full px-2 py-[0.15em] font-semibold text-sm",
                 colorClass,
             )}
         >
-            <ProjectStatusIcon status={props.status} className="mb-[0.1ch]" /> {props.t.moderation.status[props.status]}
+            <ProjectStatusIcon status={props.status} />
+            <span className="trim-both">{props.t.moderation.status[props.status]}</span>
         </span>
     );
 }

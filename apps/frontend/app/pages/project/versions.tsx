@@ -38,8 +38,8 @@ import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
 import { joinPaths, ProjectPagePath, VersionPagePath } from "~/utils/urls";
-import DeleteVersionDialog from "./version/delete-version";
 import VersionFilters from "./version-filters";
+import DeleteVersionDialog from "./version/delete-version";
 
 export default function ProjectVersionsPage() {
     const session = useSession();
@@ -306,7 +306,7 @@ function ProjectLoaders({ versionLoaders }: { versionLoaders: string[] }) {
                         }}
                     >
                         {loaderIcon ? loaderIcon : null}
-                        {CapitalizeAndFormatString(loaderData.name)}
+                        <span className="trim-both">{CapitalizeAndFormatString(loaderData.name)}</span>
                     </Chip>
                 );
             })}
@@ -318,8 +318,10 @@ function DatePublished({ dateStr, iconVisible = true }: { dateStr: string | Date
     return (
         <TooltipTemplate content={<FormattedDate date={dateStr} />}>
             <span className="flex cursor-help items-center justify-start gap-1.5 font-medium text-foreground-extra-muted text-sm">
-                {iconVisible === true ? <CalendarIcon aria-hidden className="h-3 w-3" /> : null}
-                <TimePassedSince date={dateStr} capitalize />
+                {iconVisible === true ? <CalendarIcon aria-hidden className="h-3.5 w-3.5" /> : null}
+                <span className="trim-both">
+                    <TimePassedSince date={dateStr} capitalize />
+                </span>
             </span>
         </TooltipTemplate>
     );
@@ -329,9 +331,9 @@ function DownloadsCount({ downloads }: { downloads: number }) {
     const { t } = useTranslation();
 
     return (
-        <span className="flex items-center justify-start gap-1.5 font-medium text-foreground-muted text-sm">
-            <DownloadIcon aria-hidden className="h-3 w-3" strokeWidth={2.5} />
-            <span>
+        <span className="flex items-center justify-start gap-1.5 font-medium text-foreground-extra-muted text-sm">
+            <DownloadIcon aria-hidden className="h-3.5 w-3.5" strokeWidth={2.5} />
+            <span className="text-foreground-muted">
                 {t.count.downloads(
                     downloads,
                     <em className="font-extrabold text-base not-italic" key="downloads">

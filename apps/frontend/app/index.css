@@ -87,6 +87,10 @@ body.no-scrollbar {
     .content-container:not(:has(> .full-width)) {
         @apply container sm:px-8 mb-16 px-4;
     }
+
+    .trim-both {
+        text-box: trim-both cap alphabetic;
+    }
 }
 
 a {
