@@ -395,12 +395,12 @@ function AuthorLink(props: AuthorLinkProps) {
         <Link
             to={props.isOrgOwned ? OrgPagePath(props.author) : UserProfilePath(props.author)}
             className={cn(
-                "mobile-break-words leading-none underline hover:brightness-110",
+                "mobile-break-words inline-flex items-center gap-1 leading-none underline hover:brightness-110",
                 props.galleryViewType && "leading-tight",
             )}
             title={props.isOrgOwned ? `${props.author} (${props.Organization_translation})` : props.author}
         >
-            {props.authorDisplayName}
+            <span className="trim-both">{props.authorDisplayName}</span>
             {props.isOrgOwned ? (
                 <>
                     {" "}

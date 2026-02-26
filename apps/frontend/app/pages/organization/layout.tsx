@@ -153,7 +153,7 @@ function OrgInfoHeader({
                 titleBadge={
                     <div className="ms-2 flex items-center justify-center gap-1.5 font-bold text-foreground-extra-muted">
                         <Building2Icon aria-hidden className="h-btn-icon w-btn-icon" />
-                        {t.project.organization}
+                        <span className="trim-both">{t.project.organization}</span>
                     </div>
                 }
                 threeDotMenu={
@@ -200,7 +200,7 @@ function OrgInfoHeader({
             >
                 <div className="flex items-center gap-2">
                     <UsersIcon aria-hidden className="h-[1.1rem] w-[1.1rem]" />
-                    <span className="font-semibold">
+                    <span className="trim-both font-semibold">
                         {t.count.members(
                             orgData.members.length,
                             FormatCount(orgData.members.length, formattedLocaleName),
@@ -209,11 +209,11 @@ function OrgInfoHeader({
                 </div>
                 <div className="flex items-center gap-2">
                     <CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                    <span className="font-semibold">{t.count.projects(totalProjects, totalProjects)}</span>
+                    <span className="trim-both font-semibold">{t.count.projects(totalProjects, totalProjects)}</span>
                 </div>
                 <div className="flex items-center gap-2">
                     <DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                    <span className="font-semibold">
+                    <span className="trim-both font-semibold">
                         {t.count.downloads(totalDownloads, FormatCount(totalDownloads, formattedLocaleName))}
                     </span>
                 </div>

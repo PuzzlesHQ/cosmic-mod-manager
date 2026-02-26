@@ -305,17 +305,19 @@ function ProfilePageHeader({ userData, totalProjects, totalDownloads }: ProfileP
         >
             <div className="flex items-center gap-2">
                 <CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                <span className="font-semibold">{t.count.projects(totalProjects, totalProjects)}</span>
+                <span className="trim-both font-semibold">{t.count.projects(totalProjects, totalProjects)}</span>
             </div>
             <div className="flex items-center gap-2">
                 <DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                <span className="font-semibold">
+                <span className="trim-both font-semibold">
                     {t.count.downloads(totalDownloads, FormatCount(totalDownloads, formattedLocaleName))}
                 </span>
             </div>
             <div className="flex items-center gap-2">
                 <CalendarIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                <span className="font-semibold">{t.user.joined(TimePassedSince({ date: userData.dateJoined }))}</span>
+                <span className="trim-both font-semibold">
+                    {t.user.joined(TimePassedSince({ date: userData.dateJoined }))}
+                </span>
             </div>
         </PageHeader>
     );

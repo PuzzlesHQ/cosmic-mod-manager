@@ -96,9 +96,9 @@ export default function CollectionPageLayout(props: Props) {
                 fallbackIcon={fallbackProjectIcon}
                 description={props.collection.description || ""}
                 titleBadge={
-                    <div className="ms-2 flex items-center justify-center gap-1.5 font-bold text-foreground-extra-muted">
+                    <div className="ms-2 flex items-center gap-1.5 font-bold text-foreground-extra-muted">
                         <CubeIcon aria-hidden className="h-btn-icon w-btn-icon" />
-                        {t.dashboard.collection}
+                        <span className="trim-both">{t.dashboard.collection}</span>
                     </div>
                 }
                 actionBtns={
@@ -162,7 +162,7 @@ export default function CollectionPageLayout(props: Props) {
             >
                 <div className="flex items-center gap-2">
                     <CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                    <span className="font-semibold">
+                    <span className="trim-both font-semibold">
                         {t.count.projects(props.collection.projects.length, props.collection.projects.length)}
                     </span>
                 </div>
@@ -174,18 +174,12 @@ export default function CollectionPageLayout(props: Props) {
                         <EarthIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
                     )}
 
-                    <span className="font-semibold">
-                        {
-                            t.projectSettings[
-                                props.collection.visibility === CollectionVisibility.PRIVATE ? "private" : "public"
-                            ]
-                        }
-                    </span>
+                    <span className="trim-both font-semibold">{t.projectSettings[props.collection.visibility]}</span>
                 </div>
 
                 <div className="flex items-center gap-2">
                     <CalendarIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                    <span className="font-semibold">
+                    <span className="trim-both font-semibold">
                         {t.settings.created(TimePassedSince({ date: props.collection.dateCreated }))}
                     </span>
                 </div>
