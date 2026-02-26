@@ -18,6 +18,7 @@ import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import Chip from "~/components/ui/chip";
 import { TimePassedSince } from "~/components/ui/date";
+import { LabelledIcon } from "~/components/ui/labelled-icon";
 import Link, { LinkPrefetchStrategy, useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { PopoverClose } from "~/components/ui/popover";
 import { cn } from "~/components/utils";
@@ -29,7 +30,6 @@ import SecondaryNav from "~/pages/project/secondary-nav";
 import ReportButton from "~/pages/report/report-btn";
 import type { UserOutletData } from "~/routes/user/layout";
 import { OrgPagePath, UserProfilePath } from "~/utils/urls";
-
 import "./styles.css";
 
 interface Props {
@@ -303,22 +303,26 @@ function ProfilePageHeader({ userData, totalProjects, totalDownloads }: ProfileP
                 ) : null
             }
         >
-            <div className="flex items-center gap-2">
-                <CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                <span className="trim-both font-semibold">{t.count.projects(totalProjects, totalProjects)}</span>
-            </div>
-            <div className="flex items-center gap-2">
-                <DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                <span className="trim-both font-semibold">
-                    {t.count.downloads(totalDownloads, FormatCount(totalDownloads, formattedLocaleName))}
-                </span>
-            </div>
-            <div className="flex items-center gap-2">
-                <CalendarIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                <span className="trim-both font-semibold">
-                    {t.user.joined(TimePassedSince({ date: userData.dateJoined }))}
-                </span>
-            </div>
+            <LabelledIcon
+                icon={<CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />}
+                className="font-semibold"
+            >
+                {t.count.projects(totalProjects, totalProjects)}
+            </LabelledIcon>
+
+            <LabelledIcon
+                icon={<DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />}
+                className="font-semibold"
+            >
+                {t.count.downloads(totalDownloads, FormatCount(totalDownloads, formattedLocaleName))}
+            </LabelledIcon>
+
+            <LabelledIcon
+                icon={<CalendarIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />}
+                className="font-semibold"
+            >
+                {t.user.joined(TimePassedSince({ date: userData.dateJoined }))}
+            </LabelledIcon>
         </PageHeader>
     );
 }

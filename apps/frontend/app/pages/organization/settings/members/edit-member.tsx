@@ -147,7 +147,7 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                         onSubmit={(e) => {
                             submitFormWithErrorHandling(e, updateTeamMemberFormSchema, form, updateMemberDetails);
                         }}
-                        className="grid w-full gap-form-elements"
+                        className="grid gap-form-elements px-1"
                     >
                         <FormField
                             control={form.control}
@@ -184,7 +184,7 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                                         <FormItem>
                                             <FormLabel className="font-bold">Project permissions</FormLabel>
                                             <div
-                                                className="grid w-full gap-x-4 gap-y-1 ps-1"
+                                                className="grid w-full gap-x-4 gap-y-1"
                                                 style={{
                                                     gridTemplateColumns: "repeat(auto-fit, minmax(11rem, 1fr))",
                                                 }}
@@ -225,7 +225,7 @@ export function OrgTeamMember({ org, member, currMember, fetchOrgData, session }
                                         <FormItem>
                                             <FormLabel className="font-bold">Organization permissions</FormLabel>
                                             <div
-                                                className="grid w-full gap-x-4 gap-y-1 ps-1"
+                                                className="grid w-full gap-x-4 gap-y-1"
                                                 style={{
                                                     gridTemplateColumns: "repeat(auto-fit, minmax(11rem, 1fr))",
                                                 }}

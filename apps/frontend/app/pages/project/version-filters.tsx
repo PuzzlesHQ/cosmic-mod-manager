@@ -175,11 +175,9 @@ export default function VersionFilters(props: VersionFiltersProps) {
                             className="mx-2 sm:ms-auto"
                             checked={showDevVersions}
                             onCheckedChange={(checked) => setShowDevVersions(checked === true)}
+                            icon={<FlaskConicalIcon aria-hidden className="h-btn-icon w-btn-icon" />}
                         >
-                            <span className="flex items-center justify-center gap-1">
-                                <FlaskConicalIcon aria-hidden className="h-btn-icon w-btn-icon" />
-                                {t.project.showDevVersions}
-                            </span>
+                            {t.project.showDevVersions}
                         </LabelledCheckbox>
                     ) : null}
                 </div>

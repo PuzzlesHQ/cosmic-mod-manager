@@ -139,13 +139,9 @@ export default function TagsSettingsPage() {
                                                                 );
                                                             }
                                                         }}
+                                                        icon={<TagIcon name={tag.name} />}
                                                     >
-                                                        <span className="flex items-center justify-start gap-1">
-                                                            <TagIcon name={tag.name} />
-                                                            <span className="trim-both">
-                                                                {CapitalizeAndFormatString(tagName)}
-                                                            </span>
-                                                        </span>
+                                                        {CapitalizeAndFormatString(tagName)}
                                                     </LabelledCheckbox>
                                                 );
                                             })}
@@ -193,13 +189,9 @@ export default function TagsSettingsPage() {
                                                         );
                                                     }
                                                 }}
+                                                icon={<TagIcon name={tag} />}
                                             >
-                                                <span className="flex items-center justify-start gap-1">
-                                                    <TagIcon name={tag} />
-                                                    <span className="trim-both">
-                                                        {CapitalizeAndFormatString(tagName)}
-                                                    </span>
-                                                </span>
+                                                {CapitalizeAndFormatString(tagName)}
                                             </LabelledCheckbox>
                                         );
                                     })}

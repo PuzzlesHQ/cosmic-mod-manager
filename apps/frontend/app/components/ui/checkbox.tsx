@@ -2,6 +2,7 @@ import { CheckIcon } from "lucide-react";
 import { Checkbox as CheckboxPrimitive } from "radix-ui";
 import { cn } from "~/components/utils";
 import { Label } from "./label";
+import { LabelledIcon } from "./labelled-icon";
 
 function Checkbox({ ref, className, name, ...props }: React.ComponentProps<typeof CheckboxPrimitive.Root>) {
     return (
@@ -31,6 +32,7 @@ interface LabelledCheckboxProps {
     disabled?: boolean;
     checkBoxId?: string;
     name?: string;
+    icon?: React.ReactNode;
 }
 
 function LabelledCheckbox({
@@ -63,7 +65,8 @@ function LabelledCheckbox({
                 ref={ref}
                 name={name}
             />
-            {children}
+
+            <LabelledIcon icon={props.icon}>{children}</LabelledIcon>
         </Label>
     );
 }

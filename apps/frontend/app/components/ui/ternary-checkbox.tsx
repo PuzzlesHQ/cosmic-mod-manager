@@ -2,6 +2,7 @@ import { CheckIcon, MinusIcon } from "lucide-react";
 import { useState } from "react";
 import { cn } from "~/components/utils";
 import { Label } from "./label";
+import { LabelledIcon } from "./labelled-icon";
 
 export enum TernaryStates {
     INCLUDED = 1,
@@ -57,13 +58,15 @@ interface LabelledCheckboxProps extends ThreeStateCheckboxProps {
     checkBoxClassname?: string;
     disabled?: boolean;
     checkBoxId?: string;
+
+    icon?: React.ReactNode;
 }
 
 export function LabelledTernaryCheckbox(props: LabelledCheckboxProps) {
     return (
         <Label
             className={cn(
-                "flex cursor-not-allowed items-center justify-start gap-x-2.5 py-1 font-normal text-base text-foreground-muted opacity-75 transition",
+                "flex cursor-not-allowed items-center justify-start gap-x-2 font-normal text-base text-foreground-muted opacity-75 transition",
                 !props.disabled && "cursor-pointer opacity-100 hover:brightness-90 dark:hover:brightness-115",
                 props.state === TernaryStates.EXCLUDED && "text-error-fg",
                 props.className,
@@ -78,7 +81,8 @@ export function LabelledTernaryCheckbox(props: LabelledCheckboxProps) {
                 disabled={props.disabled}
                 ref={props.ref}
             />
-            {props.children}
+
+            <LabelledIcon icon={props.icon}>{props.children}</LabelledIcon>
         </Label>
     );
 }

@@ -12,6 +12,7 @@ import { PageHeader } from "~/components/misc/page-header";
 import RefreshPage from "~/components/misc/refresh-page";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { LabelledIcon } from "~/components/ui/labelled-icon";
 import { LinkPrefetchStrategy, useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { PopoverClose } from "~/components/ui/popover";
 import { Separator } from "~/components/ui/separator";
@@ -151,10 +152,12 @@ function OrgInfoHeader({
                 title={orgData.name}
                 description={orgData.description || ""}
                 titleBadge={
-                    <div className="ms-2 flex items-center justify-center gap-1.5 font-bold text-foreground-extra-muted">
-                        <Building2Icon aria-hidden className="h-btn-icon w-btn-icon" />
-                        <span className="trim-both">{t.project.organization}</span>
-                    </div>
+                    <LabelledIcon
+                        className="ms-2 font-bold text-foreground-extra-muted"
+                        icon={<Building2Icon aria-hidden className="h-btn-icon w-btn-icon" />}
+                    >
+                        {t.project.organization}
+                    </LabelledIcon>
                 }
                 threeDotMenu={
                     <>
@@ -198,25 +201,26 @@ function OrgInfoHeader({
                     ) : null
                 }
             >
-                <div className="flex items-center gap-2">
-                    <UsersIcon aria-hidden className="h-[1.1rem] w-[1.1rem]" />
-                    <span className="trim-both font-semibold">
-                        {t.count.members(
-                            orgData.members.length,
-                            FormatCount(orgData.members.length, formattedLocaleName),
-                        )}
-                    </span>
-                </div>
-                <div className="flex items-center gap-2">
-                    <CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                    <span className="trim-both font-semibold">{t.count.projects(totalProjects, totalProjects)}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                    <DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                    <span className="trim-both font-semibold">
-                        {t.count.downloads(totalDownloads, FormatCount(totalDownloads, formattedLocaleName))}
-                    </span>
-                </div>
+                <LabelledIcon
+                    icon={<UsersIcon aria-hidden className="h-[1.1rem] w-[1.1rem]" />}
+                    className="font-semibold"
+                >
+                    {t.count.members(orgData.members.length, FormatCount(orgData.members.length, formattedLocaleName))}
+                </LabelledIcon>
+
+                <LabelledIcon
+                    icon={<CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />}
+                    className="font-semibold"
+                >
+                    {t.count.projects(totalProjects, totalProjects)}
+                </LabelledIcon>
+
+                <LabelledIcon
+                    icon={<DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />}
+                    className="font-semibold"
+                >
+                    {t.count.downloads(totalDownloads, FormatCount(totalDownloads, formattedLocaleName))}
+                </LabelledIcon>
             </PageHeader>
 
             {currUsersMembership && currUsersMembership?.accepted !== true ? (

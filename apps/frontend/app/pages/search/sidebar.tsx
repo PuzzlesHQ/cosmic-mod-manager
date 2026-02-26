@@ -180,7 +180,7 @@ function SearchFilters({ type, sectionsDefaultOpen }: Props) {
                 items={gameVersionFilterOptions}
                 selectedItems={searchParams.getAll(gameVersionFilterParamNamespace)}
                 label={gameVersionsFilterLabel}
-                listWrapperClassName="max-h-[15rem] overflow-y-auto px-0.5"
+                listWrapperClassName="max-h-[clamp(14rem,_30vh,_28rem)] overflow-y-auto px-0.5 gap-2.5"
                 formatLabel={false}
                 filterToggledUrl={(version) => {
                     const params = new URLSearchParams(searchParams);
@@ -398,7 +398,7 @@ function FilterCategory({
 
             <div className={cn("grid ps-1", collapsibleBoxClassName(isVisible))}>
                 <div>
-                    <div className={cn("grid", listWrapperClassName)}>
+                    <div className={cn("grid gap-1 py-1", listWrapperClassName)}>
                         {items.map((item) => {
                             const itemValue = typeof item === "string" ? item : item.value;
                             let _itemLabel = typeof item === "string" ? item : item.label;
@@ -418,17 +418,15 @@ function FilterCategory({
 
                             return (
                                 <LabelledTernaryCheckbox
+                                    key={itemValue}
                                     state={state}
                                     onCheckedChange={() => {
                                         const params = filterToggledUrl(itemValue);
                                         setSearchParams(params, { preventScrollReset: true });
                                     }}
-                                    key={itemValue}
+                                    icon={<TagIcon name={itemValue} />}
                                 >
-                                    <span className="flex items-center justify-center gap-1">
-                                        <TagIcon name={itemValue} />
-                                        <span className="trim-both">{itemLabel}</span>
-                                    </span>
+                                    {itemLabel}
                                 </LabelledTernaryCheckbox>
                             );
                         })}

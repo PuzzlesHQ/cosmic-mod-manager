@@ -251,9 +251,9 @@ export default {
         organization: "Organización",
         project: "Proyecto",
         details: "Detalles",
-        licensed: (license: string) => ["Con licencia", license, ""],
-        updatedAt: (when: string) => `Actualizado ${when}`, // eg: Updated 3 days ago
-        publishedAt: (when: string) => `Publicado ${when}`, // eg: Published 3 days ago
+        licensed: (license) => ["Con licencia ", license],
+        updatedAt: (when) => `Actualizado ${when}`, // eg: Updated 3 days ago
+        publishedAt: (when) => `Publicado ${when}`, // eg: Published 3 days ago
         gallery: "Galería",
         changelog: "Registro de cambios",
         versions: "Versiones",

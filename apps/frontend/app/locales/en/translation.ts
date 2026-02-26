@@ -340,7 +340,7 @@ export default {
         organization: "Organization",
         project: "Project",
         details: "Details",
-        licensed: (license: string): FixedStringArray<3> => ["LICENSED", license, ""],
+        licensed: (license: React.ReactNode) => ["LICENSED ", license],
         updatedAt: (when: string) => `Updated ${when}`, // eg: Updated 3 days ago
         publishedAt: (when: string) => `Published ${when}`, // eg: Published 3 days ago
         gallery: "Gallery",

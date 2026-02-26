@@ -155,7 +155,7 @@ function EnvSupportChip(props: EnvSupportChipProps) {
         <LabelledIcon
             title={props.title}
             icon={props.icon}
-            className={cn("font-semibold", props.title ? "cursor-help" : "", props.className)}
+            className={cn("font-semibold text-foreground-muted", props.title ? "cursor-help" : "", props.className)}
         >
             {props.label}
         </LabelledIcon>

@@ -15,6 +15,7 @@ import { ContentCardTemplate } from "~/components/misc/panel";
 import RefreshPage from "~/components/misc/refresh-page";
 import { Button } from "~/components/ui/button";
 import { TimePassedSince } from "~/components/ui/date";
+import { LabelledIcon } from "~/components/ui/labelled-icon";
 import { useNavigate } from "~/components/ui/link";
 import { PopoverClose } from "~/components/ui/popover";
 import { Separator } from "~/components/ui/separator";
@@ -96,10 +97,12 @@ export default function CollectionPageLayout(props: Props) {
                 fallbackIcon={fallbackProjectIcon}
                 description={props.collection.description || ""}
                 titleBadge={
-                    <div className="ms-2 flex items-center gap-1.5 font-bold text-foreground-extra-muted">
-                        <CubeIcon aria-hidden className="h-btn-icon w-btn-icon" />
-                        <span className="trim-both">{t.dashboard.collection}</span>
-                    </div>
+                    <LabelledIcon
+                        className="ms-2 font-bold text-foreground-extra-muted"
+                        icon={<CubeIcon aria-hidden className="h-btn-icon w-btn-icon" />}
+                    >
+                        {t.dashboard.collection}
+                    </LabelledIcon>
                 }
                 actionBtns={
                     markedProjects.length > 0 ? (
@@ -160,29 +163,32 @@ export default function CollectionPageLayout(props: Props) {
                     </>
                 }
             >
-                <div className="flex items-center gap-2">
-                    <CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                    <span className="trim-both font-semibold">
-                        {t.count.projects(props.collection.projects.length, props.collection.projects.length)}
-                    </span>
-                </div>
+                <LabelledIcon
+                    className="font-semibold"
+                    icon={<CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />}
+                >
+                    {t.count.projects(props.collection.projects.length, props.collection.projects.length)}
+                </LabelledIcon>
 
-                <div className="flex items-center gap-2">
-                    {props.collection.visibility === CollectionVisibility.PRIVATE ? (
-                        <LockIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                    ) : (
-                        <EarthIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                    )}
+                <LabelledIcon
+                    className="font-semibold"
+                    icon={
+                        props.collection.visibility === CollectionVisibility.PRIVATE ? (
+                            <LockIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
+                        ) : (
+                            <EarthIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
+                        )
+                    }
+                >
+                    {t.projectSettings[props.collection.visibility]}
+                </LabelledIcon>
 
-                    <span className="trim-both font-semibold">{t.projectSettings[props.collection.visibility]}</span>
-                </div>
-
-                <div className="flex items-center gap-2">
-                    <CalendarIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                    <span className="trim-both font-semibold">
-                        {t.settings.created(TimePassedSince({ date: props.collection.dateCreated }))}
-                    </span>
-                </div>
+                <LabelledIcon
+                    className="font-semibold"
+                    icon={<CalendarIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />}
+                >
+                    {t.settings.created(TimePassedSince({ date: props.collection.dateCreated }))}
+                </LabelledIcon>
             </PageHeader>
 
             <div className="page-content grid h-fit grid-cols-1 gap-panel-cards">

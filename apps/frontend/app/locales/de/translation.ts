@@ -282,9 +282,9 @@ export default {
         organization: "Organisation",
         project: "Projekt",
         details: "Details",
-        licensed: (license: string) => ["LIZENSIERT UNTER", license, ""],
-        updatedAt: (when: string) => `${Capitalize(when)} aktualisiert`, // eg: Updated 3 days ago
-        publishedAt: (when: string) => `${Capitalize(when)} veröffentlicht`, // eg: Published 3 days ago
+        licensed: (license) => ["LIZENSIERT UNTER ", license],
+        updatedAt: (when) => `${Capitalize(when)} aktualisiert`, // eg: Updated 3 days ago
+        publishedAt: (when) => `${Capitalize(when)} veröffentlicht`, // eg: Published 3 days ago
         gallery: "Gallerie",
         changelog: "Änderungsverlauf",
         versions: "Versionen",

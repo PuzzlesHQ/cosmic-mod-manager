@@ -254,9 +254,9 @@ export default {
         project: "Проект",
         details: "Подробнее",
         // ? New string
-        // licensed: (license: string) => ["LICENSED", license, ""],
-        updatedAt: (when: string) => `Обновлено ${when}`, // eg: Updated 3 days ago
-        publishedAt: (when: string) => `Опубликовано ${when}`, // eg: Published 3 days ago
+        // licensed: (license) => ["LICENSED ", license],
+        updatedAt: (when) => `Обновлено ${when}`, // eg: Updated 3 days ago
+        publishedAt: (when) => `Опубликовано ${when}`, // eg: Published 3 days ago
         gallery: "Галерея",
         changelog: "Список изменений",
         versions: "Версии",

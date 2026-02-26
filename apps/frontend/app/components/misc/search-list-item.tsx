@@ -19,6 +19,7 @@ import { viewTransitionStyleObj } from "~/components/view-transitions";
 import { useTranslation } from "~/locales/provider";
 import ProjectSupportedEnv from "~/pages/project/supported-env";
 import { OrgPagePath, ProjectPagePath, UserProfilePath } from "~/utils/urls";
+import { LabelledIcon } from "../ui/labelled-icon";
 
 export enum ListViewType {
     GALLERY = "gallery",
@@ -218,16 +219,14 @@ function BaseView(props: SearchListItemProps) {
                     const tagName = t.search.tags[category.name] || CapitalizeAndFormatString(category.name);
 
                     return (
-                        <span
-                            className="flex items-center justify-center gap-1"
+                        <LabelledIcon
                             key={category.name}
                             title={`${t.search[category.type]} / ${tagName}`}
+                            icon={<TagIcon name={category.name} />}
+                            itemProp={MicrodataItemProps.name}
                         >
-                            <TagIcon name={category.name} />
-                            <span className="trim-both" itemProp={MicrodataItemProps.name}>
-                                {tagName}
-                            </span>
-                        </span>
+                            {tagName}
+                        </LabelledIcon>
                     );
                 })}
 
@@ -235,14 +234,13 @@ function BaseView(props: SearchListItemProps) {
                     const loaderName = CapitalizeAndFormatString(loader.name);
 
                     return (
-                        <span
+                        <LabelledIcon
                             key={loader.name}
-                            className="flex items-center justify-center gap-1"
+                            icon={<TagIcon name={loader.name} />}
                             title={`${t.search.loaders} / ${loaderName}`}
                         >
-                            <TagIcon name={loader.name} />
-                            <span className="trim-both">{loaderName}</span>
-                        </span>
+                            {loaderName}
+                        </LabelledIcon>
                     );
                 })}
             </div>

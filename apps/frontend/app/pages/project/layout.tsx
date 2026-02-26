@@ -35,13 +35,13 @@ import { itemType, MicrodataItemProps, MicrodataItemType } from "~/components/mi
 import { FileDownloader } from "~/components/misc/file-downloader";
 import { PageHeader } from "~/components/misc/page-header";
 import RefreshPage from "~/components/misc/refresh-page";
-import { TextSpacer } from "~/components/misc/text";
 import { ImgWrapper } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import Chip from "~/components/ui/chip";
 import { FormattedCount } from "~/components/ui/count";
 import { FormattedDate, TimePassedSince } from "~/components/ui/date";
+import { LabelledIcon } from "~/components/ui/labelled-icon";
 import Link, { LinkPrefetchStrategy, TextLink, useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { PopoverClose } from "~/components/ui/popover";
 import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
@@ -123,8 +123,6 @@ export default function ProjectPageLayout() {
         ExclusiveProjectMembers.push(member);
     }
 
-    const licensed_str = t.project.licensed(projectLicenseData.id || projectLicenseData.name || "");
-
     return (
         <main
             className="header-content-sidebar-layout w-full max-w-full gap-panel-cards pb-12"
@@ -168,10 +166,9 @@ export default function ProjectPageLayout() {
                                                     color: `hsla(var(--loader-fg-${loader.name}, --foreground-muted))`,
                                                 }}
                                             >
-                                                {loaderIcon ? loaderIcon : null}
-                                                <span className="trim-both">
+                                                <LabelledIcon icon={loaderIcon ? loaderIcon : null}>
                                                     {CapitalizeAndFormatString(loader.name)}
-                                                </span>
+                                                </LabelledIcon>
                                             </Chip>
                                         );
                                     })}
@@ -370,44 +367,40 @@ export default function ProjectPageLayout() {
                     })}
                 </Card>
 
-                <Card className="grid grid-cols-1 items-start justify-start gap-3 p-card-surround">
-                    <h2 className="pb-2 font-bold text-lg leading-none">{t.project.details}</h2>
+                <Card className="grid grid-cols-1 items-start justify-start gap-3 p-card-surround text-foreground-muted">
+                    <h2 className="pb-2 font-bold text-foreground text-lg leading-none">{t.project.details}</h2>
 
                     {projectLicenseData?.id || projectLicenseData?.name ? (
-                        <div className="flex items-center justify-start gap-2 text-foreground-muted">
-                            <BookTextIcon aria-hidden className="h-btn-icon w-btn-icon shrink-0" />
-                            <p className="trim-both">
-                                <TextSpacer text={licensed_str[0]} />
-                                {projectLicenseData.url ? (
+                        <LabelledIcon icon={<BookTextIcon aria-hidden className="h-btn-icon w-btn-icon shrink-0" />}>
+                            {t.project.licensed(
+                                projectLicenseData.url ? (
                                     <TextLink
+                                        key="license-url"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         to={projectLicenseData.url}
                                         className="font-bold"
                                         title={projectLicenseData.url}
                                     >
-                                        {licensed_str[1]}
+                                        {projectLicenseData.id || projectLicenseData.name}
                                     </TextLink>
                                 ) : (
-                                    <span className="font-bold" title={projectLicenseData.text}>
-                                        {licensed_str[1]}
+                                    <span key="license-name" className="font-bold" title={projectLicenseData.text}>
+                                        {projectLicenseData.id || projectLicenseData.name}
                                     </span>
-                                )}
-                                <TextSpacer text={licensed_str[2]} spacing="before" />
-                            </p>
-                        </div>
+                                ),
+                            )}
+                        </LabelledIcon>
                     ) : null}
 
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild className="cursor-text">
-                                <p className="flex w-fit max-w-full items-center justify-start gap-2 text-foreground-muted">
-                                    <CalendarIcon aria-hidden className="h-btn-icon w-btn-icon" />
-                                    <span className="trim-both">
-                                        {t.settings.created(TimePassedSince({ date: projectData.datePublished }))}
-                                    </span>
-                                </p>
+                                <LabelledIcon icon={<CalendarIcon aria-hidden className="h-btn-icon w-btn-icon" />}>
+                                    {t.settings.created(TimePassedSince({ date: projectData.datePublished }))}
+                                </LabelledIcon>
                             </TooltipTrigger>
+
                             <TooltipContent>
                                 <FormattedDate date={projectData.datePublished} />
                             </TooltipContent>
@@ -416,13 +409,13 @@ export default function ProjectPageLayout() {
                         {ctx.allProjectVersions.length > 0 ? (
                             <Tooltip>
                                 <TooltipTrigger asChild className="cursor-text">
-                                    <p className="flex w-fit max-w-full items-center justify-start gap-2 text-foreground-muted">
-                                        <GitCommitHorizontalIcon aria-hidden className="h-btn-icon w-btn-icon" />
-                                        <span className="trim-both">
-                                            {t.project.updatedAt(TimePassedSince({ date: projectData.dateUpdated }))}
-                                        </span>
-                                    </p>
+                                    <LabelledIcon
+                                        icon={<GitCommitHorizontalIcon aria-hidden className="h-btn-icon w-btn-icon" />}
+                                    >
+                                        {t.project.updatedAt(TimePassedSince({ date: projectData.dateUpdated }))}
+                                    </LabelledIcon>
                                 </TooltipTrigger>
+
                                 <TooltipContent>
                                     <FormattedDate date={projectData.dateUpdated} />
                                 </TooltipContent>
@@ -595,18 +588,19 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
                     </>
                 }
             >
-                <div className="flex items-center gap-3">
-                    <DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                    <span className="trim-both font-semibold">
-                        <FormattedCount count={projectData.downloads} />
-                    </span>
-                </div>
-                <div className="flex items-center gap-3">
-                    <HeartIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                    <span className="trim-both font-semibold">
-                        <FormattedCount count={projectData.followers} />
-                    </span>
-                </div>
+                <LabelledIcon
+                    icon={<DownloadIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />}
+                    className="font-semibold"
+                >
+                    <FormattedCount count={projectData.downloads} />
+                </LabelledIcon>
+
+                <LabelledIcon
+                    icon={<HeartIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />}
+                    className="font-semibold"
+                >
+                    <FormattedCount count={projectData.followers} />
+                </LabelledIcon>
 
                 {(projectData.featuredCategories?.length || 0) > 0 ? (
                     <div className="hidden items-center gap-3 md:flex">
@@ -711,12 +705,13 @@ function ExternalLink({ url, label, icon }: { url: string; icon: React.ReactNode
     return (
         <Link
             to={url}
-            className="flex w-fit items-center justify-start gap-2 p-0 text-foreground-muted hover:underline"
+            className="flex w-fit items-center gap-2 p-0 text-foreground-muted hover:underline"
             target="_blank"
             rel="noopener noreferrer"
         >
             {icon}
-            <span className="trim-both">
+
+            <span>
                 <span className="trim-both">{label}</span>
                 <ArrowUpRightIcon aria-hidden className="ms-1 inline h-4 w-4 text-foreground-extra-muted" />
             </span>

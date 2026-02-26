@@ -2,6 +2,7 @@ import { ProjectPublishingStatus } from "@app/utils/types";
 import { ProjectStatusDesc, ProjectStatusIcon } from "~/components/icons";
 import { cn } from "~/components/utils";
 import type { Locale } from "~/locales/types";
+import { LabelledIcon } from "./labelled-icon";
 
 interface ProjectStatusBadge {
     status: ProjectPublishingStatus;
@@ -28,15 +29,12 @@ export function ProjectStatusBadge(props: ProjectStatusBadge) {
     }
 
     return (
-        <span
+        <LabelledIcon
             title={props.title === false ? undefined : ProjectStatusDesc(props.status)}
-            className={cn(
-                "flex cursor-help items-center gap-x-space rounded-full px-2 py-[0.15em] font-semibold text-sm",
-                colorClass,
-            )}
+            icon={<ProjectStatusIcon status={props.status} />}
+            className={cn("cursor-help rounded-full px-2 py-1 font-semibold text-sm", colorClass)}
         >
-            <ProjectStatusIcon status={props.status} />
-            <span className="trim-both">{props.t.moderation.status[props.status]}</span>
-        </span>
+            {props.t.moderation.status[props.status]}
+        </LabelledIcon>
     );
 }

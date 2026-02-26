@@ -175,8 +175,9 @@ ${isCustomLicense ? t.projectSettings.customLicenseDesc : ""}
                                             }
                                         }}
                                     >
-                                        <span>{t.projectSettings.doesntHaveSpdxId}</span>
+                                        {t.projectSettings.doesntHaveSpdxId}
                                     </LabelledCheckbox>
+
                                     {doesNotHaveASpdxId && (
                                         <FormField
                                             control={form.control}

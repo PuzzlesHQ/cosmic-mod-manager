@@ -318,7 +318,7 @@ export default {
         organization: "Organisation",
         project: "Projet",
         details: "Détails",
-        licensed: (license) => ["SOUS LA LICENCE ", license, ""],
+        licensed: (license) => ["SOUS LA LICENCE ", license],
         updatedAt: (when) => `Mise à jour ${when}`,
         publishedAt: (when) => `Publié ${when}`,
         gallery: "Galerie",

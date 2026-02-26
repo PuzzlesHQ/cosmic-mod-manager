@@ -153,7 +153,7 @@ export function ProjectTeamMember({
                         onSubmit={async (e) => {
                             submitFormWithErrorHandling(e, updateTeamMemberFormSchema, form, updateMemberDetails);
                         }}
-                        className="grid gap-form-elements"
+                        className="grid gap-form-elements px-1"
                     >
                         <FormField
                             control={form.control}
@@ -187,7 +187,7 @@ export function ProjectTeamMember({
                                     <FormItem>
                                         <FormLabel className="font-bold">{t.projectSettings.permissions}</FormLabel>
                                         <div
-                                            className="grid w-full gap-x-4 gap-y-1 ps-1"
+                                            className="grid w-full gap-x-4 gap-y-1"
                                             style={{
                                                 gridTemplateColumns: "repeat(auto-fit, minmax(11rem, 1fr))",
                                             }}
@@ -458,7 +458,7 @@ export function OrgTeamMember({
                             if (permsOverridden && overridePerms) await updateMemberDetails(data);
                             else if (!permsOverridden && overridePerms) await addPermissionOverride(data);
                         }}
-                        className="grid w-full gap-form-elements"
+                        className="grid gap-form-elements px-1"
                     >
                         <FormItem className="flex-row items-center justify-between gap-x-4 sm:gap-x-8">
                             <div className="flex flex-col items-start justify-center gap-1">
@@ -518,7 +518,7 @@ export function OrgTeamMember({
                                     <FormItem>
                                         <FormLabel className="font-bold">Permissions</FormLabel>
                                         <div
-                                            className="grid w-full gap-x-4 gap-y-1 ps-1"
+                                            className="grid w-full gap-x-4 gap-y-1"
                                             style={{
                                                 gridTemplateColumns: "repeat(auto-fit, minmax(11rem, 1fr))",
                                             }}

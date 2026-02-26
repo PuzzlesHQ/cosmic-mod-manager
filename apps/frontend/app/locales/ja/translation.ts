@@ -239,9 +239,9 @@ export default {
         organization: "組織",
         project: "プロジェクト",
         details: "詳細",
-        licensed: (license: string) => ["ライセンス", license, ""],
-        updatedAt: (when: string) => `更新 ${when}`, // eg: Updated 3 days ago
-        publishedAt: (when: string) => `公開 ${when}`, // eg: Published 3 days ago
+        licensed: (license) => ["ライセンス ", license],
+        updatedAt: (when) => `更新 ${when}`, // eg: Updated 3 days ago
+        publishedAt: (when) => `公開 ${when}`, // eg: Published 3 days ago
         gallery: "ギャラリー",
         changelog: "更新履歴",
         versions: "バージョン",

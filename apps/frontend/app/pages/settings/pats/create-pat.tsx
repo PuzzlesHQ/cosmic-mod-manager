@@ -228,7 +228,7 @@ function PatInfoForm({ patData, onSubmit, loading, ...props }: PatInfoFormProps)
                                     <FormItem className="items-stretch">
                                         <FormLabel>{t.settings.scopes}</FormLabel>
 
-                                        <div className="grid gap-x-3 sm:grid-cols-3">
+                                        <div className="grid gap-x-3 gap-y-2 sm:grid-cols-3">
                                             {Object.values(API_SCOPE)
                                                 .filter((scope) => PAT_RESTRICTED_SCOPES.includes(scope) === false)
                                                 .map((scope) => {
@@ -245,12 +245,9 @@ function PatInfoForm({ patData, onSubmit, loading, ...props }: PatInfoFormProps)
                                                                     );
                                                                 }
                                                             }}
-                                                            className="py-1.5"
                                                         >
-                                                            <span>
-                                                                {t.settings.apiScopes[scope] ??
-                                                                    CapitalizeAndFormatString(scope)}
-                                                            </span>
+                                                            {t.settings.apiScopes[scope] ??
+                                                                CapitalizeAndFormatString(scope)}
                                                         </LabelledCheckbox>
                                                     );
                                                 })}
