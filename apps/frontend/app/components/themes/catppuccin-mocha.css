@@ -1,52 +1,56 @@
-.catppuccin-mocha {
-    @apply base-theme;
-    color-scheme: dark;
+@tailwind utilities;
 
-    --foreground-bright: 226, 67%, 98%;
-    --foreground: 226, 54%, 92%;
-    --foreground-muted: 227, 28%, 81%;
-    --foreground-extra-muted: 228, 20%, 67%;
-    --foreground-link: 217, 92%, 76%;
+@layer utilities {
+    .catppuccin-mocha {
+        @apply dark;
+        color-scheme: dark;
 
-    --background: 240, 18%, 8%;
-    --card-background: 240, 17%, 15%;
-    --raised-background: 237, 16%, 22%;
-    --hover-background: 234, 15%, 25%;
-    --hover-background-strong: 231, 14%, 31%;
+        --foreground-bright: 226, 67%, 98%;
+        --foreground: 226, 54%, 92%;
+        --foreground-muted: 227, 28%, 81%;
+        --foreground-extra-muted: 228, 20%, 67%;
+        --foreground-link: 217, 92%, 76%;
 
-    --accent-text: 267, 84%, 81%;
-    --accent-bg: 267, 86%, 72%;
-    --accent-bg-foreground: 226, 67%, 8%;
+        --background: 240, 18%, 8%;
+        --card-background: 240, 17%, 15%;
+        --raised-background: 237, 16%, 22%;
+        --hover-background: 234, 15%, 25%;
+        --hover-background-strong: 231, 14%, 31%;
 
-    --error-fg: 343, 98%, 82%;
-    --error-bg: 343, 78%, 68%, 0.12;
-    --warning-fg: 23, 92%, 75%;
-    --warning-bg: 23, 92%, 75%, 0.1;
-    --success-fg: 115, 70%, 76%;
-    --success-bg: 115, 62%, 76%, 0.1;
+        --accent-text: 267, 84%, 81%;
+        --accent-bg: 267, 86%, 72%;
+        --accent-bg-foreground: 226, 67%, 8%;
 
-    --primary-btn-bg: 267, 86%, 72%;
-    --primary-btn-fg: 226, 67%, 8%;
-    --secondary-btn-bg: var(--raised-background);
-    --secondary-btn-fg: var(--foreground);
-    --danger-btn-bg: 343, 78%, 68%;
-    --danger-btn-fg: 343, 84%, 6%;
-    --moderation-btn-bg: 23, 92%, 75%;
-    --moderation-btn-fg: 23, 92%, 4%;
+        --error-fg: 343, 98%, 82%;
+        --error-bg: 343, 78%, 68%, 0.12;
+        --warning-fg: 23, 92%, 75%;
+        --warning-bg: 23, 92%, 75%, 0.1;
+        --success-fg: 115, 70%, 76%;
+        --success-bg: 115, 62%, 76%, 0.1;
 
-    --shadow: 240, 20%, 10%;
-    --border: 240, 18%, 24%;
-    --separator: 237, 16%, 24%;
+        --primary-btn-bg: 267, 86%, 72%;
+        --primary-btn-fg: 226, 67%, 8%;
+        --secondary-btn-bg: var(--raised-background);
+        --secondary-btn-fg: var(--foreground);
+        --danger-btn-bg: 343, 78%, 68%;
+        --danger-btn-fg: 343, 84%, 6%;
+        --moderation-btn-bg: 23, 92%, 75%;
+        --moderation-btn-fg: 23, 92%, 4%;
 
-    --chart-1: 267, 84%, 81%;
+        --shadow: 240, 20%, 10%;
+        --border: 240, 18%, 24%;
+        --separator: 237, 16%, 24%;
 
-    /* Border Radius */
-    --radius-sm: 0.2rem;
-    --radius-md: 0.33rem;
-    --radius-DEFAULT: 0.5rem;
-    --radius-lg: 0.67rem;
-    --radius-xl: 1rem;
-    --radius-2xl: 1.17rem;
-    --radius-3xl: 1.6rem;
-    --radius-full: 9999px;
+        --chart-1: 267, 84%, 81%;
+
+        /* Border Radius */
+        --radius-sm: 0.2rem;
+        --radius-md: 0.33rem;
+        --radius-DEFAULT: 0.5rem;
+        --radius-lg: 0.67rem;
+        --radius-xl: 1rem;
+        --radius-2xl: 1.17rem;
+        --radius-3xl: 1.6rem;
+        --radius-full: 9999px;
+    }
 }
