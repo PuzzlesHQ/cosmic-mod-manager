@@ -157,7 +157,7 @@ function EnvSupportChip(props: EnvSupportChipProps) {
             icon={props.icon}
             className={cn("font-semibold", props.title ? "cursor-help" : "", props.className)}
         >
-            <span className="trim-both">{props.label}</span>
+            {props.label}
         </LabelledIcon>
     );
 }
