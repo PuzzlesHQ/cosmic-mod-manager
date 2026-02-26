@@ -1,28 +1,31 @@
-/* DARK THEME */
+@tailwind utilities;
 
+/* DARK THEME */
 /* Mofify _base.css to tweak dark theme colors */
 
-.dark {
-    color-scheme: dark;
-    @apply base-theme;
-}
+@layer utilities {
+    .dark {
+        @apply base-theme;
+        color-scheme: dark;
+    }
 
-.oled {
-    @apply base-theme;
-    color-scheme: dark;
+    .oled {
+        @apply base-theme;
+        color-scheme: dark;
 
-    --foreground-bright: 208, 16%, 94%;
-    --foreground: 208, 16%, 85%;
-    --foreground-muted: 208, 16%, 78%;
-    --foreground-extra-muted: 208, 16%, 64%;
+        --foreground-bright: 208, 16%, 94%;
+        --foreground: 208, 16%, 85%;
+        --foreground-muted: 208, 16%, 78%;
+        --foreground-extra-muted: 208, 16%, 64%;
 
-    --background: 0, 0%, 0%;
-    --card-background: 215, 16%, 9%;
-    --raised-background: 215, 16%, 15%;
-    --hover-background: 215, 15%, 19%;
-    --hover-background-strong: 215, 14%, 26%;
+        --background: 0, 0%, 0%;
+        --card-background: 215, 16%, 9%;
+        --raised-background: 215, 16%, 15%;
+        --hover-background: 215, 15%, 19%;
+        --hover-background-strong: 215, 14%, 26%;
 
-    --shadow: 215, 20%, 3%;
-    --border: 215, 16%, 13%;
-    --separator: 215, 16%, 12%;
+        --shadow: 215, 20%, 3%;
+        --border: 215, 16%, 13%;
+        --separator: 215, 16%, 12%;
+    }
 }
