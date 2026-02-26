@@ -2,6 +2,65 @@
 
 *css variables for defining a new theme*
 
+## Adding a custom theme
+
+1. **Create a CSS file** at `app/components/themes/your-theme.css`.
+    - Copy paste this boilerplate code
+        ```css
+        @tailwind utilities;
+
+        @layer utilities {
+            .YOUR_THEME {
+                
+            }
+        }
+        ```
+    
+    - Add the fallback theme and color scheme (dark/light) at the top
+        ```css
+        @apply dark;
+        color-scheme: dark;
+        ```
+
+        If you're adding a light theme you'd make `light` the fallback theme and `color-scheme: light;` instead.
+
+
+    - Now you can start adding the theme variables (See [the format below](#format))
+        ```css
+        --foreground-bright: 0, 0%, 100%;
+        /* ... rest of the variables */
+        ```
+
+2. **Import the file** in `app/components/themes/index.css` at the bottom:
+
+    ```css
+    /* existing themes */
+    @import "./your-theme.css";
+    ```
+
+3. **Register the theme** in [`app/components/themes/config.tsx`](/apps/frontend/app/components/themes/config.tsx):
+
+    - Add a key to the `ThemePreference` enum:
+        ```ts
+        export enum ThemePreference {
+            // ...existing themes
+            YOUR_THEME = "your-theme",
+        }
+        ```
+
+    - Add an entry to the `Themes` array:
+        ```ts
+        {
+            label: "Your Theme",
+            name: ThemePreference.YOUR_THEME,
+            icon: <SomeIcon className="h-5 w-5 text-current" />,
+            variant: ThemeVariant.DARK, // or ThemeVariant.LIGHT
+        }
+        ```
+        If you're not sure about the icon, just copy the icon of dark/light theme.
+
+---
+
 ### Format
 
 All the Colors must be hsl values without the wrapping `hsl()` function. \
@@ -54,3 +113,38 @@ You can also reference the [base theme](/apps/frontend/app/components/themes/_ba
 | --shadow | Shadow color |
 | --border | Border color |
 | --separator | Separator color (usually less strong than border color) |
+|  |  |
+| **Charts** |  |
+| --chart-1 | Primary chart/graph color (used in analytics charts) |
+|  |  |
+| **Loader Colors** | Text color for mod loaders and plugins |
+| --loader-fg-quilt | |
+| --loader-fg-puzzle_loader | |
+| --loader-fg-paradox | |
+| --loader-fg-simply_shaders | |
+|  |  |
+| **User Role Colors** |  |
+| --role-moderator-fg | Username/badge color for moderators |
+| --role-admin-fg | Username/badge color for admins |
+|  |  |
+| **Border Radius** |  |
+| --radius-sm | |
+| --radius-md | |
+| --radius-DEFAULT | |
+| --radius-lg | |
+| --radius-xl | |
+| --radius-2xl | |
+| --radius-3xl | |
+| --radius-full | |
+|  |  |
+| **Font Sizes** | From small to large |
+| --font-super-tiny | |
+| --font-tiny | |
+| --font-sm | |
+| --font-base | |
+| --font-md | |
+| --font-lg | |
+| --font-lg-plus | |
+| --font-xl | |
+| --font-xl-plus | |
+| --font-2xl | |
