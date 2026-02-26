@@ -4,7 +4,7 @@ The REST API server for [CRMM](https://crmm.tech).
 
 ## Tech stack
 [Hono](https://hono.dev)
-[![Typescript](https://skillicons.dev/icons?i=ts)](https://typescript.org)
+[![Typescript](https://skillicons.dev/icons?i=ts)](https://typescriptlang.org)
 [![Bun](https://skillicons.dev/icons?i=bun)](https://bun.sh)
 [![Postgres](https://skillicons.dev/icons?i=postgres)](https://www.postgresql.org)
 [![Prisma](https://skillicons.dev/icons?i=prisma)](https://www.prisma.io)
