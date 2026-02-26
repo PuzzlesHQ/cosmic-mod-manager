@@ -25,10 +25,12 @@ import { usePreferences } from "~/hooks/preferences";
 import { getThemeClassName } from "~/hooks/preferences/theme";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
+import SecondaryNav from "~/pages/project/secondary-nav";
 import ReportButton from "~/pages/report/report-btn";
 import type { UserOutletData } from "~/routes/user/layout";
 import { OrgPagePath, UserProfilePath } from "~/utils/urls";
-import SecondaryNav from "../project/secondary-nav";
+
+import "./styles.css";
 
 interface Props {
     userData: UserProfileData;
