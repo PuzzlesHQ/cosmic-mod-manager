@@ -60,7 +60,7 @@ export default {
     },
 
     homePage: {
-        title: (projectType: string) => ["Cosmic\u00A0Reachの", projectType, "のための場所"],
+        title: (projectType) => ["Cosmic\u00A0Reachの", projectType, "のための場所"],
         desc: "Cosmic ReachのModに最高の場所。コンテンツを発見し、遊び、作成する、そのすべてを1つの場所で。",
         exploreMods: "Modを探してみよう",
     },
@@ -120,11 +120,11 @@ export default {
         addPassDialogDesc: "このパスワードを使用してアカウントにログインできます",
         manageProviders: "管理",
         linkedProviders: "外部アカウント",
-        linkProvider: (provider: string) => `${provider}のアカウントと連携する`,
+        linkProvider: (provider) => `${provider}のアカウントと連携する`,
         link: "連携", // Verb
         sureToDeleteAccount: "本当にアカウントを削除しますか？",
         profileInfo: "プロフィール情報",
-        profileInfoDesc: (site: string) => `あなたのプロフィール情報は、${site}で公開されています。`,
+        profileInfoDesc: (site) => `あなたのプロフィール情報は、${site}で公開されています。`,
         profilePic: "プロフィール画像",
         bio: "自己紹介",
         bioDesc: "他のユーザーにあなたのことを伝えるための簡単な説明です。",
@@ -133,9 +133,9 @@ export default {
         sessionsDesc:
             "これらは現在アカウントにログインしているすべてのデバイスです。個別にセッションを破棄できます。見覚えのないことが表示されている場合は、すぐにセッションを破棄して、外部アカウントのパスワードを変更してください。",
         ipHidden: "IP非表示",
-        lastAccessed: (when: string) => `${when}に最終アクセス`,
-        created: (when: string) => `${when}に作成`, // eg: Created a month ago
-        sessionCreatedUsing: (providerName: string) => `${providerName}を使っているセッション`,
+        lastAccessed: (when) => `${when}に最終アクセス`,
+        created: (when) => `${when}に作成`, // eg: Created a month ago
+        sessionCreatedUsing: (providerName) => `${providerName}を使っているセッション`,
         currSession: "現在のセッション",
         revokeSession: "セッションを破棄",
     },
@@ -156,7 +156,7 @@ export default {
         viewNotifHistory: "通知履歴を見る",
         noUnreadNotifs: "未読の通知はありません。",
         totalDownloads: "総ダウンロード数",
-        fromProjects: (count: number) => {
+        fromProjects: (count) => {
             return `（${count}件のプロジェクト）`;
         },
         totalFollowers: "総フォロワー数",
@@ -269,20 +269,19 @@ export default {
         downloads: "ダウンロード数", // Used for table headers
         openInNewTab: "新しいタブで開く",
         copyLink: "リンクをコピー",
-        doesNotSupport: (project: string, version: string, loader: string) => {
+        doesNotSupport: (project, version, loader) => {
             return `${project}の${version}は${loader}をサポートしていません`;
         },
-        downloadItem: (project: string) => `${project}をダウンロード`,
+        downloadItem: (project) => `${project}をダウンロード`,
         gameVersion: (version) => ["ゲームのバージョン：", version],
         selectGameVersion: "ゲームのバージョンを選択",
         platform: (loader) => ["プラットフォーム：", loader],
         selectPlatform: "プラットフォームを選択",
-        onlyAvailableFor: (project: string, platform: string) => `${project}は${platform}のみで利用可能です`,
-        noVersionsAvailableFor: (gameVersion: string, loader: string) =>
-            `${gameVersion}のためのバージョンは${loader}にありません`,
+        onlyAvailableFor: (project, platform) => `${project}は${platform}のみで利用可能です`,
+        noVersionsAvailableFor: (gameVersion, loader) => `${gameVersion}のためのバージョンは${loader}にありません`,
         declinedInvitation: "招待を辞退しました",
-        teamInvitationTitle: (teamType: string) => `${teamType}に参加する招待`, // teamType = organization | project
-        teamInviteDesc: (teamType: string, role: string) => `あなたは${teamType}の'${role}'として招待されています。`,
+        teamInvitationTitle: (teamType) => `${teamType}に参加する招待`, // teamType = organization | project
+        teamInviteDesc: (teamType, role) => `あなたは${teamType}の'${role}'として招待されています。`,
 
         browse: {
             mod: "Modを見る",
@@ -296,7 +295,7 @@ export default {
 
         rejected: "却下",
         withheld: "保留中",
-        archivedMessage: (project: string) =>
+        archivedMessage: (project) =>
             `${project}はアーカイブされました。作成者がプロジェクトのアーカイブを解除しない限り、これ以上更新されることはありません。`,
         publishingChecklist: {
             required: "必須",
@@ -318,9 +317,9 @@ export default {
             addExtLinks: "外部リンクの追加",
             addExtLinksDesc: "ソースコード、バグトラッカー、Discordサーバーなどの関連リンクを追加してください。",
             selectLicense: "ライセンスを選択",
-            selectLicenseDesc: (projectType: string) => `${projectType}が配布されているライセンスを選択してください。`,
+            selectLicenseDesc: (projectType) => `${projectType}が配布されているライセンスを選択してください。`,
             selectEnv: "対応環境を選択",
-            selectEnvDesc: (projectType: string) =>
+            selectEnvDesc: (projectType) =>
                 `${projectType}がクライアント側／サーバー側のどちらで機能するかを選択してください。`,
             requiredStepsDesc: "＊印は必須項目です",
             submitForReview: "審査に提出",
@@ -369,10 +368,10 @@ export default {
             optional: "任意",
             incompatible: "非互換性",
             embedded: "埋め込み",
-            required_desc: (version: string) => `バージョン${version}は必須です`,
-            optional_desc: (version: string) => `バージョン${version}は任意です`,
-            incompatible_desc: (version: string) => `バージョン${version}は互換性がありません`,
-            embedded_desc: (version: string) => `バージョン${version}は埋め込まれています`,
+            required_desc: (version) => `バージョン${version}は必須です`,
+            optional_desc: (version) => `バージョン${version}は任意です`,
+            incompatible_desc: (version) => `バージョン${version}は互換性がありません`,
+            embedded_desc: (version) => `バージョン${version}は埋め込まれています`,
         },
 
         primary: "プライマリー",
@@ -410,7 +409,7 @@ export default {
         wikiPageDesc: "プロジェクトの情報、ドキュメンテーション、使い方を含むページです。",
         discordInvite: "Discordサーバー",
         discordInviteDesc: "プロジェクトのDiscordサーバーへの招待リンクです。",
-        licenseDesc: (projectType: string) =>
+        licenseDesc: (projectType) =>
             `あなたの${projectType}に適切なライセンスを選択することは非常に重要です。リストから1つ選択するか、カスタムのライセンスを使えます。また、選択したライセンスへのURLを入力することもできて、URLを入力しない場合はライセンスの文章が表示されます。`,
         customLicenseDesc:
             "有効な[SPDX Identifier](https://spdx.org/licenses)を入力してください。ライセンスにSPDX Identifierがない場合（例えば、ライセンスを自分で作成した場合や、ライセンスがCosmic Reach固有のものである場合）は、チェックボックスにチェックを入れ、代わりにライセンス名を入力してください。",
@@ -420,17 +419,16 @@ export default {
         licenseUrl: "ライセンスのURL（任意）",
         spdxId: "SPDX Identifier",
         doesntHaveSpdxId: "ライセンスにSPDX Identiferがありません",
-        tagsDesc: (projectType: string) =>
+        tagsDesc: (projectType) =>
             `正確なタグ付けは、他のユーザーがあなたの${projectType}を見つけやすくために重要です。該当するタグをすべて選択してください。`,
         featuredCategories: "優先表示カテゴリー",
-        featuredCategoriesDesc: (count: number) => `最も関連性の高いタグを最大${count}個まで優先表示できます。`,
+        featuredCategoriesDesc: (count) => `最も関連性の高いタグを最大${count}個まで優先表示できます。`,
         selectAtLeastOneCategory: "カテゴリーを優先表示するには、少なくとも1つのカテゴリーを選択してください。",
         projectInfo: "プロジェクト情報",
         clientSide: "クライアント側",
-        clientSideDesc: (projectType: string) =>
-            `${projectType}にクライアント側の機能があるかどうかで選択してください。`,
+        clientSideDesc: (projectType) => `${projectType}にクライアント側の機能があるかどうかで選択してください。`,
         serverSide: "サーバー側",
-        serverSideDesc: (projectType: string) => `${projectType}にサーバー側の機能があるかどうかで選択してください。`,
+        serverSideDesc: (projectType) => `${projectType}にサーバー側の機能があるかどうかで選択してください。`,
         unknown: "不明",
         clientOrServer: "クライアントまたはサーバー",
         clientAndServer: "クライアントとサーバー",
@@ -450,12 +448,12 @@ export default {
         unlisted: "限定公開",
         archived: "アーカイブ済み",
         deleteProject: "プロジェクトの削除",
-        deleteProjectDesc: (site: string) =>
+        deleteProjectDesc: (site) =>
             `プロジェクトを${site}のサーバーと検索結果から削除します。これをクリックするとプロジェクトが削除されますので、十分注意してください！`,
         sureToDeleteProject: "本当にこのプロジェクトを削除しますか？",
         deleteProjectDesc2:
             "続行すると、プロジェクトのすべてのバージョンとデータがサーバーから削除されます。他のプロジェクトが壊れる可能性がありますので、ご注意ください。",
-        typeToVerify: (projectName: string) => `確認のため、以下に**${projectName}**と入力してください：`,
+        typeToVerify: (projectName) => `確認のため、以下に**${projectName}**と入力してください：`,
         typeHere: "ここに入力...",
         manageMembers: "メンバーを管理",
         leftProjectTeam: "チームを抜けました",
@@ -496,13 +494,13 @@ export default {
             "このプロジェクトは組織によって管理されていません。いずれかの組織に所属している場合は、その組織に管理を移管することができます。",
         transferManagementToOrg: "管理を移管",
         selectOrg: "組織を選択",
-        projectManagedByOrg: (orgName: string) =>
+        projectManagedByOrg: (orgName) =>
             `このプロジェクトは${orgName}によって管理されています。メンバー権限のデフォルトは組織設定で設定されます。下記で上書きすることができます。`,
         removeFromOrg: "組織から削除",
         memberRemoved: "メンバーの削除に成功しました",
-        sureToRemoveMember: (memberName: string) => `本当に${memberName}をこのチームから削除しますか？`,
+        sureToRemoveMember: (memberName) => `本当に${memberName}をこのチームから削除しますか？`,
         ownershipTransfered: "所有権の移転に成功しました",
-        sureToTransferOwnership: (memberName: string) => `本当に${memberName}に所有権の移転をしますか？`,
+        sureToTransferOwnership: (memberName) => `本当に${memberName}に所有権の移転をしますか？`,
     },
 
     organization: {
@@ -516,7 +514,7 @@ export default {
         deleteOrgDesc:
             "組織を削除すると、組織のすべてのプロジェクトが組織のオーナーに移転されます。この操作は元に戻せません。",
         sureToDeleteOrg: "本当にこの組織を削除しますか？",
-        deleteOrgNamed: (orgName: string) => `組織「${orgName}」を削除`,
+        deleteOrgNamed: (orgName) => `組織「${orgName}」を削除`,
         deletionWarning: "これにより、この組織は永久に削除されます（本当に永久です）。",
 
         perms: {
@@ -534,9 +532,9 @@ export default {
     user: {
         admin: "アドミン",
         moderator: "モデレーター",
-        doesntHaveProjects: (user: string) => `${user}にはまだプロジェクトがありません。`,
-        isntPartOfAnyOrgs: (user: string) => `${user}はどの組織にも所属していません。`,
-        joined: (when: string) => `${when}に参加`, // eg: Joined 2 months ago
+        doesntHaveProjects: (user) => `${user}にはまだプロジェクトがありません。`,
+        isntPartOfAnyOrgs: (user) => `${user}はどの組織にも所属していません。`,
+        joined: (when) => `${when}に参加`, // eg: Joined 2 months ago
     },
 
     collection: {
@@ -557,7 +555,7 @@ export default {
         socials: "ソーシャル",
         about: "CRMMについて",
         changeTheme: "テーマを変更",
-        siteOfferedIn: (site: string) => `${site}は次の言語で提供されています：`,
+        siteOfferedIn: (site) => `${site}は次の言語で提供されています：`,
     },
 
     legal: {
@@ -583,14 +581,14 @@ export default {
         moderation: "管理",
         statistics: "統計",
         authors: "作成者",
-        projectsInQueue: (count: number) => {
+        projectsInQueue: (count) => {
             return `待ち行列には${count}個のプロジェクトがあります。`;
         },
         // hours will either be 24 or 48
-        projectsQueuedFor: (count: number, hours: number) => {
+        projectsQueuedFor: (count, hours) => {
             return `${count}個のプロジェクトが${hours}時間以上待ち行列に入っています。`;
         },
-        submitted: (when: string) => `Submitted ${when}`, // eg: Submitted 4 hours ago, (the date string comes from the localized phrases defined at end of the file)
+        submitted: (when) => `Submitted ${when}`, // eg: Submitted 4 hours ago, (the date string comes from the localized phrases defined at end of the file)
         viewProject: "プロジェクトを見る",
         awaitingApproval: "プロジェクトは承認待ちです",
         draft: "下書き",
@@ -641,7 +639,7 @@ export default {
         pageNotFound: "404｜ページが見つかりません。",
         pageNotFoundDesc: "お探しのページは見つかりませんでした。",
         projectNotFound: "プロジェクトが見つかりませんでした。",
-        projectNotFoundDesc: (type: string, slug: string) => `スラッグ/ID「${slug}」の${type}は存在しません。`,
+        projectNotFoundDesc: (type, slug) => `スラッグ/ID「${slug}」の${type}は存在しません。`,
     },
 
     editor: {
@@ -674,6 +672,6 @@ export default {
         preview: "プレビュー",
         insert: "挿入",
         keyboardShortcuts: "キーボードショートカット",
-        supportsMarkdown: (markdownPageUrl: string) => `ここでは[Markdown](${markdownPageUrl})が使えます。`,
+        supportsMarkdown: (markdownPageUrl) => `ここでは[Markdown](${markdownPageUrl})が使えます。`,
     },
 } satisfies Locale;

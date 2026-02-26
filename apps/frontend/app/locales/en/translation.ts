@@ -1,5 +1,4 @@
 import type { API_SCOPE } from "@app/utils/pats";
-import type { FixedStringArray } from "@app/utils/types/helpers";
 import type React from "react";
 import type { Translation } from "~/locales/types";
 import { AboutUs } from "./about";
@@ -80,7 +79,7 @@ export default {
     },
 
     homePage: {
-        title: (projectType: string): FixedStringArray<3> => ["The place for Cosmic\u00A0Reach ", projectType, ""],
+        title: (projectType: React.ReactNode) => ["The place for Cosmic\u00A0Reach ", projectType],
         desc: "The best place for your Cosmic Reach mods. Discover, play, and create content, all in one spot.",
         exploreMods: "Explore mods",
     },

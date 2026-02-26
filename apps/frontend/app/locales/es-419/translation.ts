@@ -68,7 +68,7 @@ export default {
     },
 
     homePage: {
-        title: (projectType: string) => ["El lugar para ", projectType, " de Cosmic\u00A0Reach"],
+        title: (projectType) => ["El lugar para ", projectType, " de Cosmic\u00A0Reach"],
         desc: "El mejor lugar para tus mods de Cosmic Reach. Descubre, juega y crea contenido, todo en un solo sitio.",
         exploreMods: "Explorar mods",
     },
@@ -129,11 +129,11 @@ export default {
         addPassDialogDesc: "Podrás usar esta contraseña para iniciar sesión en tu cuenta",
         manageProviders: "Gestionar proveedores",
         linkedProviders: "Proveedores de autenticación vinculados",
-        linkProvider: (provider: string) => `Vincular ${provider} a tu cuenta`,
+        linkProvider: (provider) => `Vincular ${provider} a tu cuenta`,
         link: "Vincular", // Verb
         sureToDeleteAccount: "¿Estás seguro de que quieres eliminar tu cuenta?",
         profileInfo: "Información del perfil",
-        profileInfoDesc: (site: string) => `Tu información de perfil es visible públicamente en ${site}.`,
+        profileInfoDesc: (site) => `Tu información de perfil es visible públicamente en ${site}.`,
         profilePic: "Foto de perfil",
         bio: "Biografía",
         bioDesc: "Una breve descripción para contarle a todos un poco sobre ti.",
@@ -142,9 +142,9 @@ export default {
         sessionsDesc:
             "Estos dispositivos están actualmente conectados a tu cuenta. Puedes revocar cualquier sesión en cualquier momento. Si ves algo que no reconoces, revoca la sesión inmediatamente y cambia la contraseña del proveedor de autenticación asociado.",
         ipHidden: "IP oculta",
-        lastAccessed: (when: string) => `Último acceso ${when}`,
-        created: (when: string) => `Creado ${when}`, // eg: Created a month ago
-        sessionCreatedUsing: (providerName: string) => `Sesión creada usando ${providerName}`,
+        lastAccessed: (when) => `Último acceso ${when}`,
+        created: (when) => `Creado ${when}`, // eg: Created a month ago
+        sessionCreatedUsing: (providerName) => `Sesión creada usando ${providerName}`,
         currSession: "Sesión actual",
         revokeSession: "Revocar sesión",
     },
@@ -165,7 +165,7 @@ export default {
         viewNotifHistory: "Ver historial de notificaciones",
         noUnreadNotifs: "No tienes notificaciones no leídas.",
         totalDownloads: "Descargas totales",
-        fromProjects: (count: number) => {
+        fromProjects: (count) => {
             const projects = Pluralize(count, "proyecto", "proyectos");
             return `de ${count} ${projects}`;
         },
@@ -281,20 +281,20 @@ export default {
         downloads: "Descargas", // Used for table headers
         openInNewTab: "Abrir en una nueva pestaña",
         copyLink: "Copiar enlace",
-        doesNotSupport: (project: string, version: string, loader: string) => {
+        doesNotSupport: (project, version, loader) => {
             return `${project} no es compatible con la versión ${version} de ${loader}`;
         },
-        downloadItem: (project: string) => `Descargar ${project}`,
+        downloadItem: (project) => `Descargar ${project}`,
         gameVersion: (version) => ["Versión del juego: ", version],
         selectGameVersion: "Seleccionar versión del juego",
         platform: (loader) => ["Plataforma: ", loader],
         selectPlatform: "Seleccionar plataforma",
-        onlyAvailableFor: (project: string, platform: string) => `${project} solo está disponible para ${platform}`,
-        noVersionsAvailableFor: (gameVersion: string, loader: string) =>
+        onlyAvailableFor: (project, platform) => `${project} solo está disponible para ${platform}`,
+        noVersionsAvailableFor: (gameVersion, loader) =>
             `No hay versiones disponibles para la ${gameVersion} en ${loader}`,
         declinedInvitation: "Invitación rechazada",
-        teamInvitationTitle: (teamType: string) => `Invitación para unirse a un equipo (${teamType})`, // teamType = organization | project
-        teamInviteDesc: (teamType: string, role: string) =>
+        teamInvitationTitle: (teamType) => `Invitación para unirse a un equipo (${teamType})`, // teamType = organization | project
+        teamInviteDesc: (teamType, role) =>
             `Te invitaron a ser miembro de este equipo (${teamType}) con el rol de '${role}'.`,
 
         browse: {
@@ -309,7 +309,7 @@ export default {
 
         rejected: "Rechazado",
         withheld: "Suspendido",
-        archivedMessage: (project: string) =>
+        archivedMessage: (project) =>
             `${project} ha sido archivado. No recibirá más actualizaciones a menos que el autor decida desarchivarlo.`,
         publishingChecklist: {
             required: "Requerido",
@@ -333,10 +333,9 @@ export default {
             addExtLinksDesc:
                 "Añade enlaces relevantes, como fuentes, un sitio web para rastrear errores o una invitación de Discord.",
             selectLicense: "Seleccionar licencia",
-            selectLicenseDesc: (projectType: string) =>
-                `Selecciona la licencia bajo la cual se distribuye tu ${projectType}.`,
+            selectLicenseDesc: (projectType) => `Selecciona la licencia bajo la cual se distribuye tu ${projectType}.`,
             selectEnv: "Seleccionar entornos compatibles",
-            selectEnvDesc: (projectType: string) =>
+            selectEnvDesc: (projectType) =>
                 `Selecciona si el ${projectType} funciona en el lado del cliente o del servidor.`,
             requiredStepsDesc: "Todo lo que está marcado con un asterisco (*) es obligatorio",
             submitForReview: "Enviar para revisión",
@@ -385,10 +384,10 @@ export default {
             optional: "Opcional",
             incompatible: "Incompatible",
             embedded: "Incorporada",
-            required_desc: (version: string) => `La versión ${version} es requerida`,
-            optional_desc: (version: string) => `La versión ${version} es opcional`,
-            incompatible_desc: (version: string) => `La versión ${version} es incompatible`,
-            embedded_desc: (version: string) => `La versión ${version} está incorporada`,
+            required_desc: (version) => `La versión ${version} es requerida`,
+            optional_desc: (version) => `La versión ${version} es opcional`,
+            incompatible_desc: (version) => `La versión ${version} es incompatible`,
+            embedded_desc: (version) => `La versión ${version} está incorporada`,
         },
 
         primary: "Principal",
@@ -430,7 +429,7 @@ export default {
         wikiPageDesc: "Una página que contiene información, documentación y ayuda para el proyecto.",
         discordInvite: "Invitación a Discord",
         discordInviteDesc: "Un enlace de invitación a tu servidor de Discord.",
-        licenseDesc: (projectType: string) =>
+        licenseDesc: (projectType) =>
             `Es muy importante elegir una licencia adecuada para tu ${projectType}. Puedes elegir una de nuestra lista o proporcionar una licencia personalizada. También puedes proporcionar una URL personalizada para tu licencia elegida; de lo contrario, se mostrará el texto de la licencia.`,
         customLicenseDesc:
             "Ingresa un [identificador de licencia SPDX](https://spdx.org/licenses) válido en el lugar indicado. Si tu licencia no tiene un identificador SPDX (por ejemplo, si creaste la licencia tú mismo o es específica de Cosmic Reach), simplemente marca la casilla e ingresa el nombre de la licencia.",
@@ -440,18 +439,16 @@ export default {
         licenseUrl: "URL de la licencia (opcional)",
         spdxId: "Identificador SPDX",
         doesntHaveSpdxId: "La licencia no tiene un identificador SPDX",
-        tagsDesc: (projectType: string) =>
+        tagsDesc: (projectType) =>
             `Es importante etiquetar correctamente para ayudar a las personas a encontrar tu ${projectType}. Asegúrate de seleccionar todas las etiquetas que correspondan.`,
         featuredCategories: "Categorías destacadas",
-        featuredCategoriesDesc: (count: number) => `Puedes destacar hasta ${count} de tus etiquetas más relevantes.`,
+        featuredCategoriesDesc: (count) => `Puedes destacar hasta ${count} de tus etiquetas más relevantes.`,
         selectAtLeastOneCategory: "Selecciona al menos una categoría para destacar.",
         projectInfo: "Información del proyecto",
         clientSide: "Del lado del cliente",
-        clientSideDesc: (projectType: string) =>
-            `Selecciona si tu ${projectType} tiene funcionalidad en el lado del cliente.`,
+        clientSideDesc: (projectType) => `Selecciona si tu ${projectType} tiene funcionalidad en el lado del cliente.`,
         serverSide: "Del lado del servidor",
-        serverSideDesc: (projectType: string) =>
-            `Selecciona si tu ${projectType} tiene funcionalidad en el servidor lógico.`,
+        serverSideDesc: (projectType) => `Selecciona si tu ${projectType} tiene funcionalidad en el servidor lógico.`,
         unknown: "Desconocido",
         clientOrServer: "Cliente o servidor",
         clientAndServer: "Cliente y servidor",
@@ -471,12 +468,12 @@ export default {
         unlisted: "No listado",
         archived: "Archivado",
         deleteProject: "Eliminar proyecto",
-        deleteProjectDesc: (site: string) =>
+        deleteProjectDesc: (site) =>
             `Elimina tu proyecto de los servidores de ${site} y de la búsqueda. ¡Al hacer clic aquí, eliminarás tu proyecto, así que ten mucho cuidado!`,
         sureToDeleteProject: "¿Estás seguro de que quieres eliminar tu proyecto?",
         deleteProjectDesc2:
             "Si procedes, todas las versiones y los datos adjuntos se eliminarán de nuestros servidores. Esto podría afectar a otros proyectos, así que ten cuidado.",
-        typeToVerify: (projectName: string) => `Para verificar, escribe **${projectName}** abajo:`,
+        typeToVerify: (projectName) => `Para verificar, escribe **${projectName}** abajo:`,
         typeHere: "Escribe aquí...",
         manageMembers: "Gestionar miembros",
         leftProjectTeam: "Has salido del equipo",
@@ -519,14 +516,13 @@ export default {
             "Este proyecto no está gestionado por una organización. Si eres miembro de alguna organización, puedes transferir la gestión a una de ellas.",
         transferManagementToOrg: "Transferir gestión",
         selectOrg: "Seleccionar organización",
-        projectManagedByOrg: (orgName: string) =>
+        projectManagedByOrg: (orgName) =>
             `Este proyecto está gestionado por ${orgName}. Los valores predeterminados para los permisos de los miembros se establecen en los ajustes de la organización. Puedes sobrescribirlos a continuación.`,
         removeFromOrg: "Eliminar de la organización",
         memberRemoved: "Miembro eliminado con éxito",
-        sureToRemoveMember: (memberName: string) =>
-            `¿Estás seguro de que quieres eliminar a ${memberName} de este equipo?`,
+        sureToRemoveMember: (memberName) => `¿Estás seguro de que quieres eliminar a ${memberName} de este equipo?`,
         ownershipTransfered: "Propiedad transferida con éxito",
-        sureToTransferOwnership: (memberName: string) =>
+        sureToTransferOwnership: (memberName) =>
             `¿Estás seguro de que quieres transferir la propiedad a ${memberName}?`,
     },
 
@@ -542,7 +538,7 @@ export default {
         deleteOrgDesc:
             "Eliminar tu organización transferirá todos sus proyectos al propietario de la organización. Este proceso es irreversible.",
         sureToDeleteOrg: "¿Estás seguro de que quieres eliminar esta organización?",
-        deleteOrgNamed: (orgName: string) => `Eliminar organización ${orgName}`,
+        deleteOrgNamed: (orgName) => `Eliminar organización ${orgName}`,
         deletionWarning: "Esto eliminará esta organización para siempre (de verdad, para siempre).",
 
         perms: {
@@ -560,9 +556,9 @@ export default {
     user: {
         admin: "Administrador",
         moderator: "Moderador",
-        doesntHaveProjects: (user: string) => `${user} no tiene proyectos aún.`,
-        isntPartOfAnyOrgs: (user: string) => `${user} no es miembro de ninguna organización.`,
-        joined: (when: string) => `Se unió ${when}`, // eg: Joined 2 months ago
+        doesntHaveProjects: (user) => `${user} no tiene proyectos aún.`,
+        isntPartOfAnyOrgs: (user) => `${user} no es miembro de ninguna organización.`,
+        joined: (when) => `Se unió ${when}`, // eg: Joined 2 months ago
     },
 
     collection: {
@@ -583,7 +579,7 @@ export default {
         socials: "Redes sociales",
         about: "Acerca de",
         changeTheme: "Cambiar tema",
-        siteOfferedIn: (site: string) => `${site} ofrecido en:`,
+        siteOfferedIn: (site) => `${site} ofrecido en:`,
     },
 
     legal: {
@@ -609,16 +605,16 @@ export default {
         moderation: "Moderación",
         statistics: "Estadísticas",
         authors: "Autores",
-        projectsInQueue: (count: number) => {
+        projectsInQueue: (count) => {
             if (count === 1) return "Hay 1 proyecto en la cola.";
             return `Hay ${count} proyectos en la cola.`;
         },
         // hours will either be 24 or 48
-        projectsQueuedFor: (count: number, hours: number) => {
+        projectsQueuedFor: (count, hours) => {
             if (count === 1) return `1 proyecto ha estado en la cola por más de ${hours} horas.`;
             return `${count} proyectos han estado en la cola por más de ${hours} horas.`;
         },
-        submitted: (when: string) => `Enviado ${when}`, // eg: Submitted 4 hours ago, (the date string comes from the localized phrases defined at end of the file)
+        submitted: (when) => `Enviado ${when}`, // eg: Submitted 4 hours ago, (the date string comes from the localized phrases defined at end of the file)
         viewProject: "Ver proyecto",
         awaitingApproval: "El proyecto está en la cola para aprobación",
         draft: "Borrador",
@@ -669,7 +665,7 @@ export default {
         pageNotFound: "404 | Página no encontrada.",
         pageNotFoundDesc: "Lo sentimos, no pudimos encontrar la página que estás buscando.",
         projectNotFound: "Proyecto no encontrado",
-        projectNotFoundDesc: (type: string, slug: string) => `El ${type} con el slug/ID "${slug}" no existe.`,
+        projectNotFoundDesc: (type, slug) => `El ${type} con el slug/ID "${slug}" no existe.`,
     },
 
     editor: {
@@ -701,7 +697,7 @@ export default {
         video: "Video",
         preview: "Vista previa",
         insert: "Insertar",
-        supportsMarkdown: (markdownPageUrl: string) => `Puedes usar el formato [Markdown](${markdownPageUrl}) aquí.`,
+        supportsMarkdown: (markdownPageUrl) => `Puedes usar el formato [Markdown](${markdownPageUrl}) aquí.`,
         keyboardShortcuts: "Atajos de teclado",
         action: "Acción",
         shortcut: "Atajo",

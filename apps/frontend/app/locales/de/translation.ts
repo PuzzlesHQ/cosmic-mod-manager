@@ -111,7 +111,7 @@ export default {
     },
 
     homePage: {
-        title: (projectType: string) => ["Der Ort für Cosmic\u00A0Reach ", projectType, ""],
+        title: (projectType) => ["Der Ort für Cosmic\u00A0Reach ", projectType],
         desc: "Der beste Ort für deine Cosmic Reach Mods. Entdecke, spiele und erstelle Inhalte, alles an einer Stelle.",
         exploreMods: "Entdecke Mods",
     },
@@ -171,11 +171,11 @@ export default {
         addPassDialogDesc: "Du wirst diese Passwort benutzen können, um dich mit deinem Konto anzumelden.",
         manageProviders: "Verwalten",
         linkedProviders: "Verknüpfte Anmeldemethode",
-        linkProvider: (provider: string) => `Verknüpfe ${provider} mit deinem Konto`,
+        linkProvider: (provider) => `Verknüpfe ${provider} mit deinem Konto`,
         link: "Verknüpfen", // Verb
         sureToDeleteAccount: "Bist du sicher, dass du dein Konto löschen willst?",
         profileInfo: "Profil",
-        profileInfoDesc: (site: string) => `Dein Profil ist öffentlich sichtbar auf ${site}.`,
+        profileInfoDesc: (site) => `Dein Profil ist öffentlich sichtbar auf ${site}.`,
         profilePic: "Profilbild",
         bio: "Bio",
         bioDesc: "Eine kurze Beschreibung, um anderen ein wenig über dich zu erzählen.",
@@ -184,9 +184,9 @@ export default {
         sessionsDesc:
             "Diese Geräte sind aktuell in deinen Account eingeloggt; du kannst jede Sitzung jederzeit beenden. Solltest du etwas sehen, das du nicht kennst, beende die entsprechende Sitzung sofort und ändere das Passwort deiner Anmeldemethode.",
         ipHidden: "IP versteckt",
-        lastAccessed: (when: string) => `Zuletzt ${when} zugegriffen`,
-        created: (when: string) => `${Capitalize(when)} erstellt`, // eg: Created a month ago
-        sessionCreatedUsing: (providerName: string) => `Sitzung erstellt über ${providerName}`,
+        lastAccessed: (when) => `Zuletzt ${when} zugegriffen`,
+        created: (when) => `${Capitalize(when)} erstellt`, // eg: Created a month ago
+        sessionCreatedUsing: (providerName) => `Sitzung erstellt über ${providerName}`,
         currSession: "Aktuelle Sitzung",
         revokeSession: "Sitzung beenden",
     },
@@ -207,7 +207,7 @@ export default {
         viewNotifHistory: "Benachrichtungsverlauf anzeigen",
         noUnreadNotifs: "Du hast keine ungelesenen Benachrichtigungen.",
         totalDownloads: "Gesamtdownloads",
-        fromProjects: (count: number) => `von ${count} Projekten`,
+        fromProjects: (count) => `von ${count} Projekten`,
         totalFollowers: "Gesamtfollower",
         viewHistory: "Verlauf anzeigen",
         markAllRead: "Alle als gelesen markieren",
@@ -312,21 +312,20 @@ export default {
         downloads: "Downloads", // Used for table headers
         openInNewTab: "In neuem Tab öffnen",
         copyLink: "Link kopieren",
-        doesNotSupport: (project: string, version: string, loader: string) => {
+        doesNotSupport: (project, version, loader) => {
             return `${project} unterstützt ${version} für ${loader} nicht`;
         },
-        downloadItem: (project: string) => `Lade ${project} herunter`,
+        downloadItem: (project) => `Lade ${project} herunter`,
         gameVersion: (version) => ["Spielversion: ", version],
         selectGameVersion: "Spielversion wählen",
         platform: (loader) => ["Platform: ", loader],
         selectPlatform: "Platform wählen",
-        onlyAvailableFor: (project: string, platform: string) => `${project} ist nur für ${platform} verfügbar`,
-        noVersionsAvailableFor: (gameVersion: string, loader: string) =>
-            `Keine Versionen für ${gameVersion} auf ${loader} verfügbar`,
+        onlyAvailableFor: (project, platform) => `${project} ist nur für ${platform} verfügbar`,
+        noVersionsAvailableFor: (gameVersion, loader) => `Keine Versionen für ${gameVersion} auf ${loader} verfügbar`,
         declinedInvitation: "Abgelehnte Einladung",
-        teamInvitationTitle: (teamType: string) =>
+        teamInvitationTitle: (teamType) =>
             `Einladung, ${definiteArticleDative[genderOf[teamType] || ("a" as Gender)]} ${teamType} beizutreten`, // teamType = organization | project
-        teamInviteDesc: (teamType: string, role: string) =>
+        teamInviteDesc: (teamType, role) =>
             `Du wurdest eingeladen, in ${demonstrativePronounDative[genderOf[teamType] || ("a" as Gender)]} ${teamType} Mitglied mit der Rolle '${role}' zu sein.`,
 
         browse: {
@@ -341,10 +340,10 @@ export default {
 
         rejected: "Abgelehnt",
         withheld: "Zurückgehalten",
-        archivedMessage: (project: string) =>
+        archivedMessage: (project) =>
             `${project} wurde archiviert. Es wird keine weiteren Updates geben, außer der Author entscheidet sich, die Archivierung des Projekts aufzuheben.`,
         updateProjectStatus: "Projektstatus ändern",
-        sureToUpdateStatus: (projectName: string, projectType: string, prevStatus: string, newStatus: string) =>
+        sureToUpdateStatus: (projectName, projectType, prevStatus, newStatus) =>
             `Bist du dir sicher, dass du den Status des Projektes **${projectName}** ${projectType} von **${prevStatus}** zu **${newStatus}** ändern möchtest?`,
 
         publishingChecklist: {
@@ -370,10 +369,10 @@ export default {
             addExtLinksDesc:
                 "Füge jegliche relevante Links hinzu, wie zum Quellcode, zum Bugtracker, oder einer Discord-Einladung.",
             selectLicense: "Lizenz wählen",
-            selectLicenseDesc: (projectType: string) =>
+            selectLicenseDesc: (projectType) =>
                 `Wähle die Lizenz, unter der ${secondPersonPossesivePronouns[genderOf[projectType] || ("a" as Gender)]} ${projectType} verbreitet wird.`,
             selectEnv: "Wähle unterstützte Umgebungen",
-            selectEnvDesc: (projectType: string) =>
+            selectEnvDesc: (projectType) =>
                 `Wähle, ob ${secondPersonPossesivePronouns[genderOf[projectType] || ("a" as Gender)]} ${projectType} Client- und/oder Serverseitige Funktionen hat.`,
             requiredStepsDesc: "Alle mit einem Sternchen (*) markierten Felder werden benötigt.",
             submitForReview: "Zur Prüfung vorlegen",
@@ -422,10 +421,10 @@ export default {
             optional: "Optional",
             incompatible: "Unvollständig",
             embedded: "Eingebettet",
-            required_desc: (version: string) => `Version ${version} ist benötigt`,
-            optional_desc: (version: string) => `Version ${version} ist optional`,
-            incompatible_desc: (version: string) => `Version ${version} ist inkompatibel`,
-            embedded_desc: (version: string) => `Version ${version} ist eingebettet`,
+            required_desc: (version) => `Version ${version} ist benötigt`,
+            optional_desc: (version) => `Version ${version} ist optional`,
+            incompatible_desc: (version) => `Version ${version} ist inkompatibel`,
+            embedded_desc: (version) => `Version ${version} ist eingebettet`,
         },
 
         primary: "Primär",
@@ -466,7 +465,7 @@ export default {
         wikiPageDesc: "Eine Seite die Informationen, Dokumentation und Hilfe zu deinem Projekt enthält.",
         discordInvite: "Discord-Einladung",
         discordInviteDesc: "Ein Einladungslink zu deinem Discord-Server.",
-        licenseDesc: (projectType: string) =>
+        licenseDesc: (projectType) =>
             `Es ist sehr wichtig, die richtige Lizenz für ${secondPersonPossesivePronouns[genderOf[projectType] || ("a" as Gender)]} ${projectType} zu wählen. Du kannst eine von unserer Liste wählen, oder eine eigene Lizenz festlegen. Du kannst auch eine URL zu deiner gewählten Lizenz festlegen; andernfalls wird der Text der Lizenz angezeigt.`,
         customLicenseDesc:
             "Gib einen gültigen [SPDX Lizenz-Identifikator](https://spdx.org/licenses) in den markierten Bereich ein. Wenn deine Lizenz keinen SPDX-Identifikator hat (zum Beispiel, wenn du die Lizenz selber erstellt hast, oder, wenn sie sich speziell auf Cosmic Reach bezieht), setze einfach einen Haken in der Box und gib stattdessen den Namen der Lizenz ein.",
@@ -479,14 +478,14 @@ export default {
         tagsDesc: (projectType) =>
             `Das korrekte Wählen von Tags ist wichtig, um Leuten zu helfen, ${secondPersonPossesivePronouns[genderOf[projectType] || ("a" as Gender)]} ${projectType} zu finden. Stelle sicher, alle Tags zu wählen, die zutreffen.`,
         featuredCategories: "Hervorgehobene Kategorien",
-        featuredCategoriesDesc: (count: number) => `Du kannst bis zu ${count} deiner relevantesten Tags hervorheben.`,
+        featuredCategoriesDesc: (count) => `Du kannst bis zu ${count} deiner relevantesten Tags hervorheben.`,
         selectAtLeastOneCategory: "Wähle mindestens eine Kategorie, um eine Kategorie hervorzuheben.",
         projectInfo: "Projekt",
         clientSide: "Clientseitig",
-        clientSideDesc: (projectType: string) =>
+        clientSideDesc: (projectType) =>
             `Wähle dies, wenn ${secondPersonPossesivePronouns[genderOf[projectType] || ("a" as Gender)]} ${projectType} Clientseitige Funktionalität hat.`,
         serverSide: "Serverseitig",
-        serverSideDesc: (projectType: string) =>
+        serverSideDesc: (projectType) =>
             `Wähle dies, wenn ${secondPersonPossesivePronouns[genderOf[projectType] || ("a" as Gender)]} ${projectType} Serverseitige Funktionalität hat.`,
         unknown: "Unbekannt",
         clientOrServer: "Client oder Server",
@@ -507,12 +506,12 @@ export default {
         unlisted: "Nicht gelistet",
         archived: "Archiviert",
         deleteProject: "Projekt löschen",
-        deleteProjectDesc: (site: string) =>
+        deleteProjectDesc: (site) =>
             `Entfernt sein Projekt von ${site}s Servern und aus der Suche. Du löschst dein Projekt damit entgültig, sei also extra vosichtig!`,
         sureToDeleteProject: "Bist du sicher, dass du dieses Projekt löschen willst?",
         deleteProjectDesc2:
             "Wenn du fortfährst, werden alle Versionen und jegliche zusammenhängende Information von unseren Server entfernt. Das kann die Funktion anderer Projekte stören oder sie kaputt machen, sei also vorsichtig.",
-        typeToVerify: (projectName: string) => `Zum Verifizieren gib unten **${projectName}** ein:`,
+        typeToVerify: (projectName) => `Zum Verifizieren gib unten **${projectName}** ein:`,
         typeHere: "Hier eingeben...",
         manageMembers: "Mitglieder verwalten",
         leftProjectTeam: "Du hast das Team verlassen",
@@ -555,13 +554,13 @@ export default {
             "Dieses Projekt wird nicht von einer Organisation verwaltet. Wenn du einer Organisation angehörst, kannst du die Verwaltungsrechte an diese übertragen.",
         transferManagementToOrg: "Verwaltungsrechte übertragen",
         selectOrg: "Organisation wählen",
-        projectManagedByOrg: (orgName: string) =>
+        projectManagedByOrg: (orgName) =>
             `Dieses Projekt wird von ${orgName} verwaltet. Die Standardwerte für Mitgleiderberechtigungen werden in den Organisationseinstellungen festgelegt. Du kannst sie unten überschreiben.`,
         removeFromOrg: "Aus Organisation entfernen",
         memberRemoved: "Mitglied erfolgreich entfernt",
-        sureToRemoveMember: (memberName: string) => `Möchtest du ${memberName} wirklich aus diesem Team entfernen?`,
+        sureToRemoveMember: (memberName) => `Möchtest du ${memberName} wirklich aus diesem Team entfernen?`,
         ownershipTransfered: "Besitz erfolgreich übertragen.",
-        sureToTransferOwnership: (memberName: string) => `Möchtest du wirklich ${memberName} zum Besitzer machen?`,
+        sureToTransferOwnership: (memberName) => `Möchtest du wirklich ${memberName} zum Besitzer machen?`,
     },
 
     organization: {
@@ -577,7 +576,7 @@ export default {
         deleteOrgDesc:
             "Durch das Löschen deiner Organisation werden alle Projekte zum Organisationsinhaber verschoben. Das kann nicht rückgängig gemacht werden.",
         sureToDeleteOrg: "Bist du sicher, dass du diese Organisation löschen willst?",
-        deleteOrgNamed: (orgName: string) => `Organisation ${orgName} löschen`,
+        deleteOrgNamed: (orgName) => `Organisation ${orgName} löschen`,
         deletionWarning: "Dadurch wird die Organisation für immer gelöscht (also wirklich für immer immer).",
 
         perms: {
@@ -595,9 +594,9 @@ export default {
     user: {
         admin: "Admin",
         moderator: "Moderator",
-        doesntHaveProjects: (user: string) => `${user} hat noch keine Projekte.`,
-        isntPartOfAnyOrgs: (user: string) => `${user} ist nicht Mitglied einer Organization.`,
-        joined: (when: string) => `${Capitalize(when)} beigetreten`, // eg: Joined 2 months ago
+        doesntHaveProjects: (user) => `${user} hat noch keine Projekte.`,
+        isntPartOfAnyOrgs: (user) => `${user} ist nicht Mitglied einer Organization.`,
+        joined: (when) => `${Capitalize(when)} beigetreten`, // eg: Joined 2 months ago
     },
 
     footer: {
@@ -608,7 +607,7 @@ export default {
         socials: "Sociale Medien",
         about: "Über Uns",
         changeTheme: "Theme wechseln",
-        siteOfferedIn: (site: string) => `${site} wird angeboten in:`,
+        siteOfferedIn: (site) => `${site} wird angeboten in:`,
     },
 
     legal: {
@@ -634,16 +633,16 @@ export default {
         moderation: "Moderation",
         statistics: "Statistiken",
         authors: "Autoren",
-        projectsInQueue: (count: number) => {
+        projectsInQueue: (count) => {
             if (count === 1) return "Es ist ein Projekt in der Warteschlange.";
             return `Es sind ${count} Projekte in der Warteschlange.`;
         },
         // hours will either be 24 or 48
-        projectsQueuedFor: (count: number, hours: number) => {
+        projectsQueuedFor: (count, hours) => {
             if (count === 1) return `Ein Projekt war über ${hours} Stunden in der Warteschlange.`;
             return `${count} Projekte waren über ${hours} Stunden in der Warteschlange.`;
         },
-        submitted: (when: string) => `${Capitalize(when)} abgeschickt`, // eg: Submitted 4 hours ago, (the date string comes from the localized phrases defined at end of the file)
+        submitted: (when) => `${Capitalize(when)} abgeschickt`, // eg: Submitted 4 hours ago, (the date string comes from the localized phrases defined at end of the file)
         viewProject: "Projekt anzeigen",
         awaitingApproval: "Projekt ist in der Prüfungs-Warteschlange",
         draft: "Entwurf",
@@ -695,7 +694,7 @@ export default {
         pageNotFound: "404 | Seite nicht gefunden.",
         pageNotFoundDesc: "Sorry, aber wir konnten die Seite nach der du gesucht hast nicht finden.",
         projectNotFound: "Projekt nicht gefunden",
-        projectNotFoundDesc: (type: string, slug: string) =>
+        projectNotFoundDesc: (type, slug) =>
             `${Capitalize(indefiniteArticleNominative[genderOf[type] || ("a" as Gender)])} ${type} mit der ID "${slug}" existiert nicht.`,
     },
 
@@ -728,7 +727,7 @@ export default {
         video: "Video",
         preview: "Vorschau",
         insert: "Einfügen",
-        supportsMarkdown: (markdownPageUrl: string) => `Du kannst hier [Markdown](${markdownPageUrl}) nutzen.`,
+        supportsMarkdown: (markdownPageUrl) => `Du kannst hier [Markdown](${markdownPageUrl}) nutzen.`,
         keyboardShortcuts: "Tastenkombinationen",
         action: "Aktion",
         shortcut: "Tastenkombination",

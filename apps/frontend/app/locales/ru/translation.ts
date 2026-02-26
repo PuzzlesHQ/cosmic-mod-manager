@@ -80,7 +80,7 @@ export default {
     },
 
     homePage: {
-        title: (projectType: string) => ["Место, где вы найдете ", projectType, " для Cosmic\u00A0Reach"],
+        title: (projectType) => ["Место, где вы найдете ", projectType, " для Cosmic\u00A0Reach"],
         desc: "Лучшее место для ваших модов Cosmic Reach. Открывайте, играйте и создавайте контент, здесь и сразу.",
         exploreMods: "Найти моды",
     },
@@ -140,11 +140,11 @@ export default {
         addPassDialogDesc: "Вы сможете использовать этот пароль для входа в аккаунт",
         manageProviders: "Управление способами входа",
         linkedProviders: "Используемые способы входа",
-        linkProvider: (provider: string) => `Добавьте возможность входа в аккаунт через ${provider}`,
+        linkProvider: (provider) => `Добавьте возможность входа в аккаунт через ${provider}`,
         link: "Добавить", // Verb
         sureToDeleteAccount: "Вы уверены, что хотите удалить аккаунт?",
         profileInfo: "Информация о профиле",
-        profileInfoDesc: (site: string) => `Информация о вашем профиле доступна на ${site}.`,
+        profileInfoDesc: (site) => `Информация о вашем профиле доступна на ${site}.`,
         profilePic: "Аватарка",
         bio: "Информация",
         bioDesc: "Кратко опишите себя.",
@@ -154,9 +154,9 @@ export default {
             "На этих девайсах есть активные сессии, вы можете завершить любую сессию в любое время. " +
             "Если вы видите незнакомое устройство, немедленно завершите сессию и смените пароль у соответствующего способа входа.",
         ipHidden: "IP Скрыт",
-        lastAccessed: (when: string) => `Последний раз был активен ${when}`,
-        created: (when: string) => `Создан ${when}`, // eg: Created a month ago
-        sessionCreatedUsing: (providerName: string) => `Сессия создана через ${providerName}`,
+        lastAccessed: (when) => `Последний раз был активен ${when}`,
+        created: (when) => `Создан ${when}`, // eg: Created a month ago
+        sessionCreatedUsing: (providerName) => `Сессия создана через ${providerName}`,
         currSession: "Текущая сессия",
         revokeSession: "Завершить сессию",
     },
@@ -177,7 +177,7 @@ export default {
         viewNotifHistory: "Посмотреть историю уведомлений",
         noUnreadNotifs: "У вас нет непрочитанных уведомлений.",
         totalDownloads: "Всего скачиваний",
-        fromProjects: (count: number) => `с ${count} проектов`,
+        fromProjects: (count) => `с ${count} проектов`,
         totalFollowers: "Всего фолловеров",
         viewHistory: "Посмотреть историю",
         markAllRead: "Отметить все как прочитанные",
@@ -284,21 +284,19 @@ export default {
         downloads: "Загрузки", // Used for table headers
         openInNewTab: "Открыть в новой вкладке",
         copyLink: "Копировать ссылку",
-        doesNotSupport: (project: string, version: string, loader: string) => {
+        doesNotSupport: (project, version, loader) => {
             return `${project} не поддерживает версию ${version} для ${loader}`;
         },
-        downloadItem: (project: string) => `Скачать ${project}`,
+        downloadItem: (project) => `Скачать ${project}`,
         gameVersion: (version) => ["Версия игры: ", version],
         selectGameVersion: "Выберите версию игры",
         platform: (loader) => ["Платформа: ", loader],
         selectPlatform: "Выберите платформу",
-        onlyAvailableFor: (project: string, platform: string) => `${project} доступен только для ${platform}`,
-        noVersionsAvailableFor: (gameVersion: string, loader: string) =>
-            `Версий не найдено для ${gameVersion} на ${loader}`,
+        onlyAvailableFor: (project, platform) => `${project} доступен только для ${platform}`,
+        noVersionsAvailableFor: (gameVersion, loader) => `Версий не найдено для ${gameVersion} на ${loader}`,
         declinedInvitation: "Отклонённое приглашение",
-        teamInvitationTitle: (teamType: string) => `Приглашение для присоединения к ${teamType}`, // teamType = organization | project
-        teamInviteDesc: (teamType: string, role: string) =>
-            `Вы были приглашены стать частью ${teamType} в качестве ${role}.`,
+        teamInvitationTitle: (teamType) => `Приглашение для присоединения к ${teamType}`, // teamType = organization | project
+        teamInviteDesc: (teamType, role) => `Вы были приглашены стать частью ${teamType} в качестве ${role}.`,
 
         browse: {
             mod: "Найти моды",
@@ -313,7 +311,7 @@ export default {
 
         rejected: "Отклонено",
         withheld: "Скрыт",
-        archivedMessage: (project: string) =>
+        archivedMessage: (project) =>
             `Проект ${project} был архивирован. Он не будет получать никаких обновлений до тех пор, пока автор не решит разархивировать его.`,
         publishingChecklist: {
             required: "Обязательно",
@@ -336,10 +334,9 @@ export default {
             addExtLinks: "Добавьте ссылки",
             addExtLinksDesc: "Любые полезные ссылки, например, на исходный код, вики и так далее.",
             selectLicense: "Выберите лицензию",
-            selectLicenseDesc: (projectType: string) =>
-                `Выберите лицензию, под которой вы распространяете ${projectType}.`,
+            selectLicenseDesc: (projectType) => `Выберите лицензию, под которой вы распространяете ${projectType}.`,
             selectEnv: "Выберите поддерживаемые среды",
-            selectEnvDesc: (projectType: string) => `Выберите среды, где применяется ваш ${projectType}.`,
+            selectEnvDesc: (projectType) => `Выберите среды, где применяется ваш ${projectType}.`,
             // ? New string
             // requiredStepsDesc: "All marked with an asterisk(*) are required",
             submitForReview: "Отправить на рассмотрение",
@@ -388,10 +385,10 @@ export default {
             optional: "Необязательно",
             incompatible: "Несовместимо",
             embedded: "Встроено",
-            required_desc: (version: string) => `Версия ${version} обязательна`,
-            optional_desc: (version: string) => `Версия ${version} необязательна`,
-            incompatible_desc: (version: string) => `Версия ${version} несовместима`,
-            embedded_desc: (version: string) => `Версия ${version} встроена`,
+            required_desc: (version) => `Версия ${version} обязательна`,
+            optional_desc: (version) => `Версия ${version} необязательна`,
+            incompatible_desc: (version) => `Версия ${version} несовместима`,
+            embedded_desc: (version) => `Версия ${version} встроена`,
         },
 
         primary: "Основной",
@@ -517,13 +514,13 @@ export default {
             "Этот проект не находится под управлением организации. If you are the member of any organizations, you can transfer management to one of them.",
         transferManagementToOrg: "Передать управление",
         selectOrg: "Выберите организацию",
-        projectManagedByOrg: (orgName: string) =>
+        projectManagedByOrg: (orgName) =>
             `Этот проект находится под управлением организации ${orgName}. Стандартные разрешения установлены в настройках организации. Вы можете переопределить их ниже.`,
         removeFromOrg: "Удалить из организации",
         memberRemoved: "Участник успешно удалён",
-        sureToRemoveMember: (memberName: string) => `Вы уверены, что хотите удалить ${memberName} из этой командны?`,
+        sureToRemoveMember: (memberName) => `Вы уверены, что хотите удалить ${memberName} из этой командны?`,
         ownershipTransfered: "Роль владельца успешно передана",
-        sureToTransferOwnership: (memberName: string) =>
+        sureToTransferOwnership: (memberName) =>
             `Вы уверены, что хотите передать роль владельца участнику ${memberName}?`,
     },
 
@@ -539,7 +536,7 @@ export default {
         deleteOrgDesc:
             "Удаление организации приведет к переносу всех проектов к её владельцу. Это действие нельзя отменить.",
         sureToDeleteOrg: "Вы уверены, что хотите удалить эту организацию?",
-        deleteOrgNamed: (orgName: string) => `Удалить организацию ${orgName}`,
+        deleteOrgNamed: (orgName) => `Удалить организацию ${orgName}`,
         deletionWarning: "Это действие удалит организацию навсегда (типо реально навсегда).",
 
         perms: {
@@ -557,9 +554,9 @@ export default {
     user: {
         admin: "Администратор",
         moderator: "Модератор",
-        doesntHaveProjects: (user: string) => `У пользователя ${user} ещё нет проектов.`,
-        isntPartOfAnyOrgs: (user: string) => `Пользователь ${user} не принадлежит ни одной организации.`,
-        joined: (when: string) => `Присоединился ${when}`, // eg: Joined 2 months ago
+        doesntHaveProjects: (user) => `У пользователя ${user} ещё нет проектов.`,
+        isntPartOfAnyOrgs: (user) => `Пользователь ${user} не принадлежит ни одной организации.`,
+        joined: (when) => `Присоединился ${when}`, // eg: Joined 2 months ago
     },
 
     footer: {
@@ -570,7 +567,7 @@ export default {
         socials: "Контакты",
         about: "О нас",
         changeTheme: "Сменить тему",
-        siteOfferedIn: (site: string) => `${site} доступен на следующих языках:`,
+        siteOfferedIn: (site) => `${site} доступен на следующих языках:`,
     },
 
     legal: {
@@ -596,22 +593,23 @@ export default {
         moderation: "Модерация",
         statistics: "Статистика",
         authors: "Авторы",
-        projectsInQueue: (count: number) => {
+        projectsInQueue: (count) => {
             const lastDigit = count % 10;
 
             if (lastDigit === 1) return "1 проект ожидает одобрения.";
             if ([2, 3, 4].includes(lastDigit)) return `${count} проекта ожидают одобрения.`;
             return `${count} проектов ожидают одобрения.`;
         },
+
         // hours will either be 24 or 48
-        projectsQueuedFor: (count: number, hours: number) => {
+        projectsQueuedFor: (count, hours) => {
             const lastDigit = count % 10;
 
             if (lastDigit === 1) return `1 ожидает одобрения уже более ${hours} часов.`;
             if ([2, 3, 4].includes(lastDigit)) return `${count} проекта ожидают одобрения уже более ${hours} часов.`;
             return `${count} проектов ожидают одобрения уже более ${hours} часов.`;
         },
-        submitted: (when: string) => `Отправлен на одобрение ${when}`, // eg: Created 4 hours ago, (the date string comes from the localized phrases defined at end of the file)
+        submitted: (when) => `Отправлен на одобрение ${when}`, // eg: Created 4 hours ago, (the date string comes from the localized phrases defined at end of the file)
         viewProject: "Посмотреть проект",
         awaitingApproval: "Проект ожидает одобрения",
         draft: "Черновик",
@@ -662,7 +660,7 @@ export default {
         pageNotFound: "404 | Страница не найдена.",
         pageNotFoundDesc: "Извините, нам не удалось найти запрашиваемую Вами страницу.",
         projectNotFound: "Проект не найден",
-        projectNotFoundDesc: (type: string, slug: string) => `${type} со slug/ID "${slug}" не существует.`,
+        projectNotFoundDesc: (type, slug) => `${type} со slug/ID "${slug}" не существует.`,
     },
 
     editor: {
