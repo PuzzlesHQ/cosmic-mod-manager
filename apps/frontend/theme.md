@@ -69,37 +69,39 @@ where: `h` is hue (0-360), `s` is saturation (%), `l` is lightness (%) and `a` i
 
 You can also reference the [base theme](/apps/frontend/app/components/themes/_base.css).
 
-| Variable Name | Description |
+| **Text Colors** | |
 |:-- | :-- |
-| |  |
-| **Text Colors** |  |
 | --foreground-bright | A bright text color (primarily used for section/page titles) |
 | --foreground | The regular body text color |
 | --foreground-muted | Secondary text color |
 | --foreground-extra-muted | Tertiary text color (mostly used for decorative items like svg icons) |
 | --foreground-link | A distinct color for links (Usually a bluish color or the accent color) |
-| |  |
+
 | **Background Colors** |  |
+|:-- | :-- |
 | --background | Regular body background |
 | --card-background | Background color for cards |
 | --raised-background | Background color for raised surfaces like Secondary btn bg, button style links' bg etc |
 | --hover-background | Background for hover state |
 | --hover-background-strong | A stronger version of hover-background for some special use cases |
-|  |  |
+
 | **Accents Colors** |  |
+|:-- | :-- |
 | --accent-text | Accent colored text |
 | --accent-bg | Accent colored background |
 | --accent-bg-foreground | Text color to be used when it's on `accent-bg` background, it's separate from regular text color because that might not always be readable on the accent background |
-|  |  |
+
 | **Status Colors** |  |
+|:-- | :-- |
 | --error-fg | Error text color |
 | --error-bg | A tinted background for error message box |
 | --warning-fg | Warning text color |
 | --warning-bg | A tinted background for warning message box |
 | --success-fg | success text color |
 | --success-bg | A tinted background for success message box |
-|  |  |
+
 | **Buttons** |  |
+|:-- | :-- |
 | --primary-btn-bg | Background color of primary action button (Usually accent color) |
 | --primary-btn-fg | Text color for primary button |
 | --secondary-btn-bg | Background color of secondary action button (Usually a greyish color) |
@@ -108,26 +110,31 @@ You can also reference the [base theme](/apps/frontend/app/components/themes/_ba
 | --danger-btn-fg | Text color for destructive button |
 | --moderation-btn-bg | A yellowish colored background for moderation related buttons |
 | --moderation-btn-fg | Text color for moderation button |
-|  |  |
+
 | **Decorations** |  |
+|:-- | :-- |
 | --shadow | Shadow color |
 | --border | Border color |
 | --separator | Separator color (usually less strong than border color) |
-|  |  |
+
 | **Charts** |  |
+|:-- | :-- |
 | --chart-1 | Primary chart/graph color (used in analytics charts) |
-|  |  |
+
 | **Loader Colors** | Text color for mod loaders and plugins |
+|:-- | :-- |
 | --loader-fg-quilt | |
 | --loader-fg-puzzle_loader | |
 | --loader-fg-paradox | |
 | --loader-fg-simply_shaders | |
-|  |  |
+
 | **User Role Colors** |  |
+|:-- | :-- |
 | --role-moderator-fg | Username/badge color for moderators |
 | --role-admin-fg | Username/badge color for admins |
-|  |  |
+
 | **Border Radius** |  |
+|:-- | :-- |
 | --radius-sm | |
 | --radius-md | |
 | --radius-DEFAULT | |
@@ -136,8 +143,9 @@ You can also reference the [base theme](/apps/frontend/app/components/themes/_ba
 | --radius-2xl | |
 | --radius-3xl | |
 | --radius-full | |
-|  |  |
+
 | **Font Sizes** | From small to large |
+|:-- | :-- |
 | --font-super-tiny | |
 | --font-tiny | |
 | --font-sm | |
