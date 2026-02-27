@@ -8,7 +8,30 @@ const SupportedLocales = defineLocales([
         nativeName: "English",
         dir: "ltr",
     },
-
+    {
+        code: "fr",
+        name: "French",
+        nativeName: "Français",
+        dir: "ltr",
+    },
+    {
+        code: "de",
+        name: "German",
+        nativeName: "Deutsch",
+        dir: "ltr",
+    },
+    {
+        code: "ja",
+        name: "Japanese",
+        nativeName: "日本語",
+        dir: "ltr",
+    },
+    {
+        code: "ru",
+        name: "Russian",
+        nativeName: "Русский",
+        dir: "ltr",
+    },
     {
         code: "es",
         name: "Spanish",
@@ -19,34 +42,6 @@ const SupportedLocales = defineLocales([
             name: "Latin America",
             displayName: "Latinoamérica",
         },
-    },
-
-    {
-        code: "fr",
-        name: "French",
-        nativeName: "Français",
-        dir: "ltr",
-    },
-
-    {
-        code: "ru",
-        name: "Russian",
-        nativeName: "Русский",
-        dir: "ltr",
-    },
-
-    {
-        code: "de",
-        name: "German",
-        nativeName: "Deutsch",
-        dir: "ltr",
-    },
-
-    {
-        code: "ja",
-        name: "Japanese",
-        nativeName: "日本語",
-        dir: "ltr",
     },
 ] as const);
 
