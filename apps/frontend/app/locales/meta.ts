@@ -48,6 +48,28 @@ const SupportedLocales = defineLocales([
             displayName: "Latinoamérica",
         },
     },
+    {
+        code: "no",
+        name: "Norwegian",
+        displayName: "Norsk",
+        dir: "ltr",
+        region: {
+            code: "nb",
+            name: "Book Norwegian",
+            displayName: "Bokmål",
+        },
+    },
+    {
+        code: "no",
+        name: "Norwegian",
+        displayName: "Norsk",
+        dir: "ltr",
+        region: {
+            code: "nn",
+            name: "New Norwegian",
+            displayName: "Nynorsk",
+        },
+    },
 ] as const);
 
 type ExtractLocaleCodes<L> = L extends { code: string }
