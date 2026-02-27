@@ -124,7 +124,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<RootOutletD
     const cookie = request.headers.get("Cookie") || "";
     const userConfig = getUserConfig(cookie);
 
-    const effectiveLocale = getValidLocaleCode(getHintLocale(reqUrl.searchParams) ?? userConfig.locale);
+    const effectiveLocale = getValidLocaleCode(getHintLocale(reqUrl.searchParams) || userConfig.locale);
     const effectiveLocale_Meta = getMetadataFromLocaleCode(effectiveLocale) ?? DefaultLocale_Meta;
 
     const urlWithLocaleHint = setHintLocale(reqUrl, effectiveLocale, userConfig.locale, true);
