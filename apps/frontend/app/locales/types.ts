@@ -3,7 +3,7 @@ import type default_locale from "~/locales/default/translation";
 export interface LocaleMetaData {
     code: string; // es
     name: string; // Spanish
-    nativeName: string; // Español
+    displayName: string; // Español
     dir: "ltr" | "rtl";
     fallback?: string;
 
@@ -24,3 +24,11 @@ export interface Translation {
 }
 
 export type Locale = typeof default_locale;
+
+type DeepPartial<T> =
+    T extends Record<string, unknown>
+        ? {
+              [K in keyof T]?: DeepPartial<T[K]>;
+          }
+        : T;
+export type PartialLocale = DeepPartial<Locale>;
