@@ -19,6 +19,7 @@ import yaml from "highlight.js/lib/languages/yaml";
 import { useMemo } from "react";
 // Scripting
 import { cn } from "~/components/utils";
+import { usePreferences } from "~/hooks/preferences";
 import { useTranslation } from "~/locales/provider";
 import { setHintLocale } from "~/locales/utils";
 import { configureXss, md } from "./parse-md";
@@ -81,10 +82,11 @@ interface Props {
 }
 
 export function MarkdownRenderBox({ text, className, divElem, addIdToHeadings = true }: Props) {
+    const prefs = usePreferences();
     const { locale } = useTranslation();
 
     function urlFormatter(url: string) {
-        return setHintLocale(url, locale);
+        return setHintLocale(url, locale, prefs.locale);
     }
 
     const formattedText = useMemo(() => {

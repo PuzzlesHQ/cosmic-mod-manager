@@ -28,14 +28,14 @@ interface CustomLinkProps extends LinkProps {
 
 export default function Link({ ref, escapeUrlWrapper, ...props }: CustomLinkProps) {
     const { locale } = useTranslation();
-    const { viewTransitions } = usePreferences();
+    const prefs = usePreferences();
 
     let to = props.to?.toString().trim() || "#";
     if (escapeUrlWrapper !== true && (to.startsWith("/") || to.startsWith("https://"))) {
-        to = setHintLocale(to, locale);
+        to = setHintLocale(to, locale, prefs.locale);
     }
 
-    return <RemixLink ref={ref} {...props} to={to} viewTransition={viewTransitions !== false} />;
+    return <RemixLink ref={ref} {...props} to={to} viewTransition={prefs.viewTransitions !== false} />;
 }
 
 export function TextLink(props: React.ComponentProps<typeof Link>) {
@@ -136,13 +136,17 @@ export function VariantButtonLink({
 export function useNavigate(dontAlterHintLocale?: boolean, initOptions?: NavigateOptions) {
     const navigate = useNavigate_Original();
     const { locale } = useTranslation();
-    const { viewTransitions } = usePreferences();
+    const prefs = usePreferences();
 
     function __navigate(_to: string, options?: NavigateOptions): void {
         const to = _to?.trim() || "#";
-        const toUrl = dontAlterHintLocale || to.startsWith("#") ? to : setHintLocale(to, locale);
+        const toUrl = dontAlterHintLocale || to.startsWith("#") ? to : setHintLocale(to, locale, prefs.locale);
 
-        navigate(toUrl, { viewTransition: viewTransitions !== false, ...initOptions, ...options });
+        navigate(toUrl, {
+            viewTransition: prefs.viewTransitions !== false,
+            ...initOptions,
+            ...options,
+        });
     }
 
     return __navigate;

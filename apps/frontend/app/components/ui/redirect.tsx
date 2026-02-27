@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router";
+import { usePreferences } from "~/hooks/preferences";
 import { useTranslation } from "~/locales/provider";
 import { setHintLocale } from "~/locales/utils";
 import { setReturnUrl } from "~/pages/auth/oauth-providers";
@@ -8,13 +9,14 @@ import { useNavigate } from "./link";
 export default function Redirect({ to }: { to: string }) {
     const { t, locale } = useTranslation();
     const location = useLocation();
+    const prefs = usePreferences();
 
     useEffect(() => {
         if (to === "/login" || to === "/signup") {
             setReturnUrl(location);
         }
 
-        window.location.href = new URL(setHintLocale(to, locale), window.location.origin).href;
+        window.location.href = new URL(setHintLocale(to, locale, prefs.locale), window.location.origin).href;
     }, []);
 
     return (

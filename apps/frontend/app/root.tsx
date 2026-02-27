@@ -122,30 +122,20 @@ function AppSetup(props: { data: RootOutletData }) {
 export async function loader({ request }: Route.LoaderArgs): Promise<RootOutletData> {
     const reqUrl = new URL(request.url);
     const cookie = request.headers.get("Cookie") || "";
-
-    // Preferences
     const userConfig = getUserConfig(cookie);
 
-    const hintLocale = getHintLocale(reqUrl.searchParams);
-    // The locale obtained from the request url
-    const hintLocale_Metadata = getMetadataFromLocaleCode(hintLocale) || DefaultLocale_Meta;
-    // The locale that is set in user's preference
-    // Url locale takes priority over the prefs locale from the cookie
-    const cookieLocale_Metadata =
-        getMetadataFromLocaleCode(getValidLocaleCode(userConfig.locale)) || DefaultLocale_Meta;
+    const effectiveLocale = getValidLocaleCode(getHintLocale(reqUrl.searchParams) ?? userConfig.locale);
+    const effectiveLocale_Meta = getMetadataFromLocaleCode(effectiveLocale) ?? DefaultLocale_Meta;
 
-    let currLocale = hintLocale_Metadata;
-    if (!hintLocale) currLocale = cookieLocale_Metadata;
+    const urlWithLocaleHint = setHintLocale(reqUrl, effectiveLocale, userConfig.locale, true);
 
-    // If there's no hintLocale and user has a non default locale set, redirect to the url with user's locale
-    if (!hintLocale.length && formatLocaleCode(cookieLocale_Metadata) !== formatLocaleCode(hintLocale_Metadata)) {
-        const localeFormattedUrl = setHintLocale(reqUrl, currLocale);
-        throw Response.redirect(new URL(localeFormattedUrl), 302);
+    // if the current page URL doesn't have the correct locale hint, redirect to the same page with the correct hint
+    // the frontend still works correctly, this is just to ensure that the URL always has the correct locale hint for better sharing and consistency
+    if (urlWithLocaleHint !== reqUrl.href) {
+        throw Response.redirect(urlWithLocaleHint, 302);
     }
 
-    // Session
     let session: LoggedInUserData | null = null;
-
     if (getCookie("auth-token", cookie)?.length) {
         const sessionRes = await serverFetch(request, "/api/auth/me");
         session = await resJson<LoggedInUserData>(sessionRes);
@@ -156,7 +146,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<RootOutletD
     return {
         userConfig: userConfig,
         session: session as LoggedInUserData | null,
-        locale: currLocale,
+        locale: effectiveLocale_Meta,
         supportedLocales: SupportedLocales,
         defaultLocale: DefaultLocale_Meta,
     };

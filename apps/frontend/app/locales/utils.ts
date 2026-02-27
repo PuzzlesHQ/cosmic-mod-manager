@@ -13,13 +13,21 @@ export function getHintLocale(params: URLSearchParams) {
     return getValidLocaleCode(hlParam);
 }
 
-export function setHintLocale(url: string | URL, locale: LocaleMetaData | string, omitDefaultLocale = true) {
+export function setHintLocale(
+    url: string | URL,
+    locale: LocaleMetaData | string,
+    userPreferredLocale = formatLocaleCode(DefaultLocale_Meta),
+    omitOnDefaultLocale = true,
+) {
     const isFullUrl = typeof url !== "string" || url.startsWith("http");
-    const urlObj = typeof url === "string" ? new URL(url, Config.FRONTEND_URL) : url;
-
+    const urlObj = new URL(url, Config.FRONTEND_URL);
     const localeCode = typeof locale === "string" ? locale : formatLocaleCode(locale);
 
-    if (omitDefaultLocale === true && localeCode === formatLocaleCode(DefaultLocale_Meta)) {
+    if (
+        omitOnDefaultLocale === true &&
+        localeCode === formatLocaleCode(DefaultLocale_Meta) &&
+        (!userPreferredLocale || userPreferredLocale === localeCode)
+    ) {
         urlObj.searchParams.delete(HINT_LOCALE_KEY);
     } else {
         urlObj.searchParams.set(HINT_LOCALE_KEY, localeCode);

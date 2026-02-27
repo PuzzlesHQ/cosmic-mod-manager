@@ -5,10 +5,10 @@ import { isbot } from "isbot";
 import ReactDomServer, { type RenderToPipeableStreamOptions } from "react-dom/server";
 import type { EntryContext } from "react-router";
 import { ServerRouter } from "react-router";
+import { getLocale } from "~/locales";
+import { getMetadataFromLocaleCode } from "~/locales/meta";
 import { LocaleProvider } from "~/locales/provider";
 import { getHintLocale } from "~/locales/utils";
-import { getLocale } from "./locales";
-import { getMetadataFromLocaleCode } from "./locales/meta";
 
 const ABORT_DELAY = 5000;
 

@@ -41,7 +41,7 @@ export function MetaTags(props: MetaTagsProps): MetaDescriptor[] {
             tagName: "link",
             rel: "alternate",
             hrefLang: formatLocaleCode(locale),
-            href: setHintLocale(url, locale, false),
+            href: setHintLocale(url, locale, undefined, false),
         };
     });
 
@@ -49,7 +49,7 @@ export function MetaTags(props: MetaTagsProps): MetaDescriptor[] {
         {
             tagName: "link",
             rel: "canonical",
-            href: setHintLocale(url, DefaultLocale_Meta, true),
+            href: setHintLocale(url, DefaultLocale_Meta),
         },
         {
             tagName: "link",

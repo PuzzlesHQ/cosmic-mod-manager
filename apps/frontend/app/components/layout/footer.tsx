@@ -124,7 +124,7 @@ export default function Footer() {
                     const title = region ? `${locale.name} - ${region.name}` : locale.name;
 
                     const formattedCode = formatLocaleCode(locale);
-                    const url = setHintLocale(location.pathname, locale);
+                    const url = setHintLocale(location.pathname, formattedCode, formattedCode);
 
                     return (
                         <TextLink
@@ -194,7 +194,7 @@ export function LangSwitcher() {
                 const newLocaleCode = getValidLocaleCode(value);
 
                 updatePreferences({ locale: newLocaleCode });
-                navigate(setHintLocale(stringifyLocation(location), newLocaleCode), {
+                navigate(setHintLocale(stringifyLocation(location), newLocaleCode, newLocaleCode), {
                     preventScrollReset: true,
                     viewTransition: false,
                 });
