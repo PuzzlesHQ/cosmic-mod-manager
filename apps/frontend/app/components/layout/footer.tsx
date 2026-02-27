@@ -119,7 +119,7 @@ export default function Footer() {
 
                 {SupportedLocalesList.map((locale) => {
                     const region = locale?.region;
-                    const label = region ? `${locale.nativeName} (${region.displayName})` : locale.nativeName;
+                    const label = region ? `${locale.displayName} (${region.displayName})` : locale.displayName;
                     const title = region ? `${locale.name} - ${region.name}` : locale.name;
 
                     const formattedCode = formatLocaleCode(locale);
@@ -188,7 +188,7 @@ export function LangSwitcher() {
     const { locale, changeLocale } = useTranslation();
 
     const formattedLocale = formatLocaleCode(locale);
-    const currLocaleLabel = locale.region ? `${locale.nativeName} (${locale.region.displayName})` : locale.nativeName;
+    const currLocaleLabel = locale.region ? `${locale.displayName} (${locale.region.displayName})` : locale.displayName;
 
     return (
         <Select
@@ -224,7 +224,7 @@ export function LangSwitcher() {
                             <SelectItem key={label} value={formatLocaleCode(locale)} aria-label={label} title={label}>
                                 <div className="flex w-full items-center justify-center gap-1.5 break-words">
                                     <span className="flex items-end justify-center align-bottom">
-                                        {locale.nativeName}
+                                        {locale.displayName}
                                     </span>
                                     {region ? (
                                         <>

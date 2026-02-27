@@ -5,37 +5,37 @@ const SupportedLocales = defineLocales([
     {
         code: "en",
         name: "English",
-        nativeName: "English",
+        displayName: "English",
         dir: "ltr",
     },
     {
         code: "fr",
         name: "French",
-        nativeName: "Français",
+        displayName: "Français",
         dir: "ltr",
     },
     {
         code: "de",
         name: "German",
-        nativeName: "Deutsch",
+        displayName: "Deutsch",
         dir: "ltr",
     },
     {
         code: "ja",
         name: "Japanese",
-        nativeName: "日本語",
+        displayName: "日本語",
         dir: "ltr",
     },
     {
         code: "ru",
         name: "Russian",
-        nativeName: "Русский",
+        displayName: "Русский",
         dir: "ltr",
     },
     {
         code: "es",
         name: "Spanish",
-        nativeName: "Español",
+        displayName: "Español",
         dir: "ltr",
         region: {
             code: "419",
