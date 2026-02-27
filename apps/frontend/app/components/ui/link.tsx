@@ -10,7 +10,8 @@ import type { VariantProps } from "~/components/types";
 import { cn } from "~/components/utils";
 import { usePreferences } from "~/hooks/preferences";
 import { useTranslation } from "~/locales/provider";
-import { changeHintLocale, isCurrLinkActive } from "~/utils/urls";
+import { setHintLocale } from "~/locales/utils";
+import { isCurrLinkActive } from "~/utils/urls";
 import { buttonVariants } from "./button";
 
 export enum LinkPrefetchStrategy {
@@ -31,7 +32,7 @@ export default function Link({ ref, escapeUrlWrapper, ...props }: CustomLinkProp
 
     let to = props.to?.toString().trim() || "#";
     if (escapeUrlWrapper !== true && (to.startsWith("/") || to.startsWith("https://"))) {
-        to = changeHintLocale(locale, to);
+        to = setHintLocale(to, locale);
     }
 
     return <RemixLink ref={ref} {...props} to={to} viewTransition={viewTransitions !== false} />;
@@ -139,7 +140,7 @@ export function useNavigate(dontAlterHintLocale?: boolean, initOptions?: Navigat
 
     function __navigate(_to: string, options?: NavigateOptions): void {
         const to = _to?.trim() || "#";
-        const toUrl = dontAlterHintLocale || to.startsWith("#") ? to : changeHintLocale(locale, to);
+        const toUrl = dontAlterHintLocale || to.startsWith("#") ? to : setHintLocale(to, locale);
 
         navigate(toUrl, { viewTransition: viewTransitions !== false, ...initOptions, ...options });
     }

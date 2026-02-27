@@ -1,8 +1,8 @@
 import MarkdownRenderBox from "~/components/md-editor/md-renderer";
 import { useTranslation } from "~/locales/provider";
+import { setHintLocale } from "~/locales/utils";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
-import { changeHintLocale } from "~/utils/urls";
 import type { Route } from "./+types/privacy";
 
 export default function () {
@@ -17,8 +17,8 @@ export default function () {
                 siteName_Short: Config.SITE_NAME_SHORT,
                 siteName_Long: Config.SITE_NAME_LONG,
                 websiteUrl: Config.FRONTEND_URL,
-                sessionSettings_PageUrl: changeHintLocale(locale, "settings/sessions"),
-                accountSettings_PageUrl: changeHintLocale(locale, "settings/account"),
+                sessionSettings_PageUrl: setHintLocale("settings/sessions", locale),
+                accountSettings_PageUrl: setHintLocale("settings/account", locale),
             })}
         />
     );

@@ -1,9 +1,9 @@
 import type { Location, MetaDescriptor } from "react-router";
 import { formatLocaleCode } from "~/locales";
 import SupportedLocales, { DefaultLocale_Meta, getMetadataFromLocaleCode } from "~/locales/meta";
+import { getHintLocale, setHintLocale } from "~/locales/utils";
 import Config from "~/utils/config";
-import { changeHintLocale } from "~/utils/urls";
-import { getHintLocale, omitOrigin } from "./urls";
+import { stringifyLocation } from "./urls";
 
 type BaseMetaProps = {
     url: string | undefined; // when no url is provided, uses the curr page's url
@@ -33,16 +33,15 @@ type MetaTagsProps = BaseMetaProps & UnionMetaProps;
 export function MetaTags(props: MetaTagsProps): MetaDescriptor[] {
     if (!props.parentMetaTags) props.parentMetaTags = [];
 
-    const urlObj = new URL(props.url ? props.url : `${Config.FRONTEND_URL}${omitOrigin(props.location)}`);
-    const url = urlObj.href;
+    const url = new URL(props.url ? props.url : stringifyLocation(props.location), Config.FRONTEND_URL);
+    const currHintLocale = getMetadataFromLocaleCode(getHintLocale(url.searchParams)) || DefaultLocale_Meta;
 
-    const currHintLocale = getMetadataFromLocaleCode(getHintLocale(urlObj.searchParams)) || DefaultLocale_Meta;
     const alternateLocaleLinks = SupportedLocales.map((locale) => {
         return {
             tagName: "link",
             rel: "alternate",
             hrefLang: formatLocaleCode(locale),
-            href: changeHintLocale(locale, url, false),
+            href: setHintLocale(url, locale, false),
         };
     });
 
@@ -50,17 +49,17 @@ export function MetaTags(props: MetaTagsProps): MetaDescriptor[] {
         {
             tagName: "link",
             rel: "canonical",
-            href: changeHintLocale(currHintLocale, url, true),
+            href: setHintLocale(url, DefaultLocale_Meta, true),
         },
         {
             tagName: "link",
             rel: "alternate",
             hrefLang: "x-default",
-            href: changeHintLocale(DefaultLocale_Meta, url, true),
+            href: setHintLocale(url, DefaultLocale_Meta),
         },
         ...alternateLocaleLinks,
-        { property: "og:url", content: changeHintLocale(currHintLocale, url) },
-        { name: "twitter:url", content: changeHintLocale(currHintLocale, url) },
+        { property: "og:url", content: setHintLocale(url, currHintLocale) },
+        { name: "twitter:url", content: setHintLocale(url, currHintLocale) },
         ...(props.authorProfile ? [AuthorLink(props.authorProfile)] : []),
     ]);
 

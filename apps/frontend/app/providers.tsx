@@ -2,7 +2,7 @@ import { DownloadProvider } from "~/components/misc/file-downloader";
 import { Toaster } from "~/components/ui/sonner";
 import type { UserPreferences } from "~/hooks/preferences/types";
 import { CollectionsProvider } from "~/pages/collection/provider";
-import { ChangeUrlHintOnLocaleChange } from "./global-effects";
+import { UpdateLocaleOnHintChange } from "./global-effects";
 import { PageBreadCrumbs } from "./hooks/breadcrumb";
 import { UserPreferencesProvider } from "./hooks/preferences";
 
@@ -29,7 +29,7 @@ function GlobalEffects() {
         <>
             <Toaster />
             <PageBreadCrumbs />
-            <ChangeUrlHintOnLocaleChange />
+            <UpdateLocaleOnHintChange />
         </>
     );
 }

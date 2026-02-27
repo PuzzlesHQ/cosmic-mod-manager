@@ -20,7 +20,7 @@ import { useMemo } from "react";
 // Scripting
 import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
-import { changeHintLocale } from "~/utils/urls";
+import { setHintLocale } from "~/locales/utils";
 import { configureXss, md } from "./parse-md";
 
 /* REGISTRATION */
@@ -84,7 +84,7 @@ export function MarkdownRenderBox({ text, className, divElem, addIdToHeadings = 
     const { locale } = useTranslation();
 
     function urlFormatter(url: string) {
-        return changeHintLocale(locale, url);
+        return setHintLocale(url, locale);
     }
 
     const formattedText = useMemo(() => {

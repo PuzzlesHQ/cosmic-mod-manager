@@ -1,24 +1,21 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router";
-import { useNavigate } from "~/components/ui/link";
+import { getValidLocaleCode } from "~/locales";
 import { useTranslation } from "~/locales/provider";
-import { omitOrigin } from "./utils/urls";
+import { getHintLocale } from "~/locales/utils";
+import { stringifyLocation } from "~/utils/urls";
 
-export function ChangeUrlHintOnLocaleChange() {
-    const { formattedLocaleName } = useTranslation();
-    const navigate = useNavigate();
+export function UpdateLocaleOnHintChange() {
+    const { setLocale, formattedLocaleName } = useTranslation();
     const location = useLocation();
-
-    function changeHintInUrl() {
-        navigate(omitOrigin(location), {
-            preventScrollReset: true,
-            viewTransition: false,
-        });
-    }
+    const locationStr = stringifyLocation(location);
 
     useEffect(() => {
-        changeHintInUrl();
-    }, [formattedLocaleName]);
+        const updatedLocale = getValidLocaleCode(getHintLocale(new URLSearchParams(location.search)));
+        if (updatedLocale !== formattedLocaleName) {
+            setLocale(updatedLocale);
+        }
+    }, [locationStr]);
 
     return null;
 }

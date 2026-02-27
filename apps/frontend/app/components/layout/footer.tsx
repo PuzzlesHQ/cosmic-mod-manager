@@ -1,19 +1,20 @@
 import { ArrowUpRightIcon, LanguagesIcon, LinkIcon, Settings2Icon } from "lucide-react";
 import { type LinkProps, useLocation } from "react-router";
 import { BrandIcon } from "~/components/icons";
-import Link, { LinkPrefetchStrategy, TextLink, VariantButtonLink } from "~/components/ui/link";
+import Link, { LinkPrefetchStrategy, TextLink, useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { DotSeparator } from "~/components/ui/separator";
 import { usePreferences } from "~/hooks/preferences";
 import { formatLocaleCode, getValidLocaleCode } from "~/locales";
 import { SupportedLocalesList } from "~/locales/meta";
 import { useTranslation } from "~/locales/provider";
+import { setHintLocale } from "~/locales/utils";
 import Config from "~/utils/config";
-import { changeHintLocale } from "~/utils/urls";
+import { stringifyLocation } from "~/utils/urls";
 
 export default function Footer() {
     const { updatePreferences } = usePreferences();
-    const { t, changeLocale } = useTranslation();
+    const { t } = useTranslation();
     const location = useLocation();
 
     const footer = t.footer;
@@ -123,7 +124,7 @@ export default function Footer() {
                     const title = region ? `${locale.name} - ${region.name}` : locale.name;
 
                     const formattedCode = formatLocaleCode(locale);
-                    const url = changeHintLocale(locale, location.pathname);
+                    const url = setHintLocale(location.pathname, locale);
 
                     return (
                         <TextLink
@@ -133,12 +134,7 @@ export default function Footer() {
                             title={title}
                             preventScrollReset
                             escapeUrlWrapper
-                            onClick={(e) => {
-                                e.preventDefault();
-
-                                updatePreferences({ locale: formattedCode });
-                                changeLocale(formattedCode);
-                            }}
+                            onClick={() => updatePreferences({ locale: formattedCode })}
                         >
                             {label}
                         </TextLink>
@@ -185,7 +181,9 @@ function LinksColumn({ children, area }: { area: string; children: React.ReactNo
 
 export function LangSwitcher() {
     const { updatePreferences } = usePreferences();
-    const { locale, changeLocale } = useTranslation();
+    const { locale } = useTranslation();
+    const navigate = useNavigate(true);
+    const location = useLocation();
 
     const formattedLocale = formatLocaleCode(locale);
     const currLocaleLabel = locale.region ? `${locale.displayName} (${locale.region.displayName})` : locale.displayName;
@@ -193,8 +191,13 @@ export function LangSwitcher() {
     return (
         <Select
             onValueChange={(value: string) => {
-                updatePreferences({ locale: getValidLocaleCode(value) });
-                changeLocale(value);
+                const newLocaleCode = getValidLocaleCode(value);
+
+                updatePreferences({ locale: newLocaleCode });
+                navigate(setHintLocale(stringifyLocation(location), newLocaleCode), {
+                    preventScrollReset: true,
+                    viewTransition: false,
+                });
             }}
             value={formattedLocale}
         >

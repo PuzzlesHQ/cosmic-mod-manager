@@ -4,7 +4,7 @@ import { HydratedRouter } from "react-router/dom";
 import { getLocale } from "~/locales";
 import { getMetadataFromLocaleCode } from "~/locales/meta";
 import { LocaleProvider } from "~/locales/provider";
-import { getHintLocale } from "~/utils/urls";
+import { getHintLocale } from "~/locales/utils";
 
 startTransition(async () => {
     const hintLocale = getHintLocale(new URLSearchParams(window.location.search));

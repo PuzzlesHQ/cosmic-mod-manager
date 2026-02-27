@@ -1,23 +1,12 @@
 import { append, prepend, removeLeading, removeTrailing } from "@app/utils/string";
 import type { Location } from "react-router";
 import { useLocation } from "react-router";
-import { formatLocaleCode, getValidLocaleCode } from "~/locales";
-import { DefaultLocale_Meta } from "~/locales/meta";
-import type { LocaleMetaData } from "~/locales/types";
-import Config from "./config";
+import Config from "~/utils/config";
 
 export const HINT_LOCALE_KEY = "hl";
 
 export { isCurrLinkActive } from "@app/utils/string";
 export { append, prepend, removeLeading, removeTrailing };
-
-export function getHintLocale(params: URLSearchParams) {
-    const hlParam = params.get(HINT_LOCALE_KEY);
-    const localeCode = getValidLocaleCode(hlParam);
-
-    if (localeCode === getValidLocaleCode(undefined) && !hlParam) return "";
-    return localeCode;
-}
 
 export function getCurrLocation() {
     // biome-ignore lint/correctness/useHookAtTopLevel: the condition never changes, it's always true in the browser and always false on the server
@@ -26,30 +15,15 @@ export function getCurrLocation() {
 }
 
 export function omitOrigin(loc: Location<unknown> | URL) {
+    return stringifyLocation(loc);
+}
+
+export function stringifyLocation(loc: { pathname: string; search: string; hash: string }) {
     let path = loc.pathname;
     if (loc.search.length > 1) path += loc.search;
     if (loc.hash.length > 1) path += loc.hash;
 
     return path;
-}
-
-/**
- * Changes the existing hint locale in the url to be the one provided, if doesn't exist already adds the hint locale param
- */
-export function changeHintLocale(locale: LocaleMetaData, _path: string, omitDefaultLocale = true) {
-    const isFullUrl = _path.startsWith("http");
-    const url = new URL(_path, Config.FRONTEND_URL);
-
-    const localeCode = formatLocaleCode(locale);
-
-    if (omitDefaultLocale === true && localeCode === formatLocaleCode(DefaultLocale_Meta)) {
-        url.searchParams.delete(HINT_LOCALE_KEY);
-    } else {
-        url.searchParams.set(HINT_LOCALE_KEY, localeCode);
-    }
-
-    if (isFullUrl) return url.href;
-    return omitOrigin(url);
 }
 
 export function ProjectPagePath(type: string, projectSlug: string, extra?: string) {

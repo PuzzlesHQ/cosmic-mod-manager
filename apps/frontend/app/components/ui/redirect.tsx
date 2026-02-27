@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router";
 import { useTranslation } from "~/locales/provider";
+import { setHintLocale } from "~/locales/utils";
 import { setReturnUrl } from "~/pages/auth/oauth-providers";
-import { changeHintLocale } from "~/utils/urls";
 import { useNavigate } from "./link";
 
 export default function Redirect({ to }: { to: string }) {
@@ -14,7 +14,7 @@ export default function Redirect({ to }: { to: string }) {
             setReturnUrl(location);
         }
 
-        window.location.href = new URL(changeHintLocale(locale, to), window.location.origin).href;
+        window.location.href = new URL(setHintLocale(to, locale), window.location.origin).href;
     }, []);
 
     return (

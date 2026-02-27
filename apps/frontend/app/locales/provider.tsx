@@ -1,7 +1,7 @@
 import { disableInteractions, enableInteractions } from "@app/utils/dom";
 import { createContext, type ReactNode, use, useState } from "react";
 import defaultLocale from "~/locales/default/translation";
-import { formatLocaleCode, getLocale, getValidLocaleCode } from "~/locales/index";
+import { formatLocaleCode, getLocale } from "~/locales/index";
 import { DefaultLocale_Meta, getMetadataFromLocaleCode } from "~/locales/meta";
 import type { Locale, LocaleMetaData } from "~/locales/types";
 
@@ -9,25 +9,27 @@ interface LocaleContext {
     locale: LocaleMetaData;
     t: Locale;
     formattedLocaleName: string;
-    changeLocale: (locale: string) => Promise<void>;
+    setLocale: (locale: string) => void;
 }
 const LocaleContext = createContext<LocaleContext>({
     locale: DefaultLocale_Meta,
     t: defaultLocale,
     formattedLocaleName: formatLocaleCode(DefaultLocale_Meta),
-    changeLocale: async (_locale) => {},
+    setLocale: () => {},
 });
 
 export function LocaleProvider({ children, initLocale, initMetadata }: Props) {
     const [translation, setTranslation] = useState(initLocale);
     const [localeMetadata, setLocaleMetadata] = useState(initMetadata || DefaultLocale_Meta);
 
-    async function changeLocale(locale: string) {
+    async function setLocale(locale: string) {
         disableInteractions();
 
-        const newLocale = getMetadataFromLocaleCode(getValidLocaleCode(locale)) ?? DefaultLocale_Meta;
-        setLocaleMetadata(newLocale);
-        setTranslation(await getLocale(formatLocaleCode(newLocale)));
+        const newLocale_Meta = getMetadataFromLocaleCode(locale) ?? DefaultLocale_Meta;
+        const newLocale_Obj = await getLocale(formatLocaleCode(newLocale_Meta));
+
+        setLocaleMetadata(newLocale_Meta);
+        setTranslation(newLocale_Obj);
 
         enableInteractions();
     }
@@ -37,7 +39,7 @@ export function LocaleProvider({ children, initLocale, initMetadata }: Props) {
             value={{
                 locale: localeMetadata,
                 t: translation,
-                changeLocale: changeLocale,
+                setLocale,
                 formattedLocaleName: formatLocaleCode(localeMetadata),
             }}
         >

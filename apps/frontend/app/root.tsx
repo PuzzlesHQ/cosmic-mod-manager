@@ -19,6 +19,7 @@ import Navbar from "~/components/layout/Navbar/navbar";
 import { MarkdownLinkHandler } from "~/components/md-editor/link-handler";
 import { DownloadRipple } from "~/components/misc/file-downloader";
 import LoaderBar from "~/components/misc/loader-bar";
+import { shouldForceRevalidate } from "~/components/misc/refresh-page";
 import { cn } from "~/components/utils";
 import { getUserConfig } from "~/hooks/preferences/helpers";
 import { getThemeClassName } from "~/hooks/preferences/theme";
@@ -27,6 +28,7 @@ import { formatLocaleCode, getValidLocaleCode } from "~/locales";
 import SupportedLocales, { DefaultLocale_Meta, getMetadataFromLocaleCode } from "~/locales/meta";
 import { useTranslation } from "~/locales/provider";
 import type { LocaleMetaData } from "~/locales/types";
+import { getHintLocale, setHintLocale } from "~/locales/utils";
 import { LoginDialog } from "~/pages/auth/login/login-card";
 import ContextProviders from "~/providers";
 import ErrorView from "~/routes/error-view";
@@ -34,9 +36,7 @@ import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
 import { resJson, serverFetch } from "~/utils/server-fetch";
-import { changeHintLocale, getHintLocale, omitOrigin } from "~/utils/urls";
 import type { Route } from "./+types/root";
-import { shouldForceRevalidate } from "./components/misc/refresh-page";
 
 const ASSETS_SERVER_URL = import.meta.env.BASE_URL;
 
@@ -139,8 +139,8 @@ export async function loader({ request }: Route.LoaderArgs): Promise<RootOutletD
 
     // If there's no hintLocale and user has a non default locale set, redirect to the url with user's locale
     if (!hintLocale.length && formatLocaleCode(cookieLocale_Metadata) !== formatLocaleCode(hintLocale_Metadata)) {
-        const localeFormattedUrl = changeHintLocale(currLocale, omitOrigin(reqUrl));
-        throw Response.redirect(new URL(localeFormattedUrl, Config.FRONTEND_URL), 302);
+        const localeFormattedUrl = setHintLocale(reqUrl, currLocale);
+        throw Response.redirect(new URL(localeFormattedUrl), 302);
     }
 
     // Session
