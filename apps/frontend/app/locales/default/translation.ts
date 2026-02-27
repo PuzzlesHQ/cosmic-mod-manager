@@ -1,3 +1,3 @@
-import en from "~/locales/en/translation";
+import en from "~/locales/en-US/translation";
 
 export default en;

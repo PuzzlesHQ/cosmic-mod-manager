@@ -2,7 +2,7 @@ import { ProjectType } from "@app/utils/types";
 import { ListViewType } from "~/components/misc/search-list-item";
 import { DefaultTheme, type ThemePreference } from "~/components/themes/config";
 import { formatLocaleCode } from "~/locales";
-import { DefaultLocale } from "~/locales/meta";
+import { DefaultLocale_Meta } from "~/locales/meta";
 
 export interface UserPreferences {
     theme: ThemePreference;
@@ -33,6 +33,6 @@ export const DEFAULT_USER_CONF: UserPreferences = {
     prefersOLED: false,
 
     viewTransitions: false,
-    locale: formatLocaleCode(DefaultLocale),
+    locale: formatLocaleCode(DefaultLocale_Meta),
     viewPrefs: DEFAULT_LIST_VIEW_PREFS,
 };

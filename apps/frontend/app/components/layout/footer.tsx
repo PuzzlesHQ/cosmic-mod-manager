@@ -5,7 +5,7 @@ import Link, { LinkPrefetchStrategy, TextLink, VariantButtonLink } from "~/compo
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { DotSeparator } from "~/components/ui/separator";
 import { usePreferences } from "~/hooks/preferences";
-import { formatLocaleCode, parseLocale } from "~/locales";
+import { formatLocaleCode, getValidLocaleCode } from "~/locales";
 import { SupportedLocalesList } from "~/locales/meta";
 import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
@@ -193,7 +193,7 @@ export function LangSwitcher() {
     return (
         <Select
             onValueChange={(value: string) => {
-                updatePreferences({ locale: parseLocale(value) });
+                updatePreferences({ locale: getValidLocaleCode(value) });
                 changeLocale(value);
             }}
             value={formattedLocale}

@@ -101,9 +101,9 @@ Recommended if you're comfortable with JavaScript/TypeScript.
     export default { } satisfies Locale;
     ```
     Use `PartialLocale` instead of `Locale` if you're doing a partial override. \
-    See [`app/locales/en/translation.ts`](/apps/frontend/app/locales/en/translation.ts) for keys reference.
+    See [`app/locales/en-US/translation.ts`](/apps/frontend/app/locales/en-US/translation.ts) for keys reference.
 
-3. **Translate the other files**: browse `apps/frontend/app/locales/en/` to see what else is there (like `tags.ts`, `about.ts`). Create matching files in your folder and import them in `translation.ts`:
+3. **Translate the other files**: browse `apps/frontend/app/locales/en-US/` to see what else is there (like `tags.ts`, `about.ts`). Create matching files in your folder and import them in `translation.ts`:
     ```ts
     import type { Locale } from "~/locales/types";
     import tags from "./tags";

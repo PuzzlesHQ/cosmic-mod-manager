@@ -1,6 +1,6 @@
 import type { Location, MetaDescriptor } from "react-router";
 import { formatLocaleCode } from "~/locales";
-import SupportedLocales, { DefaultLocale, GetLocaleMetadata } from "~/locales/meta";
+import SupportedLocales, { DefaultLocale_Meta, getMetadataFromLocaleCode } from "~/locales/meta";
 import Config from "~/utils/config";
 import { changeHintLocale } from "~/utils/urls";
 import { getHintLocale, omitOrigin } from "./urls";
@@ -36,7 +36,7 @@ export function MetaTags(props: MetaTagsProps): MetaDescriptor[] {
     const urlObj = new URL(props.url ? props.url : `${Config.FRONTEND_URL}${omitOrigin(props.location)}`);
     const url = urlObj.href;
 
-    const currHintLocale = GetLocaleMetadata(getHintLocale(urlObj.searchParams)) || DefaultLocale;
+    const currHintLocale = getMetadataFromLocaleCode(getHintLocale(urlObj.searchParams)) || DefaultLocale_Meta;
     const alternateLocaleLinks = SupportedLocales.map((locale) => {
         return {
             tagName: "link",
@@ -56,11 +56,11 @@ export function MetaTags(props: MetaTagsProps): MetaDescriptor[] {
             tagName: "link",
             rel: "alternate",
             hrefLang: "x-default",
-            href: changeHintLocale(DefaultLocale, url, true),
+            href: changeHintLocale(DefaultLocale_Meta, url, true),
         },
         ...alternateLocaleLinks,
-        { property: "og:url", content: changeHintLocale(currHintLocale, url, undefined) },
-        { name: "twitter:url", content: changeHintLocale(currHintLocale, url, undefined) },
+        { property: "og:url", content: changeHintLocale(currHintLocale, url) },
+        { name: "twitter:url", content: changeHintLocale(currHintLocale, url) },
         ...(props.authorProfile ? [AuthorLink(props.authorProfile)] : []),
     ]);
 
@@ -124,10 +124,3 @@ function AuthorLink(url: string) {
         href: url,
     };
 }
-
-// export async function getLocaleObject(_search: string) {
-//     const searchParams = new URLSearchParams(_search);
-//     const locale = getHintLocale(searchParams);
-
-//     return await getLocale(locale);
-// }

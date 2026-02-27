@@ -1,4 +1,4 @@
-import type default_locale from "~/locales/default/translation";
+import type defaultLocale from "~/locales/default/translation";
 
 export interface LocaleMetaData {
     code: string; // es
@@ -23,7 +23,7 @@ export interface Translation {
     [key: string]: TranslationReturnType | TranslationFunction | Translation;
 }
 
-export type Locale = typeof default_locale;
+export type Locale = typeof defaultLocale;
 
 type DeepPartial<T> =
     T extends Record<string, unknown>

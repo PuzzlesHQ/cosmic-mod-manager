@@ -23,8 +23,8 @@ import { cn } from "~/components/utils";
 import { getUserConfig } from "~/hooks/preferences/helpers";
 import { getThemeClassName } from "~/hooks/preferences/theme";
 import type { UserPreferences } from "~/hooks/preferences/types";
-import { formatLocaleCode, parseLocale } from "~/locales";
-import SupportedLocales, { DefaultLocale, GetLocaleMetadata } from "~/locales/meta";
+import { formatLocaleCode, getValidLocaleCode } from "~/locales";
+import SupportedLocales, { DefaultLocale_Meta, getMetadataFromLocaleCode } from "~/locales/meta";
 import { useTranslation } from "~/locales/provider";
 import type { LocaleMetaData } from "~/locales/types";
 import { LoginDialog } from "~/pages/auth/login/login-card";
@@ -128,10 +128,11 @@ export async function loader({ request }: Route.LoaderArgs): Promise<RootOutletD
 
     const hintLocale = getHintLocale(reqUrl.searchParams);
     // The locale obtained from the request url
-    const hintLocale_Metadata = GetLocaleMetadata(hintLocale) || DefaultLocale;
+    const hintLocale_Metadata = getMetadataFromLocaleCode(hintLocale) || DefaultLocale_Meta;
     // The locale that is set in user's preference
     // Url locale takes priority over the prefs locale from the cookie
-    const cookieLocale_Metadata = GetLocaleMetadata(parseLocale(userConfig.locale)) || DefaultLocale;
+    const cookieLocale_Metadata =
+        getMetadataFromLocaleCode(getValidLocaleCode(userConfig.locale)) || DefaultLocale_Meta;
 
     let currLocale = hintLocale_Metadata;
     if (!hintLocale) currLocale = cookieLocale_Metadata;
@@ -157,7 +158,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<RootOutletD
         session: session as LoggedInUserData | null,
         locale: currLocale,
         supportedLocales: SupportedLocales,
-        defaultLocale: DefaultLocale,
+        defaultLocale: DefaultLocale_Meta,
     };
 }
 

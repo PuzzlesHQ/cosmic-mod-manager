@@ -1,8 +1,8 @@
 import { append, prepend, removeLeading, removeTrailing } from "@app/utils/string";
 import type { Location } from "react-router";
 import { useLocation } from "react-router";
-import { formatLocaleCode, parseLocale } from "~/locales";
-import { DefaultLocale } from "~/locales/meta";
+import { formatLocaleCode, getValidLocaleCode } from "~/locales";
+import { DefaultLocale_Meta } from "~/locales/meta";
 import type { LocaleMetaData } from "~/locales/types";
 import Config from "./config";
 
@@ -13,9 +13,9 @@ export { append, prepend, removeLeading, removeTrailing };
 
 export function getHintLocale(params: URLSearchParams) {
     const hlParam = params.get(HINT_LOCALE_KEY);
-    const localeCode = parseLocale(hlParam);
+    const localeCode = getValidLocaleCode(hlParam);
 
-    if (localeCode === parseLocale(undefined) && !hlParam) return "";
+    if (localeCode === getValidLocaleCode(undefined) && !hlParam) return "";
     return localeCode;
 }
 
@@ -42,7 +42,7 @@ export function changeHintLocale(locale: LocaleMetaData, _path: string, omitDefa
 
     const localeCode = formatLocaleCode(locale);
 
-    if (omitDefaultLocale === true && localeCode === formatLocaleCode(DefaultLocale)) {
+    if (omitDefaultLocale === true && localeCode === formatLocaleCode(DefaultLocale_Meta)) {
         url.searchParams.delete(HINT_LOCALE_KEY);
     } else {
         url.searchParams.set(HINT_LOCALE_KEY, localeCode);

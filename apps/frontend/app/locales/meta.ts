@@ -7,6 +7,11 @@ const SupportedLocales = defineLocales([
         name: "English",
         displayName: "English",
         dir: "ltr",
+        region: {
+            code: "US",
+            name: "United States",
+            displayName: "United States",
+        },
     },
     {
         code: "fr",
@@ -62,9 +67,9 @@ function defineLocales<const T extends readonly LocaleMetaData[]>(
 }
 
 export default SupportedLocales;
-export const DefaultLocale = SupportedLocales[0];
+export const DefaultLocale_Meta = SupportedLocales[0];
 export const SupportedLocalesList = SupportedLocales as readonly LocaleMetaData[];
 
-export function GetLocaleMetadata(code: string) {
+export function getMetadataFromLocaleCode(code: string) {
     return SupportedLocales.find((locale) => locale.code === code || formatLocaleCode(locale) === code);
 }

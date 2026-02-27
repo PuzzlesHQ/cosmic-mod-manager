@@ -6,7 +6,7 @@ import ReactDomServer, { type RenderToPipeableStreamOptions } from "react-dom/se
 import type { EntryContext } from "react-router";
 import { ServerRouter } from "react-router";
 import { getLocale } from "./locales";
-import { GetLocaleMetadata } from "./locales/meta";
+import { getMetadataFromLocaleCode } from "./locales/meta";
 import { LocaleProvider } from "./locales/provider";
 import { getHintLocale } from "./utils/urls";
 
@@ -27,7 +27,7 @@ export default function handleRequest(
 
         const hintLocale = getHintLocale(new URL(request.url).searchParams);
         getLocale(hintLocale).then(async (initLocaleModule) => {
-            const initLocaleMetadata = GetLocaleMetadata(hintLocale);
+            const initLocaleMetadata = getMetadataFromLocaleCode(hintLocale);
 
             const { pipe, abort } = ReactDomServer.renderToPipeableStream(
                 <LocaleProvider initLocale={initLocaleModule} initMetadata={initLocaleMetadata}>

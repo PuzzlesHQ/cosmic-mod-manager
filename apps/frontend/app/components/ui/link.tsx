@@ -1,5 +1,4 @@
 import type React from "react";
-import { useCallback } from "react";
 import {
     type LinkProps,
     type NavigateOptions,
@@ -135,10 +134,8 @@ export function VariantButtonLink({
 
 export function useNavigate(dontAlterHintLocale?: boolean, initOptions?: NavigateOptions) {
     const navigate = useNavigate_Original();
-    const { locale, formattedLocaleName } = useTranslation();
+    const { locale } = useTranslation();
     const { viewTransitions } = usePreferences();
-
-    useCallback(() => {}, [viewTransitions, formattedLocaleName]);
 
     function __navigate(_to: string, options?: NavigateOptions): void {
         const to = _to?.trim() || "#";

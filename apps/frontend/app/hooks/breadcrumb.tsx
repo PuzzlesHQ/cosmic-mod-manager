@@ -3,9 +3,7 @@ import { prepend, removeLeading } from "@app/utils/string";
 import { useLocation } from "react-router";
 import { itemType, MicrodataItemProps, MicrodataItemType } from "~/components/microdata";
 import Link from "~/components/ui/link";
-import { DefaultLocale } from "~/locales/meta";
 import { useTranslation } from "~/locales/provider";
-import { changeHintLocale } from "~/utils/urls";
 
 interface Breadcrumb {
     label: string;
@@ -45,7 +43,7 @@ export function PageBreadCrumbs() {
 function getBreadCrumbsFromUrl(): Breadcrumb[] {
     const { t } = useTranslation();
     const loc = useLocation();
-    const path = removeLeading("/", changeHintLocale(DefaultLocale, loc.pathname, true));
+    const path = removeLeading("/", loc.pathname);
     const pathParts = path.split("/");
 
     return pathParts
