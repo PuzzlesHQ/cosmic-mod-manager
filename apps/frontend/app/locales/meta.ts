@@ -70,7 +70,7 @@ const SupportedLocales = defineLocales([
             name: "Book Norwegian",
             displayName: "Bokmål",
         },
-        fallbacks: ["no-nn", "se", "da", "en-GB"]
+        fallbacks: ["no-nn", "se", "da", "en-GB"],
     },
     {
         code: "no",
@@ -82,7 +82,7 @@ const SupportedLocales = defineLocales([
             name: "New Norwegian",
             displayName: "Nynorsk",
         },
-        fallbacks: ["no-nb", "se", "da", "en-GB"]
+        fallbacks: ["no-nb", "se", "da", "en-GB"],
     },
 ] as const);
 
