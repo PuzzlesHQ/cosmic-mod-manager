@@ -1,8 +1,8 @@
 import { disableInteractions, enableInteractions } from "@app/utils/dom";
 import { createContext, type ReactNode, use, useState } from "react";
-import defaultLocale from "~/locales/default/translation";
+import defaultLocale, { DefaultLocale_Meta } from "~/locales/default/translation";
 import { formatLocaleCode, getLocale } from "~/locales/index";
-import { DefaultLocale_Meta, getMetadataFromLocaleCode } from "~/locales/meta";
+import { getMetadataFromLocaleCode } from "~/locales/meta";
 import type { Locale, LocaleMetaData } from "~/locales/types";
 
 interface LocaleContext {

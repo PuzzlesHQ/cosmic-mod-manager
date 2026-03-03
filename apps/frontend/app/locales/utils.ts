@@ -1,8 +1,8 @@
+import { DefaultLocale_Meta } from "~/locales/default/translation";
 import { formatLocaleCode, getValidLocaleCode } from "~/locales/index";
 import type { LocaleMetaData } from "~/locales/types";
 import Config from "~/utils/config";
 import { stringifyLocation } from "~/utils/urls";
-import { DefaultLocale_Meta } from "./meta";
 
 export const HINT_LOCALE_KEY = "hl";
 
