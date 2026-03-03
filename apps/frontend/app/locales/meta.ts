@@ -8,9 +8,9 @@ const SupportedLocales = defineLocales([
         displayName: "English",
         dir: "ltr",
         region: {
-            code: "US",
-            name: "United States",
-            displayName: "United States",
+            code: "GB",
+            name: "United Kingdom",
+            displayName: "United Kingdom",
         },
     },
     {
