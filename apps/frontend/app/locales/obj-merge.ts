@@ -1,24 +1,29 @@
-// @ts-nocheck
+import type { DeepPartial } from "./types";
 
-export function fillEmptyKeys<T extends object>(obj: object, fallback: T): T {
-    // Return the object as it is if the fallback itself is null or undefinded or not of object type
-    if (!fallback || typeof fallback !== "object") return obj;
-    const objKeys = Object.keys(fallback);
+export function fillEmptyKeys<T extends object>(_obj: DeepPartial<T>, _fallback: T): T {
+    if (!_fallback || typeof _fallback !== "object") {
+        throw new Error("Fallback must be a non-null object");
+    }
 
-    // Loop over each key of the object
-    for (const key of objKeys) {
-        // If the fallback[key] value is an object type, recursively pass the value to this function
-        if (typeof fallback[key] === "object") {
-            if (obj[key] === undefined || obj[key] === null) obj[key] = {};
-            obj[key] = fillEmptyKeys(obj[key], fallback[key]);
-        }
+    const target = _obj as Record<string, unknown>;
+    const fallback = _fallback as Record<string, unknown>;
 
-        // If the value in the obj to be modified is null, set it equal to the value in the fallback
-        else if (obj[key] === null || obj[key] === undefined) {
-            obj[key] = fallback[key];
+    for (const key in fallback) {
+        if (isObject(fallback[key])) {
+            if (!target[key] || typeof target[key] !== "object") {
+                target[key] = {};
+            }
+            fillEmptyKeys(target[key] as Record<string, unknown>, fallback[key] as Record<string, unknown>);
+        } else if (!target[key]) {
+            target[key] = fallback[key];
         }
     }
 
-    // Return the modified object
-    return obj;
+    return target as T;
+}
+
+function isObject(val: unknown): boolean {
+    if (!val) return false;
+    if (Array.isArray(val)) return false;
+    return typeof val === "object";
 }
