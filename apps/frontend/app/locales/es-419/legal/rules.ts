@@ -1,4 +1,4 @@
-import type { RulesProps } from "~/locales/en-US/legal/rules";
+import type { RulesProps } from "~/locales/en-GB/legal/rules";
 
 export const Rules = (props: RulesProps) => `
 # ${props.title}

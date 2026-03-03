@@ -1,4 +1,4 @@
-import type { AboutUsProps } from "~/locales/en-US/about";
+import type { AboutUsProps } from "~/locales/en-GB/about";
 
 export const AboutUs = (props: AboutUsProps) => `
 # À propos de nous

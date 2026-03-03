@@ -1,4 +1,4 @@
-import type tags from "~/locales/en-US/tags";
+import type tags from "~/locales/en-GB/tags";
 
 export default {
     adventure: "Путешествие",
