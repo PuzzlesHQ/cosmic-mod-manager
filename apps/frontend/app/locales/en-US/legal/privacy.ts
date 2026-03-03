@@ -61,9 +61,9 @@ These services help improve the performance, security and reliability of our ser
 
 We also self-host open-source software such as **Clickhouse DB**, **Postgresql**, **Valkey** and **Meilisearch** for database management and other internal functions.
 
-#### **No Monetization**
+#### **No Monetisation**
 
-We do not monetize user data and have no plans for monetization at this time.
+We do not monetise user data and have no plans for monetisation at this time.
 
 ### **Data Retention**
 
