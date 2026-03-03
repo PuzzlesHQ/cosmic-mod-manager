@@ -1,3 +1,4 @@
+import { DefaultLocale_Meta as __DefaultLocale_Meta } from "~/locales/default/translation";
 import { formatLocaleCode } from ".";
 import type { LocaleMetaData } from "./types";
 
@@ -23,6 +24,7 @@ const SupportedLocales = defineLocales([
             name: "United States",
             displayName: "United States",
         },
+        fallbacks: ["en-GB"],
     },
     {
         code: "fr",
@@ -61,6 +63,9 @@ const SupportedLocales = defineLocales([
     },
 ] as const);
 
+export default SupportedLocales;
+export { __DefaultLocale_Meta as DefaultLocale_Meta };
+
 type ExtractLocaleCodes<L> = L extends { code: string }
     ? L extends { region: { code: string } }
         ? `${L["code"]}-${L["region"]["code"]}`
@@ -70,17 +75,14 @@ type ExtractLocaleCodes<L> = L extends { code: string }
 function defineLocales<const T extends readonly LocaleMetaData[]>(
     locales: T extends Array<infer Item>
         ? (Item & {
-              fallback?: ExtractLocaleCodes<T[number]>;
+              fallbacks?: ExtractLocaleCodes<T[number]>[];
           })[]
         : T,
 ) {
     return locales;
 }
 
-export default SupportedLocales;
-export const DefaultLocale_Meta = SupportedLocales[0];
 export const SupportedLocalesList = SupportedLocales as readonly LocaleMetaData[];
-
 export function getMetadataFromLocaleCode(code: string) {
     return SupportedLocales.find((locale) => locale.code === code || formatLocaleCode(locale) === code);
 }
