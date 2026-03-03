@@ -1,5 +1,5 @@
-import defaultLocale, { DefaultLocale_Meta } from "~/locales/default/translation";
-import SupportedLocales, { getMetadataFromLocaleCode } from "~/locales/meta";
+import defaultLocale from "~/locales/default/translation";
+import SupportedLocales, { DefaultLocale_Meta, getMetadataFromLocaleCode } from "~/locales/meta";
 import { fillEmptyKeys } from "~/locales/obj-merge";
 import type { Locale, LocaleMetaData, PartialLocale } from "~/locales/types";
 

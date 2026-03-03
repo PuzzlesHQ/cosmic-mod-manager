@@ -85,6 +85,7 @@ const SupportedLocales = defineLocales([
         fallbacks: ["no-nb", "se", "da", "en-GB"],
     },
 ] as const);
+
 export default SupportedLocales;
 export const DefaultLocale_Meta =
     SupportedLocales.find((locale) => formatLocaleCode(locale) === "en-GB") || SupportedLocales[0];
