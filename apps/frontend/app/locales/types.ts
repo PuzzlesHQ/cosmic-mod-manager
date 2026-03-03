@@ -5,7 +5,7 @@ export interface LocaleMetaData {
     name: string; // Spanish
     displayName: string; // Español
     dir: "ltr" | "rtl";
-    fallback?: string;
+    fallbacks?: string[];
 
     // Optional region information (if the locale is regional variant of the language)
     region?: {

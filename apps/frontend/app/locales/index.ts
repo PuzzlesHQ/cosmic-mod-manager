@@ -1,35 +1,49 @@
-import defaultLocale from "~/locales/default/translation";
-import SupportedLocales, { DefaultLocale_Meta, getMetadataFromLocaleCode } from "./meta";
-import { fillEmptyKeys } from "./obj-merge";
-import type { Locale, LocaleMetaData, PartialLocale } from "./types";
+import defaultLocale, { DefaultLocale_Meta } from "~/locales/default/translation";
+import SupportedLocales, { getMetadataFromLocaleCode } from "~/locales/meta";
+import { fillEmptyKeys } from "~/locales/obj-merge";
+import type { Locale, LocaleMetaData, PartialLocale } from "~/locales/types";
 
-export async function getLocale(localeName: string, seenLocales: string[] = []): Promise<Locale> {
+export async function getLocale(localeName: string): Promise<Locale> {
     if (localeName === formatLocaleCode(DefaultLocale_Meta)) return defaultLocale;
 
-    if (seenLocales.includes(localeName)) {
-        console.error(`Circular fallback detected: ${[...seenLocales, localeName].join(" -> ")}`);
-        return {} as Locale;
-    }
-    seenLocales.push(localeName);
+    const fallbackLocaleCodes = resolveFallbacks(localeName);
 
-    const localeInfo = getMetadataFromLocaleCode(localeName);
-    if (
-        !localeInfo ||
-        !localeInfo.fallback ||
-        [localeName, formatLocaleCode(DefaultLocale_Meta)].includes(localeInfo.fallback)
-    ) {
-        const locale = await getLocaleFile(localeName);
-        return fillEmptyKeys(locale.default, defaultLocale);
+    const localeModules = await Promise.all(
+        fallbackLocaleCodes.map(async (code) => {
+            return (await getLocaleFile(code)).default;
+        }),
+    );
+
+    let resolvedLocale: PartialLocale = {};
+    for (const localeModule of localeModules) {
+        resolvedLocale = fillEmptyKeys(resolvedLocale, localeModule);
     }
 
-    //
-    else {
-        const [localeModule, fallback] = await Promise.all([
-            getLocaleFile(localeName),
-            getLocale(localeInfo.fallback, seenLocales),
-        ]);
-        return fillEmptyKeys(fillEmptyKeys(localeModule.default, fallback), defaultLocale) as Locale;
+    if (fallbackLocaleCodes.includes(formatLocaleCode(DefaultLocale_Meta))) {
+        return resolvedLocale as Locale;
     }
+    return fillEmptyKeys(resolvedLocale, defaultLocale);
+}
+
+function resolveFallbacks(localeName: string): string[] {
+    const fallbacksList: string[] = [];
+    const visited = new Set<string>();
+
+    function visit(localeCode: string) {
+        if (visited.has(localeCode)) return;
+        visited.add(localeCode);
+        fallbacksList.push(localeCode);
+
+        const metadata = getMetadataFromLocaleCode(localeCode);
+        if (!metadata || !metadata.fallbacks) return;
+
+        for (const fallback of metadata.fallbacks) {
+            visit(fallback);
+        }
+    }
+
+    visit(localeName);
+    return fallbacksList;
 }
 
 async function getLocaleFile(locale: string): Promise<{ default: PartialLocale }> {
