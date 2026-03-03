@@ -10,7 +10,7 @@ export { append, prepend, removeLeading, removeTrailing };
 
 export function getCurrLocation() {
     // biome-ignore lint/correctness/useHookAtTopLevel: the condition never changes, it's always true in the browser and always false on the server
-    const loc = globalThis?.window ? window.location : useLocation();
+    const loc = globalThis?.window ? globalThis.window.location : useLocation();
     return new URL(`${Config.FRONTEND_URL}${loc.pathname}${loc.search}${loc.hash}`);
 }
 

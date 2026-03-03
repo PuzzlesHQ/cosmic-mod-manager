@@ -61,7 +61,10 @@ const SupportedLocales = defineLocales([
         },
     },
 ] as const);
+
 export default SupportedLocales;
+export const DefaultLocale_Meta =
+    SupportedLocales.find((locale) => formatLocaleCode(locale) === "en-GB") || SupportedLocales[0];
 
 type ExtractLocaleCodes<L> = L extends { code: string }
     ? L extends { region: { code: string } }

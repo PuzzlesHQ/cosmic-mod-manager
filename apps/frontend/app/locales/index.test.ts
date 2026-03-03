@@ -1,7 +1,8 @@
 import { describe, expect, test } from "bun:test";
-import defaultLocale, { DefaultLocale_Meta } from "~/locales/default/translation";
+import defaultLocale from "~/locales/default/translation";
+import { DefaultLocale_Meta } from "~/locales/meta";
+import type { LocaleMetaData } from "~/locales/types";
 import { formatLocaleCode, getLocale, getValidLocaleCode } from "./index";
-import type { LocaleMetaData } from "./types";
 
 describe("formatLocaleCode", () => {
     test("should include region when present", () => {
