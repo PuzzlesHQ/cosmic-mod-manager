@@ -42,12 +42,12 @@ const env = {} as Record<EnvKeys, string>;
 
 for (const key of envKeys) {
     const value = process.env[key];
-    if (value === undefined) {
+    if (value === undefined && process.env.NODE_ENV !== "test") {
         console.error(`Missing environment variable: ${key}`);
         process.exit(1);
     }
 
-    env[key] = value;
+    if (value) env[key] = value;
 }
 
 export default env;
