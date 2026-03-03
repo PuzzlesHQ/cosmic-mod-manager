@@ -1,6 +1,7 @@
 import type { Location, MetaDescriptor } from "react-router";
 import { formatLocaleCode } from "~/locales";
-import SupportedLocales, { DefaultLocale_Meta, getMetadataFromLocaleCode } from "~/locales/meta";
+import { DefaultLocale_Meta } from "~/locales/default/translation";
+import SupportedLocales, { getMetadataFromLocaleCode } from "~/locales/meta";
 import { getHintLocale, setHintLocale } from "~/locales/utils";
 import Config from "~/utils/config";
 import { stringifyLocation } from "./urls";

@@ -1,6 +1,5 @@
-import { DefaultLocale_Meta as __DefaultLocale_Meta } from "~/locales/default/translation";
-import { formatLocaleCode } from ".";
-import type { LocaleMetaData } from "./types";
+import { formatLocaleCode } from "~/locales";
+import type { LocaleMetaData } from "~/locales/types";
 
 const SupportedLocales = defineLocales([
     {
@@ -62,9 +61,7 @@ const SupportedLocales = defineLocales([
         },
     },
 ] as const);
-
 export default SupportedLocales;
-export { __DefaultLocale_Meta as DefaultLocale_Meta };
 
 type ExtractLocaleCodes<L> = L extends { code: string }
     ? L extends { region: { code: string } }

@@ -2,7 +2,7 @@ import { ProjectType } from "@app/utils/types";
 import { ListViewType } from "~/components/misc/search-list-item";
 import { DefaultTheme, type ThemePreference } from "~/components/themes/config";
 import { formatLocaleCode } from "~/locales";
-import { DefaultLocale_Meta } from "~/locales/meta";
+import { DefaultLocale_Meta } from "~/locales/default/translation";
 
 export interface UserPreferences {
     theme: ThemePreference;
