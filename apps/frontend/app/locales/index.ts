@@ -1,7 +1,7 @@
 import defaultLocale from "~/locales/default/translation";
 import SupportedLocales, { DefaultLocale_Meta, getMetadataFromLocaleCode } from "./meta";
 import { fillEmptyKeys } from "./obj-merge";
-import type { Locale, LocaleMetaData } from "./types";
+import type { Locale, LocaleMetaData, PartialLocale } from "./types";
 
 export async function getLocale(localeName: string, seenLocales: string[] = []): Promise<Locale> {
     if (localeName === formatLocaleCode(DefaultLocale_Meta)) return defaultLocale;
@@ -19,7 +19,7 @@ export async function getLocale(localeName: string, seenLocales: string[] = []):
         [localeName, formatLocaleCode(DefaultLocale_Meta)].includes(localeInfo.fallback)
     ) {
         const locale = await getLocaleFile(localeName);
-        return fillEmptyKeys(locale.default, defaultLocale) as Locale;
+        return fillEmptyKeys(locale.default, defaultLocale);
     }
 
     //
@@ -32,7 +32,7 @@ export async function getLocale(localeName: string, seenLocales: string[] = []):
     }
 }
 
-async function getLocaleFile(locale: string): Promise<{ default: Locale }> {
+async function getLocaleFile(locale: string): Promise<{ default: PartialLocale }> {
     try {
         const translationExport = await import(`./../locales/${locale}/translation.ts`);
         if (translationExport) return translationExport;
