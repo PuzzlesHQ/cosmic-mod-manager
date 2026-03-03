@@ -15,7 +15,7 @@ If you come across any form of violation of these Rules on our website, we ask y
 
 ## 1. Prohibited Content
 
-Content must in their entirety comply with all applicable federal, state, local, and international laws and regulations. Without limiting the foregoing, Content must not:
+Content must in their entirety comply with all applicable national, regional, local, and international laws and regulations. Without limiting the foregoing, Content must not:
 
 1. Contain any material which is defamatory, obscene, indecent, abusive, offensive, harassing, violent, hateful, inflammatory, harmful, damaging, disruptive, contradictory, or otherwise objectionable.
 2. Promote sexually explicit or pornographic material, violence, or discrimination based on race, sex, gender, religion, nationality, disability, sexual orientation, or age.
@@ -23,7 +23,7 @@ Content must in their entirety comply with all applicable federal, state, local,
 4. Violate the legal rights (including the rights of publicity and privacy) of others or contain any material that could give rise to any civil or criminal liability under applicable laws or regulations or that otherwise may be in conflict with our [Terms of Use](${props.termsPageUrl}) or [Privacy Policy](${props.privacyPageUrl}).
 5. Promote any illegal activity, or advocate, promote or assist any unlawful act, including real-life drugs or illicit substances.
 6. Cause needless anxiety or be likely to upset, embarrass, alarm, harm, or deceive any other person.
-7. Impersonate any person, or misrepresent your identity or affiliation with any person or organization.
+7. Impersonate any person, or misrepresent your identity or affiliation with any person or organisation.
 8. Give the impression that they emanate from or are endorsed by us or any other person or entity, if this is not the case.
 9. Upload any data to a remote server without clear disclosure ingame.
 

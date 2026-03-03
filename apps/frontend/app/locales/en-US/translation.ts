@@ -154,7 +154,7 @@ export default {
 
         showIpAddr: "Show IP addresses",
         sessionsDesc:
-            "These devices are currently logged into your account, you can revoke any session at any time. If you see something you don't recognize, immediately revoke the session and change the password of the associated auth provider.",
+            "These devices are currently logged into your account, you can revoke any session at any time. If you see something you don't recognise, immediately revoke the session and change the password of the associated auth provider.",
         ipHidden: "IP Hidden",
         lastAccessed: (when: string) => `Last accessed ${when}`,
         created: (when: string) => `Created ${when}`, // eg: Created a month ago
@@ -171,8 +171,8 @@ export default {
         expired: (when: string) => `Expired ${when}`,
 
         // Preferences
-        colorTheme: "Color theme",
-        colorThemeDesc: "Select your preferred color theme.",
+        colorTheme: "Colour theme",
+        colorThemeDesc: "Select your preferred colour theme.",
         system: "System",
 
         create_a_PAT: "Create a PAT",
@@ -206,10 +206,10 @@ export default {
             version_read: "Read versions",
             version_write: "Write versions",
             version_delete: "Delete versions",
-            organization_create: "Create organizations",
-            organization_read: "Read organizations",
-            organization_write: "Write organizations",
-            organization_delete: "Delete organizations",
+            organization_create: "Create organisations",
+            organization_read: "Read organisations",
+            organization_write: "Write organisations",
+            organization_delete: "Delete organisations",
             collection_create: "Create collections",
             collection_read: "Read collections",
             collection_write: "Write collections",
@@ -234,7 +234,7 @@ export default {
         activeReports: "Active reports",
         analytics: "Analytics",
         projects: "Projects",
-        organizations: "Organizations",
+        organizations: "Organisations",
         collections: "Collections",
         collection: "Collection",
         revenue: "Revenue",
@@ -272,10 +272,10 @@ export default {
         creatingProject: "Creating a project",
         chooseProjectType: "Choose project type",
         projectTypeDesc: "Select the appropriate type for your project",
-        createOrg: "Create organization",
-        creatingOrg: "Creating an organization",
-        enterOrgName: "Enter organization name",
-        enterOrgDescription: "Enter a short description for your organization",
+        createOrg: "Create organisation",
+        creatingOrg: "Creating an organisation",
+        enterOrgName: "Enter organisation name",
+        enterOrgDescription: "Enter a short description for your organisation",
         creatingACollection: "Creating a collection",
         enterCollectionName: "Enter collection name",
         createCollection: "Create collection",
@@ -336,7 +336,7 @@ export default {
         joinDiscord: "Join discord server",
         featuredVersions: "Featured versions",
         creators: "Creators",
-        organization: "Organization",
+        organization: "Organisation",
         project: "Project",
         details: "Details",
         licensed: (license: React.ReactNode) => ["LICENSED ", license],
@@ -579,9 +579,9 @@ export default {
         typeHere: "Type here...",
         manageMembers: "Manage members",
         leftProjectTeam: "You have left the team",
-        leaveOrg: "Leave organization",
+        leaveOrg: "Leave organisation",
         leaveProject: "Leave project",
-        leaveOrgDesc: "Remove yourself as a member of this organization.",
+        leaveOrgDesc: "Remove yourself as a member of this organisation.",
         leaveProjectDesc: "Remove yourself as a member of this project.",
         sureToLeaveTeam: "Are you sure you want to leave this team?",
         cantManageInvites: "You don't have access to manage member invites",
@@ -589,7 +589,7 @@ export default {
         inviteProjectMemberDesc:
             "Enter the username of the person you'd like to invite to be a member of this project.",
         inviteOrgMemberDesc:
-            "Enter the username of the person you'd like to invite to be a member of this organization.",
+            "Enter the username of the person you'd like to invite to be a member of this organisation.",
         invite: "Invite",
         memberUpdated: "Member updated successfully",
         pending: "Pending",
@@ -613,14 +613,14 @@ export default {
         transferOwnership: "Transfer ownership",
         overrideValues: "Override values",
         overrideValuesDesc:
-            "Override organization default values and assign custom permissions and roles to this user on the project.",
+            "Override organisation default values and assign custom permissions and roles to this user on the project.",
         projectNotManagedByOrg:
-            "This project is not managed by an organization. If you are the member of any organizations, you can transfer management to one of them.",
+            "This project is not managed by an organisation. If you are the member of any organisations, you can transfer management to one of them.",
         transferManagementToOrg: "Transfer management",
-        selectOrg: "Select organization",
+        selectOrg: "Select organisation",
         projectManagedByOrg: (orgName: string) =>
-            `This project is managed by ${orgName}. The defaults for member permissions are set in the organization settings. You may override them below.`,
-        removeFromOrg: "Remove from organization",
+            `This project is managed by ${orgName}. The defaults for member permissions are set in the organisation settings. You may override them below.`,
+        removeFromOrg: "Remove from organisation",
         memberRemoved: "Member removed successfully",
         sureToRemoveMember: (memberName: string) => `Are you sure you want to remove ${memberName} from this team?`,
         ownershipTransfered: "Ownership transferred successfully",
@@ -629,19 +629,19 @@ export default {
     },
 
     organization: {
-        orgDoesntHaveProjects: "This organization doesn't have any projects yet.",
+        orgDoesntHaveProjects: "This organisation doesn't have any projects yet.",
         manageProjects: "Manage projects",
-        orgSettings: "Organization settings",
+        orgSettings: "Organisation settings",
         transferProjectsTip:
-            "You can transfer your existing projects to this organization from: Project settings > Members",
-        noProjects_CreateOne: "This organization doesn't have any projects. Click the button above to create one.",
-        orgInfo: "Organization information",
-        deleteOrg: "Delete organization",
+            "You can transfer your existing projects to this organisation from: Project settings > Members",
+        noProjects_CreateOne: "This organisation doesn't have any projects. Click the button above to create one.",
+        orgInfo: "Organisation information",
+        deleteOrg: "Delete organisation",
         deleteOrgDesc:
-            "Deleting your organization will transfer all of its projects to the organization owner. This action cannot be undone.",
-        sureToDeleteOrg: "Are you sure you want to delete this organization?",
-        deleteOrgNamed: (orgName: string) => `Delete organization ${orgName}`,
-        deletionWarning: "This will delete this organization forever (like forever ever).",
+            "Deleting your organisation will transfer all of its projects to the organisation owner. This action cannot be undone.",
+        sureToDeleteOrg: "Are you sure you want to delete this organisation?",
+        deleteOrgNamed: (orgName: string) => `Delete organisation ${orgName}`,
+        deletionWarning: "This will delete this organisation forever (like forever ever).",
 
         perms: {
             edit_details: "Edit details",
@@ -650,7 +650,7 @@ export default {
             edit_member: "Edit member",
             add_project: "Add project",
             remove_project: "Remove project",
-            delete_organization: "Delete organization",
+            delete_organization: "Delete organisation",
             edit_member_default_permissions: "Edit member default permissions",
         },
     },
@@ -660,7 +660,7 @@ export default {
         admin: "Admin",
         moderator: "Moderator",
         doesntHaveProjects: (user: string) => `${user} doesn't have any projects yet.`,
-        isntPartOfAnyOrgs: (user: string) => `${user} is not a member of any Organization.`,
+        isntPartOfAnyOrgs: (user: string) => `${user} is not a member of any organisation.`,
         joined: (when: string) => `Joined ${when}`, // eg: Joined 2 months ago
         accountDeleted: "The user account was deleted.",
     },
@@ -830,8 +830,8 @@ export default {
             `The version of '${project}' ${type} you're looking for could not be found.`,
         gotoVersionsList: "Go to versions list",
 
-        oraganizationNotFound: "Organization not found",
-        oraganizationNotFoundDesc: (slug: string) => `No organization exists with slug/ID '${slug}'`,
+        oraganizationNotFound: "Organisation not found",
+        oraganizationNotFoundDesc: (slug: string) => `No organisation exists with slug/ID '${slug}'`,
 
         userNotFound: "User not found",
         userNotFoundDesc: (userName: string) => `No user exists with userName/ID '${userName}'`,
@@ -955,7 +955,7 @@ export default {
         /* name would be site name in most cases
          For example on login page: "Login - CRMM"
          but on pages like project settings it will be project's name: "Settings - SomeMod"
-         same for organization pages
+         same for organisation pages
         */
         addContext: (title: string, name: string) => `${title} - ${name}`,
 
@@ -963,7 +963,7 @@ export default {
             `Download Cosmic Reach mods, plugins, datamods, shaders, resourcepacks, and modpacks on ${siteName_short} (${siteName_long}). Discover and publish projects on ${siteName_short} with a modern, easy to use interface and API.`,
 
         searchDesc: (projectType: string, siteName_short: string, siteName_long: string) =>
-            `Search and download your favorite cosmic reach ${projectType} with ease here on ${siteName_short} (${siteName_long}).`,
+            `Search and download your favourite cosmic reach ${projectType} with ease here on ${siteName_short} (${siteName_long}).`,
 
         about: "About Us",
         loginDesc: (siteName_short: string) => `Log into your ${siteName_short} account.`,
@@ -1018,8 +1018,8 @@ export default {
             return string;
         },
 
-        organization: (name: string) => `${name} - Organization`,
+        organization: (name: string) => `${name} - Organisation`,
         organizationDesc: (orgDesc: string, name: string, siteName_short: string) =>
-            `${orgDesc} - View the organization ${name} on ${siteName_short}`,
+            `${orgDesc} - View the organisation ${name} on ${siteName_short}`,
     },
 } satisfies Translation;
