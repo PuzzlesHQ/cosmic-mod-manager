@@ -1,6 +1,6 @@
 import { MersenneTwister } from "@app/utils/random";
 
-const m = new MersenneTwister();
+const m = new MersenneTwister(window.crypto.getRandomValues(new Uint32Array(1))[0]);
 
 let stars: Star[] = [];
 let meteors: Meteor[] = [];
