@@ -1,7 +1,7 @@
 import type tags from "~/locales/en-GB/tags";
 
 export default {
-    audio: `"Lyd",kjøkkenv ask`,
+    audio: "Lyd",
     blocks: "Blokkar",
     "bug-fix": "Feilrettingar",
     cartoon: "Teikneserieaktig",
