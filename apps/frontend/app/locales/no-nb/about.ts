@@ -1,7 +1,4 @@
-export interface AboutUsProps {
-    discordInvite: string;
-    repoLink: string;
-}
+import type { AboutUsProps } from "~/locales/en-GB/about";
 
 export const AboutUs = (props: AboutUsProps) => `
 # Om oss
