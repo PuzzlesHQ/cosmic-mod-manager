@@ -60,6 +60,32 @@ const SupportedLocales = defineLocales([
             displayName: "Latinoamérica",
         },
     },
+    {
+        code: "no",
+        name: "Norwegian",
+        displayName: "Norsk",
+        dir: "ltr",
+        region: {
+            code: "nb",
+            name: "Book Norwegian",
+            displayName: "Bokmål",
+        },
+        fallbacks: ["en-GB"],
+        // fallbacks: ["se", "da", "en-GB"],
+    },
+    {
+        code: "no",
+        name: "Norwegian",
+        displayName: "Norsk",
+        dir: "ltr",
+        region: {
+            code: "nn",
+            name: "New Norwegian",
+            displayName: "Nynorsk",
+        },
+        fallbacks: ["no-nb", "en-GB"],
+        // fallbacks: ["no-nb", "se", "da", "en-GB"],
+    },
 ] as const);
 
 export default SupportedLocales;
