@@ -220,7 +220,7 @@ export default function MarkdownEditor({
 
     return (
         <TooltipProvider delayDuration={300}>
-            <div className="flex w-full flex-col items-start justify-center gap-1">
+            <div className="group/editor flex w-full flex-col items-start justify-center gap-1">
                 {/* TOOLBAR */}
                 <div className="flex w-full flex-wrap items-center justify-between gap-x-6 gap-y-1">
                     <div className="flex flex-wrap items-center justify-start gap-x-2 gap-y-1">
@@ -406,7 +406,8 @@ export default function MarkdownEditor({
                             name="markdown-textarea"
                             placeholder={placeholder}
                             className={cn(
-                                "focus-within:!bg-transparent h-[32rem] min-h-[16rem] w-full resize-y rounded-lg font-mono text-base text-foreground-muted focus-within:text-foreground-bright",
+                                "group-focus-within/editor:!bg-transparent group-focus-within/editor:focus_ring group-focus-within/editor:text-foreground-bright",
+                                "h-[32rem] min-h-[16rem] w-full resize-y rounded-lg font-mono text-base text-foreground-muted",
                                 wordWrap === true ? "overflow-x-auto whitespace-nowrap" : "break-words",
                                 textAreaClassName,
                             )}
