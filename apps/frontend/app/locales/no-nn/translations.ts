@@ -1,4 +1,8 @@
-import type { Locale } from "~/locales/types";
+import type { PartialLocale } from "~/locales/types";
+
+function Pluralize(count: number, singular: string, plural: string) {
+    return count === 1 ? singular : plural;
+}
 
 export default {
     common: {
@@ -43,4 +47,4 @@ export default {
         worlds: "verder",
         skipToMainContent: "Hopp til hovudinnhald",
     },
-} satisfies Locale;
+} satisfies PartialLocale;
