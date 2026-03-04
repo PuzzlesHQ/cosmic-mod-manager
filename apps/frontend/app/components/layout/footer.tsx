@@ -221,7 +221,7 @@ export function LangSwitcher() {
                 <SelectGroup>
                     {SupportedLocalesList?.map((locale) => {
                         const region = locale.region;
-                        const label = region ? `${locale.name} (${region.displayName})` : locale.name;
+                        const label = region ? `${locale.name} (${region.name})` : locale.name;
 
                         return (
                             <SelectItem key={label} value={formatLocaleCode(locale)} aria-label={label} title={label}>
