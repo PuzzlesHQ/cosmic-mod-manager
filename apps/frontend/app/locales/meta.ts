@@ -1,7 +1,18 @@
-import { formatLocaleCode } from ".";
-import type { LocaleMetaData } from "./types";
+import { formatLocaleCode } from "~/locales";
+import type { LocaleMetaData } from "~/locales/types";
 
 const SupportedLocales = defineLocales([
+    {
+        code: "en",
+        name: "English",
+        displayName: "English",
+        dir: "ltr",
+        region: {
+            code: "GB",
+            name: "United Kingdom",
+            displayName: "United Kingdom",
+        },
+    },
     {
         code: "en",
         name: "English",
@@ -12,6 +23,7 @@ const SupportedLocales = defineLocales([
             name: "United States",
             displayName: "United States",
         },
+        fallbacks: ["en-GB"],
     },
     {
         code: "fr",
@@ -58,6 +70,7 @@ const SupportedLocales = defineLocales([
             name: "Book Norwegian",
             displayName: "Bokmål",
         },
+        fallbacks: ["no-nn", "se", "da", "en-GB"]
     },
     {
         code: "no",
@@ -69,8 +82,13 @@ const SupportedLocales = defineLocales([
             name: "New Norwegian",
             displayName: "Nynorsk",
         },
+        fallbacks: ["no-nb", "se", "da", "en-GB"]
     },
 ] as const);
+
+export default SupportedLocales;
+export const DefaultLocale_Meta =
+    SupportedLocales.find((locale) => formatLocaleCode(locale) === "en-GB") || SupportedLocales[0];
 
 type ExtractLocaleCodes<L> = L extends { code: string }
     ? L extends { region: { code: string } }
@@ -81,17 +99,14 @@ type ExtractLocaleCodes<L> = L extends { code: string }
 function defineLocales<const T extends readonly LocaleMetaData[]>(
     locales: T extends Array<infer Item>
         ? (Item & {
-              fallback?: ExtractLocaleCodes<T[number]>;
+              fallbacks?: ExtractLocaleCodes<T[number]>[];
           })[]
         : T,
 ) {
     return locales;
 }
 
-export default SupportedLocales;
-export const DefaultLocale_Meta = SupportedLocales[0];
 export const SupportedLocalesList = SupportedLocales as readonly LocaleMetaData[];
-
 export function getMetadataFromLocaleCode(code: string) {
     return SupportedLocales.find((locale) => locale.code === code || formatLocaleCode(locale) === code);
 }

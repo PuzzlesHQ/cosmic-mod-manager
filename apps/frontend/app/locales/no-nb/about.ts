@@ -21,7 +21,7 @@ CRMM begynte i de tidligere stadier som en beskedent **H<sub>2</sub>O**-molekyl 
 
 CRMM ble *faktisk* opprettet den **10. mars 2024**, født ut fra ideen om å skape et sentralt sted for å dele alt som er laget for Cosmic Reach. Inspirert av plattformer som [Modrinth](https://modrinth.com/), satte vi oss fore å bygge noe renere, raskere og skreddersydd for vårt eget lille fellesskap. Og selv om vi fortsatt har en lang vei å gå, og noen utfordringer underveis, er vi veldig stolte av hvor langt vi allerede har kommet.
 
-### Vårt mål
+### Målet vårt
 
 Vårt mål er enkelt:
 Å **styrke skapere** og **gjøre innholdsdeling sømløst**. Fra modifikasjoner og verdener til teksturpakker og skjermskildrere, så vil vi gi innholdskapere en måte å dele de de skaper – og brukere en måte å ta skapelsene i bruk, uanstrengt.
@@ -52,7 +52,7 @@ Selvdrifting:
 - **Clickhouse DB** for rask og effektiv analyser
 - **Uptime Kuma** for overvåking
 
-Tredjepart:
+Tredjeparter:
 - **Cloudflare** (Proxy for backend)
 - **Fastly** for innholdslevering og mellomlagring
 

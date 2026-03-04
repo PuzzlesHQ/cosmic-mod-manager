@@ -41,13 +41,14 @@ export default {
             return [formattedCount, " ", members];
         },
     },
+    
     navbar: {
         mod: "modifikasjon",
         mods: "modifikasjoner",
         datamod: "datamodifikasjon",
         datamods: "datamodifikasjoner",
-        resource-pack: "ressurspakke",
-        resource-packs: "ressurspakker",
+        "resource-pack": "ressurspakke",
+        "resource-packs": "ressurspakker",
         shader: "skjermskildrer",
         shaders: "skjermskildrere",
         modpack: "modifikasjonspakke",
@@ -60,14 +61,13 @@ export default {
         profile: "Profil",
         skipToMainContent: "Hopp til hovedinnhold",
     },
+
     homePage: {
-        title: (projectType) => [
-            "Stedet for innhold for Cosmic Reach",
-            projectType,
-        ],
+        title: (projectType) => ["Stedet for innhold for Cosmic Reach", projectType ],
         desc: "Det beste stedet for Cosmic Reach-modifikasjonene dine. Oppdag, spill og lag innhold – alt på ett sted.",
         exploreMods: "Oppdag modifikasjoner",
     },
+
     auth: {
         email: "E-post",
         password: "Passord",
@@ -250,6 +250,7 @@ export default {
             newStatus,
             " av moderatorer.",
         ],
+
         createProjectInfo: "Du har ingen prosjekter ennå. Klikk på knappen ovenfor for å opprette et.",
         type: "Type",
         status: "Status",
@@ -265,10 +266,11 @@ export default {
         enterCollectionName: "Skriv inn samlingsnavn",
         createCollection: "Opprett samling",
     },
+
     search: {
         project: "Søk blant prosjekter",
         mod: "Søk blant modifikasjoner",
-        resource-pack: "Søk blant ressurspakker",
+        "resource-pack": "Søk blant ressurspakker",
         shader: "Søk blant skjermskildrere",
         plugin: "Søk blant pluginer",
         modpack: "Søk blant modifikasjonspakker",
@@ -370,7 +372,7 @@ export default {
         browse: {
             mod: "Bla blant modifikasjoner",
             datamod: "Bla blant datamodifikasjoner",
-            resource-pack: "Bla blant ressurspakker",
+            "resource-pack": "Bla blant ressurspakker",
             shader: "Bla blant skjermskildrere",
             modpack: "Bla blant modifikasjonspakker",
             plugin: "Bla blant pluginer",
