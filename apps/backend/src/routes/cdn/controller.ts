@@ -1,5 +1,4 @@
 import { getMimeFromType } from "@app/utils/file-signature";
-import { MiB } from "@app/utils/number";
 import type { Context } from "hono";
 import { GetFile, GetManyFiles_ByID } from "~/db/file_item";
 import { GetProject_ListItem } from "~/db/project_item";
@@ -11,8 +10,6 @@ import type { FILE_STORAGE_SERVICE, UserSessionData } from "~/types";
 import { HTTP_STATUS, notFoundResponse } from "~/utils/http";
 import { versionFileUrl } from "~/utils/urls";
 import { addToDownloadsQueue } from "./downloads-counter";
-
-const MAX_FASTLY_FILE_SIZE = 19 * MiB;
 
 export async function serveVersionFile(
     ctx: Context,
@@ -62,10 +59,8 @@ export async function serveVersionFile(
         });
     }
 
-    const fileUnder_FastlyCdn_SizeLimit = file_meta.size < MAX_FASTLY_FILE_SIZE;
-
-    // Redirect to the cdn url if the project is public and the file is under the CDN size limit
-    if (!isCdnRequest && isPublicallyAccessible && fileUnder_FastlyCdn_SizeLimit) {
+    // Redirect to the cdn url if the project is public and the request is not from the cdn
+    if (!isCdnRequest && isPublicallyAccessible) {
         return ctx.redirect(
             `${versionFileUrl(project.id, associatedProjectVersion.id, fileName, true)}`,
             HTTP_STATUS.TEMPORARY_REDIRECT,
@@ -105,7 +100,7 @@ export async function serveImageFile(props: ServeImageFileProps) {
     const fileMeta = await GetFile(props.fileId);
     if (!fileMeta?.id) return notFoundResponse(props.ctx);
 
-    if (!props.isCdnRequest && fileMeta.size < MAX_FASTLY_FILE_SIZE) {
+    if (!props.isCdnRequest) {
         return props.ctx.redirect(props.cdnUrlOfFile);
     }
 
