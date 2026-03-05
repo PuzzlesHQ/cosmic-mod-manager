@@ -1,56 +1,39 @@
-import env from "./env";
+import env from "~/utils/env";
 
-function CDN_PREFIX(useCacheCdn?: boolean) {
-    return `${useCacheCdn ? env.CACHE_CDN_URL : env.CDN_SERVER_URL}/cdn/data`;
-}
+const DIRECT_CDN_PREFIX = `${env.CDN_SERVER_URL}/cdn/data`;
+const CACHE_CDN_PREFIX = `${env.CACHE_CDN_URL}/cdn/data`;
 
-export function cdnUrl(path: string, useCacheCdn = true) {
+export function cdnUrl(path: string | null, pathPrefix?: string, cdnPrefix = CACHE_CDN_PREFIX) {
     if (!path) return null;
     if (path.startsWith("http")) return path;
 
-    return `${CDN_PREFIX(useCacheCdn)}/${path}`;
+    return pathPrefix ? `${cdnPrefix}/${pathPrefix}/${path}` : `${cdnPrefix}/${path}`;
 }
 
 export function projectIconUrl(projectId: string, icon: string | null) {
-    if (!icon) return null;
-    // If the icon has a full URL, return it
-    if (icon.startsWith("http")) return icon;
-
-    // Otherwise, construct and return the CDN URL
-    return cdnUrl(`project/${projectId}/${icon}`);
+    return cdnUrl(icon, `project/${projectId}`);
 }
 
 export function projectGalleryFileUrl(projectId: string, galleryFile: string) {
-    if (galleryFile.startsWith("http")) return galleryFile;
-    return cdnUrl(`project/${projectId}/gallery/${encodeURIComponent(galleryFile)}`);
+    return cdnUrl(encodeURIComponent(galleryFile), `project/${projectId}/gallery`);
 }
 
-export function versionFileUrl(projectId: string, versionId: string, fileName: string, useCacheCdn?: boolean) {
-    if (fileName.startsWith("http")) return fileName;
-    return cdnUrl(`project/${projectId}/version/${versionId}/${encodeURIComponent(fileName)}`, useCacheCdn === true);
+export function versionFileUrl(projectId: string, versionId: string, fileName: string, useCacheCdn = false) {
+    return cdnUrl(
+        encodeURIComponent(fileName),
+        `project/${projectId}/version/${versionId}`,
+        useCacheCdn ? CACHE_CDN_PREFIX : DIRECT_CDN_PREFIX,
+    );
 }
 
 export function orgIconUrl(orgId: string, icon: string | null) {
-    if (!icon) return null;
-    // If the icon has a full URL, return it
-    if (icon.startsWith("http")) return icon;
-
-    // Otherwise, construct and return the CDN URL
-    return cdnUrl(`organization/${orgId}/${icon}`);
+    return cdnUrl(icon, `organization/${orgId}`);
 }
 
 export function userFileUrl(userId: string, icon: string | null) {
-    if (!icon) return null;
-    // If the icon has a full URL, return it
-    if (icon.startsWith("http")) return icon;
-
-    // Otherwise, construct and return the CDN URL
-    return cdnUrl(`user/${userId}/${icon}`);
+    return cdnUrl(icon, `user/${userId}`);
 }
 
 export function collectionIconUrl(collectionId: string, icon: string | null) {
-    if (!icon) return null;
-    // If the icon has a full URL, return it
-    if (icon.startsWith("http")) return icon;
-    return cdnUrl(`collection/${collectionId}/${icon}`);
+    return cdnUrl(icon, `collection/${collectionId}`);
 }
