@@ -9,7 +9,7 @@ import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-
 import { getSitemap } from "~/services/sitemap-gen";
 import { getCollectionFile, getOrgFile, getProjectFile, getProjectGalleryFile, getUserFile } from "~/services/storage";
 import env from "~/utils/env";
-import { invalidRequestResponse, notFoundResponse, serverErrorResponse } from "~/utils/http";
+import { invalidRequestResponse, notFoundResponse, serverErrorResponse, unauthorizedReqResponse } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";
 import { collectionIconUrl, orgIconUrl, projectGalleryFileUrl, projectIconUrl, userFileUrl } from "~/utils/urls";
 import { serveImageFile, serveVersionFile } from "./controller";
@@ -99,7 +99,10 @@ async function versionFile_get(ctx: Context) {
         }
 
         if (isABot && !isExplicitlyAllowed) {
-            return invalidRequestResponse(ctx, `Error: Possibly bot activity;\nUser-Agent: '${userAgent};`);
+            return unauthorizedReqResponse(
+                ctx,
+                "You're not allowed to access this resource. If you think this is a mistake, please contact us.",
+            );
         }
 
         return await serveVersionFile(ctx, projectId, versionId, fileName, sessionUser, IsCdnRequest(ctx));
