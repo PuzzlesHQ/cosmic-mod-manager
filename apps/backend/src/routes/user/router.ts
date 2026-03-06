@@ -8,10 +8,16 @@ import {
 import { zodParse } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
-import { sendEmailRateLimiter } from "~/middleware/rate-limit/email";
-import { getReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
-import { addInvalidAuthAttempt, invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
-import { critModifyReqRateLimiter } from "~/middleware/rate-limit/modify-req";
+import {
+    addInvalidAuthAttempt,
+    invalidAuthAttemptLimiter,
+    sendEmailRateLimiter,
+} from "~/middleware/rate-limiter/fixed-limiters";
+import {
+    critModifyReqRateLimiter,
+    getReqRateLimiter,
+    strictGetReqRateLimiter,
+} from "~/middleware/rate-limiter/sliding-window-limiters";
 import { GetUserCollections } from "~/routes/collections/controllers";
 import {
     addNewPassword_ConfirmationEmail,

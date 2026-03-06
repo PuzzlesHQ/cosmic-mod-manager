@@ -15,7 +15,7 @@ import {
 } from "~/db/organization_item";
 import { GetManyProjects_ListItem, GetProject_ListItem, UpdateManyProjects, UpdateProject } from "~/db/project_item";
 import { Create_ManyTeamMembers, CreateTeamMember, Delete_ManyTeamMembers } from "~/db/team-member_item";
-import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-attempt";
+import { addInvalidAuthAttempt } from "~/middleware/rate-limiter/invalid-auth-attempt";
 import { UpdateProjects_SearchIndex } from "~/routes/search/search-db";
 import { deleteOrgDirectory, deleteOrgFile, saveOrgFile } from "~/services/storage";
 import { FILE_STORAGE_SERVICE, type UserSessionData } from "~/types";

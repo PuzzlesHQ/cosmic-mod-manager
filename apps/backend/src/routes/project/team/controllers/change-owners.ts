@@ -2,7 +2,7 @@ import { hasFullItemAccess } from "@app/utils/constants/roles";
 import type { Context } from "hono";
 import { UpdateTeamMember } from "~/db/team-member_item";
 import { GetTeam } from "~/db/team_item";
-import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-attempt";
+import { addInvalidAuthAttempt } from "~/middleware/rate-limiter/invalid-auth-attempt";
 import { UpdateProjects_SearchIndex } from "~/routes/search/search-db";
 import type { UserSessionData } from "~/types";
 import {

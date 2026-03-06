@@ -6,9 +6,12 @@ import { zodParse } from "@app/utils/schemas/utils";
 import { AuthActionIntent, type AuthProvider, type LoggedInUserData } from "@app/utils/types";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
-import { getReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
-import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
-import { critModifyReqRateLimiter } from "~/middleware/rate-limit/modify-req";
+import { invalidAuthAttemptLimiter } from "~/middleware/rate-limiter/fixed-limiters";
+import {
+    critModifyReqRateLimiter,
+    getReqRateLimiter,
+    strictGetReqRateLimiter,
+} from "~/middleware/rate-limiter/sliding-window-limiters";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { HTTP_STATUS, invalidRequestResponse, serverErrorResponse, unauthenticatedReqResponse } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";

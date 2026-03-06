@@ -1,7 +1,7 @@
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware } from "~/middleware/auth";
-import { getReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
-import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
+import { invalidAuthAttemptLimiter } from "~/middleware/rate-limiter/fixed-limiters";
+import { getReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limiter/sliding-window-limiters";
 import { HashAlgorithms } from "~/types";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { HTTP_STATUS, invalidRequestResponse, notFoundResponse, serverErrorResponse } from "~/utils/http";

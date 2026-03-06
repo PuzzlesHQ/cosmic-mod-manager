@@ -1,8 +1,8 @@
 import { decodeStringArray } from "@app/utils/string";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware } from "~/middleware/auth";
-import { strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
-import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
+import { invalidAuthAttemptLimiter } from "~/middleware/rate-limiter/fixed-limiters";
+import { strictGetReqRateLimiter } from "~/middleware/rate-limiter/sliding-window-limiters";
 import { invalidRequestResponse, serverErrorResponse } from "~/utils/http";
 import { getManyUsers } from "./controller";
 

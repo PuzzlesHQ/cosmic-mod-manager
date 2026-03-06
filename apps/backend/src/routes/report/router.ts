@@ -6,7 +6,13 @@ import { decodeStringArray } from "@app/utils/string";
 import { type ReportItemType, reportFilters_defaults } from "@app/utils/types/api/report";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
-import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
+import { invalidAuthAttemptLimiter } from "~/middleware/rate-limiter/fixed-limiters";
+import {
+    critModifyReqRateLimiter,
+    getReqRateLimiter,
+    modifyReqRateLimiter,
+    strictGetReqRateLimiter,
+} from "~/middleware/rate-limiter/sliding-window-limiters";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import {
     invalidRequestResponse,
@@ -27,12 +33,12 @@ const reportRouter = new Hono()
     .use(invalidAuthAttemptLimiter)
     .use(AuthenticationMiddleware)
     .use(LoginProtectedRoute)
-    .post("/", report_post)
-    .get("/", userReports_get)
-    .get("/getAll", getAllReports)
-    .get("/existingReport", existingReport_get)
-    .get("/:reportId", report_get)
-    .patch("/:reportId", report_patch);
+    .post("/", critModifyReqRateLimiter, report_post)
+    .get("/", getReqRateLimiter, userReports_get)
+    .get("/getAll", strictGetReqRateLimiter, getAllReports)
+    .get("/existingReport", getReqRateLimiter, existingReport_get)
+    .get("/:reportId", getReqRateLimiter, report_get)
+    .patch("/:reportId", modifyReqRateLimiter, report_patch);
 
 async function report_post(ctx: Context) {
     try {

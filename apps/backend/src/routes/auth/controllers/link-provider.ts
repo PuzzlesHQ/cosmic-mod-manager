@@ -4,7 +4,7 @@ import { Capitalize } from "@app/utils/string";
 import type { LinkedProvidersListData } from "@app/utils/types";
 import type { Context } from "hono";
 // import { addToUsedApiRateLimit } from "~/middleware/rate-limiter";
-import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-attempt";
+import { addInvalidAuthAttempt } from "~/middleware/rate-limiter/invalid-auth-attempt";
 import { createNewAuthAccount, getAuthProviderProfileData } from "~/routes/auth/helpers";
 import { OAuthProfileDataSchema } from "~/routes/auth/providers/_schema";
 import prisma from "~/services/prisma";

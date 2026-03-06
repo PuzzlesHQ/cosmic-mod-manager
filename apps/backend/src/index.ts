@@ -13,7 +13,7 @@ import { queueSearchIndexUpdate } from "~/routes/search/search-db";
 import bodyParserMiddleware from "~/middleware/body-parser";
 import { applyCacheHeaders } from "~/middleware/cache";
 import { logger } from "~/middleware/http-logger";
-import { ddosProtectionRateLimiter } from "~/middleware/rate-limit/ddos";
+import { ddosProtectionRateLimiter } from "~/middleware/rate-limiter/fixed-limiters";
 import { startSitemapGenerator } from "~/services/sitemap-gen";
 
 // Routes

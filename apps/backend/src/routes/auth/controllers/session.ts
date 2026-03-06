@@ -2,7 +2,7 @@ import type { UserSessionStates } from "@app/utils/types";
 import type { SessionListData } from "@app/utils/types/api";
 import type { Context } from "hono";
 import { GetManySessions, GetSession } from "~/db/session_item";
-import { addInvalidAuthAttempt } from "~/middleware/rate-limit/invalid-auth-attempt";
+import { addInvalidAuthAttempt } from "~/middleware/rate-limiter/invalid-auth-attempt";
 import { deleteSessionCookie, invalidateSessionFromId } from "~/routes/auth/helpers/session";
 import type { UserSessionData } from "~/types";
 import { HTTP_STATUS, invalidRequestResponseData } from "~/utils/http";

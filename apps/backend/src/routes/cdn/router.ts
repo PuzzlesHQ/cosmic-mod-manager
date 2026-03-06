@@ -4,8 +4,8 @@ import { cors } from "hono/cors";
 import { isbot } from "isbot";
 import { AuthenticationMiddleware } from "~/middleware/auth";
 import { applyCacheHeaders, IMMUTABLE_TTL } from "~/middleware/cache";
-import { cdnAssetRateLimiter, cdnLargeFileRateLimiter } from "~/middleware/rate-limit/cdn";
-import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
+import { invalidAuthAttemptLimiter } from "~/middleware/rate-limiter/fixed-limiters";
+import { cdnAssetRateLimiter } from "~/middleware/rate-limiter/sliding-window-limiters";
 import { getSitemap } from "~/services/sitemap-gen";
 import { getCollectionFile, getOrgFile, getProjectFile, getProjectGalleryFile, getUserFile } from "~/services/storage";
 import env from "~/utils/env";
@@ -26,7 +26,7 @@ const cdnRouter = new Hono()
     .get(
         "/data/project/:projectId/version/:versionId/:fileName",
         invalidAuthAttemptLimiter,
-        cdnLargeFileRateLimiter,
+        cdnAssetRateLimiter,
         AuthenticationMiddleware,
         versionFile_get,
     )

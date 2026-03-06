@@ -1,6 +1,6 @@
 import { decodeStringArray } from "@app/utils/string";
 import { type Context, Hono } from "hono";
-import { strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
+import { strictGetReqRateLimiter } from "~/middleware/rate-limiter/sliding-window-limiters";
 import { invalidRequestResponse, serverErrorResponse } from "~/utils/http";
 import { getManyOrgs } from "./controllers/get-many";
 

@@ -3,7 +3,7 @@ import { createPAT_FormSchema } from "@app/utils/schemas/pat";
 import { zodParse } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware } from "~/middleware/auth";
-import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
+import { invalidAuthAttemptLimiter } from "~/middleware/rate-limiter/fixed-limiters";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { invalidRequestResponse, serverErrorResponse } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";

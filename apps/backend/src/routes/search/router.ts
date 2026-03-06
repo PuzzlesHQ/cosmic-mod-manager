@@ -16,13 +16,13 @@ import GAME_VERSIONS from "@app/utils/src/constants/game-versions";
 import { SearchResultSortMethod, TagType } from "@app/utils/types";
 import { type Context, Hono } from "hono";
 import { applyCacheHeaders } from "~/middleware/cache";
-import { searchReqRateLimiter } from "~/middleware/rate-limit/get-req";
+import { getReqRateLimiter } from "~/middleware/rate-limiter/sliding-window-limiters";
 import { isNumber } from "~/utils";
 import { HTTP_STATUS, invalidRequestResponse, serverErrorResponse } from "~/utils/http";
 import { searchProjects } from "./controllers";
 
 const searchRouter = new Hono()
-    .use(searchReqRateLimiter)
+    .use(getReqRateLimiter)
 
     // shorter TTL for search results
     .get("/", applyCacheHeaders({ browserTTL_s: 3600, cdnTTL_s: 7200 }), search_get)

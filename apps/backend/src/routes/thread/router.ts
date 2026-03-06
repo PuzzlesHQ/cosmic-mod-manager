@@ -3,7 +3,8 @@ import { createThreadMessage_Schema } from "@app/utils/schemas/thread";
 import { zodParse } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
-import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
+import { invalidAuthAttemptLimiter } from "~/middleware/rate-limiter/fixed-limiters";
+import { getReqRateLimiter, modifyReqRateLimiter } from "~/middleware/rate-limiter/sliding-window-limiters";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { invalidRequestResponse, serverErrorResponse, unauthenticatedReqResponse } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";
@@ -14,9 +15,9 @@ const threadRouter = new Hono()
     .use(AuthenticationMiddleware)
     .use(LoginProtectedRoute)
 
-    .get("/:threadId", thread_get)
-    .post("/:threadId", thread_post)
-    .delete("/message/:messageId", threadMessage_delete);
+    .get("/:threadId", getReqRateLimiter, thread_get)
+    .post("/:threadId", modifyReqRateLimiter, thread_post)
+    .delete("/message/:messageId", modifyReqRateLimiter, threadMessage_delete);
 
 async function thread_get(ctx: Context) {
     try {

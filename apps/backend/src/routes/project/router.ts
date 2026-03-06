@@ -15,9 +15,13 @@ import type { ProjectDetailsData, ProjectVersionData } from "@app/utils/types/ap
 import { type Context, Hono } from "hono";
 import type { z } from "zod/v4";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
-import { getReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limit/get-req";
-import { invalidAuthAttemptLimiter } from "~/middleware/rate-limit/invalid-auth-attempt";
-import { critModifyReqRateLimiter, modifyReqRateLimiter } from "~/middleware/rate-limit/modify-req";
+import { invalidAuthAttemptLimiter } from "~/middleware/rate-limiter/fixed-limiters";
+import {
+    critModifyReqRateLimiter,
+    getReqRateLimiter,
+    modifyReqRateLimiter,
+    strictGetReqRateLimiter,
+} from "~/middleware/rate-limiter/sliding-window-limiters";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { invalidRequestResponse, serverErrorResponse, unauthenticatedReqResponse } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";
