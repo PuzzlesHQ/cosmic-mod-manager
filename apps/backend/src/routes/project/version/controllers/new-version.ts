@@ -10,7 +10,7 @@ import type { Context } from "hono";
 import type { z } from "zod/v4";
 import { GetManyProjects_ListItem, GetProject_ListItem, UpdateProject } from "~/db/project_item";
 import { CreateVersion, GetVersions } from "~/db/version_item";
-import { addInvalidAuthAttempt } from "~/middleware/rate-limiter/invalid-auth-attempt";
+import { addInvalidAuthAttempt } from "~/middleware/rate-limiter/fixed-limiters";
 import {
     aggregateGameVersions,
     aggregateProjectLoaderNames,

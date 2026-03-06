@@ -3,7 +3,7 @@ import { AuthProvider } from "@app/utils/types";
 import type { Context } from "hono";
 import type { z } from "zod/v4";
 import { GetUser_Unique } from "~/db/user_item";
-import { addInvalidAuthAttempt } from "~/middleware/rate-limiter/invalid-auth-attempt";
+import { addInvalidAuthAttempt } from "~/middleware/rate-limiter/fixed-limiters";
 import { matchPassword } from "~/routes/auth/helpers";
 import { createUserSession, setSessionCookie } from "~/routes/auth/helpers/session";
 import { HTTP_STATUS } from "~/utils/http";
