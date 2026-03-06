@@ -6,6 +6,7 @@ import SPDX_LICENSE_LIST, { FEATURED_LICENSE_OPTIONS } from "@app/utils/src/cons
 import type { ProjectType, TagType } from "@app/utils/types";
 import { type Context, Hono } from "hono";
 import { applyCacheHeaders } from "~/middleware/cache";
+import { getReqRateLimiter } from "~/middleware/rate-limiter/sliding-window-limiters";
 import { HTTP_STATUS, serverErrorResponse } from "~/utils/http";
 
 const tagsRouter = new Hono()
