@@ -9,7 +9,7 @@ import { ConfirmationType } from "@app/utils/types";
 import type { Context } from "hono";
 import type { z } from "zod/v4";
 import { GetUser_Unique, UpdateUser } from "~/db/user_item";
-import { addInvalidAuthAttempt } from "~/middleware/rate-limiter/invalid-auth-attempt";
+import { addInvalidAuthAttempt } from "~/middleware/rate-limiter/fixed-limiters";
 import { generateRandomToken, hashPassword, hashString, matchPassword } from "~/routes/auth/helpers";
 import { invalidateAllOtherUserSessions } from "~/routes/auth/helpers/session";
 import prisma from "~/services/prisma";
