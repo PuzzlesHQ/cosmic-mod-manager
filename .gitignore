@@ -3,6 +3,6 @@ node_modules
 
 
 apps/backend/clickhouse
-apps/apps/backend/redis
+apps/backend/redis
 apps/backend/meilisearch
 .idea
