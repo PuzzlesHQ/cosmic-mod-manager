@@ -47,6 +47,8 @@ export default {
     multiplayer: "Flerspiller",
     optimization: "Optimalisering",
     parkour: "Parkour",
+    "path-tracing": "Lysstrålesporing",
+    pbr: "Fysikkbasert gjengivelse",
     "pixel-art": "Pikselkunst",
     potato: "Potet",
     low: "Lav",
