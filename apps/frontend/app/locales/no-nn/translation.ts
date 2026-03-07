@@ -37,8 +37,8 @@ export default {
         datamods: "datamodifikasjonar",
         "resource-pack": "ressurspakke",
         "resource-packs": "ressurspakka",
-        shader: "skjermskildrar",
-        shaders: "skjermskildrarar",
+        shader: "Gjengiver",
+        shaders: "Gjengivrar",
         modpack: "modifikasjonspakke",
         modpacks: "modifikasjonspakkar",
         plugin: "plugin",
@@ -48,3 +48,4 @@ export default {
         skipToMainContent: "Hopp til hovudinnhald",
     },
 } satisfies PartialLocale;
+
