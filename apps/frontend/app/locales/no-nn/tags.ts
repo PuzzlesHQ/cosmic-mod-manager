@@ -23,6 +23,8 @@ export default {
     mobs: "Skapningar",
     models: "Modellar",
     multiplayer: "Fleirspelar",
+    "path-tracing": "Lysstrålesporing",
+    pbr: "Fysikkbasert attgiving",
     high: "Høg",
     screenshot: "Skjermbilete",
     reflections: "Refleksjonar",
