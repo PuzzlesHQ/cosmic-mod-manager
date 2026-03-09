@@ -17,9 +17,15 @@ class SlidingWindowCounter {
         const now = this.now_s();
         const stats = await this.getCount(id);
 
-        // check if the 'curr' window has passed
-        if (stats[0] + this.timeWindow_s < now) {
-            // replace prev window with the 'curr' one
+        // more than 2 windows have elapsed so all previous data is stale
+        if (stats[0] + 2 * this.timeWindow_s < now) {
+            stats[0] = now;
+            stats[1] = 0;
+            stats[2] = 0;
+            stats[3] = 0;
+        }
+        // only one window has elapsed, so slide the current window to previous and zero the current one
+        else if (stats[0] + this.timeWindow_s < now) {
             stats[2] = stats[0];
             stats[3] = stats[1];
 
