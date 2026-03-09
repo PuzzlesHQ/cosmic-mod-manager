@@ -2,8 +2,12 @@ import { API_SCOPE } from "@app/utils/pats";
 import { MODERATOR_ROLES } from "@app/utils/src/constants/roles";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware } from "~/middleware/auth";
-import { addInvalidAuthAttempt, invalidAuthAttemptLimiter } from "~/middleware/rate-limiter/fixed-limiters";
-import { critModifyReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limiter/sliding-window-limiters";
+import {
+    addInvalidAuthAttempt,
+    critModifyReqRateLimiter,
+    invalidAuthAttemptLimiter,
+    strictGetReqRateLimiter,
+} from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { serverErrorResponse, unauthorizedReqResponse } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";

@@ -3,8 +3,7 @@ import { overrideOrgMemberFormSchema, updateTeamMemberFormSchema } from "@app/ut
 import { zodParse } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
-import { invalidAuthAttemptLimiter } from "~/middleware/rate-limiter/fixed-limiters";
-import { critModifyReqRateLimiter } from "~/middleware/rate-limiter/sliding-window-limiters";
+import { critModifyReqRateLimiter, invalidAuthAttemptLimiter } from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { invalidRequestResponse, serverErrorResponse, unauthenticatedReqResponse } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";

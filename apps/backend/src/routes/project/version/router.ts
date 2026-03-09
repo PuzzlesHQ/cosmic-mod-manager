@@ -3,11 +3,7 @@ import { newVersionFormSchema, updateVersionFormSchema } from "@app/utils/schema
 import { zodParse } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
 import { LoginProtectedRoute } from "~/middleware/auth";
-import {
-    critModifyReqRateLimiter,
-    getReqRateLimiter,
-    modifyReqRateLimiter,
-} from "~/middleware/rate-limiter/sliding-window-limiters";
+import { critModifyReqRateLimiter, getReqRateLimiter, modifyReqRateLimiter } from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import {
     HTTP_STATUS,

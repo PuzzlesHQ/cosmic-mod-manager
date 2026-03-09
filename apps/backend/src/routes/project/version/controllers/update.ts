@@ -7,7 +7,7 @@ import type { z } from "zod/v4";
 import { GetManyFiles_ByID } from "~/db/file_item";
 import { GetProject_Details, GetProject_ListItem, UpdateProject } from "~/db/project_item";
 import { DeleteVersion, GetVersions, UpdateVersion } from "~/db/version_item";
-import { addInvalidAuthAttempt } from "~/middleware/rate-limiter/fixed-limiters";
+import { addInvalidAuthAttempt } from "~/middleware/rate-limiter";
 import { getFilesFromId } from "~/routes/project/queries/file";
 import {
     aggregateGameVersions,

@@ -2,8 +2,7 @@ import { API_SCOPE } from "@app/utils/pats";
 import { decodeStringArray } from "@app/utils/string";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
-import { invalidAuthAttemptLimiter } from "~/middleware/rate-limiter/fixed-limiters";
-import { getReqRateLimiter, modifyReqRateLimiter } from "~/middleware/rate-limiter/sliding-window-limiters";
+import { getReqRateLimiter, invalidAuthAttemptLimiter, modifyReqRateLimiter } from "~/middleware/rate-limiter";
 import {
     deleteNotifications,
     getNotificationById,

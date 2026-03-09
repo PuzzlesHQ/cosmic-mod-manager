@@ -3,7 +3,7 @@ import { zodParse } from "@app/utils/schemas/utils";
 import { Capitalize } from "@app/utils/string";
 import type { LinkedProvidersListData } from "@app/utils/types";
 import type { Context } from "hono";
-import { addInvalidAuthAttempt } from "~/middleware/rate-limiter/fixed-limiters";
+import { addInvalidAuthAttempt } from "~/middleware/rate-limiter";
 import { createNewAuthAccount, getAuthProviderProfileData } from "~/routes/auth/helpers";
 import { OAuthProfileDataSchema } from "~/routes/auth/providers/_schema";
 import prisma from "~/services/prisma";

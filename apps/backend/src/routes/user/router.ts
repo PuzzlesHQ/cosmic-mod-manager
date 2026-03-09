@@ -10,14 +10,12 @@ import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
 import {
     addInvalidAuthAttempt,
-    invalidAuthAttemptLimiter,
-    sendEmailRateLimiter,
-} from "~/middleware/rate-limiter/fixed-limiters";
-import {
     critModifyReqRateLimiter,
     getReqRateLimiter,
+    invalidAuthAttemptLimiter,
+    sendEmailRateLimiter,
     strictGetReqRateLimiter,
-} from "~/middleware/rate-limiter/sliding-window-limiters";
+} from "~/middleware/rate-limiter";
 import { GetUserCollections } from "~/routes/collections/controllers";
 import {
     addNewPassword_ConfirmationEmail,

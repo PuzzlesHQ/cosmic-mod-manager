@@ -6,11 +6,11 @@ import SPDX_LICENSE_LIST, { FEATURED_LICENSE_OPTIONS } from "@app/utils/src/cons
 import type { ProjectType, TagType } from "@app/utils/types";
 import { type Context, Hono } from "hono";
 import { applyCacheHeaders } from "~/middleware/cache";
-import { getReqRateLimiter } from "~/middleware/rate-limiter/sliding-window-limiters";
+import { searchReqRateLimiter } from "~/middleware/rate-limiter";
 import { HTTP_STATUS, serverErrorResponse } from "~/utils/http";
 
 const tagsRouter = new Hono()
-    .use(getReqRateLimiter)
+    .use(searchReqRateLimiter)
     .use(applyCacheHeaders({ browserTTL_s: 24 * 3600, cdnTTL_s: 24 * 3600 }))
 
     .get("/categories", categories_get)

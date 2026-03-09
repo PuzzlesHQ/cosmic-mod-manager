@@ -15,13 +15,13 @@ import type { ProjectDetailsData, ProjectVersionData } from "@app/utils/types/ap
 import { type Context, Hono } from "hono";
 import type { z } from "zod/v4";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
-import { invalidAuthAttemptLimiter } from "~/middleware/rate-limiter/fixed-limiters";
 import {
     critModifyReqRateLimiter,
     getReqRateLimiter,
+    invalidAuthAttemptLimiter,
     modifyReqRateLimiter,
     strictGetReqRateLimiter,
-} from "~/middleware/rate-limiter/sliding-window-limiters";
+} from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { invalidRequestResponse, serverErrorResponse, unauthenticatedReqResponse } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";
