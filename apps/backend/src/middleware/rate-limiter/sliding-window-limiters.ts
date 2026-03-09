@@ -60,14 +60,13 @@ export async function modifyReqRateLimiter(ctx: Context, next: Next) {
     await next();
 }
 
-const critModifyLimiter = universalRateLimiterBucket;
 export async function critModifyReqRateLimiter(ctx: Context, next: Next) {
     const ipAddr = getUserIpAddress(ctx);
     if (!ipAddr) {
         return serverErrorResponse(ctx);
     }
 
-    const res = await critModifyLimiter.consume(ipAddr, limits.CRIT_MODIFY);
+    const res = await universalRateLimiterBucket.consume(ipAddr, limits.CRIT_MODIFY);
     if (res.allowed === false) {
         return tooManyRequestsResponse(ctx);
     }
