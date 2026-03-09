@@ -3,7 +3,7 @@ import { MODERATOR_ROLES } from "@app/utils/src/constants/roles";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware } from "~/middleware/auth";
 import { addInvalidAuthAttempt, invalidAuthAttemptLimiter } from "~/middleware/rate-limiter/fixed-limiters";
-import { critModifyReqRateLimiter } from "~/middleware/rate-limiter/sliding-window-limiters";
+import { critModifyReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limiter/sliding-window-limiters";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { serverErrorResponse, unauthorizedReqResponse } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";
@@ -13,7 +13,7 @@ const moderationRouter = new Hono()
     .use(invalidAuthAttemptLimiter)
     .use(AuthenticationMiddleware)
 
-    .get("/projects", critModifyReqRateLimiter, moderationProjects_get)
+    .get("/projects", strictGetReqRateLimiter, moderationProjects_get)
     .post("/project/:id", critModifyReqRateLimiter, moderationProject_post);
 
 async function moderationProjects_get(ctx: Context) {
