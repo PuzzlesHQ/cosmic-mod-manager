@@ -244,23 +244,6 @@ export const PROJECT_STATUS_ICONS = {
     ),
 };
 
-export function ProjectStatusDesc(status?: string) {
-    switch (status) {
-        case ProjectPublishingStatus.DRAFT:
-            return "This project is currently in draft status and not visible to others.";
-        case ProjectPublishingStatus.PROCESSING:
-            return "Project is currently under review and awaiting approval.";
-        case ProjectPublishingStatus.APPROVED:
-            return "Congratulations! Project has been approved and can be accessed by others.";
-        case ProjectPublishingStatus.REJECTED:
-            return "Project was rejected by the mods.";
-        case ProjectPublishingStatus.WITHHELD:
-            return "Project has been withheld and is not publicly visible. Please check for required updates.";
-    }
-
-    return undefined;
-}
-
 export function ProjectStatusIcon({ status, className }: { status: ProjectPublishingStatus; className?: string }) {
     return PROJECT_STATUS_ICONS[status](className);
 }
