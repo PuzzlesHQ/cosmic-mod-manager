@@ -1,6 +1,7 @@
 import { EnvironmentSupport } from "@app/utils/types";
 import { GlobeIcon, HardDriveIcon, MonitorIcon } from "lucide-react";
 import { LabelledIcon } from "~/components/ui/labelled-icon";
+import { TooltipProvider, TooltipTemplate } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 
@@ -86,7 +87,7 @@ function ClientSide({ className }: Props) {
         <EnvSupportChip
             icon={<MonitorIcon aria-hidden className="h-btn-icon w-btn-icon" />}
             label={t.projectSettings.clientSide}
-            title="Needs to be installed on the game client"
+            title={t.project.supportedEnvHelp.clientSide}
             className={className}
         />
     );
@@ -99,7 +100,7 @@ function ServerSide({ className }: Props) {
         <EnvSupportChip
             icon={<HardDriveIcon aria-hidden className="h-btn-icon w-btn-icon" />}
             label={t.projectSettings.serverSide}
-            title="Needs to be installed on the game server"
+            title={t.project.supportedEnvHelp.serverSide}
             className={className}
         />
     );
@@ -112,7 +113,7 @@ function ClientOrServerSide({ className }: Props) {
         <EnvSupportChip
             icon={<GlobeIcon aria-hidden className="h-btn-icon w-btn-icon" />}
             label={t.projectSettings.clientOrServer}
-            title="Needs to be installed on either the game client or the server"
+            title={t.project.supportedEnvHelp.clientOrServerSide}
             className={className}
         />
     );
@@ -125,7 +126,7 @@ function ClientAndServerSide({ className }: Props) {
         <EnvSupportChip
             icon={<GlobeIcon aria-hidden className="h-btn-icon w-btn-icon" />}
             label={t.projectSettings.clientAndServer}
-            title="Needs to be installed on both the game client and the server"
+            title={t.project.supportedEnvHelp.clientAndServerSide}
             className={className}
         />
     );
@@ -152,12 +153,19 @@ interface EnvSupportChipProps {
 
 function EnvSupportChip(props: EnvSupportChipProps) {
     return (
-        <LabelledIcon
-            title={props.title}
-            icon={props.icon}
-            className={cn("font-semibold text-foreground-muted", props.title ? "cursor-help" : "", props.className)}
-        >
-            {props.label}
-        </LabelledIcon>
+        <TooltipProvider>
+            <TooltipTemplate content={props.title}>
+                <LabelledIcon
+                    icon={props.icon}
+                    className={cn(
+                        "font-semibold text-foreground-muted",
+                        props.title ? "cursor-help" : "",
+                        props.className,
+                    )}
+                >
+                    {props.label}
+                </LabelledIcon>
+            </TooltipTemplate>
+        </TooltipProvider>
     );
 }
