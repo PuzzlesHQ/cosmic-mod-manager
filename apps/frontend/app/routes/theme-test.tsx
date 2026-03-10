@@ -1,5 +1,6 @@
 import { type LoaderNames, loaders } from "@app/utils/constants/loaders";
 import { CapitalizeAndFormatString } from "@app/utils/string";
+import { ProjectPublishingStatus } from "@app/utils/types";
 import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
 import tagIcons from "~/components/icons/tag-icons";
@@ -28,15 +29,18 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { FormErrorMessage, FormSuccessMessage, FormWarningMessage } from "~/components/ui/form-message";
 import { TextLink } from "~/components/ui/link";
+import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { Separator } from "~/components/ui/separator";
 import { Switch } from "~/components/ui/switch";
 import { LabelledTernaryCheckbox, TernaryStates } from "~/components/ui/ternary-checkbox";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { useTranslation } from "~/locales/provider";
 import { ThemeSwitcher } from "~/pages/settings/preferences";
 
 export default function () {
+    const { t } = useTranslation();
     const [ternaryState, setTernaryState] = useState<TernaryStates>(TernaryStates.EXCLUDED);
 
     return (
@@ -207,6 +211,12 @@ export default function () {
                         <Badge variant="destructive">destructive</Badge>
                         <Badge variant="warning">warning</Badge>
                         <Badge variant="outline">outline</Badge>
+                    </div>
+
+                    <div className="flex w-full flex-wrap gap-4">
+                        {Object.values(ProjectPublishingStatus).map((status) => (
+                            <ProjectStatusBadge key={status} status={status} t={t} />
+                        ))}
                     </div>
                 </CardContent>
             </Card>

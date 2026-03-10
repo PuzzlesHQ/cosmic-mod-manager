@@ -89,7 +89,7 @@ export function FeaturedBtn({ isLoading, featured, setFeatured }: FeaturedBtnPro
             disabled={isLoading}
             type="button"
             onClick={() => setFeatured(!featured)}
-            title="Featured versions show up in your project sidebar."
+            title={t.version.featuredVersionHelp}
         >
             <StarIcon aria-hidden className={cn("h-btn-icon w-btn-icon", featured === true && "fill-current")} />
             {featured === true ? t.version.unfeature : t.version.feature}
