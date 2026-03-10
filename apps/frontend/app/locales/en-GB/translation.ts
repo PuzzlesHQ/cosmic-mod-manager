@@ -446,6 +446,12 @@ export default {
                 moderationPage: "Visit moderation page",
             },
         },
+        supportedEnvHelp: {
+            clientSide: "Needs to be installed on the game client",
+            serverSide: "Needs to be installed on the game server",
+            clientOrServerSide: "Needs to be installed on either the game client or the server",
+            clientAndServerSide: "Needs to be installed on both the game client and the server",
+        },
     },
 
     version: {
