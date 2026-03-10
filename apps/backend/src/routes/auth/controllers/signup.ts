@@ -3,7 +3,7 @@ import { createURLSafeSlug } from "@app/utils/string";
 import { GlobalUserRole } from "@app/utils/types";
 import type { Context } from "hono";
 import { CreateUser, GetUser_ByIdOrUsername, GetUser_Unique } from "~/db/user_item";
-import { addInvalidAuthAttempt } from "~/middleware/rate-limiter/fixed-limiters";
+import { addInvalidAuthAttempt } from "~/middleware/rate-limiter";
 import { createNewAuthAccount, getAuthProviderProfileData } from "~/routes/auth/helpers";
 import { createUserSession, setSessionCookie } from "~/routes/auth/helpers/session";
 import { OAuthProfileDataSchema } from "~/routes/auth/providers/_schema";

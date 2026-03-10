@@ -1,6 +1,6 @@
 import { isModerator } from "@app/utils/constants/roles";
 import type { Context } from "hono";
-import { addInvalidAuthAttempt } from "~/middleware/rate-limiter/fixed-limiters";
+import { addInvalidAuthAttempt } from "~/middleware/rate-limiter";
 import prisma from "~/services/prisma";
 import type { UserSessionData } from "~/types";
 import { HTTP_STATUS, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";

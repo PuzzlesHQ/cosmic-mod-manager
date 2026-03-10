@@ -1,4 +1,5 @@
 import type { API_SCOPE } from "@app/utils/pats";
+import type { ProjectPublishingStatus } from "@app/utils/types";
 import type React from "react";
 import type { Translation } from "~/locales/types";
 import { AboutUs } from "./about";
@@ -446,6 +447,12 @@ export default {
                 moderationPage: "Visit moderation page",
             },
         },
+        supportedEnvHelp: {
+            clientSide: "Needs to be installed on the game client",
+            serverSide: "Needs to be installed on the game server",
+            clientOrServerSide: "Needs to be installed on either the game client or the server",
+            clientAndServerSide: "Needs to be installed on both the game client and the server",
+        },
     },
 
     version: {
@@ -456,6 +463,7 @@ export default {
         enterVersionTitle: "Enter the version title...",
         feature: "Feature version",
         unfeature: "Unfeature version",
+        featuredVersionHelp: "Featured versions show up in your project sidebar.",
         featured: "Featured",
         releaseChannel: "Release channel",
         versionNumber: "Version number",
@@ -735,7 +743,15 @@ export default {
             withheld: "Withheld",
             rejected: "Rejected",
             unknown: "Unknown",
-        },
+        } satisfies Record<ProjectPublishingStatus | "unknown", string>,
+        statusDesc: {
+            draft: "This project is currently in draft status and not visible to others.",
+            processing: "Project is currently under review and awaiting approval.",
+            approved: "Congratulations! Project has been approved and can be accessed by others.",
+            rejected: "Project was rejected by the mods.",
+            withheld:
+                "Project has been withheld and is not publicly visible. Please check the moderation tab for more info.",
+        } satisfies Record<ProjectPublishingStatus, string>,
 
         pageDesc:
             "This is a private conversation thread with the moderators. They may message you with issues concerning this project. This thread is only checked when you submit your project for review.",

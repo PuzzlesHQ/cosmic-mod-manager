@@ -36,7 +36,6 @@ function CopyBtn({ text, label, className, labelClassName, iconClassName, maxLab
 
     return (
         <Button
-            // size="icon"
             id={`copy-btn-${text}-${label}`}
             variant="ghost"
             aria-label="Copy"
@@ -45,7 +44,6 @@ function CopyBtn({ text, label, className, labelClassName, iconClassName, maxLab
                 className,
             )}
             onClick={copyText}
-            title="Copy"
         >
             {label ? (
                 <span

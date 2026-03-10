@@ -6,8 +6,11 @@ import { zodParse } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
 import type { z } from "zod/v4";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
-import { invalidAuthAttemptLimiter } from "~/middleware/rate-limiter/fixed-limiters";
-import { critModifyReqRateLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limiter/sliding-window-limiters";
+import {
+    critModifyReqRateLimiter,
+    invalidAuthAttemptLimiter,
+    strictGetReqRateLimiter,
+} from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import {
     invalidRequestResponse,

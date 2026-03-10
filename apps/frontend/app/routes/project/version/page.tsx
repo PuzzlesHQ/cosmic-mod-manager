@@ -78,6 +78,7 @@ export function meta(props: Route.MetaArgs) {
         ? version.loaders.map((l) => CapitalizeAndFormatString(l)).join(" & ")
         : null;
     const publishedAt = FormatDate_ToLocaleString(version.datePublished, {
+        locale: formattedLocaleName,
         includeTime: false,
         shortMonthNames: false,
         utc: true,

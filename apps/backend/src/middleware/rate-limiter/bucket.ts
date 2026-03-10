@@ -7,31 +7,21 @@ import valkey from "~/services/redis";
 // [2] = prevWindowTimestamp
 // [3] = prevWindowCount
 
-class SlidingWindowCounter {
+export class SlidingWindowCounter {
     constructor(
-        private timeWindow_s: number,
         private storeNamespace: string,
+        private maxAllowed: number,
+        private timeWindow_s: number,
     ) {}
 
-    async consume(id: string, limit: number, amount = 1) {
+    async consume(id: string, amount = 1) {
         const now = this.now_s();
-        const stats = await this.getCount(id);
-
-        // check if the 'curr' window has passed
-        if (stats[0] + this.timeWindow_s < now) {
-            // replace prev window with the 'curr' one
-            stats[2] = stats[0];
-            stats[3] = stats[1];
-
-            // zero the curr window
-            stats[0] = now;
-            stats[1] = 0;
-        }
+        const stats = await this.getCount(id, now);
 
         const prevWeight = 1 - (now - stats[0]) / this.timeWindow_s;
         const effectiveCurrCount = stats[1] + prevWeight * stats[3];
 
-        if (effectiveCurrCount + amount > limit) {
+        if (effectiveCurrCount + amount > this.maxAllowed) {
             return { allowed: false };
         } else {
             stats[1] += amount;
@@ -40,14 +30,36 @@ class SlidingWindowCounter {
         }
     }
 
-    private async getCount(id: string) {
-        const data = await valkey.getBuffer(this.storeKey(id));
+    private async getCount(id: string, now: number) {
+        const stats = await this.getCountBuffer(id);
 
-        if (!data || data.byteLength < 16) {
-            return new Uint32Array(4);
+        // more than 2 windows have elapsed so all previous data is stale
+        if (stats[0] + 2 * this.timeWindow_s < now) {
+            stats[0] = now;
+            stats[1] = 0;
+            stats[2] = 0;
+            stats[3] = 0;
+        }
+        // only one window has elapsed, so slide the current window to previous and zero the current one
+        else if (stats[0] + this.timeWindow_s < now) {
+            stats[2] = stats[0];
+            stats[3] = stats[1];
+
+            // zero the curr window
+            stats[0] = now;
+            stats[1] = 0;
         }
 
-        return new Uint32Array(data.buffer.slice(data.byteOffset, data.byteOffset + 16));
+        return stats;
+    }
+
+    private async getCountBuffer(id: string) {
+        const data = await valkey.getBuffer(this.storeKey(id));
+        if (data && data.byteLength >= 16) {
+            return new Uint32Array(data.buffer.slice(data.byteOffset, data.byteOffset + 16));
+        }
+
+        return new Uint32Array(4);
     }
 
     private async saveCount(id: string, stats: Uint32Array) {
@@ -61,59 +73,5 @@ class SlidingWindowCounter {
 
     private now_s() {
         return Math.floor(Date.now() / 1000);
-    }
-}
-
-const UNIVERSAL_RATE_LIMIT_NAMESPACE = "global-rateLimit";
-const GLOBAL_RATE_LIMIT_TIME_WINDOW_s = 120;
-export const universalRateLimiterBucket = new SlidingWindowCounter(
-    GLOBAL_RATE_LIMIT_TIME_WINDOW_s,
-    UNIVERSAL_RATE_LIMIT_NAMESPACE,
-);
-
-// Fixed window bucket
-interface BucketConsumptionResult {
-    allowed: boolean;
-}
-
-export class FixedWindowBucket {
-    constructor(
-        private storageKey: string,
-        public max: number,
-        public timeWindow_seconds: number,
-    ) {}
-
-    async consume(key: string, cost = 1): Promise<BucketConsumptionResult> {
-        try {
-            const bucketKey = this.bucketKey(key);
-            const used = await this.getBucket(bucketKey);
-            const remaining = Math.max(this.max - used, 0);
-
-            if (used < this.max && cost > 0) {
-                await valkey.incrby(bucketKey, cost);
-            }
-
-            if (remaining > 0) {
-                return { allowed: true };
-            }
-        } catch (error) {
-            console.error(error);
-        }
-
-        return { allowed: false };
-    }
-
-    private bucketKey(key: string): string {
-        return `${this.storageKey}:${key}`;
-    }
-
-    private async getBucket(bucketKey: string): Promise<number> {
-        let used = Number.parseInt((await valkey.get(bucketKey)) || "-1", 10);
-        if (Number.isNaN(used) || used < 0) {
-            used = 1;
-            await valkey.set(bucketKey, 1, "EX", this.timeWindow_seconds);
-        }
-
-        return used;
     }
 }

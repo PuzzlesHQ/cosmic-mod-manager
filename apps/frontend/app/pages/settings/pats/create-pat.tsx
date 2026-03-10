@@ -182,9 +182,7 @@ function PatInfoForm({ patData, onSubmit, loading, ...props }: PatInfoFormProps)
 
     return (
         <Dialog open={props.dialogOpen} onOpenChange={props.setDialogOpen}>
-            <DialogTrigger asChild className="w-fit">
-                {props.trigger}
-            </DialogTrigger>
+            <DialogTrigger asChild>{props.trigger}</DialogTrigger>
 
             <DialogContent className="max-w-3xl">
                 <DialogHeader>

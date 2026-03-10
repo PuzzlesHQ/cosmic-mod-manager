@@ -48,4 +48,3 @@ export default {
         skipToMainContent: "Hopp til hovudinnhald",
     },
 } satisfies PartialLocale;
-

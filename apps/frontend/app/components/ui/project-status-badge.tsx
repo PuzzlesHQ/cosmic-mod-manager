@@ -1,13 +1,13 @@
 import { ProjectPublishingStatus } from "@app/utils/types";
-import { ProjectStatusDesc, ProjectStatusIcon } from "~/components/icons";
+import { ProjectStatusIcon } from "~/components/icons";
 import { cn } from "~/components/utils";
 import type { Locale } from "~/locales/types";
 import { LabelledIcon } from "./labelled-icon";
+import { TooltipProvider, TooltipTemplate } from "./tooltip";
 
 interface ProjectStatusBadge {
     status: ProjectPublishingStatus;
     t: Locale;
-    title?: boolean;
 }
 
 export function ProjectStatusBadge(props: ProjectStatusBadge) {
@@ -29,12 +29,15 @@ export function ProjectStatusBadge(props: ProjectStatusBadge) {
     }
 
     return (
-        <LabelledIcon
-            title={props.title === false ? undefined : ProjectStatusDesc(props.status)}
-            icon={<ProjectStatusIcon status={props.status} />}
-            className={cn("cursor-help rounded-full px-2 py-1 font-semibold text-sm", colorClass)}
-        >
-            {props.t.moderation.status[props.status]}
-        </LabelledIcon>
+        <TooltipProvider>
+            <TooltipTemplate content={props.t.moderation.statusDesc[props.status]}>
+                <LabelledIcon
+                    icon={<ProjectStatusIcon status={props.status} />}
+                    className={cn("cursor-help rounded-full px-2 py-1 font-semibold text-sm", colorClass)}
+                >
+                    {props.t.moderation.status[props.status]}
+                </LabelledIcon>
+            </TooltipTemplate>
+        </TooltipProvider>
     );
 }

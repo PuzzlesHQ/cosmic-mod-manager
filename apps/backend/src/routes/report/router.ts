@@ -6,13 +6,13 @@ import { decodeStringArray } from "@app/utils/string";
 import { type ReportItemType, reportFilters_defaults } from "@app/utils/types/api/report";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
-import { invalidAuthAttemptLimiter } from "~/middleware/rate-limiter/fixed-limiters";
 import {
     critModifyReqRateLimiter,
     getReqRateLimiter,
+    invalidAuthAttemptLimiter,
     modifyReqRateLimiter,
     strictGetReqRateLimiter,
-} from "~/middleware/rate-limiter/sliding-window-limiters";
+} from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import {
     invalidRequestResponse,

@@ -2,7 +2,7 @@ import { SITE_NAME_SHORT } from "@app/utils/constants";
 import { zodParse } from "@app/utils/schemas/utils";
 import { Capitalize, CapitalizeAndFormatString } from "@app/utils/string";
 import type { Context } from "hono";
-import { addInvalidAuthAttempt } from "~/middleware/rate-limiter/fixed-limiters";
+import { addInvalidAuthAttempt } from "~/middleware/rate-limiter";
 import { getAuthProviderProfileData } from "~/routes/auth/helpers";
 import { createUserSession, setSessionCookie } from "~/routes/auth/helpers/session";
 import { OAuthProfileDataSchema } from "~/routes/auth/providers/_schema";

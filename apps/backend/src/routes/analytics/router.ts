@@ -5,8 +5,7 @@ import { TimelineOptions } from "@app/utils/types";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
 import { applyCacheHeaders } from "~/middleware/cache";
-import { invalidAuthAttemptLimiter } from "~/middleware/rate-limiter/fixed-limiters";
-import { strictGetReqRateLimiter } from "~/middleware/rate-limiter/sliding-window-limiters";
+import { invalidAuthAttemptLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limiter";
 import {
     invalidRequestResponse,
     serverErrorResponse,
