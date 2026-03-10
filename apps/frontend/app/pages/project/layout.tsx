@@ -178,10 +178,7 @@ export default function ProjectPageLayout() {
 
                         {projectEnvironments?.length ? (
                             <section className="flex flex-wrap items-start justify-start gap-1">
-                                <h3
-                                    className="block w-full font-bold text-foreground-muted"
-                                    title="Environment(s) the mod is made for"
-                                >
+                                <h3 className="block w-full font-bold text-foreground-muted">
                                     {t.project.environments}
                                 </h3>
                                 {projectEnvironments.map((item, i) => {
