@@ -432,7 +432,7 @@ interface ThreadMessageProps {
 }
 
 function ThreadMessage(props: ThreadMessageProps) {
-    const { t } = useTranslation();
+    const { t, formattedLocaleName } = useTranslation();
     const session = useSession();
     const msgHighlightTimeoutMap = useRef(new Map<string, number | null>());
 
@@ -502,7 +502,10 @@ function ThreadMessage(props: ThreadMessageProps) {
     }
 
     const showShortTimestamp = isContinuationMessage || ISO_DateStr(now) === ISO_DateStr(createdAt);
-    const fullDate = FormatDate_ToLocaleString(props.message.createdAt, { shortMonthNames: true });
+    const fullDate = FormatDate_ToLocaleString(props.message.createdAt, {
+        locale: formattedLocaleName,
+        shortMonthNames: true,
+    });
 
     const timestamp_class = "text-foreground-muted text-xs leading-none cursor-default whitespace-nowrap";
     const timestamp = showShortTimestamp ? (
