@@ -32,7 +32,7 @@ export default {
     horror: "Skrekk",
     island: "Øyland",
     items: "Gjenstander",
-    "kitchen-sink": "Kjøkkenvask",
+    "kitchen-sink": "Altomdekkende",
     library: "Bibliotek",
     lightweight: "Lettvekt",
     locale: "Språk",

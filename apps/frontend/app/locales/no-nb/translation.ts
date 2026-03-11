@@ -46,7 +46,6 @@ export default {
             return [formattedCount, " ", members];
         },
     },
-
     navbar: {
         mod: "modifikasjon",
         mods: "modifikasjoner",
@@ -66,21 +65,31 @@ export default {
         profile: "Profil",
         skipToMainContent: "Hopp til hovedinnhold",
     },
-
     homePage: {
-        title: (projectType) => ["Stedet for innhold for Cosmic Reach", projectType],
+        title: (projectType) => [
+            "Stedet for innhold for Cosmic Reach",
+            projectType,
+        ],
         desc: "Det beste stedet for Cosmic Reach-modifikasjonene dine. Oppdag, spill og lag innhold – alt på ett sted.",
         exploreMods: "Oppdag modifikasjoner",
     },
-
     auth: {
         email: "E-post",
         password: "Passord",
         changePassword: "Endre passord",
         loginUsing: "Logg inn via andre metoder:",
-        dontHaveAccount: (signup) => ["Har du ingen konto?", signup],
-        alreadyHaveAccount: (login) => ["Har du allerede konto?", login],
-        forgotPassword: (changePassword) => ["Glemt passordet ditt?", changePassword],
+        dontHaveAccount: (signup) => [
+            "Har du ingen konto?",
+            signup,
+        ],
+        alreadyHaveAccount: (login) => [
+            "Har du allerede konto?",
+            login,
+        ],
+        forgotPassword: (changePassword) => [
+            "Glemt passordet ditt?",
+            changePassword,
+        ],
         signupWithProviders: "Logg inn ved hjelp av en av autentiseringstjenestene:",
         agreement: (terms, privacyPolicy) => [
             "Ved å lage en konto, så godtar du våre ",
@@ -93,15 +102,13 @@ export default {
         didntRequest: "Etterpurte du ikke dette?",
         checkSessions: "Sjekk innloggede økter",
         confirmNewPass: "Bekreft nytt passord",
-        confirmNewPassDesc:
-            "Et nytt passord ble nylig lagt til kontoen din og venter på bekreftelse. Bekreft nedenfor hvis dette var deg.",
+        confirmNewPassDesc: "Et nytt passord ble nylig lagt til kontoen din og venter på bekreftelse. Bekreft nedenfor hvis dette var deg.",
         newPass: "Nytt passord",
         newPass_label: "Skriv inn ditt nye passord",
         confirmPass: "Bekreft nytt passord",
         confirmPass_label: "Skriv inn passordet ditt på nytt",
         deleteAccount: "Slett konto",
-        deleteAccountDesc:
-            "Å slette kontoen din vil fjerne alle dataene dine fra databasen vår. Dette kan ikke gjøres om etter at slettingen er gjennomført.",
+        deleteAccountDesc: "Å slette kontoen din vil fjerne alle dataene dine fra databasen vår. Dette kan ikke gjøres om etter at slettingen er gjennomført.",
         enterEmail: "Skriv inn e-postadressen din",
     },
     settings: {
@@ -140,16 +147,14 @@ export default {
         profilePageBg: "Profilsidebakgrunn",
         profilePageBgDesc: "Dette bildet eller denne videoen vil bli brukt som din egen bakgrunn for profilsiden din",
         showIpAddr: "Vis IP-adresse",
-        sessionsDesc:
-            "Disse enhetene er for øyeblikket logget inn på kontoen din. Du kan når som helst avslutte en hvilken som helst økt. Hvis du ser noe du ikke gjenkjenner, må du umiddelbart avslutte økten og endre passordet hos den tilknyttede autorisasjonsleverandøren.",
+        sessionsDesc: "Disse enhetene er for øyeblikket logget inn på kontoen din. Du kan når som helst avslutte en hvilken som helst økt. Hvis du ser noe du ikke gjenkjenner, må du umiddelbart avslutte økten og endre passordet hos den tilknyttede autorisasjonsleverandøren.",
         ipHidden: "IP skjult",
         lastAccessed: (when) => `Sist brukt ${when}`,
         created: (when) => `Skapt ${when}`,
         sessionCreatedUsing: (providerName) => `Økt skapt gjennom ${providerName}`,
         currSession: "Nåværende økt",
         revokeSession: "Avslutt økt",
-        personalAccessTokensDesc: (siteName_short, docsUrl) =>
-            `Personlige tilgangspolletter kan brukes til å få tilgang til API-et til ${siteName_short}. For mer informasjon, se [API-dokumentasjonen til ${siteName_short}](${docsUrl}). De kan opprettes og avsluttes når som helst.`,
+        personalAccessTokensDesc: (siteName_short, docsUrl) => `Personlige tilgangspolletter kan brukes til å få tilgang til API-et til ${siteName_short}. For mer informasjon, se [API-dokumentasjonen til ${siteName_short}](${docsUrl}). De kan opprettes og avsluttes når som helst.`,
         editToken: "Rediger pollett",
         revokeToken: "Avslutt pollett",
         neverUsed: "Aldri brukt",
@@ -167,8 +172,7 @@ export default {
         editPAT_long: "Rediger personlig tilgangspollett",
         deletePAT: "Slett pollett",
         deletePAT_long: "Slett personlig tilgangspollett",
-        sureToDeletePAT: (patName) =>
-            `Er du sikker på at du vil slette den personlige tilgangspolletten med navnet **\`${patName}\`**?`,
+        sureToDeletePAT: (patName) => `Er du sikker på at du vil slette den personlige tilgangspolletten med navnet **\`${patName}\`**?`,
         apiScopes: {
             user_read_email: "Lese brukerens e-poster",
             user_write_email: "Endre brukerens e-post",
@@ -238,7 +242,11 @@ export default {
         received: "Mottatt",
         history: "Historikk",
         notifHistory: "Varslingshistorikk",
-        invitedToJoin: (user, team) => [user, " har invitert deg til å bli med i ", team],
+        invitedToJoin: (user, team) => [
+            user,
+            " har invitert deg til å bli med i ",
+            team,
+        ],
         projectStatusUpdated: (project, oldStatus, newStatus) => [
             project,
             " har blitt oppdatert fra ",
@@ -247,7 +255,6 @@ export default {
             newStatus,
             " av moderatorer.",
         ],
-
         createProjectInfo: "Du har ingen prosjekter ennå. Klikk på knappen ovenfor for å opprette et.",
         type: "Type",
         status: "Status",
@@ -263,12 +270,11 @@ export default {
         enterCollectionName: "Skriv inn samlingsnavn",
         createCollection: "Opprett samling",
     },
-
     search: {
         project: "Søk blant prosjekter",
         mod: "Søk blant modifikasjoner",
         "resource-pack": "Søk blant ressurspakker",
-        shader: "Søk blant skjermskildrere",
+        shader: "Søk blant gjengivere",
         plugin: "Søk blant pluginer",
         modpack: "Søk blant modifikasjonspakker",
         datamod: "Søk blant datamodifikasjoner",
@@ -299,7 +305,11 @@ export default {
         openSourceOnly: "Kun åpen kildekode",
         clearFilters: "Fjern alle filtre",
         tags: tags,
-        searchItemAuthor: (project, author) => [project, " av ", author],
+        searchItemAuthor: (project, author) => [
+            project,
+            " av ",
+            author,
+        ],
     },
     project: {
         compatibility: "Kompatibilitet",
@@ -313,7 +323,10 @@ export default {
         organization: "Organisasjon",
         project: "Prosjekt",
         details: "Detaljer",
-        licensed: (license) => ["LISENS", license],
+        licensed: (license) => [
+            "LISENS",
+            license,
+        ],
         updatedAt: (when) => `Oppdatert ${when}`,
         publishedAt: (when) => `Publisert ${when}`,
         gallery: "Galleri",
@@ -323,8 +336,7 @@ export default {
         uploadNewImg: "Last opp et nytt bilde til galleriet",
         uploadImg: "Last opp et bilde til galleriet",
         galleryOrderingDesc: "Bilder med høyere verdi i rangeringen vil bli vist først",
-        featuredGalleryImgDesc:
-            "Et fremhevet galleribilde vises i listen over prosjekter og på prosjektkortet ditt. Bare ett galleribilde kan fremheves på denne måten.",
+        featuredGalleryImgDesc: "Et fremhevet galleribilde vises i listen over prosjekter og på prosjektkortet ditt. Bare ett galleribilde kan fremheves på denne måten.",
         addGalleryImg: "Legg til galleribilde",
         featureImg: "Fremhevet bilde",
         unfeatureImg: "Fjern fremheving av bilde",
@@ -343,33 +355,35 @@ export default {
         copyLink: "Kopier lenke",
         doesNotSupport: (project, version, loader) => `${project} støtter ikke versjonen ${version} for ${loader}`,
         downloadItem: (project) => `Last ned ${project}`,
-        gameVersion: (version) => ["Spillversjon: ", version],
+        gameVersion: (version) => [
+            "Spillversjon: ",
+            version,
+        ],
         selectGameVersion: "Velg spillversjon",
-        platform: (loader) => ["Plattform: ", loader],
+        platform: (loader) => [
+            "Plattform: ",
+            loader,
+        ],
         selectPlatform: "Velg plattform",
         onlyAvailableFor: (project, platform) => `${project} er bare tilgjengelig for ${platform}`,
-        noVersionsAvailableFor: (gameVersion, loader) =>
-            `Ingen versjoner er tilgjengelige for ${gameVersion} på ${loader}`,
+        noVersionsAvailableFor: (gameVersion, loader) => `Ingen versjoner er tilgjengelige for ${gameVersion} på ${loader}`,
         declinedInvitation: "Avslo invitasjonen",
         teamInvitationTitle: (teamType) => `Invitasjon for å bli med i ${teamType}`,
-        teamInviteDesc: (teamType, role) =>
-            `Du har blitt invitert til å bli medlem av denne ${teamType} med rollen «${role}».`,
+        teamInviteDesc: (teamType, role) => `Du har blitt invitert til å bli medlem av denne ${teamType} med rollen «${role}».`,
         browse: {
             mod: "Bla blant modifikasjoner",
             datamod: "Bla blant datamodifikasjoner",
             "resource-pack": "Bla blant ressurspakker",
-            shader: "Bla blant skjermskildrere",
+            shader: "Bla blant gjengivere",
             modpack: "Bla blant modifikasjonspakker",
             plugin: "Bla blant pluginer",
             world: "Bla blant verdener",
         },
         rejected: "Avvist",
         withheld: "Tilbakeholdt",
-        archivedMessage: (project) =>
-            `${project} har blitt arkivert. Det vil ikke mota videre oppdateringer med mindre forfatteren bestemmer seg for å ta prosjektet ut av arkivering.`,
+        archivedMessage: (project) => `${project} har blitt arkivert. Det vil ikke mota videre oppdateringer med mindre forfatteren bestemmer seg for å ta prosjektet ut av arkivering.`,
         updateProjectStatus: "Oppdater prosjektstatus",
-        sureToUpdateStatus: (projectName, projectType, prevStatus, newStatus) =>
-            `Er du sikker på at du vil oppdatere statusen til **${projectName}** ${projectType} fra **${prevStatus}** til **${newStatus}**?`,
+        sureToUpdateStatus: (projectName, projectType, prevStatus, newStatus) => `Er du sikker på at du vil oppdatere statusen til **${projectName}** ${projectType} fra **${prevStatus}** til **${newStatus}**?`,
         publishingChecklist: {
             required: "Kreves",
             suggestion: "Forslag",
@@ -381,28 +395,23 @@ export default {
             addDescription: "Legg til en beskrivelse",
             addDescriptionDesc: "En beskrivelse som tydelig beskriver meningen og innholdet i prosjektet kreves.",
             addIcon: "Legg til et tittelbilde",
-            addIconDesc:
-                "Prosjektet bør ha et godt og unikt tittelbilde som identifiserer prosjektet og forteller om dets innhold.",
+            addIconDesc: "Prosjektet bør ha et godt og unikt tittelbilde som identifiserer prosjektet og forteller om dets innhold.",
             featureGalleryImg: "Fremhev et galleribilde",
             featureGalleryImgDesc: "Fremhevet galleribilde kan være førsteinntrykket til mange besøkende.",
             selectTags: "Valgte emneknagger",
             selectTagsDesc: "Velg alle emneknagger som beskriver prosjektet ditt.",
             addExtLinks: "Legg til eksterne lenker",
-            addExtLinksDesc:
-                "Legg til bare relevante lenker, som lenker for kildekoder, feilrapportering, og Discord-invitasjon.",
+            addExtLinksDesc: "Legg til bare relevante lenker, som lenker for kildekoder, feilrapportering, og Discord-invitasjon.",
             selectLicense: "Velg lisens",
             selectLicenseDesc: (projectType) => `Velg lisensen du vil at ${projectType} din skal distribueres under.`,
             selectEnv: "Velg støttede bruksområder",
             selectEnvDesc: (projectType) => `Velg om ${projectType} er ment for servere eller klienter.`,
             requiredStepsDesc: "Alt merket med stjerne (*) er nødvendig",
             submitForReview: "Send inn for evaluering",
-            submitForReviewDesc:
-                "Prosjektet ditt er bare synlig for medlemmer av prosjektet. Det må godkjennes av moderatorer for å bli offentlig synlig.",
+            submitForReviewDesc: "Prosjektet ditt er bare synlig for medlemmer av prosjektet. Det må godkjennes av moderatorer for å bli offentlig synlig.",
             resubmitForReview: "Send inn for evaluering",
-            resubmit_ApprovalRejected:
-                "Prosjektet ditt har blitt avvist av moderatoren vår. I de fleste tilfeller kan du sende det inn til ny vurdering etter at du har fulgt opp på det som står i moderatorens melding.",
-            resubmit_ProjectWithheld:
-                "Prosjektet ditt har blitt tilbakeholdt av moderatoren vår. I de fleste tilfeller kan du sende det inn til ny vurdering etter at du har fulgt opp på det som står i moderatorens melding.",
+            resubmit_ApprovalRejected: "Prosjektet ditt har blitt avvist av moderatoren vår. I de fleste tilfeller kan du sende det inn til ny vurdering etter at du har fulgt opp på det som står i moderatorens melding.",
+            resubmit_ProjectWithheld: "Prosjektet ditt har blitt holdt tilbake av moderatoren vår. I de fleste tilfeller kan du sende det inn til ny vurdering etter at du har fulgt opp på det som står i moderatorens melding.",
             visit: {
                 versionsPage: "Gå til versjonssiden",
                 descriptionSettings: "Gå til beskrivelsessiden",
@@ -414,6 +423,12 @@ export default {
                 moderationPage: "Gå til modereringssiden",
             },
         },
+        supportedEnvHelp: {
+            clientSide: "Må installeres på spillklienter",
+            serverSide: "Må installeres på spillservere",
+            clientOrServerSide: "Må installeres på spillklienter eller spillservere",
+            clientAndServerSide: "Må installeres på spillservere",
+        },
     },
     version: {
         version: "Versjon",
@@ -423,6 +438,7 @@ export default {
         enterVersionTitle: "Skriv inn versjontittel…",
         feature: "Fremhev versjon",
         unfeature: "Fjern fremheving av versjon",
+        featuredVersionHelp: "Fremhevede versjoner vises i prosjektets sidefelt",
         featured: "Fremhevet",
         releaseChannel: "Utgavetype",
         versionNumber: "Versjonsnummer",
@@ -464,7 +480,13 @@ export default {
         copySha1: "Kopier SHA-1-hash ",
         copySha512: "Kopier SHA-512-hash",
         copyFileUrl: "Kopier fil-URL",
-        publishedBy: (version, author, publish_date) => [version, " av ", author, " den ", publish_date],
+        publishedBy: (version, author, publish_date) => [
+            version,
+            " av ",
+            author,
+            " den ",
+            publish_date,
+        ],
     },
     projectSettings: {
         settings: "Prosjektinnstillinger",
@@ -483,10 +505,8 @@ export default {
         wikiPageDesc: "En side som inneholder innformasjon, dokumentsjon, og hjelp med prosjektet.",
         discordInvite: "Discord-invitasjon",
         discordInviteDesc: "En invitasjon til en Discord-server.",
-        licenseDesc: (projectType) =>
-            `Det er svært viktig å velge riktig lisens for ${projectType}. Du kan velge en fra listen vår eller oppgi en tilpasset lisens. Du kan også oppgi en tilpasset URL til den valgte lisensen; ellers vil lisensteksten vises.`,
-        customLicenseDesc:
-            "Skriv inn en gyldig [SPDX-lisensidentifikator](https://spdx.org/licenses) i det markerte området. Hvis lisensen din ikke har en SPDX-identifikator (for eksempel hvis du opprettet lisensen selv eller hvis lisensen er Cosmic Reach-spesifikk), merker du bare av i boksen og skriver inn navnet på lisensen i stedet.",
+        licenseDesc: (projectType) => `Det er svært viktig å velge riktig lisens for ${projectType}. Du kan velge en fra listen vår eller oppgi en tilpasset lisens. Du kan også oppgi en tilpasset URL til den valgte lisensen; ellers vil lisensteksten vises.`,
+        customLicenseDesc: "Skriv inn en gyldig [SPDX-lisensidentifikator](https://spdx.org/licenses) i det markerte området. Hvis lisensen din ikke har en SPDX-identifikator (for eksempel hvis du opprettet lisensen selv eller hvis lisensen er Cosmic Reach-spesifikk), merker du bare av i boksen og skriver inn navnet på lisensen i stedet.",
         selectLicense: "Velg lisens",
         searchAllLicenses: (count) => `Søk gjennom alle ${count} lisenser`,
         custom: "Selvspesifisert",
@@ -494,11 +514,9 @@ export default {
         licenseUrl: "Lisens_URL (valgfritt)",
         spdxId: "SPDX-identifikator",
         doesntHaveSpdxId: "Lisensen har ikke en SPDX-identifikato",
-        tagsDesc: (projectType) =>
-            `Nøyaktig bruk av emneknagger er viktig for å hjelpe folk med å finne ${projectType}. Sørg for å velge alle passende emneknagger.`,
+        tagsDesc: (projectType) => `Nøyaktig bruk av emneknagger er viktig for å hjelpe folk med å finne ${projectType}. Sørg for å velge alle passende emneknagger.`,
         featuredCategories: "Fremhevet kategori",
-        featuredCategoriesDesc: (count) =>
-            `Du kan fremheve opp til ${count} av de relevante emneknaggene eller kategorier du har valgt.`,
+        featuredCategoriesDesc: (count) => `Du kan fremheve opp til ${count} av de relevante emneknaggene eller kategorier du har valgt.`,
         selectAtLeastOneCategory: "Velg minst en kategori for å havne i en kategori.",
         projectInfo: "Prosjektinnformasjon",
         clientSide: "Klientsidig",
@@ -511,8 +529,7 @@ export default {
         required: "Kreves",
         optional: "Valgfritt",
         unsupported: "Ustøttet",
-        visibilityDesc:
-            "Oppførte og arkiverte prosjekter er synlige i søk. Ikke oppførte prosjekter er publisert, men ikke synlige i søk eller på brukerprofiler. Private prosjekter er kun tilgjengelige for medlemmer av prosjektet.",
+        visibilityDesc: "Oppførte og arkiverte prosjekter er synlige i søk. Ikke oppførte prosjekter er publisert, men ikke synlige i søk eller på brukerprofiler. Private prosjekter er kun tilgjengelige for medlemmer av prosjektet.",
         ifApproved: "Om godkjent av moderatorer",
         visibleInSearch: "Synlig i søk",
         visibleOnProfile: "Synlig på profil",
@@ -524,11 +541,9 @@ export default {
         unlisted: "Ikke oppført",
         archived: "Arkivert",
         deleteProject: "Slett prosjekt",
-        deleteProjectDesc: (site) =>
-            `Fjerner prosjektet ditt fra ${site}s servere og søk. Hvis du klikker på dette, slettes prosjektet ditt, så vær ekstra forsiktig!`,
+        deleteProjectDesc: (site) => `Fjerner prosjektet ditt fra ${site}s servere og søk. Hvis du klikker på dette, slettes prosjektet ditt, så vær ekstra forsiktig!`,
         sureToDeleteProject: "Er du sikker på at du vil slette dette prosjektet?",
-        deleteProjectDesc2:
-            "Om du fortsetter, vil alle versjoner og all data tilknyttet vil bli fjernet fra våre servere. Dette kan ødelgge for andre prosjekter som har dette prosjektet som en avhengighet, så vær sikker.",
+        deleteProjectDesc2: "Om du fortsetter, vil alle versjoner og all data tilknyttet vil bli fjernet fra våre servere. Dette kan ødelgge for andre prosjekter som har dette prosjektet som en avhengighet, så vær sikker.",
         typeToVerify: (projectName) => `For å verifisere. Swkriv inn **${projectName}** nedenfor:`,
         typeHere: "Skriv her…",
         manageMembers: "Bestyr medlemmer",
@@ -540,10 +555,8 @@ export default {
         sureToLeaveTeam: "Er du sikker på at du vil forlate dette laget?",
         cantManageInvites: "Du har ikke tilgang til å bestyre medlemsinvitasjoner",
         inviteMember: "Inviter et nytt medlem",
-        inviteProjectMemberDesc:
-            "Skriv inn brukernavnet til personen du vil invitere til å bli medlem av dette prosjektet.",
-        inviteOrgMemberDesc:
-            "Skriv inn brukernavnet til personen du vil invitere til å bli medlem av denne organisasjonen.",
+        inviteProjectMemberDesc: "Skriv inn brukernavnet til personen du vil invitere til å bli medlem av dette prosjektet.",
+        inviteOrgMemberDesc: "Skriv inn brukernavnet til personen du vil invitere til å bli medlem av denne organisasjonen.",
         invite: "Inviter",
         memberUpdated: "Medlemsstatus ble oppdatert",
         pending: "Ventende",
@@ -566,14 +579,11 @@ export default {
         removeMember: "Fjern medlem",
         transferOwnership: "Overfør eierskap",
         overrideValues: "Overstyr verdier",
-        overrideValuesDesc:
-            "Overstyr organisasjonens standardverdier og tilordne tilpassede tillatelser og roller til denne brukeren i prosjektet.",
-        projectNotManagedByOrg:
-            "Dette prosjektet styres ikke av en organisjon. Om du er medlem i en organisasjon, kan du overføre styringen til en av dem.",
+        overrideValuesDesc: "Overstyr organisasjonens standardverdier og tilordne tilpassede tillatelser og roller til denne brukeren i prosjektet.",
+        projectNotManagedByOrg: "Dette prosjektet styres ikke av en organisjon. Om du er medlem i en organisasjon, kan du overføre styringen til en av dem.",
         transferManagementToOrg: "Overfør styring",
         selectOrg: "Velg organisasjon",
-        projectManagedByOrg: (orgName) =>
-            `Dette prosjektet administreres av ${orgName}. Standardinnstillingene for medlemstillatelser er angitt i organisasjonsinnstillingene. Du kan overstyre dem nedenfor.`,
+        projectManagedByOrg: (orgName) => `Dette prosjektet administreres av ${orgName}. Standardinnstillingene for medlemstillatelser er angitt i organisasjonsinnstillingene. Du kan overstyre dem nedenfor.`,
         removeFromOrg: "Fjern fra organisasjon",
         memberRemoved: "Medlem ble fjernet",
         sureToRemoveMember: (memberName) => `Er du sikker på at du vil fjerne ${memberName} fra denne gruppen?`,
@@ -584,13 +594,11 @@ export default {
         orgDoesntHaveProjects: "Denne organisasjonen har ingen prosjekter ennå",
         manageProjects: "Bestyr prosjekter",
         orgSettings: "Organisasjonsinnstillingene",
-        transferProjectsTip:
-            "Du kan overføre eksisterende prosjekter til denne organisasjonen fra: Prosjektinnstillinger > Medlemmer",
+        transferProjectsTip: "Du kan overføre eksisterende prosjekter til denne organisasjonen fra: Prosjektinnstillinger > Medlemmer",
         noProjects_CreateOne: "Denne organisasjonen har ingen prosjekter. Klikk på knappen ovenfor for å opprette et.",
         orgInfo: "Organisasjonsinnformasjon",
         deleteOrg: "Slett organisasjon",
-        deleteOrgDesc:
-            "Sletting av organisasjon vil overføre alle dens prosjekter til eieren av organisasjonen. Denne handlingen kan ikke angres.",
+        deleteOrgDesc: "Sletting av organisasjon vil overføre alle dens prosjekter til eieren av organisasjonen. Denne handlingen kan ikke angres.",
         sureToDeleteOrg: "Er du sikker på at du vil slette denne organisasjonen?",
         deleteOrgNamed: (orgName) => `Slett organisasjonen ${orgName}`,
         deletionWarning: "Dette vil slette organisasjonen for alltid (som i for evig og alltid).",
@@ -672,31 +680,41 @@ export default {
             rejected: "Avvist",
             unknown: "Ukjent",
         },
-        pageDesc:
-            "Dette er en privat samtaletråd med moderatorene. De kan sende deg meldinger om problemer angående dette prosjektet. Denne tråden sjekkes kun når du sender inn prosjektet ditt til gjennomgang.",
+        statusDesc: {
+            draft: "Dette prosjektet er for øyeblikket i skissestatus og er ikke synlig for andre.",
+            processing: "Prosjektet er for øyeblikket under gjennomgang og venter på godkjennelse.",
+            approved: "Gratulerer! Prosjektet har blitt godkjent og kan nå bli funnet av andre.",
+            rejected: "Prosjektet ble avvist av moderatorene",
+            withheld: "Prosjektet er holdt tilbake og er ikke offentlig synlig. Se modereringsfanen for mer informasjon.",
+        },
+        pageDesc: "Dette er en privat samtaletråd med moderatorene. De kan sende deg meldinger om problemer angående dette prosjektet. Denne tråden sjekkes kun når du sender inn prosjektet ditt til gjennomgang.",
         approved_msg: "Prosjektet ditt har blitt godkjent av moderatorene.",
-        underReview_msg: (discord_invite) =>
-            `Prosjektet ditt er for tiden under vurdering. Hvis det tar mer enn 48 timer, kan du gjerne kontakte oss på [Discord-serveren vår](${discord_invite}).`,
-        rejected_msg: (contentRules_url) =>
-            `Prosjektet ditt oppfyller ikke [innholdsreglene](${contentRules_url}) våre, og moderatorene har vil at det gjøres endringer før prosjektet kan godkjennes. Les meldingene fra moderatorene nedenfor og følg opp på det som står i moderatorens melding.`,
-        repeatedSubmission_warning:
-            "Gjentatte innsendinger uten å ta hensyn til moderatorenes kommentarer kan føre til suspensjon av konto.",
+        underReview_msg: (discord_invite) => `Prosjektet ditt er for tiden under vurdering. Hvis det tar mer enn 48 timer, kan du gjerne kontakte oss på [Discord-serveren vår](${discord_invite}).`,
+        rejected_msg: (contentRules_url) => `Prosjektet ditt oppfyller ikke [innholdsreglene](${contentRules_url}) våre, og moderatorene har vil at det gjøres endringer før prosjektet kan godkjennes. Les meldingene fra moderatorene nedenfor og følg opp på det som står i moderatorens melding.`,
+        repeatedSubmission_warning: "Gjentatte innsendinger uten å ta hensyn til moderatorenes kommentarer kan føre til suspensjon av konto.",
         messages: "Meldinger",
         resubmitDesc: {
             _1: (project) => `Du sender inn ${project} for ny vurdering av moderatorene.`,
             _2: "Pass på at du har tatt hensyn til kommentarene fra moderatorene.",
-            warning:
-                "Gjentatte innsendinger uten å ta hensyn til moderatorenes kommentarer kan føre til suspensjon av konto.",
+            warning: "Gjentatte innsendinger uten å ta hensyn til moderatorenes kommentarer kan føre til suspensjon av konto.",
         },
     },
     chatThread: {
         messagePlaceholder: "Melding…",
         noMessages: "Ingen meldinger ennå!",
-        replyingTo: (user) => ["Svarer tilbake til", user],
+        replyingTo: (user) => [
+            "Svarer tilbake til",
+            user,
+        ],
         addPrivateNote: "Legg til en privat notis",
         messageDeleted: "Denne meldingen ble slattet",
         projectSubmittedForReview: "Sendte inn prosjektet for vurdering.",
-        changedProjectStatus: (oldStatus, newStatus) => ["Endret prosjektstatus fra ", oldStatus, " til ", newStatus],
+        changedProjectStatus: (oldStatus, newStatus) => [
+            "Endret prosjektstatus fra ",
+            oldStatus,
+            " til ",
+            newStatus,
+        ],
         closedTheThread: "Lukket tråden",
         reopenedTheThread: "Gjenåpnet tråden",
         reply: "Skriv tilbake",
@@ -735,24 +753,22 @@ export default {
         delete: "Slett",
         cancel: "Avbryt",
         saveChanges: "Lagre endringer",
-        uploadIcon: "Last opp profilbilde",
-        removeIcon: "Fjern profilbilde",
+        uploadIcon: "Last opp tittelbilde",
+        removeIcon: "Fjern tittelbilde",
         noFileChosen: "Ingen fil valgt",
         showAllVersions: "Vis alle versjoner",
         createNew: "Oprett en ny",
     },
     error: {
         sthWentWrong: "Ops! Noe gikk galt.",
-        errorDesc:
-            "Virker som at noe gikk galt. Mens vi prøver å fikse problemet, så prøv å laste inn nettsiden på nytt.",
+        errorDesc: "Virker som at noe gikk galt. Mens vi prøver å fikse problemet, så prøv å laste inn nettsiden på nytt.",
         refresh: "Last inn på nytt",
         pageNotFound: "404 | Nettside ble ikke funnet.",
         pageNotFoundDesc: "Nettsiden du leter etter ble ikke funnet på serveren.",
         projectNotFound: "Prosjekt ble ikke funnet",
         projectNotFoundDesc: (projectType, slug) => `Ingen ${projectType} finnes med prosjekt-IDen '${slug}'`,
         versionNotFound: "Versjon ble ikke funnet",
-        versionNotFoundDesc: (project, type) =>
-            `Versjonen av «${project}» ${type} som du ser etter kunne ikke bli funnet.`,
+        versionNotFoundDesc: (project, type) => `Versjonen av «${project}» ${type} som du ser etter kunne ikke bli funnet.`,
         gotoVersionsList: "Gå til versjonslisten",
         oraganizationNotFound: "Organisasjonen ble ikke funnet",
         oraganizationNotFoundDesc: (slug) => `Ingen organisasjon finnes med IDen «${slug}»`,
@@ -798,22 +814,28 @@ export default {
         content: "Innhold",
         reportToMods: (itemName) => `Rapporter «${itemName}» til moderatorer`,
         alreadyReported: (itemName) => `Du har allerede rapportert ${itemName}`,
-        alreadyReportedDesc: (itemType) =>
-            `Du har allerede en åpen rapport for denne ${itemType}en. Du kan heller legge til flere detaljer i rapporten din hvis du har mer informasjon å legge til.`,
+        alreadyReportedDesc: (itemType) => `Du har allerede en åpen rapport for denne ${itemType}en. Du kan heller legge til flere detaljer i rapporten din hvis du har mer informasjon å legge til.`,
         backToContent: (itemType) => `Tilbake til ${itemType}`,
         goToReport: "Gå til rapport",
         whatTypeOfContent: "Hvilken type innhold er det du repporterer?",
         whatIsContentId: (item) => `Hva er IDen til ${item.toLowerCase()}en?`,
         pleaseReport: "Dette skjemaet er for:",
         itsNotFor: "Dette skjemaet er ikke for:",
-        rulesViolation: (siteName_short, rules, tos) => [`Brudd på ${siteName_short}s`, rules, " eller ", tos],
-        violationExamples:
-            "Eksempler på brudd kan være innhold som er skadelig, søppel, støtende, villedende, misvisende, og eller ulovlig.",
+        rulesViolation: (siteName_short, rules, tos) => [
+            `Brudd på ${siteName_short}s`,
+            rules,
+            " eller ",
+            tos,
+        ],
+        violationExamples: "Eksempler på brudd kan være innhold som er skadelig, søppel, støtende, villedende, misvisende, og eller ulovlig.",
         bugReports: "Feilrapporter",
         dmcaTakedowns: "Opphavsrettsbrudd",
-        seeCopyrightPolicy: (copyrightPolicy) => ["Se vår ", copyrightPolicy, "."],
-        whichRuleIsBeingViolated: (siteName_short, item) =>
-            `Hvilke av ${siteName_short}s regler bryter ${item.toLowerCase()}?`,
+        seeCopyrightPolicy: (copyrightPolicy) => [
+            "Se vår ",
+            copyrightPolicy,
+            ".",
+        ],
+        whichRuleIsBeingViolated: (siteName_short, item) => `Hvilke av ${siteName_short}s regler bryter ${item.toLowerCase()}?`,
         violationType: {
             spam: "Søppelinnhold",
             reuploaded_work: "Reopplasting av andres innhold",
@@ -837,16 +859,27 @@ export default {
             other: "Annet",
         },
         provideAdditionalContext: "Vennligst gi ytterligere informasjon om rapporten din",
-        additionalContextDesc:
-            "Inluder lenker og bilder om mulig og relevant. Tomme eller ufullstendige rapporter vil bli lukket og ingorert.",
+        additionalContextDesc: "Inluder lenker og bilder om mulig og relevant. Tomme eller ufullstendige rapporter vil bli lukket og ingorert.",
         submitReport: "Send inn rapport",
         noOpenReports: "Du har ingen åpne rapporter.",
         viewReport: "Vis rapport",
-        reportedBy: (reporter) => ["Rapportert av", reporter],
+        reportedBy: (reporter) => [
+            "Rapportert av",
+            reporter,
+        ],
         reportDetails: "Rapportdetaljer",
-        status: (status) => ["Status", status],
-        reportedItem: (itemType) => ["Rapportert prosjekt", itemType],
-        ruleViolated: (ruleType) => ["Regelbrudd", ruleType],
+        status: (status) => [
+            "Status",
+            status,
+        ],
+        reportedItem: (itemType) => [
+            "Rapportert prosjekt",
+            itemType,
+        ],
+        ruleViolated: (ruleType) => [
+            "Regelbrudd",
+            ruleType,
+        ],
     },
     graph: {
         noDataAvailable: "Ingen data er tilgjengelig for det valgte datointervallet",
@@ -867,36 +900,25 @@ export default {
     },
     meta: {
         addContext: (title, name) => `${title} - ${name}`,
-        siteDesc: (siteName_long, siteName_short) =>
-            `Last ned modifikasjoner for Cosmic Reach, som plugins, datamodifikasjoner, skjermskildrere, ressurspakker, og modifikasjonspakker på ${siteName_short} (${siteName_long}). Oppdag og publiser prosjekter for alt nevnt på ${siteName_short} med et moderne, brukervennlig grensesnitt og API.`,
-        searchDesc: (projectType, siteName_short, siteName_long) =>
-            `Finn og last ned dine favoritt${projectType}er for Cosmic Reach enkelt her på ${siteName_short} (${siteName_long}).`,
+        siteDesc: (siteName_long, siteName_short) => `Last ned modifikasjoner for Cosmic Reach, som plugins, datamodifikasjoner, gjengivere, ressurspakker, og modifikasjonspakker på ${siteName_short} (${siteName_long}). Oppdag og publiser prosjekter for alt nevnt på ${siteName_short} med et moderne, brukervennlig grensesnitt og API.`,
+        searchDesc: (projectType, siteName_short, siteName_long) => `Finn og last ned dine favoritt${projectType}er for Cosmic Reach enkelt her på ${siteName_short} (${siteName_long}).`,
         about: "Om oss",
         loginDesc: (siteName_short) => `Logg inn i kontoen din for ${siteName_short}.`,
         signupDesc: (siteName_short) => `Registrer deg for å få en konto for ${siteName_short}.`,
         changePassDesc: (siteName_short) => `Endre passordet for kontoen din for ${siteName_short}.`,
-        userPageDesc: (userBio, userName, siteName_short) =>
-            `${userBio} - Last ned ${userName}s prosjekter på ${siteName_short}`,
+        userPageDesc: (userBio, userName, siteName_short) => `${userBio} - Last ned ${userName}s prosjekter på ${siteName_short}`,
         collection: (name) => `${name} - Samling`,
-        collectionDesc: (userProvidedDesc, name, siteName_short) =>
-            `${userProvidedDesc} - Vis samlingen ${name} på ${siteName_short}`,
+        collectionDesc: (userProvidedDesc, name, siteName_short) => `${userProvidedDesc} - Vis samlingen ${name} på ${siteName_short}`,
         collectionNotFound: "Samlingen ble ikke funnet",
         collectionNotFoundDesc: (collectionId) => `Ingen samling ble funnet med IDen: ${collectionId}`,
-        copyrightPolicyPageDesc: (siteName_short) =>
-            `Opphavsrettsreglene til ${siteName_short}, en plattform for modifikasjoner med åpen kildekode fokusert på Cosmic Reach`,
-        privacyPolicyPageDesc: (siteName_short) =>
-            `Personvernerklæringen til ${siteName_short}, en plattform for modifikasjoner med åpen kildekode fokusert på Cosmic Reach`,
-        contentRulesPageDesc: (siteName_short) =>
-            `Innholdsreglene for ${siteName_short}, en plattform for modifikasjoner med åpen kildekode fokusert på Cosmic Reach`,
-        securityNoticePageDesc: (siteName_short) =>
-            `Sikkerhetsvarslene for ${siteName_short}, en plattform for modifikasjoner med åpen kildekode fokusert på Cosmic Reach`,
-        tosPageDesc: (siteName_short) =>
-            `Bruksvilkårene for ${siteName_short}, en plattform for modifikasjoner med åpen kildekode fokusert på Cosmic Reach`,
+        copyrightPolicyPageDesc: (siteName_short) => `Opphavsrettsreglene til ${siteName_short}, en plattform for modifikasjoner med åpen kildekode fokusert på Cosmic Reach`,
+        privacyPolicyPageDesc: (siteName_short) => `Personvernerklæringen til ${siteName_short}, en plattform for modifikasjoner med åpen kildekode fokusert på Cosmic Reach`,
+        contentRulesPageDesc: (siteName_short) => `Innholdsreglene for ${siteName_short}, en plattform for modifikasjoner med åpen kildekode fokusert på Cosmic Reach`,
+        securityNoticePageDesc: (siteName_short) => `Sikkerhetsvarslene for ${siteName_short}, en plattform for modifikasjoner med åpen kildekode fokusert på Cosmic Reach`,
+        tosPageDesc: (siteName_short) => `Bruksvilkårene for ${siteName_short}, en plattform for modifikasjoner med åpen kildekode fokusert på Cosmic Reach`,
         project: (project, type) => `${project} - Cosmic Reach ${type}`,
-        projectDesc: (project, summary, type, author, siteName_short) =>
-            `${summary} - Last ned ${type} «${project}» for Cosmic Reach av ${author} på ${siteName_short}`,
-        galleryDesc: (numImages, project, type, siteName_short) =>
-            `Vis ${numImages} bilde(r) av «${project}» ${type} på ${siteName_short}`,
+        projectDesc: (project, summary, type, author, siteName_short) => `${summary} - Last ned ${type} «${project}» for Cosmic Reach av ${author} på ${siteName_short}`,
+        galleryDesc: (numImages, project, type, siteName_short) => `Vis ${numImages} bilde(r) av «${project}» ${type} på ${siteName_short}`,
         changelogDesc: (project, versionsNum) => `Vis endringsloggen(e) for ${project}s ${versionsNum}-versjon(er).`,
         versionsListDesc: (project, versionsNum) => `Liste av ${project}s ${versionsNum}-versjon(er).`,
         versionPageDesc: (o) => {
@@ -906,7 +928,6 @@ export default {
             return string;
         },
         organization: (name) => `${name} - Organisasjon`,
-        organizationDesc: (orgDesc, name, siteName_short) =>
-            `${orgDesc} - Vis ${name}et på organisasjonen på ${siteName_short}`,
+        organizationDesc: (orgDesc, name, siteName_short) => `${orgDesc} - Vis ${name}et på organisasjonen på ${siteName_short}`,
     },
 } satisfies Locale;

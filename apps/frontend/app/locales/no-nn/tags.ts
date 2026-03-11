@@ -16,7 +16,7 @@ export default {
     fonts: "Skrifttypar",
     "game-mechanics": "Spellmekanikk",
     "hide-and-seek": "Gøymsle",
-    "kitchen-sink": "Kjøkenvask",
+    "kitchen-sink": "Altomdekkjande",
     management: "Administrera",
     medieval: "Mellomalderen",
     minigame: "Minispel",

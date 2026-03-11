@@ -47,4 +47,37 @@ export default {
         worlds: "verder",
         skipToMainContent: "Hopp til hovudinnhald",
     },
+    project: {
+        featuredVersions: "Framheva versjonar",
+        featureImg: "Framheva bilete",
+        unfeatureImg: "Sluta å framheva biletet",
+        publishingChecklist: {
+            featureGalleryImg: "Framheva eit galleribilete",
+            featureGalleryImgDesc: "Eit framheva galleribilete kan vera fyrste­inntrykket til mange besøkjande",
+        },
+        supportedEnvHelp: {
+            clientSide: "Må installeras på spillklientar",
+            serverSide: "Må installeras på spillsørvarar",
+            clientOrServerSide: "Må installeras på spillklientar eller spillsørvarar",
+            clientAndServerSide: "Må installeras på spillklientar eller spillsørvarar",
+        },
+    },
+    version: {
+        feature: "Framheva versjonar",
+        unfeature: "Sluta å framheva versjonen",
+        featuredVersionHelp: "Framheva versjonar visast i prosjektets sidefelt.",
+        featured: "Framheva",
+    },
+    projectSettings: {
+        featuredCategories: "Framheva kategoriar",
+        serverSide: "Sørvarsidig",
+        clientOrServer: "Klinet eller sørvar",
+        clientAndServer: "Klient og sørvar",
+        required: "Krevjast",
+    },
+    form: {
+        featured: "Framheva",
+        uploadIcon: "Last opp profilbilete",
+        removeIcon: "Fjern profilbilete",
+    },
 } satisfies PartialLocale;
