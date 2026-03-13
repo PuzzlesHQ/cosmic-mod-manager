@@ -13,7 +13,7 @@ bun install --frozen-lockfile
 echo "Deploying frontend..."
 cd "$FRONTEND_DIR" || exit 1
 bun run build > /dev/null
-pm2 reload crmm-frontend -s
+pm2 reload crmm-frontend -s --update-env
 
 # deploy backend
 echo "Deploying backend..."
@@ -21,8 +21,7 @@ cd "$BACKEND_DIR" || exit 1
 bun run src/routes/cdn/process-downloads.ts
 bun run prisma-generate > /dev/null
 bun run prisma-push > /dev/null
-pm2 reload crmm-backend -s
-
-pm2 reload crmm-github-webhook -s
+pm2 reload crmm-backend -s --update-env
+pm2 reload crmm-github-webhook -s --update-env
 
 echo "Deployment complete!"
