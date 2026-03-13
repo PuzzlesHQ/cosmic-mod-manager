@@ -14,7 +14,7 @@ const Config = {
     // Additional configuration things
     SUPPORT_EMAIL: "support@crmods.org",
     ADMIN_EMAIL: "admin@crmods.org",
-    SECURITY_EMAIL: "security@crmods.org",
+    SECURITY_EMAIL: "admin@crmods.org",
     DISCORD_INVITE: "https://discord.gg/6avTnupc6D",
     REPO_LINK: "https://github.com/PuzzlesHQ/cosmic-mod-manager",
     DOCS_URL: "https://docs.crmods.org",
