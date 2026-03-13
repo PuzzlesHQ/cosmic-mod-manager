@@ -4,7 +4,6 @@ import { doesMemberHaveAccess, getCurrMember, getValidProjectCategories } from "
 import type { generalProjectSettingsFormSchema } from "@app/utils/schemas/project/settings/general";
 import { ICON_WIDTH } from "@app/utils/src/constants";
 import { FileType, ProjectPermission } from "@app/utils/types";
-import { ThreadType } from "@app/utils/types/api/thread";
 import type { z } from "zod/v4";
 import { GetManyCollections, UpdateCollection } from "~/db/collection_item";
 import { CreateFile, DeleteFile_ByID, DeleteManyFiles_ByID } from "~/db/file_item";
@@ -172,8 +171,7 @@ export async function deleteProject(userSession: UserSessionData, projectId: str
 
     await prisma.thread.delete({
         where: {
-            relatedEntity: project.threadId,
-            type: ThreadType.PROJECT,
+            id: project.threadId,
         },
     });
 
