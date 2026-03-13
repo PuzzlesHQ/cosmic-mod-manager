@@ -100,7 +100,7 @@ const app = new Hono()
 
     // Some inlined routes
     .get("/favicon.ico", async (ctx: Context) => {
-        return ctx.redirect("https://crmm.tech/favicon.ico");
+        return ctx.redirect(`${env.FRONTEND_URL}/favicon.ico`);
     })
 
     .get("/", apiDetails)
@@ -118,9 +118,9 @@ async function apiDetails(ctx: Context) {
     return ctx.json(
         {
             message: "Hello visitor! Welcome to the CRMM API.",
-            website: "https://crmm.tech",
-            docs: "https://docs.crmm.tech",
-            status: "https://status.crmm.tech",
+            website: env.FRONTEND_URL,
+            docs: `https://docs${env.COOKIE_DOMAIN}`,
+            status: `https://status${env.COOKIE_DOMAIN}`,
             cdn: env.CACHE_CDN_URL,
         },
         HTTP_STATUS.OK,

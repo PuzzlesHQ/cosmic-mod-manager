@@ -125,9 +125,9 @@ export function configureXss(urlModifier?: (url: string) => string) {
                         "i.ibb.co",
                         "cf.way2muchnoise.eu",
                         "bstats.org",
-                        "crmm.tech",
-                        "cdn.crmm.tech",
-                        "crmm-cdn.global.ssl.fastly.net",
+                        "crmods.org",
+                        "api.crmods.org",
+                        "cdn.crmods.org",
                         "wsrv.nl",
                         "localhost",
                     ];

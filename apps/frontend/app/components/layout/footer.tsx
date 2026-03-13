@@ -36,7 +36,7 @@ export default function Footer() {
                 <LinksColumn area="links-1">
                     <Title>{footer.resources}</Title>
 
-                    <FooterLink to="https://docs.crmm.tech" aria-label={footer.docs} target="_blank">
+                    <FooterLink to={Config.DOCS_URL} aria-label={footer.docs} target="_blank">
                         {footer.docs}
                         <OpenInNewTab_Icon />
                     </FooterLink>

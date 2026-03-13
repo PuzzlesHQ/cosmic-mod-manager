@@ -4,7 +4,7 @@ export default defineConfig({
     title: "CRMM Docs",
     description: "Documentation for CRMM backend API",
     sitemap: {
-        hostname: "https://docs.crmm.tech",
+        hostname: "https://docs.crmods.org",
     },
     srcDir: "src",
 
@@ -12,7 +12,7 @@ export default defineConfig({
     lastUpdated: true,
 
     themeConfig: {
-        logo: { src: "https://cdn.crmm.tech/icon.svg", width: 24, height: 24 },
+        logo: { src: "https://cdn.crmods.org/icon.svg", width: 24, height: 24 },
 
         editLink: {
             pattern: (data) => {
@@ -109,7 +109,7 @@ export default defineConfig({
 
                         // Prefix all /api links with the api url
                         if (attr[1].startsWith("/api/")) {
-                            attr[1] = `https://api.crmm.tech${attr[1]}`;
+                            attr[1] = `https://api.crmods.org${attr[1]}`;
                         }
 
                         // Prefix all relative links with the GitHub URL

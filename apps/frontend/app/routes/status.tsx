@@ -22,17 +22,17 @@ export default function () {
       <td><strong>Website</strong></td>
       <td>
         <picture>
-          <img src="https://status.crmm.tech/api/badge/1/status?style=for-the-badge" alt="Website Status">
+          <img src="https://status.crmods.org/api/badge/1/status?style=for-the-badge" alt="Website Status">
         </picture>
       </td>
       <td>
         <picture>
-          <img src="https://status.crmm.tech/api/badge/1/uptime?style=for-the-badge" alt="Website Uptime">
+          <img src="https://status.crmods.org/api/badge/1/uptime?style=for-the-badge" alt="Website Uptime">
         </picture>
       </td>
       <td>
         <picture>
-          <img src="https://status.crmm.tech/api/badge/1/avg-response?style=for-the-badge" alt="Website Latency">
+          <img src="https://status.crmods.org/api/badge/1/avg-response?style=for-the-badge" alt="Website Latency">
         </picture>
       </td>
     </tr>
@@ -40,17 +40,17 @@ export default function () {
       <td><strong>API</strong></td>
       <td>
         <picture>
-          <img src="https://status.crmm.tech/api/badge/2/status?style=for-the-badge" alt="API Status">
+          <img src="https://status.crmods.org/api/badge/2/status?style=for-the-badge" alt="API Status">
         </picture>
       </td>
       <td>
         <picture>
-          <img src="https://status.crmm.tech/api/badge/2/uptime?style=for-the-badge" alt="API Uptime">
+          <img src="https://status.crmods.org/api/badge/2/uptime?style=for-the-badge" alt="API Uptime">
         </picture>
       </td>
       <td>
         <picture>
-          <img src="https://status.crmm.tech/api/badge/2/avg-response?style=for-the-badge" alt="API Latency">
+          <img src="https://status.crmods.org/api/badge/2/avg-response?style=for-the-badge" alt="API Latency">
         </picture>
       </td>
     </tr>
@@ -58,17 +58,17 @@ export default function () {
       <td><strong>Search</strong></td>
       <td>
         <picture>
-          <img src="https://status.crmm.tech/api/badge/3/status?style=for-the-badge" alt="Search Status">
+          <img src="https://status.crmods.org/api/badge/3/status?style=for-the-badge" alt="Search Status">
         </picture>
       </td>
       <td>
         <picture>
-          <img src="https://status.crmm.tech/api/badge/3/uptime?style=for-the-badge" alt="Search Uptime">
+          <img src="https://status.crmods.org/api/badge/3/uptime?style=for-the-badge" alt="Search Uptime">
         </picture>
       </td>
       <td>
         <picture>
-          <img src="https://status.crmm.tech/api/badge/3/avg-response?style=for-the-badge" alt="Search Latency">
+          <img src="https://status.crmods.org/api/badge/3/avg-response?style=for-the-badge" alt="Search Latency">
         </picture>
       </td>
     </tr>
@@ -76,17 +76,17 @@ export default function () {
       <td><strong>CDN</strong></td>
       <td>
         <picture>
-          <img src="https://status.crmm.tech/api/badge/5/status?style=for-the-badge" alt="CDN Status">
+          <img src="https://status.crmods.org/api/badge/5/status?style=for-the-badge" alt="CDN Status">
         </picture>
       </td>
       <td>
         <picture>
-          <img src="https://status.crmm.tech/api/badge/5/uptime?style=for-the-badge" alt="CDN Uptime">
+          <img src="https://status.crmods.org/api/badge/5/uptime?style=for-the-badge" alt="CDN Uptime">
         </picture>
       </td>
       <td>
         <picture>
-          <img src="https://status.crmm.tech/api/badge/5/avg-response?style=for-the-badge" alt="CDN Latency">
+          <img src="https://status.crmods.org/api/badge/5/avg-response?style=for-the-badge" alt="CDN Latency">
         </picture>
       </td>
     </tr>
@@ -94,17 +94,17 @@ export default function () {
       <td><strong>Database</strong></td>
       <td>
         <picture>
-          <img src="https://status.crmm.tech/api/badge/4/status?style=for-the-badge" alt="Database Status">
+          <img src="https://status.crmods.org/api/badge/4/status?style=for-the-badge" alt="Database Status">
         </picture>
       </td>
       <td>
         <picture>
-          <img src="https://status.crmm.tech/api/badge/4/uptime?style=for-the-badge" alt="Database Uptime">
+          <img src="https://status.crmods.org/api/badge/4/uptime?style=for-the-badge" alt="Database Uptime">
         </picture>
       </td>
       <td>
         <picture>
-          <img src="https://status.crmm.tech/api/badge/4/avg-response?style=for-the-badge" alt="Database Latency">
+          <img src="https://status.crmods.org/api/badge/4/avg-response?style=for-the-badge" alt="Database Latency">
         </picture>
       </td>
     </tr>
@@ -112,17 +112,17 @@ export default function () {
       <td><strong>Valkey Cache</strong></td>
       <td>
         <picture>
-          <img src="https://status.crmm.tech/api/badge/6/status?style=for-the-badge" alt="Valkey Cache Status">
+          <img src="https://status.crmods.org/api/badge/6/status?style=for-the-badge" alt="Valkey Cache Status">
         </picture>
       </td>
       <td>
         <picture>
-          <img src="https://status.crmm.tech/api/badge/6/uptime?style=for-the-badge" alt="Valkey Cache Uptime">
+          <img src="https://status.crmods.org/api/badge/6/uptime?style=for-the-badge" alt="Valkey Cache Uptime">
         </picture>
       </td>
       <td>
         <picture>
-          <img src="https://status.crmm.tech/api/badge/6/avg-response?style=for-the-badge" alt="Valkey Cache Latency">
+          <img src="https://status.crmods.org/api/badge/6/avg-response?style=for-the-badge" alt="Valkey Cache Latency">
         </picture>
       </td>
     </tr>
@@ -130,7 +130,7 @@ export default function () {
 </table>
 
 
-Visit [status.crmm.tech](https://status.crmm.tech) for more details.
+Visit [status.crmods.org](https://status.crmods.org) for more details.
 `}
             />
         </main>

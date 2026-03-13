@@ -10,7 +10,7 @@ GET [`/api/search?q=shader`](/api/search?q=shader)
         "name": "TestShaders",
         "summary": "Test shaderpack for SimplyShaders mod",
         "type": ["shader"],
-        "icon": "https://cdn.crmm.tech/cdn/data/project/4xvLkWrQx2lt6Vyx6Z/ls2JTf78WZg8XCv8qx_128.webp",
+        "icon": "https://cdn.crmods.org/cdn/data/project/4xvLkWrQx2lt6Vyx6Z/ls2JTf78WZg8XCv8qx_128.webp",
         "downloads": 44,
         "followers": 0,
         "dateUpdated": "2025-01-11T20:08:26.562Z",
@@ -20,7 +20,7 @@ GET [`/api/search?q=shader`](/api/search?q=shader)
         "gameVersions": ["0.3.16", "0.3.15", "0.3.14", "0.3.11", "0.3.1"],
         "loaders": [],
         "author": "Shfloop",
-        "featured_gallery": "https://cdn.crmm.tech/cdn/data/project/4xvLkWrQx2lt6Vyx6Z/gallery/dJH8_ag7j_waPvPfYu_420.webp",
+        "featured_gallery": "https://cdn.crmods.org/cdn/data/project/4xvLkWrQx2lt6Vyx6Z/gallery/dJH8_ag7j_waPvPfYu_420.webp",
         "color": "#8a696f",
         "isOrgOwned": false,
         "visibility": "listed"

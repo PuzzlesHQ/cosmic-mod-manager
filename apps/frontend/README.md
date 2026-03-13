@@ -1,6 +1,6 @@
 # Frontend
 
-The web interface for [CRMM](https://crmm.tech). A server rendered app built with React Router v7.
+The web interface for [CRMM](https://crmods.org). A server rendered app built with React Router v7.
 
 ## Tech stack
 
@@ -16,4 +16,4 @@ The app supports custom themes via CSS variables. See [theme.md](theme.md) for t
 
 ## Setup
 
-See the [contributing guide](https://docs.crmm.tech/contributing.html#setting-up-dev-environment) for dev environment setup instructions.
+See the [contributing guide](https://docs.crmods.org/contributing.html#setting-up-dev-environment) for dev environment setup instructions.

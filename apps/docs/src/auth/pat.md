@@ -16,7 +16,7 @@ Pass the token value in the `Authorization` header of your request:
 curl -X PATCH \
   --header "Authorization: YOUR_PAT_TOKEN" \
   --form "icon=@./icon.webp" \
-  https://api.crmm.tech/api/project/my-project/icon
+  https://api.crmods.org/api/project/my-project/icon
 ```
 
 ---

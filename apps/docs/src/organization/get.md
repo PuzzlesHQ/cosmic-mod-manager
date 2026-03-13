@@ -8,7 +8,7 @@ GET [`/api/organization/{ID|slug}`](/api/organization/example-org)
     "teamId": "nBcJdRxQpF7mKoLsAw",
     "name": "Example Organization",
     "slug": "example-org",
-    "icon": "https://cdn.crmm.tech/cdn/data/organization/Tz1NpKlMrE4aYeVWXb/icon_128.webp",
+    "icon": "https://cdn.crmods.org/cdn/data/organization/Tz1NpKlMrE4aYeVWXb/icon_128.webp",
     "description": "An example organization.",
     "members": [
         {
@@ -16,7 +16,7 @@ GET [`/api/organization/{ID|slug}`](/api/organization/example-org)
             "userId": "ah2LyusAsuzzobzcRe",
             "teamId": "nBcJdRxQpF7mKoLsAw",
             "userName": "Shfloop",
-            "avatar": "https://cdn.crmm.tech/cdn/data/user/ah2LyusAsuzzobzcRe/repqJiI8XfwnHGnMSa_128.jpeg",
+            "avatar": "https://cdn.crmods.org/cdn/data/user/ah2LyusAsuzzobzcRe/repqJiI8XfwnHGnMSa_128.jpeg",
             "role": "Owner",
             "isOwner": true,
             "accepted": true,

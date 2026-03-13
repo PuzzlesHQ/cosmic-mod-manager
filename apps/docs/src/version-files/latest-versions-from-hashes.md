@@ -23,7 +23,7 @@ _Returns a map from input hash to the latest version of the project the version 
             "id": "u3ttJQpSrzyQH-4V77",
             "isPrimary": true,
             "name": "TestShaderV8.zip",
-            "url": "https://cdn.crmm.tech/cdn/data/project/4xvLkWrQx2lt6Vyx6Z/version/I1uoODEUnXP4ZLw1hB/TestShaderV8.zip",
+            "url": "https://cdn.crmods.org/cdn/data/project/4xvLkWrQx2lt6Vyx6Z/version/I1uoODEUnXP4ZLw1hB/TestShaderV8.zip",
             "size": 24354,
             "type": "zip",
             "sha1_hash": "d180dc418edf939a6b61dacf1065861e86404184",
@@ -34,7 +34,7 @@ _Returns a map from input hash to the latest version of the project the version 
                 "id": "u3ttJQpSrzyQH-4V77",
                 "isPrimary": true,
                 "name": "TestShaderV8.zip",
-                "url": "https://cdn.crmm.tech/cdn/data/project/4xvLkWrQx2lt6Vyx6Z/version/I1uoODEUnXP4ZLw1hB/TestShaderV8.zip",
+                "url": "https://cdn.crmods.org/cdn/data/project/4xvLkWrQx2lt6Vyx6Z/version/I1uoODEUnXP4ZLw1hB/TestShaderV8.zip",
                 "size": 24354,
                 "type": "zip",
                 "sha1_hash": "d180dc418edf939a6b61dacf1065861e86404184",
@@ -44,7 +44,7 @@ _Returns a map from input hash to the latest version of the project the version 
         "author": {
             "id": "ah2LyusAsuzzobzcRe",
             "userName": "Shfloop",
-            "avatar": "https://cdn.crmm.tech/cdn/data/user/ah2LyusAsuzzobzcRe/repqJiI8XfwnHGnMSa_128.jpeg",
+            "avatar": "https://cdn.crmods.org/cdn/data/user/ah2LyusAsuzzobzcRe/repqJiI8XfwnHGnMSa_128.jpeg",
             "role": ""
         },
         "dependencies": [

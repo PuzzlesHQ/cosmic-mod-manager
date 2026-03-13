@@ -20,7 +20,7 @@ GET [`/api/version-file/{hash}`](/api/version-file/6d37f994f50697b36221bc7e84333
     "id": "fr7fFUQqRsLPv_ILCS",
     "isPrimary": true,
     "name": "testshadersv4.zip",
-    "url": "https://cdn.crmm.tech/cdn/data/project/4xvLkWrQx2lt6Vyx6Z/version/EqhMLQH5wVTbxwIfON/testshadersv4.zip",
+    "url": "https://cdn.crmods.org/cdn/data/project/4xvLkWrQx2lt6Vyx6Z/version/EqhMLQH5wVTbxwIfON/testshadersv4.zip",
     "size": 18028,
     "type": "zip",
     "sha1_hash": "6d37f994f50697b36221bc7e84333783b2d14577",
@@ -31,7 +31,7 @@ GET [`/api/version-file/{hash}`](/api/version-file/6d37f994f50697b36221bc7e84333
         "id": "fr7fFUQqRsLPv_ILCS",
         "isPrimary": true,
         "name": "testshadersv4.zip",
-        "url": "https://cdn.crmm.tech/cdn/data/project/4xvLkWrQx2lt6Vyx6Z/version/EqhMLQH5wVTbxwIfON/testshadersv4.zip",
+        "url": "https://cdn.crmods.org/cdn/data/project/4xvLkWrQx2lt6Vyx6Z/version/EqhMLQH5wVTbxwIfON/testshadersv4.zip",
         "size": 18028,
         "type": "zip",
         "sha1_hash": "6d37f994f50697b36221bc7e84333783b2d14577",
@@ -41,7 +41,7 @@ GET [`/api/version-file/{hash}`](/api/version-file/6d37f994f50697b36221bc7e84333
 "author": {
     "id": "ah2LyusAsuzzobzcRe",
     "userName": "Shfloop",
-    "avatar": "https://cdn.crmm.tech/cdn/data/user/ah2LyusAsuzzobzcRe/repqJiI8XfwnHGnMSa_128.jpeg",
+    "avatar": "https://cdn.crmods.org/cdn/data/user/ah2LyusAsuzzobzcRe/repqJiI8XfwnHGnMSa_128.jpeg",
     "role": ""
 },
 "dependencies": [

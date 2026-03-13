@@ -1,5 +1,5 @@
 # Backend
-The REST API server for [CRMM](https://crmm.tech).
+The REST API server for [CRMM](https://crmods.org).
 
 
 ## Tech stack
@@ -27,4 +27,4 @@ The REST API server for [CRMM](https://crmm.tech).
 
 ## Setup
 
-See the [contributing guide](https://docs.crmm.tech/contributing.html#setting-up-dev-environment) for dev environment setup instructions.
+See the [contributing guide](https://docs.crmods.org/contributing.html#setting-up-dev-environment) for dev environment setup instructions.

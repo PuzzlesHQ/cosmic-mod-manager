@@ -12,9 +12,9 @@ const Config = {
     SITE_NAME_LONG: SITE_NAME_LONG,
 
     // Additional configuration things
-    SUPPORT_EMAIL: "support@crmm.tech",
-    ADMIN_EMAIL: "admin@crmm.tech",
-    SECURITY_EMAIL: "security@crmm.tech",
+    SUPPORT_EMAIL: "support@crmods.org",
+    ADMIN_EMAIL: "admin@crmods.org",
+    SECURITY_EMAIL: "security@crmods.org",
     DISCORD_INVITE: "https://discord.gg/6avTnupc6D",
     REPO_LINK: "https://github.com/PuzzlesHQ/cosmic-mod-manager",
     DOCS_URL: "https://docs.crmods.org",

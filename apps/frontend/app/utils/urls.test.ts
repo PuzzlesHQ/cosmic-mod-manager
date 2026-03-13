@@ -65,7 +65,7 @@ describe("route path helpers", () => {
 
 describe("omitOrigin", () => {
     test("should return location without origin for URL objects", () => {
-        const url = new URL("https://crmm.tech/project/demo?tab=files#download");
+        const url = new URL("https://crmods.org/project/demo?tab=files#download");
         expect(omitOrigin(url)).toBe("/project/demo?tab=files#download");
     });
 });

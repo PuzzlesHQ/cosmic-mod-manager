@@ -3,7 +3,7 @@ A list of all the available backend API endpoints.
 
 -------------
 
-Base URL: `https://api.crmm.tech/api` <br />
+Base URL: `https://api.crmods.org/api` <br />
 NOTE:- `/cdn` urls are not under the base `/api`
 
 ### Value Types

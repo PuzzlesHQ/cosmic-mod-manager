@@ -69,10 +69,10 @@ Pick whichever method works for you:
 
 #### Option A: Web editor
 
-We built a translation editor for this: **[translate.crmm.tech](https://translate.crmm.tech)** \
+We built a translation editor for this: **[translate.crmods.org](https://translate.crmods.org)** \
 No need to edit files manually, it shows every string alongside the reference locale in a form-like UI.
 
-1. **Open the editor** at [translate.crmm.tech](https://translate.crmm.tech)
+1. **Open the editor** at [translate.crmods.org](https://translate.crmods.org)
 
 2. **Pick a reference locale**: what you'll read while translating. Defaults to English, but you can switch to any other existing locale. _(Note: non-English locales may have missing keys that the editor won't show.)_
 

@@ -6,7 +6,7 @@ _*ids is not json encoded, it's just a comma separated list_
 ```json
 [
     {
-        "icon": "https://cdn.crmm.tech/cdn/data/project/4xvLkWrQx2lt6Vyx6Z/ls2JTf78WZg8XCv8qx_128.webp",
+        "icon": "https://cdn.crmods.org/cdn/data/project/4xvLkWrQx2lt6Vyx6Z/ls2JTf78WZg8XCv8qx_128.webp",
         "id": "4xvLkWrQx2lt6Vyx6Z",
         "slug": "testshaders",
         "name": "TestShaders",

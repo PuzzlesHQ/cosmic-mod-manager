@@ -12,7 +12,7 @@ export default function () {
             className="bright-heading rounded-lg bg-card-background p-6"
             text={t.legal.contentRules({
                 title: t.legal.rulesTitle,
-                supportEmail: "support@crmm.tech",
+                supportEmail: Config.SUPPORT_EMAIL,
                 privacyPageUrl: "/legal/privacy",
                 termsPageUrl: "/legal/terms",
                 siteName_Short: Config.SITE_NAME_SHORT,

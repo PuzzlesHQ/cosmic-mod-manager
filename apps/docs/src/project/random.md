@@ -4,7 +4,7 @@ GET [`/api/projects/random`](/api/projects/random)
 ```json
 [
     {
-        "icon": "https://cdn.crmm.tech/cdn/data/project/S0UHapuf5ghzmf96t2/DwtitsgLuf7yhVm91x_128.webp",
+        "icon": "https://cdn.crmods.org/cdn/data/project/S0UHapuf5ghzmf96t2/DwtitsgLuf7yhVm91x_128.webp",
         "id": "S0UHapuf5ghzmf96t2",
         "slug": "midtone-grit",
         "name": "Pinkletwink's Mid-tone Grit",
@@ -26,7 +26,7 @@ GET [`/api/projects/random`](/api/projects/random)
         "color": "#525148"
     },
     {
-        "icon": "https://cdn.crmm.tech/cdn/data/project/37zveFqapEG4kEWxBH/zRIE21kYQmhD7pEC81_128.webp",
+        "icon": "https://cdn.crmods.org/cdn/data/project/37zveFqapEG4kEWxBH/zRIE21kYQmhD7pEC81_128.webp",
         "id": "37zveFqapEG4kEWxBH",
         "slug": "jedos-simple-texture-pack",
         "name": "Jedo's Simple Texture Pack",

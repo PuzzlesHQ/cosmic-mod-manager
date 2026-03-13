@@ -8,7 +8,7 @@ GET [`/api/user/{ID|username}`](/api/user/Shfloop)
     "name": "Shfloop",
     "userName": "Shfloop",
     "role": "user",
-    "avatar": "https://cdn.crmm.tech/cdn/data/user/ah2LyusAsuzzobzcRe/repqJiI8XfwnHGnMSa_128.jpeg",
+    "avatar": "https://cdn.crmods.org/cdn/data/user/ah2LyusAsuzzobzcRe/repqJiI8XfwnHGnMSa_128.jpeg",
     "bio": null,
     "dateJoined": "2024-09-20T21:01:23.000Z",
     "profilePageBg": null
@@ -34,7 +34,7 @@ Returns an array of user profile objects (same shape as above).
         "name": "Shfloop",
         "userName": "Shfloop",
         "role": "user",
-        "avatar": "https://cdn.crmm.tech/cdn/data/user/ah2LyusAsuzzobzcRe/repqJiI8XfwnHGnMSa_128.jpeg",
+        "avatar": "https://cdn.crmods.org/cdn/data/user/ah2LyusAsuzzobzcRe/repqJiI8XfwnHGnMSa_128.jpeg",
         "bio": null,
         "dateJoined": "2024-09-20T21:01:23.000Z",
         "profilePageBg": null
@@ -61,7 +61,7 @@ Returns a list of projects belonging to the given user.
 ```json
 [
     {
-        "icon": "https://cdn.crmm.tech/cdn/data/project/4xvLkWrQx2lt6Vyx6Z/ls2JTf78WZg8XCv8qx_128.webp",
+        "icon": "https://cdn.crmods.org/cdn/data/project/4xvLkWrQx2lt6Vyx6Z/ls2JTf78WZg8XCv8qx_128.webp",
         "id": "4xvLkWrQx2lt6Vyx6Z",
         "slug": "testshaders",
         "name": "TestShaders",
