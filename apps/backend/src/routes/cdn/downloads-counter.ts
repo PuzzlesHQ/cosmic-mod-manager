@@ -180,7 +180,7 @@ export async function processDownloads() {
         }
 
         await Promise.all(promises);
-        UpdateProjects_SearchIndex(projectIds);
+        await UpdateProjects_SearchIndex(projectIds);
     } finally {
         await SetDownloadsProcessing(false);
     }
