@@ -90,36 +90,25 @@ export async function processDownloads() {
         const versionDownloadsMap = new Map<string, number>();
         const projectDownloadsMap = new Map<string, number>();
 
-        // History counters
-        const userDownloadsHistory = new Map<string, number>();
-        const ipDownloadsHistory = new Map<string, number>();
-
         for (let i = 0; i < downloadsQueue.length; i++) {
             const queueItem = downloadsQueue[i];
             let isDuplicateDownload = false;
+            let userDownloads = 0;
+            let ipDownloads = 0;
 
             for (let j = 0; j < downloadsHistory.length; j++) {
                 const historyItem = downloadsHistory[j];
-                const userDownloads =
-                    userDownloadsHistory.get(userDownloadsHistoryMapKey(queueItem.userId || "", queueItem.projectId)) ||
-                    0;
-                const ipDownloads =
-                    ipDownloadsHistory.get(ipDownloadsHistoryMapKey(queueItem.ipAddress, queueItem.projectId)) || 0;
+                if (historyItem.projectId !== queueItem.projectId) continue;
 
-                userDownloadsHistory.set(
-                    userDownloadsHistoryMapKey(historyItem.userId || "", historyItem.projectId),
-                    userDownloads + 1,
-                );
-                ipDownloadsHistory.set(
-                    ipDownloadsHistoryMapKey(historyItem.ipAddress, historyItem.projectId),
-                    ipDownloads + 1,
-                );
+                const sameUser = !!historyItem.userId && historyItem.userId === queueItem.userId;
+                const sameIp = historyItem.ipAddress === queueItem.ipAddress;
+                if (!sameUser && !sameIp) continue;
+
+                if (sameUser) userDownloads += 1;
+                if (sameIp) ipDownloads += 1;
 
                 if (
                     historyItem.id !== queueItem.id &&
-                    historyItem.projectId === queueItem.projectId &&
-                    (historyItem.ipAddress === queueItem.ipAddress ||
-                        (!!historyItem.userId && historyItem.userId === queueItem.userId)) &&
                     (historyItem.versionId === queueItem.versionId ||
                         userDownloads >= MAX_DOWNLOADS_PER_USER_PER_HISTORY_WINDOW ||
                         ipDownloads >= MAX_DOWNLOADS_PER_USER_PER_HISTORY_WINDOW)
@@ -216,13 +205,6 @@ export async function SetDownloadsProcessing(val: boolean) {
 
 export async function addToDownloadsQueue(item: Omit<DownloadsQueueItem, "id">) {
     await valkey.lpush(DOWNLOADS_QUEUE_KEY, JSON.stringify({ ...item, id: generateRandomId() }));
-}
-
-function userDownloadsHistoryMapKey(userId: string, projectId: string) {
-    return `${userId}:${projectId}`;
-}
-function ipDownloadsHistoryMapKey(ipAddr: string, projectId: string) {
-    return `${ipAddr}:${projectId}`;
 }
 
 async function pushOldDownloadsToAnalytics() {
