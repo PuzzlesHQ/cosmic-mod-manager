@@ -4,7 +4,7 @@ import { cors } from "hono/cors";
 import { isbot } from "isbot";
 import { AuthenticationMiddleware } from "~/middleware/auth";
 import { applyCacheHeaders, IMMUTABLE_TTL } from "~/middleware/cache";
-import { cdnAssetRateLimiter, invalidAuthAttemptLimiter } from "~/middleware/rate-limiter";
+import { cdnImgRateLimiter, cdnVersionFileRateLimiter, invalidAuthAttemptLimiter } from "~/middleware/rate-limiter";
 import { getSitemap } from "~/services/sitemap-gen";
 import { getCollectionFile, getOrgFile, getProjectFile, getProjectGalleryFile, getUserFile } from "~/services/storage";
 import env from "~/utils/env";
@@ -20,21 +20,21 @@ const cdnRouter = new Hono()
         applyCacheHeaders({ browserTTL_s: IMMUTABLE_TTL, cdnTTL_s: IMMUTABLE_TTL }),
     )
 
-    .get("/data/project/:projectId/:file", cdnAssetRateLimiter, projectFile_get)
-    .get("/data/project/:projectId/gallery/:file", cdnAssetRateLimiter, galleryImage_get)
+    .get("/data/project/:projectId/:file", cdnImgRateLimiter, projectFile_get)
+    .get("/data/project/:projectId/gallery/:file", cdnImgRateLimiter, galleryImage_get)
     .get(
         "/data/project/:projectId/version/:versionId/:fileName",
         invalidAuthAttemptLimiter,
-        cdnAssetRateLimiter,
+        cdnVersionFileRateLimiter,
         AuthenticationMiddleware,
         versionFile_get,
     )
 
-    .get("/data/organization/:orgId/:file", cdnAssetRateLimiter, orgFile_get)
-    .get("/data/user/:userId/:file", cdnAssetRateLimiter, userFile_get)
-    .get("/data/collection/:collectionId/:file", cdnAssetRateLimiter, collectionIcon_get)
+    .get("/data/organization/:orgId/:file", cdnImgRateLimiter, orgFile_get)
+    .get("/data/user/:userId/:file", cdnImgRateLimiter, userFile_get)
+    .get("/data/collection/:collectionId/:file", cdnImgRateLimiter, collectionIcon_get)
 
-    .get("/sitemap/:name", cdnAssetRateLimiter, sitemap_get);
+    .get("/sitemap/:name", cdnImgRateLimiter, sitemap_get);
 
 async function projectFile_get(ctx: Context) {
     try {
