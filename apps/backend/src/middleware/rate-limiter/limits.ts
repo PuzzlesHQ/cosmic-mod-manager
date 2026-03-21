@@ -5,7 +5,7 @@ export const Limits: Record<string, Limit> = {
         namespace: "SEARCH",
     },
     GET: {
-        max: 150,
+        max: 200,
         timeWindow_s: 300,
         namespace: "GET",
     },
