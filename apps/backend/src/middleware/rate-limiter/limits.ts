@@ -1,4 +1,4 @@
-export const Limits: Record<string, Limit> = {
+export const Limits: Record<string, RateLimit> = {
     SEARCH: {
         max: 60,
         timeWindow_s: 60,
@@ -25,6 +25,18 @@ export const Limits: Record<string, Limit> = {
         namespace: "CRIT_MODIFY",
     },
 
+    // --
+    CDN_IMG: {
+        max: 200,
+        timeWindow_s: 300,
+        namespace: "CDN_IMG",
+    },
+    CDN_VERSION_FILE: {
+        max: 75,
+        timeWindow_s: 600,
+        namespace: "CDN_VERSION_FILE",
+    },
+
     //--
     EMAIL: {
         max: 10,
@@ -43,7 +55,7 @@ export const Limits: Record<string, Limit> = {
     },
 };
 
-interface Limit {
+export interface RateLimit {
     namespace: string;
     max: number;
     timeWindow_s: number;
