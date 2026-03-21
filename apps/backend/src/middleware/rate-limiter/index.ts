@@ -4,14 +4,14 @@ import { serverErrorResponse, tooManyRequestsResponse } from "~/utils/http";
 import { SlidingWindowCounter } from "./bucket";
 import { Limits } from "./limits";
 
-const getReqLimiter = new SlidingWindowCounter(Limits.GET.namespace, Limits.GET.max, Limits.GET.timeWindow_s);
+const getReqLimit = new SlidingWindowCounter(Limits.GET.namespace, Limits.GET.max, Limits.GET.timeWindow_s);
 export async function getReqRateLimiter(ctx: Context, next: Next) {
     const ipAddr = getUserIpAddress(ctx);
     if (!ipAddr) {
         return serverErrorResponse(ctx);
     }
 
-    const res = await getReqLimiter.consume(ipAddr);
+    const res = await getReqLimit.consume(ipAddr);
     if (res.allowed === false) {
         return tooManyRequestsResponse(ctx);
     }
@@ -19,18 +19,14 @@ export async function getReqRateLimiter(ctx: Context, next: Next) {
     await next();
 }
 
-const searchReqLimiter = new SlidingWindowCounter(
-    Limits.SEARCH.namespace,
-    Limits.SEARCH.max,
-    Limits.SEARCH.timeWindow_s,
-);
+const searchReqLimit = new SlidingWindowCounter(Limits.SEARCH.namespace, Limits.SEARCH.max, Limits.SEARCH.timeWindow_s);
 export async function searchReqRateLimiter(ctx: Context, next: Next) {
     const ipAddr = getUserIpAddress(ctx);
     if (!ipAddr) {
         return serverErrorResponse(ctx);
     }
 
-    const res = await searchReqLimiter.consume(ipAddr);
+    const res = await searchReqLimit.consume(ipAddr);
     if (res.allowed === false) {
         return tooManyRequestsResponse(ctx);
     }
@@ -39,7 +35,7 @@ export async function searchReqRateLimiter(ctx: Context, next: Next) {
 }
 
 // Restricted get request rate limiter
-const strictGetReqLimiter = new SlidingWindowCounter(
+const strictGetReqLimit = new SlidingWindowCounter(
     Limits.STRICT_GET.namespace,
     Limits.STRICT_GET.max,
     Limits.STRICT_GET.timeWindow_s,
@@ -50,7 +46,7 @@ export async function strictGetReqRateLimiter(ctx: Context, next: Next) {
         return serverErrorResponse(ctx);
     }
 
-    const res = await strictGetReqLimiter.consume(ipAddr);
+    const res = await strictGetReqLimit.consume(ipAddr);
     if (res.allowed === false) {
         return tooManyRequestsResponse(ctx);
     }
@@ -59,18 +55,14 @@ export async function strictGetReqRateLimiter(ctx: Context, next: Next) {
 }
 
 // Limiter for requests that modify some data
-const modifyReqLimiterBucket = new SlidingWindowCounter(
-    Limits.MODIFY.namespace,
-    Limits.MODIFY.max,
-    Limits.MODIFY.timeWindow_s,
-);
+const modifyReqLimit = new SlidingWindowCounter(Limits.MODIFY.namespace, Limits.MODIFY.max, Limits.MODIFY.timeWindow_s);
 export async function modifyReqRateLimiter(ctx: Context, next: Next) {
     const ipAddr = getUserIpAddress(ctx);
     if (!ipAddr) {
         return serverErrorResponse(ctx);
     }
 
-    const res = await modifyReqLimiterBucket.consume(ipAddr);
+    const res = await modifyReqLimit.consume(ipAddr);
     if (res.allowed === false) {
         return tooManyRequestsResponse(ctx);
     }
@@ -78,7 +70,7 @@ export async function modifyReqRateLimiter(ctx: Context, next: Next) {
     await next();
 }
 
-const critModifyReqLimiterBucket = new SlidingWindowCounter(
+const critModifyReqLimit = new SlidingWindowCounter(
     Limits.CRIT_MODIFY.namespace,
     Limits.CRIT_MODIFY.max,
     Limits.CRIT_MODIFY.timeWindow_s,
@@ -89,7 +81,7 @@ export async function critModifyReqRateLimiter(ctx: Context, next: Next) {
         return serverErrorResponse(ctx);
     }
 
-    const res = await critModifyReqLimiterBucket.consume(ipAddr);
+    const res = await critModifyReqLimit.consume(ipAddr);
     if (res.allowed === false) {
         return tooManyRequestsResponse(ctx);
     }
@@ -97,13 +89,13 @@ export async function critModifyReqRateLimiter(ctx: Context, next: Next) {
     await next();
 }
 
-export async function cdnAssetRateLimiter(ctx: Context, next: Next) {
+export async function cdnImgRateLimiter(ctx: Context, next: Next) {
     const ipAddr = getUserIpAddress(ctx);
     if (!ipAddr) {
         return serverErrorResponse(ctx);
     }
 
-    const res = await strictGetReqLimiter.consume(ipAddr);
+    const res = await getReqLimit.consume(ipAddr);
     if (res.allowed === false) {
         return tooManyRequestsResponse(ctx);
     }
@@ -111,7 +103,21 @@ export async function cdnAssetRateLimiter(ctx: Context, next: Next) {
     await next();
 }
 
-const ddosRateLimiterBucket = new SlidingWindowCounter(
+export async function cdnVersionFileRateLimiter(ctx: Context, next: Next) {
+    const ipAddr = getUserIpAddress(ctx);
+    if (!ipAddr) {
+        return serverErrorResponse(ctx);
+    }
+
+    const res = await strictGetReqLimit.consume(ipAddr);
+    if (res.allowed === false) {
+        return tooManyRequestsResponse(ctx);
+    }
+
+    await next();
+}
+
+const ddosRateLimit = new SlidingWindowCounter(
     Limits.DDOS_PROTECTION.namespace,
     Limits.DDOS_PROTECTION.max,
     Limits.DDOS_PROTECTION.timeWindow_s,
@@ -123,7 +129,7 @@ export async function ddosProtectionRateLimiter(ctx: Context, next: Next) {
         return serverErrorResponse(ctx);
     }
 
-    const res = await ddosRateLimiterBucket.consume(ipAddr);
+    const res = await ddosRateLimit.consume(ipAddr);
     if (res.allowed === false) {
         return tooManyRequestsResponse(ctx);
     }
@@ -131,11 +137,7 @@ export async function ddosProtectionRateLimiter(ctx: Context, next: Next) {
     await next();
 }
 
-const sendEmailLimiterBucket = new SlidingWindowCounter(
-    Limits.EMAIL.namespace,
-    Limits.EMAIL.max,
-    Limits.EMAIL.timeWindow_s,
-);
+const sendEmailLimit = new SlidingWindowCounter(Limits.EMAIL.namespace, Limits.EMAIL.max, Limits.EMAIL.timeWindow_s);
 
 export async function sendEmailRateLimiter(ctx: Context, next: Next) {
     const ipAddr = getUserIpAddress(ctx);
@@ -143,7 +145,7 @@ export async function sendEmailRateLimiter(ctx: Context, next: Next) {
         return serverErrorResponse(ctx);
     }
 
-    const res = await sendEmailLimiterBucket.consume(ipAddr);
+    const res = await sendEmailLimit.consume(ipAddr);
     if (res.allowed === false) {
         return tooManyRequestsResponse(ctx);
     }
@@ -151,7 +153,7 @@ export async function sendEmailRateLimiter(ctx: Context, next: Next) {
     await next();
 }
 
-const invalidAuthAttemptsBucket = new SlidingWindowCounter(
+const invalidAuthAttemptsLimit = new SlidingWindowCounter(
     Limits.INVALID_AUTH_ATTEMPT.namespace,
     Limits.INVALID_AUTH_ATTEMPT.max,
     Limits.INVALID_AUTH_ATTEMPT.timeWindow_s,
@@ -164,7 +166,7 @@ export async function invalidAuthAttemptLimiter(ctx: Context, next: Next) {
     }
 
     // This is just to read the data, so cost is 0
-    const res = await invalidAuthAttemptsBucket.consume(ipAddr, 0);
+    const res = await invalidAuthAttemptsLimit.consume(ipAddr, 0);
     if (res.allowed === false) {
         return tooManyRequestsResponse(ctx);
     }
@@ -175,6 +177,6 @@ export async function invalidAuthAttemptLimiter(ctx: Context, next: Next) {
 export async function addInvalidAuthAttempt(ctx: Context) {
     const ipAddr = getUserIpAddress(ctx);
     if (ipAddr) {
-        await invalidAuthAttemptsBucket.consume(ipAddr);
+        await invalidAuthAttemptsLimit.consume(ipAddr);
     }
 }
