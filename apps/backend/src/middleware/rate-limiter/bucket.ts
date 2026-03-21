@@ -1,4 +1,5 @@
 import valkey from "~/services/redis";
+import type { RateLimit } from "./limits";
 
 // the Buffer stored in redis contains data in the following order
 // all values are 32 bits, so the timestamps are in seconds
@@ -8,11 +9,15 @@ import valkey from "~/services/redis";
 // [3] = prevWindowCount
 
 export class SlidingWindowCounter {
-    constructor(
-        private storeNamespace: string,
-        private maxAllowed: number,
-        private timeWindow_s: number,
-    ) {}
+    private storeNamespace: string;
+    private maxAllowed: number;
+    private timeWindow_s: number;
+
+    constructor(limit: RateLimit) {
+        this.storeNamespace = limit.namespace;
+        this.maxAllowed = limit.max;
+        this.timeWindow_s = limit.timeWindow_s;
+    }
 
     async consume(id: string, amount = 1) {
         const now = this.now_s();
