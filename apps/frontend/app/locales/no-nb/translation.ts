@@ -324,7 +324,7 @@ export default {
         project: "Prosjekt",
         details: "Detaljer",
         licensed: (license) => [
-            "LISENS",
+            "LISENS ",
             license,
         ],
         updatedAt: (when) => `Oppdatert ${when}`,
