@@ -5,13 +5,13 @@ import type { LoggedInUserData } from "@app/utils/types";
 import { useEffect } from "react";
 import type { LinkDescriptor } from "react-router";
 import {
-    Links,
-    Meta,
-    Outlet,
-    Scripts,
-    ScrollRestoration,
-    type ShouldRevalidateFunctionArgs,
-    useLoaderData,
+	Links,
+	Meta,
+	Outlet,
+	Scripts,
+	ScrollRestoration,
+	type ShouldRevalidateFunctionArgs,
+	useLoaderData,
 } from "react-router";
 import ClientOnly from "~/components/client-only";
 import Footer from "~/components/layout/footer";
@@ -64,13 +64,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <meta name="google-site-verification" content="saVDIhLaNSit_2LnqK9Zz-yxY2hMGTEC_Vud5v7-Tug" />
                 <Meta />
                 <Links />
-                {!import.meta.env.DEV && (
-                    <script
-                        defer
-                        src="https://static.cloudflareinsights.com/beacon.min.js"
-                        data-cf-beacon='{"token": "17f7926d0f21488c8e26cb18e384aa2a"}'
-                    ></script>
-                )}
             </head>
             <body className="antialiased">
                 {children}
