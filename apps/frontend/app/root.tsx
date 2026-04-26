@@ -2,7 +2,6 @@ import "~/index.css";
 
 import { getCookie } from "@app/utils/cookie";
 import type { LoggedInUserData } from "@app/utils/types";
-import { useEffect } from "react";
 import type { LinkDescriptor } from "react-router";
 import {
 	Links,
@@ -16,8 +15,6 @@ import {
 import ClientOnly from "~/components/client-only";
 import Footer from "~/components/layout/footer";
 import Navbar from "~/components/layout/Navbar/navbar";
-import { MarkdownLinkHandler } from "~/components/md-editor/link-handler";
-import { DownloadRipple } from "~/components/misc/file-downloader";
 import LoaderBar from "~/components/misc/loader-bar";
 import { shouldForceRevalidate } from "~/components/misc/refresh-page";
 import { cn } from "~/components/utils";
@@ -32,7 +29,6 @@ import { getHintLocale, setHintLocale } from "~/locales/utils";
 import { LoginDialog } from "~/pages/auth/login/login-card";
 import ContextProviders from "~/providers";
 import ErrorView from "~/routes/error-view";
-import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
 import { resJson, serverFetch } from "~/utils/server-fetch";
@@ -76,22 +72,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-    const data = useLoaderData() as RootOutletData;
+    const data = useLoaderData<typeof loader>();
 
     return (
         <ContextProviders init_userConfig={data.userConfig}>
-            <AppSetup data={data} />
-        </ContextProviders>
-    );
-}
-
-function AppSetup(props: { data: RootOutletData }) {
-    const data = props.data;
-
-    return (
-        <>
             {!data.session?.id && <LoginDialog isMainDialog />}
-            <ValidateClientSession />
             <ClientOnly Element={LoaderBar} />
 
             {/* A portal for the grid_bg_div inserted from the pages/page.tsx */}
@@ -105,10 +90,7 @@ function AppSetup(props: { data: RootOutletData }) {
                 </div>
                 <Footer />
             </div>
-
-            <DownloadRipple />
-            <MarkdownLinkHandler />
-        </>
+        </ContextProviders>
     );
 }
 
@@ -199,12 +181,4 @@ export function meta(props: Route.MetaArgs) {
 
 export function ErrorBoundary() {
     return <ErrorView />;
-}
-
-function ValidateClientSession() {
-    useEffect(() => {
-        clientFetch("/api/auth/me");
-    }, []);
-
-    return null;
 }

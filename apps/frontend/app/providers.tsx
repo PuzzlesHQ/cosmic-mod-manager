@@ -1,9 +1,7 @@
 import { DownloadProvider } from "~/components/misc/file-downloader";
-import { Toaster } from "~/components/ui/sonner";
 import type { UserPreferences } from "~/hooks/preferences/types";
 import { CollectionsProvider } from "~/pages/collection/provider";
-import { UpdateLocaleOnHintChange } from "./global-effects";
-import { PageBreadCrumbs } from "./hooks/breadcrumb";
+import { AppWidgets } from "./app-widgets";
 import { UserPreferencesProvider } from "./hooks/preferences";
 
 interface ContextProvidersProps {
@@ -17,19 +15,11 @@ export default function ContextProviders({ children, init_userConfig }: ContextP
             <DownloadProvider>
                 <CollectionsProvider>
                     {children}
-                    <GlobalEffects />
+					
+                    <AppWidgets />
                 </CollectionsProvider>
             </DownloadProvider>
         </UserPreferencesProvider>
     );
 }
 
-function GlobalEffects() {
-    return (
-        <>
-            <Toaster />
-            <PageBreadCrumbs />
-            <UpdateLocaleOnHintChange />
-        </>
-    );
-}
