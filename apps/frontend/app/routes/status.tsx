@@ -1,11 +1,11 @@
 import MarkdownRenderBox from "~/components/md-editor/md-renderer";
 
 export default function () {
-    return (
-        <main className="grid w-full grid-cols-1 overflow-auto">
-            <MarkdownRenderBox
-                className="rounded-lg bg-card-background p-6 pt-0"
-                text={`
+	return (
+		<main className="grid w-full grid-cols-1 overflow-auto">
+			<MarkdownRenderBox
+				className="rounded-lg bg-card-background p-6 pt-0"
+				text={`
 # Services' status
 
 <table>
@@ -132,7 +132,7 @@ export default function () {
 
 Visit [status.crmods.org](https://status.crmods.org) for more details.
 `}
-            />
-        </main>
-    );
+			/>
+		</main>
+	);
 }

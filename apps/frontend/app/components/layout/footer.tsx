@@ -13,236 +13,220 @@ import Config from "~/utils/config";
 import { stringifyLocation } from "~/utils/urls";
 
 export default function Footer() {
-    const { updatePreferences } = usePreferences();
-    const { t } = useTranslation();
-    const location = useLocation();
+	const { updatePreferences } = usePreferences();
+	const { t } = useTranslation();
+	const location = useLocation();
 
-    const footer = t.footer;
-    const legal = t.legal;
+	const footer = t.footer;
+	const legal = t.legal;
 
-    return (
-        <footer className="mx-auto w-full bg-card-background/50 pt-20 pb-8">
-            <div className="footer-grid container gap-y-5 pb-16">
-                <LinksColumn area="logo">
-                    <span
-                        className="flex items-center justify-center gap-2 font-bold text-[1.72rem] leading-none"
-                        title={Config.SITE_NAME_LONG}
-                    >
-                        <BrandIcon aria-label="Logo" className="h-11 w-11" />
-                        {Config.SITE_NAME_SHORT}
-                    </span>
-                </LinksColumn>
+	return (
+		<footer className="mx-auto w-full bg-card-background/50 pt-20 pb-8">
+			<div className="footer-grid container gap-y-5 pb-16">
+				<LinksColumn area="logo">
+					<span
+						className="flex items-center justify-center gap-2 font-bold text-[1.72rem] leading-none"
+						title={Config.SITE_NAME_LONG}
+					>
+						<BrandIcon aria-label="Logo" className="h-11 w-11" />
+						{Config.SITE_NAME_SHORT}
+					</span>
+				</LinksColumn>
 
-                <LinksColumn area="links-1">
-                    <Title>{footer.resources}</Title>
+				<LinksColumn area="links-1">
+					<Title>{footer.resources}</Title>
 
-                    <FooterLink to={Config.DOCS_URL} aria-label={footer.docs} target="_blank">
-                        {footer.docs}
-                        <OpenInNewTab_Icon />
-                    </FooterLink>
+					<FooterLink to={Config.DOCS_URL} aria-label={footer.docs} target="_blank">
+						{footer.docs}
+						<OpenInNewTab_Icon />
+					</FooterLink>
 
-                    <FooterLink to="/status" aria-label={footer.status}>
-                        {footer.status}
-                    </FooterLink>
+					<FooterLink to="/status" aria-label={footer.status}>
+						{footer.status}
+					</FooterLink>
 
-                    <FooterLink to={`mailto:${Config.SUPPORT_EMAIL}`} aria-label={footer.support} target="_blank">
-                        {footer.support}
-                        <OpenInNewTab_Icon />
-                    </FooterLink>
-                </LinksColumn>
+					<FooterLink to={`mailto:${Config.SUPPORT_EMAIL}`} aria-label={footer.support} target="_blank">
+						{footer.support}
+						<OpenInNewTab_Icon />
+					</FooterLink>
+				</LinksColumn>
 
-                <LinksColumn area="links-2">
-                    <Title>{footer.socials}</Title>
-                    <FooterLink to="/about" aria-label={footer.about}>
-                        {footer.about}
-                    </FooterLink>
+				<LinksColumn area="links-2">
+					<Title>{footer.socials}</Title>
+					<FooterLink to="/about" aria-label={footer.about}>
+						{footer.about}
+					</FooterLink>
 
-                    <FooterLink
-                        to="https://github.com/PuzzlesHQ/cosmic-mod-manager"
-                        aria-label="GitHub Repo"
-                        target="_blank"
-                    >
-                        Github
-                        <OpenInNewTab_Icon />
-                    </FooterLink>
+					<FooterLink to="https://github.com/PuzzlesHQ/cosmic-mod-manager" aria-label="GitHub Repo" target="_blank">
+						Github
+						<OpenInNewTab_Icon />
+					</FooterLink>
 
-                    <FooterLink to={Config.DISCORD_INVITE} aria-label="Discord Invite" target="_blank">
-                        Discord
-                        <OpenInNewTab_Icon />
-                    </FooterLink>
-                </LinksColumn>
+					<FooterLink to={Config.DISCORD_INVITE} aria-label="Discord Invite" target="_blank">
+						Discord
+						<OpenInNewTab_Icon />
+					</FooterLink>
+				</LinksColumn>
 
-                <LinksColumn area="links-3">
-                    <Link to="/legal" className="flex items-center gap-2 hover:underline">
-                        <Title>{legal.legal}</Title>
-                        <LinkIcon className="h-3.5 w-3.5 text-foreground-muted" />
-                    </Link>
+				<LinksColumn area="links-3">
+					<Link to="/legal" className="flex items-center gap-2 hover:underline">
+						<Title>{legal.legal}</Title>
+						<LinkIcon className="h-3.5 w-3.5 text-foreground-muted" />
+					</Link>
 
-                    <FooterLink to="/legal/terms" aria-label={legal.termsTitle}>
-                        {legal.termsTitle}
-                    </FooterLink>
+					<FooterLink to="/legal/terms" aria-label={legal.termsTitle}>
+						{legal.termsTitle}
+					</FooterLink>
 
-                    <FooterLink to="/legal/privacy" aria-label={legal.privacyPolicyTitle}>
-                        {legal.privacyPolicyTitle}
-                    </FooterLink>
+					<FooterLink to="/legal/privacy" aria-label={legal.privacyPolicyTitle}>
+						{legal.privacyPolicyTitle}
+					</FooterLink>
 
-                    <FooterLink to="/legal/rules" aria-label={legal.rulesTitle}>
-                        {legal.rulesTitle}
-                    </FooterLink>
-                </LinksColumn>
+					<FooterLink to="/legal/rules" aria-label={legal.rulesTitle}>
+						{legal.rulesTitle}
+					</FooterLink>
+				</LinksColumn>
 
-                <div
-                    style={{ gridArea: "buttons" }}
-                    className="grid h-fit grid-cols-1 place-items-center gap-2 lg:place-items-start"
-                >
-                    <VariantButtonLink
-                        prefetch={LinkPrefetchStrategy.Render}
-                        to="/settings"
-                        variant="outline"
-                        className="rounded-full"
-                    >
-                        <Settings2Icon
-                            aria-hidden
-                            className="h-btn-icon-md w-btn-icon-md"
-                            aria-label={t.common.settings}
-                        />
-                        {t.common.settings}
-                    </VariantButtonLink>
+				<div
+					style={{ gridArea: "buttons" }}
+					className="grid h-fit grid-cols-1 place-items-center gap-2 lg:place-items-start"
+				>
+					<VariantButtonLink
+						prefetch={LinkPrefetchStrategy.Render}
+						to="/settings"
+						variant="outline"
+						className="rounded-full"
+					>
+						<Settings2Icon aria-hidden className="h-btn-icon-md w-btn-icon-md" aria-label={t.common.settings} />
+						{t.common.settings}
+					</VariantButtonLink>
 
-                    <div className="">
-                        <LangSwitcher />
-                    </div>
-                </div>
-            </div>
+					<div className="">
+						<LangSwitcher />
+					</div>
+				</div>
+			</div>
 
-            <div className="container flex flex-wrap items-center justify-start gap-x-3 gap-y-2 text-[small]">
-                <span>{t.footer.siteOfferedIn(Config.SITE_NAME_SHORT)}</span>
+			<div className="container flex flex-wrap items-center justify-start gap-x-3 gap-y-2 text-[small]">
+				<span>{t.footer.siteOfferedIn(Config.SITE_NAME_SHORT)}</span>
 
-                {SupportedLocalesList.map((locale) => {
-                    const region = locale?.region;
-                    const label = region ? `${locale.displayName} (${region.displayName})` : locale.displayName;
-                    const title = region ? `${locale.name} - ${region.name}` : locale.name;
+				{SupportedLocalesList.map((locale) => {
+					const region = locale?.region;
+					const label = region ? `${locale.displayName} (${region.displayName})` : locale.displayName;
+					const title = region ? `${locale.name} - ${region.name}` : locale.name;
 
-                    const formattedCode = formatLocaleCode(locale);
-                    const url = setHintLocale(location.pathname, formattedCode, formattedCode);
+					const formattedCode = formatLocaleCode(locale);
+					const url = setHintLocale(location.pathname, formattedCode, formattedCode);
 
-                    return (
-                        <TextLink
-                            key={url}
-                            to={url}
-                            aria-label={title}
-                            title={title}
-                            preventScrollReset
-                            escapeUrlWrapper
-                            onClick={() => updatePreferences({ locale: formattedCode })}
-                        >
-                            {label}
-                        </TextLink>
-                    );
-                })}
-            </div>
-        </footer>
-    );
+					return (
+						<TextLink
+							key={url}
+							to={url}
+							aria-label={title}
+							title={title}
+							preventScrollReset
+							escapeUrlWrapper
+							onClick={() => updatePreferences({ locale: formattedCode })}
+						>
+							{label}
+						</TextLink>
+					);
+				})}
+			</div>
+		</footer>
+	);
 }
 
 function Title({ children }: { children: React.ReactNode }) {
-    return <h4 className="font-bold text-foreground-bright">{children}</h4>;
+	return <h4 className="font-bold text-foreground-bright">{children}</h4>;
 }
 
 function FooterLink({ children, ...props }: LinkProps) {
-    return (
-        <Link
-            {...props}
-            prefetch={LinkPrefetchStrategy.Viewport}
-            className="flex w-fit items-center justify-center gap-1 text-foreground-muted leading-none hover:text-foreground hover:underline lg:justify-start"
-        >
-            {children}
-        </Link>
-    );
+	return (
+		<Link
+			{...props}
+			prefetch={LinkPrefetchStrategy.Viewport}
+			className="flex w-fit items-center justify-center gap-1 text-foreground-muted leading-none hover:text-foreground hover:underline lg:justify-start"
+		>
+			{children}
+		</Link>
+	);
 }
 
 function OpenInNewTab_Icon() {
-    return (
-        <ArrowUpRightIcon
-            aria-hidden
-            aria-label="Open in new tab"
-            className="inline h-4 w-4 text-foreground-extra-muted"
-        />
-    );
+	return (
+		<ArrowUpRightIcon aria-hidden aria-label="Open in new tab" className="inline h-4 w-4 text-foreground-extra-muted" />
+	);
 }
 
 function LinksColumn({ children, area }: { area: string; children: React.ReactNode }) {
-    return (
-        <div style={{ gridArea: area }} className="grid h-fit place-items-center gap-4 lg:me-16 lg:place-items-start">
-            {children}
-        </div>
-    );
+	return (
+		<div style={{ gridArea: area }} className="grid h-fit place-items-center gap-4 lg:me-16 lg:place-items-start">
+			{children}
+		</div>
+	);
 }
 
 export function LangSwitcher() {
-    const { updatePreferences } = usePreferences();
-    const { locale } = useTranslation();
-    const navigate = useNavigate(true);
-    const location = useLocation();
+	const { updatePreferences } = usePreferences();
+	const { locale } = useTranslation();
+	const navigate = useNavigate(true);
+	const location = useLocation();
 
-    const formattedLocale = formatLocaleCode(locale);
-    const currLocaleLabel = locale.region ? `${locale.displayName} (${locale.region.displayName})` : locale.displayName;
+	const formattedLocale = formatLocaleCode(locale);
+	const currLocaleLabel = locale.region ? `${locale.displayName} (${locale.region.displayName})` : locale.displayName;
 
-    return (
-        <Select
-            onValueChange={(value: string) => {
-                const newLocaleCode = getValidLocaleCode(value);
+	return (
+		<Select
+			onValueChange={(value: string) => {
+				const newLocaleCode = getValidLocaleCode(value);
 
-                updatePreferences({ locale: newLocaleCode });
-                navigate(setHintLocale(stringifyLocation(location), newLocaleCode, newLocaleCode), {
-                    preventScrollReset: true,
-                    viewTransition: false,
-                });
-            }}
-            value={formattedLocale}
-        >
-            <SelectTrigger
-                aria-label={currLocaleLabel}
-                className="rounded-full ps-4"
-                variant="outline"
-                style={{
-                    minWidth: `calc(${currLocaleLabel.length}ch + 1.3rem)`,
-                }}
-            >
-                <LanguagesIcon
-                    aria-hidden
-                    className="h-btn-icon-md w-btn-icon-md text-foreground-muted"
-                    aria-label="Language switcher"
-                />
-                <SelectValue className="flex items-center justify-start" placeholder={<p>{formattedLocale}</p>} />
-            </SelectTrigger>
+				updatePreferences({ locale: newLocaleCode });
+				navigate(setHintLocale(stringifyLocation(location), newLocaleCode, newLocaleCode), {
+					preventScrollReset: true,
+					viewTransition: false,
+				});
+			}}
+			value={formattedLocale}
+		>
+			<SelectTrigger
+				aria-label={currLocaleLabel}
+				className="rounded-full ps-4"
+				variant="outline"
+				style={{
+					minWidth: `calc(${currLocaleLabel.length}ch + 1.3rem)`,
+				}}
+			>
+				<LanguagesIcon
+					aria-hidden
+					className="h-btn-icon-md w-btn-icon-md text-foreground-muted"
+					aria-label="Language switcher"
+				/>
+				<SelectValue className="flex items-center justify-start" placeholder={<p>{formattedLocale}</p>} />
+			</SelectTrigger>
 
-            <SelectContent>
-                <SelectGroup>
-                    {SupportedLocalesList?.map((locale) => {
-                        const region = locale.region;
-                        const label = region ? `${locale.name} (${region.name})` : locale.name;
+			<SelectContent>
+				<SelectGroup>
+					{SupportedLocalesList?.map((locale) => {
+						const region = locale.region;
+						const label = region ? `${locale.name} (${region.name})` : locale.name;
 
-                        return (
-                            <SelectItem key={label} value={formatLocaleCode(locale)} aria-label={label} title={label}>
-                                <div className="flex w-full items-center justify-center gap-1.5 break-words">
-                                    <span className="flex items-end justify-center align-bottom">
-                                        {locale.displayName}
-                                    </span>
-                                    {region ? (
-                                        <>
-                                            <DotSeparator className="bg-foreground-extra-muted" />
-                                            <span className="text-foreground-muted/85 text-sm">
-                                                {region.displayName}
-                                            </span>
-                                        </>
-                                    ) : null}
-                                </div>
-                            </SelectItem>
-                        );
-                    })}
-                </SelectGroup>
-            </SelectContent>
-        </Select>
-    );
+						return (
+							<SelectItem key={label} value={formatLocaleCode(locale)} aria-label={label} title={label}>
+								<div className="flex w-full items-center justify-center gap-1.5 break-words">
+									<span className="flex items-end justify-center align-bottom">{locale.displayName}</span>
+									{region ? (
+										<>
+											<DotSeparator className="bg-foreground-extra-muted" />
+											<span className="text-foreground-muted/85 text-sm">{region.displayName}</span>
+										</>
+									) : null}
+								</div>
+							</SelectItem>
+						);
+					})}
+				</SelectGroup>
+			</SelectContent>
+		</Select>
+	);
 }

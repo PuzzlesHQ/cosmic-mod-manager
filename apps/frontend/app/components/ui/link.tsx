@@ -1,10 +1,10 @@
 import type React from "react";
 import {
-    type LinkProps,
-    type NavigateOptions,
-    Link as RemixLink,
-    useLocation,
-    useNavigate as useNavigate_Original,
+	type LinkProps,
+	type NavigateOptions,
+	Link as RemixLink,
+	useLocation,
+	useNavigate as useNavigate_Original,
 } from "react-router";
 import type { VariantProps } from "~/components/types";
 import { cn } from "~/components/utils";
@@ -15,141 +15,132 @@ import { isCurrLinkActive } from "~/utils/urls";
 import { buttonVariants } from "./button";
 
 export enum LinkPrefetchStrategy {
-    Intent = "intent",
-    Render = "render",
-    None = "none",
-    Viewport = "viewport",
+	Intent = "intent",
+	Render = "render",
+	None = "none",
+	Viewport = "viewport",
 }
 
 interface CustomLinkProps extends LinkProps {
-    ref?: React.ComponentProps<"a">["ref"];
-    escapeUrlWrapper?: boolean;
+	ref?: React.ComponentProps<"a">["ref"];
+	escapeUrlWrapper?: boolean;
 }
 
 export default function Link({ ref, escapeUrlWrapper, ...props }: CustomLinkProps) {
-    const { locale } = useTranslation();
-    const prefs = usePreferences();
+	const { locale } = useTranslation();
+	const prefs = usePreferences();
 
-    let to = props.to?.toString().trim() || "#";
-    if (escapeUrlWrapper !== true && (to.startsWith("/") || to.startsWith("https://"))) {
-        to = setHintLocale(to, locale, prefs.locale);
-    }
+	let to = props.to?.toString().trim() || "#";
+	if (escapeUrlWrapper !== true && (to.startsWith("/") || to.startsWith("https://"))) {
+		to = setHintLocale(to, locale, prefs.locale);
+	}
 
-    return <RemixLink ref={ref} {...props} to={to} viewTransition={prefs.viewTransitions !== false} />;
+	return <RemixLink ref={ref} {...props} to={to} viewTransition={prefs.viewTransitions !== false} />;
 }
 
 export function TextLink(props: React.ComponentProps<typeof Link>) {
-    return (
-        <Link
-            {...props}
-            className={cn(
-                "text-foreground-link underline-offset-3 hover:underline hover:brightness-110",
-                props.className,
-            )}
-        >
-            {props.children}
-        </Link>
-    );
+	return (
+		<Link
+			{...props}
+			className={cn("text-foreground-link underline-offset-3 hover:underline hover:brightness-110", props.className)}
+		>
+			{props.children}
+		</Link>
+	);
 }
 
 interface ButtonLinkProps extends Omit<LinkProps, "to"> {
-    url: string;
-    children: React.ReactNode;
-    className?: string;
-    exactTailMatch?: boolean;
-    activityIndicator?: boolean;
-    tabIndex?: number;
-    onClick?: React.MouseEventHandler<HTMLAnchorElement>;
-    activeClassName?: string;
-    preventScrollReset?: boolean;
-    ref?: React.ComponentProps<"a">["ref"];
+	url: string;
+	children: React.ReactNode;
+	className?: string;
+	exactTailMatch?: boolean;
+	activityIndicator?: boolean;
+	tabIndex?: number;
+	onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+	activeClassName?: string;
+	preventScrollReset?: boolean;
+	ref?: React.ComponentProps<"a">["ref"];
 }
 
 export function ButtonLink({
-    ref,
-    url,
-    children,
-    className,
-    exactTailMatch = true,
-    activityIndicator = true,
-    activeClassName,
-    ...props
+	ref,
+	url,
+	children,
+	className,
+	exactTailMatch = true,
+	activityIndicator = true,
+	activeClassName,
+	...props
 }: ButtonLinkProps) {
-    const location = useLocation();
+	const location = useLocation();
 
-    const isActive = isCurrLinkActive(url, location.pathname, exactTailMatch);
+	const isActive = isCurrLinkActive(url, location.pathname, exactTailMatch);
 
-    return (
-        <Link
-            {...props}
-            to={url}
-            ref={ref}
-            className={cn(
-                buttonVariants({ variant: "ghost" }),
-                "bg_hover_stagger h-[unset] min-h-10 justify-start whitespace-normal",
-                isActive && activityIndicator && "bg-raised-background hover:brightness-95 dark:hover:brightness-110",
-                isActive && `active ${activeClassName}`,
-                className,
-            )}
-        >
-            {children}
-        </Link>
-    );
+	return (
+		<Link
+			{...props}
+			to={url}
+			ref={ref}
+			className={cn(
+				buttonVariants({ variant: "ghost" }),
+				"bg_hover_stagger h-[unset] min-h-10 justify-start whitespace-normal",
+				isActive && activityIndicator && "bg-raised-background hover:brightness-95 dark:hover:brightness-110",
+				isActive && `active ${activeClassName}`,
+				className,
+			)}
+		>
+			{children}
+		</Link>
+	);
 }
 
 export interface VariantLinkProps extends VariantProps<typeof buttonVariants> {
-    children: React.ReactNode;
-    to: string;
-    className?: string;
-    label?: string;
-    target?: string;
-    onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void | Promise<void>;
-    tabIndex?: number;
-    preventScrollReset?: boolean;
-    viewTransition?: boolean;
-    ref?: React.ComponentProps<"a">["ref"];
+	children: React.ReactNode;
+	to: string;
+	className?: string;
+	label?: string;
+	target?: string;
+	onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void | Promise<void>;
+	tabIndex?: number;
+	preventScrollReset?: boolean;
+	viewTransition?: boolean;
+	ref?: React.ComponentProps<"a">["ref"];
 }
 
 export function VariantButtonLink({
-    ref,
-    children,
-    to,
-    className,
-    label,
-    variant = "secondary",
-    size = "default",
-    ...props
+	ref,
+	children,
+	to,
+	className,
+	label,
+	variant = "secondary",
+	size = "default",
+	...props
 }: VariantLinkProps & CustomLinkProps) {
-    return (
-        <Link
-            to={to}
-            ref={ref}
-            className={cn(buttonVariants({ variant, size }), className)}
-            aria-label={label}
-            {...props}
-        >
-            {children}
-        </Link>
-    );
+	return (
+		<Link to={to} ref={ref} className={cn(buttonVariants({ variant, size }), className)} aria-label={label} {...props}>
+			{children}
+		</Link>
+	);
 }
 
 export function useNavigate(dontAlterHintLocale?: boolean, initOptions?: NavigateOptions) {
-    const navigate = useNavigate_Original();
-    const { locale } = useTranslation();
-    const prefs = usePreferences();
+	const navigate = useNavigate_Original();
+	const { locale } = useTranslation();
+	const prefs = usePreferences();
 
-    function __navigate(_to: string, options?: NavigateOptions): void {
-        const to = _to?.trim() || "#";
-        const toUrl = dontAlterHintLocale || to.startsWith("#") ? to : setHintLocale(to, locale, prefs.locale);
+	function __navigate(_to: string, options?: NavigateOptions): void {
+		const to = _to?.trim() || "#";
+		const toUrl = dontAlterHintLocale || to.startsWith("#") ? to : setHintLocale(to, locale, prefs.locale);
 
-        navigate(toUrl, {
-            viewTransition: prefs.viewTransitions !== false,
-            ...initOptions,
-            ...options,
-        });
-    }
+		navigate(toUrl, {
+			viewTransition: prefs.viewTransitions !== false,
+			...initOptions,
+			...options,
+		});
+	}
 
-    return __navigate;
+	return __navigate;
 }
 
 export type NavigateFunction = ReturnType<typeof useNavigate>;

@@ -1,6 +1,6 @@
 export interface AboutUsProps {
-    discordInvite: string;
-    repoLink: string;
+	discordInvite: string;
+	repoLink: string;
 }
 
 export const AboutUs = (props: AboutUsProps) => `

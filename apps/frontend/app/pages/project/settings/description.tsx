@@ -17,74 +17,70 @@ import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 
 export default function DescriptionSettings() {
-    const { t } = useTranslation();
-    const ctx = useProjectData();
-    const [isLoading, setIsLoading] = useState(false);
+	const { t } = useTranslation();
+	const ctx = useProjectData();
+	const [isLoading, setIsLoading] = useState(false);
 
-    const navigate = useNavigate();
-    const location = useLocation();
+	const navigate = useNavigate();
+	const location = useLocation();
 
-    const form = useFormHook(updateDescriptionFormSchema, {
-        values: {
-            description: ctx.projectData.description || "",
-        },
-    });
+	const form = useFormHook(updateDescriptionFormSchema, {
+		values: {
+			description: ctx.projectData.description || "",
+		},
+	});
 
-    async function updateDescription(values: z.infer<typeof updateDescriptionFormSchema>) {
-        if (isLoading) return;
-        setIsLoading(true);
+	async function updateDescription(values: z.infer<typeof updateDescriptionFormSchema>) {
+		if (isLoading) return;
+		setIsLoading(true);
 
-        try {
-            const response = await clientFetch(`/api/project/${ctx.projectData.id}/description`, {
-                method: "PATCH",
-                body: JSON.stringify(values),
-            });
-            const result = await response.json();
+		try {
+			const response = await clientFetch(`/api/project/${ctx.projectData.id}/description`, {
+				method: "PATCH",
+				body: JSON.stringify(values),
+			});
+			const result = await response.json();
 
-            if (!response.ok || !result?.success) {
-                return toast.error(result?.message || t.common.error);
-            }
+			if (!response.ok || !result?.success) {
+				return toast.error(result?.message || t.common.error);
+			}
 
-            RefreshPage(navigate, location);
-            toast.success(result?.message || t.common.success);
-        } finally {
-            setIsLoading(false);
-        }
-    }
+			RefreshPage(navigate, location);
+			toast.success(result?.message || t.common.success);
+		} finally {
+			setIsLoading(false);
+		}
+	}
 
-    return (
-        <ContentCardTemplate title={t.form.description}>
-            <Form {...form}>
-                <form
-                    onSubmit={form.handleSubmit(updateDescription)}
-                    className="flex w-full flex-col items-start justify-start gap-form-elements"
-                >
-                    <FormField
-                        control={form.control}
-                        name="description"
-                        render={({ field }) => (
-                            <FormItem>
-                                <MarkdownEditor
-                                    editorValue={field.value || ""}
-                                    setEditorValue={field.onChange}
-                                    textAreaClassName="min-h-[36rem]"
-                                />
-                            </FormItem>
-                        )}
-                    />
+	return (
+		<ContentCardTemplate title={t.form.description}>
+			<Form {...form}>
+				<form
+					onSubmit={form.handleSubmit(updateDescription)}
+					className="flex w-full flex-col items-start justify-start gap-form-elements"
+				>
+					<FormField
+						control={form.control}
+						name="description"
+						render={({ field }) => (
+							<FormItem>
+								<MarkdownEditor
+									editorValue={field.value || ""}
+									setEditorValue={field.onChange}
+									textAreaClassName="min-h-[36rem]"
+								/>
+							</FormItem>
+						)}
+					/>
 
-                    <div className="flex w-full items-center justify-end">
-                        <Button type="submit" disabled={!form.formState.isDirty || isLoading}>
-                            {isLoading ? (
-                                <LoadingSpinner size="xs" />
-                            ) : (
-                                <SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
-                            )}
-                            {t.form.saveChanges}
-                        </Button>
-                    </div>
-                </form>
-            </Form>
-        </ContentCardTemplate>
-    );
+					<div className="flex w-full items-center justify-end">
+						<Button type="submit" disabled={!form.formState.isDirty || isLoading}>
+							{isLoading ? <LoadingSpinner size="xs" /> : <SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />}
+							{t.form.saveChanges}
+						</Button>
+					</div>
+				</form>
+			</Form>
+		</ContentCardTemplate>
+	);
 }

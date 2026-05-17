@@ -6,161 +6,161 @@ import { DeleteCache, GetData_FromCache, PAT_CACHE_EXPIRY_seconds, SetCache } fr
 
 export type GetPAT_ReturnType = Awaited<ReturnType<typeof GetPAT_FromDb>>;
 async function GetPAT_FromDb(tokenHash: string) {
-    try {
-        return await prisma.personalAccessToken.update({
-            where: {
-                tokenHash: tokenHash,
-            },
-            data: {
-                dateLastUsed: new Date(),
-            },
-        });
-    } catch {
-        return null;
-    }
+	try {
+		return await prisma.personalAccessToken.update({
+			where: {
+				tokenHash: tokenHash,
+			},
+			data: {
+				dateLastUsed: new Date(),
+			},
+		});
+	} catch {
+		return null;
+	}
 }
 
 export async function GetPAT(tokenHash: string): Promise<GetPAT_ReturnType> {
-    const cachedPat = await getPAT_FromCache(tokenHash);
-    if (cachedPat) return cachedPat;
+	const cachedPat = await getPAT_FromCache(tokenHash);
+	if (cachedPat) return cachedPat;
 
-    const pat = await GetPAT_FromDb(tokenHash);
-    if (pat) await setPAT_Cache(pat);
-    return pat;
+	const pat = await GetPAT_FromDb(tokenHash);
+	if (pat) await setPAT_Cache(pat);
+	return pat;
 }
 
 export type GetPATs_ReturnType = Awaited<ReturnType<typeof GetPATs_ByUserID_FromDb>>;
 function GetPATs_ByUserID_FromDb(userId: string) {
-    return prisma.personalAccessToken.findMany({
-        where: { userId: userId },
-        orderBy: { dateCreated: "desc" },
-    });
+	return prisma.personalAccessToken.findMany({
+		where: { userId: userId },
+		orderBy: { dateCreated: "desc" },
+	});
 }
 
 export async function GetManyPATs_ByUserID(userId: string): Promise<GetPATs_ReturnType> {
-    const cachedPATs = await GetData_FromCache<string[]>(USER_PATs_CACHE_KEY, userId);
-    if (cachedPATs) {
-        return await GetManyPATs_ByIDs(cachedPATs);
-    }
+	const cachedPATs = await GetData_FromCache<string[]>(USER_PATs_CACHE_KEY, userId);
+	if (cachedPATs) {
+		return await GetManyPATs_ByIDs(cachedPATs);
+	}
 
-    const PATs = await GetPATs_ByUserID_FromDb(userId);
-    await SetCache(USER_PATs_CACHE_KEY, userId, JSON.stringify(PATs.map((pat) => pat.id)), PAT_CACHE_EXPIRY_seconds);
+	const PATs = await GetPATs_ByUserID_FromDb(userId);
+	await SetCache(USER_PATs_CACHE_KEY, userId, JSON.stringify(PATs.map((pat) => pat.id)), PAT_CACHE_EXPIRY_seconds);
 
-    return PATs;
+	return PATs;
 }
 
 export async function GetManyPATs_ByIDs(ids: string[]) {
-    if (ids.length === 0) return [];
-    const PATs = [];
+	if (ids.length === 0) return [];
+	const PATs = [];
 
-    const PAts_retrievedFromCache: string[] = [];
-    {
-        const _cachedPATs_promises: Promise<GetPAT_ReturnType>[] = [];
-        for (const id of ids) {
-            const cachedPAT = getPAT_FromCache(id);
-            _cachedPATs_promises.push(cachedPAT);
-        }
+	const PAts_retrievedFromCache: string[] = [];
+	{
+		const _cachedPATs_promises: Promise<GetPAT_ReturnType>[] = [];
+		for (const id of ids) {
+			const cachedPAT = getPAT_FromCache(id);
+			_cachedPATs_promises.push(cachedPAT);
+		}
 
-        const _cachedPATs = await Promise.all(_cachedPATs_promises);
-        for (const pat of _cachedPATs) {
-            if (!pat) continue;
-            PAts_retrievedFromCache.push(pat.id);
-            PATs.push(pat);
-        }
-    }
+		const _cachedPATs = await Promise.all(_cachedPATs_promises);
+		for (const pat of _cachedPATs) {
+			if (!pat) continue;
+			PAts_retrievedFromCache.push(pat.id);
+			PATs.push(pat);
+		}
+	}
 
-    const PATs_toRetrieveFromDb_ids = ids.filter((id) => !PAts_retrievedFromCache.includes(id));
-    if (PATs_toRetrieveFromDb_ids.length > 0) {
-        const _DB_PATs = await prisma.personalAccessToken.findMany({
-            where: { id: { in: PATs_toRetrieveFromDb_ids } },
-        });
+	const PATs_toRetrieveFromDb_ids = ids.filter((id) => !PAts_retrievedFromCache.includes(id));
+	if (PATs_toRetrieveFromDb_ids.length > 0) {
+		const _DB_PATs = await prisma.personalAccessToken.findMany({
+			where: { id: { in: PATs_toRetrieveFromDb_ids } },
+		});
 
-        const _setCache_promises = [];
-        for (const pat of _DB_PATs) {
-            if (!pat) continue;
-            PATs.push(pat);
-            _setCache_promises.push(setPAT_Cache(pat));
-        }
-        await Promise.all(_setCache_promises);
-    }
+		const _setCache_promises = [];
+		for (const pat of _DB_PATs) {
+			if (!pat) continue;
+			PATs.push(pat);
+			_setCache_promises.push(setPAT_Cache(pat));
+		}
+		await Promise.all(_setCache_promises);
+	}
 
-    return PATs.sort((a, b) => {
-        return new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime();
-    });
+	return PATs.sort((a, b) => {
+		return new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime();
+	});
 }
 
 export async function GetPAT_ById(id: string): Promise<GetPAT_ReturnType> {
-    const pat = await getPAT_FromCache(id);
-    if (pat) return pat;
+	const pat = await getPAT_FromCache(id);
+	if (pat) return pat;
 
-    const dbPat = await prisma.personalAccessToken.findUnique({
-        where: { id: id },
-    });
-    if (dbPat) await setPAT_Cache(dbPat);
-    return dbPat;
+	const dbPat = await prisma.personalAccessToken.findUnique({
+		where: { id: id },
+	});
+	if (dbPat) await setPAT_Cache(dbPat);
+	return dbPat;
 }
 
 export async function CreatePAT<T extends Prisma.PersonalAccessTokenCreateArgs>(
-    args: Prisma.SelectSubset<T, Prisma.PersonalAccessTokenCreateArgs>,
+	args: Prisma.SelectSubset<T, Prisma.PersonalAccessTokenCreateArgs>,
 ) {
-    const patData = await prisma.personalAccessToken.create(args);
-    if (patData) await setPAT_Cache(patData);
-    await DeleteCache(cacheKey(patData.userId, USER_PATs_CACHE_KEY));
+	const patData = await prisma.personalAccessToken.create(args);
+	if (patData) await setPAT_Cache(patData);
+	await DeleteCache(cacheKey(patData.userId, USER_PATs_CACHE_KEY));
 
-    return patData;
+	return patData;
 }
 
 export async function UpdatePAT<T extends Prisma.PersonalAccessTokenUpdateArgs>(
-    args: Prisma.SelectSubset<T, Prisma.PersonalAccessTokenUpdateArgs>,
+	args: Prisma.SelectSubset<T, Prisma.PersonalAccessTokenUpdateArgs>,
 ) {
-    const updatedPAT = await prisma.personalAccessToken.update(args);
-    if (updatedPAT) await deletePAT_Cache(updatedPAT.id, updatedPAT.tokenHash);
+	const updatedPAT = await prisma.personalAccessToken.update(args);
+	if (updatedPAT) await deletePAT_Cache(updatedPAT.id, updatedPAT.tokenHash);
 
-    return updatedPAT;
+	return updatedPAT;
 }
 
 export async function DeletePAT<T extends Prisma.PersonalAccessTokenDeleteArgs>(
-    args: Prisma.SelectSubset<T, Prisma.PersonalAccessTokenDeleteArgs>,
+	args: Prisma.SelectSubset<T, Prisma.PersonalAccessTokenDeleteArgs>,
 ) {
-    const deletedPAT = await prisma.personalAccessToken.delete(args);
-    if (deletedPAT) await deletePAT_Cache(deletedPAT.id, deletedPAT.tokenHash);
-    await DeleteCache(cacheKey(deletedPAT.userId, USER_PATs_CACHE_KEY));
+	const deletedPAT = await prisma.personalAccessToken.delete(args);
+	if (deletedPAT) await deletePAT_Cache(deletedPAT.id, deletedPAT.tokenHash);
+	await DeleteCache(cacheKey(deletedPAT.userId, USER_PATs_CACHE_KEY));
 
-    return deletedPAT;
+	return deletedPAT;
 }
 
 // ? Cache helpers
 
 // key can be either `tokenHash` or `id`
 async function getPAT_FromCache(key: string) {
-    type CachedReturnType = (Omit<NonNullable<GetPAT_ReturnType>, "scopes"> & { scopes: string }) | null;
+	type CachedReturnType = (Omit<NonNullable<GetPAT_ReturnType>, "scopes"> & { scopes: string }) | null;
 
-    const cachedPAT = await GetData_FromCache<CachedReturnType>(PAT_DATA_CACHE_KEY, key);
-    if (!cachedPAT) return null;
+	const cachedPAT = await GetData_FromCache<CachedReturnType>(PAT_DATA_CACHE_KEY, key);
+	if (!cachedPAT) return null;
 
-    return {
-        ...cachedPAT,
-        scopes: BigInt(cachedPAT.scopes), // JSON.parse can't deal with BigInt
-    };
+	return {
+		...cachedPAT,
+		scopes: BigInt(cachedPAT.scopes), // JSON.parse can't deal with BigInt
+	};
 }
 
 // need to do this chain shit just so it can have two keys (kinda) pointing to the same data
 async function setPAT_Cache(pat: NonNullable<GetPAT_ReturnType>) {
-    // ID -> tokenHash
-    await SetCache(PAT_ID_TO_HASH_CACHE_KEY, pat.id, pat.tokenHash, PAT_CACHE_EXPIRY_seconds);
+	// ID -> tokenHash
+	await SetCache(PAT_ID_TO_HASH_CACHE_KEY, pat.id, pat.tokenHash, PAT_CACHE_EXPIRY_seconds);
 
-    // tokenHash -> PAT data
-    await SetCache(
-        PAT_DATA_CACHE_KEY,
-        pat.tokenHash,
-        JSON.stringify({
-            ...pat,
-            scopes: pat.scopes.toString(), // JSON.stringify can't deal with BigInt
-        }),
-        PAT_CACHE_EXPIRY_seconds,
-    );
+	// tokenHash -> PAT data
+	await SetCache(
+		PAT_DATA_CACHE_KEY,
+		pat.tokenHash,
+		JSON.stringify({
+			...pat,
+			scopes: pat.scopes.toString(), // JSON.stringify can't deal with BigInt
+		}),
+		PAT_CACHE_EXPIRY_seconds,
+	);
 }
 
 async function deletePAT_Cache(id: string, tokenHash: string) {
-    await DeleteCache(cacheKey(id, PAT_ID_TO_HASH_CACHE_KEY), cacheKey(tokenHash, PAT_DATA_CACHE_KEY));
+	await DeleteCache(cacheKey(id, PAT_ID_TO_HASH_CACHE_KEY), cacheKey(tokenHash, PAT_DATA_CACHE_KEY));
 }

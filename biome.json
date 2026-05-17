@@ -1,62 +1,61 @@
 {
-    "$schema": "https://biomejs.dev/schemas/2.3.15/schema.json",
-    "files": {
-        "includes": [
-            "**/*.{tsx,ts,json,css,js,cjs}",
-            "!**/node_modules/*",
-            "!**/dist/*",
-            "!**/build/*",
-            "!**/public/*",
-            "!**/pm2.config.cjs",
-            "!**/.react-router/*",
-            "!**/redis/*",
-            "!**/meilisearch/*",
-            "!**/prisma/client/*",
-            "!**/clickhouse/*",
-            "!**/.vitepress/cache/*"
-        ]
-    },
-    "linter": {
-        "enabled": true,
-        "rules": {
-            "correctness": {
-                "useExhaustiveDependencies": "off",
-                "noUnusedImports": "error",
-                "useJsxKeyInIterable": "error",
-                "useUniqueElementIds": "off"
-            },
-            "style": {
-                "noParameterAssign": "off",
-                "useImportType": "error"
-            },
-            "nursery": {
-                "useSortedClasses": {
-                    "level": "info",
-                    "options": {
-                        "attributes": ["classList"],
-                        "functions": ["cn", "cva", "tw", "tw.*"]
-                    }
-                }
-            },
-            "a11y": {
-                "useSemanticElements": "info",
-                "noStaticElementInteractions": "info",
-                "useKeyWithClickEvents": "info"
-            },
-            "suspicious": {
-                "noArrayIndexKey": "info",
-                "noUnknownAtRules": "off"
-            }
-        }
-    },
-    "css": {
-        "parser": {
-            "tailwindDirectives": true
-        }
-    },
-    "formatter": {
-        "lineWidth": 120,
-        "indentWidth": 4,
-        "indentStyle": "space"
-    }
+	"$schema": "https://biomejs.dev/schemas/2.3.10/schema.json",
+	"files": {
+		"includes": [
+			"**/*.{tsx,ts,json,css,js,cjs}",
+			"!**/node_modules/*",
+			"!**/dist/*",
+			"!**/build/*",
+			"!**/public/*",
+			"!**/pm2.config.cjs",
+			"!**/.react-router/*",
+			"!**/redis/*",
+			"!**/meilisearch/*",
+			"!**/prisma/client/*",
+			"!**/clickhouse/*",
+			"!**/.vitepress/cache/*"
+		]
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"correctness": {
+				"useExhaustiveDependencies": "off",
+				"noUnusedImports": "error",
+				"useJsxKeyInIterable": "error",
+				"useUniqueElementIds": "off"
+			},
+			"style": {
+				"noParameterAssign": "off",
+				"useImportType": "error"
+			},
+			"nursery": {
+				"useSortedClasses": {
+					"level": "info",
+					"options": {
+						"attributes": ["classList"],
+						"functions": ["cn", "cva", "tw", "tw.*"]
+					}
+				}
+			},
+			"a11y": {
+				"useSemanticElements": "info",
+				"noStaticElementInteractions": "info",
+				"useKeyWithClickEvents": "info"
+			},
+			"suspicious": {
+				"noArrayIndexKey": "info",
+				"noUnknownAtRules": "off"
+			}
+		}
+	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
+		}
+	},
+	"formatter": {
+		"lineWidth": 120,
+		"indentStyle": "tab"
+	}
 }

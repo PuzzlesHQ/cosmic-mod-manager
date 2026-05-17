@@ -7,36 +7,36 @@ import { setReturnUrl } from "~/pages/auth/oauth-providers";
 import { useNavigate } from "./link";
 
 export default function Redirect({ to }: { to: string }) {
-    const { t, locale } = useTranslation();
-    const location = useLocation();
-    const prefs = usePreferences();
+	const { t, locale } = useTranslation();
+	const location = useLocation();
+	const prefs = usePreferences();
 
-    useEffect(() => {
-        if (to === "/login" || to === "/signup") {
-            setReturnUrl(location);
-        }
+	useEffect(() => {
+		if (to === "/login" || to === "/signup") {
+			setReturnUrl(location);
+		}
 
-        window.location.href = new URL(setHintLocale(to, locale, prefs.locale), window.location.origin).href;
-    }, []);
+		window.location.href = new URL(setHintLocale(to, locale, prefs.locale), window.location.origin).href;
+	}, []);
 
-    return (
-        <div className="grid w-full place-items-center gap-4 py-8">
-            <span className="text-foreground-muted">{t.common.redirecting}</span>
-        </div>
-    );
+	return (
+		<div className="grid w-full place-items-center gap-4 py-8">
+			<span className="text-foreground-muted">{t.common.redirecting}</span>
+		</div>
+	);
 }
 
 export function SoftRedirect({ to }: { to: string }) {
-    const { t } = useTranslation();
-    const navigate = useNavigate();
+	const { t } = useTranslation();
+	const navigate = useNavigate();
 
-    useEffect(() => {
-        navigate(to);
-    }, []);
+	useEffect(() => {
+		navigate(to);
+	}, []);
 
-    return (
-        <div className="grid w-full place-items-center gap-4 py-8">
-            <span className="text-foreground-muted">{t.common.redirecting}</span>
-        </div>
-    );
+	return (
+		<div className="grid w-full place-items-center gap-4 py-8">
+			<span className="text-foreground-muted">{t.common.redirecting}</span>
+		</div>
+	);
 }

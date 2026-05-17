@@ -9,15 +9,15 @@ import type { Route } from "./+types/license";
 export default LicenseSettingsPage;
 
 export function meta(props: Route.MetaArgs) {
-    const { t } = useTranslation();
-    const ctx = getProjectLoaderData(props.matches, props.location.pathname);
-    if (!ctx?.projectData) return;
+	const { t } = useTranslation();
+	const ctx = getProjectLoaderData(props.matches, props.location.pathname);
+	if (!ctx?.projectData) return;
 
-    return MetaTags({
-        location: props.location,
-        title: t.meta.addContext(ctx.projectData.name, t.search.license),
-        description: t.search.license,
-        image: Config.SITE_ICON,
-        url: Config.FRONTEND_URL + ProjectPagePath(ctx.projectData.type[0], ctx.projectData.slug, "settings/license"),
-    });
+	return MetaTags({
+		location: props.location,
+		title: t.meta.addContext(ctx.projectData.name, t.search.license),
+		description: t.search.license,
+		image: Config.SITE_ICON,
+		url: Config.FRONTEND_URL + ProjectPagePath(ctx.projectData.type[0], ctx.projectData.slug, "settings/license"),
+	});
 }

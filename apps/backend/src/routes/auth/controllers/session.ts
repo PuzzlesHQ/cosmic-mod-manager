@@ -9,68 +9,68 @@ import { HTTP_STATUS, invalidRequestResponseData } from "~/utils/http";
 import { hashString } from "../helpers";
 
 export async function getUserSessions(userSession: UserSessionData) {
-    const sessions = await GetManySessions({
-        where: {
-            userId: userSession.id,
-        },
-        orderBy: { dateLastActive: "desc" },
-    });
+	const sessions = await GetManySessions({
+		where: {
+			userId: userSession.id,
+		},
+		orderBy: { dateLastActive: "desc" },
+	});
 
-    if (!sessions?.[0]?.id) {
-        return invalidRequestResponseData();
-    }
+	if (!sessions?.[0]?.id) {
+		return invalidRequestResponseData();
+	}
 
-    const list: SessionListData[] = [];
-    for (const session of sessions) {
-        list.push({
-            id: session.id,
-            userId: session.userId,
-            dateCreated: session.dateCreated,
-            dateLastActive: session.dateLastActive,
-            providerName: session.providerName || "",
-            status: session.status as UserSessionStates,
-            os: session.os,
-            browser: session.browser,
-            city: session.city,
-            country: session.country,
-            ip: session.ip,
-            userAgent: session.userAgent,
-        });
-    }
+	const list: SessionListData[] = [];
+	for (const session of sessions) {
+		list.push({
+			id: session.id,
+			userId: session.userId,
+			dateCreated: session.dateCreated,
+			dateLastActive: session.dateLastActive,
+			providerName: session.providerName || "",
+			status: session.status as UserSessionStates,
+			os: session.os,
+			browser: session.browser,
+			city: session.city,
+			country: session.country,
+			ip: session.ip,
+			userAgent: session.userAgent,
+		});
+	}
 
-    return {
-        data: list,
-        status: HTTP_STATUS.OK,
-    };
+	return {
+		data: list,
+		status: HTTP_STATUS.OK,
+	};
 }
 
 export async function deleteUserSession(ctx: Context, userSession: UserSessionData, sessionId: string) {
-    const deletedSession = await invalidateSessionFromId(sessionId, userSession.id);
+	const deletedSession = await invalidateSessionFromId(sessionId, userSession.id);
 
-    if (!deletedSession?.id) {
-        await addInvalidAuthAttempt(ctx);
-        return invalidRequestResponseData();
-    }
-    if (userSession.sessionId === deletedSession.id) deleteSessionCookie(ctx);
+	if (!deletedSession?.id) {
+		await addInvalidAuthAttempt(ctx);
+		return invalidRequestResponseData();
+	}
+	if (userSession.sessionId === deletedSession.id) deleteSessionCookie(ctx);
 
-    return {
-        data: { success: true, message: `Session with id: ${sessionId} logged out successfully` },
-        status: HTTP_STATUS.OK,
-    };
+	return {
+		data: { success: true, message: `Session with id: ${sessionId} logged out successfully` },
+		status: HTTP_STATUS.OK,
+	};
 }
 
 export async function revokeSessionFromAccessCode(ctx: Context, code: string) {
-    const revokeAccessCodeHash = hashString(code);
-    const targetSession = await GetSession({
-        where: {
-            revokeAccessCode: revokeAccessCodeHash,
-        },
-    });
-    if (!targetSession?.id) {
-        await addInvalidAuthAttempt(ctx);
-        return { data: { success: false, message: "Invalid access code" }, status: HTTP_STATUS.BAD_REQUEST };
-    }
+	const revokeAccessCodeHash = hashString(code);
+	const targetSession = await GetSession({
+		where: {
+			revokeAccessCode: revokeAccessCodeHash,
+		},
+	});
+	if (!targetSession?.id) {
+		await addInvalidAuthAttempt(ctx);
+		return { data: { success: false, message: "Invalid access code" }, status: HTTP_STATUS.BAD_REQUEST };
+	}
 
-    await invalidateSessionFromId(targetSession.id);
-    return { data: { success: true, message: "Successfully revoked the session access" }, status: HTTP_STATUS.OK };
+	await invalidateSessionFromId(targetSession.id);
+	return { data: { success: true, message: "Successfully revoked the session access" }, status: HTTP_STATUS.OK };
 }

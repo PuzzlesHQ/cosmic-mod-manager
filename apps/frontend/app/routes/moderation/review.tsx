@@ -8,26 +8,26 @@ import { resJson, serverFetch } from "~/utils/server-fetch";
 import type { Route } from "./+types/review";
 
 export default function () {
-    const projects = useLoaderData<typeof loader>();
+	const projects = useLoaderData<typeof loader>();
 
-    return <ReviewProjects projects={projects || []} />;
+	return <ReviewProjects projects={projects || []} />;
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-    const res = await serverFetch(request, "/api/moderation/projects");
-    const queuedProjects = resJson<ModerationProjectItem[]>(res);
+	const res = await serverFetch(request, "/api/moderation/projects");
+	const queuedProjects = resJson<ModerationProjectItem[]>(res);
 
-    return queuedProjects;
+	return queuedProjects;
 }
 
 export function meta(props: Route.MetaArgs) {
-    const { t } = useTranslation();
+	const { t } = useTranslation();
 
-    return MetaTags({
-        location: props.location,
-        title: t.meta.addContext(t.moderation.review, Config.SITE_NAME_SHORT),
-        description: t.moderation.review,
-        image: Config.SITE_ICON,
-        url: undefined,
-    });
+	return MetaTags({
+		location: props.location,
+		title: t.meta.addContext(t.moderation.review, Config.SITE_NAME_SHORT),
+		description: t.moderation.review,
+		image: Config.SITE_ICON,
+		url: undefined,
+	});
 }

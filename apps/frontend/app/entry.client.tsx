@@ -7,15 +7,15 @@ import { LocaleProvider } from "~/locales/provider";
 import { getHintLocale } from "~/locales/utils";
 
 startTransition(async () => {
-    const hintLocale = getHintLocale(new URLSearchParams(window.location.search));
-    const initLocaleModule = await getLocale(hintLocale);
-    const initLocaleMetadata = getMetadataFromLocaleCode(hintLocale);
+	const hintLocale = getHintLocale(new URLSearchParams(window.location.search));
+	const initLocaleModule = await getLocale(hintLocale);
+	const initLocaleMetadata = getMetadataFromLocaleCode(hintLocale);
 
-    hydrateRoot(
-        document,
+	hydrateRoot(
+		document,
 
-        <LocaleProvider initLocale={initLocaleModule} initMetadata={initLocaleMetadata}>
-            <HydratedRouter />
-        </LocaleProvider>,
-    );
+		<LocaleProvider initLocale={initLocaleModule} initMetadata={initLocaleMetadata}>
+			<HydratedRouter />
+		</LocaleProvider>,
+	);
 });

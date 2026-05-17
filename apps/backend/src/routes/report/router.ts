@@ -7,152 +7,152 @@ import { type ReportItemType, reportFilters_defaults } from "@app/utils/types/ap
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
 import {
-    critModifyReqRateLimiter,
-    getReqRateLimiter,
-    invalidAuthAttemptLimiter,
-    modifyReqRateLimiter,
-    strictGetReqRateLimiter,
+	critModifyReqRateLimiter,
+	getReqRateLimiter,
+	invalidAuthAttemptLimiter,
+	modifyReqRateLimiter,
+	strictGetReqRateLimiter,
 } from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import {
-    invalidRequestResponse,
-    serverErrorResponse,
-    unauthenticatedReqResponse,
-    unauthorizedReqResponse,
+	invalidRequestResponse,
+	serverErrorResponse,
+	unauthenticatedReqResponse,
+	unauthorizedReqResponse,
 } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";
 import {
-    createReport,
-    getExistingReport,
-    getAllUserReports as getManyReports,
-    getReportData,
-    patchReport,
+	createReport,
+	getExistingReport,
+	getAllUserReports as getManyReports,
+	getReportData,
+	patchReport,
 } from "./controllers";
 
 const reportRouter = new Hono()
-    .use(invalidAuthAttemptLimiter)
-    .use(AuthenticationMiddleware)
-    .use(LoginProtectedRoute)
-    .post("/", critModifyReqRateLimiter, report_post)
-    .get("/", getReqRateLimiter, userReports_get)
-    .get("/getAll", strictGetReqRateLimiter, getAllReports)
-    .get("/existingReport", getReqRateLimiter, existingReport_get)
-    .get("/:reportId", getReqRateLimiter, report_get)
-    .patch("/:reportId", modifyReqRateLimiter, report_patch);
+	.use(invalidAuthAttemptLimiter)
+	.use(AuthenticationMiddleware)
+	.use(LoginProtectedRoute)
+	.post("/", critModifyReqRateLimiter, report_post)
+	.get("/", getReqRateLimiter, userReports_get)
+	.get("/getAll", strictGetReqRateLimiter, getAllReports)
+	.get("/existingReport", getReqRateLimiter, existingReport_get)
+	.get("/:reportId", getReqRateLimiter, report_get)
+	.patch("/:reportId", modifyReqRateLimiter, report_patch);
 
 async function report_post(ctx: Context) {
-    try {
-        const sessionUser = getSessionUser(ctx, API_SCOPE.REPORT_CREATE);
-        if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	try {
+		const sessionUser = getSessionUser(ctx, API_SCOPE.REPORT_CREATE);
+		if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-        const { error, data } = await zodParse(newReportFormSchema, ctx.get(REQ_BODY_NAMESPACE));
-        if (error || !data) {
-            return invalidRequestResponse(ctx, error);
-        }
+		const { error, data } = await zodParse(newReportFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+		if (error || !data) {
+			return invalidRequestResponse(ctx, error);
+		}
 
-        const res = await createReport(data, sessionUser);
-        return ctx.json(res.data, res.status);
-    } catch (error) {
-        console.error(error);
-        return serverErrorResponse(ctx);
-    }
+		const res = await createReport(data, sessionUser);
+		return ctx.json(res.data, res.status);
+	} catch (error) {
+		console.error(error);
+		return serverErrorResponse(ctx);
+	}
 }
 
 async function userReports_get(ctx: Context) {
-    try {
-        const sessionUser = getSessionUser(ctx, API_SCOPE.REPORT_READ);
-        if (!sessionUser?.id) return unauthenticatedReqResponse(ctx);
+	try {
+		const sessionUser = getSessionUser(ctx, API_SCOPE.REPORT_READ);
+		if (!sessionUser?.id) return unauthenticatedReqResponse(ctx);
 
-        const url = new URL(ctx.req.url);
-        const userId = url.searchParams.get("userId");
+		const url = new URL(ctx.req.url);
+		const userId = url.searchParams.get("userId");
 
-        const res = await getManyReports(sessionUser, userId || sessionUser.id);
-        return ctx.json(res.data, res.status);
-    } catch (error) {
-        console.error(error);
-        return serverErrorResponse(ctx);
-    }
+		const res = await getManyReports(sessionUser, userId || sessionUser.id);
+		return ctx.json(res.data, res.status);
+	} catch (error) {
+		console.error(error);
+		return serverErrorResponse(ctx);
+	}
 }
 
 async function getAllReports(ctx: Context) {
-    try {
-        const sessionUser = getSessionUser(ctx, API_SCOPE.REPORT_READ);
-        if (!sessionUser?.id || !isModerator(sessionUser.role)) return unauthorizedReqResponse(ctx);
+	try {
+		const sessionUser = getSessionUser(ctx, API_SCOPE.REPORT_READ);
+		if (!sessionUser?.id || !isModerator(sessionUser.role)) return unauthorizedReqResponse(ctx);
 
-        const filters = { ...reportFilters_defaults };
-        const reqUrl = new URL(ctx.req.url);
+		const filters = { ...reportFilters_defaults };
+		const reqUrl = new URL(ctx.req.url);
 
-        for (const key of Object.keys(filters) as (keyof typeof reportFilters_defaults)[]) {
-            const value = reqUrl.searchParams.get(key);
-            if (!value?.length) continue;
+		for (const key of Object.keys(filters) as (keyof typeof reportFilters_defaults)[]) {
+			const value = reqUrl.searchParams.get(key);
+			if (!value?.length) continue;
 
-            const defaultValue = reportFilters_defaults[key];
+			const defaultValue = reportFilters_defaults[key];
 
-            if (Array.isArray(defaultValue)) {
-                // @ts-expect-error - TypeScript doesn't know that value is of the correct type
-                filters[key] = decodeStringArray(value);
-            } else if (value !== defaultValue) {
-                // @ts-expect-error - TypeScript doesn't know that value is of the correct type
-                filters[key] = value;
-            }
-        }
+			if (Array.isArray(defaultValue)) {
+				// @ts-expect-error - TypeScript doesn't know that value is of the correct type
+				filters[key] = decodeStringArray(value);
+			} else if (value !== defaultValue) {
+				// @ts-expect-error - TypeScript doesn't know that value is of the correct type
+				filters[key] = value;
+			}
+		}
 
-        const res = await getManyReports(sessionUser, undefined, filters);
-        return ctx.json(res.data, res.status);
-    } catch (error) {
-        console.error(error);
-        return serverErrorResponse(ctx);
-    }
+		const res = await getManyReports(sessionUser, undefined, filters);
+		return ctx.json(res.data, res.status);
+	} catch (error) {
+		console.error(error);
+		return serverErrorResponse(ctx);
+	}
 }
 
 async function existingReport_get(ctx: Context) {
-    try {
-        const sessionUser = getSessionUser(ctx, API_SCOPE.REPORT_READ);
-        if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	try {
+		const sessionUser = getSessionUser(ctx, API_SCOPE.REPORT_READ);
+		if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-        const reqUrl = new URL(ctx.req.url);
-        const itemType = reqUrl.searchParams.get("itemType");
-        const itemId = reqUrl.searchParams.get("itemId");
-        if (!itemType || !itemId) return invalidRequestResponse(ctx, "Item type and item ID are required.");
+		const reqUrl = new URL(ctx.req.url);
+		const itemType = reqUrl.searchParams.get("itemType");
+		const itemId = reqUrl.searchParams.get("itemId");
+		if (!itemType || !itemId) return invalidRequestResponse(ctx, "Item type and item ID are required.");
 
-        const res = await getExistingReport(itemType as ReportItemType, itemId, sessionUser);
-        return ctx.json(res.data, res.status);
-    } catch (error) {
-        console.error(error);
-        return serverErrorResponse(ctx);
-    }
+		const res = await getExistingReport(itemType as ReportItemType, itemId, sessionUser);
+		return ctx.json(res.data, res.status);
+	} catch (error) {
+		console.error(error);
+		return serverErrorResponse(ctx);
+	}
 }
 
 async function report_get(ctx: Context) {
-    try {
-        const sessionUser = getSessionUser(ctx, API_SCOPE.REPORT_READ);
-        if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	try {
+		const sessionUser = getSessionUser(ctx, API_SCOPE.REPORT_READ);
+		if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-        const reportId = ctx.req.param("reportId");
-        if (!reportId) return invalidRequestResponse(ctx, "Report ID is required.");
+		const reportId = ctx.req.param("reportId");
+		if (!reportId) return invalidRequestResponse(ctx, "Report ID is required.");
 
-        const res = await getReportData(reportId, sessionUser);
-        return ctx.json(res.data, res.status);
-    } catch (error) {
-        console.error(error);
-        return serverErrorResponse(ctx);
-    }
+		const res = await getReportData(reportId, sessionUser);
+		return ctx.json(res.data, res.status);
+	} catch (error) {
+		console.error(error);
+		return serverErrorResponse(ctx);
+	}
 }
 
 async function report_patch(ctx: Context) {
-    try {
-        const sessionUser = getSessionUser(ctx, API_SCOPE.REPORT_WRITE);
-        if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	try {
+		const sessionUser = getSessionUser(ctx, API_SCOPE.REPORT_WRITE);
+		if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-        const reportId = ctx.req.param("reportId");
-        if (!reportId) return invalidRequestResponse(ctx, "Report ID is required.");
+		const reportId = ctx.req.param("reportId");
+		if (!reportId) return invalidRequestResponse(ctx, "Report ID is required.");
 
-        const res = await patchReport(reportId, ctx.get(REQ_BODY_NAMESPACE).closed === true, sessionUser);
-        return ctx.json(res.data, res.status);
-    } catch (error) {
-        console.error(error);
-        return serverErrorResponse(ctx);
-    }
+		const res = await patchReport(reportId, ctx.get(REQ_BODY_NAMESPACE).closed === true, sessionUser);
+		return ctx.json(res.data, res.status);
+	} catch (error) {
+		console.error(error);
+		return serverErrorResponse(ctx);
+	}
 }
 
 export default reportRouter;

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .markdown-body {
-    @apply text-foreground-muted text-base;
+	@apply text-foreground-muted text-base;
 }
 
 .markdown-body blockquote,
@@ -15,28 +15,28 @@
 .markdown-body pre,
 .markdown-body table,
 .markdown-body ul {
-    @apply mt-0 mb-4;
+	@apply mt-0 mb-4;
 }
 
 .markdown-body li,
 .markdown-body p {
-    @apply p-0 leading-normal text-foreground-muted;
+	@apply p-0 leading-normal text-foreground-muted;
 }
 
 .markdown-body h1,
 .markdown-body h2 {
-    @apply pt-2.5 pb-1 border-b border-border;
+	@apply pt-2.5 pb-1 border-b border-border;
 }
 
 .markdown-body h1:first-child,
 .markdown-body h2:first-child {
-    @apply pt-0;
+	@apply pt-0;
 }
 
 .markdown-body h1,
 .markdown-body h2,
 .markdown-body h3 {
-    @apply font-bold;
+	@apply font-bold;
 }
 
 .markdown-body h1,
@@ -47,9 +47,9 @@
 .markdown-body h6,
 .markdown-body li,
 .markdown-body p {
-    position: relative;
-    word-wrap: break-word;
-    overflow-wrap: anywhere !important;
+	position: relative;
+	word-wrap: break-word;
+	overflow-wrap: anywhere !important;
 }
 
 .markdown-body.bright-heading h1,
@@ -58,16 +58,16 @@
 .markdown-body.bright-heading h4,
 .markdown-body.bright-heading h5,
 .markdown-body.bright-heading h6 {
-    @apply text-foreground;
+	@apply text-foreground;
 }
 
 .markdown-body ul,
 .markdown-body ol {
-    @apply ps-10;
+	@apply ps-10;
 }
 
 .markdown-body li {
-    @apply mb-1;
+	@apply mb-1;
 }
 
 /* Reduced bottom margin of p tags if there's a list just below it */
@@ -76,164 +76,164 @@
 .markdown-body p:has(+ ol),
 .markdown-body li p:has(+ ul),
 .markdown-body li p:has(+ ol) {
-    @apply mb-1;
+	@apply mb-1;
 }
 
 .markdown-body li li {
-    @apply mb-0.5;
+	@apply mb-0.5;
 }
 
 li ul li:first-child,
 li ol li:first-child {
-    @apply mt-0.5;
+	@apply mt-0.5;
 }
 
 li ul li:last-child,
 li ol li:last-child {
-    @apply mb-0;
+	@apply mb-0;
 }
 
 .markdown-body ul li {
-    list-style-type: disc;
+	list-style-type: disc;
 }
 
 .markdown-body li ul li {
-    list-style-type: circle;
+	list-style-type: circle;
 }
 
 .markdown-body ol li {
-    list-style-type: decimal;
+	list-style-type: decimal;
 }
 
 .markdown-body h1 {
-    @apply mb-5 text-[2rem];
+	@apply mb-5 text-[2rem];
 }
 
 .markdown-body h2 {
-    @apply text-[1.5rem] mb-4;
+	@apply text-[1.5rem] mb-4;
 }
 
 .markdown-body h3 {
-    @apply text-[1.17rem];
+	@apply text-[1.17rem];
 }
 
 .markdown-body blockquote {
-    @apply ms-6 px-4 border-s-[0.25rem] border-border;
+	@apply ms-6 px-4 border-s-[0.25rem] border-border;
 }
 
 .markdown-body.chat-msg blockquote {
-    @apply ms-0;
+	@apply ms-0;
 }
 
 .markdown-body blockquote blockquote {
-    @apply ms-4 px-4 border-s-[0.25rem] border-border;
+	@apply ms-4 px-4 border-s-[0.25rem] border-border;
 }
 
 .markdown-body a {
-    @apply text-foreground-link cursor-pointer transition-[filter] w-auto h-auto box-border inline-block;
+	@apply text-foreground-link cursor-pointer transition-[filter] w-auto h-auto box-border inline-block;
 }
 
 .markdown-body a:focus-visible,
 .markdown-body a:hover {
-    @apply brightness-110 underline;
+	@apply brightness-110 underline;
 }
 
 .markdown-body img {
-    @apply max-w-full h-auto inline-block;
+	@apply max-w-full h-auto inline-block;
 }
 
 html:not(.dark).markdown-body img[src$="#gh-dark-mode-only"] {
-    display: none;
+	display: none;
 }
 
 html:is(.dark).markdown-body img[src$="#gh-light-mode-only"] {
-    display: none;
+	display: none;
 }
 
 .markdown-body pre {
-    @apply mt-3 py-4 px-5 w-full inline-block text-foreground bg-raised-background rounded overflow-x-auto;
+	@apply mt-3 py-4 px-5 w-full inline-block text-foreground bg-raised-background rounded overflow-x-auto;
 }
 
 .markdown-body pre code {
-    @apply p-0 rounded-none text-[90%] bg-transparent dark:bg-transparent;
+	@apply p-0 rounded-none text-[90%] bg-transparent dark:bg-transparent;
 }
 
 .markdown-body code {
-    @apply max-w-full py-0.5 px-2 text-[90%] rounded-md bg-raised-background font-mono;
+	@apply max-w-full py-0.5 px-2 text-[90%] rounded-md bg-raised-background font-mono;
 }
 
 .markdown-body hr {
-    @apply my-5 border-foreground-muted;
+	@apply my-5 border-foreground-muted;
 }
 
 .markdown-body table {
-    @apply block w-max max-w-full overflow-auto border-separate border-spacing-0 leading-normal border-[0.1rem] border-border rounded;
+	@apply block w-max max-w-full overflow-auto border-separate border-spacing-0 leading-normal border-[0.1rem] border-border rounded;
 }
 
 .markdown-body table th {
-    @apply font-semibold text-base;
+	@apply font-semibold text-base;
 }
 
 .markdown-body table td,
 .markdown-body table th {
-    @apply py-2 px-3.5;
+	@apply py-2 px-3.5;
 }
 
 .markdown-body table tr:nth-child(2n) {
-    @apply bg-zinc-100 dark:bg-zinc-950/40;
+	@apply bg-zinc-100 dark:bg-zinc-950/40;
 }
 
 .markdown-body table td:not(:last-of-type),
 .markdown-body table th:not(:last-of-type) {
-    @apply border-e-[0.1rem] border-border;
+	@apply border-e-[0.1rem] border-border;
 }
 
 .markdown-body table tr:not(:last-of-type) td,
 .markdown-body table th {
-    @apply border-b-[0.1rem] border-border;
+	@apply border-b-[0.1rem] border-border;
 }
 
 .markdown-body kbd {
-    @apply bg-raised-background rounded-md text-foreground px-2 pt-1 pb-0.5 leading-none text-sm;
+	@apply bg-raised-background rounded-md text-foreground px-2 pt-1 pb-0.5 leading-none text-sm;
 }
 
 .markdown-body details {
-    @apply border-[0.2rem] border-border rounded p-2 pb-0 open:pb-2;
+	@apply border-[0.2rem] border-border rounded p-2 pb-0 open:pb-2;
 }
 
 .markdown-body details > summary {
-    @apply font-bold bg-raised-background m-[-0.5rem] mb-0 py-2 px-3 cursor-pointer rounded-md hover:bg-hover-background;
+	@apply font-bold bg-raised-background m-[-0.5rem] mb-0 py-2 px-3 cursor-pointer rounded-md hover:bg-hover-background;
 }
 
 .markdown-body details[open] > summary {
-    @apply mb-2 rounded-bl-none rounded-br-none;
+	@apply mb-2 rounded-bl-none rounded-br-none;
 }
 
 .markdown-body details[open] > :last-child:not(summary) {
-    @apply !mb-0;
+	@apply !mb-0;
 }
 
 .markdown-body > :last-child {
-    @apply !mb-0;
+	@apply !mb-0;
 }
 
 .markdown-body iframe,
 .markdown-body video {
-    @apply aspect-video w-full xl:w-[850px] max-w-full h-auto;
+	@apply aspect-video w-full xl:w-[850px] max-w-full h-auto;
 }
 
 .markdown-body h1 .anchor,
 .markdown-body h2 .anchor,
 .markdown-body h3 .anchor,
 .markdown-body h4 .anchor {
-    padding: 0 0.1rem;
-    display: inline-block;
-    opacity: 0;
-    font-size: clamp(0.87rem, 0.95em, 1.7rem);
-    font-weight: 400;
-    margin-inline-start: 0.5ch;
-    user-select: none;
-    @apply text-accent-text;
+	padding: 0 0.1rem;
+	display: inline-block;
+	opacity: 0;
+	font-size: clamp(0.87rem, 0.95em, 1.7rem);
+	font-weight: 400;
+	margin-inline-start: 0.5ch;
+	user-select: none;
+	@apply text-accent-text;
 }
 
 .markdown-body h1:hover .anchor,
@@ -244,19 +244,19 @@ html:is(.dark).markdown-body img[src$="#gh-light-mode-only"] {
 .markdown-body h2:focus-within .anchor,
 .markdown-body h3:focus-within .anchor,
 .markdown-body h4:focus-within .anchor {
-    opacity: 1;
+	opacity: 1;
 }
 
 /* CODE BLOCK THEME */
 
 code.hljs {
-    padding: 3px 5px;
+	padding: 3px 5px;
 }
 
 pre code.hljs {
-    display: block;
-    overflow-x: auto;
-    padding: 1em;
+	display: block;
+	overflow-x: auto;
+	padding: 1em;
 }
 
 /*
@@ -279,20 +279,20 @@ pre code.hljs {
 
   */
 .hljs {
-    color: #383a42;
-    background: #fbfcff;
+	color: #383a42;
+	background: #fbfcff;
 }
 
 .hljs-comment,
 .hljs-quote {
-    color: #a0a1a7;
-    font-style: italic;
+	color: #a0a1a7;
+	font-style: italic;
 }
 
 .hljs-doctag,
 .hljs-keyword,
 .hljs-formula {
-    color: #a626a4;
+	color: #a626a4;
 }
 
 .hljs-section,
@@ -300,11 +300,11 @@ pre code.hljs {
 .hljs-selector-tag,
 .hljs-deletion,
 .hljs-subst {
-    color: #e45649;
+	color: #e45649;
 }
 
 .hljs-literal {
-    color: #0184bb;
+	color: #0184bb;
 }
 
 .hljs-string,
@@ -312,7 +312,7 @@ pre code.hljs {
 .hljs-addition,
 .hljs-attribute,
 .hljs-meta .hljs-string {
-    color: #50a14f;
+	color: #50a14f;
 }
 
 .hljs-attr,
@@ -323,7 +323,7 @@ pre code.hljs {
 .hljs-selector-attr,
 .hljs-selector-pseudo,
 .hljs-number {
-    color: #986801;
+	color: #986801;
 }
 
 .hljs-symbol,
@@ -332,37 +332,37 @@ pre code.hljs {
 .hljs-meta,
 .hljs-selector-id,
 .hljs-title {
-    color: #4078f2;
+	color: #4078f2;
 }
 
 .hljs-built_in,
 .hljs-title.class_,
 .hljs-class .hljs-title {
-    color: #c18401;
+	color: #c18401;
 }
 
 .hljs-emphasis {
-    font-style: italic;
+	font-style: italic;
 }
 
 .hljs-strong {
-    font-weight: bold;
+	font-weight: bold;
 }
 
 .hljs-link {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 
 /* * DARK THEME */
 
 .dark code.hljs {
-    padding: 3px 5px;
+	padding: 3px 5px;
 }
 
 .dark pre code.hljs {
-    display: block;
-    overflow-x: auto;
-    padding: 1em;
+	display: block;
+	overflow-x: auto;
+	padding: 1em;
 }
 
 /*
@@ -385,20 +385,20 @@ pre code.hljs {
 
   */
 .dark .hljs {
-    color: #abb2bf;
-    background: #282c34;
+	color: #abb2bf;
+	background: #282c34;
 }
 
 .dark .hljs-comment,
 .dark .hljs-quote {
-    color: #5c6370;
-    font-style: italic;
+	color: #5c6370;
+	font-style: italic;
 }
 
 .dark .hljs-doctag,
 .dark .hljs-keyword,
 .dark .hljs-formula {
-    color: #c678dd;
+	color: #c678dd;
 }
 
 .dark .hljs-section,
@@ -406,11 +406,11 @@ pre code.hljs {
 .dark .hljs-selector-tag,
 .dark .hljs-deletion,
 .dark .hljs-subst {
-    color: #e06c75;
+	color: #e06c75;
 }
 
 .dark .hljs-literal {
-    color: #56b6c2;
+	color: #56b6c2;
 }
 
 .dark .hljs-string,
@@ -418,7 +418,7 @@ pre code.hljs {
 .dark .hljs-addition,
 .dark .hljs-attribute,
 .dark .hljs-meta .hljs-string {
-    color: #98c379;
+	color: #98c379;
 }
 
 .dark .hljs-attr,
@@ -429,7 +429,7 @@ pre code.hljs {
 .dark .hljs-selector-attr,
 .dark .hljs-selector-pseudo,
 .dark .hljs-number {
-    color: #d19a66;
+	color: #d19a66;
 }
 
 .dark .hljs-symbol,
@@ -438,23 +438,23 @@ pre code.hljs {
 .dark .hljs-meta,
 .dark .hljs-selector-id,
 .dark .hljs-title {
-    color: #61aeee;
+	color: #61aeee;
 }
 
 .dark .hljs-built_in,
 .dark .hljs-title.class_,
 .dark .hljs-class .hljs-title {
-    color: #e6c07b;
+	color: #e6c07b;
 }
 
 .dark .hljs-emphasis {
-    font-style: italic;
+	font-style: italic;
 }
 
 .dark .hljs-strong {
-    font-weight: bold;
+	font-weight: bold;
 }
 
 .dark .hljs-link {
-    text-decoration: underline;
+	text-decoration: underline;
 }

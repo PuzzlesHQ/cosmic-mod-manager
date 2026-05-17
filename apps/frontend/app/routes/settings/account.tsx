@@ -10,28 +10,28 @@ import { resJson, serverFetch } from "~/utils/server-fetch";
 import type { Route } from "./+types/account";
 
 export default function () {
-    const session = useSession();
-    const linkedProviders = useLoaderData() as LinkedProvidersListData[];
+	const session = useSession();
+	const linkedProviders = useLoaderData() as LinkedProvidersListData[];
 
-    if (!session?.id) return <Redirect to="/login" />;
-    return <AccountSettingsPage session={session} linkedAuthProviders={linkedProviders || []} />;
+	if (!session?.id) return <Redirect to="/login" />;
+	return <AccountSettingsPage session={session} linkedAuthProviders={linkedProviders || []} />;
 }
 
 export async function loader(props: Route.LoaderArgs): Promise<LinkedProvidersListData[]> {
-    const res = await serverFetch(props.request, "/api/auth/linked-providers");
-    const providersList = await resJson<LinkedProvidersListData[]>(res);
+	const res = await serverFetch(props.request, "/api/auth/linked-providers");
+	const providersList = await resJson<LinkedProvidersListData[]>(res);
 
-    return providersList || [];
+	return providersList || [];
 }
 
 export function meta(props: Route.MetaArgs) {
-    const { t } = useTranslation();
+	const { t } = useTranslation();
 
-    return MetaTags({
-        location: props.location,
-        title: t.meta.addContext(t.common.settings, t.settings.accountAndSecurity),
-        description: t.settings.accountAndSecurity,
-        image: Config.SITE_ICON,
-        url: `${Config.FRONTEND_URL}/settings/account`,
-    });
+	return MetaTags({
+		location: props.location,
+		title: t.meta.addContext(t.common.settings, t.settings.accountAndSecurity),
+		description: t.settings.accountAndSecurity,
+		image: Config.SITE_ICON,
+		url: `${Config.FRONTEND_URL}/settings/account`,
+	});
 }

@@ -7,13 +7,13 @@ import type { Route } from "./+types/revoke-session";
 export default RevokeSessionPage;
 
 export function meta(props: Route.MetaArgs) {
-    const { t } = useTranslation();
+	const { t } = useTranslation();
 
-    return MetaTags({
-        location: props.location,
-        title: t.meta.addContext(t.settings.revokeSession, Config.SITE_NAME_SHORT),
-        description: "",
-        image: Config.SITE_ICON,
-        url: `${Config.FRONTEND_URL}/change-password`,
-    });
+	return MetaTags({
+		location: props.location,
+		title: t.meta.addContext(t.settings.revokeSession, Config.SITE_NAME_SHORT),
+		description: "",
+		image: Config.SITE_ICON,
+		url: `${Config.FRONTEND_URL}/change-password`,
+	});
 }

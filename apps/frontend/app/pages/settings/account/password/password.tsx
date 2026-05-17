@@ -7,24 +7,24 @@ import AddPasswordForm from "./add-password";
 import RemovePasswordForm from "./remove-password";
 
 interface Props {
-    session: LoggedInUserData;
+	session: LoggedInUserData;
 }
 
 export default function ManagePassword({ session }: Props) {
-    const { t } = useTranslation();
-    if (!session?.hasAPassword) {
-        return <AddPasswordForm email={session.email} />;
-    }
+	const { t } = useTranslation();
+	if (!session?.hasAPassword) {
+		return <AddPasswordForm email={session.email} />;
+	}
 
-    return (
-        <div className="flex flex-wrap gap-panel-cards">
-            <Link to="/change-password">
-                <Button variant="secondary" tabIndex={-1}>
-                    <KeyRound className="h-btn-icon w-btn-icon" />
-                    {t.auth.changePassword}
-                </Button>
-            </Link>
-            <RemovePasswordForm />
-        </div>
-    );
+	return (
+		<div className="flex flex-wrap gap-panel-cards">
+			<Link to="/change-password">
+				<Button variant="secondary" tabIndex={-1}>
+					<KeyRound className="h-btn-icon w-btn-icon" />
+					{t.auth.changePassword}
+				</Button>
+			</Link>
+			<RemovePasswordForm />
+		</div>
+	);
 }

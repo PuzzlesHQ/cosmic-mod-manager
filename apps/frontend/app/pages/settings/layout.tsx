@@ -7,63 +7,63 @@ import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 
 export default function SettingsPageLayout() {
-    const session = useSession();
-    const { t, formattedLocaleName } = useTranslation();
+	const session = useSession();
+	const { t, formattedLocaleName } = useTranslation();
 
-    const sidePanelSections = useMemo(() => {
-        const sections: SidePanelSection[] = [
-            {
-                items: [
-                    {
-                        label: t.settings.preferences,
-                        href: "/settings",
-                        icon: <PaintbrushIcon aria-hidden className="size-4" />,
-                        prefetch: LinkPrefetchStrategy.Render,
-                    },
-                ],
-            },
-        ];
+	const sidePanelSections = useMemo(() => {
+		const sections: SidePanelSection[] = [
+			{
+				items: [
+					{
+						label: t.settings.preferences,
+						href: "/settings",
+						icon: <PaintbrushIcon aria-hidden className="size-4" />,
+						prefetch: LinkPrefetchStrategy.Render,
+					},
+				],
+			},
+		];
 
-        if (!session?.id) return sections;
+		if (!session?.id) return sections;
 
-        sections.push({
-            name: t.settings.account,
-            items: [
-                {
-                    label: t.settings.publicProfile,
-                    href: "/settings/profile",
-                    icon: <UserIcon aria-hidden className="size-4" />,
-                    prefetch: LinkPrefetchStrategy.Render,
-                },
-                {
-                    label: t.settings.accountAndSecurity,
-                    href: "/settings/account",
-                    icon: <ShieldIcon aria-hidden className="size-4" />,
-                },
-                {
-                    label: t.settings.sessions,
-                    href: "/settings/sessions",
-                    icon: <MonitorSmartphoneIcon aria-hidden className="size-4" />,
-                },
-                {
-                    label: t.settings.personalAccessTokens,
-                    href: "/settings/pats",
-                    icon: <KeyRoundIcon aria-hidden className="size-4" />,
-                },
-            ],
-        });
-        return sections;
-    }, [session?.id, formattedLocaleName]);
+		sections.push({
+			name: t.settings.account,
+			items: [
+				{
+					label: t.settings.publicProfile,
+					href: "/settings/profile",
+					icon: <UserIcon aria-hidden className="size-4" />,
+					prefetch: LinkPrefetchStrategy.Render,
+				},
+				{
+					label: t.settings.accountAndSecurity,
+					href: "/settings/account",
+					icon: <ShieldIcon aria-hidden className="size-4" />,
+				},
+				{
+					label: t.settings.sessions,
+					href: "/settings/sessions",
+					icon: <MonitorSmartphoneIcon aria-hidden className="size-4" />,
+				},
+				{
+					label: t.settings.personalAccessTokens,
+					href: "/settings/pats",
+					icon: <KeyRoundIcon aria-hidden className="size-4" />,
+				},
+			],
+		});
+		return sections;
+	}, [session?.id, formattedLocaleName]);
 
-    return (
-        <main className="w-full">
-            <Panel>
-                <SidePanel header={t.common.settings} sections={sidePanelSections} />
+	return (
+		<main className="w-full">
+			<Panel>
+				<SidePanel header={t.common.settings} sections={sidePanelSections} />
 
-                <PanelContent>
-                    <Outlet />
-                </PanelContent>
-            </Panel>
-        </main>
-    );
+				<PanelContent>
+					<Outlet />
+				</PanelContent>
+			</Panel>
+		</main>
+	);
 }

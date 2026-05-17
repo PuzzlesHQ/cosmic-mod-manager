@@ -1,25 +1,25 @@
 {
-    "name": "cosmic-mod-manager",
-    "type": "module",
-    "module": "index.ts",
-    "dependencies": {
-        "isbot": "^5.1.31",
-        "zod": "^4.1.9"
-    },
-    "devDependencies": {
-        "@biomejs/biome": "^2.3.10",
-        "@types/bun": "latest",
-        "cross-env": "^10.1.0",
-        "dotenv": "^17.2.3",
-        "typescript": "^5.9.3"
-    },
-    "scripts": {
-        "lint": "biome lint",
-        "test": "NODE_ENV=test bun test"
-    },
-    "workspaces": [
-        "packages/utils",
-        "apps/backend",
-        "apps/frontend"
-    ]
+	"name": "cosmic-mod-manager",
+	"type": "module",
+	"module": "index.ts",
+	"dependencies": {
+		"isbot": "^5.1.31",
+		"zod": "^4.1.9"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.3.10",
+		"@types/bun": "latest",
+		"cross-env": "^10.1.0",
+		"dotenv": "^17.2.3",
+		"typescript": "^5.9.3"
+	},
+	"scripts": {
+		"lint": "biome lint",
+		"test": "NODE_ENV=test bun test"
+	},
+	"workspaces": [
+		"packages/utils",
+		"apps/backend",
+		"apps/frontend"
+	]
 }

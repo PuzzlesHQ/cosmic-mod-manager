@@ -42,103 +42,103 @@ import versionsRouter from "~/routes/versions/router";
 
 const corsAllowedOrigins = env.CORS_ALLOWED_URLS.split(" ");
 const app = new Hono()
-    .use(ddosProtectionRateLimiter)
-    .use(logger())
-    .use(
-        cors({
-            origin: (origin, ctx) => {
-                // Allow all requests from allowed origins
-                for (const allowedOrigin of corsAllowedOrigins) {
-                    if (origin?.endsWith(allowedOrigin)) {
-                        return origin;
-                    }
-                }
+	.use(ddosProtectionRateLimiter)
+	.use(logger())
+	.use(
+		cors({
+			origin: (origin, ctx) => {
+				// Allow all requests from allowed origins
+				for (const allowedOrigin of corsAllowedOrigins) {
+					if (origin?.endsWith(allowedOrigin)) {
+						return origin;
+					}
+				}
 
-                // Allow GET requests from all origins
-                if (ctx.req.method === "GET") {
-                    return ctx.req.header("Origin") || "*";
-                }
+				// Allow GET requests from all origins
+				if (ctx.req.method === "GET") {
+					return ctx.req.header("Origin") || "*";
+				}
 
-                return corsAllowedOrigins[0];
-            },
-            credentials: true,
-        }),
-    )
-    .use(bodyParserMiddleware)
+				return corsAllowedOrigins[0];
+			},
+			credentials: true,
+		}),
+	)
+	.use(bodyParserMiddleware)
 
-    .route("/api/auth", authRouter)
-    .route("/api/search", searchRouter)
-    .route("/api/tags", tagsRouter)
+	.route("/api/auth", authRouter)
+	.route("/api/search", searchRouter)
+	.route("/api/tags", tagsRouter)
 
-    .route("/api/user", userRouter)
-    .route("/api/users", bulkUserActionsRouter)
+	.route("/api/user", userRouter)
+	.route("/api/users", bulkUserActionsRouter)
 
-    .route("/api/pat", patRouter)
+	.route("/api/pat", patRouter)
 
-    .route("/api/notifications", notificationRouter) // Uses the userSession's userId instead of getting it from the URL
-    .route("/api/user/:userId/notifications", notificationRouter)
+	.route("/api/notifications", notificationRouter) // Uses the userSession's userId instead of getting it from the URL
+	.route("/api/user/:userId/notifications", notificationRouter)
 
-    .route("/api/project", projectRouter)
-    .route("/api/version", versionsRouter)
-    .route("/api/version-file", versionFileRouter)
-    .route("/api/version-files", versionFiles_Router)
-    .route("/api/projects", bulkProjectsRouter)
-    .route("/api/moderation", moderationRouter)
+	.route("/api/project", projectRouter)
+	.route("/api/version", versionsRouter)
+	.route("/api/version-file", versionFileRouter)
+	.route("/api/version-files", versionFiles_Router)
+	.route("/api/projects", bulkProjectsRouter)
+	.route("/api/moderation", moderationRouter)
 
-    .route("/api/team", teamRouter)
-    .route("/api/organization", orgRouter) // Uses the userSession's userId instead of getting it from the URL
-    .route("/api/user/:userId/organization", orgRouter)
-    .route("/api/organizations", bulkOrgsRouter)
+	.route("/api/team", teamRouter)
+	.route("/api/organization", orgRouter) // Uses the userSession's userId instead of getting it from the URL
+	.route("/api/user/:userId/organization", orgRouter)
+	.route("/api/organizations", bulkOrgsRouter)
 
-    .route("/api/thread", threadRouter)
-    .route("/api/report", reportRouter)
+	.route("/api/thread", threadRouter)
+	.route("/api/report", reportRouter)
 
-    .route("/api/collections", collectionsRouter)
-    .route("/api/analytics", analyticsRouter)
+	.route("/api/collections", collectionsRouter)
+	.route("/api/analytics", analyticsRouter)
 
-    .route("/cdn", cdnRouter)
+	.route("/cdn", cdnRouter)
 
-    // Some inlined routes
-    .get("/favicon.ico", async (ctx: Context) => {
-        return ctx.redirect(`${env.FRONTEND_URL}/favicon.ico`);
-    })
+	// Some inlined routes
+	.get("/favicon.ico", async (ctx: Context) => {
+		return ctx.redirect(`${env.FRONTEND_URL}/favicon.ico`);
+	})
 
-    .get("/", apiDetails)
-    .get("/api", apiDetails)
-    .get("/api/statistics", applyCacheHeaders({ browserTTL_s: 600, cdnTTL_s: 12 * 3600 }), async (ctx: Context) => {
-        try {
-            const stats = await getStatistics();
-            return ctx.json(stats, HTTP_STATUS.OK);
-        } catch {
-            return serverErrorResponse(ctx);
-        }
-    });
+	.get("/", apiDetails)
+	.get("/api", apiDetails)
+	.get("/api/statistics", applyCacheHeaders({ browserTTL_s: 600, cdnTTL_s: 12 * 3600 }), async (ctx: Context) => {
+		try {
+			const stats = await getStatistics();
+			return ctx.json(stats, HTTP_STATUS.OK);
+		} catch {
+			return serverErrorResponse(ctx);
+		}
+	});
 
 async function apiDetails(ctx: Context) {
-    return ctx.json(
-        {
-            message: "Hello visitor! Welcome to the CRMM API.",
-            website: env.FRONTEND_URL,
-            docs: `https://docs${env.COOKIE_DOMAIN}`,
-            status: `https://status${env.COOKIE_DOMAIN}`,
-            cdn: env.CACHE_CDN_URL,
-        },
-        HTTP_STATUS.OK,
-    );
+	return ctx.json(
+		{
+			message: "Hello visitor! Welcome to the CRMM API.",
+			website: env.FRONTEND_URL,
+			docs: `https://docs${env.COOKIE_DOMAIN}`,
+			status: `https://status${env.COOKIE_DOMAIN}`,
+			cdn: env.CACHE_CDN_URL,
+		},
+		HTTP_STATUS.OK,
+	);
 }
 
 try {
-    // Initialize the queues
-    await queueDownloadsCounterQueueProcessing();
-    await startSitemapGenerator();
-    await queueSearchIndexUpdate();
+	// Initialize the queues
+	await queueDownloadsCounterQueueProcessing();
+	await startSitemapGenerator();
+	await queueSearchIndexUpdate();
 } catch {}
 
 Bun.serve({
-    port: 5500,
-    fetch(req, server) {
-        return app.fetch(req, { ip: server.requestIP(req) });
-    },
+	port: 5500,
+	fetch(req, server) {
+		return app.fetch(req, { ip: server.requestIP(req) });
+	},
 });
 
 export { app };

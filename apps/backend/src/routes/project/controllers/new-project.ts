@@ -13,86 +13,86 @@ import { HTTP_STATUS, invalidRequestResponseData, unauthorizedReqResponseData } 
 import { generateDbId } from "~/utils/str";
 
 export async function createNewProject(userSession: UserSessionData, formData: z.infer<typeof newProjectFormSchema>) {
-    const existingProjectWithSameUrl = await GetProject_ListItem(formData.slug, formData.slug);
-    if (existingProjectWithSameUrl?.id) return invalidRequestResponseData("Url slug already taken");
+	const existingProjectWithSameUrl = await GetProject_ListItem(formData.slug, formData.slug);
+	if (existingProjectWithSameUrl?.id) return invalidRequestResponseData("Url slug already taken");
 
-    let orgId: string | null = null;
-    if (formData.orgId) {
-        const org = await GetOrganization_Data(formData.orgId);
-        if (!org) return invalidRequestResponseData("Organisation not found");
-        orgId = org.id;
+	let orgId: string | null = null;
+	if (formData.orgId) {
+		const org = await GetOrganization_Data(formData.orgId);
+		if (!org) return invalidRequestResponseData("Organisation not found");
+		orgId = org.id;
 
-        const currMember = org.team.members.find((member) => member.userId === userSession.id);
-        const canAddProject = doesOrgMemberHaveAccess(
-            OrganisationPermission.ADD_PROJECT,
-            currMember?.organisationPermissions as OrganisationPermission[],
-            currMember?.isOwner,
-            userSession?.role,
-        );
-        if (!canAddProject)
-            return unauthorizedReqResponseData("You do not have permission to add project to this organisation");
-    }
+		const currMember = org.team.members.find((member) => member.userId === userSession.id);
+		const canAddProject = doesOrgMemberHaveAccess(
+			OrganisationPermission.ADD_PROJECT,
+			currMember?.organisationPermissions as OrganisationPermission[],
+			currMember?.isOwner,
+			userSession?.role,
+		);
+		if (!canAddProject)
+			return unauthorizedReqResponseData("You do not have permission to add project to this organisation");
+	}
 
-    const newTeam = await prisma.team.create({
-        data: {
-            id: generateDbId(),
-        },
-    });
+	const newTeam = await prisma.team.create({
+		data: {
+			id: generateDbId(),
+		},
+	});
 
-    // If this not an organisation project, add the user in project team as owner
-    // else the org owner will be project owner
-    if (!orgId) {
-        await CreateTeamMember({
-            data: {
-                id: generateDbId(),
-                teamId: newTeam.id,
-                userId: userSession.id,
-                role: "Owner",
-                isOwner: true,
-                permissions: [], // Owner does not need to have explicit permissions
-                organisationPermissions: [],
-                accepted: true,
-                dateAccepted: new Date(),
-            },
-        });
-    }
+	// If this not an organisation project, add the user in project team as owner
+	// else the org owner will be project owner
+	if (!orgId) {
+		await CreateTeamMember({
+			data: {
+				id: generateDbId(),
+				teamId: newTeam.id,
+				userId: userSession.id,
+				role: "Owner",
+				isOwner: true,
+				permissions: [], // Owner does not need to have explicit permissions
+				organisationPermissions: [],
+				accepted: true,
+				dateAccepted: new Date(),
+			},
+		});
+	}
 
-    const projectId = generateDbId();
+	const projectId = generateDbId();
 
-    const thread = await prisma.thread.create({
-        data: {
-            id: generateDbId(),
-            type: ThreadType.PROJECT,
-            relatedEntity: projectId,
-            members: [],
-        },
-    });
+	const thread = await prisma.thread.create({
+		data: {
+			id: generateDbId(),
+			type: ThreadType.PROJECT,
+			relatedEntity: projectId,
+			members: [],
+		},
+	});
 
-    const EnvSupport = GetProjectEnvironment(formData.type);
-    const newProject = await CreateProject({
-        data: {
-            id: projectId,
-            threadId: thread.id,
-            teamId: newTeam.id,
-            organisationId: orgId || null,
-            name: formData.name,
-            slug: formData.slug,
-            type: formData.type,
-            summary: formData.summary,
-            visibility: formData.visibility,
-            status: ProjectPublishingStatus.DRAFT,
-            clientSide: EnvSupport.clientSide,
-            serverSide: EnvSupport.serverSide,
-        },
-    });
+	const EnvSupport = GetProjectEnvironment(formData.type);
+	const newProject = await CreateProject({
+		data: {
+			id: projectId,
+			threadId: thread.id,
+			teamId: newTeam.id,
+			organisationId: orgId || null,
+			name: formData.name,
+			slug: formData.slug,
+			type: formData.type,
+			summary: formData.summary,
+			visibility: formData.visibility,
+			status: ProjectPublishingStatus.DRAFT,
+			clientSide: EnvSupport.clientSide,
+			serverSide: EnvSupport.serverSide,
+		},
+	});
 
-    return {
-        data: {
-            success: true,
-            message: "Successfully created new project",
-            urlSlug: newProject.slug,
-            type: newProject.type,
-        },
-        status: HTTP_STATUS.OK,
-    };
+	return {
+		data: {
+			success: true,
+			message: "Successfully created new project",
+			urlSlug: newProject.slug,
+			type: newProject.type,
+		},
+		status: HTTP_STATUS.OK,
+	};
 }

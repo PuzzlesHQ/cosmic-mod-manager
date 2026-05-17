@@ -143,11 +143,11 @@ Like links, Images also have a footnote style syntax
 `;
 
 export default function () {
-    const [editorValue, setEditorValue] = useState(defaultText);
+	const [editorValue, setEditorValue] = useState(defaultText);
 
-    return (
-        <div className="rounded-lg bg-card-background p-card-surround">
-            <MarkdownEditor editorValue={editorValue} setEditorValue={setEditorValue} textAreaClassName="!h-[75dvh]" />
-        </div>
-    );
+	return (
+		<div className="rounded-lg bg-card-background p-card-surround">
+			<MarkdownEditor editorValue={editorValue} setEditorValue={setEditorValue} textAreaClassName="!h-[75dvh]" />
+		</div>
+	);
 }

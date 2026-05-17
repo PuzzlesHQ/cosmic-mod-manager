@@ -1,55 +1,55 @@
 /* FOOTER */
 .footer-grid {
-    display: grid;
-    grid-template-columns: auto auto;
-    grid-template-rows: repeat(4, auto);
-    gap: 2rem;
-    grid-template-areas:
-        "logo logo"
-        "links-1 links-2"
-        "links-3 dummy"
-        "buttons buttons";
+	display: grid;
+	grid-template-columns: auto auto;
+	grid-template-rows: repeat(4, auto);
+	gap: 2rem;
+	grid-template-areas:
+		"logo logo"
+		"links-1 links-2"
+		"links-3 dummy"
+		"buttons buttons";
 }
 
 @media (min-width: 64rem) {
-    .footer-grid {
-        grid-template-columns: repeat(3, auto);
-        grid-template-rows: auto auto auto;
-        grid-template-areas:
-            "logo logo logo"
-            "links-1 links-2 links-3"
-            "buttons buttons buttons";
-    }
+	.footer-grid {
+		grid-template-columns: repeat(3, auto);
+		grid-template-rows: auto auto auto;
+		grid-template-areas:
+			"logo logo logo"
+			"links-1 links-2 links-3"
+			"buttons buttons buttons";
+	}
 }
 
 @media (min-width: 80rem) {
-    .footer-grid {
-        grid-template-columns: repeat(5, auto);
-        grid-template-rows: auto;
-        grid-template-areas: "logo links-1 links-2 links-3 buttons buttons";
-    }
+	.footer-grid {
+		grid-template-columns: repeat(5, auto);
+		grid-template-rows: auto;
+		grid-template-areas: "logo links-1 links-2 links-3 buttons buttons";
+	}
 }
 
 /* Chat Thread UI */
 .autoresizing-textarea {
-    display: grid;
+	display: grid;
 }
 
 .autoresizing-textarea::after {
-    content: attr(data-editor-value) " ";
-    white-space: pre-wrap;
-    visibility: hidden;
-    overflow: hidden;
+	content: attr(data-editor-value) " ";
+	white-space: pre-wrap;
+	visibility: hidden;
+	overflow: hidden;
 }
 
 .autoresizing-textarea > textarea,
 .autoresizing-textarea > .textarea,
 .autoresizing-textarea::after {
-    grid-area: 1 / 1 / -1 / -1;
-    @apply font-mono min-h-10 max-h-[16rem] py-2 px-3 text-base;
+	grid-area: 1 / 1 / -1 / -1;
+	@apply font-mono min-h-10 max-h-[16rem] py-2 px-3 text-base;
 }
 
 .msg-highlight {
-    transition: box-shadow 500ms ease;
-    @apply ring-2 ring-accent-bg;
+	transition: box-shadow 500ms ease;
+	@apply ring-2 ring-accent-bg;
 }

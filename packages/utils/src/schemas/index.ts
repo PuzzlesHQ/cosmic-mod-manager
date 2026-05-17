@@ -5,16 +5,16 @@ import { fileMaxSize_ErrMsg, validImgFileExtensions } from "./utils";
 import { isImageFile } from "./validation";
 
 export const iconFieldSchema = z
-    .file()
-    .max(MAX_ICON_SIZE, fileMaxSize_ErrMsg(MAX_ICON_SIZE))
-    .refine(
-        async (file) => {
-            const type = await getFileType(file);
-            if (!type || !isImageFile(type)) return false;
+	.file()
+	.max(MAX_ICON_SIZE, fileMaxSize_ErrMsg(MAX_ICON_SIZE))
+	.refine(
+		async (file) => {
+			const type = await getFileType(file);
+			if (!type || !isImageFile(type)) return false;
 
-            return true;
-        },
-        { error: `Invalid file type! Allowed files: ${validImgFileExtensions.join(", ")}` },
-    );
+			return true;
+		},
+		{ error: `Invalid file type! Allowed files: ${validImgFileExtensions.join(", ")}` },
+	);
 
 export { z };

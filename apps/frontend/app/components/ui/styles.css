@@ -1,83 +1,83 @@
 /* LOADING SPINNER */
 .wandering_cubes_animation {
-    --frame-size: 2.1rem;
-    --cube-size: 0.5rem;
-    --animation-duration: 1.8s;
+	--frame-size: 2.1rem;
+	--cube-size: 0.5rem;
+	--animation-duration: 1.8s;
 }
 
 .wandering_cube {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: var(--cube-size);
-    height: var(--cube-size);
-    animation-name: wandering_cubes;
-    animation-duration: var(--animation-duration);
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: infinite;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: var(--cube-size);
+	height: var(--cube-size);
+	animation-name: wandering_cubes;
+	animation-duration: var(--animation-duration);
+	animation-timing-function: ease-in-out;
+	animation-iteration-count: infinite;
 }
 
 .wandering_cube.cube1 {
-    animation-delay: 0;
+	animation-delay: 0;
 }
 
 .wandering_cube.cube2 {
-    animation-delay: calc(-0.5 * var(--animation-duration));
+	animation-delay: calc(-0.5 * var(--animation-duration));
 }
 
 @keyframes wandering_cubes {
-    25% {
-        transform: translatex(calc(var(--frame-size) - var(--cube-size))) rotate(-90deg) scale(0.5);
-    }
+	25% {
+		transform: translatex(calc(var(--frame-size) - var(--cube-size))) rotate(-90deg) scale(0.5);
+	}
 
-    50% {
-        transform: translatex(calc(var(--frame-size) - var(--cube-size)))
-            translatey(calc(var(--frame-size) - var(--cube-size))) rotate(-180deg);
-    }
+	50% {
+		transform: translatex(calc(var(--frame-size) - var(--cube-size)))
+			translatey(calc(var(--frame-size) - var(--cube-size))) rotate(-180deg);
+	}
 
-    75% {
-        transform: translatex(0) translatey(calc(var(--frame-size) - var(--cube-size))) rotate(-270deg) scale(0.5);
-    }
+	75% {
+		transform: translatex(0) translatey(calc(var(--frame-size) - var(--cube-size))) rotate(-270deg) scale(0.5);
+	}
 
-    100% {
-        transform: rotate(-360deg);
-    }
+	100% {
+		transform: rotate(-360deg);
+	}
 }
 
 /* THEME SWITCH VIEW TRANSITION */
 [data-view-transition="theme-switch"]::view-transition-group(root) {
-    animation-duration: 0.6s;
+	animation-duration: 0.6s;
 }
 
 [data-view-transition="theme-switch"]::view-transition-new(root),
 [data-view-transition="theme-switch"]::view-transition-old(root) {
-    mix-blend-mode: normal;
+	mix-blend-mode: normal;
 }
 
 [data-view-transition="theme-switch"]::view-transition-new(root) {
-    animation-timing-function: ease-in;
-    animation-name: reveal-theme;
+	animation-timing-function: ease-in;
+	animation-name: reveal-theme;
 }
 
 [data-view-transition="theme-switch"]::view-transition-old(root),
 .dark[data-view-transition="theme-switch"]::view-transition-old(root) {
-    animation: none;
+	animation: none;
 }
 
 @keyframes reveal-theme {
-    from {
-        clip-path: circle(0 at var(--click-x, 81.8%) var(--click-y, 1.85rem));
-    }
+	from {
+		clip-path: circle(0 at var(--click-x, 81.8%) var(--click-y, 1.85rem));
+	}
 
-    to {
-        clip-path: circle(135% at var(--click-x, 81.8%) var(--click-y, 1.85rem));
-    }
+	to {
+		clip-path: circle(135% at var(--click-x, 81.8%) var(--click-y, 1.85rem));
+	}
 }
 
 .view-transition-item {
-    view-transition-name: var(--vt-id);
+	view-transition-name: var(--vt-id);
 }
 
 [data-view-transition="theme-switch"] .view-transition-item {
-    view-transition-name: unset;
+	view-transition-name: unset;
 }

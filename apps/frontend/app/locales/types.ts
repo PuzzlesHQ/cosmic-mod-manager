@@ -1,18 +1,18 @@
 import type defaultLocale from "~/locales/default/translation";
 
 export interface LocaleMetaData {
-    code: string; // es
-    name: string; // Spanish
-    displayName: string; // Español
-    dir: "ltr" | "rtl";
-    fallbacks?: string[];
+	code: string; // es
+	name: string; // Spanish
+	displayName: string; // Español
+	dir: "ltr" | "rtl";
+	fallbacks?: string[];
 
-    // Optional region information (if the locale is regional variant of the language)
-    region?: {
-        code: string; // ES
-        name: string; // Spain
-        displayName: string; // España
-    };
+	// Optional region information (if the locale is regional variant of the language)
+	region?: {
+		code: string; // ES
+		name: string; // Spain
+		displayName: string; // España
+	};
 }
 
 type TranslationReturnType = React.ReactNode;
@@ -20,15 +20,15 @@ type TranslationReturnType = React.ReactNode;
 type TranslationFunction = (...args: any[]) => TranslationReturnType;
 
 export interface Translation {
-    [key: string]: TranslationReturnType | TranslationFunction | Translation;
+	[key: string]: TranslationReturnType | TranslationFunction | Translation;
 }
 
 export type Locale = typeof defaultLocale;
 
 export type DeepPartial<T> =
-    T extends Record<string, unknown>
-        ? {
-              [K in keyof T]?: DeepPartial<T[K]>;
-          }
-        : T;
+	T extends Record<string, unknown>
+		? {
+				[K in keyof T]?: DeepPartial<T[K]>;
+			}
+		: T;
 export type PartialLocale = DeepPartial<Locale>;

@@ -5,32 +5,32 @@ import { MetaTags } from "~/utils/meta";
 import type { Route } from "./+types/privacy";
 
 export default function () {
-    const { t } = useTranslation();
+	const { t } = useTranslation();
 
-    return (
-        <MarkdownRenderBox
-            className="bright-heading rounded-lg bg-card-background p-6"
-            text={t.legal.privacyPolicy({
-                title: t.legal.privacyPolicyTitle,
-                supportEmail: Config.SUPPORT_EMAIL,
-                siteName_Short: Config.SITE_NAME_SHORT,
-                siteName_Long: Config.SITE_NAME_LONG,
-                websiteUrl: Config.FRONTEND_URL,
-                sessionSettings_PageUrl: "/settings/sessions",
-                accountSettings_PageUrl: "/settings/account",
-            })}
-        />
-    );
+	return (
+		<MarkdownRenderBox
+			className="bright-heading rounded-lg bg-card-background p-6"
+			text={t.legal.privacyPolicy({
+				title: t.legal.privacyPolicyTitle,
+				supportEmail: Config.SUPPORT_EMAIL,
+				siteName_Short: Config.SITE_NAME_SHORT,
+				siteName_Long: Config.SITE_NAME_LONG,
+				websiteUrl: Config.FRONTEND_URL,
+				sessionSettings_PageUrl: "/settings/sessions",
+				accountSettings_PageUrl: "/settings/account",
+			})}
+		/>
+	);
 }
 
 export function meta(props: Route.MetaArgs) {
-    const { t } = useTranslation();
+	const { t } = useTranslation();
 
-    return MetaTags({
-        location: props.location,
-        title: t.meta.addContext(t.legal.privacyPolicyTitle, Config.SITE_NAME_SHORT),
-        description: t.meta.privacyPolicyPageDesc(Config.SITE_NAME_SHORT),
-        image: Config.SITE_ICON,
-        url: undefined,
-    });
+	return MetaTags({
+		location: props.location,
+		title: t.meta.addContext(t.legal.privacyPolicyTitle, Config.SITE_NAME_SHORT),
+		description: t.meta.privacyPolicyPageDesc(Config.SITE_NAME_SHORT),
+		image: Config.SITE_ICON,
+		url: undefined,
+	});
 }

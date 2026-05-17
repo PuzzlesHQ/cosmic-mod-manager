@@ -1,7 +1,7 @@
 export interface SecurityProps {
-    title: string;
-    adminEmail: string;
-    siteName_Short: string;
+	title: string;
+	adminEmail: string;
+	siteName_Short: string;
 }
 
 export const SecurityNotice = (props: SecurityProps) => `

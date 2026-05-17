@@ -9,74 +9,74 @@ import type { RateLimit } from "./limits";
 // [3] = prevWindowCount
 
 export class SlidingWindowCounter {
-    private storeNamespace: string;
-    private maxAllowed: number;
-    private timeWindow_s: number;
+	private storeNamespace: string;
+	private maxAllowed: number;
+	private timeWindow_s: number;
 
-    constructor(limit: RateLimit) {
-        this.storeNamespace = limit.namespace;
-        this.maxAllowed = limit.max;
-        this.timeWindow_s = limit.timeWindow_s;
-    }
+	constructor(limit: RateLimit) {
+		this.storeNamespace = limit.namespace;
+		this.maxAllowed = limit.max;
+		this.timeWindow_s = limit.timeWindow_s;
+	}
 
-    async consume(id: string, amount = 1) {
-        const now = this.now_s();
-        const stats = await this.getCount(id, now);
+	async consume(id: string, amount = 1) {
+		const now = this.now_s();
+		const stats = await this.getCount(id, now);
 
-        const prevWeight = 1 - (now - stats[0]) / this.timeWindow_s;
-        const effectiveCurrCount = stats[1] + prevWeight * stats[3];
+		const prevWeight = 1 - (now - stats[0]) / this.timeWindow_s;
+		const effectiveCurrCount = stats[1] + prevWeight * stats[3];
 
-        if (effectiveCurrCount + amount > this.maxAllowed) {
-            return { allowed: false };
-        } else {
-            stats[1] += amount;
-            await this.saveCount(id, stats);
-            return { allowed: true };
-        }
-    }
+		if (effectiveCurrCount + amount > this.maxAllowed) {
+			return { allowed: false };
+		} else {
+			stats[1] += amount;
+			await this.saveCount(id, stats);
+			return { allowed: true };
+		}
+	}
 
-    private async getCount(id: string, now: number) {
-        const stats = await this.getCountBuffer(id);
+	private async getCount(id: string, now: number) {
+		const stats = await this.getCountBuffer(id);
 
-        // more than 2 windows have elapsed so all previous data is stale
-        if (stats[0] + 2 * this.timeWindow_s < now) {
-            stats[0] = now;
-            stats[1] = 0;
-            stats[2] = 0;
-            stats[3] = 0;
-        }
-        // only one window has elapsed, so slide the current window to previous and zero the current one
-        else if (stats[0] + this.timeWindow_s < now) {
-            stats[2] = stats[0];
-            stats[3] = stats[1];
+		// more than 2 windows have elapsed so all previous data is stale
+		if (stats[0] + 2 * this.timeWindow_s < now) {
+			stats[0] = now;
+			stats[1] = 0;
+			stats[2] = 0;
+			stats[3] = 0;
+		}
+		// only one window has elapsed, so slide the current window to previous and zero the current one
+		else if (stats[0] + this.timeWindow_s < now) {
+			stats[2] = stats[0];
+			stats[3] = stats[1];
 
-            // zero the curr window
-            stats[0] = now;
-            stats[1] = 0;
-        }
+			// zero the curr window
+			stats[0] = now;
+			stats[1] = 0;
+		}
 
-        return stats;
-    }
+		return stats;
+	}
 
-    private async getCountBuffer(id: string) {
-        const data = await valkey.getBuffer(this.storeKey(id));
-        if (data && data.byteLength >= 16) {
-            return new Uint32Array(data.buffer.slice(data.byteOffset, data.byteOffset + 16));
-        }
+	private async getCountBuffer(id: string) {
+		const data = await valkey.getBuffer(this.storeKey(id));
+		if (data && data.byteLength >= 16) {
+			return new Uint32Array(data.buffer.slice(data.byteOffset, data.byteOffset + 16));
+		}
 
-        return new Uint32Array(4);
-    }
+		return new Uint32Array(4);
+	}
 
-    private async saveCount(id: string, stats: Uint32Array) {
-        const buf = Buffer.from(stats.buffer);
-        await valkey.set(this.storeKey(id), buf, "EX", this.timeWindow_s * 2);
-    }
+	private async saveCount(id: string, stats: Uint32Array) {
+		const buf = Buffer.from(stats.buffer);
+		await valkey.set(this.storeKey(id), buf, "EX", this.timeWindow_s * 2);
+	}
 
-    private storeKey(id: string) {
-        return `${this.storeNamespace}:${id}`;
-    }
+	private storeKey(id: string) {
+		return `${this.storeNamespace}:${id}`;
+	}
 
-    private now_s() {
-        return Math.floor(Date.now() / 1000);
-    }
+	private now_s() {
+		return Math.floor(Date.now() / 1000);
+	}
 }

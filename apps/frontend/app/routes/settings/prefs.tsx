@@ -7,13 +7,13 @@ import type { Route } from "./+types/prefs";
 export default PreferencesPage;
 
 export function meta(props: Route.MetaArgs) {
-    const { t } = useTranslation();
+	const { t } = useTranslation();
 
-    return MetaTags({
-        location: props.location,
-        title: t.meta.addContext(t.common.settings, t.settings.preferences),
-        description: t.settings.preferences,
-        image: Config.SITE_ICON,
-        url: `${Config.FRONTEND_URL}/settings`,
-    });
+	return MetaTags({
+		location: props.location,
+		title: t.meta.addContext(t.common.settings, t.settings.preferences),
+		description: t.settings.preferences,
+		image: Config.SITE_ICON,
+		url: `${Config.FRONTEND_URL}/settings`,
+	});
 }

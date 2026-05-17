@@ -4,86 +4,86 @@ import { toast } from "sonner";
 import { cn } from "~/components/utils";
 
 export function DownloadRipple() {
-    const { isAnimationPlaying, isVisible } = use(FileDownloader);
+	const { isAnimationPlaying, isVisible } = use(FileDownloader);
 
-    return (
-        <div
-            aria-hidden
-            className={cn(
-                "download-animation fixed inset-0 top-0 left-0 z-[9999] grid h-full w-full place-items-center",
-                !isAnimationPlaying && "animation-hidden",
-                !isVisible && "-z-50",
-            )}
-        >
-            <div className="wrapper grid w-fit place-items-center">
-                <RippleCircle className="circle-3 absolute h-[55rem] w-[55rem] opacity-40" />
-                <RippleCircle className="circle-2 absolute h-[30rem] w-[30rem] opacity-40" />
-                <RippleCircle className="circle-1 grid h-[15rem] w-[15rem] place-items-center">
-                    <DownloadIcon aria-hidden className="h-10 w-10 text-foreground" />
-                </RippleCircle>
-            </div>
-        </div>
-    );
+	return (
+		<div
+			aria-hidden
+			className={cn(
+				"download-animation fixed inset-0 top-0 left-0 z-[9999] grid h-full w-full place-items-center",
+				!isAnimationPlaying && "animation-hidden",
+				!isVisible && "-z-50",
+			)}
+		>
+			<div className="wrapper grid w-fit place-items-center">
+				<RippleCircle className="circle-3 absolute h-[55rem] w-[55rem] opacity-40" />
+				<RippleCircle className="circle-2 absolute h-[30rem] w-[30rem] opacity-40" />
+				<RippleCircle className="circle-1 grid h-[15rem] w-[15rem] place-items-center">
+					<DownloadIcon aria-hidden className="h-10 w-10 text-foreground" />
+				</RippleCircle>
+			</div>
+		</div>
+	);
 }
 
 function RippleCircle({ children, className }: { children?: React.ReactNode; className?: string }) {
-    return (
-        <div className={cn("rounded-full border-[0.2rem] border-accent-bg bg-accent-bg/25", className)}>{children}</div>
-    );
+	return (
+		<div className={cn("rounded-full border-[0.2rem] border-accent-bg bg-accent-bg/25", className)}>{children}</div>
+	);
 }
 
 interface DownloadAnimationContext {
-    downloadFile: (fileUrl: string | undefined) => void;
-    isAnimationPlaying: boolean;
-    isVisible: boolean;
+	downloadFile: (fileUrl: string | undefined) => void;
+	isAnimationPlaying: boolean;
+	isVisible: boolean;
 }
 
 export const FileDownloader = createContext<DownloadAnimationContext>({
-    downloadFile: (_fileUrl: string | undefined) => {},
-    isAnimationPlaying: false,
-    isVisible: false,
+	downloadFile: (_fileUrl: string | undefined) => {},
+	isAnimationPlaying: false,
+	isVisible: false,
 });
 
 export function DownloadProvider({ children }: { children: React.ReactNode }) {
-    const animationTimeoutRef = useRef<number | null>(null);
-    const visibilityTimeoutRef = useRef<number | null>(null);
+	const animationTimeoutRef = useRef<number | null>(null);
+	const visibilityTimeoutRef = useRef<number | null>(null);
 
-    const [isAnimationPlaying, setIsAnimationPlaying] = useState(false);
-    const [isVisible, setIsVisible] = useState(false);
+	const [isAnimationPlaying, setIsAnimationPlaying] = useState(false);
+	const [isVisible, setIsVisible] = useState(false);
 
-    function downloadFile(fileUrl: string | undefined) {
-        if (animationTimeoutRef.current) window.clearTimeout(animationTimeoutRef.current);
-        if (visibilityTimeoutRef.current) window.clearTimeout(visibilityTimeoutRef.current);
+	function downloadFile(fileUrl: string | undefined) {
+		if (animationTimeoutRef.current) window.clearTimeout(animationTimeoutRef.current);
+		if (visibilityTimeoutRef.current) window.clearTimeout(visibilityTimeoutRef.current);
 
-        setIsVisible(true);
-        setIsAnimationPlaying(true);
+		setIsVisible(true);
+		setIsAnimationPlaying(true);
 
-        animationTimeoutRef.current = window.setTimeout(() => {
-            setIsAnimationPlaying(false);
+		animationTimeoutRef.current = window.setTimeout(() => {
+			setIsAnimationPlaying(false);
 
-            visibilityTimeoutRef.current = window.setTimeout(() => {
-                setIsVisible(false);
-            }, 600);
-        }, 600);
+			visibilityTimeoutRef.current = window.setTimeout(() => {
+				setIsVisible(false);
+			}, 600);
+		}, 600);
 
-        if (!fileUrl) return toast.error("Empty file download url provided.");
+		if (!fileUrl) return toast.error("Empty file download url provided.");
 
-        downloadFile_TheDefaultWay(fileUrl);
-    }
+		downloadFile_TheDefaultWay(fileUrl);
+	}
 
-    function downloadFile_TheDefaultWay(fileUrl: string) {
-        window.location.href = fileUrl;
-    }
+	function downloadFile_TheDefaultWay(fileUrl: string) {
+		window.location.href = fileUrl;
+	}
 
-    return (
-        <FileDownloader.Provider
-            value={{
-                downloadFile: downloadFile,
-                isAnimationPlaying: isAnimationPlaying,
-                isVisible: isVisible,
-            }}
-        >
-            {children}
-        </FileDownloader.Provider>
-    );
+	return (
+		<FileDownloader.Provider
+			value={{
+				downloadFile: downloadFile,
+				isAnimationPlaying: isAnimationPlaying,
+				isVisible: isVisible,
+			}}
+		>
+			{children}
+		</FileDownloader.Provider>
+	);
 }

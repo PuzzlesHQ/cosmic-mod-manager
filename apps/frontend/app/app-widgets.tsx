@@ -11,39 +11,39 @@ import { PageBreadCrumbs } from "./hooks/breadcrumb";
 import clientFetch from "./utils/client-fetch";
 
 export function AppWidgets() {
-    return (
-        <>
-            <ValidateClientSession />
+	return (
+		<>
+			<ValidateClientSession />
 
-            <Toaster />
-            <DownloadRipple />
-            <PageBreadCrumbs />
+			<Toaster />
+			<DownloadRipple />
+			<PageBreadCrumbs />
 
-            <UpdateLocaleOnHintChange />
-            <MarkdownLinkHandler />
-        </>
-    );
+			<UpdateLocaleOnHintChange />
+			<MarkdownLinkHandler />
+		</>
+	);
 }
 
 function UpdateLocaleOnHintChange() {
-    const { setLocale, formattedLocaleName } = useTranslation();
-    const location = useLocation();
-    const locationStr = stringifyLocation(location);
+	const { setLocale, formattedLocaleName } = useTranslation();
+	const location = useLocation();
+	const locationStr = stringifyLocation(location);
 
-    useEffect(() => {
-        const updatedLocale = getValidLocaleCode(getHintLocale(new URLSearchParams(location.search)));
-        if (updatedLocale !== formattedLocaleName) {
-            setLocale(updatedLocale);
-        }
-    }, [locationStr]);
+	useEffect(() => {
+		const updatedLocale = getValidLocaleCode(getHintLocale(new URLSearchParams(location.search)));
+		if (updatedLocale !== formattedLocaleName) {
+			setLocale(updatedLocale);
+		}
+	}, [locationStr]);
 
-    return null;
+	return null;
 }
 
 function ValidateClientSession() {
-    useEffect(() => {
-        clientFetch("/api/auth/me");
-    }, []);
+	useEffect(() => {
+		clientFetch("/api/auth/me");
+	}, []);
 
-    return null;
+	return null;
 }

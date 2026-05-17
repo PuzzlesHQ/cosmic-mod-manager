@@ -1,36 +1,36 @@
 {
-    "name": "@app/backend",
-    "module": "src/index.ts",
-    "type": "module",
-    "scripts": {
-        "dev": "bun run --hot src/index.ts",
-        "start": "bun src/index.ts",
-        "prisma-generate": "prisma generate",
-        "prisma-push": "prisma db push",
-        "deploy": "cross-env NODE_ENV=production pm2 deploy pm2.config.cjs backend",
-        "file-backup": "bun run src/services/storage/backup/index.ts"
-    },
-    "dependencies": {
-        "@app/utils": "workspace:*",
-        "@clickhouse/client": "^1.17.0",
-        "@oslojs/encoding": "^1.1.0",
-        "@prisma/adapter-pg": "^7.3.0",
-        "@prisma/client": "^7.3.0",
-        "hono": "^4.11.9",
-        "ioredis": "^5.9.2",
-        "meilisearch": "^0.55.0",
-        "nanoid": "^5.1.6",
-        "nodemailer": "^8.0.1",
-        "pg": "^8.18.0",
-        "semver": "^7.7.4",
-        "sharp": "^0.34.5"
-    },
-    "devDependencies": {
-        "@types/nodemailer": "^7.0.9",
-        "@types/pg": "^8.16.0",
-        "@types/semver": "^7.7.1",
-        "@types/xml2js": "^0.4.14",
-        "prisma": "^7.3.0",
-        "xml2js": "^0.6.2"
-    }
+	"name": "@app/backend",
+	"module": "src/index.ts",
+	"type": "module",
+	"scripts": {
+		"dev": "bun run --hot src/index.ts",
+		"start": "bun src/index.ts",
+		"prisma-generate": "prisma generate",
+		"prisma-push": "prisma db push",
+		"deploy": "cross-env NODE_ENV=production pm2 deploy pm2.config.cjs backend",
+		"file-backup": "bun run src/services/storage/backup/index.ts"
+	},
+	"dependencies": {
+		"@app/utils": "workspace:*",
+		"@clickhouse/client": "^1.17.0",
+		"@oslojs/encoding": "^1.1.0",
+		"@prisma/adapter-pg": "^7.3.0",
+		"@prisma/client": "^7.3.0",
+		"hono": "^4.11.9",
+		"ioredis": "^5.9.2",
+		"meilisearch": "^0.55.0",
+		"nanoid": "^5.1.6",
+		"nodemailer": "^8.0.1",
+		"pg": "^8.18.0",
+		"semver": "^7.7.4",
+		"sharp": "^0.34.5"
+	},
+	"devDependencies": {
+		"@types/nodemailer": "^7.0.9",
+		"@types/pg": "^8.16.0",
+		"@types/semver": "^7.7.1",
+		"@types/xml2js": "^0.4.14",
+		"prisma": "^7.3.0",
+		"xml2js": "^0.6.2"
+	}
 }

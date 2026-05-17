@@ -8,31 +8,31 @@ import { resJson, serverFetch } from "~/utils/server-fetch";
 import type { Route } from "./+types/page";
 
 export default function () {
-    const projects = useLoaderData() as ProjectListItem[];
+	const projects = useLoaderData() as ProjectListItem[];
 
-    return <HomePage projects={projects} />;
+	return <HomePage projects={projects} />;
 }
 
 export async function loader(props: Route.LoaderArgs): Promise<ProjectListItem[]> {
-    const res = await serverFetch(props.request, "/api/projects/home-page-carousel");
-    if (!res.ok) return [];
-    const projects = await resJson<ProjectListItem[]>(res);
+	const res = await serverFetch(props.request, "/api/projects/home-page-carousel");
+	if (!res.ok) return [];
+	const projects = await resJson<ProjectListItem[]>(res);
 
-    return projects || [];
+	return projects || [];
 }
 
 export function shouldRevalidate() {
-    return false;
+	return false;
 }
 
 export function meta(props: Route.MetaArgs) {
-    const { t } = useTranslation();
+	const { t } = useTranslation();
 
-    return MetaTags({
-        location: props.location,
-        title: Config.SITE_NAME_LONG,
-        description: t.meta.siteDesc(Config.SITE_NAME_LONG, Config.SITE_NAME_SHORT),
-        image: Config.SITE_ICON,
-        url: Config.FRONTEND_URL,
-    });
+	return MetaTags({
+		location: props.location,
+		title: Config.SITE_NAME_LONG,
+		description: t.meta.siteDesc(Config.SITE_NAME_LONG, Config.SITE_NAME_SHORT),
+		image: Config.SITE_ICON,
+		url: Config.FRONTEND_URL,
+	});
 }

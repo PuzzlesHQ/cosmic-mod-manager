@@ -10,111 +10,111 @@ import { searchReqRateLimiter } from "~/middleware/rate-limiter";
 import { HTTP_STATUS, serverErrorResponse } from "~/utils/http";
 
 const tagsRouter = new Hono()
-    .use(searchReqRateLimiter)
-    .use(applyCacheHeaders({ browserTTL_s: 24 * 3600, cdnTTL_s: 24 * 3600 }))
+	.use(searchReqRateLimiter)
+	.use(applyCacheHeaders({ browserTTL_s: 24 * 3600, cdnTTL_s: 24 * 3600 }))
 
-    .get("/categories", categories_get)
-    .get("/game-versions", gameVersions_get)
-    .get("/loaders", loaders_get)
-    .get("/licenses", licenses_get)
-    .get("/licenses/featured", featuredLicenses_get)
-    .get("/licenses/:id", licenses_get)
-    .get("/project-types", projectTypes_get)
-    .get("/api-scopes", apiScopes_get);
+	.get("/categories", categories_get)
+	.get("/game-versions", gameVersions_get)
+	.get("/loaders", loaders_get)
+	.get("/licenses", licenses_get)
+	.get("/licenses/featured", featuredLicenses_get)
+	.get("/licenses/:id", licenses_get)
+	.get("/project-types", projectTypes_get)
+	.get("/api-scopes", apiScopes_get);
 
 function getCategories({
-    projectType,
-    headerType,
-    namesOnly,
+	projectType,
+	headerType,
+	namesOnly,
 }: {
-    projectType?: ProjectType;
-    headerType?: TagType;
-    namesOnly?: boolean;
+	projectType?: ProjectType;
+	headerType?: TagType;
+	namesOnly?: boolean;
 }) {
-    const list = getValidProjectCategories(projectType ? [projectType] : [], headerType);
+	const list = getValidProjectCategories(projectType ? [projectType] : [], headerType);
 
-    if (namesOnly) {
-        return list.map((category) => category.name);
-    }
-    return list;
+	if (namesOnly) {
+		return list.map((category) => category.name);
+	}
+	return list;
 }
 
 async function categories_get(ctx: Context) {
-    try {
-        const projectType = (ctx.req.query("type")?.toLowerCase() as ProjectType) || undefined;
-        const namesOnly = ctx.req.query("namesOnly") === "true";
+	try {
+		const projectType = (ctx.req.query("type")?.toLowerCase() as ProjectType) || undefined;
+		const namesOnly = ctx.req.query("namesOnly") === "true";
 
-        const categories = await getCategories({ namesOnly, projectType: projectType });
-        return ctx.json(categories, HTTP_STATUS.OK);
-    } catch (error) {
-        console.error(error);
-        return serverErrorResponse(ctx);
-    }
+		const categories = await getCategories({ namesOnly, projectType: projectType });
+		return ctx.json(categories, HTTP_STATUS.OK);
+	} catch (error) {
+		console.error(error);
+		return serverErrorResponse(ctx);
+	}
 }
 
 async function gameVersions_get(ctx: Context) {
-    try {
-        return ctx.json(GAME_VERSIONS, HTTP_STATUS.OK);
-    } catch (error) {
-        console.error(error);
-        return serverErrorResponse(ctx);
-    }
+	try {
+		return ctx.json(GAME_VERSIONS, HTTP_STATUS.OK);
+	} catch (error) {
+		console.error(error);
+		return serverErrorResponse(ctx);
+	}
 }
 
 async function loaders_get(ctx: Context) {
-    try {
-        const projectType = (ctx.req.query("type")?.toLowerCase() as ProjectType) || undefined;
-        const loaders = getAllLoaderCategories(projectType);
-        return ctx.json(loaders, HTTP_STATUS.OK);
-    } catch (error) {
-        console.error(error);
-        return serverErrorResponse(ctx);
-    }
+	try {
+		const projectType = (ctx.req.query("type")?.toLowerCase() as ProjectType) || undefined;
+		const loaders = getAllLoaderCategories(projectType);
+		return ctx.json(loaders, HTTP_STATUS.OK);
+	} catch (error) {
+		console.error(error);
+		return serverErrorResponse(ctx);
+	}
 }
 
 async function featuredLicenses_get(ctx: Context) {
-    try {
-        return ctx.json(FEATURED_LICENSE_OPTIONS.slice(1), HTTP_STATUS.OK);
-    } catch (error) {
-        console.error(error);
-        return serverErrorResponse(ctx);
-    }
+	try {
+		return ctx.json(FEATURED_LICENSE_OPTIONS.slice(1), HTTP_STATUS.OK);
+	} catch (error) {
+		console.error(error);
+		return serverErrorResponse(ctx);
+	}
 }
 
 async function licenses_get(ctx: Context) {
-    try {
-        const licenseId = ctx.req.param("id")?.toLowerCase();
-        if (licenseId) {
-            const license = SPDX_LICENSE_LIST.find((l) => l.licenseId.toLowerCase() === licenseId);
-            if (!license) {
-                return ctx.json({ success: false, message: "License not found" }, HTTP_STATUS.NOT_FOUND);
-            }
-            return ctx.json(license, HTTP_STATUS.OK);
-        }
+	try {
+		const licenseId = ctx.req.param("id")?.toLowerCase();
+		if (licenseId) {
+			const license = SPDX_LICENSE_LIST.find((l) => l.licenseId.toLowerCase() === licenseId);
+			if (!license) {
+				return ctx.json({ success: false, message: "License not found" }, HTTP_STATUS.NOT_FOUND);
+			}
+			return ctx.json(license, HTTP_STATUS.OK);
+		}
 
-        return ctx.json(SPDX_LICENSE_LIST, HTTP_STATUS.OK);
-    } catch (error) {
-        console.error(error);
-        return serverErrorResponse(ctx);
-    }
+		return ctx.json(SPDX_LICENSE_LIST, HTTP_STATUS.OK);
+	} catch (error) {
+		console.error(error);
+		return serverErrorResponse(ctx);
+	}
 }
 
 async function projectTypes_get(ctx: Context) {
-    try {
-        return ctx.json(projectTypes, HTTP_STATUS.OK);
-    } catch (error) {
-        console.error(error);
-        return serverErrorResponse(ctx);
-    }
+	try {
+		return ctx.json(projectTypes, HTTP_STATUS.OK);
+	} catch (error) {
+		console.error(error);
+		return serverErrorResponse(ctx);
+	}
 }
 
 async function apiScopes_get(ctx: Context) {
-    try {
-        return ctx.json(Object.values(API_SCOPE), HTTP_STATUS.OK);
-    } catch (error) {
-        console.error(error);
-        return serverErrorResponse(ctx);
-    }
+	try {
+		return ctx.json(Object.values(API_SCOPE), HTTP_STATUS.OK);
+	} catch (error) {
+		console.error(error);
+		return serverErrorResponse(ctx);
+	}
 }
 
 export default tagsRouter;

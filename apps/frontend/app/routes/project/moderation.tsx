@@ -7,17 +7,17 @@ import type { Route } from "./+types/moderation";
 export default ModerationPage;
 
 export function meta(props: Route.MetaArgs) {
-    const { t } = useTranslation();
-    const ctx = getProjectLoaderData(props.matches, props.location.pathname);
-    if (!ctx?.projectData) return;
+	const { t } = useTranslation();
+	const ctx = getProjectLoaderData(props.matches, props.location.pathname);
+	if (!ctx?.projectData) return;
 
-    const project = ctx.projectData;
-    return MetaTags({
-        location: props.location,
-        title: t.meta.addContext(project.name, t.moderation.moderation),
-        description: t.moderation.moderation,
-        image: project.icon || "",
-        url: undefined,
-        parentMetaTags: props.matches[1].meta,
-    });
+	const project = ctx.projectData;
+	return MetaTags({
+		location: props.location,
+		title: t.meta.addContext(project.name, t.moderation.moderation),
+		description: t.moderation.moderation,
+		image: project.icon || "",
+		url: undefined,
+		parentMetaTags: props.matches[1].meta,
+	});
 }

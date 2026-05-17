@@ -3,17 +3,17 @@
 @import "./project/styles.css";
 
 @layer view-transitions {
-    @view-transition {
-        navigation: auto;
-    }
+	@view-transition {
+		navigation: auto;
+	}
 }
 
 ::view-transition-group(root) {
-    /* animation: none; */
-    animation-duration: 200ms;
+	/* animation: none; */
+	animation-duration: 200ms;
 }
 
 ::view-transition-new(root),
 ::view-transition-old(root) {
-    mix-blend-mode: multiply;
+	mix-blend-mode: multiply;
 }

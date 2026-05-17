@@ -1,12 +1,12 @@
 export interface PrivacyProps {
-    title: string;
-    supportEmail: string;
-    siteName_Short: string;
-    siteName_Long: string;
+	title: string;
+	supportEmail: string;
+	siteName_Short: string;
+	siteName_Long: string;
 
-    websiteUrl: string;
-    accountSettings_PageUrl: string;
-    sessionSettings_PageUrl: string;
+	websiteUrl: string;
+	accountSettings_PageUrl: string;
+	sessionSettings_PageUrl: string;
 }
 
 export const PrivacyPolicy = (props: PrivacyProps) => `

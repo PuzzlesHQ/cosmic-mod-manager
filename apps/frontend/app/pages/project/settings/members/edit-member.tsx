@@ -29,538 +29,505 @@ import { UserProfilePath } from "~/utils/urls";
 import { RemoveMemberDialog, TransferOwnershipDialog } from "./dialogs";
 
 interface ProjectTeamMemberProps {
-    session: LoggedInUserData | null;
-    member: TeamMember;
-    currUsersMembership: TeamMember | null;
-    fetchProjectData: () => Promise<void>;
-    projectTeamId: string;
-    doesProjectHaveOrg: boolean;
+	session: LoggedInUserData | null;
+	member: TeamMember;
+	currUsersMembership: TeamMember | null;
+	fetchProjectData: () => Promise<void>;
+	projectTeamId: string;
+	doesProjectHaveOrg: boolean;
 }
 
 export function ProjectTeamMember({
-    session,
-    member,
-    currUsersMembership,
-    fetchProjectData,
-    projectTeamId,
-    doesProjectHaveOrg,
+	session,
+	member,
+	currUsersMembership,
+	fetchProjectData,
+	projectTeamId,
+	doesProjectHaveOrg,
 }: ProjectTeamMemberProps) {
-    const { t } = useTranslation();
-    const [detailsOpen, setDetailsOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+	const { t } = useTranslation();
+	const [detailsOpen, setDetailsOpen] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 
-    const form = useFormHook(updateTeamMemberFormSchema, {
-        values: {
-            role: member.role,
-            permissions: member.permissions,
-        },
-    });
+	const form = useFormHook(updateTeamMemberFormSchema, {
+		values: {
+			role: member.role,
+			permissions: member.permissions,
+		},
+	});
 
-    async function updateMemberDetails(values: z.infer<typeof updateTeamMemberFormSchema>) {
-        if (isLoading) return;
-        setIsLoading(true);
-        try {
-            const res = await clientFetch(`/api/team/${member.teamId}/member/${member.id}`, {
-                method: "PATCH",
-                body: JSON.stringify(values),
-            });
-            const data = await res.json();
+	async function updateMemberDetails(values: z.infer<typeof updateTeamMemberFormSchema>) {
+		if (isLoading) return;
+		setIsLoading(true);
+		try {
+			const res = await clientFetch(`/api/team/${member.teamId}/member/${member.id}`, {
+				method: "PATCH",
+				body: JSON.stringify(values),
+			});
+			const data = await res.json();
 
-            if (!res.ok || !data?.success) {
-                return toast.error(data?.message || t.common.error);
-            }
+			if (!res.ok || !data?.success) {
+				return toast.error(data?.message || t.common.error);
+			}
 
-            await fetchProjectData();
-            return toast.success(t.projectSettings.memberUpdated);
-        } finally {
-            setIsLoading(false);
-        }
-    }
+			await fetchProjectData();
+			return toast.success(t.projectSettings.memberUpdated);
+		} finally {
+			setIsLoading(false);
+		}
+	}
 
-    const canEditMember = doesMemberHaveAccess(
-        ProjectPermission.EDIT_MEMBER,
-        currUsersMembership?.permissions,
-        currUsersMembership?.isOwner,
-        session?.role,
-    );
-    const canAddPermissions = hasFullItemAccess(currUsersMembership?.isOwner, session?.role);
-    const canRemoveMembers = doesMemberHaveAccess(
-        ProjectPermission.REMOVE_MEMBER,
-        currUsersMembership?.permissions,
-        currUsersMembership?.isOwner,
-        session?.role,
-    );
-    const canTransferOwnership =
-        hasFullItemAccess(currUsersMembership?.isOwner, session?.role) &&
-        member.isOwner === false &&
-        member.accepted &&
-        !doesProjectHaveOrg;
+	const canEditMember = doesMemberHaveAccess(
+		ProjectPermission.EDIT_MEMBER,
+		currUsersMembership?.permissions,
+		currUsersMembership?.isOwner,
+		session?.role,
+	);
+	const canAddPermissions = hasFullItemAccess(currUsersMembership?.isOwner, session?.role);
+	const canRemoveMembers = doesMemberHaveAccess(
+		ProjectPermission.REMOVE_MEMBER,
+		currUsersMembership?.permissions,
+		currUsersMembership?.isOwner,
+		session?.role,
+	);
+	const canTransferOwnership =
+		hasFullItemAccess(currUsersMembership?.isOwner, session?.role) &&
+		member.isOwner === false &&
+		member.accepted &&
+		!doesProjectHaveOrg;
 
-    return (
-        <Card className="grid w-full p-card-surround">
-            {/* Head */}
-            <div className="flex w-full flex-wrap items-center justify-between">
-                {/* Member profile details */}
-                <div className="flex items-center justify-center gap-2 text-foreground-muted">
-                    <ImgWrapper
-                        vtId={member.userId}
-                        src={imageUrl(member.avatar)}
-                        alt={member.userName}
-                        fallback={fallbackUserIcon}
-                        className="h-12 w-12 rounded-full"
-                    />
-                    <div className="flex flex-col items-start justify-center gap-1.5">
-                        <Link
-                            to={UserProfilePath(member.userName)}
-                            className="flex items-baseline justify-center gap-1.5 font-semibold text-foreground leading-none"
-                        >
-                            {member.userName}
-                            {member.isOwner && (
-                                <span
-                                    className="flex shrink-0 items-baseline justify-center"
-                                    title={t.projectSettings.owner}
-                                >
-                                    <CrownIcon aria-hidden className="h-4 w-4 text-orange-500 dark:text-orange-400" />
-                                </span>
-                            )}
-                        </Link>
-                        <span className="text-[0.93rem] text-foreground-muted/80 leading-none">{member.role}</span>
-                    </div>
-                </div>
+	return (
+		<Card className="grid w-full p-card-surround">
+			{/* Head */}
+			<div className="flex w-full flex-wrap items-center justify-between">
+				{/* Member profile details */}
+				<div className="flex items-center justify-center gap-2 text-foreground-muted">
+					<ImgWrapper
+						vtId={member.userId}
+						src={imageUrl(member.avatar)}
+						alt={member.userName}
+						fallback={fallbackUserIcon}
+						className="h-12 w-12 rounded-full"
+					/>
+					<div className="flex flex-col items-start justify-center gap-1.5">
+						<Link
+							to={UserProfilePath(member.userName)}
+							className="flex items-baseline justify-center gap-1.5 font-semibold text-foreground leading-none"
+						>
+							{member.userName}
+							{member.isOwner && (
+								<span className="flex shrink-0 items-baseline justify-center" title={t.projectSettings.owner}>
+									<CrownIcon aria-hidden className="h-4 w-4 text-orange-500 dark:text-orange-400" />
+								</span>
+							)}
+						</Link>
+						<span className="text-[0.93rem] text-foreground-muted/80 leading-none">{member.role}</span>
+					</div>
+				</div>
 
-                {/* Accepted status */}
-                <div className="flex items-center justify-center gap-x-4">
-                    {member.accepted === false && (
-                        <span className="flex items-center justify-center gap-1.5 font-bold text-orange-500 dark:text-orange-400">
-                            <RefreshCcwIcon aria-hidden className="h-btn-icon w-btn-icon" />
-                            {t.projectSettings.pending}
-                        </span>
-                    )}
+				{/* Accepted status */}
+				<div className="flex items-center justify-center gap-x-4">
+					{member.accepted === false && (
+						<span className="flex items-center justify-center gap-1.5 font-bold text-orange-500 dark:text-orange-400">
+							<RefreshCcwIcon aria-hidden className="h-btn-icon w-btn-icon" />
+							{t.projectSettings.pending}
+						</span>
+					)}
 
-                    <Button size="icon" variant="ghost" onClick={() => setDetailsOpen((prev) => !prev)}>
-                        <ChevronDownIcon
-                            aria-hidden
-                            className={cn("h-btn-icon-lg w-btn-icon-lg transition-all", detailsOpen && "rotate-180")}
-                        />
-                    </Button>
-                </div>
-            </div>
+					<Button size="icon" variant="ghost" onClick={() => setDetailsOpen((prev) => !prev)}>
+						<ChevronDownIcon
+							aria-hidden
+							className={cn("h-btn-icon-lg w-btn-icon-lg transition-all", detailsOpen && "rotate-180")}
+						/>
+					</Button>
+				</div>
+			</div>
 
-            {/* Body */}
-            <div className={collapsibleBoxClassName(detailsOpen, "pt-4", "pt-0")}>
-                <Form {...form}>
-                    <form
-                        onSubmit={async (e) => {
-                            submitFormWithErrorHandling(e, updateTeamMemberFormSchema, form, updateMemberDetails);
-                        }}
-                        className="grid gap-form-elements px-1"
-                    >
-                        <FormField
-                            control={form.control}
-                            name="role"
-                            render={({ field }) => (
-                                <FormItem className="flex-col justify-between md:flex-row">
-                                    <div className="flex flex-col items-start justify-center">
-                                        <FormLabel className="font-bold" htmlFor={`member-role-input_${member.id}`}>
-                                            {t.projectSettings.role}
-                                        </FormLabel>
-                                        <span className="text-foreground-muted/90">{t.projectSettings.roleDesc}</span>
-                                    </div>
-                                    <Input
-                                        {...field}
-                                        disabled={!canEditMember}
-                                        placeholder={t.projectSettings.role}
-                                        className="w-[24ch]"
-                                        id={`member-role-input_${member.id}`}
-                                    />
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+			{/* Body */}
+			<div className={collapsibleBoxClassName(detailsOpen, "pt-4", "pt-0")}>
+				<Form {...form}>
+					<form
+						onSubmit={async (e) => {
+							submitFormWithErrorHandling(e, updateTeamMemberFormSchema, form, updateMemberDetails);
+						}}
+						className="grid gap-form-elements px-1"
+					>
+						<FormField
+							control={form.control}
+							name="role"
+							render={({ field }) => (
+								<FormItem className="flex-col justify-between md:flex-row">
+									<div className="flex flex-col items-start justify-center">
+										<FormLabel className="font-bold" htmlFor={`member-role-input_${member.id}`}>
+											{t.projectSettings.role}
+										</FormLabel>
+										<span className="text-foreground-muted/90">{t.projectSettings.roleDesc}</span>
+									</div>
+									<Input
+										{...field}
+										disabled={!canEditMember}
+										placeholder={t.projectSettings.role}
+										className="w-[24ch]"
+										id={`member-role-input_${member.id}`}
+									/>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 
-                        {member.isOwner === false && (
-                            <FormField
-                                control={form.control}
-                                disabled={!canEditMember}
-                                name="permissions"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="font-bold">{t.projectSettings.permissions}</FormLabel>
-                                        <div
-                                            className="grid w-full gap-x-4 gap-y-1"
-                                            style={{
-                                                gridTemplateColumns: "repeat(auto-fit, minmax(11rem, 1fr))",
-                                            }}
-                                        >
-                                            {ProjectPermissionsList.map((permissionName: ProjectPermission) => {
-                                                const checked = (field?.value || []).includes(permissionName);
-                                                return (
-                                                    <LabelledCheckbox
-                                                        key={permissionName}
-                                                        name={permissionName}
-                                                        disabled={field.disabled || (!checked && !canAddPermissions)}
-                                                        checked={checked}
-                                                        onCheckedChange={(checked) => {
-                                                            const currList = field.value || [];
-                                                            if (checked === true) {
-                                                                field.onChange([...currList, permissionName]);
-                                                            } else {
-                                                                field.onChange(
-                                                                    currList.filter((p) => p !== permissionName),
-                                                                );
-                                                            }
-                                                        }}
-                                                    >
-                                                        {t.projectSettings.perms[permissionName]}
-                                                    </LabelledCheckbox>
-                                                );
-                                            })}
-                                        </div>
-                                    </FormItem>
-                                )}
-                            />
-                        )}
+						{member.isOwner === false && (
+							<FormField
+								control={form.control}
+								disabled={!canEditMember}
+								name="permissions"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel className="font-bold">{t.projectSettings.permissions}</FormLabel>
+										<div
+											className="grid w-full gap-x-4 gap-y-1"
+											style={{
+												gridTemplateColumns: "repeat(auto-fit, minmax(11rem, 1fr))",
+											}}
+										>
+											{ProjectPermissionsList.map((permissionName: ProjectPermission) => {
+												const checked = (field?.value || []).includes(permissionName);
+												return (
+													<LabelledCheckbox
+														key={permissionName}
+														name={permissionName}
+														disabled={field.disabled || (!checked && !canAddPermissions)}
+														checked={checked}
+														onCheckedChange={(checked) => {
+															const currList = field.value || [];
+															if (checked === true) {
+																field.onChange([...currList, permissionName]);
+															} else {
+																field.onChange(currList.filter((p) => p !== permissionName));
+															}
+														}}
+													>
+														{t.projectSettings.perms[permissionName]}
+													</LabelledCheckbox>
+												);
+											})}
+										</div>
+									</FormItem>
+								)}
+							/>
+						)}
 
-                        <div className="flex w-full flex-wrap gap-x-4 gap-y-2">
-                            <Button
-                                type="submit"
-                                size="sm"
-                                disabled={
-                                    isLoading || !form.formState.isDirty || (!canEditMember && !canAddPermissions)
-                                }
-                            >
-                                <SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
-                                {t.form.saveChanges}
-                            </Button>
+						<div className="flex w-full flex-wrap gap-x-4 gap-y-2">
+							<Button
+								type="submit"
+								size="sm"
+								disabled={isLoading || !form.formState.isDirty || (!canEditMember && !canAddPermissions)}
+							>
+								<SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
+								{t.form.saveChanges}
+							</Button>
 
-                            {!member.isOwner && canRemoveMembers && (
-                                <RemoveMemberDialog member={member} refreshData={fetchProjectData}>
-                                    <Button
-                                        type="button"
-                                        variant="secondary-destructive"
-                                        size="sm"
-                                        disabled={isLoading}
-                                    >
-                                        <UserXIcon aria-hidden className="h-btn-icon w-btn-icon" />
-                                        {t.projectSettings.removeMember}
-                                    </Button>
-                                </RemoveMemberDialog>
-                            )}
+							{!member.isOwner && canRemoveMembers && (
+								<RemoveMemberDialog member={member} refreshData={fetchProjectData}>
+									<Button type="button" variant="secondary-destructive" size="sm" disabled={isLoading}>
+										<UserXIcon aria-hidden className="h-btn-icon w-btn-icon" />
+										{t.projectSettings.removeMember}
+									</Button>
+								</RemoveMemberDialog>
+							)}
 
-                            {canTransferOwnership ? (
-                                <TransferOwnershipDialog
-                                    member={member}
-                                    teamId={projectTeamId}
-                                    refreshData={fetchProjectData}
-                                >
-                                    <Button variant="secondary" size="sm" disabled={isLoading}>
-                                        <ArrowRightLeftIcon aria-hidden className="h-btn-icon w-btn-icon" />
-                                        {t.projectSettings.transferOwnership}
-                                    </Button>
-                                </TransferOwnershipDialog>
-                            ) : null}
-                        </div>
-                    </form>
-                </Form>
-            </div>
-        </Card>
-    );
+							{canTransferOwnership ? (
+								<TransferOwnershipDialog member={member} teamId={projectTeamId} refreshData={fetchProjectData}>
+									<Button variant="secondary" size="sm" disabled={isLoading}>
+										<ArrowRightLeftIcon aria-hidden className="h-btn-icon w-btn-icon" />
+										{t.projectSettings.transferOwnership}
+									</Button>
+								</TransferOwnershipDialog>
+							) : null}
+						</div>
+					</form>
+				</Form>
+			</div>
+		</Card>
+	);
 }
 
 interface OrgTeamMemberProps {
-    session: LoggedInUserData | null;
-    project: ProjectDetailsData;
-    orgMember: TeamMember;
-    currUsersMembership: TeamMember | null;
-    fetchProjectData: () => Promise<void>;
+	session: LoggedInUserData | null;
+	project: ProjectDetailsData;
+	orgMember: TeamMember;
+	currUsersMembership: TeamMember | null;
+	fetchProjectData: () => Promise<void>;
 }
 
 export function OrgTeamMember({
-    session,
-    project,
-    orgMember,
-    fetchProjectData,
-    currUsersMembership,
+	session,
+	project,
+	orgMember,
+	fetchProjectData,
+	currUsersMembership,
 }: OrgTeamMemberProps) {
-    const { t } = useTranslation();
-    const [isLoading, setIsLoading] = useState(false);
-    const [detailsOpen, setDetailsOpen] = useState(false);
+	const { t } = useTranslation();
+	const [isLoading, setIsLoading] = useState(false);
+	const [detailsOpen, setDetailsOpen] = useState(false);
 
-    const permsOverridden = project.members.find((teamMember) => teamMember.userId === orgMember.userId);
-    const projectMembership = permsOverridden;
-    const [overridePerms, setOverridePerms] = useState(!!permsOverridden);
+	const permsOverridden = project.members.find((teamMember) => teamMember.userId === orgMember.userId);
+	const projectMembership = permsOverridden;
+	const [overridePerms, setOverridePerms] = useState(!!permsOverridden);
 
-    const effectiveMembership = projectMembership || orgMember;
-    const canEditMember = doesMemberHaveAccess(
-        ProjectPermission.EDIT_MEMBER,
-        currUsersMembership?.permissions || [],
-        currUsersMembership?.isOwner,
-        session?.role,
-    );
-    const canAddPermissions = hasFullItemAccess(currUsersMembership?.isOwner, session?.role);
-    const canRemoveMembers = doesMemberHaveAccess(
-        ProjectPermission.REMOVE_MEMBER,
-        currUsersMembership?.permissions || [],
-        currUsersMembership?.isOwner,
-        session?.role,
-    );
+	const effectiveMembership = projectMembership || orgMember;
+	const canEditMember = doesMemberHaveAccess(
+		ProjectPermission.EDIT_MEMBER,
+		currUsersMembership?.permissions || [],
+		currUsersMembership?.isOwner,
+		session?.role,
+	);
+	const canAddPermissions = hasFullItemAccess(currUsersMembership?.isOwner, session?.role);
+	const canRemoveMembers = doesMemberHaveAccess(
+		ProjectPermission.REMOVE_MEMBER,
+		currUsersMembership?.permissions || [],
+		currUsersMembership?.isOwner,
+		session?.role,
+	);
 
-    const form = useFormHook(updateTeamMemberFormSchema, {
-        values: {
-            role: effectiveMembership.role,
-            permissions: effectiveMembership.permissions,
-        },
-    });
+	const form = useFormHook(updateTeamMemberFormSchema, {
+		values: {
+			role: effectiveMembership.role,
+			permissions: effectiveMembership.permissions,
+		},
+	});
 
-    async function updateMemberDetails(values: z.infer<typeof updateTeamMemberFormSchema>) {
-        if (isLoading || !projectMembership) return;
-        setIsLoading(true);
-        try {
-            const res = await clientFetch(`/api/team/${project.teamId}/member/${projectMembership.id}`, {
-                method: "PATCH",
-                body: JSON.stringify(values),
-            });
-            const data = await res.json();
+	async function updateMemberDetails(values: z.infer<typeof updateTeamMemberFormSchema>) {
+		if (isLoading || !projectMembership) return;
+		setIsLoading(true);
+		try {
+			const res = await clientFetch(`/api/team/${project.teamId}/member/${projectMembership.id}`, {
+				method: "PATCH",
+				body: JSON.stringify(values),
+			});
+			const data = await res.json();
 
-            if (!res.ok || !data?.success) {
-                return toast.error(data?.message || t.common.error);
-            }
+			if (!res.ok || !data?.success) {
+				return toast.error(data?.message || t.common.error);
+			}
 
-            await fetchProjectData();
-            return toast.success(t.projectSettings.memberUpdated);
-        } finally {
-            setIsLoading(false);
-        }
-    }
+			await fetchProjectData();
+			return toast.success(t.projectSettings.memberUpdated);
+		} finally {
+			setIsLoading(false);
+		}
+	}
 
-    async function removePermissionOverride() {
-        if (isLoading || !projectMembership) return;
-        setIsLoading(true);
-        try {
-            const res = await clientFetch(`/api/team/${project.teamId}/member/${projectMembership.id}`, {
-                method: "DELETE",
-            });
-            const data = await res.json();
+	async function removePermissionOverride() {
+		if (isLoading || !projectMembership) return;
+		setIsLoading(true);
+		try {
+			const res = await clientFetch(`/api/team/${project.teamId}/member/${projectMembership.id}`, {
+				method: "DELETE",
+			});
+			const data = await res.json();
 
-            if (!res.ok || !data?.success) {
-                return toast.error(data?.message || t.common.error);
-            }
+			if (!res.ok || !data?.success) {
+				return toast.error(data?.message || t.common.error);
+			}
 
-            await fetchProjectData();
-            return toast.success(t.projectSettings.memberUpdated);
-        } finally {
-            setIsLoading(false);
-        }
-    }
+			await fetchProjectData();
+			return toast.success(t.projectSettings.memberUpdated);
+		} finally {
+			setIsLoading(false);
+		}
+	}
 
-    async function addPermissionOverride(values: z.infer<typeof updateTeamMemberFormSchema>) {
-        if (isLoading || projectMembership) return;
-        setIsLoading(true);
-        try {
-            const res = await clientFetch(`/api/team/${project.teamId}/members`, {
-                method: "POST",
-                body: JSON.stringify({
-                    ...values,
-                    userId: orgMember.userId,
-                }),
-            });
-            const data = await res.json();
+	async function addPermissionOverride(values: z.infer<typeof updateTeamMemberFormSchema>) {
+		if (isLoading || projectMembership) return;
+		setIsLoading(true);
+		try {
+			const res = await clientFetch(`/api/team/${project.teamId}/members`, {
+				method: "POST",
+				body: JSON.stringify({
+					...values,
+					userId: orgMember.userId,
+				}),
+			});
+			const data = await res.json();
 
-            if (!res.ok || !data?.success) {
-                return toast.error(data?.message || t.common.error);
-            }
+			if (!res.ok || !data?.success) {
+				return toast.error(data?.message || t.common.error);
+			}
 
-            await fetchProjectData();
-            return toast.success(t.projectSettings.memberUpdated);
-        } finally {
-            setIsLoading(false);
-        }
-    }
+			await fetchProjectData();
+			return toast.success(t.projectSettings.memberUpdated);
+		} finally {
+			setIsLoading(false);
+		}
+	}
 
-    useEffect(() => {
-        setOverridePerms(!!permsOverridden);
-    }, [permsOverridden]);
+	useEffect(() => {
+		setOverridePerms(!!permsOverridden);
+	}, [permsOverridden]);
 
-    let submitButtonDisabled = false;
-    if (isLoading === true) submitButtonDisabled = true;
-    else if (canEditMember === false) submitButtonDisabled = true;
-    // If the form hasn't been changed and the toggle to override member permissions is still the same, the submitButton will be disabled
-    else if (form.formState.isDirty === false && !!permsOverridden === overridePerms) {
-        submitButtonDisabled = true;
-    }
+	let submitButtonDisabled = false;
+	if (isLoading === true) submitButtonDisabled = true;
+	else if (canEditMember === false) submitButtonDisabled = true;
+	// If the form hasn't been changed and the toggle to override member permissions is still the same, the submitButton will be disabled
+	else if (form.formState.isDirty === false && !!permsOverridden === overridePerms) {
+		submitButtonDisabled = true;
+	}
 
-    return (
-        <Card className="grid w-full p-card-surround">
-            {/* Head */}
-            <div className="flex w-full flex-wrap items-center justify-between">
-                {/* Member profile details */}
-                <div className="flex items-center justify-center gap-2 text-foreground-muted">
-                    <ImgWrapper
-                        vtId={effectiveMembership.userId}
-                        src={imageUrl(effectiveMembership.avatar)}
-                        alt={effectiveMembership.userName}
-                        fallback={fallbackUserIcon}
-                        className="h-12 w-12 rounded-full"
-                    />
-                    <div className="flex flex-col items-start justify-center gap-1.5">
-                        <Link
-                            to={UserProfilePath(effectiveMembership.userName)}
-                            className="flex items-baseline justify-center gap-1.5 font-semibold text-foreground leading-none"
-                        >
-                            {effectiveMembership.userName}
-                            {orgMember.isOwner && (
-                                <span
-                                    className="flex shrink-0 items-baseline justify-center"
-                                    title={t.projectSettings.owner}
-                                >
-                                    <CrownIcon aria-hidden className="h-4 w-4 text-orange-500 dark:text-orange-400" />
-                                </span>
-                            )}
-                        </Link>
-                        <span className="text-[0.93rem] text-foreground-muted/80 leading-none">
-                            {effectiveMembership.role}
-                        </span>
-                    </div>
-                </div>
+	return (
+		<Card className="grid w-full p-card-surround">
+			{/* Head */}
+			<div className="flex w-full flex-wrap items-center justify-between">
+				{/* Member profile details */}
+				<div className="flex items-center justify-center gap-2 text-foreground-muted">
+					<ImgWrapper
+						vtId={effectiveMembership.userId}
+						src={imageUrl(effectiveMembership.avatar)}
+						alt={effectiveMembership.userName}
+						fallback={fallbackUserIcon}
+						className="h-12 w-12 rounded-full"
+					/>
+					<div className="flex flex-col items-start justify-center gap-1.5">
+						<Link
+							to={UserProfilePath(effectiveMembership.userName)}
+							className="flex items-baseline justify-center gap-1.5 font-semibold text-foreground leading-none"
+						>
+							{effectiveMembership.userName}
+							{orgMember.isOwner && (
+								<span className="flex shrink-0 items-baseline justify-center" title={t.projectSettings.owner}>
+									<CrownIcon aria-hidden className="h-4 w-4 text-orange-500 dark:text-orange-400" />
+								</span>
+							)}
+						</Link>
+						<span className="text-[0.93rem] text-foreground-muted/80 leading-none">{effectiveMembership.role}</span>
+					</div>
+				</div>
 
-                {/* Accepted status */}
-                <div className="flex items-center justify-center gap-x-4">
-                    {effectiveMembership.accepted === false && (
-                        <span className="flex items-center justify-center gap-1.5 font-bold text-orange-500 dark:text-orange-400">
-                            <RefreshCcwIcon aria-hidden className="h-btn-icon w-btn-icon" />
-                            {t.projectSettings.pending}
-                        </span>
-                    )}
+				{/* Accepted status */}
+				<div className="flex items-center justify-center gap-x-4">
+					{effectiveMembership.accepted === false && (
+						<span className="flex items-center justify-center gap-1.5 font-bold text-orange-500 dark:text-orange-400">
+							<RefreshCcwIcon aria-hidden className="h-btn-icon w-btn-icon" />
+							{t.projectSettings.pending}
+						</span>
+					)}
 
-                    <Button size="icon" variant="ghost" onClick={() => setDetailsOpen((prev) => !prev)}>
-                        <ChevronDownIcon
-                            aria-hidden
-                            className={cn("h-btn-icon-lg w-btn-icon-lg transition-all", detailsOpen && "rotate-180")}
-                        />
-                    </Button>
-                </div>
-            </div>
+					<Button size="icon" variant="ghost" onClick={() => setDetailsOpen((prev) => !prev)}>
+						<ChevronDownIcon
+							aria-hidden
+							className={cn("h-btn-icon-lg w-btn-icon-lg transition-all", detailsOpen && "rotate-180")}
+						/>
+					</Button>
+				</div>
+			</div>
 
-            {/* Body */}
-            <div className={collapsibleBoxClassName(detailsOpen, "pt-4", "pt-0")}>
-                <Form {...form}>
-                    <form
-                        onSubmit={async (e) => {
-                            e.preventDefault();
-                            if (permsOverridden && !overridePerms) return await removePermissionOverride();
+			{/* Body */}
+			<div className={collapsibleBoxClassName(detailsOpen, "pt-4", "pt-0")}>
+				<Form {...form}>
+					<form
+						onSubmit={async (e) => {
+							e.preventDefault();
+							if (permsOverridden && !overridePerms) return await removePermissionOverride();
 
-                            const { data, error } = await zodParse(updateTeamMemberFormSchema, form.getValues());
-                            if (!data || error) {
-                                toast.error(error || "Invalid form data!");
-                                return;
-                            }
+							const { data, error } = await zodParse(updateTeamMemberFormSchema, form.getValues());
+							if (!data || error) {
+								toast.error(error || "Invalid form data!");
+								return;
+							}
 
-                            if (permsOverridden && overridePerms) await updateMemberDetails(data);
-                            else if (!permsOverridden && overridePerms) await addPermissionOverride(data);
-                        }}
-                        className="grid gap-form-elements px-1"
-                    >
-                        <FormItem className="flex-row items-center justify-between gap-x-4 sm:gap-x-8">
-                            <div className="flex flex-col items-start justify-center gap-1">
-                                <FormLabel
-                                    className="font-bold"
-                                    htmlFor={`override-perms-input_${effectiveMembership.id}`}
-                                >
-                                    {t.projectSettings.overrideValues}
-                                    <FormMessage />
-                                </FormLabel>
-                                <span className="text-foreground-muted/90 leading-tight">
-                                    {t.projectSettings.overrideValuesDesc}
-                                </span>
-                            </div>
-                            <Switch
-                                id={`override-perms-input_${effectiveMembership.id}`}
-                                checked={overridePerms}
-                                onCheckedChange={setOverridePerms}
-                                disabled={!canEditMember || (overridePerms && !canRemoveMembers)}
-                            />
-                        </FormItem>
+							if (permsOverridden && overridePerms) await updateMemberDetails(data);
+							else if (!permsOverridden && overridePerms) await addPermissionOverride(data);
+						}}
+						className="grid gap-form-elements px-1"
+					>
+						<FormItem className="flex-row items-center justify-between gap-x-4 sm:gap-x-8">
+							<div className="flex flex-col items-start justify-center gap-1">
+								<FormLabel className="font-bold" htmlFor={`override-perms-input_${effectiveMembership.id}`}>
+									{t.projectSettings.overrideValues}
+									<FormMessage />
+								</FormLabel>
+								<span className="text-foreground-muted/90 leading-tight">{t.projectSettings.overrideValuesDesc}</span>
+							</div>
+							<Switch
+								id={`override-perms-input_${effectiveMembership.id}`}
+								checked={overridePerms}
+								onCheckedChange={setOverridePerms}
+								disabled={!canEditMember || (overridePerms && !canRemoveMembers)}
+							/>
+						</FormItem>
 
-                        <FormField
-                            control={form.control}
-                            disabled={!overridePerms || !canEditMember}
-                            name="role"
-                            render={({ field }) => (
-                                <FormItem className="flex-col justify-between md:flex-row">
-                                    <div className="flex flex-col items-start justify-center gap-1">
-                                        <FormLabel
-                                            className="font-bold"
-                                            htmlFor={`member-role-input_${effectiveMembership.id}`}
-                                        >
-                                            {t.projectSettings.role}
-                                            <FormMessage />
-                                        </FormLabel>
-                                        <span className="text-foreground-muted/90 leading-tight">
-                                            {t.projectSettings.roleDesc}
-                                        </span>
-                                    </div>
-                                    <Input
-                                        {...field}
-                                        placeholder={t.projectSettings.role}
-                                        className="w-[24ch]"
-                                        id={`member-role-input_${effectiveMembership.id}`}
-                                    />
-                                </FormItem>
-                            )}
-                        />
+						<FormField
+							control={form.control}
+							disabled={!overridePerms || !canEditMember}
+							name="role"
+							render={({ field }) => (
+								<FormItem className="flex-col justify-between md:flex-row">
+									<div className="flex flex-col items-start justify-center gap-1">
+										<FormLabel className="font-bold" htmlFor={`member-role-input_${effectiveMembership.id}`}>
+											{t.projectSettings.role}
+											<FormMessage />
+										</FormLabel>
+										<span className="text-foreground-muted/90 leading-tight">{t.projectSettings.roleDesc}</span>
+									</div>
+									<Input
+										{...field}
+										placeholder={t.projectSettings.role}
+										className="w-[24ch]"
+										id={`member-role-input_${effectiveMembership.id}`}
+									/>
+								</FormItem>
+							)}
+						/>
 
-                        {orgMember.isOwner === false && (
-                            <FormField
-                                control={form.control}
-                                disabled={!overridePerms}
-                                name="permissions"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="font-bold">Permissions</FormLabel>
-                                        <div
-                                            className="grid w-full gap-x-4 gap-y-1"
-                                            style={{
-                                                gridTemplateColumns: "repeat(auto-fit, minmax(11rem, 1fr))",
-                                            }}
-                                        >
-                                            {ProjectPermissionsList.map((permissionName: ProjectPermission) => {
-                                                const checked = (field?.value || []).includes(permissionName);
-                                                return (
-                                                    <LabelledCheckbox
-                                                        key={permissionName}
-                                                        name={permissionName}
-                                                        disabled={field.disabled || (!checked && !canAddPermissions)}
-                                                        checked={checked}
-                                                        onCheckedChange={(checked) => {
-                                                            const currList = field.value || [];
-                                                            if (checked === true) {
-                                                                field.onChange([...currList, permissionName]);
-                                                            } else {
-                                                                field.onChange(
-                                                                    currList.filter((p) => p !== permissionName),
-                                                                );
-                                                            }
-                                                        }}
-                                                    >
-                                                        {t.projectSettings.perms[permissionName]}
-                                                    </LabelledCheckbox>
-                                                );
-                                            })}
-                                        </div>
-                                    </FormItem>
-                                )}
-                            />
-                        )}
+						{orgMember.isOwner === false && (
+							<FormField
+								control={form.control}
+								disabled={!overridePerms}
+								name="permissions"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel className="font-bold">Permissions</FormLabel>
+										<div
+											className="grid w-full gap-x-4 gap-y-1"
+											style={{
+												gridTemplateColumns: "repeat(auto-fit, minmax(11rem, 1fr))",
+											}}
+										>
+											{ProjectPermissionsList.map((permissionName: ProjectPermission) => {
+												const checked = (field?.value || []).includes(permissionName);
+												return (
+													<LabelledCheckbox
+														key={permissionName}
+														name={permissionName}
+														disabled={field.disabled || (!checked && !canAddPermissions)}
+														checked={checked}
+														onCheckedChange={(checked) => {
+															const currList = field.value || [];
+															if (checked === true) {
+																field.onChange([...currList, permissionName]);
+															} else {
+																field.onChange(currList.filter((p) => p !== permissionName));
+															}
+														}}
+													>
+														{t.projectSettings.perms[permissionName]}
+													</LabelledCheckbox>
+												);
+											})}
+										</div>
+									</FormItem>
+								)}
+							/>
+						)}
 
-                        <div className="flex w-full flex-wrap gap-x-4 gap-y-2">
-                            <Button type="submit" size="sm" disabled={submitButtonDisabled}>
-                                <SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
-                                {t.form.saveChanges}
-                            </Button>
-                        </div>
-                    </form>
-                </Form>
-            </div>
-        </Card>
-    );
+						<div className="flex w-full flex-wrap gap-x-4 gap-y-2">
+							<Button type="submit" size="sm" disabled={submitButtonDisabled}>
+								<SaveIcon aria-hidden className="h-btn-icon w-btn-icon" />
+								{t.form.saveChanges}
+							</Button>
+						</div>
+					</form>
+				</Form>
+			</div>
+		</Card>
+	);
 }

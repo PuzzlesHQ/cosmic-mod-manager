@@ -15,85 +15,85 @@ import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 
 export default function ChangePasswordPage() {
-    const user = useSession();
-    const { t } = useTranslation();
-    const [isLoading, setIsLoading] = useState(false);
+	const user = useSession();
+	const { t } = useTranslation();
+	const [isLoading, setIsLoading] = useState(false);
 
-    const form = useFormHook(emailFormSchema, {
-        defaultValues: {
-            email: user ? user.email : "",
-        },
-    });
+	const form = useFormHook(emailFormSchema, {
+		defaultValues: {
+			email: user ? user.email : "",
+		},
+	});
 
-    async function sendAccountPasswordChangeEmail() {
-        try {
-            if (isLoading) return;
-            setIsLoading(true);
+	async function sendAccountPasswordChangeEmail() {
+		try {
+			if (isLoading) return;
+			setIsLoading(true);
 
-            const response = await clientFetch("/api/user/change-password", {
-                method: "POST",
-                body: JSON.stringify(form.getValues()),
-            });
-            const result = await response.json();
+			const response = await clientFetch("/api/user/change-password", {
+				method: "POST",
+				body: JSON.stringify(form.getValues()),
+			});
+			const result = await response.json();
 
-            if (!response.ok || !result?.success) {
-                return toast.error(result?.message || t.common.error);
-            }
+			if (!response.ok || !result?.success) {
+				return toast.error(result?.message || t.common.error);
+			}
 
-            toast.success(result?.message || t.common.success);
-        } finally {
-            setIsLoading(false);
-        }
-    }
+			toast.success(result?.message || t.common.success);
+		} finally {
+			setIsLoading(false);
+		}
+	}
 
-    return (
-        <main className="full_page flex w-full items-center justify-center">
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(sendAccountPasswordChangeEmail)} className="w-full max-w-md">
-                    <Card className="w-full">
-                        <CardHeader>
-                            <CardTitle>{t.auth.changePassword}</CardTitle>
-                        </CardHeader>
-                        <CardContent className="grid gap-form-elements">
-                            <FormField
-                                control={form.control}
-                                name="email"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel htmlFor="email-input">{t.auth.email}</FormLabel>
+	return (
+		<main className="full_page flex w-full items-center justify-center">
+			<Form {...form}>
+				<form onSubmit={form.handleSubmit(sendAccountPasswordChangeEmail)} className="w-full max-w-md">
+					<Card className="w-full">
+						<CardHeader>
+							<CardTitle>{t.auth.changePassword}</CardTitle>
+						</CardHeader>
+						<CardContent className="grid gap-form-elements">
+							<FormField
+								control={form.control}
+								name="email"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel htmlFor="email-input">{t.auth.email}</FormLabel>
 
-                                        <Input
-                                            id="email-input"
-                                            type="email"
-                                            autoComplete="email"
-                                            {...field}
-                                            placeholder={t.auth.enterEmail}
-                                        />
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+										<Input
+											id="email-input"
+											type="email"
+											autoComplete="email"
+											{...field}
+											placeholder={t.auth.enterEmail}
+										/>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
 
-                            <Button className="h-form-submit-btn w-full" disabled={isLoading}>
-                                {isLoading ? (
-                                    <LoadingSpinner size="xs" />
-                                ) : (
-                                    <ArrowRightIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-                                )}
-                                {t.form.continue}
-                            </Button>
-                        </CardContent>
+							<Button className="h-form-submit-btn w-full" disabled={isLoading}>
+								{isLoading ? (
+									<LoadingSpinner size="xs" />
+								) : (
+									<ArrowRightIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
+								)}
+								{t.form.continue}
+							</Button>
+						</CardContent>
 
-                        <CardFooter className="flex w-full flex-col items-center justify-center gap-1">
-                            <HorizontalSeparator />
+						<CardFooter className="flex w-full flex-col items-center justify-center gap-1">
+							<HorizontalSeparator />
 
-                            <TextLink prefetch={LinkPrefetchStrategy.Render} to="/login">
-                                {t.form.login}
-                            </TextLink>
-                        </CardFooter>
-                    </Card>
-                </form>
-            </Form>
-        </main>
-    );
+							<TextLink prefetch={LinkPrefetchStrategy.Render} to="/login">
+								{t.form.login}
+							</TextLink>
+						</CardFooter>
+					</Card>
+				</form>
+			</Form>
+		</main>
+	);
 }
