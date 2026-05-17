@@ -145,3 +145,14 @@
 		padding-inline: 2rem;
 	}
 }
+
+@utility backdrop-animation {
+	@apply data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:duration-200 data-[state=open]:duration-250;
+	@apply data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0;
+}
+
+@utility dialog-animation {
+	@apply data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:duration-200 data-[state=open]:duration-250;
+	@apply data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0;
+	@apply data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95;
+}

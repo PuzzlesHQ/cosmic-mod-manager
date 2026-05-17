@@ -16,7 +16,7 @@ function DialogOverlay({ ref, className, ...props }: React.ComponentProps<typeof
 		<DialogPrimitive.Overlay
 			ref={ref}
 			className={cn(
-				"data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/90 data-[state=closed]:animate-out data-[state=open]:animate-in",
+				"backdrop-animation fixed inset-0 z-50 bg-black/90",
 				className,
 			)}
 			{...props}
@@ -32,7 +32,8 @@ function DialogContent({ ref, className, children, ...props }: React.ComponentPr
 			<DialogPrimitive.Content
 				ref={ref}
 				className={cn(
-					"data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] fixed top-[50%] left-[50%] z-50 grid max-h-full w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 overflow-y-auto border border-border bg-card-background py-card-surround shadow-lg outline-none duration-200 data-[state=closed]:animate-out data-[state=open]:animate-in sm:rounded",
+					"fixed top-[50%] left-[50%] z-50 grid max-h-full w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 overflow-y-auto border border-border bg-card-background py-card-surround shadow-lg outline-none sm:rounded",
+					"dialog-animation",
 					className,
 				)}
 				{...props}
@@ -41,7 +42,7 @@ function DialogContent({ ref, className, children, ...props }: React.ComponentPr
 				<DialogPrimitive.Close
 					className={cn(
 						buttonVariants({ variant: "ghost", size: "icon" }),
-						"absolute end-2.5 top-2.5 rounded p-1.5 disabled:pointer-events-none",
+						"absolute inset-e-2.5 top-2.5 rounded p-1.5 disabled:pointer-events-none",
 					)}
 				>
 					<XIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
@@ -107,5 +108,6 @@ export {
 	DialogOverlay,
 	DialogPortal,
 	DialogTitle,
-	DialogTrigger,
+	DialogTrigger
 };
+
