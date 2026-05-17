@@ -59,7 +59,7 @@ export default function HomePage({ projects }: Props) {
 				? createPortal(
 						<div className="relative grid grid-cols-1 grid-rows-1 overflow-hidden">
 							<canvas id="starry_bg_canvas" className="col-span-full row-span-full w-full" />
-							<div className="hero_section_fading_bg col-span-full row-span-full h-full w-full bg-gradient-to-b from-transparent via-background/65 to-background" />
+							<div className="hero_section_fading_bg col-span-full row-span-full h-full w-full bg-linear-to-b from-transparent via-background/65 to-background" />
 						</div>,
 						gridBgPortal,
 					)
@@ -74,16 +74,16 @@ export default function HomePage({ projects }: Props) {
 					<div className="flex w-full max-w-4xl flex-col items-center justify-center gap-4">
 						<h1 className="inline-flex flex-wrap items-center justify-center gap-x-2.5 text-center font-medium text-4xl text-foreground lg:gap-x-4 lg:text-6xl">
 							{t.homePage.title(
-								<div key="project-type" className="mb-1 inline-block h-12 max-w-full overflow-hidden lg:h-[4.5rem]">
-									<span className="hero_section_showcase inline-flex flex-col items-center justify-center [--unit-height:_3rem] lg:[--unit-height:_4.5rem]">
+								<div key="project-type" className="mb-1 inline-block h-12 max-w-full overflow-hidden lg:h-18">
+									<span className="hero_section_showcase inline-flex flex-col items-center justify-center [--unit-height:3rem] lg:[--unit-height:4.5rem]">
 										{showcaseItems?.map((item, index) => {
 											return (
 												<strong
 													// biome-ignore lint/suspicious/noArrayIndexKey: --
 													key={`${item}${index}`}
 													className={cn(
-														"flex h-12 items-center justify-center whitespace-nowrap text-nowrap bg-clip-text font-bold text-4xl leading-loose lg:h-[4.5rem] lg:text-6xl",
-														"bg-accent-bg bg-cover bg-gradient-to-b from-foreground-bright via-accent-bg to-accent-bg text-transparent",
+														"flex h-12 items-center justify-center whitespace-nowrap text-nowrap bg-clip-text font-bold text-4xl leading-loose lg:h-18 lg:text-6xl",
+														"bg-accent-bg bg-cover bg-linear-to-b from-foreground-bright via-accent-bg to-accent-bg text-transparent",
 													)}
 													// @ts-expect-error
 													style={{ "--index": index + 1 }}

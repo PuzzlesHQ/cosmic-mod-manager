@@ -176,7 +176,7 @@ function ChartTooltipContent({
 									) : (
 										!hideIndicator && (
 											<div
-												className={cn("shrink-0 rounded-[2px] border-border bg-[--color-bg]", {
+												className={cn("shrink-0 rounded-xs border-border bg-(--color-bg)", {
 													"h-2.5 w-2.5": indicator === "dot",
 													"w-1": indicator === "line",
 													"w-0 border-[1.5px] border-dashed bg-transparent": indicator === "dashed",

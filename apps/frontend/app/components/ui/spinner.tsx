@@ -37,7 +37,7 @@ export function LoadingSpinner({ size }: { size?: LoaderSizes }) {
 	return (
 		<div
 			title="Loading..."
-			className="size-[--size] animate-spin rounded-[999px] border-current border-s-transparent border-e-transparent [border-width:_var(--border-width)]"
+			className="size-(--size) animate-spin rounded-full border-current border-s-transparent border-e-transparent [border-width:var(--border-width)]"
 			style={{
 				// @ts-expect-error
 				"--size": loaderSize,
@@ -54,7 +54,7 @@ export function WanderingCubesSpinner({ className }: { className?: string }) {
 			role="presentation"
 			aria-label="Loading"
 		>
-			<span className="relative flex size-[--frame-size] items-center justify-center contain-paint">
+			<span className="relative flex size-(--frame-size) items-center justify-center contain-paint">
 				<span className="wandering_cube cube1 bg-current" />
 				<span className="wandering_cube cube2 bg-current" />
 			</span>

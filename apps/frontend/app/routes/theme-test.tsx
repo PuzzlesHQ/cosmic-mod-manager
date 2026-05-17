@@ -33,6 +33,7 @@ import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { Separator } from "~/components/ui/separator";
+import { WanderingCubesSpinner } from "~/components/ui/spinner";
 import { Switch } from "~/components/ui/switch";
 import { LabelledTernaryCheckbox, TernaryStates } from "~/components/ui/ternary-checkbox";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
@@ -213,6 +214,10 @@ export default function () {
 						{Object.values(ProjectPublishingStatus).map((status) => (
 							<ProjectStatusBadge key={status} status={status} t={t} />
 						))}
+					</div>
+
+					<div className="flex w-full flex-wrap gap-4">
+						<WanderingCubesSpinner />
 					</div>
 				</CardContent>
 			</Card>

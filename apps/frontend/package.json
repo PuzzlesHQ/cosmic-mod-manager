@@ -40,7 +40,6 @@
 		"@types/react-dom": "^19.2.3",
 		"@types/ua-parser-js": "^0.7.39",
 		"tailwindcss": "^4.3.0",
-		"tailwindcss-animate": "^1.0.7",
 		"vite": "^7.3.0",
 		"vite-tsconfig-paths": "^6.1.1"
 	}

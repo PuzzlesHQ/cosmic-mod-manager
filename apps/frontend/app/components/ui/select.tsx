@@ -22,7 +22,7 @@ function SelectTrigger({
 			ref={ref}
 			className={cn(
 				buttonVariants({ variant: variant || "secondary", size: size }),
-				"w-full justify-between px-3 [&>span]:line-clamp-1 [&_.indicator]:data-[state=open]:rotate-180",
+				"w-full justify-between px-3 [&>span]:line-clamp-1 data-[state=open]:[&_.indicator]:rotate-180",
 				className,
 			)}
 			{...props}
@@ -97,7 +97,7 @@ function SelectContent({
 				<SelectPrimitive.Viewport
 					className={cn(
 						"p-1",
-						position === "popper" && "h-[--radix-select-trigger-height] w-full min-w-[--radix-select-trigger-width]",
+						position === "popper" && "h-(--radix-select-trigger-height) w-full min-w-(--radix-select-trigger-width)",
 					)}
 				>
 					{children}
