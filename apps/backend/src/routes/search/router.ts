@@ -1,23 +1,23 @@
 import {
-    categoryFilterParamNamespace,
-    defaultSearchLimit,
-    defaultSortBy,
-    gameVersionFilterParamNamespace,
-    licenseFilterParamNamespace,
-    loaderFilterParamNamespace,
-    MAX_SEARCH_LIMIT,
-    pageOffsetParamNamespace,
-    searchLimitParamNamespace,
-    sortByParamNamespace,
+	categoryFilterParamNamespace,
+	defaultSearchLimit,
+	defaultSortBy,
+	gameVersionFilterParamNamespace,
+	licenseFilterParamNamespace,
+	loaderFilterParamNamespace,
+	MAX_SEARCH_LIMIT,
+	pageOffsetParamNamespace,
+	searchLimitParamNamespace,
+	sortByParamNamespace,
 } from "@app/utils/config/search";
 import { getProjectTypeFromName } from "@app/utils/convertors";
+import { isNumber } from "@app/utils/number";
 import { getAllLoaderCategories, getValidProjectCategories } from "@app/utils/project";
 import GAME_VERSIONS from "@app/utils/src/constants/game-versions";
 import { SearchResultSortMethod, TagType } from "@app/utils/types";
 import { type Context, Hono } from "hono";
 import { applyCacheHeaders } from "~/middleware/cache";
 import { searchReqRateLimiter } from "~/middleware/rate-limiter";
-import { isNumber } from "~/utils";
 import { HTTP_STATUS, invalidRequestResponse, serverErrorResponse } from "~/utils/http";
 import { searchProjects } from "./controllers";
 

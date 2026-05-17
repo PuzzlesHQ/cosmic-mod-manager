@@ -1,12 +1,13 @@
+import { isNumber } from "@app/utils/number";
 import { combineProjectMembers, sortVersionsWithReference } from "@app/utils/project";
 import { gameVersionsList } from "@app/utils/src/constants/game-versions";
 import type {
-    EnvironmentSupport,
-    OrganisationPermission,
-    ProjectPermission,
-    ProjectPublishingStatus,
-    ProjectType,
-    ProjectVisibility,
+	EnvironmentSupport,
+	OrganisationPermission,
+	ProjectPermission,
+	ProjectPublishingStatus,
+	ProjectType,
+	ProjectVisibility,
 } from "@app/utils/types";
 import type { ProjectDetailsData, ProjectListItem } from "@app/utils/types/api";
 import type { TeamMember as DBTeamMember } from "@prisma-client";
@@ -17,7 +18,6 @@ import meilisearch from "~/services/meilisearch";
 import prisma from "~/services/prisma";
 import valkey from "~/services/redis";
 import type { UserSessionData } from "~/types";
-import { isNumber } from "~/utils";
 import { HTTP_STATUS } from "~/utils/http";
 import { parseJson } from "~/utils/str";
 import { orgIconUrl, projectGalleryFileUrl, projectIconUrl, userFileUrl } from "~/utils/urls";
