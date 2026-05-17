@@ -1,7 +1,7 @@
 import {
-    CHANGE_ACCOUNT_PASSWORD_EMAIL_VALIDITY_ms,
-    CONFIRM_NEW_PASSWORD_EMAIL_VALIDITY_ms,
-    DELETE_USER_ACCOUNT_EMAIL_VALIDITY_ms,
+	CHANGE_ACCOUNT_PASSWORD_EMAIL_VALIDITY_ms,
+	CONFIRM_NEW_PASSWORD_EMAIL_VALIDITY_ms,
+	DELETE_USER_ACCOUNT_EMAIL_VALIDITY_ms,
 } from "@app/utils/constants";
 import { getConfirmActionTypeFromStringName } from "@app/utils/convertors";
 import type { emailFormSchema, passwordFormSchema, setNewPasswordFormSchema } from "@app/utils/schemas/settings";
@@ -14,7 +14,7 @@ import { generateRandomToken, hashPassword, hashString, matchPassword } from "~/
 import { invalidateAllOtherUserSessions } from "~/routes/auth/helpers/session";
 import prisma from "~/services/prisma";
 import type { UserSessionData } from "~/types";
-import { isConfirmationCodeValid } from "~/utils";
+import { isExpired } from "~/utils";
 import { sendChangePasswordEmail, sendConfirmNewPasswordEmail, sendDeleteUserAccountEmail } from "~/utils/email";
 import { HTTP_STATUS, invalidRequestResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
@@ -71,7 +71,7 @@ export async function getConfirmActionTypeFromCode(token: string) {
     const actionType = getConfirmActionTypeFromStringName(confirmationEmail?.confirmationType || "");
     if (!confirmationEmail || !actionType) return invalidRequestResponseData("Invalid or expired code");
 
-    if (!isConfirmationCodeValid(confirmationEmail.dateCreated, confirmationEmailValidityDict[actionType]))
+    if (!isExpired(confirmationEmail.dateCreated, confirmationEmailValidityDict[actionType]))
         return invalidRequestResponseData("Invalid or expired code");
 
     return { data: { actionType: actionType, success: true }, status: HTTP_STATUS.OK };
@@ -114,7 +114,7 @@ export async function confirmAddingNewPassword(code: string) {
     });
     if (!confirmationEmail) return invalidRequestResponseData("Invalid or expired code");
 
-    if (!isConfirmationCodeValid(confirmationEmail.dateCreated, CONFIRM_NEW_PASSWORD_EMAIL_VALIDITY_ms))
+    if (!isExpired(confirmationEmail.dateCreated, CONFIRM_NEW_PASSWORD_EMAIL_VALIDITY_ms))
         return invalidRequestResponseData("Invalid or expired code");
     if (confirmationEmail.user.password)
         return invalidRequestResponseData("A password already exists for your account");
@@ -257,7 +257,7 @@ export async function changeUserPassword(
 
     if (
         !confirmationEmail?.userId ||
-        !isConfirmationCodeValid(confirmationEmail.dateCreated, CHANGE_ACCOUNT_PASSWORD_EMAIL_VALIDITY_ms)
+        !isExpired(confirmationEmail.dateCreated, CHANGE_ACCOUNT_PASSWORD_EMAIL_VALIDITY_ms)
     ) {
         return invalidRequestResponseData();
     }

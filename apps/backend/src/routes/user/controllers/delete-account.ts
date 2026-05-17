@@ -10,7 +10,7 @@ import { hashString } from "~/routes/auth/helpers";
 import { deleteAllUserCollections } from "~/routes/collections/controllers";
 import { deleteUserDirectory } from "~/services/storage";
 import { FILE_STORAGE_SERVICE, type UserSessionData } from "~/types";
-import { isConfirmationCodeValid } from "~/utils";
+import { isExpired } from "~/utils";
 import env from "~/utils/env";
 import { HTTP_STATUS, invalidRequestResponseData, serverErrorResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
@@ -26,7 +26,7 @@ export async function confirmUserAccountDeletion(token: string) {
 
     if (
         !confirmationEmail?.id ||
-        !isConfirmationCodeValid(confirmationEmail.dateCreated, DELETE_USER_ACCOUNT_EMAIL_VALIDITY_ms)
+        !isExpired(confirmationEmail.dateCreated, DELETE_USER_ACCOUNT_EMAIL_VALIDITY_ms)
     ) {
         return invalidRequestResponseData("Expired or invalid code");
     }

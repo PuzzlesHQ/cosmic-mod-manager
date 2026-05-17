@@ -1,3 +1,3 @@
-export function isConfirmationCodeValid(dateCreated: Date, validity_ms: number) {
-    return Date.now() <= new Date(dateCreated).getTime() + validity_ms;
+export function isExpired(expiryDate: Date, validity_ms: number) {
+    return Date.now() <= new Date(expiryDate).getTime() + validity_ms;
 }
