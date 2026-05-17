@@ -27,8 +27,7 @@ export function getThemeClassName(theme: ThemePreference, prefersOLED: boolean, 
 	const effectiveTheme = resolveThemePreference(theme, prefersOLED, e);
 	const themeObj = findTheme(effectiveTheme);
 
-	if (!themeObj.variant) return [themeObj.name];
-	return [themeObj.variant, themeObj.name];
+	return [themeObj.name];
 }
 
 const allThemesClasses = [...Object.values(ThemeVariant), ...Object.values(ThemePreference)];

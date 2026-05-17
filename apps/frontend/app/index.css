@@ -1,3 +1,4 @@
+@import "./tailwind.css";
 @import "./fonts/index.css";
 @import "./components/ui/styles.css";
 @import "./components/misc/styles.css";
@@ -6,10 +7,6 @@
 @import "./components/md-editor/highlightjs.css";
 @import "./components/themes/index.css";
 @import "./pages/layouts.css";
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 html,
 body {
@@ -43,8 +40,8 @@ body.no-scrollbar {
 	outline: transparent;
 }
 
-@layer components {
-	.focus_ring:not(.no_focus_ring) {
+@utility focus_ring {
+	&:not(.no_focus_ring) {
 		--surround-width: 0.17rem;
 		box-shadow:
 			inset 0px -1px 2px transparent,
@@ -53,88 +50,104 @@ body.no-scrollbar {
 		transition-duration: 150ms;
 		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 	}
+}
 
-	.keyboard_focus_ring:not(.no_keyboard_focus_ring) {
+@utility keyboard_focus_ring {
+	&:not(.no_keyboard_focus_ring) {
 		--surround-width: 0.17rem;
 		box-shadow:
 			inset 0px -1px 2px transparent,
 			0 0 0 var(--surround-width) hsla(var(--accent-bg));
 	}
+}
 
-	.input_box_styles:not(.no_input_box_styles) {
+@utility input_box_styles {
+	&:not(.no_input_box_styles) {
 		@apply h-10 rounded flex items-center bg-raised-background text-foreground px-3 py-2 placeholder:text-foreground-extra-muted disabled:cursor-not-allowed disabled:opacity-50;
 		@apply focus-visible:outline-none focus-visible:focus_ring focus-visible:bg-transparent;
 	}
+}
 
-	.full_page:not(.no_full_page) {
+@utility full_page {
+	&:not(.no_full_page) {
 		min-height: min(100vh, 68rem);
 		min-height: clamp(45rem, 100vh, 68rem);
 	}
+}
 
-	.bg_hover_stagger:not(.no_bg_hover_stagger) {
+@utility bg_hover_stagger {
+	&:not(.no_bg_hover_stagger) {
 		transition-property: filter, color, background-color;
 		@apply hover:duration-0 group-hover:duration-0;
 	}
+}
 
-	.absolute-center {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-	}
+@utility absolute-center {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
 
-	/* kinda HACKY_THING */
-	.content-container:not(:has(> .full-width)) {
+/* kinda HACKY_THING */
+@utility content-container {
+	&:not(:has(> .full-width)) {
 		@apply container sm:px-8 mb-16 px-4;
 	}
+}
 
-	.trim-both {
-		text-box: trim-both cap alphabetic;
+@utility trim-both {
+	text-box: trim-both cap alphabetic;
+}
+
+@layer base {
+	a {
+		text-underline-offset: 2px;
 	}
-}
 
-a {
-	text-underline-offset: 2px;
-}
+	button {
+		cursor: pointer;
+	}
 
-a,
-button,
-input[type="checkbox"] {
-	@apply focus-visible:outline-none focus-visible:keyboard_focus_ring rounded transition-[filter];
-}
+	a,
+	button,
+	input[type="checkbox"] {
+		@apply focus-visible:outline-none focus-visible:keyboard_focus_ring rounded transition-[filter];
+	}
 
-.lucide-arrow-up-right {
-	transition: translate 250ms ease;
-}
+	.lucide-arrow-up-right {
+		transition: translate 250ms ease;
+	}
 
-a:hover .lucide-arrow-up-right,
-a:focus-visible .lucide-arrow-up-right {
-	translate: 0.1rem -0.1rem;
-}
+	a:hover .lucide-arrow-up-right,
+	a:focus-visible .lucide-arrow-up-right {
+		translate: 0.1rem -0.1rem;
+	}
 
-a svg {
-	flex-shrink: 0;
-}
+	a svg {
+		flex-shrink: 0;
+	}
 
-img {
-	vertical-align: center;
-	font-style: italic;
-}
+	img {
+		vertical-align: center;
+		font-style: italic;
+	}
 
-.disable-interactions {
-	user-select: none;
-	pointer-events: none;
-	filter: brightness(80%);
-}
+	.disable-interactions {
+		user-select: none;
+		pointer-events: none;
+		filter: brightness(80%);
+	}
 
-/* RTL things */
+	/* RTL things */
 
-html[dir="rtl"] .lucide-chevron-right,
-html[dir="rtl"] .lucide-arrow-right {
-	rotate: 180deg;
-}
+	html[dir="rtl"] .lucide-chevron-right,
+	html[dir="rtl"] .lucide-arrow-right {
+		rotate: 180deg;
+	}
 
-html[dir="rtl"] .lucide-chevron-left,
-html[dir="rtl"] .lucide-arrow-left {
-	rotate: 180deg;
+	html[dir="rtl"] .lucide-chevron-left,
+	html[dir="rtl"] .lucide-arrow-left {
+		rotate: 180deg;
+	}
 }

@@ -28,7 +28,7 @@ export default function PreferencesPage() {
 				</CardHeader>
 				<CardContent>
 					<div className="flex w-full items-center justify-between gap-x-6 gap-y-1">
-						<label htmlFor="view-transitions" className="shrink-[2] grow basis-[min-content]">
+						<label htmlFor="view-transitions" className="shrink-2 grow basis-[min-content]">
 							<span className="my-0 block font-bold text-foreground text-lg">{t.settings.viewTransitions}</span>
 							<span className="my-0 block text-foreground-muted">{t.settings.viewTransitionsDesc}</span>
 						</label>
