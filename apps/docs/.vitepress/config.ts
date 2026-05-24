@@ -16,7 +16,7 @@ export default defineConfig({
 
 		editLink: {
 			pattern: (data) => {
-				return `https://github.com/PuzzlesHQ/cosmic-mod-manager/blob/main/apps/docs/${data.filePath}`;
+				return `https://github.com/PuzzlesHQ/cosmic-mod-manager/blob/main/apps/docs/src/${data.filePath}`;
 			},
 		},
 
