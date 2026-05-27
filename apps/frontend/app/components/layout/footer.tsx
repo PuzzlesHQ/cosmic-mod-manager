@@ -1,7 +1,13 @@
 import { ArrowUpRightIcon, LanguagesIcon, LinkIcon, Settings2Icon } from "lucide-react";
-import { type LinkProps, useLocation } from "react-router";
+import { useLocation } from "react-router";
 import { BrandIcon } from "~/components/icons";
-import Link, { LinkPrefetchStrategy, TextLink, useNavigate, VariantButtonLink } from "~/components/ui/link";
+import Link, {
+	type CustomLinkProps,
+	LinkPrefetchStrategy,
+	TextLink,
+	useNavigate,
+	VariantButtonLink,
+} from "~/components/ui/link";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { DotSeparator } from "~/components/ui/separator";
 import { usePreferences } from "~/hooks/preferences";
@@ -36,7 +42,7 @@ export default function Footer() {
 				<LinksColumn area="links-1">
 					<Title>{footer.resources}</Title>
 
-					<FooterLink to={Config.DOCS_URL} aria-label={footer.docs} target="_blank">
+					<FooterLink to={Config.DOCS_URL} escapeUrlWrapper aria-label={footer.docs} target="_blank">
 						{footer.docs}
 						<OpenInNewTab_Icon />
 					</FooterLink>
@@ -57,12 +63,12 @@ export default function Footer() {
 						{footer.about}
 					</FooterLink>
 
-					<FooterLink to="https://github.com/PuzzlesHQ/cosmic-mod-manager" aria-label="GitHub Repo" target="_blank">
+					<FooterLink to="https://github.com/PuzzlesHQ/cosmic-mod-manager" escapeUrlWrapper aria-label="GitHub Repo" target="_blank">
 						Github
 						<OpenInNewTab_Icon />
 					</FooterLink>
 
-					<FooterLink to={Config.DISCORD_INVITE} aria-label="Discord Invite" target="_blank">
+					<FooterLink to={Config.DISCORD_INVITE} escapeUrlWrapper aria-label="Discord Invite" target="_blank">
 						Discord
 						<OpenInNewTab_Icon />
 					</FooterLink>
@@ -141,7 +147,7 @@ function Title({ children }: { children: React.ReactNode }) {
 	return <h4 className="font-bold text-foreground-bright">{children}</h4>;
 }
 
-function FooterLink({ children, ...props }: LinkProps) {
+function FooterLink({ children, ...props }: CustomLinkProps) {
 	return (
 		<Link
 			{...props}

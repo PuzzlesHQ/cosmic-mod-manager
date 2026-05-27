@@ -21,7 +21,7 @@ export enum LinkPrefetchStrategy {
 	Viewport = "viewport",
 }
 
-interface CustomLinkProps extends LinkProps {
+export interface CustomLinkProps extends LinkProps {
 	ref?: React.ComponentProps<"a">["ref"];
 	escapeUrlWrapper?: boolean;
 }
