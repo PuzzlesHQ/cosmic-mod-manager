@@ -27,11 +27,11 @@ Vårt mål er enkelt:
 
 Sjølv om CRMM er eit fellesskapsdrive initiativ, er det nokon kjernepersonar bak det:
 
-* **Abhinav** – *Kodetrollmannen*. Det er han som skaper backend- og frontend-delen av nettstaden. Om noko må fiksast eller utviklast, er det han som får det gjort.
-* **Eatham** – *Mannen med ideen*. Hjalp CRMM å komma i gang og har vore der heilt frå starten av.
-* **Spicylemon** – *Leiaren, logoutformar, og grammatikkontrollør, når han hugsar det*. Har oversikt over prosjektet og sørgjer for at alt går knirkefritt.
+* **[Abhinav](${props.memberProfiles.abhinav})** – *Kodetrollmannen*. Det er han som skaper backend- og frontend-delen av nettstaden. Om noko må fiksast eller utviklast, er det han som får det gjort.
+* **[Eatham](${props.memberProfiles.eatham})** – *Mannen med ideen*. Hjalp CRMM å komma i gang og har vore der heilt frå starten av.
+* **[Spicylemon](${props.memberProfiles.spicy})** – *Leiaren, logoutformar, og grammatikkontrollør, når han hugsar det*. Har oversikt over prosjektet og sørgjer for at alt går knirkefritt.
 * **CaptainDynamite** – Hjelper til med finansieringa av prosjektet. Har vore der sidan starten.
-* **Dounford & Arlojay** – Gav generell hjelp i CRMMs tidlege stadium.
+* **[Dounford](${props.memberProfiles.dounford}) & Arlojay** – Gav generell hjelp i CRMMs tidlege stadium.
 * **Puzzle** – Er i dag moderorganisasjonen og ein sentral del av røtene våre.
 
 Sjølv om mange hjelper til i ny og ne – hovudsakleg via Discord – blir det daglege arbeidet handtert hovudsakleg av Spicylemon og Abhinav, med nokre urter og krydder slungne inn av Eatham.
@@ -57,7 +57,7 @@ Alt er utvikla for å vera lett, personvernvennleg og med modifiseringsfellesska
 
 ### Fellesskap og bidrag
 
-*CRMM er **open kjeldekode og er driven av fellesskapen** under *GNU *Affero General Public License*.
+CRMM er **open kjeldekode og er driven av fellesskapen** under *GNU Affero General Public License*.
 Brukarar kan hjelpa til med å omsetja nettstaden, foreslå funksjonar, eller (om dei kjenner seg modige) til og med bidra direkte via [GitHub](${props.repoLink}). Det skjer ikkje ofte, men når det skjer, set me stor pris på det.
 
 ### Vil du vera med og bidra?

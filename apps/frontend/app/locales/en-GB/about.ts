@@ -1,6 +1,13 @@
 export interface AboutUsProps {
 	discordInvite: string;
 	repoLink: string;
+
+	memberProfiles: {
+		abhinav: string;
+		eatham: string;
+		spicy: string;
+		dounford: string;
+	};
 }
 
 export const AboutUs = (props: AboutUsProps) => `
@@ -30,11 +37,11 @@ To **empower creators** and **make content sharing seamless**. From mods and map
 
 While CRMM is a community-driven effort, here are some of the core people behind it:
 
-* **Abhinav** – *The coder wizard*. He built the backend and frontend of the site. If something needs fixing or building, he's the one who gets it done.
-* **Eatham** – *The idea guy*. Helped get CRMM off the ground and was there from the very beginning.
-* **Spicylemon** – *The manager, logo designer, and grammar checker (when he remembers)*. Oversees the project and keeps everything running smoothly.
+* **[Abhinav](${props.memberProfiles.abhinav})** – *The coder wizard*. He built the backend and frontend of the site. If something needs fixing or building, he's the one who gets it done.
+* **[Eatham](${props.memberProfiles.eatham})** – *The idea guy*. Helped get CRMM off the ground and was there from the very beginning.
+* **[Spicylemon](${props.memberProfiles.spicy})** – *The manager, logo designer, and grammar checker (when he remembers)*. Oversees the project and keeps everything running smoothly.
 * **CaptainDynamite** – Helps with funding the project, been there since the start.
-* **Dounford & Arlojay** – Provided general help during CRMM’s early days.
+* **[Dounford](${props.memberProfiles.dounford}) & Arlojay** – Provided general help during CRMM’s early days.
 * **Puzzle** – Our “parent” project and a key part of our roots.
 
 Although lots of folks pitch in now and then – mostly via Discord – the day-to-day work is mainly handled by Spicylemon and Abhinav with a few herbes and spices thrown in by Eatham.

@@ -27,11 +27,11 @@ Vårt mål er enkelt:
 
 Selv om CRMM er et fellesskapsdrevet initiativ, er det noen kjernepersoner bak det:
 
-* **Abhinav** – *Kodetrollmannen*. Det er han som skaper backend- og frontend-delen av nettstedet. Hvis noe må fikses eller utvikles, er det han som får det gjort.
-* **Eatham** – *Mannen med ideen*. Hjalp CRMM å komme i gang og har vært der helt fra starten av.
-* **Spicylemon** – *Lederen, logoutformer, og grammatikkontrollør, når han husker det*. Har oversikt over prosjektet og sørger for at alt går knirkefritt.
+* **[Abhinav](${props.memberProfiles.abhinav})** – *Kodetrollmannen*. Det er han som skaper backend- og frontend-delen av nettstedet. Hvis noe må fikses eller utvikles, er det han som får det gjort.
+* **[Eatham](${props.memberProfiles.eatham})** – *Mannen med ideen*. Hjalp CRMM å komme i gang og har vært der helt fra starten av.
+* **[Spicylemon](${props.memberProfiles.spicy})** – *Lederen, logoutformer, og grammatikkontrollør, når han husker det*. Har oversikt over prosjektet og sørger for at alt går knirkefritt.
 * **CaptainDynamite** – Hjelper til med finansieringen av prosjektet. Har vært der siden starten.
-* **Dounford & Arlojay** – Gav generell hjelp i CRMMs tidlige stadier.
+* **[Dounford](${props.memberProfiles.dounford}) & Arlojay** – Gav generell hjelp i CRMMs tidlige stadier.
 * **Puzzle** – Er i dag moderorganisasjonen og en sentral del av våre røtter.
 
 Selv om mange hjelper til i ny og ne – hovedsakelig via Discord – håndteres det daglige arbeidet hovedsakelig av Spicylemon og Abhinav, med noen urter og krydder slengt inn av Eatham.
