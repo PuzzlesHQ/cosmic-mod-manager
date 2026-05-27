@@ -1,4 +1,5 @@
 import type { Locale } from "~/locales/types";
+import { AboutUs } from "./about";
 import tags from "./tags";
 
 function Pluralize(count: number, singular: string, plural: string) {
@@ -636,6 +637,8 @@ export default {
 		copyrightPolicyTitle: "Retningslinjer for opphavsrett",
 		securityNoticeTitle: "Sikkerhetsvarsel",
 		privacyPolicyTitle: "Personvernerklæring",
+
+		aboutUs: AboutUs
 	},
 	moderation: {
 		review: "Gjennomgå prosjekter",

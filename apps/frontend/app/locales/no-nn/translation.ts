@@ -1,4 +1,5 @@
 import type { PartialLocale } from "~/locales/types";
+import { AboutUs } from "./about";
 
 function Pluralize(count: number, singular: string, plural: string) {
 	return count === 1 ? singular : plural;
@@ -79,5 +80,8 @@ export default {
 		featured: "Framheva",
 		uploadIcon: "Last opp profilbilete",
 		removeIcon: "Fjern profilbilete",
+	},
+	legal: {
+		aboutUs: AboutUs,
 	},
 } satisfies PartialLocale;

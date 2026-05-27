@@ -14,6 +14,13 @@ export default function () {
 				text={t.legal.aboutUs({
 					discordInvite: Config.DISCORD_INVITE,
 					repoLink: Config.REPO_LINK,
+
+					memberProfiles: {
+						abhinav: "https://github.com/Abhinav5383",
+						eatham: "https://github.com/realeatham",
+						spicy: "https://github.com/Spicylemon2623",
+						dounford: "https://github.com/Dounford-Felipe"
+					}
 				})}
 			/>
 		</main>
