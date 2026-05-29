@@ -3,6 +3,9 @@
 This monorepo contains the code of CRMM, a mod hosting platform for [Cosmic Reach](https://finalforeach.itch.io/cosmic-reach), like Modrinth for Minecraft. Check it out at [crmods.org](https://crmods.org).
 
 
+### [Features Showcase](./showcase/README.md)
+
+
 ## Packages
 
 - ### [Frontend](/apps/frontend)
