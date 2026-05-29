@@ -11,6 +11,7 @@ import { fallbackProjectIcon, fallbackUserIcon } from "~/components/icons";
 import { ImgWrapper } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { FormattedDate, TimePassedSince } from "~/components/ui/date";
+import { LabelledIcon } from "~/components/ui/labelled-icon";
 import Link, { useNavigate } from "~/components/ui/link";
 import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { toast } from "~/components/ui/sonner";
@@ -289,22 +290,21 @@ interface NotifReceivedDateProps {
 
 function NotifReceivedDate(props: NotifReceivedDateProps) {
 	return (
-		<div className="flex w-fit items-center justify-center gap-1.5 text-foreground-extra-muted">
-			<CalendarIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />
-
-			<TooltipProvider>
-				<Tooltip>
-					<TooltipTrigger asChild>
-						<span>
-							{props.received_text} <TimePassedSince date={props.dateCreated} />
-						</span>
-					</TooltipTrigger>
-					<TooltipContent>
-						<FormattedDate date={props.dateCreated} />
-					</TooltipContent>
-				</Tooltip>
-			</TooltipProvider>
-		</div>
+		<TooltipProvider>
+			<Tooltip>
+				<TooltipTrigger asChild>
+					<LabelledIcon
+						className="gap-1.5 py-1 text-foreground-extra-muted"
+						icon={<CalendarIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />}
+					>
+						{props.received_text} <TimePassedSince date={props.dateCreated} />
+					</LabelledIcon>
+				</TooltipTrigger>
+				<TooltipContent>
+					<FormattedDate date={props.dateCreated} />
+				</TooltipContent>
+			</Tooltip>
+		</TooltipProvider>
 	);
 }
 
