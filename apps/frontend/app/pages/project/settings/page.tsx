@@ -33,7 +33,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
 import { Textarea } from "~/components/ui/textarea";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
@@ -339,16 +339,14 @@ export default function GeneralSettingsPage() {
 												</span>
 												<span className="flex items-center justify-center gap-1.5">
 													{field.value === ProjectVisibility.PRIVATE ? (
-														<TooltipProvider>
-															<Tooltip>
-																<TooltipTrigger asChild>
-																	<span>
-																		<TriangleAlertIcon aria-hidden className="h-btn-icon w-btn-icon text-warning-fg" />
-																	</span>
-																</TooltipTrigger>
-																<TooltipContent>{t.projectSettings.visibleToMembersOnly}</TooltipContent>
-															</Tooltip>
-														</TooltipProvider>
+														<Tooltip>
+															<TooltipTrigger asChild>
+																<span>
+																	<TriangleAlertIcon aria-hidden className="h-btn-icon w-btn-icon text-warning-fg" />
+																</span>
+															</TooltipTrigger>
+															<TooltipContent>{t.projectSettings.visibleToMembersOnly}</TooltipContent>
+														</Tooltip>
 													) : (
 														<CheckIcon aria-hidden className="h-btn-icon w-btn-icon text-success-fg" />
 													)}

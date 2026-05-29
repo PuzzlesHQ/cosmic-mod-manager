@@ -37,7 +37,7 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Switch } from "~/components/ui/switch";
 import { Textarea } from "~/components/ui/textarea";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import type { Locale } from "~/locales/types";
@@ -204,258 +204,252 @@ export default function MarkdownEditor({
 	}, []);
 
 	return (
-		<TooltipProvider delayDuration={300}>
-			<div className="group/editor flex w-full flex-col items-start justify-center gap-1">
-				{/* TOOLBAR */}
-				<div className="flex w-full flex-wrap items-center justify-between gap-x-6 gap-y-1">
-					<div className="flex flex-wrap items-center justify-start gap-x-2 gap-y-1">
-						<BtnGroup>
-							<IconButton
-								tooltipContent={t.editor.heading1}
-								disabled={previewOpen}
-								onClick={() => {
-									toggleTextAtCursorsLine("# ", true);
-								}}
-							>
-								<Heading1Icon aria-hidden className="h-5 w-5" />
-							</IconButton>
-							<IconButton
-								tooltipContent={t.editor.heading2}
-								disabled={previewOpen}
-								onClick={() => {
-									toggleTextAtCursorsLine("## ", true);
-								}}
-							>
-								<Heading2Icon aria-hidden className="h-5 w-5" />
-							</IconButton>
-							<IconButton
-								tooltipContent={t.editor.heading3}
-								disabled={previewOpen}
-								onClick={() => {
-									toggleTextAtCursorsLine("### ", true);
-								}}
-							>
-								<Heading3Icon aria-hidden className="h-5 w-5" />
-							</IconButton>
-						</BtnGroup>
-						<Separator />
-						<BtnGroup>
-							<IconButton tooltipContent={t.editor.bold} disabled={previewOpen} onClick={bold}>
-								<BoldIcon aria-hidden className="h-5 w-5" />
-							</IconButton>
-							<IconButton tooltipContent={t.editor.italic} disabled={previewOpen} onClick={italic}>
-								<ItalicIcon aria-hidden className="h-5 w-5" />
-							</IconButton>
-							<IconButton tooltipContent={t.editor.underline} disabled={previewOpen} onClick={underline}>
-								<UnderlineIcon aria-hidden className="h-5 w-5" />
-							</IconButton>
-							<IconButton
-								tooltipContent={t.editor.strikethrough}
-								disabled={previewOpen}
-								onClick={() => {
-									toggleTextAtCursorsLine(`~~${textSeparatorChar}~~`);
-								}}
-							>
-								<StrikethroughIcon aria-hidden className="h-5 w-5" />
-							</IconButton>
-							<IconButton tooltipContent={t.editor.code} disabled={previewOpen} onClick={codeBlock}>
-								<CodeIcon aria-hidden className="h-5 w-5" />
-							</IconButton>
-							<IconButton tooltipContent={t.editor.spoiler} disabled={previewOpen} onClick={spoiler}>
-								<ScanEyeIcon aria-hidden className="h-btn-icon w-btn-icon" />
-							</IconButton>
-						</BtnGroup>
-						<Separator />
-						<BtnGroup>
-							<IconButton tooltipContent={t.editor.bulletedList} disabled={previewOpen} onClick={unorderedList}>
-								<ListIcon aria-hidden className="h-5 w-5" />
-							</IconButton>
-							<IconButton
-								tooltipContent={t.editor.numberedList}
-								disabled={previewOpen}
-								onClick={() => {
-									toggleTextAtCursorsLine("1. ", true);
-								}}
-							>
-								<ListOrderedIcon aria-hidden className="h-5 w-5" />
-							</IconButton>
-							<IconButton tooltipContent={t.editor.quote} disabled={previewOpen} onClick={quote}>
-								<TextQuoteIcon aria-hidden className="h-5 w-5" />
-							</IconButton>
-						</BtnGroup>
-						<Separator />
-						<BtnGroup>
-							<LinkInsertionModal
-								disabled={previewOpen}
-								modalTitle={t.editor.insertLink}
-								getMarkdownString={(url: string, altText: string, isPreview?: boolean) => {
-									let selectedText = "";
-									if (editorTextarea.current) selectedText = getTextareaSelectedText(editorTextarea.current);
-									const linkLabel = altText || selectedText || url;
-									return `[${isPreview === true ? linkLabel : ""}${textSeparatorChar}](${url})`;
-								}}
-								insertFragmentFunc={(markdownString: string, url: string, altText: string) => {
-									let selectedText = "";
-									if (editorTextarea.current) selectedText = getTextareaSelectedText(editorTextarea.current);
-									const linkLabel = altText || selectedText || url;
-									toggleTextAtCursorsLine(markdownString, false, "ADD_FRAGMENT", linkLabel);
-								}}
-								altTextInputLabel={t.editor.label}
-								altTextInputPlaceholder={t.editor.enterLabel}
-								urlInputLabel={t.form.url}
-								urlInputPlaceholder={t.editor.enterUrl}
-								isAltTextRequired={false}
-								altTextInputVisible={true}
-							>
-								<IconButton tooltipContent={t.editor.link} disabled={previewOpen}>
-									<LinkIcon aria-hidden className="h-4 w-4" />
-								</IconButton>
-							</LinkInsertionModal>
-
-							<LinkInsertionModal
-								disabled={previewOpen}
-								modalTitle={t.editor.insertImage}
-								getMarkdownString={(url: string, altText: string, isPreview = false) => {
-									let selectedText = "";
-									if (editorTextarea.current) selectedText = getTextareaSelectedText(editorTextarea.current);
-									const linkLabel = altText || selectedText || url;
-									return `![${isPreview ? linkLabel : ""}${textSeparatorChar}](${url})`;
-								}}
-								insertFragmentFunc={(markdownString: string, url: string, altText: string) => {
-									let selectedText = "";
-									if (editorTextarea.current) selectedText = getTextareaSelectedText(editorTextarea.current);
-									const linkLabel = altText || selectedText || url;
-									toggleTextAtCursorsLine(markdownString, false, "ADD_FRAGMENT", linkLabel);
-								}}
-								altTextInputLabel={t.editor.imgAlt}
-								altTextInputPlaceholder={t.editor.imgAltDesc}
-								urlInputLabel={t.form.url}
-								urlInputPlaceholder={t.editor.enterImgUrl}
-								isAltTextRequired={false}
-								altTextInputVisible={true}
-							>
-								<IconButton tooltipContent={t.editor.image} disabled={previewOpen}>
-									<ImageIcon aria-hidden className="h-4 w-4" />
-								</IconButton>
-							</LinkInsertionModal>
-
-							<LinkInsertionModal
-								disabled={previewOpen}
-								modalTitle={t.editor.inserYtVideo}
-								getMarkdownString={getYoutubeIframe}
-								insertFragmentFunc={(markdownString: string, _url: string, _altText: string) => {
-									toggleTextAtCursorsLine(markdownString, false, "ADD_FRAGMENT");
-								}}
-								altTextInputLabel=""
-								altTextInputPlaceholder=""
-								urlInputLabel={t.editor.ytVideoUrl}
-								urlInputPlaceholder={t.editor.enterYtUrl}
-								isAltTextRequired={false}
-								altTextInputVisible={false}
-							>
-								<IconButton tooltipContent={t.editor.video} disabled={previewOpen}>
-									<VideoIcon aria-hidden className="h-5 w-5" />
-								</IconButton>
-							</LinkInsertionModal>
-						</BtnGroup>
-					</div>
-					<div className="flex items-center justify-center gap-2">
-						<Switch id="markdown-editor-preview-toggle-switch" checked={previewOpen} onCheckedChange={setPreviewOn} />
-						<Label htmlFor="markdown-editor-preview-toggle-switch" className="text-base">
-							{t.editor.preview}
-						</Label>
-					</div>
-				</div>
-
-				<div className="mt-2 flex w-full items-start justify-center gap-2">
-					{/* Editor area */}
-					<div
-						className={cn("flex w-full flex-col items-center justify-center gap-2", previewOpen === true && "hidden")}
-					>
-						<Textarea
-							name="markdown-textarea"
-							placeholder={placeholder}
-							className={cn(
-								"group-focus-within/editor:!bg-transparent group-focus-within/editor:focus_ring group-focus-within/editor:text-foreground-bright",
-								"h-[32rem] min-h-[16rem] w-full resize-y rounded-lg font-mono text-base text-foreground-muted",
-								wordWrap === true ? "overflow-x-auto whitespace-nowrap" : "break-words",
-								textAreaClassName,
-							)}
-							ref={editorTextarea}
-							value={editorValue}
-							onChange={(e) => {
-								setEditorValue(e.target.value);
+		<div className="group/editor flex w-full flex-col items-start justify-center gap-1">
+			{/* TOOLBAR */}
+			<div className="flex w-full flex-wrap items-center justify-between gap-x-6 gap-y-1">
+				<div className="flex flex-wrap items-center justify-start gap-x-2 gap-y-1">
+					<BtnGroup>
+						<IconButton
+							tooltipContent={t.editor.heading1}
+							disabled={previewOpen}
+							onClick={() => {
+								toggleTextAtCursorsLine("# ", true);
 							}}
-							onKeyDown={(e) => {
-								const pressedKey = e.key.toLowerCase();
-								if (pressedKey === "escape") return editorTextarea.current?.blur();
-
-								if (pressedKey === "tab") {
-									e.preventDefault();
-
-									if (e.shiftKey === true) {
-										toggleTextAtCursorsLine("  ", true, "DELETE_FRAGMENT");
-									} else {
-										toggleTextAtCursorsLine("  ", true, "ADD_FRAGMENT");
-									}
-								}
-
-								if (e.shiftKey) return;
-
-								if (e.altKey) {
-									e.preventDefault();
-
-									if (pressedKey === "z") setWordWrap((prev) => !prev);
-									else if (pressedKey === "b") bold();
-									else if (pressedKey === "i") italic();
-									else if (pressedKey === "u") underline();
-									else if (pressedKey === "c") codeBlock();
-									else if (pressedKey === "s") spoiler();
-									else if (pressedKey === "q") quote();
-									else if (pressedKey === "l") unorderedList();
-								}
-							}}
-							spellCheck={false}
-						/>
-
-						{showInfoRow !== false && (
-							<div className="flex w-full flex-wrap items-center justify-between gap-x-6 gap-y-2 text-foreground-muted text-sm">
-								<div className="flex items-center justify-start gap-2">
-									<InfoIcon aria-hidden className="h-btn-icon w-btn-icon" />
-									<MarkdownRenderBox text={t.editor.supportsMarkdown("/md-editor")} />
-								</div>
-								<KeyboardShortcutsDialog
-									open={keyboardShortcutsModalOpen}
-									setOpen={setKeyboardShortcutsModalOpen}
-									t={t.editor}
-								>
-									<div className="hidden cursor-pointer items-center justify-center gap-2 font-mono lg:flex">
-										<span>{t.editor.keyboardShortcuts}</span>
-										<div className="flex items-center justify-center gap-1 font-mono">
-											<span className="flex items-center justify-center rounded-sm bg-raised-background px-1">
-												ctrl
-											</span>
-											<span className="flex items-center justify-center rounded-sm bg-raised-background px-1">/</span>
-										</div>
-									</div>
-								</KeyboardShortcutsDialog>
-							</div>
-						)}
-					</div>
-
-					{previewOpen && (
-						<div
-							className={cn(
-								"flex w-full items-center justify-center overflow-auto rounded border-2 border-border p-4",
-								!editorValue && "min-h-24",
-							)}
 						>
-							<MarkdownRenderBox text={editorValue} />
+							<Heading1Icon aria-hidden className="h-5 w-5" />
+						</IconButton>
+						<IconButton
+							tooltipContent={t.editor.heading2}
+							disabled={previewOpen}
+							onClick={() => {
+								toggleTextAtCursorsLine("## ", true);
+							}}
+						>
+							<Heading2Icon aria-hidden className="h-5 w-5" />
+						</IconButton>
+						<IconButton
+							tooltipContent={t.editor.heading3}
+							disabled={previewOpen}
+							onClick={() => {
+								toggleTextAtCursorsLine("### ", true);
+							}}
+						>
+							<Heading3Icon aria-hidden className="h-5 w-5" />
+						</IconButton>
+					</BtnGroup>
+					<Separator />
+					<BtnGroup>
+						<IconButton tooltipContent={t.editor.bold} disabled={previewOpen} onClick={bold}>
+							<BoldIcon aria-hidden className="h-5 w-5" />
+						</IconButton>
+						<IconButton tooltipContent={t.editor.italic} disabled={previewOpen} onClick={italic}>
+							<ItalicIcon aria-hidden className="h-5 w-5" />
+						</IconButton>
+						<IconButton tooltipContent={t.editor.underline} disabled={previewOpen} onClick={underline}>
+							<UnderlineIcon aria-hidden className="h-5 w-5" />
+						</IconButton>
+						<IconButton
+							tooltipContent={t.editor.strikethrough}
+							disabled={previewOpen}
+							onClick={() => {
+								toggleTextAtCursorsLine(`~~${textSeparatorChar}~~`);
+							}}
+						>
+							<StrikethroughIcon aria-hidden className="h-5 w-5" />
+						</IconButton>
+						<IconButton tooltipContent={t.editor.code} disabled={previewOpen} onClick={codeBlock}>
+							<CodeIcon aria-hidden className="h-5 w-5" />
+						</IconButton>
+						<IconButton tooltipContent={t.editor.spoiler} disabled={previewOpen} onClick={spoiler}>
+							<ScanEyeIcon aria-hidden className="h-btn-icon w-btn-icon" />
+						</IconButton>
+					</BtnGroup>
+					<Separator />
+					<BtnGroup>
+						<IconButton tooltipContent={t.editor.bulletedList} disabled={previewOpen} onClick={unorderedList}>
+							<ListIcon aria-hidden className="h-5 w-5" />
+						</IconButton>
+						<IconButton
+							tooltipContent={t.editor.numberedList}
+							disabled={previewOpen}
+							onClick={() => {
+								toggleTextAtCursorsLine("1. ", true);
+							}}
+						>
+							<ListOrderedIcon aria-hidden className="h-5 w-5" />
+						</IconButton>
+						<IconButton tooltipContent={t.editor.quote} disabled={previewOpen} onClick={quote}>
+							<TextQuoteIcon aria-hidden className="h-5 w-5" />
+						</IconButton>
+					</BtnGroup>
+					<Separator />
+					<BtnGroup>
+						<LinkInsertionModal
+							disabled={previewOpen}
+							modalTitle={t.editor.insertLink}
+							getMarkdownString={(url: string, altText: string, isPreview?: boolean) => {
+								let selectedText = "";
+								if (editorTextarea.current) selectedText = getTextareaSelectedText(editorTextarea.current);
+								const linkLabel = altText || selectedText || url;
+								return `[${isPreview === true ? linkLabel : ""}${textSeparatorChar}](${url})`;
+							}}
+							insertFragmentFunc={(markdownString: string, url: string, altText: string) => {
+								let selectedText = "";
+								if (editorTextarea.current) selectedText = getTextareaSelectedText(editorTextarea.current);
+								const linkLabel = altText || selectedText || url;
+								toggleTextAtCursorsLine(markdownString, false, "ADD_FRAGMENT", linkLabel);
+							}}
+							altTextInputLabel={t.editor.label}
+							altTextInputPlaceholder={t.editor.enterLabel}
+							urlInputLabel={t.form.url}
+							urlInputPlaceholder={t.editor.enterUrl}
+							isAltTextRequired={false}
+							altTextInputVisible={true}
+						>
+							<IconButton tooltipContent={t.editor.link} disabled={previewOpen}>
+								<LinkIcon aria-hidden className="h-4 w-4" />
+							</IconButton>
+						</LinkInsertionModal>
+
+						<LinkInsertionModal
+							disabled={previewOpen}
+							modalTitle={t.editor.insertImage}
+							getMarkdownString={(url: string, altText: string, isPreview = false) => {
+								let selectedText = "";
+								if (editorTextarea.current) selectedText = getTextareaSelectedText(editorTextarea.current);
+								const linkLabel = altText || selectedText || url;
+								return `![${isPreview ? linkLabel : ""}${textSeparatorChar}](${url})`;
+							}}
+							insertFragmentFunc={(markdownString: string, url: string, altText: string) => {
+								let selectedText = "";
+								if (editorTextarea.current) selectedText = getTextareaSelectedText(editorTextarea.current);
+								const linkLabel = altText || selectedText || url;
+								toggleTextAtCursorsLine(markdownString, false, "ADD_FRAGMENT", linkLabel);
+							}}
+							altTextInputLabel={t.editor.imgAlt}
+							altTextInputPlaceholder={t.editor.imgAltDesc}
+							urlInputLabel={t.form.url}
+							urlInputPlaceholder={t.editor.enterImgUrl}
+							isAltTextRequired={false}
+							altTextInputVisible={true}
+						>
+							<IconButton tooltipContent={t.editor.image} disabled={previewOpen}>
+								<ImageIcon aria-hidden className="h-4 w-4" />
+							</IconButton>
+						</LinkInsertionModal>
+
+						<LinkInsertionModal
+							disabled={previewOpen}
+							modalTitle={t.editor.inserYtVideo}
+							getMarkdownString={getYoutubeIframe}
+							insertFragmentFunc={(markdownString: string, _url: string, _altText: string) => {
+								toggleTextAtCursorsLine(markdownString, false, "ADD_FRAGMENT");
+							}}
+							altTextInputLabel=""
+							altTextInputPlaceholder=""
+							urlInputLabel={t.editor.ytVideoUrl}
+							urlInputPlaceholder={t.editor.enterYtUrl}
+							isAltTextRequired={false}
+							altTextInputVisible={false}
+						>
+							<IconButton tooltipContent={t.editor.video} disabled={previewOpen}>
+								<VideoIcon aria-hidden className="h-5 w-5" />
+							</IconButton>
+						</LinkInsertionModal>
+					</BtnGroup>
+				</div>
+				<div className="flex items-center justify-center gap-2">
+					<Switch id="markdown-editor-preview-toggle-switch" checked={previewOpen} onCheckedChange={setPreviewOn} />
+					<Label htmlFor="markdown-editor-preview-toggle-switch" className="text-base">
+						{t.editor.preview}
+					</Label>
+				</div>
+			</div>
+
+			<div className="mt-2 flex w-full items-start justify-center gap-2">
+				{/* Editor area */}
+				<div className={cn("flex w-full flex-col items-center justify-center gap-2", previewOpen === true && "hidden")}>
+					<Textarea
+						name="markdown-textarea"
+						placeholder={placeholder}
+						className={cn(
+							"group-focus-within/editor:!bg-transparent group-focus-within/editor:focus_ring group-focus-within/editor:text-foreground-bright",
+							"h-[32rem] min-h-[16rem] w-full resize-y rounded-lg font-mono text-base text-foreground-muted",
+							wordWrap === true ? "overflow-x-auto whitespace-nowrap" : "break-words",
+							textAreaClassName,
+						)}
+						ref={editorTextarea}
+						value={editorValue}
+						onChange={(e) => {
+							setEditorValue(e.target.value);
+						}}
+						onKeyDown={(e) => {
+							const pressedKey = e.key.toLowerCase();
+							if (pressedKey === "escape") return editorTextarea.current?.blur();
+
+							if (pressedKey === "tab") {
+								e.preventDefault();
+
+								if (e.shiftKey === true) {
+									toggleTextAtCursorsLine("  ", true, "DELETE_FRAGMENT");
+								} else {
+									toggleTextAtCursorsLine("  ", true, "ADD_FRAGMENT");
+								}
+							}
+
+							if (e.shiftKey) return;
+
+							if (e.altKey) {
+								e.preventDefault();
+
+								if (pressedKey === "z") setWordWrap((prev) => !prev);
+								else if (pressedKey === "b") bold();
+								else if (pressedKey === "i") italic();
+								else if (pressedKey === "u") underline();
+								else if (pressedKey === "c") codeBlock();
+								else if (pressedKey === "s") spoiler();
+								else if (pressedKey === "q") quote();
+								else if (pressedKey === "l") unorderedList();
+							}
+						}}
+						spellCheck={false}
+					/>
+
+					{showInfoRow !== false && (
+						<div className="flex w-full flex-wrap items-center justify-between gap-x-6 gap-y-2 text-foreground-muted text-sm">
+							<div className="flex items-center justify-start gap-2">
+								<InfoIcon aria-hidden className="h-btn-icon w-btn-icon" />
+								<MarkdownRenderBox text={t.editor.supportsMarkdown("/md-editor")} />
+							</div>
+							<KeyboardShortcutsDialog
+								open={keyboardShortcutsModalOpen}
+								setOpen={setKeyboardShortcutsModalOpen}
+								t={t.editor}
+							>
+								<div className="hidden cursor-pointer items-center justify-center gap-2 font-mono lg:flex">
+									<span>{t.editor.keyboardShortcuts}</span>
+									<div className="flex items-center justify-center gap-1 font-mono">
+										<span className="flex items-center justify-center rounded-sm bg-raised-background px-1">ctrl</span>
+										<span className="flex items-center justify-center rounded-sm bg-raised-background px-1">/</span>
+									</div>
+								</div>
+							</KeyboardShortcutsDialog>
 						</div>
 					)}
 				</div>
+
+				{previewOpen && (
+					<div
+						className={cn(
+							"flex w-full items-center justify-center overflow-auto rounded border-2 border-border p-4",
+							!editorValue && "min-h-24",
+						)}
+					>
+						<MarkdownRenderBox text={editorValue} />
+					</div>
+				)}
 			</div>
-		</TooltipProvider>
+		</div>
 	);
 }
 

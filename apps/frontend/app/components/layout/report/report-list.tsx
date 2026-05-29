@@ -7,7 +7,7 @@ import { Badge } from "~/components/ui/badge";
 import CopyBtn from "~/components/ui/copy-btn";
 import { FormattedDate, TimePassedSince } from "~/components/ui/date";
 import Link, { TextLink } from "~/components/ui/link";
-import { TooltipProvider, TooltipTemplate } from "~/components/ui/tooltip";
+import { TooltipTemplate } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
@@ -88,13 +88,11 @@ export function ReportInfo(props: ReportInfoProps) {
 					),
 				)}
 
-				<TooltipProvider>
-					<TooltipTemplate content={<FormattedDate date={props.report.createdAt} />}>
-						<span className="cursor-help text-foreground-extra-muted">
-							<TimePassedSince date={props.report.createdAt} />
-						</span>
-					</TooltipTemplate>
-				</TooltipProvider>
+				<TooltipTemplate content={<FormattedDate date={props.report.createdAt} />}>
+					<span className="cursor-help text-foreground-extra-muted">
+						<TimePassedSince date={props.report.createdAt} />
+					</span>
+				</TooltipTemplate>
 
 				{props.viewReportBtn !== false && (
 					<TextLink

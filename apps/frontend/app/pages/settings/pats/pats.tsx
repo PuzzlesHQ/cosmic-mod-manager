@@ -24,7 +24,7 @@ import {
 import { useNavigate } from "~/components/ui/link";
 import { DotSeparator } from "~/components/ui/separator";
 import { LoadingSpinner } from "~/components/ui/spinner";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
 import Config from "~/utils/config";
@@ -60,76 +60,74 @@ export default function PersonalAccessTokensSettingsPage({ pats: _pats }: { pats
 			<CardContent className="grid gap-form-elements">
 				<MarkdownRenderBox text={t.settings.personalAccessTokensDesc(SITE_NAME_SHORT, Config.DOCS_URL)} />
 
-				<TooltipProvider>
-					{pats.map((pat) => {
-						return (
-							<div
-								key={pat.id}
-								className="group/pat-item flex w-full flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded bg-background px-4 py-3"
-							>
-								<div className="flex grow flex-col gap-2.5 sm:gap-1">
-									<div className="grid gap-x-2">
-										<span className="font-semibold text-foreground">{pat.name}</span>
+				{pats.map((pat) => {
+					return (
+						<div
+							key={pat.id}
+							className="group/pat-item flex w-full flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded bg-background px-4 py-3"
+						>
+							<div className="flex grow flex-col gap-2.5 sm:gap-1">
+								<div className="grid gap-x-2">
+									<span className="font-semibold text-foreground">{pat.name}</span>
 
-										{pat.token && (
-											<div className="flex items-center gap-2 text-foreground-muted">
-												<span className="font-mono">{pat.token}</span>
-												<CopyBtn text={pat.token} />
-											</div>
-										)}
-									</div>
-									<div className="flex w-full flex-wrap items-center justify-start gap-x-2 text-foreground-muted">
-										{pat.dateLastUsed ? (
-											<Tooltip>
-												<TooltipTrigger className="cursor-text" asChild>
-													<span>{t.settings.lastAccessed(TimePassedSince({ date: pat.dateLastUsed }))}</span>
-												</TooltipTrigger>
-												<TooltipContent>
-													<FormattedDate date={pat.dateLastUsed} />
-												</TooltipContent>
-											</Tooltip>
-										) : (
-											<span>{t.settings.neverUsed}</span>
-										)}
-
-										<DotSeparator />
-
-										<Tooltip>
-											<TooltipTrigger className="cursor-text" asChild>
-												{Date.now() > (DateFromStr(pat.dateExpires)?.getTime() ?? 0) ? (
-													<span className="text-error-fg">
-														{t.settings.expired(TimePassedSince({ date: pat.dateExpires }))}
-													</span>
-												) : (
-													<span>{t.settings.expires(TimePassedSince({ date: pat.dateExpires }))}</span>
-												)}
-											</TooltipTrigger>
-											<TooltipContent>
-												<FormattedDate date={pat.dateExpires} />
-											</TooltipContent>
-										</Tooltip>
-
-										<DotSeparator />
-
-										<Tooltip>
-											<TooltipTrigger className="cursor-text" asChild>
-												<span>{t.settings.created(TimePassedSince({ date: pat.dateCreated }))}</span>
-											</TooltipTrigger>
-											<TooltipContent>
-												<FormattedDate date={pat.dateCreated} />
-											</TooltipContent>
-										</Tooltip>
-									</div>
+									{pat.token && (
+										<div className="flex items-center gap-2 text-foreground-muted">
+											<span className="font-mono">{pat.token}</span>
+											<CopyBtn text={pat.token} />
+										</div>
+									)}
 								</div>
-								<div className="flex flex-wrap gap-2">
-									<EditPAT_Dialog pat={pat} />
+								<div className="flex w-full flex-wrap items-center justify-start gap-x-2 text-foreground-muted">
+									{pat.dateLastUsed ? (
+										<Tooltip>
+											<TooltipTrigger className="cursor-text" asChild>
+												<span>{t.settings.lastAccessed(TimePassedSince({ date: pat.dateLastUsed }))}</span>
+											</TooltipTrigger>
+											<TooltipContent>
+												<FormattedDate date={pat.dateLastUsed} />
+											</TooltipContent>
+										</Tooltip>
+									) : (
+										<span>{t.settings.neverUsed}</span>
+									)}
 
-									<DeletePAT_Dialog pat={pat} />
+									<DotSeparator />
+
+									<Tooltip>
+										<TooltipTrigger className="cursor-text" asChild>
+											{Date.now() > (DateFromStr(pat.dateExpires)?.getTime() ?? 0) ? (
+												<span className="text-error-fg">
+													{t.settings.expired(TimePassedSince({ date: pat.dateExpires }))}
+												</span>
+											) : (
+												<span>{t.settings.expires(TimePassedSince({ date: pat.dateExpires }))}</span>
+											)}
+										</TooltipTrigger>
+										<TooltipContent>
+											<FormattedDate date={pat.dateExpires} />
+										</TooltipContent>
+									</Tooltip>
+
+									<DotSeparator />
+
+									<Tooltip>
+										<TooltipTrigger className="cursor-text" asChild>
+											<span>{t.settings.created(TimePassedSince({ date: pat.dateCreated }))}</span>
+										</TooltipTrigger>
+										<TooltipContent>
+											<FormattedDate date={pat.dateCreated} />
+										</TooltipContent>
+									</Tooltip>
 								</div>
 							</div>
-						);
-					})}
-				</TooltipProvider>
+							<div className="flex flex-wrap gap-2">
+								<EditPAT_Dialog pat={pat} />
+
+								<DeletePAT_Dialog pat={pat} />
+							</div>
+						</div>
+					);
+				})}
 			</CardContent>
 		</Card>
 	);

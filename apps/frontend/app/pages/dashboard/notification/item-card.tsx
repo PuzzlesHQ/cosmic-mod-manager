@@ -16,7 +16,7 @@ import Link, { useNavigate } from "~/components/ui/link";
 import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 import { useTranslation } from "~/locales/provider";
 import { acceptTeamInvite, leaveTeam } from "~/pages/project/settings/members/utils";
 import { ProjectPagePath, UserProfilePath } from "~/utils/urls";
@@ -132,59 +132,57 @@ export function TeamInviteNotification({
 					</div>
 				</div>
 
-				<TooltipProvider>
-					<div className="flex items-center justify-center gap-2">
-						{notification.read === false && concise === true && (
-							<>
-								<Tooltip>
-									<TooltipTrigger asChild>
-										<Button
-											size="icon"
-											variant="ghost"
-											className="text-success-fg"
-											disabled={!!isLoading}
-											onClick={acceptInvite}
-										>
-											{isLoading === "accept" ? (
-												<LoadingSpinner size="xs" />
-											) : (
-												<CheckIcon aria-hidden strokeWidth={2.2} className="h-btn-icon-md w-btn-icon-md" />
-											)}
-										</Button>
-									</TooltipTrigger>
-									<TooltipContent>{t.common.accept}</TooltipContent>
-								</Tooltip>
+				<div className="flex items-center justify-center gap-2">
+					{notification.read === false && concise === true && (
+						<>
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Button
+										size="icon"
+										variant="ghost"
+										className="text-success-fg"
+										disabled={!!isLoading}
+										onClick={acceptInvite}
+									>
+										{isLoading === "accept" ? (
+											<LoadingSpinner size="xs" />
+										) : (
+											<CheckIcon aria-hidden strokeWidth={2.2} className="h-btn-icon-md w-btn-icon-md" />
+										)}
+									</Button>
+								</TooltipTrigger>
+								<TooltipContent>{t.common.accept}</TooltipContent>
+							</Tooltip>
 
-								<Tooltip>
-									<TooltipTrigger asChild>
-										<Button variant="ghost-destructive" size="icon" disabled={!!isLoading} onClick={declineInvite}>
-											{isLoading === "decline" ? (
-												<LoadingSpinner size="xs" />
-											) : (
-												<XIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-											)}
-										</Button>
-									</TooltipTrigger>
-									<TooltipContent>{t.common.decline}</TooltipContent>
-								</Tooltip>
-							</>
-						)}
-						{showMarkAsReadButton && !notification.read && (
-							<MarkReadNotif
-								disabled={markingAsRead || deletingNotification}
-								deleteNotif_text={t.dashboard.markRead}
-								markNotificationAsRead={() => markNotificationAsRead(notification.id)}
-							/>
-						)}
-						{showDeleteButton && (
-							<DeleteNotif
-								disabled={markingAsRead || deletingNotification}
-								deleteNotif_text={t.dashboard.deleteNotif}
-								deleteNotification={() => deleteNotification(notification.id)}
-							/>
-						)}
-					</div>
-				</TooltipProvider>
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Button variant="ghost-destructive" size="icon" disabled={!!isLoading} onClick={declineInvite}>
+										{isLoading === "decline" ? (
+											<LoadingSpinner size="xs" />
+										) : (
+											<XIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
+										)}
+									</Button>
+								</TooltipTrigger>
+								<TooltipContent>{t.common.decline}</TooltipContent>
+							</Tooltip>
+						</>
+					)}
+					{showMarkAsReadButton && !notification.read && (
+						<MarkReadNotif
+							disabled={markingAsRead || deletingNotification}
+							deleteNotif_text={t.dashboard.markRead}
+							markNotificationAsRead={() => markNotificationAsRead(notification.id)}
+						/>
+					)}
+					{showDeleteButton && (
+						<DeleteNotif
+							disabled={markingAsRead || deletingNotification}
+							deleteNotif_text={t.dashboard.deleteNotif}
+							deleteNotification={() => deleteNotification(notification.id)}
+						/>
+					)}
+				</div>
 			</div>
 			{notification.read === false && concise === false && (
 				<div className="flex w-fit items-center justify-start gap-x-2 gap-y-1">
@@ -258,24 +256,22 @@ export function StatusChangeNotif_Item({ notification, project, ...props }: Stat
 					</div>
 				</div>
 
-				<TooltipProvider>
-					<div className="flex items-center justify-center gap-2">
-						{props.showMarkAsReadButton && !notification.read && (
-							<MarkReadNotif
-								disabled={props.markingAsRead || props.deletingNotification}
-								deleteNotif_text={t.dashboard.markRead}
-								markNotificationAsRead={() => props.markNotificationAsRead(notification.id)}
-							/>
-						)}
-						{props.showDeleteButton && (
-							<DeleteNotif
-								disabled={props.markingAsRead || props.deletingNotification}
-								deleteNotif_text={t.dashboard.deleteNotif}
-								deleteNotification={() => props.deleteNotification(notification.id)}
-							/>
-						)}
-					</div>
-				</TooltipProvider>
+				<div className="flex items-center justify-center gap-2">
+					{props.showMarkAsReadButton && !notification.read && (
+						<MarkReadNotif
+							disabled={props.markingAsRead || props.deletingNotification}
+							deleteNotif_text={t.dashboard.markRead}
+							markNotificationAsRead={() => props.markNotificationAsRead(notification.id)}
+						/>
+					)}
+					{props.showDeleteButton && (
+						<DeleteNotif
+							disabled={props.markingAsRead || props.deletingNotification}
+							deleteNotif_text={t.dashboard.deleteNotif}
+							deleteNotification={() => props.deleteNotification(notification.id)}
+						/>
+					)}
+				</div>
 			</div>
 
 			<NotifReceivedDate received_text={t.dashboard.received} dateCreated={notification.dateCreated} />
@@ -290,21 +286,19 @@ interface NotifReceivedDateProps {
 
 function NotifReceivedDate(props: NotifReceivedDateProps) {
 	return (
-		<TooltipProvider>
-			<Tooltip>
-				<TooltipTrigger asChild>
-					<LabelledIcon
-						className="gap-1.5 py-1 text-foreground-extra-muted"
-						icon={<CalendarIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />}
-					>
-						{props.received_text} <TimePassedSince date={props.dateCreated} />
-					</LabelledIcon>
-				</TooltipTrigger>
-				<TooltipContent>
-					<FormattedDate date={props.dateCreated} />
-				</TooltipContent>
-			</Tooltip>
-		</TooltipProvider>
+		<Tooltip>
+			<TooltipTrigger asChild>
+				<LabelledIcon
+					className="gap-1.5 py-1 text-foreground-extra-muted"
+					icon={<CalendarIcon aria-hidden className="h-btn-icon-sm w-btn-icon-sm" />}
+				>
+					{props.received_text} <TimePassedSince date={props.dateCreated} />
+				</LabelledIcon>
+			</TooltipTrigger>
+			<TooltipContent>
+				<FormattedDate date={props.dateCreated} />
+			</TooltipContent>
+		</Tooltip>
 	);
 }
 

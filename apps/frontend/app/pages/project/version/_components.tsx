@@ -47,7 +47,7 @@ import { MultiSelect, type noResultsElementProps } from "~/components/ui/multi-s
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
-import { TooltipProvider, TooltipTemplate } from "~/components/ui/tooltip";
+import { TooltipTemplate } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import clientFetch from "~/utils/client-fetch";
@@ -196,14 +196,12 @@ export function MetadataInputCard<FieldsT extends {}>(props: {
 								<SelectValue />
 
 								{field.value === VersionReleaseChannel.DEV ? (
-									<TooltipProvider>
-										<TooltipTemplate className="max-w-sm text-start" content={t.version.devReleasesNote}>
-											<CircleAlertIcon
-												aria-hidden
-												className="ms-auto h-btn-icon w-btn-icon cursor-help text-warning-fg"
-											/>
-										</TooltipTemplate>
-									</TooltipProvider>
+									<TooltipTemplate className="max-w-sm text-start" content={t.version.devReleasesNote}>
+										<CircleAlertIcon
+											aria-hidden
+											className="ms-auto h-btn-icon w-btn-icon cursor-help text-warning-fg"
+										/>
+									</TooltipTemplate>
 								) : null}
 							</SelectTrigger>
 							<SelectContent>

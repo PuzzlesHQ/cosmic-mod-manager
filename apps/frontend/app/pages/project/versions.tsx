@@ -32,7 +32,7 @@ import Link, { LinkPrefetchStrategy, useNavigate, VariantButtonLink } from "~/co
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { ReleaseChannelBadge } from "~/components/ui/release-channel-pill";
 import { Separator } from "~/components/ui/separator";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTemplate, TooltipTrigger } from "~/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTemplate, TooltipTrigger } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
 import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
@@ -157,81 +157,75 @@ function ProjectVersionsListTable({
 
 	return (
 		<>
-			<TooltipProvider>
-				<div
-					className={cn(
-						"grid max-w-full overflow-x-auto rounded-lg bg-card-background",
-						"grid-cols-[min-content_2fr_2fr_1fr_min-content]",
-					)}
-				>
-					<Row className="hidden sm:grid">
-						<span> </span>
-						<span className="font-bold">{t.form.name}</span>
-						<span className="font-bold">{t.project.compatibility}</span>
-						<span className="justify-self-stretch font-bold">{t.project.stats}</span>
-						<span> </span>
-					</Row>
+			<div
+				className={cn(
+					"grid max-w-full overflow-x-auto rounded-lg bg-card-background",
+					"grid-cols-[min-content_2fr_2fr_1fr_min-content]",
+				)}
+			>
+				<Row className="hidden sm:grid">
+					<span> </span>
+					<span className="font-bold">{t.form.name}</span>
+					<span className="font-bold">{t.project.compatibility}</span>
+					<span className="justify-self-stretch font-bold">{t.project.stats}</span>
+					<span> </span>
+				</Row>
 
-					{allProjectVersions.slice((activePage - 1) * ITEMS_PER_PAGE, activePage * ITEMS_PER_PAGE).map((version) => (
-						<Row
-							key={version.id}
-							className="cursor-pointer"
-							onClick={(e) => {
-								//@ts-expect-error
-								if (!e.target.closest(".noClickRedirect") && e.target.closest(".table_row")) {
-									navigate(versionPagePathname(version.slug));
-								}
-							}}
-						>
-							<ReleaseChannelBadge releaseChannel={version.releaseChannel} />
+				{allProjectVersions.slice((activePage - 1) * ITEMS_PER_PAGE, activePage * ITEMS_PER_PAGE).map((version) => (
+					<Row
+						key={version.id}
+						className="cursor-pointer"
+						onClick={(e) => {
+							//@ts-expect-error
+							if (!e.target.closest(".noClickRedirect") && e.target.closest(".table_row")) {
+								navigate(versionPagePathname(version.slug));
+							}
+						}}
+					>
+						<ReleaseChannelBadge releaseChannel={version.releaseChannel} />
 
-							<VersionName
-								title={version.title}
-								number={version.versionNumber}
-								url={versionPagePathname(version.slug)}
+						<VersionName title={version.title} number={version.versionNumber} url={versionPagePathname(version.slug)} />
+
+						<div className="flex flex-wrap items-start justify-start gap-1.5">
+							<GameVersions gameVersions={version.gameVersions} verbose={anyFilterEnabled} />
+							<ProjectLoaders versionLoaders={version.loaders} />
+						</div>
+
+						<div className="grid w-fit min-w-max gap-1.5 leading-none">
+							<DownloadsCount downloads={version.downloads} />
+							<DatePublished dateStr={version.datePublished} />
+						</div>
+
+						<div className="flex items-center justify-end gap-1">
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Button
+										variant="outline"
+										size="icon"
+										className="noClickRedirect !w-10 !h-10 shrink-0 rounded-full"
+										aria-label={t.project.downloadItem(version.primaryFile?.name || "")}
+										onClick={() => downloadFile(version.primaryFile?.url)}
+									>
+										<DownloadIcon aria-hidden className="h-btn-icon w-btn-icon" strokeWidth={2.2} />
+									</Button>
+								</TooltipTrigger>
+								<TooltipContent>
+									{version.primaryFile?.name} ({parseFileSize(version.primaryFile?.size || 0)})
+								</TooltipContent>
+							</Tooltip>
+
+							<ThreeDotMenu
+								canEditVersion={canEditVersion}
+								canDeleteVersion={canDeleteVersion}
+								versionDetailsPage={versionPagePathname(version.slug)}
+								versionsPageUrl={ProjectPagePath(projectType, projectData.slug, "versions")}
+								projectId={version.projectId}
+								versionId={version.id}
 							/>
-
-							<div className="flex flex-wrap items-start justify-start gap-1.5">
-								<GameVersions gameVersions={version.gameVersions} verbose={anyFilterEnabled} />
-								<ProjectLoaders versionLoaders={version.loaders} />
-							</div>
-
-							<div className="grid w-fit min-w-max gap-1.5 leading-none">
-								<DownloadsCount downloads={version.downloads} />
-								<DatePublished dateStr={version.datePublished} />
-							</div>
-
-							<div className="flex items-center justify-end gap-1">
-								<Tooltip>
-									<TooltipTrigger asChild>
-										<Button
-											variant="outline"
-											size="icon"
-											className="noClickRedirect !w-10 !h-10 shrink-0 rounded-full"
-											aria-label={t.project.downloadItem(version.primaryFile?.name || "")}
-											onClick={() => downloadFile(version.primaryFile?.url)}
-										>
-											<DownloadIcon aria-hidden className="h-btn-icon w-btn-icon" strokeWidth={2.2} />
-										</Button>
-									</TooltipTrigger>
-									<TooltipContent>
-										{version.primaryFile?.name} ({parseFileSize(version.primaryFile?.size || 0)})
-									</TooltipContent>
-								</Tooltip>
-
-								<ThreeDotMenu
-									canEditVersion={canEditVersion}
-									canDeleteVersion={canDeleteVersion}
-									versionDetailsPage={versionPagePathname(version.slug)}
-									versionsPageUrl={ProjectPagePath(projectType, projectData.slug, "versions")}
-									projectId={version.projectId}
-									versionId={version.id}
-								/>
-							</div>
-						</Row>
-					))}
-				</div>
-			</TooltipProvider>
+						</div>
+					</Row>
+				))}
+			</div>
 
 			{Pagination ? <div className="flex items-center justify-center">{Pagination}</div> : null}
 		</>

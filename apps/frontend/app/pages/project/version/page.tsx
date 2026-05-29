@@ -30,7 +30,7 @@ import { FormattedCount } from "~/components/ui/count";
 import { FormattedDate } from "~/components/ui/date";
 import Link, { LinkPrefetchStrategy, VariantButtonLink } from "~/components/ui/link";
 import ReleaseChannelChip from "~/components/ui/release-channel-pill";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 import type { ProjectContextData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
@@ -84,23 +84,21 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
 				</div>
 
 				<div className="flex flex-wrap gap-x-2 gap-y-1.5">
-					<TooltipProvider>
-						<Tooltip>
-							<TooltipTrigger asChild>
-								<Button
-									variant="default"
-									onClick={() => downloadFile(versionData.primaryFile?.url ? versionData.primaryFile?.url : "")}
-									rel="nofollow noindex"
-								>
-									<DownloadIcon aria-hidden className="h-btn-icon w-btn-icon" />
-									{t.common.download}
-								</Button>
-							</TooltipTrigger>
-							<TooltipContent>
-								{versionData.primaryFile?.name} ({parseFileSize(versionData.primaryFile?.size || 0)})
-							</TooltipContent>
-						</Tooltip>
-					</TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Button
+								variant="default"
+								onClick={() => downloadFile(versionData.primaryFile?.url ? versionData.primaryFile?.url : "")}
+								rel="nofollow noindex"
+							>
+								<DownloadIcon aria-hidden className="h-btn-icon w-btn-icon" />
+								{t.common.download}
+							</Button>
+						</TooltipTrigger>
+						<TooltipContent>
+							{versionData.primaryFile?.name} ({parseFileSize(versionData.primaryFile?.size || 0)})
+						</TooltipContent>
+					</Tooltip>
 
 					{!currUsersMembership?.userId ? (
 						<ReportButton itemType={ReportItemType.VERSION} itemId={versionData.id} btnVariant="secondary" />

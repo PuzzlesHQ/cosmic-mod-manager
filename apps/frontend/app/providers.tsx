@@ -2,6 +2,7 @@ import { DownloadProvider } from "~/components/misc/file-downloader";
 import type { UserPreferences } from "~/hooks/preferences/types";
 import { CollectionsProvider } from "~/pages/collection/provider";
 import { AppWidgets } from "./app-widgets";
+import { TooltipProvider } from "./components/ui/tooltip";
 import { UserPreferencesProvider } from "./hooks/preferences";
 
 interface ContextProvidersProps {
@@ -14,7 +15,7 @@ export default function ContextProviders({ children, init_userConfig }: ContextP
 		<UserPreferencesProvider init={init_userConfig}>
 			<DownloadProvider>
 				<CollectionsProvider>
-					{children}
+					<TooltipProvider>{children}</TooltipProvider>
 
 					<AppWidgets />
 				</CollectionsProvider>

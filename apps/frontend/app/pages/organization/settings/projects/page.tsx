@@ -1,6 +1,6 @@
 import { BadgeInfoIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 import { useOrgData } from "~/hooks/org";
 import { useTranslation } from "~/locales/provider";
 import CreateNewProjectDialog from "~/pages/dashboard/projects/new-project";
@@ -17,14 +17,12 @@ export default function OrgProjectsSettings() {
 			<CardHeader className="flex w-full flex-row flex-wrap items-start justify-between gap-x-6 gap-y-2">
 				<CardTitle>{t.dashboard.projects}</CardTitle>
 				<div className="flex items-center justify-center gap-3">
-					<TooltipProvider>
-						<Tooltip>
-							<TooltipTrigger asChild>
-								<BadgeInfoIcon aria-hidden className="h-btn-icon-md w-btn-icon-md text-foreground-muted" />
-							</TooltipTrigger>
-							<TooltipContent className="max-w-md">{t.organization.transferProjectsTip}</TooltipContent>
-						</Tooltip>
-					</TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<BadgeInfoIcon aria-hidden className="h-btn-icon-md w-btn-icon-md text-foreground-muted" />
+						</TooltipTrigger>
+						<TooltipContent className="max-w-md">{t.organization.transferProjectsTip}</TooltipContent>
+					</Tooltip>
 
 					<CreateNewProjectDialog orgId={orgData.id} />
 				</div>

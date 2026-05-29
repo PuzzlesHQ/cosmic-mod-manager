@@ -1,7 +1,7 @@
 import { EnvironmentSupport } from "@app/utils/types";
 import { GlobeIcon, HardDriveIcon, MonitorIcon } from "lucide-react";
 import { LabelledIcon } from "~/components/ui/labelled-icon";
-import { TooltipProvider, TooltipTemplate } from "~/components/ui/tooltip";
+import { TooltipTemplate } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 
@@ -153,15 +153,13 @@ interface EnvSupportChipProps {
 
 function EnvSupportChip(props: EnvSupportChipProps) {
 	return (
-		<TooltipProvider>
-			<TooltipTemplate content={props.title}>
-				<LabelledIcon
-					icon={props.icon}
-					className={cn("font-semibold text-foreground-muted", props.title ? "cursor-help" : "", props.className)}
-				>
-					{props.label}
-				</LabelledIcon>
-			</TooltipTemplate>
-		</TooltipProvider>
+		<TooltipTemplate content={props.title}>
+			<LabelledIcon
+				icon={props.icon}
+				className={cn("font-semibold text-foreground-muted", props.title ? "cursor-help" : "", props.className)}
+			>
+				{props.label}
+			</LabelledIcon>
+		</TooltipTemplate>
 	);
 }

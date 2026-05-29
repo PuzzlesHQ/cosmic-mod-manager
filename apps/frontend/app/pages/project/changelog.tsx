@@ -10,7 +10,7 @@ import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { FormattedDate } from "~/components/ui/date";
 import Link, { TextLink } from "~/components/ui/link";
-import { TooltipProvider, TooltipTemplate } from "~/components/ui/tooltip";
+import { TooltipTemplate } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
 import { useProjectData } from "~/hooks/project";
 import { useTranslation } from "~/locales/provider";
@@ -63,14 +63,9 @@ export default function VersionChangelogs() {
 									<ChangelogBar releaseChannel={version.releaseChannel} isDuplicate={isDuplicate === true} />
 
 									{version.releaseChannel === VersionReleaseChannel.DEV ? (
-										<TooltipProvider>
-											<TooltipTemplate content="Dev release!" className="font-normal">
-												<FlaskConicalIcon
-													aria-hidden
-													className="h-btn-icon-md w-btn-icon-md cursor-help text-error-fg"
-												/>
-											</TooltipTemplate>
-										</TooltipProvider>
+										<TooltipTemplate content="Dev release!" className="font-normal">
+											<FlaskConicalIcon aria-hidden className="h-btn-icon-md w-btn-icon-md cursor-help text-error-fg" />
+										</TooltipTemplate>
 									) : null}
 
 									{t.version.publishedBy(

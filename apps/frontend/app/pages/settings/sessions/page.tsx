@@ -14,7 +14,7 @@ import { DotSeparator } from "~/components/ui/separator";
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
 import { Switch } from "~/components/ui/switch";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 import { useTranslation } from "~/locales/provider";
 import { authProvidersList } from "~/pages/auth/oauth-providers";
 import clientFetch from "~/utils/client-fetch";
@@ -72,110 +72,106 @@ export default function SessionsPage({ loggedInSessions, session: currSession }:
 				<CardDescription>{t.settings.sessionsDesc}</CardDescription>
 			</CardHeader>
 			<CardContent className="relative grid min-h-24 gap-form-elements">
-				<TooltipProvider>
-					{loggedInSessions.map((session) => {
-						const sessionProvider_Icon = authProvidersList.find(
-							(provider) => provider.name.toLowerCase() === session.providerName,
-						)?.icon;
+				{loggedInSessions.map((session) => {
+					const sessionProvider_Icon = authProvidersList.find(
+						(provider) => provider.name.toLowerCase() === session.providerName,
+					)?.icon;
 
-						return (
-							<div
-								key={session.id}
-								className="flex w-full flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded bg-background px-4 py-3"
-							>
-								<div className="flex grow flex-col gap-2.5 sm:gap-1">
-									<div className="flex flex-wrap items-center justify-start gap-x-2 font-medium">
-										<span>{session.browser}</span>
-										<DotSeparator />
-										<span>{session.os}</span>
-										<DotSeparator />
-										<div className="flex items-center justify-center gap-2">
-											{showIp ? (
-												<span>{session.ip}</span>
-											) : (
-												<span className="text-foreground-extra-muted" title={session.ip || ""}>
-													[{t.settings.ipHidden}]
-												</span>
-											)}
-											<CopyBtn text={session.ip || ""} />
-										</div>
-									</div>
-
-									<div className="flex w-full flex-wrap items-center justify-start gap-x-2 text-foreground-muted">
-										{session.city || session.country ? (
-											<>
-												<span>
-													{session.city || ""}
-													{session.city && session.country && " - "}
-													{session.country || ""}
-												</span>
-												<DotSeparator />
-											</>
-										) : null}
-
-										<Tooltip>
-											<TooltipTrigger className="cursor-text">
-												<span>{t.settings.lastAccessed(TimePassedSince({ date: session.dateLastActive }))}</span>
-											</TooltipTrigger>
-											<TooltipContent>
-												<FormattedDate date={session.dateLastActive} />
-											</TooltipContent>
-										</Tooltip>
-
-										<DotSeparator />
-
-										<Tooltip>
-											<TooltipTrigger className="cursor-text">
-												<span>{t.settings.created(TimePassedSince({ date: session.dateCreated }))}</span>
-											</TooltipTrigger>
-											<TooltipContent>
-												<FormattedDate date={session.dateCreated} />
-											</TooltipContent>
-										</Tooltip>
-									</div>
-
-									<div className="mt-1 flex items-center justify-start">
-										<Tooltip>
-											<TooltipTrigger className="flex cursor-default items-center justify-start gap-2 text-foreground-muted">
-												{sessionProvider_Icon ? (
-													<i className="flex h-btn-icon-lg w-btn-icon-lg items-center justify-center">
-														{sessionProvider_Icon}
-													</i>
-												) : (
-													<KeyRoundIcon aria-hidden className="h-4 w-4" />
-												)}
-												<span className="capitalize">{session?.providerName}</span>
-											</TooltipTrigger>
-											<TooltipContent>
-												{t.settings.sessionCreatedUsing(Capitalize(session?.providerName))}
-											</TooltipContent>
-										</Tooltip>
+					return (
+						<div
+							key={session.id}
+							className="flex w-full flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded bg-background px-4 py-3"
+						>
+							<div className="flex grow flex-col gap-2.5 sm:gap-1">
+								<div className="flex flex-wrap items-center justify-start gap-x-2 font-medium">
+									<span>{session.browser}</span>
+									<DotSeparator />
+									<span>{session.os}</span>
+									<DotSeparator />
+									<div className="flex items-center justify-center gap-2">
+										{showIp ? (
+											<span>{session.ip}</span>
+										) : (
+											<span className="text-foreground-extra-muted" title={session.ip || ""}>
+												[{t.settings.ipHidden}]
+											</span>
+										)}
+										<CopyBtn text={session.ip || ""} />
 									</div>
 								</div>
-								<div>
-									{session.id === currSession?.sessionId ? (
-										<span className="text-foreground-muted italic">{t.settings.currSession}</span>
-									) : (
-										<Button
-											variant="secondary"
-											disabled={isLoading.value}
-											onClick={() => {
-												revokeSession(session.id);
-											}}
-										>
-											{isLoading.value && isLoading.sessionId === session.id ? (
-												<LoadingSpinner size="xs" />
+
+								<div className="flex w-full flex-wrap items-center justify-start gap-x-2 text-foreground-muted">
+									{session.city || session.country ? (
+										<>
+											<span>
+												{session.city || ""}
+												{session.city && session.country && " - "}
+												{session.country || ""}
+											</span>
+											<DotSeparator />
+										</>
+									) : null}
+
+									<Tooltip>
+										<TooltipTrigger className="cursor-text">
+											<span>{t.settings.lastAccessed(TimePassedSince({ date: session.dateLastActive }))}</span>
+										</TooltipTrigger>
+										<TooltipContent>
+											<FormattedDate date={session.dateLastActive} />
+										</TooltipContent>
+									</Tooltip>
+
+									<DotSeparator />
+
+									<Tooltip>
+										<TooltipTrigger className="cursor-text">
+											<span>{t.settings.created(TimePassedSince({ date: session.dateCreated }))}</span>
+										</TooltipTrigger>
+										<TooltipContent>
+											<FormattedDate date={session.dateCreated} />
+										</TooltipContent>
+									</Tooltip>
+								</div>
+
+								<div className="mt-1 flex items-center justify-start">
+									<Tooltip>
+										<TooltipTrigger className="flex cursor-default items-center justify-start gap-2 text-foreground-muted">
+											{sessionProvider_Icon ? (
+												<i className="flex h-btn-icon-lg w-btn-icon-lg items-center justify-center">
+													{sessionProvider_Icon}
+												</i>
 											) : (
-												<XIcon aria-hidden className="h-btn-icon w-btn-icon" />
+												<KeyRoundIcon aria-hidden className="h-4 w-4" />
 											)}
-											{t.settings.revokeSession}
-										</Button>
-									)}
+											<span className="capitalize">{session?.providerName}</span>
+										</TooltipTrigger>
+										<TooltipContent>{t.settings.sessionCreatedUsing(Capitalize(session?.providerName))}</TooltipContent>
+									</Tooltip>
 								</div>
 							</div>
-						);
-					})}
-				</TooltipProvider>
+							<div>
+								{session.id === currSession?.sessionId ? (
+									<span className="text-foreground-muted italic">{t.settings.currSession}</span>
+								) : (
+									<Button
+										variant="secondary"
+										disabled={isLoading.value}
+										onClick={() => {
+											revokeSession(session.id);
+										}}
+									>
+										{isLoading.value && isLoading.sessionId === session.id ? (
+											<LoadingSpinner size="xs" />
+										) : (
+											<XIcon aria-hidden className="h-btn-icon w-btn-icon" />
+										)}
+										{t.settings.revokeSession}
+									</Button>
+								)}
+							</div>
+						</div>
+					);
+				})}
 			</CardContent>
 		</Card>
 	);

@@ -34,7 +34,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "~/components/ui/select";
-import { TooltipProvider, TooltipTemplate } from "~/components/ui/tooltip";
+import { TooltipTemplate } from "~/components/ui/tooltip";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { cn } from "~/components/utils";
 import { usePreferences } from "~/hooks/preferences";
@@ -271,22 +271,20 @@ function ViewTypeToggle({ projectType, viewType }: { projectType: ProjectType; v
 	}
 
 	return (
-		<TooltipProvider>
-			<TooltipTemplate content={t.search.view[viewType]}>
-				<Button
-					variant="secondary"
-					size="icon"
-					onClick={toggleViewType}
-					aria-label="Toggle View Type"
-					className="h-nav-item w-nav-item"
-				>
-					{viewType === ListViewType.GALLERY ? (
-						<ImageIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-					) : (
-						<LayoutListIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-					)}
-				</Button>
-			</TooltipTemplate>
-		</TooltipProvider>
+		<TooltipTemplate content={t.search.view[viewType]}>
+			<Button
+				variant="secondary"
+				size="icon"
+				onClick={toggleViewType}
+				aria-label="Toggle View Type"
+				className="h-nav-item w-nav-item"
+			>
+				{viewType === ListViewType.GALLERY ? (
+					<ImageIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
+				) : (
+					<LayoutListIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
+				)}
+			</Button>
+		</TooltipTemplate>
 	);
 }

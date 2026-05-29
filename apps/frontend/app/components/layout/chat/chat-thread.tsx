@@ -42,7 +42,7 @@ import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { Separator } from "~/components/ui/separator";
 import { toast } from "~/components/ui/sonner";
 import { SuspenseFallback } from "~/components/ui/spinner";
-import { TooltipProvider, TooltipTemplate } from "~/components/ui/tooltip";
+import { TooltipTemplate } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
 import { type ProjectContextData, useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
@@ -188,215 +188,213 @@ export function ChatThread(props: ChatThreadProps) {
 	const isReportClosed = !!props.report && props.report.closed === true;
 
 	return (
-		<TooltipProvider>
-			<div className="grid w-full rounded-lg bg-background/50 dark:bg-background">
-				<div className="grid py-card-surround">
-					{thread.messages.map((msg, i) => {
-						const createdAt = DateFromStr(msg.createdAt);
-						const inResponseTo_msg =
-							msg.type === MessageType.TEXT && !!msg.body.replying_to
-								? thread.messages.find((m) => m.id === msg.body.replying_to)
-								: null;
-
-						const inResponseTo_user = inResponseTo_msg
-							? thread.members.find((u) => u.id === inResponseTo_msg.authorId) || null
+		<div className="grid w-full rounded-lg bg-background/50 dark:bg-background">
+			<div className="grid py-card-surround">
+				{thread.messages.map((msg, i) => {
+					const createdAt = DateFromStr(msg.createdAt);
+					const inResponseTo_msg =
+						msg.type === MessageType.TEXT && !!msg.body.replying_to
+							? thread.messages.find((m) => m.id === msg.body.replying_to)
 							: null;
 
-						return (
-							<ThreadMessage
-								key={`${msg.authorId}-${createdAt?.getTime()}`}
-								message={msg}
-								prevMsg={thread.messages[i - 1]}
-								members={thread.members}
-								replyingTo={replyingTo}
-								setReplyingTo={setReplyingTo}
-								inResponseTo={
-									inResponseTo_msg
-										? {
-												user: inResponseTo_user,
-												msg: inResponseTo_msg,
-											}
-										: null
-								}
-								fetchThreadMessages={FetchThreadMessages}
-							/>
-						);
-					})}
+					const inResponseTo_user = inResponseTo_msg
+						? thread.members.find((u) => u.id === inResponseTo_msg.authorId) || null
+						: null;
 
-					{!thread.messages.length && (
-						<span className="py-8 text-center text-foreground-extra-muted">{t.chatThread.noMessages}</span>
-					)}
-				</div>
-
-				<div className="grid gap-3 rounded-t-lg bg-card-background p-card-surround">
-					{!!replyingTo && (
-						<div className="flex items-center justify-between border-border border-b px-1 pb-2">
-							<span className="text-foreground-muted text-sm leading-none">
-								{t.chatThread.replyingTo(
-									<Button
-										key="replying-to-user"
-										onClick={() => {
-											scrollMsgIntoView(replyingTo);
-										}}
-										variant="link"
-										className="inline h-fit p-0 leading-none"
-									>
-										{replyingTo_user?.userName}
-									</Button>,
-								)}
-							</span>
-
-							<Button
-								variant="secondary"
-								size="icon"
-								className="!p-0.5 !w-fit !h-fit aspect-square rounded-full"
-								onClick={() => setReplyingTo(null)}
-							>
-								<XIcon className="h-btn-icon-sm w-btn-icon-sm" />
-							</Button>
-						</div>
-					)}
-					{!isThreadOpen ? (
-						<p className="text-foreground-muted">{t.chatThread.threadClosedDesc}</p>
-					) : (
-						<div className="grid grid-cols-[1fr_auto] gap-2">
-							<div className="autoresizing-textarea" data-editor-value={editorText}>
-								<textarea
-									className={cn(
-										"resize-none overflow-y-auto rounded",
-										"bg-raised-background focus:bg-transparent",
-										"ring-raised-background focus-visible:outline-none focus-visible:ring-2",
-									)}
-									rows={1}
-									placeholder={t.chatThread.messagePlaceholder}
-									value={editorText}
-									onChange={(e) => setEditorText(e.target.value)}
-								/>
-							</div>
-
-							<Button
-								onClick={() => PostThreadMessage()}
-								disabled={sendingMsg || !editorText.trim().length}
-								variant="secondary"
-							>
-								<SendIcon className="h-btn-icon-md w-btn-icon-md" />
-							</Button>
-						</div>
-					)}
-
-					<div className="flex flex-wrap items-center gap-2">
-						{isReportOpen && (
-							<Button variant="destructive" onClick={() => updateReportStatus(true)} disabled={updatingReportStatus}>
-								<LockKeyholeIcon aria-hidden="true" className="h-btn-icon-md w-btn-icon-md" strokeWidth={2.2} />
-								{t.chatThread.closeThread}
-							</Button>
-						)}
-
-						{isReportClosed && (
-							<Button onClick={() => updateReportStatus(false)} disabled={updatingReportStatus}>
-								<CheckCircleIcon aria-hidden="true" className="h-btn-icon-md w-btn-icon-md" strokeWidth={2.2} />
-								{t.chatThread.reopenThread}
-							</Button>
-						)}
-
-						{isThreadOpen && isModerator(session.role) && (
-							<Button
-								variant="secondary"
-								onClick={() => PostThreadMessage(true)}
-								disabled={sendingMsg || !editorText.trim().length}
-								title="Private messages are only accessible to Moderators"
-							>
-								<ScaleIcon className="h-btn-icon w-btn-icon" />
-								{t.chatThread.addPrivateNote}
-							</Button>
-						)}
-
-						{ctx?.projectData?.id ? (
-							<>
-								{ctx.currUsersMembership?.isOwner && isRejected(ctx.projectData.status) && (
-									<ConfirmDialog
-										title={t.project.publishingChecklist.resubmitForReview}
-										confirmText={t.project.publishingChecklist.resubmitForReview}
-										onConfirm={() => submitForReview(ctx.projectData.id, () => RefreshPage(navigate, location))}
-										description={
-											<>
-												<span className="block">{t.moderation.resubmitDesc._1(ctx.projectData.name)}</span>
-												<span className="block">{t.moderation.resubmitDesc._2}</span>
-												<span className="block font-medium text-error-fg">{t.moderation.resubmitDesc.warning}</span>
-											</>
+					return (
+						<ThreadMessage
+							key={`${msg.authorId}-${createdAt?.getTime()}`}
+							message={msg}
+							prevMsg={thread.messages[i - 1]}
+							members={thread.members}
+							replyingTo={replyingTo}
+							setReplyingTo={setReplyingTo}
+							inResponseTo={
+								inResponseTo_msg
+									? {
+											user: inResponseTo_user,
+											msg: inResponseTo_msg,
 										}
-										confirmIcon={<ScaleIcon className="h-btn-icon w-btn-icon" />}
-										variant="moderation"
-									>
-										<Button variant="moderation">
-											<ScaleIcon className="h-btn-icon w-btn-icon" />
-											{t.project.publishingChecklist.resubmitForReview}
-										</Button>
-									</ConfirmDialog>
-								)}
+									: null
+							}
+							fetchThreadMessages={FetchThreadMessages}
+						/>
+					);
+				})}
 
-								{isModerator(session.role) && isUnderReview(ctx.projectData.status) && (
-									<>
-										<UpdateProjectStatusDialog
-											projectId={ctx.projectData.id}
-											projectName={ctx.projectData.name}
-											projectType={ctx.projectData.type[0]}
-											prevStatus={ctx.projectData.status}
-											newStatus={ProjectPublishingStatus.APPROVED}
-											trigger={{
-												text: t.moderation.approve,
-												size: "default",
-												className: "justify-start",
-											}}
-										/>
-
-										<UpdateProjectStatusDialog
-											projectId={ctx.projectData.id}
-											projectName={ctx.projectData.name}
-											projectType={ctx.projectData.type[0]}
-											prevStatus={ctx.projectData.status}
-											newStatus={ProjectPublishingStatus.REJECTED}
-											trigger={{
-												text: t.moderation.reject,
-												size: "default",
-												variant: "secondary-destructive",
-												className: "justify-start",
-											}}
-											dialogConfirmBtn={{ variant: "destructive" }}
-										/>
-
-										<Popover>
-											<PopoverTrigger asChild>
-												<Button size="icon" className="rounded-full" variant="outline">
-													<MoreVerticalIcon aria-hidden className="h-btn-icon w-btn-icon" />
-												</Button>
-											</PopoverTrigger>
-											<PopoverContent className="w-fit min-w-0 p-1" align="end">
-												<UpdateProjectStatusDialog
-													projectId={ctx.projectData.id}
-													projectName={ctx.projectData.name}
-													projectType={ctx.projectData.type[0]}
-													prevStatus={ctx.projectData.status}
-													newStatus={ProjectPublishingStatus.WITHHELD}
-													trigger={{
-														text: t.moderation.withhold,
-														variant: "ghost-destructive",
-														className: "justify-start",
-													}}
-													dialogConfirmBtn={{ variant: "destructive" }}
-												/>
-											</PopoverContent>
-										</Popover>
-									</>
-								)}
-							</>
-						) : null}
-					</div>
-
-					<div id="thread-bottom" />
-				</div>
+				{!thread.messages.length && (
+					<span className="py-8 text-center text-foreground-extra-muted">{t.chatThread.noMessages}</span>
+				)}
 			</div>
-		</TooltipProvider>
+
+			<div className="grid gap-3 rounded-t-lg bg-card-background p-card-surround">
+				{!!replyingTo && (
+					<div className="flex items-center justify-between border-border border-b px-1 pb-2">
+						<span className="text-foreground-muted text-sm leading-none">
+							{t.chatThread.replyingTo(
+								<Button
+									key="replying-to-user"
+									onClick={() => {
+										scrollMsgIntoView(replyingTo);
+									}}
+									variant="link"
+									className="inline h-fit p-0 leading-none"
+								>
+									{replyingTo_user?.userName}
+								</Button>,
+							)}
+						</span>
+
+						<Button
+							variant="secondary"
+							size="icon"
+							className="!p-0.5 !w-fit !h-fit aspect-square rounded-full"
+							onClick={() => setReplyingTo(null)}
+						>
+							<XIcon className="h-btn-icon-sm w-btn-icon-sm" />
+						</Button>
+					</div>
+				)}
+				{!isThreadOpen ? (
+					<p className="text-foreground-muted">{t.chatThread.threadClosedDesc}</p>
+				) : (
+					<div className="grid grid-cols-[1fr_auto] gap-2">
+						<div className="autoresizing-textarea" data-editor-value={editorText}>
+							<textarea
+								className={cn(
+									"resize-none overflow-y-auto rounded",
+									"bg-raised-background focus:bg-transparent",
+									"ring-raised-background focus-visible:outline-none focus-visible:ring-2",
+								)}
+								rows={1}
+								placeholder={t.chatThread.messagePlaceholder}
+								value={editorText}
+								onChange={(e) => setEditorText(e.target.value)}
+							/>
+						</div>
+
+						<Button
+							onClick={() => PostThreadMessage()}
+							disabled={sendingMsg || !editorText.trim().length}
+							variant="secondary"
+						>
+							<SendIcon className="h-btn-icon-md w-btn-icon-md" />
+						</Button>
+					</div>
+				)}
+
+				<div className="flex flex-wrap items-center gap-2">
+					{isReportOpen && (
+						<Button variant="destructive" onClick={() => updateReportStatus(true)} disabled={updatingReportStatus}>
+							<LockKeyholeIcon aria-hidden="true" className="h-btn-icon-md w-btn-icon-md" strokeWidth={2.2} />
+							{t.chatThread.closeThread}
+						</Button>
+					)}
+
+					{isReportClosed && (
+						<Button onClick={() => updateReportStatus(false)} disabled={updatingReportStatus}>
+							<CheckCircleIcon aria-hidden="true" className="h-btn-icon-md w-btn-icon-md" strokeWidth={2.2} />
+							{t.chatThread.reopenThread}
+						</Button>
+					)}
+
+					{isThreadOpen && isModerator(session.role) && (
+						<Button
+							variant="secondary"
+							onClick={() => PostThreadMessage(true)}
+							disabled={sendingMsg || !editorText.trim().length}
+							title="Private messages are only accessible to Moderators"
+						>
+							<ScaleIcon className="h-btn-icon w-btn-icon" />
+							{t.chatThread.addPrivateNote}
+						</Button>
+					)}
+
+					{ctx?.projectData?.id ? (
+						<>
+							{ctx.currUsersMembership?.isOwner && isRejected(ctx.projectData.status) && (
+								<ConfirmDialog
+									title={t.project.publishingChecklist.resubmitForReview}
+									confirmText={t.project.publishingChecklist.resubmitForReview}
+									onConfirm={() => submitForReview(ctx.projectData.id, () => RefreshPage(navigate, location))}
+									description={
+										<>
+											<span className="block">{t.moderation.resubmitDesc._1(ctx.projectData.name)}</span>
+											<span className="block">{t.moderation.resubmitDesc._2}</span>
+											<span className="block font-medium text-error-fg">{t.moderation.resubmitDesc.warning}</span>
+										</>
+									}
+									confirmIcon={<ScaleIcon className="h-btn-icon w-btn-icon" />}
+									variant="moderation"
+								>
+									<Button variant="moderation">
+										<ScaleIcon className="h-btn-icon w-btn-icon" />
+										{t.project.publishingChecklist.resubmitForReview}
+									</Button>
+								</ConfirmDialog>
+							)}
+
+							{isModerator(session.role) && isUnderReview(ctx.projectData.status) && (
+								<>
+									<UpdateProjectStatusDialog
+										projectId={ctx.projectData.id}
+										projectName={ctx.projectData.name}
+										projectType={ctx.projectData.type[0]}
+										prevStatus={ctx.projectData.status}
+										newStatus={ProjectPublishingStatus.APPROVED}
+										trigger={{
+											text: t.moderation.approve,
+											size: "default",
+											className: "justify-start",
+										}}
+									/>
+
+									<UpdateProjectStatusDialog
+										projectId={ctx.projectData.id}
+										projectName={ctx.projectData.name}
+										projectType={ctx.projectData.type[0]}
+										prevStatus={ctx.projectData.status}
+										newStatus={ProjectPublishingStatus.REJECTED}
+										trigger={{
+											text: t.moderation.reject,
+											size: "default",
+											variant: "secondary-destructive",
+											className: "justify-start",
+										}}
+										dialogConfirmBtn={{ variant: "destructive" }}
+									/>
+
+									<Popover>
+										<PopoverTrigger asChild>
+											<Button size="icon" className="rounded-full" variant="outline">
+												<MoreVerticalIcon aria-hidden className="h-btn-icon w-btn-icon" />
+											</Button>
+										</PopoverTrigger>
+										<PopoverContent className="w-fit min-w-0 p-1" align="end">
+											<UpdateProjectStatusDialog
+												projectId={ctx.projectData.id}
+												projectName={ctx.projectData.name}
+												projectType={ctx.projectData.type[0]}
+												prevStatus={ctx.projectData.status}
+												newStatus={ProjectPublishingStatus.WITHHELD}
+												trigger={{
+													text: t.moderation.withhold,
+													variant: "ghost-destructive",
+													className: "justify-start",
+												}}
+												dialogConfirmBtn={{ variant: "destructive" }}
+											/>
+										</PopoverContent>
+									</Popover>
+								</>
+							)}
+						</>
+					) : null}
+				</div>
+
+				<div id="thread-bottom" />
+			</div>
+		</div>
 	);
 }
 

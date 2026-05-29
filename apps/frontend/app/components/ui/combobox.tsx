@@ -4,7 +4,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
 
 export interface ComboBoxItem {
 	label: string;
@@ -94,7 +94,7 @@ function ComboBox(props: ComboBoxProps) {
 	return (
 		<Popover open={open} onOpenChange={setOpen} modal={true}>
 			<PopoverTrigger asChild>{props.children}</PopoverTrigger>
-			<PopoverContent align="end" className="border-none p-0 sm:min-w-[28rem]">
+			<PopoverContent align="end" className="border-none p-0 sm:min-w-md">
 				<Command className="border border-border">
 					{props.inputBox === false ? null : (
 						<CommandInput
@@ -103,12 +103,12 @@ function ComboBox(props: ComboBoxProps) {
 							placeholder={props.inputLabel || t.common.search}
 						/>
 					)}
-					<TooltipProvider delayDuration={100} skipDelayDuration={200}>
-						<CommandList>
-							<CommandEmpty>{props.noResultsElem || t.common.noResults}</CommandEmpty>
-							<CommandGroup>{commandItems}</CommandGroup>
-						</CommandList>
-					</TooltipProvider>
+
+					<CommandList>
+						<CommandEmpty>{props.noResultsElem || t.common.noResults}</CommandEmpty>
+						<CommandGroup>{commandItems}</CommandGroup>
+					</CommandList>
+
 					{props.footerItem}
 				</Command>
 			</PopoverContent>

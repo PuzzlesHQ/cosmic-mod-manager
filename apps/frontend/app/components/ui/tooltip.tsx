@@ -50,7 +50,7 @@ export function TooltipTemplate({
 	className?: string;
 }) {
 	return (
-		<Tooltip>
+		<Tooltip delayDuration={200}>
 			<TooltipTrigger asChild={asChild}>{children}</TooltipTrigger>
 			<TooltipContent className={className}>{content}</TooltipContent>
 		</Tooltip>

@@ -47,7 +47,7 @@ import { PopoverClose } from "~/components/ui/popover";
 import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { ReleaseChannelBadge } from "~/components/ui/release-channel-pill";
 import { Separator } from "~/components/ui/separator";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
 import { useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
@@ -242,69 +242,67 @@ export default function ProjectPageLayout() {
 							)}
 						</div>
 
-						<TooltipProvider>
-							{ctx.featuredProjectVersions?.map((version) => (
-								// biome-ignore lint/a11y/useKeyWithClickEvents: --
-								// biome-ignore lint/a11y/noStaticElementInteractions: --
-								<div
-									key={version.id}
-									className="bg_hover_stagger group/card flex w-full cursor-pointer items-start justify-start gap-2 rounded p-2 pb-2.5 text-foreground-muted hover:bg-raised-background"
-									onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-										if (
-											// @ts-expect-error
-											!e.target.closest(".noClickRedirect")
-										) {
-											const link = VersionPagePath(ctx.projectType, projectData.slug, version.slug);
-											if (window.location.pathname !== link) {
-												navigate(link);
-											}
+						{ctx.featuredProjectVersions?.map((version) => (
+							// biome-ignore lint/a11y/useKeyWithClickEvents: --
+							// biome-ignore lint/a11y/noStaticElementInteractions: --
+							<div
+								key={version.id}
+								className="bg_hover_stagger group/card flex w-full cursor-pointer items-start justify-start gap-2 rounded p-2 pb-2.5 text-foreground-muted hover:bg-raised-background"
+								onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+									if (
+										// @ts-expect-error
+										!e.target.closest(".noClickRedirect")
+									) {
+										const link = VersionPagePath(ctx.projectType, projectData.slug, version.slug);
+										if (window.location.pathname !== link) {
+											navigate(link);
 										}
-									}}
-								>
-									<div className="relative flex min-w-10 items-center justify-center">
-										<ReleaseChannelBadge
-											releaseChannel={version.releaseChannel}
-											className="absolute group-focus-within/card:invisible group-hover/card:invisible"
-										/>
+									}
+								}}
+							>
+								<div className="relative flex min-w-10 items-center justify-center">
+									<ReleaseChannelBadge
+										releaseChannel={version.releaseChannel}
+										className="absolute group-focus-within/card:invisible group-hover/card:invisible"
+									/>
 
-										<Tooltip>
-											<TooltipTrigger
-												asChild
-												className="invisible group-focus-within/card:visible group-hover/card:visible"
-											>
-												<Button
-													className="noClickRedirect !w-10 !h-10 flex-shrink-0 rounded-full"
-													variant={isVersionDetailsPage ? "secondary-dark" : "default"}
-													size="icon"
-													aria-label={t.project.downloadItem(version.primaryFile?.name || "")}
-													onClick={() => downloadFile(version.primaryFile?.url)}
-												>
-													<DownloadIcon aria-hidden className="h-[1.07rem] w-[1.07rem]" strokeWidth={2.2} />
-												</Button>
-											</TooltipTrigger>
-
-											<TooltipContent>
-												{version?.primaryFile?.name} ({parseFileSize(version.primaryFile?.size || 0)})
-											</TooltipContent>
-										</Tooltip>
-									</div>
-
-									<div className="flex h-full w-fit grow select-text flex-col">
-										<Link
-											prefetch={LinkPrefetchStrategy.Render}
-											to={VersionPagePath(ctx.projectType, projectData.slug, version.slug)}
-											className="noClickRedirect w-fit"
+									<Tooltip>
+										<TooltipTrigger
+											asChild
+											className="invisible group-focus-within/card:visible group-hover/card:visible"
 										>
-											<p className="font-bold leading-tight">{version.title}</p>
-										</Link>
-										<p className="text-pretty leading-tight">
-											{version.loaders.map((loader) => CapitalizeAndFormatString(loader)).join(", ")}{" "}
-											{formatVersionsForDisplay(version.gameVersions).join(", ")}
-										</p>
-									</div>
+											<Button
+												className="noClickRedirect !w-10 !h-10 flex-shrink-0 rounded-full"
+												variant={isVersionDetailsPage ? "secondary-dark" : "default"}
+												size="icon"
+												aria-label={t.project.downloadItem(version.primaryFile?.name || "")}
+												onClick={() => downloadFile(version.primaryFile?.url)}
+											>
+												<DownloadIcon aria-hidden className="h-[1.07rem] w-[1.07rem]" strokeWidth={2.2} />
+											</Button>
+										</TooltipTrigger>
+
+										<TooltipContent>
+											{version?.primaryFile?.name} ({parseFileSize(version.primaryFile?.size || 0)})
+										</TooltipContent>
+									</Tooltip>
 								</div>
-							))}
-						</TooltipProvider>
+
+								<div className="flex h-full w-fit grow select-text flex-col">
+									<Link
+										prefetch={LinkPrefetchStrategy.Render}
+										to={VersionPagePath(ctx.projectType, projectData.slug, version.slug)}
+										className="noClickRedirect w-fit"
+									>
+										<p className="font-bold leading-tight">{version.title}</p>
+									</Link>
+									<p className="text-pretty leading-tight">
+										{version.loaders.map((loader) => CapitalizeAndFormatString(loader)).join(", ")}{" "}
+										{formatVersionsForDisplay(version.gameVersions).join(", ")}
+									</p>
+								</div>
+							</div>
+						))}
 					</Card>
 				) : null}
 
@@ -369,33 +367,31 @@ export default function ProjectPageLayout() {
 						</LabelledIcon>
 					) : null}
 
-					<TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger asChild className="cursor-text">
+							<LabelledIcon icon={<CalendarIcon aria-hidden className="h-btn-icon w-btn-icon" />}>
+								{t.settings.created(TimePassedSince({ date: projectData.datePublished }))}
+							</LabelledIcon>
+						</TooltipTrigger>
+
+						<TooltipContent>
+							<FormattedDate date={projectData.datePublished} />
+						</TooltipContent>
+					</Tooltip>
+
+					{ctx.allProjectVersions.length > 0 ? (
 						<Tooltip>
 							<TooltipTrigger asChild className="cursor-text">
-								<LabelledIcon icon={<CalendarIcon aria-hidden className="h-btn-icon w-btn-icon" />}>
-									{t.settings.created(TimePassedSince({ date: projectData.datePublished }))}
+								<LabelledIcon icon={<GitCommitHorizontalIcon aria-hidden className="h-btn-icon w-btn-icon" />}>
+									{t.project.updatedAt(TimePassedSince({ date: projectData.dateUpdated }))}
 								</LabelledIcon>
 							</TooltipTrigger>
 
 							<TooltipContent>
-								<FormattedDate date={projectData.datePublished} />
+								<FormattedDate date={projectData.dateUpdated} />
 							</TooltipContent>
 						</Tooltip>
-
-						{ctx.allProjectVersions.length > 0 ? (
-							<Tooltip>
-								<TooltipTrigger asChild className="cursor-text">
-									<LabelledIcon icon={<GitCommitHorizontalIcon aria-hidden className="h-btn-icon w-btn-icon" />}>
-										{t.project.updatedAt(TimePassedSince({ date: projectData.dateUpdated }))}
-									</LabelledIcon>
-								</TooltipTrigger>
-
-								<TooltipContent>
-									<FormattedDate date={projectData.dateUpdated} />
-								</TooltipContent>
-							</Tooltip>
-						) : null}
-					</TooltipProvider>
+					) : null}
 				</Card>
 			</div>
 

@@ -18,7 +18,7 @@ import { useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { toast } from "~/components/ui/sonner";
 import { LoadingSpinner } from "~/components/ui/spinner";
 import { Textarea } from "~/components/ui/textarea";
-import { TooltipProvider, TooltipTemplate } from "~/components/ui/tooltip";
+import { TooltipTemplate } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
 import { useFormHook } from "~/hooks/use-form";
 import { useTranslation } from "~/locales/provider";
@@ -171,88 +171,86 @@ export function ProfileSettingsPage({ session }: Props) {
 							control={form.control}
 							name="profilePageBg"
 							render={({ field }) => (
-								<TooltipProvider>
-									<FormItem
-										onPaste={(e) => {
-											const file = e.clipboardData?.files?.[0];
-											if (!file) return;
+								<FormItem
+									onPaste={(e) => {
+										const file = e.clipboardData?.files?.[0];
+										if (!file) return;
 
-											field.onChange(file);
-										}}
-									>
-										<FormLabel htmlFor="bg-input" className="justify-start gap-2">
-											{t.settings.profilePageBg}{" "}
-											<TooltipTemplate content={t.settings.profilePageBgDesc}>
-												<HelpCircleIcon className="h-btn-icon w-btn-icon cursor-help text-foreground-extra-muted" />
-											</TooltipTemplate>
-										</FormLabel>
+										field.onChange(file);
+									}}
+								>
+									<FormLabel htmlFor="bg-input" className="justify-start gap-2">
+										{t.settings.profilePageBg}{" "}
+										<TooltipTemplate content={t.settings.profilePageBgDesc}>
+											<HelpCircleIcon className="h-btn-icon w-btn-icon cursor-help text-foreground-extra-muted" />
+										</TooltipTemplate>
+									</FormLabel>
 
-										<div className="grid w-full max-w-md grid-cols-1">
-											<div
-												className={cn(
-													"flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded bg-raised-background px-4 py-2 sm:flex-nowrap",
-													field.value && "rounded-b-none",
-												)}
-											>
-												<div className="flex w-full items-center justify-start gap-1.5">
-													<input
-														hidden
-														type="file"
-														name={field.name}
-														id="gallery-image-input"
-														className="hidden"
-														accept={validImgFileExtensions.concat(validVideoFileExtensions).join(",")}
-														onChange={(e) => {
-															const file = e.target.files?.[0];
-															if (file) field.onChange(file);
-														}}
-													/>
-													<FileImageIcon
-														aria-hidden
-														className="h-btn-icon w-btn-icon flex-shrink-0 text-foreground-muted"
-													/>
-													{field.value instanceof File ? (
-														<div className="flex flex-wrap items-center justify-start gap-x-2">
-															<span className="break-words break-all font-semibold">{field.value.name}</span>
-														</div>
-													) : (
-														<span className="text-foreground-muted italic">
-															{field.value?.split("/").at(-1) || t.form.noFileChosen}
-														</span>
-													)}
-												</div>
-
-												{field.value ? (
-													<Button type="button" variant="secondary-dark" size="sm" onClick={() => field.onChange(null)}>
-														<Trash2Icon className="h-btn-icon w-btn-icon" />
-														{t.form.remove}
-													</Button>
+									<div className="grid w-full max-w-md grid-cols-1">
+										<div
+											className={cn(
+												"flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded bg-raised-background px-4 py-2 sm:flex-nowrap",
+												field.value && "rounded-b-none",
+											)}
+										>
+											<div className="flex w-full items-center justify-start gap-1.5">
+												<input
+													hidden
+													type="file"
+													name={field.name}
+													id="gallery-image-input"
+													className="hidden"
+													accept={validImgFileExtensions.concat(validVideoFileExtensions).join(",")}
+													onChange={(e) => {
+														const file = e.target.files?.[0];
+														if (file) field.onChange(file);
+													}}
+												/>
+												<FileImageIcon
+													aria-hidden
+													className="h-btn-icon w-btn-icon flex-shrink-0 text-foreground-muted"
+												/>
+												{field.value instanceof File ? (
+													<div className="flex flex-wrap items-center justify-start gap-x-2">
+														<span className="break-words break-all font-semibold">{field.value.name}</span>
+													</div>
 												) : (
-													<InteractiveLabel
-														htmlFor="gallery-image-input"
-														className={cn(buttonVariants({ variant: "secondary-dark", size: "sm" }), "cursor-pointer")}
-													>
-														{t.version.chooseFile}
-													</InteractiveLabel>
+													<span className="text-foreground-muted italic">
+														{field.value?.split("/").at(-1) || t.form.noFileChosen}
+													</span>
 												)}
 											</div>
+
 											{field.value ? (
-												<div className="aspect-[2/1] w-full overflow-hidden rounded rounded-t-none bg-zinc-900">
-													{/* HACKY_THING */}
-													<video
-														src={field.value instanceof File ? URL.createObjectURL(field.value) : field.value}
-														poster={field.value instanceof File ? URL.createObjectURL(field.value) : field.value}
-														muted
-														autoPlay
-														loop
-														className="h-full w-full object-contain"
-													/>
-												</div>
-											) : null}
+												<Button type="button" variant="secondary-dark" size="sm" onClick={() => field.onChange(null)}>
+													<Trash2Icon className="h-btn-icon w-btn-icon" />
+													{t.form.remove}
+												</Button>
+											) : (
+												<InteractiveLabel
+													htmlFor="gallery-image-input"
+													className={cn(buttonVariants({ variant: "secondary-dark", size: "sm" }), "cursor-pointer")}
+												>
+													{t.version.chooseFile}
+												</InteractiveLabel>
+											)}
 										</div>
-										<FormMessage />
-									</FormItem>
-								</TooltipProvider>
+										{field.value ? (
+											<div className="aspect-[2/1] w-full overflow-hidden rounded rounded-t-none bg-zinc-900">
+												{/* HACKY_THING */}
+												<video
+													src={field.value instanceof File ? URL.createObjectURL(field.value) : field.value}
+													poster={field.value instanceof File ? URL.createObjectURL(field.value) : field.value}
+													muted
+													autoPlay
+													loop
+													className="h-full w-full object-contain"
+												/>
+											</div>
+										) : null}
+									</div>
+									<FormMessage />
+								</FormItem>
 							)}
 						/>
 

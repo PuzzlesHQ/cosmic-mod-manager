@@ -19,7 +19,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { collapsibleBoxClassName } from "~/components/ui/collapsible";
 import { TextLink, useNavigate } from "~/components/ui/link";
 import { toast } from "~/components/ui/sonner";
-import { TooltipProvider, TooltipTemplate } from "~/components/ui/tooltip";
+import { TooltipTemplate } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
 import { useProjectData } from "~/hooks/project";
 import { useTranslation } from "~/locales/provider";
@@ -221,21 +221,19 @@ export function PublishingChecklist() {
 					<CardTitle className="text-foreground-muted/85">{pubChecklist.title}</CardTitle>
 
 					<div className="flex flex-wrap items-center gap-1">
-						<TooltipProvider>
-							<span className="me-2 font-bold text-foreground-muted/85">{pubChecklist.progress}</span>
+						<span className="me-2 font-bold text-foreground-muted/85">{pubChecklist.progress}</span>
 
-							{steps.map((step) => {
-								if (step.hide) return null;
+						{steps.map((step) => {
+							if (step.hide) return null;
 
-								return (
-									<TooltipTemplate key={step.id} content={step.title}>
-										<span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-background">
-											{step.condition === true ? <StatusIcon status={step.status} /> : TickIcon}
-										</span>
-									</TooltipTemplate>
-								);
-							})}
-						</TooltipProvider>
+							return (
+								<TooltipTemplate key={step.id} content={step.title}>
+									<span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-background">
+										{step.condition === true ? <StatusIcon status={step.status} /> : TickIcon}
+									</span>
+								</TooltipTemplate>
+							);
+						})}
 					</div>
 				</div>
 
@@ -247,55 +245,53 @@ export function PublishingChecklist() {
 			<div className={collapsibleBoxClassName(dropdownOpen)}>
 				<div>
 					<CardContent className="grid grid-cols-1 gap-panel-cards sm:grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))]">
-						<TooltipProvider delayDuration={200}>
-							{steps.map((step) => {
-								if (!step.condition || step.hide === true) return null;
+						{steps.map((step) => {
+							if (!step.condition || step.hide === true) return null;
 
-								let link: ChecklistCardProps["link"] | undefined;
-								if (step.link) {
-									const href = ProjectPagePath(project.type[0], project.slug, step.link.path);
-									link = {
-										label: step.link.title,
-										hidden: isCurrLinkActive(href, currLoc.pathname),
-										href: href,
-									};
-								}
+							let link: ChecklistCardProps["link"] | undefined;
+							if (step.link) {
+								const href = ProjectPagePath(project.type[0], project.slug, step.link.path);
+								link = {
+									label: step.link.title,
+									hidden: isCurrLinkActive(href, currLoc.pathname),
+									href: href,
+								};
+							}
 
-								return (
-									<ChecklistCard
-										key={step.id}
-										icon={
-											<TooltipTemplate content={Capitalize(step.status)}>
-												<span>
-													<StatusIcon status={step.status} />
-												</span>
-											</TooltipTemplate>
-										}
-										label={step.title}
-										desc={step.description}
-										link={link}
-									>
-										{step.action ? (
-											<>
-												{!readyToSubmit && (
-													<span className="text-foreground-muted leading-tight">{pubChecklist.requiredStepsDesc}</span>
-												)}
+							return (
+								<ChecklistCard
+									key={step.id}
+									icon={
+										<TooltipTemplate content={Capitalize(step.status)}>
+											<span>
+												<StatusIcon status={step.status} />
+											</span>
+										</TooltipTemplate>
+									}
+									label={step.title}
+									desc={step.description}
+									link={link}
+								>
+									{step.action ? (
+										<>
+											{!readyToSubmit && (
+												<span className="text-foreground-muted leading-tight">{pubChecklist.requiredStepsDesc}</span>
+											)}
 
-												<Button
-													disabled={!readyToSubmit}
-													onClick={step.action.onClick}
-													className="w-fit"
-													variant="moderation"
-													size="sm"
-												>
-													<SendIcon aria-hidden className="h-btn-icon w-iconh-btn-icon" /> {step.action.title}
-												</Button>
-											</>
-										) : null}
-									</ChecklistCard>
-								);
-							})}
-						</TooltipProvider>
+											<Button
+												disabled={!readyToSubmit}
+												onClick={step.action.onClick}
+												className="w-fit"
+												variant="moderation"
+												size="sm"
+											>
+												<SendIcon aria-hidden className="h-btn-icon w-iconh-btn-icon" /> {step.action.title}
+											</Button>
+										</>
+									) : null}
+								</ChecklistCard>
+							);
+						})}
 					</CardContent>
 				</div>
 			</div>

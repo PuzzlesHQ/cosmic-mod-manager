@@ -36,7 +36,7 @@ import { Separator } from "~/components/ui/separator";
 import { WanderingCubesSpinner } from "~/components/ui/spinner";
 import { Switch } from "~/components/ui/switch";
 import { LabelledTernaryCheckbox, TernaryStates } from "~/components/ui/ternary-checkbox";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 import { useTranslation } from "~/locales/provider";
 import { ThemeSwitcher } from "~/pages/settings/preferences";
 
@@ -170,14 +170,12 @@ export default function () {
 						</SelectContent>
 					</Select>
 
-					<TooltipProvider>
 						<Tooltip>
 							<TooltipTrigger asChild>
 								<Button variant="ghost">Hover for Tooltip</Button>
 							</TooltipTrigger>
 							<TooltipContent>This is a tooltip message.</TooltipContent>
 						</Tooltip>
-					</TooltipProvider>
 				</CardContent>
 			</Card>
 

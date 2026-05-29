@@ -13,7 +13,7 @@ import Chip from "~/components/ui/chip";
 import { FormattedCount } from "~/components/ui/count";
 import { FormattedDate, TimePassedSince } from "~/components/ui/date";
 import Link from "~/components/ui/link";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 import { cn } from "~/components/utils";
 import { viewTransitionStyleObj } from "~/components/view-transitions";
 import { useTranslation } from "~/locales/provider";
@@ -302,33 +302,31 @@ function BaseView(props: SearchListItemProps) {
 						galleryViewType && "my-auto justify-start",
 					)}
 				>
-					<TooltipProvider>
-						{props.showDatePublished === true ? (
-							<Tooltip>
-								<CalendarIcon aria-hidden className="h-[1.1rem] w-[1.1rem] text-foreground-extra-muted" />
-								<TooltipTrigger asChild>
-									<p className="flex items-baseline justify-center gap-1 text-nowrap">
-										{t.project.publishedAt(TimePassedSince({ date: props.datePublished }))}
-									</p>
-								</TooltipTrigger>
-								<TooltipContent>
-									<FormattedDate date={props.datePublished} />
-								</TooltipContent>
-							</Tooltip>
-						) : (
-							<Tooltip>
-								<RefreshCcwIcon aria-hidden className="h-[1.1rem] w-[1.1rem] text-foreground-extra-muted" />
-								<TooltipTrigger asChild>
-									<p className="flex items-baseline justify-center gap-1 text-nowrap">
-										{t.project.updatedAt(TimePassedSince({ date: props.dateUpdated }))}
-									</p>
-								</TooltipTrigger>
-								<TooltipContent>
-									<FormattedDate date={props.dateUpdated} />
-								</TooltipContent>
-							</Tooltip>
-						)}
-					</TooltipProvider>
+					{props.showDatePublished === true ? (
+						<Tooltip>
+							<CalendarIcon aria-hidden className="h-[1.1rem] w-[1.1rem] text-foreground-extra-muted" />
+							<TooltipTrigger asChild>
+								<p className="flex items-baseline justify-center gap-1 text-nowrap">
+									{t.project.publishedAt(TimePassedSince({ date: props.datePublished }))}
+								</p>
+							</TooltipTrigger>
+							<TooltipContent>
+								<FormattedDate date={props.datePublished} />
+							</TooltipContent>
+						</Tooltip>
+					) : (
+						<Tooltip>
+							<RefreshCcwIcon aria-hidden className="h-[1.1rem] w-[1.1rem] text-foreground-extra-muted" />
+							<TooltipTrigger asChild>
+								<p className="flex items-baseline justify-center gap-1 text-nowrap">
+									{t.project.updatedAt(TimePassedSince({ date: props.dateUpdated }))}
+								</p>
+							</TooltipTrigger>
+							<TooltipContent>
+								<FormattedDate date={props.dateUpdated} />
+							</TooltipContent>
+						</Tooltip>
+					)}
 				</div>
 			</div>
 		</article>
