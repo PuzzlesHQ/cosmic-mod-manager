@@ -33,6 +33,7 @@ export default defineConfig({
 					{ text: "Translating", link: "/translating" },
 					{ text: "API Endpoints", link: "/endpoints" },
 					{ text: "Credits", link: "/credits" },
+					{ text: "Showcase", link: "/showcase/index" },
 				],
 			},
 
@@ -96,7 +97,7 @@ export default defineConfig({
 	markdown: {
 		config: (md) => {
 			md.use((md) => {
-				md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
+				md.renderer.rules.link_open = (tokens, idx, options, _, self) => {
 					const token = tokens[idx];
 					if (!token.attrs) return self.renderToken(tokens, idx, options);
 
