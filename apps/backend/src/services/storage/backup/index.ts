@@ -1,5 +1,5 @@
-import path from "node:path/posix";
 import { $ } from "bun";
+import path from "node:path/posix";
 import { LOCAL_BASE_STORAGE_PATH, LogWithTimestamp } from "../utils";
 import { BackupToBackblaze } from "./backblaze";
 
@@ -31,7 +31,7 @@ async function CreateDbBackupZip() {
 }
 
 async function CreateProjectFilesBackupZip() {
-	await $`zip -r ${zipPath} ${filesDir}`;
+	await $`zip -r --quiet ${zipPath} ${filesDir}`;
 	return Bun.file(zipPath);
 }
 
