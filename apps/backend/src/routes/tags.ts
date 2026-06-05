@@ -3,7 +3,7 @@ import { API_SCOPE } from "@app/utils/pats";
 import { getAllLoaderCategories, getValidProjectCategories } from "@app/utils/project";
 import GAME_VERSIONS from "@app/utils/src/constants/game-versions";
 import SPDX_LICENSE_LIST, { FEATURED_LICENSE_OPTIONS } from "@app/utils/src/constants/license-list";
-import type { ProjectType, TagType } from "@app/utils/types";
+import type { ProjectType } from "@app/utils/types";
 import { type Context, Hono } from "hono";
 import { applyCacheHeaders } from "~/middleware/cache";
 import { searchReqRateLimiter } from "~/middleware/rate-limiter";
@@ -22,29 +22,17 @@ const tagsRouter = new Hono()
 	.get("/project-types", projectTypes_get)
 	.get("/api-scopes", apiScopes_get);
 
-function getCategories({
-	projectType,
-	headerType,
-	namesOnly,
-}: {
-	projectType?: ProjectType;
-	headerType?: TagType;
-	namesOnly?: boolean;
-}) {
-	const list = getValidProjectCategories(projectType ? [projectType] : [], headerType);
-
-	if (namesOnly) {
-		return list.map((category) => category.name);
-	}
-	return list;
-}
-
 async function categories_get(ctx: Context) {
 	try {
 		const projectType = (ctx.req.query("type")?.toLowerCase() as ProjectType) || undefined;
 		const namesOnly = ctx.req.query("namesOnly") === "true";
 
-		const categories = await getCategories({ namesOnly, projectType: projectType });
+		const categories = getValidProjectCategories(projectType ? [projectType] : []);
+		if (namesOnly) {
+			const names = categories.map((category) => category.name);
+			return ctx.json(names, HTTP_STATUS.OK);
+		}
+
 		return ctx.json(categories, HTTP_STATUS.OK);
 	} catch (error) {
 		console.error(error);
