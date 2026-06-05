@@ -6,11 +6,10 @@ import { LoginProtectedRoute } from "~/middleware/auth";
 import { critModifyReqRateLimiter, getReqRateLimiter, modifyReqRateLimiter } from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import {
-	HTTP_STATUS,
-	invalidRequestResponse,
-	notFoundResponse,
-	serverErrorResponse,
-	unauthenticatedReqResponse,
+    HTTP_STATUS,
+    invalidRequestResponse,
+    notFoundResponse,
+    unauthenticatedReqResponse
 } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";
 import { getAllProjectVersions, getLatestVersion, getProjectVersionData } from "./controllers";
@@ -34,164 +33,139 @@ versionRouter.patch("/:versionId", modifyReqRateLimiter, LoginProtectedRoute, ve
 versionRouter.delete("/:versionId", critModifyReqRateLimiter, LoginProtectedRoute, version_delete);
 
 async function versions_get(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.VERSION_READ);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.VERSION_READ);
 
-		const projectSlug = ctx.req.param("projectSlug");
-		if (!projectSlug) return invalidRequestResponse(ctx);
-		const featuredOnly = ctx.req.query("featured") === "true";
+	const projectSlug = ctx.req.param("projectSlug");
+	if (!projectSlug) return invalidRequestResponse(ctx);
+	const featuredOnly = ctx.req.query("featured") === "true";
 
-		const res = await getAllProjectVersions(projectSlug, sessionUser, featuredOnly);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await getAllProjectVersions(projectSlug, sessionUser, featuredOnly);
+	return ctx.json(res.data, res.status);
 }
 
 async function version_get(ctx: Context, download = false) {
-	try {
-		const projectSlug = ctx.req.param("projectSlug");
-		if (!projectSlug) return invalidRequestResponse(ctx);
-		let versionId = ctx.req.param("versionId");
-		if (!versionId?.length) versionId = "latest";
+	const projectSlug = ctx.req.param("projectSlug");
+	if (!projectSlug) return invalidRequestResponse(ctx);
+	let versionId = ctx.req.param("versionId");
+	if (!versionId?.length) versionId = "latest";
 
-		const sessionUser = getSessionUser(ctx, API_SCOPE.VERSION_READ);
-		const releaseChannel = ctx.req.query("releaseChannel");
-		const gameVersion = ctx.req.query("gameVersion");
-		const loader = ctx.req.query("loader");
+	const sessionUser = getSessionUser(ctx, API_SCOPE.VERSION_READ);
+	const releaseChannel = ctx.req.query("releaseChannel");
+	const gameVersion = ctx.req.query("gameVersion");
+	const loader = ctx.req.query("loader");
 
-		const res =
-			versionId === "latest"
-				? await getLatestVersion(projectSlug, sessionUser, {
-						releaseChannel: releaseChannel,
-						gameVersion: gameVersion,
-						loader: loader,
-					})
-				: await getProjectVersionData(projectSlug, versionId, sessionUser);
+	const res =
+		versionId === "latest"
+			? await getLatestVersion(projectSlug, sessionUser, {
+					releaseChannel: releaseChannel,
+					gameVersion: gameVersion,
+					loader: loader,
+				})
+			: await getProjectVersionData(projectSlug, versionId, sessionUser);
 
-		if (download !== true) return ctx.json(res.data, res.status);
-		if ("success" in res.data && res.data.success === false) return ctx.json(res.data, res.status);
+	if (download !== true) return ctx.json(res.data, res.status);
+	if ("success" in res.data && res.data.success === false) return ctx.json(res.data, res.status);
 
-		const fileName = ctx.req.param("fileName");
-		const version = res.data.data;
+	const fileName = ctx.req.param("fileName");
+	const version = res.data.data;
 
-		// If the fileName was specified redirect to that file
-		if (fileName?.length) {
-			const file = version.files.find((f) => f.name === fileName || f.id === fileName);
-			if (!file?.id) return notFoundResponse(ctx, "File not found!");
-			return ctx.redirect(file.url);
-		}
-		// Redirect to the primary file by default
-		if (version.primaryFile) return ctx.redirect(version.primaryFile.url);
-
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
+	// If the fileName was specified redirect to that file
+	if (fileName?.length) {
+		const file = version.files.find((f) => f.name === fileName || f.id === fileName);
+		if (!file?.id) return notFoundResponse(ctx, "File not found!");
+		return ctx.redirect(file.url);
 	}
+	// Redirect to the primary file by default
+	if (version.primaryFile) return ctx.redirect(version.primaryFile.url);
+
+	return ctx.json(res.data, res.status);
 }
 
 async function version_post(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.VERSION_CREATE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.VERSION_CREATE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const projectId = ctx.req.param("projectSlug");
-		if (!projectId) return invalidRequestResponse(ctx);
+	const projectId = ctx.req.param("projectSlug");
+	if (!projectId) return invalidRequestResponse(ctx);
 
-		const formData = ctx.get(REQ_BODY_NAMESPACE);
-		if (!formData) {
-			return ctx.json({ success: false, message: "No form data found" }, HTTP_STATUS.BAD_REQUEST);
-		}
-
-		const dependencies = formData.get("dependencies");
-		const loaders = formData.get("loaders");
-		const gameVersions = formData.get("gameVersions");
-
-		const schemaObj = {
-			title: formData.get("title"),
-			changelog: formData.get("changelog"),
-			featured: formData.get("featured") === "true",
-			releaseChannel: formData.get("releaseChannel"),
-			versionNumber: formData.get("versionNumber"),
-			loaders: JSON.parse(loaders ? loaders.toString() : "[]"),
-			gameVersions: JSON.parse(gameVersions ? gameVersions.toString() : "[]"),
-			dependencies: JSON.parse(dependencies ? dependencies.toString() : "[]"),
-			primaryFile: formData.get("primaryFile"),
-			additionalFiles: (formData.getAll("additionalFiles") || []).filter((file: unknown) => {
-				if (file instanceof File) return file;
-				return null;
-			}),
-		};
-
-		const { data, error } = await zodParse(newVersionFormSchema, schemaObj);
-		if (error || !data) return invalidRequestResponse(ctx, error);
-
-		const res = await createNewVersion(ctx, sessionUser, projectId, data);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.trace(error);
-		return serverErrorResponse(ctx);
+	const formData = ctx.get(REQ_BODY_NAMESPACE);
+	if (!formData) {
+		return ctx.json({ success: false, message: "No form data found" }, HTTP_STATUS.BAD_REQUEST);
 	}
+
+	const dependencies = formData.get("dependencies");
+	const loaders = formData.get("loaders");
+	const gameVersions = formData.get("gameVersions");
+
+	const schemaObj = {
+		title: formData.get("title"),
+		changelog: formData.get("changelog"),
+		featured: formData.get("featured") === "true",
+		releaseChannel: formData.get("releaseChannel"),
+		versionNumber: formData.get("versionNumber"),
+		loaders: JSON.parse(loaders ? loaders.toString() : "[]"),
+		gameVersions: JSON.parse(gameVersions ? gameVersions.toString() : "[]"),
+		dependencies: JSON.parse(dependencies ? dependencies.toString() : "[]"),
+		primaryFile: formData.get("primaryFile"),
+		additionalFiles: (formData.getAll("additionalFiles") || []).filter((file: unknown) => {
+			if (file instanceof File) return file;
+			return null;
+		}),
+	};
+
+	const { data, error } = await zodParse(newVersionFormSchema, schemaObj);
+	if (error || !data) return invalidRequestResponse(ctx, error);
+
+	const res = await createNewVersion(ctx, sessionUser, projectId, data);
+	return ctx.json(res.data, res.status);
 }
 
 async function version_patch(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.VERSION_WRITE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.VERSION_WRITE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const projectId = ctx.req.param("projectSlug");
-		const versionId = ctx.req.param("versionId");
-		if (!projectId || !versionId) return invalidRequestResponse(ctx);
+	const projectId = ctx.req.param("projectSlug");
+	const versionId = ctx.req.param("versionId");
+	if (!projectId || !versionId) return invalidRequestResponse(ctx);
 
-		const formData = ctx.get(REQ_BODY_NAMESPACE);
-		const dependencies = formData.get("dependencies");
-		const loaders = formData.get("loaders");
-		const gameVersions = formData.get("gameVersions");
-		const additionalFiles = formData.getAll("additionalFiles").map((file: File | string) => {
-			if (file instanceof File) return file;
-			return JSON.parse(file);
-		});
+	const formData = ctx.get(REQ_BODY_NAMESPACE);
+	const dependencies = formData.get("dependencies");
+	const loaders = formData.get("loaders");
+	const gameVersions = formData.get("gameVersions");
+	const additionalFiles = formData.getAll("additionalFiles").map((file: File | string) => {
+		if (file instanceof File) return file;
+		return JSON.parse(file);
+	});
 
-		const schemaObj = {
-			title: formData.get("title"),
-			changelog: formData.get("changelog"),
-			featured: formData.get("featured") === "true",
-			releaseChannel: formData.get("releaseChannel"),
-			versionNumber: formData.get("versionNumber"),
-			dependencies: dependencies ? JSON.parse(dependencies) : [],
-			loaders: loaders ? JSON.parse(loaders) : [],
-			gameVersions: gameVersions ? JSON.parse(gameVersions) : [],
-			additionalFiles: additionalFiles,
-		};
+	const schemaObj = {
+		title: formData.get("title"),
+		changelog: formData.get("changelog"),
+		featured: formData.get("featured") === "true",
+		releaseChannel: formData.get("releaseChannel"),
+		versionNumber: formData.get("versionNumber"),
+		dependencies: dependencies ? JSON.parse(dependencies) : [],
+		loaders: loaders ? JSON.parse(loaders) : [],
+		gameVersions: gameVersions ? JSON.parse(gameVersions) : [],
+		additionalFiles: additionalFiles,
+	};
 
-		const { data, error } = await zodParse(updateVersionFormSchema, schemaObj);
-		if (error || !data) return invalidRequestResponse(ctx, error);
+	const { data, error } = await zodParse(updateVersionFormSchema, schemaObj);
+	if (error || !data) return invalidRequestResponse(ctx, error);
 
-		const res = await updateVersionData(ctx, projectId, versionId, sessionUser, data);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.trace(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await updateVersionData(ctx, projectId, versionId, sessionUser, data);
+	return ctx.json(res.data, res.status);
 }
 
 async function version_delete(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.VERSION_DELETE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.VERSION_DELETE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const projectId = ctx.req.param("projectSlug");
-		const versionId = ctx.req.param("versionId");
-		if (!projectId || !versionId) return invalidRequestResponse(ctx);
+	const projectId = ctx.req.param("projectSlug");
+	const versionId = ctx.req.param("versionId");
+	if (!projectId || !versionId) return invalidRequestResponse(ctx);
 
-		const res = await deleteProjectVersion(ctx, projectId, versionId, sessionUser);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.trace(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await deleteProjectVersion(ctx, projectId, versionId, sessionUser);
+	return ctx.json(res.data, res.status);
 }
 
 export default versionRouter;

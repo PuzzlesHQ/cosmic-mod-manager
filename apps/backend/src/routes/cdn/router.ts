@@ -8,7 +8,7 @@ import { cdnImgRateLimiter, cdnVersionFileRateLimiter, invalidAuthAttemptLimiter
 import { getSitemap } from "~/services/sitemap-gen";
 import { getCollectionFile, getOrgFile, getProjectFile, getProjectGalleryFile, getUserFile } from "~/services/storage";
 import env from "~/utils/env";
-import { invalidRequestResponse, notFoundResponse, serverErrorResponse, unauthorizedReqResponse } from "~/utils/http";
+import { invalidRequestResponse, notFoundResponse, unauthorizedReqResponse } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";
 import { collectionIconUrl, orgIconUrl, projectGalleryFileUrl, projectIconUrl, userFileUrl } from "~/utils/urls";
 import { serveImageFile, serveVersionFile } from "./controller";
@@ -37,158 +37,123 @@ const cdnRouter = new Hono()
 	.get("/sitemap/:name", cdnImgRateLimiter, sitemap_get);
 
 async function projectFile_get(ctx: Context) {
-	try {
-		const projectId = ctx.req.param("projectId");
-		const fileId = ctx.req.param("file");
-		if (!projectId) return invalidRequestResponse(ctx);
+	const projectId = ctx.req.param("projectId");
+	const fileId = ctx.req.param("file");
+	if (!projectId) return invalidRequestResponse(ctx);
 
-		return await serveImageFile({
-			ctx: ctx,
-			isCdnRequest: IsCdnRequest(ctx),
-			fileId: fileId,
-			entityId: projectId,
-			cdnUrlOfFile: `${projectIconUrl(projectId, fileId)}`,
-			getFile: getProjectFile,
-		});
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	return await serveImageFile({
+		ctx: ctx,
+		isCdnRequest: IsCdnRequest(ctx),
+		fileId: fileId,
+		entityId: projectId,
+		cdnUrlOfFile: `${projectIconUrl(projectId, fileId)}`,
+		getFile: getProjectFile,
+	});
 }
 
 async function galleryImage_get(ctx: Context) {
-	try {
-		const projectId = ctx.req.param("projectId");
-		const fileId = ctx.req.param("file");
-		if (!projectId || !fileId) {
-			return invalidRequestResponse(ctx);
-		}
-
-		return await serveImageFile({
-			ctx: ctx,
-			isCdnRequest: IsCdnRequest(ctx),
-			fileId: fileId,
-			entityId: projectId,
-			cdnUrlOfFile: `${projectGalleryFileUrl(projectId, fileId)}`,
-			getFile: getProjectGalleryFile,
-		});
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
+	const projectId = ctx.req.param("projectId");
+	const fileId = ctx.req.param("file");
+	if (!projectId || !fileId) {
+		return invalidRequestResponse(ctx);
 	}
+
+	return await serveImageFile({
+		ctx: ctx,
+		isCdnRequest: IsCdnRequest(ctx),
+		fileId: fileId,
+		entityId: projectId,
+		cdnUrlOfFile: `${projectGalleryFileUrl(projectId, fileId)}`,
+		getFile: getProjectGalleryFile,
+	});
 }
 
 const ALLOWED_EXTERNAL_USER_AGENTS = ["CRLauncher/"];
 async function versionFile_get(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_READ, API_SCOPE.VERSION_READ);
-		const { projectId, versionId, fileName } = ctx.req.param();
-		if (!projectId || !versionId || !fileName) return invalidRequestResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_READ, API_SCOPE.VERSION_READ);
+	const { projectId, versionId, fileName } = ctx.req.param();
+	if (!projectId || !versionId || !fileName) return invalidRequestResponse(ctx);
 
-		const userAgent = ctx.req.header("User-Agent");
-		if (!userAgent) return invalidRequestResponse(ctx, "User-Agent header is missing");
-		const isABot = isbot(userAgent);
-		let isExplicitlyAllowed = false;
+	const userAgent = ctx.req.header("User-Agent");
+	if (!userAgent) return invalidRequestResponse(ctx, "User-Agent header is missing");
+	const isABot = isbot(userAgent);
+	let isExplicitlyAllowed = false;
 
-		for (let i = 0; i < ALLOWED_EXTERNAL_USER_AGENTS.length; i++) {
-			if (userAgent.startsWith(ALLOWED_EXTERNAL_USER_AGENTS[i])) {
-				isExplicitlyAllowed = true;
-				break;
-			}
+	for (let i = 0; i < ALLOWED_EXTERNAL_USER_AGENTS.length; i++) {
+		if (userAgent.startsWith(ALLOWED_EXTERNAL_USER_AGENTS[i])) {
+			isExplicitlyAllowed = true;
+			break;
 		}
-
-		if (isABot && !isExplicitlyAllowed) {
-			return unauthorizedReqResponse(
-				ctx,
-				"You're not allowed to access this resource. If you think this is a mistake, please contact us.",
-			);
-		}
-
-		return await serveVersionFile(ctx, projectId, versionId, fileName, sessionUser, IsCdnRequest(ctx));
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
 	}
+
+	if (isABot && !isExplicitlyAllowed) {
+		return unauthorizedReqResponse(
+			ctx,
+			"You're not allowed to access this resource. If you think this is a mistake, please contact us.",
+		);
+	}
+
+	return await serveVersionFile(ctx, projectId, versionId, fileName, sessionUser, IsCdnRequest(ctx));
 }
 
 async function orgFile_get(ctx: Context) {
-	try {
-		const orgId = ctx.req.param("orgId");
-		const fileId = ctx.req.param("file");
-		if (!orgId || !fileId) return invalidRequestResponse(ctx);
+	const orgId = ctx.req.param("orgId");
+	const fileId = ctx.req.param("file");
+	if (!orgId || !fileId) return invalidRequestResponse(ctx);
 
-		return await serveImageFile({
-			ctx: ctx,
-			isCdnRequest: IsCdnRequest(ctx),
-			fileId: fileId,
-			entityId: orgId,
-			cdnUrlOfFile: `${orgIconUrl(orgId, fileId)}`,
-			getFile: getOrgFile,
-		});
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	return await serveImageFile({
+		ctx: ctx,
+		isCdnRequest: IsCdnRequest(ctx),
+		fileId: fileId,
+		entityId: orgId,
+		cdnUrlOfFile: `${orgIconUrl(orgId, fileId)}`,
+		getFile: getOrgFile,
+	});
 }
 
 async function userFile_get(ctx: Context) {
-	try {
-		const userId = ctx.req.param("userId");
-		const fileId = ctx.req.param("file");
-		if (!userId || !fileId) return invalidRequestResponse(ctx);
+	const userId = ctx.req.param("userId");
+	const fileId = ctx.req.param("file");
+	if (!userId || !fileId) return invalidRequestResponse(ctx);
 
-		return await serveImageFile({
-			ctx: ctx,
-			isCdnRequest: IsCdnRequest(ctx),
-			fileId: fileId,
-			entityId: userId,
-			cdnUrlOfFile: `${userFileUrl(userId, fileId)}`,
-			getFile: getUserFile,
-		});
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	return await serveImageFile({
+		ctx: ctx,
+		isCdnRequest: IsCdnRequest(ctx),
+		fileId: fileId,
+		entityId: userId,
+		cdnUrlOfFile: `${userFileUrl(userId, fileId)}`,
+		getFile: getUserFile,
+	});
 }
 
 async function collectionIcon_get(ctx: Context) {
-	try {
-		const collectionId = ctx.req.param("collectionId");
-		const iconId = ctx.req.param("file");
-		if (!collectionId || !iconId) return invalidRequestResponse(ctx);
+	const collectionId = ctx.req.param("collectionId");
+	const iconId = ctx.req.param("file");
+	if (!collectionId || !iconId) return invalidRequestResponse(ctx);
 
-		return await serveImageFile({
-			ctx: ctx,
-			isCdnRequest: IsCdnRequest(ctx),
-			fileId: iconId,
-			entityId: collectionId,
-			cdnUrlOfFile: `${collectionIconUrl(collectionId, iconId)}`,
-			getFile: getCollectionFile,
-		});
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	return await serveImageFile({
+		ctx: ctx,
+		isCdnRequest: IsCdnRequest(ctx),
+		fileId: iconId,
+		entityId: collectionId,
+		cdnUrlOfFile: `${collectionIconUrl(collectionId, iconId)}`,
+		getFile: getCollectionFile,
+	});
 }
 
 async function sitemap_get(ctx: Context) {
-	try {
-		const name = ctx.req.param("name");
-		if (!name) return invalidRequestResponse(ctx);
+	const name = ctx.req.param("name");
+	if (!name) return invalidRequestResponse(ctx);
 
-		const sitemap = await getSitemap(name);
-		if (!sitemap) return invalidRequestResponse(ctx);
-		if (!(await sitemap.exists())) return notFoundResponse(ctx, "Sitemap not found");
+	const sitemap = await getSitemap(name);
+	if (!sitemap) return invalidRequestResponse(ctx);
+	if (!(await sitemap.exists())) return notFoundResponse(ctx, "Sitemap not found");
 
-		return new Response(sitemap, {
-			headers: {
-				"Content-Type": "application/xml",
-			},
-		});
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	return new Response(sitemap, {
+		headers: {
+			"Content-Type": "application/xml",
+		},
+	});
 }
 
 function IsCdnRequest(ctx: Context) {

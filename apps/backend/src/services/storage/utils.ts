@@ -64,3 +64,8 @@ export function LogWithTimestamp(...args: unknown[]) {
 	const timestamp = GetTimestamp();
 	console.log(`[${timestamp}] `, ...args);
 }
+
+export function ErrorLogWithTimestamp(...args: unknown[]) {
+	const timestamp = GetTimestamp();
+	console.error(`[${timestamp}] `, ...args);
+}

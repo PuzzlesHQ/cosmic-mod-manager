@@ -7,26 +7,25 @@ import { type Context, Hono } from "hono";
 import type { z } from "zod/v4";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
 import {
-	critModifyReqRateLimiter,
-	invalidAuthAttemptLimiter,
-	strictGetReqRateLimiter,
+    critModifyReqRateLimiter,
+    invalidAuthAttemptLimiter,
+    strictGetReqRateLimiter,
 } from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import {
-	invalidRequestResponse,
-	serverErrorResponse,
-	unauthenticatedReqResponse,
-	unauthorizedReqResponse,
+    invalidRequestResponse,
+    unauthenticatedReqResponse,
+    unauthorizedReqResponse
 } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";
 import { createOrganisation, getOrganisationById, getOrganisationProjects, getUserOrganisations } from "./controllers";
 import {
-	addProjectToOrganisation,
-	deleteOrg,
-	deleteOrgIcon,
-	removeProjectFromOrg,
-	updateOrg,
-	updateOrgIcon,
+    addProjectToOrganisation,
+    deleteOrg,
+    deleteOrgIcon,
+    removeProjectFromOrg,
+    updateOrg,
+    updateOrgIcon,
 } from "./controllers/modify-org";
 
 const orgRouter = new Hono()
@@ -47,183 +46,133 @@ const orgRouter = new Hono()
 	.delete("/:orgId/project/:projectId", critModifyReqRateLimiter, LoginProtectedRoute, organisationProjects_delete);
 
 async function userOrganisations_get(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.ORGANIZATION_READ);
-		const userId = ctx.req.param("userId") || sessionUser?.id;
-		if (!userId) return invalidRequestResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.ORGANIZATION_READ);
+	const userId = ctx.req.param("userId") || sessionUser?.id;
+	if (!userId) return invalidRequestResponse(ctx);
 
-		const res = await getUserOrganisations(sessionUser, userId);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await getUserOrganisations(sessionUser, userId);
+	return ctx.json(res.data, res.status);
 }
 
 async function organisation_post(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.ORGANIZATION_CREATE);
-		if (!sessionUser) return unauthorizedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.ORGANIZATION_CREATE);
+	if (!sessionUser) return unauthorizedReqResponse(ctx);
 
-		const body = ctx.get(REQ_BODY_NAMESPACE);
-		const { data, error } = await zodParse(createOrganisationFormSchema, body);
-		if (!data || error) return invalidRequestResponse(ctx, error);
+	const body = ctx.get(REQ_BODY_NAMESPACE);
+	const { data, error } = await zodParse(createOrganisationFormSchema, body);
+	if (!data || error) return invalidRequestResponse(ctx, error);
 
-		const res = await createOrganisation(sessionUser, data);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await createOrganisation(sessionUser, data);
+	return ctx.json(res.data, res.status);
 }
 
 async function organisation_get(ctx: Context) {
-	try {
-		const orgId = ctx.req.param("orgId");
-		if (!orgId) return invalidRequestResponse(ctx);
+	const orgId = ctx.req.param("orgId");
+	if (!orgId) return invalidRequestResponse(ctx);
 
-		const sessionUser = getSessionUser(ctx, API_SCOPE.ORGANIZATION_READ);
-		const res = await getOrganisationById(sessionUser, orgId);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const sessionUser = getSessionUser(ctx, API_SCOPE.ORGANIZATION_READ);
+	const res = await getOrganisationById(sessionUser, orgId);
+	return ctx.json(res.data, res.status);
 }
 
 async function organisation_delete(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.ORGANIZATION_DELETE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.ORGANIZATION_DELETE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const orgId = ctx.req.param("orgId");
-		if (!orgId) return invalidRequestResponse(ctx);
+	const orgId = ctx.req.param("orgId");
+	if (!orgId) return invalidRequestResponse(ctx);
 
-		const res = await deleteOrg(ctx, sessionUser, orgId);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await deleteOrg(ctx, sessionUser, orgId);
+	return ctx.json(res.data, res.status);
 }
 
 async function organisation_patch(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.ORGANIZATION_WRITE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.ORGANIZATION_WRITE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const orgId = ctx.req.param("orgId");
-		if (!orgId) return invalidRequestResponse(ctx);
+	const orgId = ctx.req.param("orgId");
+	if (!orgId) return invalidRequestResponse(ctx);
 
-		const formData = ctx.get(REQ_BODY_NAMESPACE);
-		const obj = {
-			icon: formData.get("icon"),
-			name: formData.get("name"),
-			slug: formData.get("slug"),
-			description: formData.get("description"),
-		} satisfies z.infer<typeof orgSettingsFormSchema>;
+	const formData = ctx.get(REQ_BODY_NAMESPACE);
+	const obj = {
+		icon: formData.get("icon"),
+		name: formData.get("name"),
+		slug: formData.get("slug"),
+		description: formData.get("description"),
+	} satisfies z.infer<typeof orgSettingsFormSchema>;
 
-		const { data, error } = await zodParse(orgSettingsFormSchema, obj);
-		if (error || !data) return invalidRequestResponse(ctx, error);
+	const { data, error } = await zodParse(orgSettingsFormSchema, obj);
+	if (error || !data) return invalidRequestResponse(ctx, error);
 
-		const res = await updateOrg(ctx, sessionUser, orgId, data);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await updateOrg(ctx, sessionUser, orgId, data);
+	return ctx.json(res.data, res.status);
 }
 
 async function organisationProjects_get(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.ORGANIZATION_READ, API_SCOPE.PROJECT_READ);
-		const listedOnly = ctx.req.query("listedOnly") === "true";
-		const orgId = ctx.req.param("orgId");
-		if (!orgId) return invalidRequestResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.ORGANIZATION_READ, API_SCOPE.PROJECT_READ);
+	const listedOnly = ctx.req.query("listedOnly") === "true";
+	const orgId = ctx.req.param("orgId");
+	if (!orgId) return invalidRequestResponse(ctx);
 
-		const res = await getOrganisationProjects(sessionUser, orgId, listedOnly);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await getOrganisationProjects(sessionUser, orgId, listedOnly);
+	return ctx.json(res.data, res.status);
 }
 
 async function organisationIcon_patch(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.ORGANIZATION_WRITE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.ORGANIZATION_WRITE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const orgId = ctx.req.param("orgId");
-		if (!orgId) return invalidRequestResponse(ctx);
+	const orgId = ctx.req.param("orgId");
+	if (!orgId) return invalidRequestResponse(ctx);
 
-		const formData = ctx.get(REQ_BODY_NAMESPACE);
-		const icon = formData.get("icon");
+	const formData = ctx.get(REQ_BODY_NAMESPACE);
+	const icon = formData.get("icon");
 
-		const { data, error } = await zodParse(iconFieldSchema, icon);
-		if (error || !data) return invalidRequestResponse(ctx, error);
+	const { data, error } = await zodParse(iconFieldSchema, icon);
+	if (error || !data) return invalidRequestResponse(ctx, error);
 
-		const res = await updateOrgIcon(ctx, sessionUser, orgId, data);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await updateOrgIcon(ctx, sessionUser, orgId, data);
+	return ctx.json(res.data, res.status);
 }
 
 async function organisationIcon_delete(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.ORGANIZATION_WRITE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.ORGANIZATION_WRITE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const orgId = ctx.req.param("orgId");
-		if (!orgId) return invalidRequestResponse(ctx);
+	const orgId = ctx.req.param("orgId");
+	if (!orgId) return invalidRequestResponse(ctx);
 
-		const res = await deleteOrgIcon(ctx, sessionUser, orgId);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await deleteOrgIcon(ctx, sessionUser, orgId);
+	return ctx.json(res.data, res.status);
 }
 
 async function organisationProjects_post(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.ORGANIZATION_WRITE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.ORGANIZATION_WRITE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const orgId = ctx.req.param("orgId");
-		if (!orgId) return invalidRequestResponse(ctx);
+	const orgId = ctx.req.param("orgId");
+	if (!orgId) return invalidRequestResponse(ctx);
 
-		const projectId = ctx.get(REQ_BODY_NAMESPACE)?.projectId;
-		if (!projectId || typeof projectId !== "string") {
-			return invalidRequestResponse(ctx, "Invalid project ID");
-		}
-
-		const res = await addProjectToOrganisation(sessionUser, orgId, projectId);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
+	const projectId = ctx.get(REQ_BODY_NAMESPACE)?.projectId;
+	if (!projectId || typeof projectId !== "string") {
+		return invalidRequestResponse(ctx, "Invalid project ID");
 	}
+
+	const res = await addProjectToOrganisation(sessionUser, orgId, projectId);
+	return ctx.json(res.data, res.status);
 }
 
 async function organisationProjects_delete(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.ORGANIZATION_WRITE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.ORGANIZATION_WRITE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const projectId = ctx.req.param("projectId");
-		const orgId = ctx.req.param("orgId");
+	const projectId = ctx.req.param("projectId");
+	const orgId = ctx.req.param("orgId");
 
-		if (!orgId || !projectId) return invalidRequestResponse(ctx);
+	if (!orgId || !projectId) return invalidRequestResponse(ctx);
 
-		const res = await removeProjectFromOrg(ctx, sessionUser, orgId, projectId);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await removeProjectFromOrg(ctx, sessionUser, orgId, projectId);
+	return ctx.json(res.data, res.status);
 }
 
 export default orgRouter;

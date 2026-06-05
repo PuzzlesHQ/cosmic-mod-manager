@@ -4,8 +4,8 @@ import { newProjectFormSchema } from "@app/utils/schemas/project";
 import { updateProjectTagsFormSchema } from "@app/utils/schemas/project/settings/categories";
 import { updateDescriptionFormSchema } from "@app/utils/schemas/project/settings/description";
 import {
-	addNewGalleryImageFormSchema,
-	updateGalleryImageFormSchema,
+    addNewGalleryImageFormSchema,
+    updateGalleryImageFormSchema,
 } from "@app/utils/schemas/project/settings/gallery";
 import { generalProjectSettingsFormSchema } from "@app/utils/schemas/project/settings/general";
 import { updateProjectLicenseFormSchema } from "@app/utils/schemas/project/settings/license";
@@ -16,14 +16,14 @@ import { type Context, Hono } from "hono";
 import type { z } from "zod/v4";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
 import {
-	critModifyReqRateLimiter,
-	getReqRateLimiter,
-	invalidAuthAttemptLimiter,
-	modifyReqRateLimiter,
-	strictGetReqRateLimiter,
+    critModifyReqRateLimiter,
+    getReqRateLimiter,
+    invalidAuthAttemptLimiter,
+    modifyReqRateLimiter,
+    strictGetReqRateLimiter,
 } from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
-import { invalidRequestResponse, serverErrorResponse, unauthenticatedReqResponse } from "~/utils/http";
+import { invalidRequestResponse, unauthenticatedReqResponse } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";
 import { getAllVisibleProjects } from "../user/controllers/profile";
 import { checkProjectSlugValidity, getProjectData } from "./controllers";
@@ -70,375 +70,280 @@ const projectRouter = new Hono()
 	.route("/:projectSlug/version", versionRouter);
 
 async function projects_get(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_READ);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_READ);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const listedProjectsOnly = ctx.req.query("listedOnly") === "true";
-		const res = await getAllVisibleProjects(sessionUser, sessionUser.userName, listedProjectsOnly);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const listedProjectsOnly = ctx.req.query("listedOnly") === "true";
+	const res = await getAllVisibleProjects(sessionUser, sessionUser.userName, listedProjectsOnly);
+	return ctx.json(res.data, res.status);
 }
 
 async function project_get(ctx: Context) {
-	try {
-		const slug = ctx.req.param("slug");
-		if (!slug) return invalidRequestResponse(ctx);
+	const slug = ctx.req.param("slug");
+	if (!slug) return invalidRequestResponse(ctx);
 
-		const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_READ);
-		const includeVersions = ctx.req.query("includeVersions") === "true";
-		const featuredVersionsOnly = ctx.req.query("featuredOnly") === "true";
-		const res = await getProjectData(slug, sessionUser);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_READ);
+	const includeVersions = ctx.req.query("includeVersions") === "true";
+	const featuredVersionsOnly = ctx.req.query("featuredOnly") === "true";
+	const res = await getProjectData(slug, sessionUser);
 
-		if (includeVersions !== true || !res.data.project) {
-			return ctx.json(res.data, res.status);
+	if (includeVersions !== true || !res.data.project) {
+		return ctx.json(res.data, res.status);
+	} else {
+		// Fetch the project versions if it's to be included
+		const project = res.data.project as ProjectDetailsData & { versions: ProjectVersionData[] };
+		const versions = await getAllProjectVersions(slug, sessionUser, featuredVersionsOnly);
+
+		if ("data" in versions.data && versions.data.data) {
+			project.versions = versions.data.data;
 		} else {
-			// Fetch the project versions if it's to be included
-			const project = res.data.project as ProjectDetailsData & { versions: ProjectVersionData[] };
-			const versions = await getAllProjectVersions(slug, sessionUser, featuredVersionsOnly);
-
-			if ("data" in versions.data && versions.data.data) {
-				project.versions = versions.data.data;
-			} else {
-				project.versions = [];
-			}
-
-			return ctx.json(
-				{
-					success: res.data.success,
-					message: res.data.message,
-					project: project,
-				},
-				res.status,
-			);
+			project.versions = [];
 		}
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
+
+		return ctx.json(
+			{
+				success: res.data.success,
+				message: res.data.message,
+				project: project,
+			},
+			res.status,
+		);
 	}
 }
 
 async function projectDependencies_get(ctx: Context) {
-	try {
-		const slug = ctx.req.param("slug");
-		if (!slug) return invalidRequestResponse(ctx);
+	const slug = ctx.req.param("slug");
+	if (!slug) return invalidRequestResponse(ctx);
 
-		const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_READ);
-		const res = await getProjectDependencies(slug, sessionUser);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_READ);
+	const res = await getProjectDependencies(slug, sessionUser);
+	return ctx.json(res.data, res.status);
 }
 
 async function projectCheck_get(ctx: Context) {
-	try {
-		const slug = ctx.req.param("slug");
-		if (!slug) return invalidRequestResponse(ctx);
+	const slug = ctx.req.param("slug");
+	if (!slug) return invalidRequestResponse(ctx);
 
-		const res = await checkProjectSlugValidity(slug);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await checkProjectSlugValidity(slug);
+	return ctx.json(res.data, res.status);
 }
 
 async function projectFollow_post(ctx: Context) {
-	try {
-		// following a project modifies the user data, so technically it falls under a user write
-		const sessionUser = getSessionUser(ctx, API_SCOPE.USER_WRITE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	// following a project modifies the user data, so technically it falls under a user write
+	const sessionUser = getSessionUser(ctx, API_SCOPE.USER_WRITE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const projectId = ctx.req.param("projectId");
-		if (!projectId) return invalidRequestResponse(ctx);
+	const projectId = ctx.req.param("projectId");
+	if (!projectId) return invalidRequestResponse(ctx);
 
-		const res = await addProjectsToUserFollows([projectId], sessionUser);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await addProjectsToUserFollows([projectId], sessionUser);
+	return ctx.json(res.data, res.status);
 }
 
 async function projectFollow_delete(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.USER_WRITE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.USER_WRITE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const projectId = ctx.req.param("projectId");
-		if (!projectId) return invalidRequestResponse(ctx);
+	const projectId = ctx.req.param("projectId");
+	if (!projectId) return invalidRequestResponse(ctx);
 
-		const res = await removeProjectsFromUserFollows([projectId], sessionUser);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await removeProjectsFromUserFollows([projectId], sessionUser);
+	return ctx.json(res.data, res.status);
 }
 
 async function project_post(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_CREATE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_CREATE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const { data, error } = await zodParse(newProjectFormSchema, ctx.get(REQ_BODY_NAMESPACE));
-		if (error || !data) return invalidRequestResponse(ctx, error);
+	const { data, error } = await zodParse(newProjectFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+	if (error || !data) return invalidRequestResponse(ctx, error);
 
-		const res = await createNewProject(sessionUser, data);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await createNewProject(sessionUser, data);
+	return ctx.json(res.data, res.status);
 }
 
 async function project_patch(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const projectId = ctx.req.param("id");
-		if (!projectId) return invalidRequestResponse(ctx);
+	const projectId = ctx.req.param("id");
+	if (!projectId) return invalidRequestResponse(ctx);
 
-		const formData = ctx.get(REQ_BODY_NAMESPACE);
-		const obj = {
-			icon: formData.get("icon"),
-			name: formData.get("name"),
-			slug: formData.get("slug"),
-			visibility: formData.get("visibility"),
-			type: JSON.parse(formData.get("type")),
-			clientSide: formData.get("clientSide"),
-			serverSide: formData.get("serverSide"),
-			summary: formData.get("summary"),
-		} satisfies z.infer<typeof generalProjectSettingsFormSchema>;
+	const formData = ctx.get(REQ_BODY_NAMESPACE);
+	const obj = {
+		icon: formData.get("icon"),
+		name: formData.get("name"),
+		slug: formData.get("slug"),
+		visibility: formData.get("visibility"),
+		type: JSON.parse(formData.get("type")),
+		clientSide: formData.get("clientSide"),
+		serverSide: formData.get("serverSide"),
+		summary: formData.get("summary"),
+	} satisfies z.infer<typeof generalProjectSettingsFormSchema>;
 
-		const { data, error } = await zodParse(generalProjectSettingsFormSchema, obj);
-		if (error || !data) return invalidRequestResponse(ctx, error);
+	const { data, error } = await zodParse(generalProjectSettingsFormSchema, obj);
+	if (error || !data) return invalidRequestResponse(ctx, error);
 
-		const res = await updateGeneralProjectData(projectId, sessionUser, data);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await updateGeneralProjectData(projectId, sessionUser, data);
+	return ctx.json(res.data, res.status);
 }
 
 async function project_delete(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_DELETE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_DELETE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const projectId = ctx.req.param("id");
-		if (!projectId) return invalidRequestResponse(ctx);
+	const projectId = ctx.req.param("id");
+	if (!projectId) return invalidRequestResponse(ctx);
 
-		const res = await deleteProject(sessionUser, projectId);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await deleteProject(sessionUser, projectId);
+	return ctx.json(res.data, res.status);
 }
 
 async function project_queueForApproval_post(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const projectId = ctx.req.param("id");
-		if (!projectId) return invalidRequestResponse(ctx);
+	const projectId = ctx.req.param("id");
+	if (!projectId) return invalidRequestResponse(ctx);
 
-		const res = await QueueProjectForApproval(projectId, sessionUser);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await QueueProjectForApproval(projectId, sessionUser);
+	return ctx.json(res.data, res.status);
 }
 
 async function projectIcon_patch(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const projectId = ctx.req.param("id");
-		const formData = ctx.get(REQ_BODY_NAMESPACE);
-		const icon = formData.get("icon");
+	const projectId = ctx.req.param("id");
+	const formData = ctx.get(REQ_BODY_NAMESPACE);
+	const icon = formData.get("icon");
 
-		if (!projectId || !icon || !(icon instanceof File)) return invalidRequestResponse(ctx, "Invalid data");
+	if (!projectId || !icon || !(icon instanceof File)) return invalidRequestResponse(ctx, "Invalid data");
 
-		const { data, error } = await zodParse(iconFieldSchema, icon);
-		if (error || !data) {
-			return invalidRequestResponse(ctx, error as string);
-		}
-
-		const res = await updateProjectIcon(sessionUser, projectId, data);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
+	const { data, error } = await zodParse(iconFieldSchema, icon);
+	if (error || !data) {
+		return invalidRequestResponse(ctx, error as string);
 	}
+
+	const res = await updateProjectIcon(sessionUser, projectId, data);
+	return ctx.json(res.data, res.status);
 }
 
 async function projectIcon_delete(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const projectId = ctx.req.param("id");
-		if (!projectId) return invalidRequestResponse(ctx, "Invalid data");
+	const projectId = ctx.req.param("id");
+	if (!projectId) return invalidRequestResponse(ctx, "Invalid data");
 
-		const res = await deleteProjectIcon(sessionUser, projectId);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await deleteProjectIcon(sessionUser, projectId);
+	return ctx.json(res.data, res.status);
 }
 
 async function description_patch(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const projectId = ctx.req.param("id");
-		if (!projectId) return invalidRequestResponse(ctx);
+	const projectId = ctx.req.param("id");
+	if (!projectId) return invalidRequestResponse(ctx);
 
-		const { data, error } = await zodParse(updateDescriptionFormSchema, ctx.get(REQ_BODY_NAMESPACE));
-		if (error || !data) return invalidRequestResponse(ctx, error);
+	const { data, error } = await zodParse(updateDescriptionFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+	if (error || !data) return invalidRequestResponse(ctx, error);
 
-		const res = await updateProjectDescription(projectId, sessionUser, data);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await updateProjectDescription(projectId, sessionUser, data);
+	return ctx.json(res.data, res.status);
 }
 
 async function tags_patch(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const projectId = ctx.req.param("id");
-		if (!projectId) return invalidRequestResponse(ctx);
+	const projectId = ctx.req.param("id");
+	if (!projectId) return invalidRequestResponse(ctx);
 
-		const { data, error } = await zodParse(updateProjectTagsFormSchema, ctx.get(REQ_BODY_NAMESPACE));
-		if (error || !data) return invalidRequestResponse(ctx, error);
+	const { data, error } = await zodParse(updateProjectTagsFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+	if (error || !data) return invalidRequestResponse(ctx, error);
 
-		const res = await updateProjectTags(projectId, sessionUser, data);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await updateProjectTags(projectId, sessionUser, data);
+	return ctx.json(res.data, res.status);
 }
 
 async function externalLinks_patch(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const projectId = ctx.req.param("id");
-		if (!projectId) return invalidRequestResponse(ctx);
+	const projectId = ctx.req.param("id");
+	if (!projectId) return invalidRequestResponse(ctx);
 
-		const { data, error } = await zodParse(updateExternalLinksFormSchema, ctx.get(REQ_BODY_NAMESPACE));
-		if (error || !data) return invalidRequestResponse(ctx, error);
+	const { data, error } = await zodParse(updateExternalLinksFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+	if (error || !data) return invalidRequestResponse(ctx, error);
 
-		const res = await updateProjectExternalLinks(sessionUser, projectId, data);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await updateProjectExternalLinks(sessionUser, projectId, data);
+	return ctx.json(res.data, res.status);
 }
 
 async function license_patch(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const projectId = ctx.req.param("id");
-		if (!projectId) return invalidRequestResponse(ctx);
+	const projectId = ctx.req.param("id");
+	if (!projectId) return invalidRequestResponse(ctx);
 
-		const { data, error } = await zodParse(updateProjectLicenseFormSchema, ctx.get(REQ_BODY_NAMESPACE));
-		if (error || !data) return invalidRequestResponse(ctx, error);
+	const { data, error } = await zodParse(updateProjectLicenseFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+	if (error || !data) return invalidRequestResponse(ctx, error);
 
-		const res = await updateProjectLicense(sessionUser, projectId, data);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await updateProjectLicense(sessionUser, projectId, data);
+	return ctx.json(res.data, res.status);
 }
 
 async function gallery_post(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
-		if (!sessionUser) return invalidRequestResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
+	if (!sessionUser) return invalidRequestResponse(ctx);
 
-		const projectId = ctx.req.param("id");
-		if (!projectId) return invalidRequestResponse(ctx);
+	const projectId = ctx.req.param("id");
+	if (!projectId) return invalidRequestResponse(ctx);
 
-		const formData = ctx.get(REQ_BODY_NAMESPACE);
-		const obj = {
-			image: formData.get("image"),
-			title: formData.get("title"),
-			description: formData.get("description"),
-			orderIndex: Number.parseInt(formData.get("orderIndex") || "0", 10),
-			featured: formData.get("featured") === "true",
-		};
+	const formData = ctx.get(REQ_BODY_NAMESPACE);
+	const obj = {
+		image: formData.get("image"),
+		title: formData.get("title"),
+		description: formData.get("description"),
+		orderIndex: Number.parseInt(formData.get("orderIndex") || "0", 10),
+		featured: formData.get("featured") === "true",
+	};
 
-		const { data, error } = await zodParse(addNewGalleryImageFormSchema, obj);
-		if (error || !data) return invalidRequestResponse(ctx, error);
+	const { data, error } = await zodParse(addNewGalleryImageFormSchema, obj);
+	if (error || !data) return invalidRequestResponse(ctx, error);
 
-		const res = await addNewGalleryImage(projectId, sessionUser, data);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await addNewGalleryImage(projectId, sessionUser, data);
+	return ctx.json(res.data, res.status);
 }
 
 async function galleryItem_patch(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
-		if (!sessionUser) return invalidRequestResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
+	if (!sessionUser) return invalidRequestResponse(ctx);
 
-		const galleryId = ctx.req.param("galleryId");
-		const projectId = ctx.req.param("id");
-		if (!projectId || !galleryId) return invalidRequestResponse(ctx);
+	const galleryId = ctx.req.param("galleryId");
+	const projectId = ctx.req.param("id");
+	if (!projectId || !galleryId) return invalidRequestResponse(ctx);
 
-		const { data, error } = await zodParse(updateGalleryImageFormSchema, ctx.get(REQ_BODY_NAMESPACE));
-		if (error || !data) return invalidRequestResponse(ctx, error);
+	const { data, error } = await zodParse(updateGalleryImageFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+	if (error || !data) return invalidRequestResponse(ctx, error);
 
-		const res = await updateGalleryImage(projectId, sessionUser, galleryId, data);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await updateGalleryImage(projectId, sessionUser, galleryId, data);
+	return ctx.json(res.data, res.status);
 }
 
 async function galleryItem_delete(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
-		if (!sessionUser) return invalidRequestResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
+	if (!sessionUser) return invalidRequestResponse(ctx);
 
-		const galleryId = ctx.req.param("galleryId");
-		const projectId = ctx.req.param("id");
-		if (!projectId || !galleryId) return invalidRequestResponse(ctx);
+	const galleryId = ctx.req.param("galleryId");
+	const projectId = ctx.req.param("id");
+	if (!projectId || !galleryId) return invalidRequestResponse(ctx);
 
-		const res = await removeGalleryImage(projectId, sessionUser, galleryId);
-		return ctx.json(res.data, res.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const res = await removeGalleryImage(projectId, sessionUser, galleryId);
+	return ctx.json(res.data, res.status);
 }
 
 export default projectRouter;

@@ -5,7 +5,7 @@ import { getUserIpAddress } from "~/routes/auth/helpers";
 import { validateContextSession } from "~/routes/auth/helpers/session";
 import { CTX_USER_NAMESPACE } from "~/types/namespaces";
 import env from "~/utils/env";
-import { deleteCookie, serverErrorResponse, setCookie, unauthenticatedReqResponse } from "~/utils/http";
+import { deleteCookie, setCookie, unauthenticatedReqResponse } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";
 import { generateRandomId } from "~/utils/str";
 
@@ -34,17 +34,12 @@ export async function AuthenticationMiddleware(ctx: Context, next: Next) {
 }
 
 export async function LoginProtectedRoute(ctx: Context, next: Next) {
-	try {
-		const sessionUser = getSessionUser(ctx);
-		if (!sessionUser?.id) {
-			return unauthenticatedReqResponse(ctx, "You're not logged in");
-		}
-
-		await next();
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
+	const sessionUser = getSessionUser(ctx);
+	if (!sessionUser?.id) {
+		return unauthenticatedReqResponse(ctx, "You're not logged in");
 	}
+
+	await next();
 }
 
 function IsCdnRequest(ctx: Context) {

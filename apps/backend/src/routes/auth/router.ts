@@ -7,13 +7,13 @@ import { AuthActionIntent, type AuthProvider, type LoggedInUserData } from "@app
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
 import {
-	critModifyReqRateLimiter,
-	getReqRateLimiter,
-	invalidAuthAttemptLimiter,
-	strictGetReqRateLimiter,
+    critModifyReqRateLimiter,
+    getReqRateLimiter,
+    invalidAuthAttemptLimiter,
+    strictGetReqRateLimiter,
 } from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
-import { HTTP_STATUS, invalidRequestResponse, serverErrorResponse, unauthenticatedReqResponse } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponse, unauthenticatedReqResponse } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";
 import { userFileUrl } from "~/utils/urls";
 import { getLinkedAuthProviders, linkAuthProviderHandler, unlinkAuthProvider } from "./controllers/link-provider";
@@ -54,203 +54,148 @@ const authRouter = new Hono()
 	.delete("/sessions/:revokeCode", critModifyReqRateLimiter, revokeSession_delete);
 
 async function currSession_get(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.USER_READ);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx, "You're not logged in!");
+	const sessionUser = getSessionUser(ctx, API_SCOPE.USER_READ);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx, "You're not logged in!");
 
-		const formattedObject = {
-			id: sessionUser.id,
-			email: sessionUser.email,
-			userName: sessionUser.userName,
-			name: sessionUser.name,
-			role: getUserRoleFromString(sessionUser.role),
-			hasAPassword: !!sessionUser.password,
-			avatar: userFileUrl(sessionUser.id, sessionUser.avatar),
-			bio: sessionUser.bio,
-			profilePageBg: userFileUrl(sessionUser.id, sessionUser.profilePageBg),
-			sessionId: sessionUser.sessionId,
-			patId: sessionUser.patID,
-		} satisfies LoggedInUserData;
+	const formattedObject = {
+		id: sessionUser.id,
+		email: sessionUser.email,
+		userName: sessionUser.userName,
+		name: sessionUser.name,
+		role: getUserRoleFromString(sessionUser.role),
+		hasAPassword: !!sessionUser.password,
+		avatar: userFileUrl(sessionUser.id, sessionUser.avatar),
+		bio: sessionUser.bio,
+		profilePageBg: userFileUrl(sessionUser.id, sessionUser.profilePageBg),
+		sessionId: sessionUser.sessionId,
+		patId: sessionUser.patID,
+	} satisfies LoggedInUserData;
 
-		if (!hasScope(sessionUser.apiScopes, API_SCOPE.USER_READ_EMAIL)) {
-			formattedObject.email = "";
-			Object.defineProperty(formattedObject, "email", { enumerable: false });
-		}
-
-		return ctx.json(formattedObject, HTTP_STATUS.OK);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
+	if (!hasScope(sessionUser.apiScopes, API_SCOPE.USER_READ_EMAIL)) {
+		formattedObject.email = "";
+		Object.defineProperty(formattedObject, "email", { enumerable: false });
 	}
+
+	return ctx.json(formattedObject, HTTP_STATUS.OK);
 }
 
 async function oAuthUrl_get(ctx: Context, intent: AuthActionIntent) {
-	try {
-		const sessionUser = getSessionUser(ctx);
-		if (sessionUser?.id && intent !== AuthActionIntent.LINK)
-			return invalidRequestResponse(ctx, "You are already logged in!");
+	const sessionUser = getSessionUser(ctx);
+	if (sessionUser?.id && intent !== AuthActionIntent.LINK)
+		return invalidRequestResponse(ctx, "You are already logged in!");
 
-		const authProvider = ctx.req.param("authProvider");
-		if (!authProvider) return invalidRequestResponse(ctx, "Invalid auth provider");
+	const authProvider = ctx.req.param("authProvider");
+	if (!authProvider) return invalidRequestResponse(ctx, "Invalid auth provider");
 
-		const redirect = ctx.req.query("redirect") === "true";
-		const url = getOAuthUrl(ctx, authProvider, intent);
+	const redirect = ctx.req.query("redirect") === "true";
+	const url = getOAuthUrl(ctx, authProvider, intent);
 
-		if (redirect) {
-			return ctx.redirect(url);
-		}
-
-		return ctx.json({ success: true, url }, HTTP_STATUS.OK);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
+	if (redirect) {
+		return ctx.redirect(url);
 	}
+
+	return ctx.json({ success: true, url }, HTTP_STATUS.OK);
 }
 
 async function credentialSignin_post(ctx: Context) {
-	try {
-		const { data, error } = await zodParse(loginFormSchema, ctx.get(REQ_BODY_NAMESPACE));
-		if (error || !data) return invalidRequestResponse(ctx, error);
+	const { data, error } = await zodParse(loginFormSchema, ctx.get(REQ_BODY_NAMESPACE));
+	if (error || !data) return invalidRequestResponse(ctx, error);
 
-		const result = await credentialSignIn(ctx, data);
-		return ctx.json(result.data, result.status);
-	} catch (err) {
-		console.error(err);
-		return serverErrorResponse(ctx);
-	}
+	const result = await credentialSignIn(ctx, data);
+	return ctx.json(result.data, result.status);
 }
 
 async function oAuthSignIn_post(ctx: Context) {
-	try {
-		if (getSessionUser(ctx)?.id) {
-			return invalidRequestResponse(ctx);
-		}
-
-		const authProvider = ctx.req.param("authProvider");
-		const code = ctx.get(REQ_BODY_NAMESPACE)?.code;
-
-		if (!authProvidersList.includes(authProvider.toLowerCase() as AuthProvider) || !code) {
-			return invalidRequestResponse(ctx);
-		}
-
-		const result = await oAuthSignInHandler(ctx, authProvider, code);
-		return ctx.json(result.data, result.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
+	if (getSessionUser(ctx)?.id) {
+		return invalidRequestResponse(ctx);
 	}
+
+	const authProvider = ctx.req.param("authProvider");
+	const code = ctx.get(REQ_BODY_NAMESPACE)?.code;
+
+	if (!authProvidersList.includes(authProvider.toLowerCase() as AuthProvider) || !code) {
+		return invalidRequestResponse(ctx);
+	}
+
+	const result = await oAuthSignInHandler(ctx, authProvider, code);
+	return ctx.json(result.data, result.status);
 }
 
 async function oAuthSignUp_post(ctx: Context) {
-	try {
-		if (getSessionUser(ctx)?.id) {
-			return invalidRequestResponse(ctx);
-		}
-
-		const authProvider = ctx.req.param("authProvider");
-		const code = ctx.get(REQ_BODY_NAMESPACE)?.code;
-		if (!authProvidersList.includes(authProvider.toLowerCase() as AuthProvider) || !code) {
-			return invalidRequestResponse(ctx);
-		}
-
-		const result = await oAuthSignUpHandler(ctx, authProvider, code);
-		return ctx.json(result.data, result.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
+	if (getSessionUser(ctx)?.id) {
+		return invalidRequestResponse(ctx);
 	}
+
+	const authProvider = ctx.req.param("authProvider");
+	const code = ctx.get(REQ_BODY_NAMESPACE)?.code;
+	if (!authProvidersList.includes(authProvider.toLowerCase() as AuthProvider) || !code) {
+		return invalidRequestResponse(ctx);
+	}
+
+	const result = await oAuthSignUpHandler(ctx, authProvider, code);
+	return ctx.json(result.data, result.status);
 }
 
 async function oAuthLinkProvider_post(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx);
-		if (!sessionUser?.id) {
-			return invalidRequestResponse(ctx);
-		}
-
-		const authProvider = ctx.req.param("authProvider");
-		const code = ctx.get(REQ_BODY_NAMESPACE)?.code;
-		if (!authProvidersList.includes(getAuthProviderFromString(authProvider)) || !code) {
-			return invalidRequestResponse(ctx);
-		}
-
-		const result = await linkAuthProviderHandler(ctx, sessionUser, authProvider, code);
-		return ctx.json(result.data, result.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
+	const sessionUser = getSessionUser(ctx);
+	if (!sessionUser?.id) {
+		return invalidRequestResponse(ctx);
 	}
+
+	const authProvider = ctx.req.param("authProvider");
+	const code = ctx.get(REQ_BODY_NAMESPACE)?.code;
+	if (!authProvidersList.includes(getAuthProviderFromString(authProvider)) || !code) {
+		return invalidRequestResponse(ctx);
+	}
+
+	const result = await linkAuthProviderHandler(ctx, sessionUser, authProvider, code);
+	return ctx.json(result.data, result.status);
 }
 
 async function oAuthLinkProvider_delete(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.USER_AUTH_WRITE);
-		if (!sessionUser?.id) {
-			return invalidRequestResponse(ctx);
-		}
-
-		const authProvider = ctx.req.param("authProvider");
-		const result = await unlinkAuthProvider(ctx, sessionUser, authProvider);
-		return ctx.json(result.data, result.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.USER_AUTH_WRITE);
+	if (!sessionUser?.id) {
+		return invalidRequestResponse(ctx);
 	}
+
+	const authProvider = ctx.req.param("authProvider");
+	const result = await unlinkAuthProvider(ctx, sessionUser, authProvider);
+	return ctx.json(result.data, result.status);
 }
 
 async function sessions_get(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.USER_SESSION_READ);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.USER_SESSION_READ);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const result = await getUserSessions(sessionUser);
-		return ctx.json(result.data, result.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const result = await getUserSessions(sessionUser);
+	return ctx.json(result.data, result.status);
 }
 
 async function linkedProviders_get(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.USER_READ, API_SCOPE.USER_READ_EMAIL);
-		if (!sessionUser?.id) return invalidRequestResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.USER_READ, API_SCOPE.USER_READ_EMAIL);
+	if (!sessionUser?.id) return invalidRequestResponse(ctx);
 
-		const result = await getLinkedAuthProviders(sessionUser);
-		return ctx.json(result.data, result.status);
-	} catch (err) {
-		console.error(err);
-		return serverErrorResponse(ctx);
-	}
+	const result = await getLinkedAuthProviders(sessionUser);
+	return ctx.json(result.data, result.status);
 }
 
 async function session_delete(ctx: Context) {
-	try {
-		const sessionUser = getSessionUser(ctx, API_SCOPE.USER_SESSION_DELETE);
-		if (!sessionUser) return unauthenticatedReqResponse(ctx);
+	const sessionUser = getSessionUser(ctx, API_SCOPE.USER_SESSION_DELETE);
+	if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-		const targetSessionId = ctx.get(REQ_BODY_NAMESPACE)?.sessionId || sessionUser?.sessionId;
-		if (!targetSessionId) return invalidRequestResponse(ctx, "Session id is required");
+	const targetSessionId = ctx.get(REQ_BODY_NAMESPACE)?.sessionId || sessionUser?.sessionId;
+	if (!targetSessionId) return invalidRequestResponse(ctx, "Session id is required");
 
-		const result = await deleteUserSession(ctx, sessionUser, targetSessionId);
-		return ctx.json(result.data, result.status);
-	} catch (error) {
-		console.error(error);
-		return serverErrorResponse(ctx);
-	}
+	const result = await deleteUserSession(ctx, sessionUser, targetSessionId);
+	return ctx.json(result.data, result.status);
 }
 
 async function revokeSession_delete(ctx: Context) {
-	try {
-		const code = ctx.req.param("revokeCode");
-		if (!code) return invalidRequestResponse(ctx);
+	const code = ctx.req.param("revokeCode");
+	if (!code) return invalidRequestResponse(ctx);
 
-		const result = await revokeSessionFromAccessCode(ctx, code);
-		return ctx.json(result.data, result.status);
-	} catch (err) {
-		console.error(err);
-		return serverErrorResponse(ctx);
-	}
+	const result = await revokeSessionFromAccessCode(ctx, code);
+	return ctx.json(result.data, result.status);
 }
 
 export default authRouter;
