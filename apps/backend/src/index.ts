@@ -39,6 +39,7 @@ import notificationRouter from "~/routes/user/notification/router";
 import userRouter from "~/routes/user/router";
 import { versionFileRouter, versionFiles_Router } from "~/routes/version-file/router";
 import versionsRouter from "~/routes/versions/router";
+import { ErrorLogWithTimestamp } from "./services/storage/utils";
 
 const corsAllowedOrigins = env.CORS_ALLOWED_URLS.split(" ");
 const app = new Hono()
@@ -106,16 +107,12 @@ const app = new Hono()
 	.get("/", apiDetails)
 	.get("/api", apiDetails)
 	.get("/api/statistics", applyCacheHeaders({ browserTTL_s: 600, cdnTTL_s: 12 * 3600 }), async (ctx: Context) => {
-		try {
-			const stats = await getStatistics();
-			return ctx.json(stats, HTTP_STATUS.OK);
-		} catch {
-			return serverErrorResponse(ctx);
-		}
+		return ctx.json(await getStatistics(), HTTP_STATUS.OK);
 	})
 
 	.onError((err, ctx) => {
-		return serverErrorResponse(ctx, err.message);
+        ErrorLogWithTimestamp(err.name, err.message, "\n", err.cause, "\n", err.stack);
+		return serverErrorResponse(ctx);
 	});
 
 async function apiDetails(ctx: Context) {
