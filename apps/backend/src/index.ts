@@ -112,6 +112,10 @@ const app = new Hono()
 		} catch {
 			return serverErrorResponse(ctx);
 		}
+	})
+
+	.onError((err, ctx) => {
+		return serverErrorResponse(ctx, err.message);
 	});
 
 async function apiDetails(ctx: Context) {
