@@ -61,7 +61,7 @@ export function ISO_DateStr(date: null | undefined | string | Date, utc = false)
 
         return `${_date.getUTCFullYear()}-${(_date.getUTCMonth() + 1).toString().padStart(2, "0")}-${_date.getUTCDate().toString().padStart(2, "0")}`;
     } catch {
-        return null;
+        return "";
     }
 }
 
@@ -109,7 +109,6 @@ export function GetTimestamp() {
 }
 
 // Date operations functions
-
 export function AddDays(date: Date, days: number): Date {
     const result = new Date(date);
     if (!days) return result;
@@ -164,10 +163,10 @@ export function getTimeRange(timeline: TimelineOptions): [Date, Date] {
             return [SubtractDays(now, 7), SubtractDays(now, 1)];
 
         case TimelineOptions.THIS_MONTH:
-            return [newDate(now.getFullYear(), now.getMonth(), 1), SubtractDays(now, 1)];
+            return [new Date(now.getFullYear(), now.getMonth(), 1), SubtractDays(now, 1)];
 
         case TimelineOptions.LAST_MONTH:
-            return [newDate(now.getFullYear(), now.getMonth() - 1, 1), newDate(now.getFullYear(), now.getMonth(), 0)];
+            return [new Date(now.getFullYear(), now.getMonth() - 1, 1), new Date(now.getFullYear(), now.getMonth(), 0)];
 
         case TimelineOptions.PREVIOUS_30_DAYS:
             return [SubtractDays(now, 30), SubtractDays(now, 1)];
@@ -176,10 +175,10 @@ export function getTimeRange(timeline: TimelineOptions): [Date, Date] {
             return [SubtractDays(now, 90), SubtractDays(now, 1)];
 
         case TimelineOptions.THIS_YEAR:
-            return [newDate(now.getFullYear(), 0, 1), SubtractDays(now, 1)];
+            return [new Date(now.getFullYear(), 0, 1), SubtractDays(now, 1)];
 
         case TimelineOptions.LAST_YEAR:
-            return [newDate(now.getFullYear() - 1, 0, 1), newDate(now.getFullYear(), 0, 0)];
+            return [new Date(now.getFullYear() - 1, 0, 1), new Date(now.getFullYear(), 0, 0)];
 
         case TimelineOptions.PREVIOUS_365_DAYS:
             return [SubtractDays(now, 365), SubtractDays(now, 1)];
@@ -189,14 +188,5 @@ export function getTimeRange(timeline: TimelineOptions): [Date, Date] {
 
         default:
             return [SubtractDays(now, 30), SubtractDays(now, 1)];
-    }
-}
-
-export function newDate(year: number, month: number, date = 1, hour = 0, min = 0, sec = 0) {
-    try {
-        return new Date(year, month, date, hour, min, sec);
-    } catch (error) {
-        console.error(error);
-        return null;
     }
 }
