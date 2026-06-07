@@ -11,86 +11,86 @@ import { OrgPagePath } from "~/utils/urls";
 import type { Route } from "./+types/data-wrapper";
 
 export default function () {
-	const ctx = useOrgData();
-	const { t } = useTranslation();
+    const ctx = useOrgData();
+    const { t } = useTranslation();
 
-	if (!ctx?.orgData?.id) {
-		return (
-			<NotFoundPage
-				title={t.error.oraganizationNotFound}
-				description={t.error.oraganizationNotFoundDesc(ctx.orgSlug)}
-				linkHref="/"
-				linkLabel={t.common.home}
-			/>
-		);
-	}
+    if (!ctx?.orgData?.id) {
+        return (
+            <NotFoundPage
+                title={t.error.oraganizationNotFound}
+                description={t.error.oraganizationNotFoundDesc(ctx.orgSlug)}
+                linkHref="/"
+                linkLabel={t.common.home}
+            />
+        );
+    }
 
-	return <Outlet />;
+    return <Outlet />;
 }
 
 export interface OrgLoaderData {
-	orgSlug?: string;
-	orgData: Organisation | null;
-	orgProjects: ProjectListItem[];
+    orgSlug?: string;
+    orgData: Organisation | null;
+    orgProjects: ProjectListItem[];
 }
 
 export async function loader(props: Route.LoaderArgs): Promise<OrgLoaderData> {
-	const orgSlug = props.params.orgSlug;
+    const orgSlug = props.params.orgSlug;
 
-	const [orgDataRes, orgProjectsRes] = await Promise.all([
-		serverFetch(props.request, `/api/organization/${orgSlug}`),
-		serverFetch(props.request, `/api/organization/${orgSlug}/projects`),
-	]);
-	const [orgData, orgProjects] = await Promise.all([
-		resJson<Organisation>(orgDataRes),
-		resJson<ProjectListItem[]>(orgProjectsRes),
-	]);
+    const [orgDataRes, orgProjectsRes] = await Promise.all([
+        serverFetch(props.request, `/api/organization/${orgSlug}`),
+        serverFetch(props.request, `/api/organization/${orgSlug}/projects`),
+    ]);
+    const [orgData, orgProjects] = await Promise.all([
+        resJson<Organisation>(orgDataRes),
+        resJson<ProjectListItem[]>(orgProjectsRes),
+    ]);
 
-	return {
-		orgSlug,
-		orgData,
-		orgProjects: orgProjects || [],
-	};
+    return {
+        orgSlug,
+        orgData,
+        orgProjects: orgProjects || [],
+    };
 }
 
 export function shouldRevalidate({
-	currentParams,
-	nextParams,
-	nextUrl,
-	currentUrl,
-	defaultShouldRevalidate,
+    currentParams,
+    nextParams,
+    nextUrl,
+    currentUrl,
+    defaultShouldRevalidate,
 }: ShouldRevalidateFunctionArgs) {
-	const forceRevalidate = shouldForceRevalidate(currentUrl.searchParams, nextUrl.searchParams);
-	if (forceRevalidate) return true;
+    const forceRevalidate = shouldForceRevalidate(currentUrl.searchParams, nextUrl.searchParams);
+    if (forceRevalidate) return true;
 
-	const currentId = currentParams.orgSlug?.toLowerCase();
-	const nextId = nextParams.orgSlug?.toLowerCase();
+    const currentId = currentParams.orgSlug?.toLowerCase();
+    const nextId = nextParams.orgSlug?.toLowerCase();
 
-	if (currentId === nextId) return false;
+    if (currentId === nextId) return false;
 
-	return defaultShouldRevalidate;
+    return defaultShouldRevalidate;
 }
 
 export function meta(props: Route.MetaArgs) {
-	const { t } = useTranslation();
-	const data = props.data as OrgLoaderData;
-	const orgData = data?.orgData;
+    const { t } = useTranslation();
+    const data = props.data as OrgLoaderData;
+    const orgData = data?.orgData;
 
-	if (!orgData?.id) {
-		return MetaTags({
-			location: props.location,
-			title: t.error.oraganizationNotFound,
-			description: t.error.oraganizationNotFoundDesc(props.params.orgSlug),
-			image: Config.SITE_ICON,
-			url: undefined,
-		});
-	}
+    if (!orgData?.id) {
+        return MetaTags({
+            location: props.location,
+            title: t.error.oraganizationNotFound,
+            description: t.error.oraganizationNotFoundDesc(props.params.orgSlug),
+            image: Config.SITE_ICON,
+            url: undefined,
+        });
+    }
 
-	return MetaTags({
-		location: props.location,
-		title: t.meta.organization(orgData.name),
-		description: t.meta.organizationDesc(orgData.description || "", orgData.name, Config.SITE_NAME_SHORT),
-		image: orgData.icon || "",
-		url: `${Config.FRONTEND_URL}${OrgPagePath(orgData.slug)}`,
-	});
+    return MetaTags({
+        location: props.location,
+        title: t.meta.organization(orgData.name),
+        description: t.meta.organizationDesc(orgData.description || "", orgData.name, Config.SITE_NAME_SHORT),
+        image: orgData.icon || "",
+        url: `${Config.FRONTEND_URL}${OrgPagePath(orgData.slug)}`,
+    });
 }

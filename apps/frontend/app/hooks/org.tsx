@@ -4,31 +4,31 @@ import type { OrgLoaderData } from "~/routes/organization/data-wrapper";
 import { useSession } from "./session";
 
 export interface OrgContextData {
-	orgSlug: string;
+    orgSlug: string;
 
-	orgData: Organisation;
-	orgProjects: ProjectListItem[];
-	currUsersMembership: TeamMember | null;
+    orgData: Organisation;
+    orgProjects: ProjectListItem[];
+    currUsersMembership: TeamMember | null;
 }
 
 export function useOrgData(): OrgContextData {
-	const session = useSession();
-	const loaderData = useRouteLoaderData("organization-data-wrapper") as OrgLoaderData;
+    const session = useSession();
+    const loaderData = useRouteLoaderData("organization-data-wrapper") as OrgLoaderData;
 
-	// We can safely return incomplete data, because the data-wrapper will handle not found cases
-	if (!loaderData?.orgData?.id) {
-		// @ts-expect-error
-		return {
-			orgSlug: loaderData?.orgSlug || "",
-		};
-	}
+    // We can safely return incomplete data, because the data-wrapper will handle not found cases
+    if (!loaderData?.orgData?.id) {
+        // @ts-expect-error
+        return {
+            orgSlug: loaderData?.orgSlug || "",
+        };
+    }
 
-	const currUsersMembership = loaderData.orgData?.members.find((member) => member.userId === session?.id) || null;
+    const currUsersMembership = loaderData.orgData?.members.find((member) => member.userId === session?.id) || null;
 
-	return {
-		orgSlug: loaderData.orgSlug || "",
-		orgData: loaderData.orgData,
-		orgProjects: loaderData.orgProjects,
-		currUsersMembership: currUsersMembership,
-	};
+    return {
+        orgSlug: loaderData.orgSlug || "",
+        orgData: loaderData.orgData,
+        orgProjects: loaderData.orgProjects,
+        currUsersMembership: currUsersMembership,
+    };
 }

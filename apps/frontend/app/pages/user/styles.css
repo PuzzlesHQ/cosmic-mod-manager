@@ -1,5 +1,5 @@
 @reference "./../../tailwind.css";
 
 .has-bg-image .blurred {
-	@apply bg-card-background/65 backdrop-blur-lg;
+    @apply bg-card-background/65 backdrop-blur-lg;
 }

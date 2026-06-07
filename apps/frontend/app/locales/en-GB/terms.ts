@@ -1,6 +1,6 @@
 export interface TermsProps {
-	title: string;
-	supportEmail: string;
+    title: string;
+    supportEmail: string;
 }
 
 export const TermsOfUse = (props: TermsProps) => `

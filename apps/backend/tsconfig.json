@@ -1,29 +1,29 @@
 {
-	"compilerOptions": {
-		"lib": ["ESNext"],
-		"composite": true,
-		"target": "ESNext",
-		"module": "ESNext",
-		"moduleDetection": "force",
-		"allowJs": true,
-		"moduleResolution": "bundler",
-		"strict": true,
-		"skipLibCheck": true,
-		"noFallthroughCasesInSwitch": true,
-		"noUnusedLocals": false,
-		"noUnusedParameters": false,
-		"noPropertyAccessFromIndexSignature": false,
-		"paths": {
-			"~/*": ["./src/*"],
-			"@app/utils/*": ["./../../packages/utils/src/*"],
-			"@prisma-client": ["./prisma/client/client.ts"]
-		}
-	},
-	"include": [".", "./../../packages/utils/src"],
-	"exclude": ["node_modules", "dist", "pm2.config.cjs"],
-	"references": [
-		{
-			"path": "./../../packages/utils"
-		}
-	]
+    "compilerOptions": {
+        "lib": ["ESNext"],
+        "composite": true,
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleDetection": "force",
+        "allowJs": true,
+        "moduleResolution": "bundler",
+        "strict": true,
+        "skipLibCheck": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "noPropertyAccessFromIndexSignature": false,
+        "paths": {
+            "~/*": ["./src/*"],
+            "@app/utils/*": ["./../../packages/utils/src/*"],
+            "@prisma-client": ["./prisma/client/client.ts"]
+        }
+    },
+    "include": [".", "./../../packages/utils/src"],
+    "exclude": ["node_modules", "dist", "pm2.config.cjs"],
+    "references": [
+        {
+            "path": "./../../packages/utils"
+        }
+    ]
 }

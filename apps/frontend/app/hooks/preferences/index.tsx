@@ -7,73 +7,73 @@ import type { UserPreferences } from "./types";
 export const USER_PREFERENCES_NAMESPACE = "user-prefs";
 
 interface UserPrefsContext extends UserPreferences {
-	resolvedTheme: ReturnType<typeof resolveThemePreference>;
-	systemTheme: ThemePreference;
-	updatePreferences: (updated: Partial<UserPreferences>) => void;
+    resolvedTheme: ReturnType<typeof resolveThemePreference>;
+    systemTheme: ThemePreference;
+    updatePreferences: (updated: Partial<UserPreferences>) => void;
 }
 
 const UserPrefsCtx = createContext<UserPrefsContext | null>(null);
 
 export function UserPreferencesProvider({ init, children }: { init: UserPreferences; children: React.ReactNode }) {
-	const [config, setConfig_State] = useState<UserPreferences>(init);
-	const [systemTheme, setSystemTheme] = useState<ThemePreference>(
-		resolveThemePreference(ThemePreference.SYSTEM, init.prefersOLED),
-	);
-	const resolvedTheme = resolveThemePreference(config.theme, config.prefersOLED, true);
+    const [config, setConfig_State] = useState<UserPreferences>(init);
+    const [systemTheme, setSystemTheme] = useState<ThemePreference>(
+        resolveThemePreference(ThemePreference.SYSTEM, init.prefersOLED),
+    );
+    const resolvedTheme = resolveThemePreference(config.theme, config.prefersOLED, true);
 
-	function updatePreferences(updated: Partial<UserPreferences>) {
-		const currConfig = getUserConfig();
+    function updatePreferences(updated: Partial<UserPreferences>) {
+        const currConfig = getUserConfig();
 
-		const validConfig = validateConfig({
-			...currConfig,
-			...updated,
-			viewPrefs: {
-				...currConfig.viewPrefs,
-				...updated.viewPrefs,
-			},
-		});
+        const validConfig = validateConfig({
+            ...currConfig,
+            ...updated,
+            viewPrefs: {
+                ...currConfig.viewPrefs,
+                ...updated.viewPrefs,
+            },
+        });
 
-		saveUserConfig(validConfig);
-		setConfig_State(validConfig);
-	}
+        saveUserConfig(validConfig);
+        setConfig_State(validConfig);
+    }
 
-	function handleMediaQuery(e: MediaQueryList | MediaQueryListEvent) {
-		const systemTheme = resolveThemePreference(ThemePreference.SYSTEM, config.prefersOLED, e);
-		setSystemTheme(systemTheme);
-	}
+    function handleMediaQuery(e: MediaQueryList | MediaQueryListEvent) {
+        const systemTheme = resolveThemePreference(ThemePreference.SYSTEM, config.prefersOLED, e);
+        setSystemTheme(systemTheme);
+    }
 
-	useEffect(() => {
-		const media = window.matchMedia(MEDIA_PREFERS_LIGHT_THEME);
-		media.addEventListener("change", handleMediaQuery);
-		handleMediaQuery(media);
+    useEffect(() => {
+        const media = window.matchMedia(MEDIA_PREFERS_LIGHT_THEME);
+        media.addEventListener("change", handleMediaQuery);
+        handleMediaQuery(media);
 
-		return () => {
-			media.removeEventListener("change", handleMediaQuery);
-		};
-	}, [config.theme]);
+        return () => {
+            media.removeEventListener("change", handleMediaQuery);
+        };
+    }, [config.theme]);
 
-	useEffect(() => {
-		applyTheme(resolvedTheme, config.prefersOLED, document.documentElement);
-	}, [resolvedTheme]);
+    useEffect(() => {
+        applyTheme(resolvedTheme, config.prefersOLED, document.documentElement);
+    }, [resolvedTheme]);
 
-	return (
-		<UserPrefsCtx.Provider
-			value={{
-				...config,
-				resolvedTheme: resolvedTheme,
-				systemTheme: systemTheme,
-				updatePreferences: updatePreferences,
-			}}
-		>
-			{children}
-		</UserPrefsCtx.Provider>
-	);
+    return (
+        <UserPrefsCtx.Provider
+            value={{
+                ...config,
+                resolvedTheme: resolvedTheme,
+                systemTheme: systemTheme,
+                updatePreferences: updatePreferences,
+            }}
+        >
+            {children}
+        </UserPrefsCtx.Provider>
+    );
 }
 
 // TODO: Fix this hacky thing
 export function usePreferences(): UserPrefsContext {
-	const ctx = useContext(UserPrefsCtx);
-	if (!ctx) return {} as UserPrefsContext;
+    const ctx = useContext(UserPrefsCtx);
+    if (!ctx) return {} as UserPrefsContext;
 
-	return ctx;
+    return ctx;
 }

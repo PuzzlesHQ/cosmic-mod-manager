@@ -10,34 +10,34 @@ import { ProjectPagePath } from "~/utils/urls";
 import type { Route } from "./+types/analytics";
 
 export default function () {
-	const data = useLoaderData<typeof loader>();
-	if (!data) return null;
+    const data = useLoaderData<typeof loader>();
+    if (!data) return null;
 
-	return <DownloadsAnalyticsChart data={data} />;
+    return <DownloadsAnalyticsChart data={data} />;
 }
 
 export async function loader(props: Route.LoaderArgs) {
-	const res = await serverFetch(props.request, `/api/project/${props.params.projectSlug}/check`);
-	if (!res.ok) return null;
+    const res = await serverFetch(props.request, `/api/project/${props.params.projectSlug}/check`);
+    if (!res.ok) return null;
 
-	const projectId = (await resJson<{ id: string }>(res))?.id;
-	if (!projectId) return null;
+    const projectId = (await resJson<{ id: string }>(res))?.id;
+    if (!projectId) return null;
 
-	return await projectAnalyticsLoader(props, [projectId]);
+    return await projectAnalyticsLoader(props, [projectId]);
 }
 
 export const ShouldRevalidate = AnalyticsRoute_ShouldRevalidate;
 
 export function meta(props: Route.MetaArgs) {
-	const { t } = useTranslation();
-	const ctx = getProjectLoaderData(props.matches, props.location.pathname);
-	if (!ctx?.projectData) return;
+    const { t } = useTranslation();
+    const ctx = getProjectLoaderData(props.matches, props.location.pathname);
+    if (!ctx?.projectData) return;
 
-	return MetaTags({
-		location: props.location,
-		title: t.meta.addContext(ctx.projectData.name, t.dashboard.analytics),
-		description: t.dashboard.analytics,
-		image: Config.SITE_ICON,
-		url: Config.FRONTEND_URL + ProjectPagePath(ctx.projectData.type[0], ctx.projectData.slug, "settings/analytics"),
-	});
+    return MetaTags({
+        location: props.location,
+        title: t.meta.addContext(ctx.projectData.name, t.dashboard.analytics),
+        description: t.dashboard.analytics,
+        image: Config.SITE_ICON,
+        url: Config.FRONTEND_URL + ProjectPagePath(ctx.projectData.type[0], ctx.projectData.slug, "settings/analytics"),
+    });
 }

@@ -10,29 +10,29 @@ import ErrorView from "../error-view";
 import type { Route } from "./+types/reports";
 
 export default function () {
-	const session = useSession();
-	const data = useLoaderData<typeof loader>();
+    const session = useSession();
+    const data = useLoaderData<typeof loader>();
 
-	if (!session?.id) return <SoftRedirect to="/login" />;
-	if (!data) return <ErrorView />;
+    if (!session?.id) return <SoftRedirect to="/login" />;
+    if (!data) return <ErrorView />;
 
-	return <Reports_ModerationPage data={data} />;
+    return <Reports_ModerationPage data={data} />;
 }
 
 export async function loader(props: Route.LoaderArgs) {
-	const url = new URL(props.request.url);
+    const url = new URL(props.request.url);
 
-	const res = await serverFetch(props.request, `/api/report/getAll?${url.searchParams.toString()}`);
-	const reports = await resJson<Report[]>(res);
+    const res = await serverFetch(props.request, `/api/report/getAll?${url.searchParams.toString()}`);
+    const reports = await resJson<Report[]>(res);
 
-	return ReportsDataLoader(props.request, reports);
+    return ReportsDataLoader(props.request, reports);
 }
 
 export function shouldRevalidate(props: ShouldRevalidateFunctionArgs) {
-	const forceRevalidate = shouldForceRevalidate(props.currentUrl.searchParams, props.nextUrl.searchParams);
-	if (forceRevalidate) return true;
+    const forceRevalidate = shouldForceRevalidate(props.currentUrl.searchParams, props.nextUrl.searchParams);
+    if (forceRevalidate) return true;
 
-	if (props.currentUrl.href === props.nextUrl.href) return false;
+    if (props.currentUrl.href === props.nextUrl.href) return false;
 
-	return props.defaultShouldRevalidate;
+    return props.defaultShouldRevalidate;
 }

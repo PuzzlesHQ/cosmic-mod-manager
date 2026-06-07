@@ -1,13 +1,13 @@
 export interface AboutUsProps {
-	discordInvite: string;
-	repoLink: string;
+    discordInvite: string;
+    repoLink: string;
 
-	memberProfiles: {
-		abhinav: string;
-		eatham: string;
-		spicy: string;
-		dounford: string;
-	};
+    memberProfiles: {
+        abhinav: string;
+        eatham: string;
+        spicy: string;
+        dounford: string;
+    };
 }
 
 export const AboutUs = (props: AboutUsProps) => `

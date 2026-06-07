@@ -7,15 +7,15 @@ import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { Button, CancelButton } from "~/components/ui/button";
 import {
-	Dialog,
-	DialogBody,
-	DialogClose,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
+    Dialog,
+    DialogBody,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 } from "~/components/ui/dialog";
 import { CharacterCounter, Form, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
@@ -31,147 +31,156 @@ import Config from "~/utils/config";
 import { OrgPagePath } from "~/utils/urls";
 
 export default function CreateNewOrg_Dialog({ children }: { children: React.ReactNode }) {
-	const { t } = useTranslation();
-	const [autoFillUrlSlug, setAutoFillUrlSlug] = useState(true);
-	const [isLoading, setIsLoading] = useState(false);
-	const navigate = useNavigate();
+    const { t } = useTranslation();
+    const [autoFillUrlSlug, setAutoFillUrlSlug] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
-	const form = useFormHook(createOrganisationFormSchema, {
-		defaultValues: {
-			name: "",
-			slug: "",
-			description: "",
-		},
-	});
+    const form = useFormHook(createOrganisationFormSchema, {
+        defaultValues: {
+            name: "",
+            slug: "",
+            description: "",
+        },
+    });
 
-	async function createOrganisation(values: z.infer<typeof createOrganisationFormSchema>) {
-		try {
-			if (isLoading) return;
-			setIsLoading(true);
-			disableInteractions();
+    async function createOrganisation(values: z.infer<typeof createOrganisationFormSchema>) {
+        try {
+            if (isLoading) return;
+            setIsLoading(true);
+            disableInteractions();
 
-			const response = await clientFetch("/api/organization", {
-				method: "POST",
-				body: JSON.stringify(values),
-			});
-			const result = await response.json();
+            const response = await clientFetch("/api/organization", {
+                method: "POST",
+                body: JSON.stringify(values),
+            });
+            const result = await response.json();
 
-			if (!response.ok || !result?.success) {
-				enableInteractions();
-				return toast.error(result?.message || t.common.error);
-			}
+            if (!response.ok || !result?.success) {
+                enableInteractions();
+                return toast.error(result?.message || t.common.error);
+            }
 
-			navigate(OrgPagePath(values.slug));
-		} finally {
-			setIsLoading(false);
-		}
-	}
+            navigate(OrgPagePath(values.slug));
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
-	return (
-		<Dialog>
-			<DialogTrigger asChild>{children}</DialogTrigger>
-			<DialogContent>
-				<DialogHeader>
-					<DialogTitle>{t.dashboard.creatingOrg}</DialogTitle>
-					<VisuallyHidden>
-						<DialogDescription>{t.dashboard.creatingOrg}</DialogDescription>
-					</VisuallyHidden>
-				</DialogHeader>
-				<DialogBody>
-					<Form {...form}>
-						<form
-							onSubmit={form.handleSubmit(createOrganisation)}
-							className="flex w-full flex-col items-start justify-center gap-form-elements"
-						>
-							<FormField
-								name="name"
-								control={form.control}
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel htmlFor="org-name-input">
-											{t.form.name}
-											<CharacterCounter currVal={field.value} max={MAX_ORGANISATION_NAME_LENGTH} />
-										</FormLabel>
-										<Input
-											placeholder={t.dashboard.enterOrgName}
-											id="org-name-input"
-											type="text"
-											{...field}
-											onChange={(e) => {
-												if (autoFillUrlSlug) {
-													const name = e.target.value;
-													form.setValue("slug", createURLSafeSlug(name));
-												}
+    return (
+        <Dialog>
+            <DialogTrigger asChild>{children}</DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>{t.dashboard.creatingOrg}</DialogTitle>
+                    <VisuallyHidden>
+                        <DialogDescription>{t.dashboard.creatingOrg}</DialogDescription>
+                    </VisuallyHidden>
+                </DialogHeader>
+                <DialogBody>
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(createOrganisation)}
+                            className="flex w-full flex-col items-start justify-center gap-form-elements"
+                        >
+                            <FormField
+                                name="name"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel htmlFor="org-name-input">
+                                            {t.form.name}
+                                            <CharacterCounter
+                                                currVal={field.value}
+                                                max={MAX_ORGANISATION_NAME_LENGTH}
+                                            />
+                                        </FormLabel>
+                                        <Input
+                                            placeholder={t.dashboard.enterOrgName}
+                                            id="org-name-input"
+                                            type="text"
+                                            {...field}
+                                            onChange={(e) => {
+                                                if (autoFillUrlSlug) {
+                                                    const name = e.target.value;
+                                                    form.setValue("slug", createURLSafeSlug(name));
+                                                }
 
-												field.onChange(e);
-											}}
-										/>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
+                                                field.onChange(e);
+                                            }}
+                                        />
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
-							<FormField
-								name="slug"
-								control={form.control}
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel htmlFor="org-url-slug-input">
-											{t.form.url}
-											<CharacterCounter currVal={field.value} max={MAX_ORGANISATION_NAME_LENGTH} />
-										</FormLabel>
-										<Input
-											id="org-url-slug-input"
-											placeholder={`${Config.FRONTEND_URL}/organization/YOUR_URL`}
-											type="text"
-											{...field}
-											onChange={(e) => {
-												field.onChange(e);
-												if (autoFillUrlSlug === true) setAutoFillUrlSlug(false);
-											}}
-										/>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
+                            <FormField
+                                name="slug"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel htmlFor="org-url-slug-input">
+                                            {t.form.url}
+                                            <CharacterCounter
+                                                currVal={field.value}
+                                                max={MAX_ORGANISATION_NAME_LENGTH}
+                                            />
+                                        </FormLabel>
+                                        <Input
+                                            id="org-url-slug-input"
+                                            placeholder={`${Config.FRONTEND_URL}/organization/YOUR_URL`}
+                                            type="text"
+                                            {...field}
+                                            onChange={(e) => {
+                                                field.onChange(e);
+                                                if (autoFillUrlSlug === true) setAutoFillUrlSlug(false);
+                                            }}
+                                        />
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
-							<FormField
-								name="description"
-								control={form.control}
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel htmlFor="org-description-input">
-											{t.form.description}
-											<CharacterCounter currVal={field.value} max={MAX_ORGANISATION_DESCRIPTION_LENGTH} />
-										</FormLabel>
-										<Textarea
-											placeholder={t.dashboard.enterOrgDescription}
-											id="org-description-input"
-											{...field}
-											className="resize-none"
-										/>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
+                            <FormField
+                                name="description"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel htmlFor="org-description-input">
+                                            {t.form.description}
+                                            <CharacterCounter
+                                                currVal={field.value}
+                                                max={MAX_ORGANISATION_DESCRIPTION_LENGTH}
+                                            />
+                                        </FormLabel>
+                                        <Textarea
+                                            placeholder={t.dashboard.enterOrgDescription}
+                                            id="org-description-input"
+                                            {...field}
+                                            className="resize-none"
+                                        />
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
-							<DialogFooter>
-								<DialogClose asChild>
-									<CancelButton type="button" />
-								</DialogClose>
-								<Button disabled={isLoading || !form.formState.isDirty}>
-									{isLoading ? (
-										<LoadingSpinner size="xs" />
-									) : (
-										<PlusIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-									)}
-									{t.dashboard.createOrg}
-								</Button>
-							</DialogFooter>
-						</form>
-					</Form>
-				</DialogBody>
-			</DialogContent>
-		</Dialog>
-	);
+                            <DialogFooter>
+                                <DialogClose asChild>
+                                    <CancelButton type="button" />
+                                </DialogClose>
+                                <Button disabled={isLoading || !form.formState.isDirty}>
+                                    {isLoading ? (
+                                        <LoadingSpinner size="xs" />
+                                    ) : (
+                                        <PlusIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
+                                    )}
+                                    {t.dashboard.createOrg}
+                                </Button>
+                            </DialogFooter>
+                        </form>
+                    </Form>
+                </DialogBody>
+            </DialogContent>
+        </Dialog>
+    );
 }

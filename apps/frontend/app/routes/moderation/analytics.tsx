@@ -7,31 +7,31 @@ import { AnalyticsRoute_ShouldRevalidate, projectAnalyticsLoader } from "../_loa
 import type { Route } from "./+types/analytics";
 
 export default function () {
-	const data = useLoaderData<typeof loader>();
+    const data = useLoaderData<typeof loader>();
 
-	if (!data) return null;
+    if (!data) return null;
 
-	return <DownloadsAnalyticsChart data={data} />;
+    return <DownloadsAnalyticsChart data={data} />;
 }
 
 function AllProjectsAnalyticsURL(searchParams: URLSearchParams) {
-	return `/api/analytics/downloads/all?${searchParams.toString()}`;
+    return `/api/analytics/downloads/all?${searchParams.toString()}`;
 }
 
 export async function loader(props: Route.LoaderArgs) {
-	return await projectAnalyticsLoader(props, [], AllProjectsAnalyticsURL);
+    return await projectAnalyticsLoader(props, [], AllProjectsAnalyticsURL);
 }
 
 export const shouldRevalidate = AnalyticsRoute_ShouldRevalidate;
 
 export function meta(props: Route.MetaArgs) {
-	const { t } = useTranslation();
+    const { t } = useTranslation();
 
-	return MetaTags({
-		location: props.location,
-		title: t.meta.addContext(t.dashboard.analytics, Config.SITE_NAME_SHORT),
-		description: t.dashboard.analytics,
-		image: Config.SITE_ICON,
-		url: undefined,
-	});
+    return MetaTags({
+        location: props.location,
+        title: t.meta.addContext(t.dashboard.analytics, Config.SITE_NAME_SHORT),
+        description: t.dashboard.analytics,
+        image: Config.SITE_ICON,
+        url: undefined,
+    });
 }

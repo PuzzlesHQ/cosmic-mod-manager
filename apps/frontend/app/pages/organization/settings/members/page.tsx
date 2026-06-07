@@ -13,59 +13,59 @@ import { OrgPagePath } from "~/utils/urls";
 import { OrgTeamMember } from "./edit-member";
 
 export default function OrgMemberSettings() {
-	const { t } = useTranslation();
-	const session = useSession();
-	const ctx = useOrgData();
-	const currUsersMembership = ctx.currUsersMembership;
-	const orgData = ctx.orgData;
+    const { t } = useTranslation();
+    const session = useSession();
+    const ctx = useOrgData();
+    const currUsersMembership = ctx.currUsersMembership;
+    const orgData = ctx.orgData;
 
-	const navigate = useNavigate();
-	const location = useLocation();
+    const navigate = useNavigate();
+    const location = useLocation();
 
-	async function refreshOrgData() {
-		RefreshPage(navigate, location);
-	}
-	async function RedirectToOrgPage() {
-		RefreshPage(navigate, OrgPagePath(orgData.slug));
-	}
+    async function refreshOrgData() {
+        RefreshPage(navigate, location);
+    }
+    async function RedirectToOrgPage() {
+        RefreshPage(navigate, OrgPagePath(orgData.slug));
+    }
 
-	const canInviteMembers = doesOrgMemberHaveAccess(
-		OrganisationPermission.MANAGE_INVITES,
-		currUsersMembership?.organisationPermissions,
-		currUsersMembership?.isOwner,
-		session?.role,
-	);
+    const canInviteMembers = doesOrgMemberHaveAccess(
+        OrganisationPermission.MANAGE_INVITES,
+        currUsersMembership?.organisationPermissions,
+        currUsersMembership?.isOwner,
+        session?.role,
+    );
 
-	return (
-		<>
-			<Card useSectionTag className="flex w-full flex-col gap-4 p-card-surround">
-				<CardTitle>{t.projectSettings.manageMembers}</CardTitle>
-				<InviteMemberForm
-					teamId={orgData.teamId}
-					canInviteMembers={canInviteMembers}
-					dataRefetch={refreshOrgData}
-					isOrg
-				/>
-				<LeaveTeam
-					teamId={orgData.teamId}
-					currUsersMembership={currUsersMembership}
-					refreshData={RedirectToOrgPage}
-					isOrgTeam
-				/>
-			</Card>
+    return (
+        <>
+            <Card useSectionTag className="flex w-full flex-col gap-4 p-card-surround">
+                <CardTitle>{t.projectSettings.manageMembers}</CardTitle>
+                <InviteMemberForm
+                    teamId={orgData.teamId}
+                    canInviteMembers={canInviteMembers}
+                    dataRefetch={refreshOrgData}
+                    isOrg
+                />
+                <LeaveTeam
+                    teamId={orgData.teamId}
+                    currUsersMembership={currUsersMembership}
+                    refreshData={RedirectToOrgPage}
+                    isOrgTeam
+                />
+            </Card>
 
-			{orgData.members.map((member) => {
-				return (
-					<OrgTeamMember
-						session={session}
-						key={member.userId}
-						org={orgData}
-						member={member}
-						currMember={currUsersMembership}
-						fetchOrgData={refreshOrgData}
-					/>
-				);
-			})}
-		</>
-	);
+            {orgData.members.map((member) => {
+                return (
+                    <OrgTeamMember
+                        session={session}
+                        key={member.userId}
+                        org={orgData}
+                        member={member}
+                        currMember={currUsersMembership}
+                        fetchOrgData={refreshOrgData}
+                    />
+                );
+            })}
+        </>
+    );
 }

@@ -1,17 +1,17 @@
 {
-	"compilerOptions": {
-		"lib": ["ESNext", "DOM"],
-		"composite": true,
-		"target": "ESNext",
-		"module": "ESNext",
-		"moduleDetection": "force",
-		"jsx": "react-jsx",
-		"allowJs": true,
-		"moduleResolution": "bundler",
-		"baseUrl": ".",
-		"paths": {
-			"~/*": ["./src/*"]
-		}
-	},
-	"include": ["./src"]
+    "compilerOptions": {
+        "lib": ["ESNext", "DOM"],
+        "composite": true,
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleDetection": "force",
+        "jsx": "react-jsx",
+        "allowJs": true,
+        "moduleResolution": "bundler",
+        "baseUrl": ".",
+        "paths": {
+            "~/*": ["./src/*"]
+        }
+    },
+    "include": ["./src"]
 }

@@ -20,159 +20,167 @@ import { authProvidersList } from "~/pages/auth/oauth-providers";
 import clientFetch from "~/utils/client-fetch";
 
 interface Props {
-	session: LoggedInUserData;
-	loggedInSessions: SessionListData[];
+    session: LoggedInUserData;
+    loggedInSessions: SessionListData[];
 }
 
 export default function SessionsPage({ loggedInSessions, session: currSession }: Props) {
-	const { t } = useTranslation();
-	const [isLoading, setIsLoading] = useState<{ value: boolean; sessionId: string }>({ value: false, sessionId: "" });
-	const [showIp, setShowIp] = useState(false);
+    const { t } = useTranslation();
+    const [isLoading, setIsLoading] = useState<{ value: boolean; sessionId: string }>({ value: false, sessionId: "" });
+    const [showIp, setShowIp] = useState(false);
 
-	const navigate = useNavigate();
-	const location = useLocation();
+    const navigate = useNavigate();
+    const location = useLocation();
 
-	async function revokeSession(sessionId: string) {
-		try {
-			if (isLoading.value) return;
-			setIsLoading({ value: true, sessionId: sessionId });
+    async function revokeSession(sessionId: string) {
+        try {
+            if (isLoading.value) return;
+            setIsLoading({ value: true, sessionId: sessionId });
 
-			const response = await clientFetch("/api/auth/sessions", {
-				method: "DELETE",
-				body: JSON.stringify({ sessionId: sessionId }),
-			});
-			const result = await response.json();
+            const response = await clientFetch("/api/auth/sessions", {
+                method: "DELETE",
+                body: JSON.stringify({ sessionId: sessionId }),
+            });
+            const result = await response.json();
 
-			if (!response.ok || !result?.success) {
-				return toast.error(result?.message || t.common.error);
-			}
+            if (!response.ok || !result?.success) {
+                return toast.error(result?.message || t.common.error);
+            }
 
-			toast.success(result?.message || t.common.success);
-			RefreshPage(navigate, location);
-		} catch (err) {
-			console.error(err);
-		} finally {
-			setIsLoading({ value: false, sessionId: "" });
-		}
-	}
+            toast.success(result?.message || t.common.success);
+            RefreshPage(navigate, location);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsLoading({ value: false, sessionId: "" });
+        }
+    }
 
-	return (
-		<Card className="w-full">
-			<CardHeader className="gap-3">
-				<div className="flex items-center justify-between gap-x-6 gap-y-2">
-					<CardTitle>{t.settings.sessions}</CardTitle>
-					<label
-						className="flex items-center justify-center gap-2 text-foreground-muted text-sm"
-						htmlFor="show-ip-addresses"
-					>
-						{t.settings.showIpAddr}
-						<Switch checked={showIp} onCheckedChange={setShowIp} id="show-ip-addresses" />
-					</label>
-				</div>
-				<CardDescription>{t.settings.sessionsDesc}</CardDescription>
-			</CardHeader>
-			<CardContent className="relative grid min-h-24 gap-form-elements">
-				{loggedInSessions.map((session) => {
-					const sessionProvider_Icon = authProvidersList.find(
-						(provider) => provider.name.toLowerCase() === session.providerName,
-					)?.icon;
+    return (
+        <Card className="w-full">
+            <CardHeader className="gap-3">
+                <div className="flex items-center justify-between gap-x-6 gap-y-2">
+                    <CardTitle>{t.settings.sessions}</CardTitle>
+                    <label
+                        className="flex items-center justify-center gap-2 text-foreground-muted text-sm"
+                        htmlFor="show-ip-addresses"
+                    >
+                        {t.settings.showIpAddr}
+                        <Switch checked={showIp} onCheckedChange={setShowIp} id="show-ip-addresses" />
+                    </label>
+                </div>
+                <CardDescription>{t.settings.sessionsDesc}</CardDescription>
+            </CardHeader>
+            <CardContent className="relative grid min-h-24 gap-form-elements">
+                {loggedInSessions.map((session) => {
+                    const sessionProvider_Icon = authProvidersList.find(
+                        (provider) => provider.name.toLowerCase() === session.providerName,
+                    )?.icon;
 
-					return (
-						<div
-							key={session.id}
-							className="flex w-full flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded bg-background px-4 py-3"
-						>
-							<div className="flex grow flex-col gap-2.5 sm:gap-1">
-								<div className="flex flex-wrap items-center justify-start gap-x-2 font-medium">
-									<span>{session.browser}</span>
-									<DotSeparator />
-									<span>{session.os}</span>
-									<DotSeparator />
-									<div className="flex items-center justify-center gap-2">
-										{showIp ? (
-											<span>{session.ip}</span>
-										) : (
-											<span className="text-foreground-extra-muted" title={session.ip || ""}>
-												[{t.settings.ipHidden}]
-											</span>
-										)}
-										<CopyBtn text={session.ip || ""} />
-									</div>
-								</div>
+                    return (
+                        <div
+                            key={session.id}
+                            className="flex w-full flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded bg-background px-4 py-3"
+                        >
+                            <div className="flex grow flex-col gap-2.5 sm:gap-1">
+                                <div className="flex flex-wrap items-center justify-start gap-x-2 font-medium">
+                                    <span>{session.browser}</span>
+                                    <DotSeparator />
+                                    <span>{session.os}</span>
+                                    <DotSeparator />
+                                    <div className="flex items-center justify-center gap-2">
+                                        {showIp ? (
+                                            <span>{session.ip}</span>
+                                        ) : (
+                                            <span className="text-foreground-extra-muted" title={session.ip || ""}>
+                                                [{t.settings.ipHidden}]
+                                            </span>
+                                        )}
+                                        <CopyBtn text={session.ip || ""} />
+                                    </div>
+                                </div>
 
-								<div className="flex w-full flex-wrap items-center justify-start gap-x-2 text-foreground-muted">
-									{session.city || session.country ? (
-										<>
-											<span>
-												{session.city || ""}
-												{session.city && session.country && " - "}
-												{session.country || ""}
-											</span>
-											<DotSeparator />
-										</>
-									) : null}
+                                <div className="flex w-full flex-wrap items-center justify-start gap-x-2 text-foreground-muted">
+                                    {session.city || session.country ? (
+                                        <>
+                                            <span>
+                                                {session.city || ""}
+                                                {session.city && session.country && " - "}
+                                                {session.country || ""}
+                                            </span>
+                                            <DotSeparator />
+                                        </>
+                                    ) : null}
 
-									<Tooltip>
-										<TooltipTrigger className="cursor-text">
-											<span>{t.settings.lastAccessed(TimePassedSince({ date: session.dateLastActive }))}</span>
-										</TooltipTrigger>
-										<TooltipContent>
-											<FormattedDate date={session.dateLastActive} />
-										</TooltipContent>
-									</Tooltip>
+                                    <Tooltip>
+                                        <TooltipTrigger className="cursor-text">
+                                            <span>
+                                                {t.settings.lastAccessed(
+                                                    TimePassedSince({ date: session.dateLastActive }),
+                                                )}
+                                            </span>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <FormattedDate date={session.dateLastActive} />
+                                        </TooltipContent>
+                                    </Tooltip>
 
-									<DotSeparator />
+                                    <DotSeparator />
 
-									<Tooltip>
-										<TooltipTrigger className="cursor-text">
-											<span>{t.settings.created(TimePassedSince({ date: session.dateCreated }))}</span>
-										</TooltipTrigger>
-										<TooltipContent>
-											<FormattedDate date={session.dateCreated} />
-										</TooltipContent>
-									</Tooltip>
-								</div>
+                                    <Tooltip>
+                                        <TooltipTrigger className="cursor-text">
+                                            <span>
+                                                {t.settings.created(TimePassedSince({ date: session.dateCreated }))}
+                                            </span>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <FormattedDate date={session.dateCreated} />
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </div>
 
-								<div className="mt-1 flex items-center justify-start">
-									<Tooltip>
-										<TooltipTrigger className="flex cursor-default items-center justify-start gap-2 text-foreground-muted">
-											{sessionProvider_Icon ? (
-												<i className="flex h-btn-icon-lg w-btn-icon-lg items-center justify-center">
-													{sessionProvider_Icon}
-												</i>
-											) : (
-												<KeyRoundIcon aria-hidden className="h-4 w-4" />
-											)}
-											<span className="capitalize">{session?.providerName}</span>
-										</TooltipTrigger>
-										<TooltipContent>{t.settings.sessionCreatedUsing(Capitalize(session?.providerName))}</TooltipContent>
-									</Tooltip>
-								</div>
-							</div>
-							<div>
-								{session.id === currSession?.sessionId ? (
-									<span className="text-foreground-muted italic">{t.settings.currSession}</span>
-								) : (
-									<Button
-										variant="secondary"
-										disabled={isLoading.value}
-										onClick={() => {
-											revokeSession(session.id);
-										}}
-									>
-										{isLoading.value && isLoading.sessionId === session.id ? (
-											<LoadingSpinner size="xs" />
-										) : (
-											<XIcon aria-hidden className="h-btn-icon w-btn-icon" />
-										)}
-										{t.settings.revokeSession}
-									</Button>
-								)}
-							</div>
-						</div>
-					);
-				})}
-			</CardContent>
-		</Card>
-	);
+                                <div className="mt-1 flex items-center justify-start">
+                                    <Tooltip>
+                                        <TooltipTrigger className="flex cursor-default items-center justify-start gap-2 text-foreground-muted">
+                                            {sessionProvider_Icon ? (
+                                                <i className="flex h-btn-icon-lg w-btn-icon-lg items-center justify-center">
+                                                    {sessionProvider_Icon}
+                                                </i>
+                                            ) : (
+                                                <KeyRoundIcon aria-hidden className="h-4 w-4" />
+                                            )}
+                                            <span className="capitalize">{session?.providerName}</span>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            {t.settings.sessionCreatedUsing(Capitalize(session?.providerName))}
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </div>
+                            </div>
+                            <div>
+                                {session.id === currSession?.sessionId ? (
+                                    <span className="text-foreground-muted italic">{t.settings.currSession}</span>
+                                ) : (
+                                    <Button
+                                        variant="secondary"
+                                        disabled={isLoading.value}
+                                        onClick={() => {
+                                            revokeSession(session.id);
+                                        }}
+                                    >
+                                        {isLoading.value && isLoading.sessionId === session.id ? (
+                                            <LoadingSpinner size="xs" />
+                                        ) : (
+                                            <XIcon aria-hidden className="h-btn-icon w-btn-icon" />
+                                        )}
+                                        {t.settings.revokeSession}
+                                    </Button>
+                                )}
+                            </div>
+                        </div>
+                    );
+                })}
+            </CardContent>
+        </Card>
+    );
 }

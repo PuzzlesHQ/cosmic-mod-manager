@@ -1,7 +1,7 @@
 import {
-	CHANGE_ACCOUNT_PASSWORD_EMAIL_VALIDITY_ms,
-	CONFIRM_NEW_PASSWORD_EMAIL_VALIDITY_ms,
-	DELETE_USER_ACCOUNT_EMAIL_VALIDITY_ms,
+    CHANGE_ACCOUNT_PASSWORD_EMAIL_VALIDITY_ms,
+    CONFIRM_NEW_PASSWORD_EMAIL_VALIDITY_ms,
+    DELETE_USER_ACCOUNT_EMAIL_VALIDITY_ms,
 } from "@app/utils/constants";
 import { getConfirmActionTypeFromStringName } from "@app/utils/convertors";
 import type { emailFormSchema, passwordFormSchema, setNewPasswordFormSchema } from "@app/utils/schemas/settings";
@@ -20,297 +20,300 @@ import { HTTP_STATUS, invalidRequestResponseData } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 
 const confirmationEmailValidityDict = {
-	[ConfirmationType.CONFIRM_NEW_PASSWORD]: CONFIRM_NEW_PASSWORD_EMAIL_VALIDITY_ms,
-	[ConfirmationType.CHANGE_ACCOUNT_PASSWORD]: CHANGE_ACCOUNT_PASSWORD_EMAIL_VALIDITY_ms,
-	[ConfirmationType.DELETE_USER_ACCOUNT]: DELETE_USER_ACCOUNT_EMAIL_VALIDITY_ms,
+    [ConfirmationType.CONFIRM_NEW_PASSWORD]: CONFIRM_NEW_PASSWORD_EMAIL_VALIDITY_ms,
+    [ConfirmationType.CHANGE_ACCOUNT_PASSWORD]: CHANGE_ACCOUNT_PASSWORD_EMAIL_VALIDITY_ms,
+    [ConfirmationType.DELETE_USER_ACCOUNT]: DELETE_USER_ACCOUNT_EMAIL_VALIDITY_ms,
 };
 
 export async function addNewPassword_ConfirmationEmail(
-	userSession: UserSessionData,
-	formData: z.infer<typeof setNewPasswordFormSchema>,
+    userSession: UserSessionData,
+    formData: z.infer<typeof setNewPasswordFormSchema>,
 ) {
-	if (formData.newPassword !== formData.confirmNewPassword)
-		return { data: { success: false, message: "Passwords do not match" }, status: HTTP_STATUS.BAD_REQUEST };
+    if (formData.newPassword !== formData.confirmNewPassword)
+        return { data: { success: false, message: "Passwords do not match" }, status: HTTP_STATUS.BAD_REQUEST };
 
-	if (userSession.password) return invalidRequestResponseData();
+    if (userSession.password) return invalidRequestResponseData();
 
-	const hashedPassword = await hashPassword(formData.newPassword);
-	const token = generateRandomToken();
-	const tokenHash = hashString(token);
+    const hashedPassword = await hashPassword(formData.newPassword);
+    const token = generateRandomToken();
+    const tokenHash = hashString(token);
 
-	await prisma.userConfirmation.create({
-		data: {
-			id: generateDbId(),
-			userId: userSession.id,
-			confirmationType: ConfirmationType.CONFIRM_NEW_PASSWORD,
-			accessCode: tokenHash,
-			contextData: hashedPassword,
-		},
-	});
+    await prisma.userConfirmation.create({
+        data: {
+            id: generateDbId(),
+            userId: userSession.id,
+            confirmationType: ConfirmationType.CONFIRM_NEW_PASSWORD,
+            accessCode: tokenHash,
+            contextData: hashedPassword,
+        },
+    });
 
-	sendConfirmNewPasswordEmail({
-		fullName: userSession.name || userSession.userName,
-		code: token,
-		receiverEmail: userSession.email,
-	});
+    sendConfirmNewPasswordEmail({
+        fullName: userSession.name || userSession.userName,
+        code: token,
+        receiverEmail: userSession.email,
+    });
 
-	return {
-		data: { message: "You should receive a confirmation email shortly.", success: true },
-		status: HTTP_STATUS.OK,
-	};
+    return {
+        data: { message: "You should receive a confirmation email shortly.", success: true },
+        status: HTTP_STATUS.OK,
+    };
 }
 
 export async function getConfirmActionTypeFromCode(token: string) {
-	const tokenHash = hashString(token);
-	const confirmationEmail = await prisma.userConfirmation.findUnique({
-		where: {
-			accessCode: tokenHash,
-		},
-	});
+    const tokenHash = hashString(token);
+    const confirmationEmail = await prisma.userConfirmation.findUnique({
+        where: {
+            accessCode: tokenHash,
+        },
+    });
 
-	const actionType = getConfirmActionTypeFromStringName(confirmationEmail?.confirmationType || "");
-	if (!confirmationEmail || !actionType) return invalidRequestResponseData("Invalid or expired code");
+    const actionType = getConfirmActionTypeFromStringName(confirmationEmail?.confirmationType || "");
+    if (!confirmationEmail || !actionType) return invalidRequestResponseData("Invalid or expired code");
 
-	if (!isExpired(confirmationEmail.dateCreated, confirmationEmailValidityDict[actionType]))
-		return invalidRequestResponseData("Invalid or expired code");
+    if (!isExpired(confirmationEmail.dateCreated, confirmationEmailValidityDict[actionType]))
+        return invalidRequestResponseData("Invalid or expired code");
 
-	return { data: { actionType: actionType, success: true }, status: HTTP_STATUS.OK };
+    return { data: { actionType: actionType, success: true }, status: HTTP_STATUS.OK };
 }
 
 export async function deleteConfirmationActionCode(token: string) {
-	const tokenHash = hashString(token);
-	const confirmationEmail = await prisma.userConfirmation.findUnique({
-		where: { accessCode: tokenHash },
-	});
+    const tokenHash = hashString(token);
+    const confirmationEmail = await prisma.userConfirmation.findUnique({
+        where: { accessCode: tokenHash },
+    });
 
-	if (!confirmationEmail?.id) return invalidRequestResponseData("Invalid or expired code");
+    if (!confirmationEmail?.id) return invalidRequestResponseData("Invalid or expired code");
 
-	await prisma.userConfirmation.deleteMany({
-		where: {
-			userId: confirmationEmail.userId,
-			confirmationType: confirmationEmail.confirmationType,
-		},
-	});
+    await prisma.userConfirmation.deleteMany({
+        where: {
+            userId: confirmationEmail.userId,
+            confirmationType: confirmationEmail.confirmationType,
+        },
+    });
 
-	return { data: { success: true, message: "Cancelled successfully" }, status: HTTP_STATUS.OK };
+    return { data: { success: true, message: "Cancelled successfully" }, status: HTTP_STATUS.OK };
 }
 
 export async function confirmAddingNewPassword(code: string) {
-	const tokenHash = hashString(code);
+    const tokenHash = hashString(code);
 
-	const confirmationEmail = await prisma.userConfirmation.findUnique({
-		where: { accessCode: tokenHash, confirmationType: ConfirmationType.CONFIRM_NEW_PASSWORD },
-		select: {
-			id: true,
-			userId: true,
-			dateCreated: true,
-			contextData: true,
-			user: {
-				select: {
-					password: true,
-				},
-			},
-		},
-	});
-	if (!confirmationEmail) return invalidRequestResponseData("Invalid or expired code");
+    const confirmationEmail = await prisma.userConfirmation.findUnique({
+        where: { accessCode: tokenHash, confirmationType: ConfirmationType.CONFIRM_NEW_PASSWORD },
+        select: {
+            id: true,
+            userId: true,
+            dateCreated: true,
+            contextData: true,
+            user: {
+                select: {
+                    password: true,
+                },
+            },
+        },
+    });
+    if (!confirmationEmail) return invalidRequestResponseData("Invalid or expired code");
 
-	if (!isExpired(confirmationEmail.dateCreated, CONFIRM_NEW_PASSWORD_EMAIL_VALIDITY_ms))
-		return invalidRequestResponseData("Invalid or expired code");
-	if (confirmationEmail.user.password) return invalidRequestResponseData("A password already exists for your account");
+    if (!isExpired(confirmationEmail.dateCreated, CONFIRM_NEW_PASSWORD_EMAIL_VALIDITY_ms))
+        return invalidRequestResponseData("Invalid or expired code");
+    if (confirmationEmail.user.password)
+        return invalidRequestResponseData("A password already exists for your account");
 
-	await UpdateUser({
-		where: {
-			id: confirmationEmail.userId,
-		},
-		data: {
-			password: confirmationEmail.contextData,
-		},
-	});
+    await UpdateUser({
+        where: {
+            id: confirmationEmail.userId,
+        },
+        data: {
+            password: confirmationEmail.contextData,
+        },
+    });
 
-	await prisma.userConfirmation.deleteMany({
-		where: {
-			userId: confirmationEmail.userId,
-			confirmationType: {
-				in: [ConfirmationType.CONFIRM_NEW_PASSWORD, ConfirmationType.CHANGE_ACCOUNT_PASSWORD],
-			},
-		},
-	});
+    await prisma.userConfirmation.deleteMany({
+        where: {
+            userId: confirmationEmail.userId,
+            confirmationType: {
+                in: [ConfirmationType.CONFIRM_NEW_PASSWORD, ConfirmationType.CHANGE_ACCOUNT_PASSWORD],
+            },
+        },
+    });
 
-	return { data: { success: true, message: "Successfully added the new password" }, status: HTTP_STATUS.OK };
+    return { data: { success: true, message: "Successfully added the new password" }, status: HTTP_STATUS.OK };
 }
 
 export async function removeAccountPassword(
-	ctx: Context,
-	userSession: UserSessionData,
-	formData: z.infer<typeof passwordFormSchema>,
+    ctx: Context,
+    userSession: UserSessionData,
+    formData: z.infer<typeof passwordFormSchema>,
 ) {
-	if (!userSession.password) {
-		await addInvalidAuthAttempt(ctx);
-		return invalidRequestResponseData();
-	}
+    if (!userSession.password) {
+        await addInvalidAuthAttempt(ctx);
+        return invalidRequestResponseData();
+    }
 
-	const userAuthProviders = await prisma.authAccount.findMany({
-		where: {
-			userId: userSession.id,
-		},
-	});
+    const userAuthProviders = await prisma.authAccount.findMany({
+        where: {
+            userId: userSession.id,
+        },
+    });
 
-	if (!userAuthProviders || userAuthProviders.length < 1) {
-		return invalidRequestResponseData(
-			"You don't have any linked auth providers. Please link at least one auth provider before removing your password",
-		);
-	}
+    if (!userAuthProviders || userAuthProviders.length < 1) {
+        return invalidRequestResponseData(
+            "You don't have any linked auth providers. Please link at least one auth provider before removing your password",
+        );
+    }
 
-	const isCorrectPassword = await matchPassword(formData.password, userSession.password);
-	if (!isCorrectPassword) {
-		await addInvalidAuthAttempt(ctx);
-		return invalidRequestResponseData("Incorrect password");
-	}
+    const isCorrectPassword = await matchPassword(formData.password, userSession.password);
+    if (!isCorrectPassword) {
+        await addInvalidAuthAttempt(ctx);
+        return invalidRequestResponseData("Incorrect password");
+    }
 
-	await UpdateUser({
-		where: {
-			id: userSession.id,
-		},
-		data: {
-			password: null,
-		},
-	});
+    await UpdateUser({
+        where: {
+            id: userSession.id,
+        },
+        data: {
+            password: null,
+        },
+    });
 
-	return {
-		data: {
-			success: true,
-			message: "Account password removed successfully",
-		},
-		status: HTTP_STATUS.OK,
-	};
+    return {
+        data: {
+            success: true,
+            message: "Account password removed successfully",
+        },
+        status: HTTP_STATUS.OK,
+    };
 }
 
 export async function sendAccountPasswordChangeLink(ctx: Context, formData: z.infer<typeof emailFormSchema>) {
-	const targetUser = await GetUser_Unique({
-		where: {
-			email: formData.email,
-		},
-	});
+    const targetUser = await GetUser_Unique({
+        where: {
+            email: formData.email,
+        },
+    });
 
-	if (!targetUser?.id) {
-		await addInvalidAuthAttempt(ctx);
-		return {
-			data: {
-				success: true,
-				message:
-					"You should receive an email with a link to change your password if you entered correct email address.",
-			},
-			status: HTTP_STATUS.OK,
-		};
-	}
+    if (!targetUser?.id) {
+        await addInvalidAuthAttempt(ctx);
+        return {
+            data: {
+                success: true,
+                message:
+                    "You should receive an email with a link to change your password if you entered correct email address.",
+            },
+            status: HTTP_STATUS.OK,
+        };
+    }
 
-	const token = generateRandomToken();
-	const tokenHash = hashString(token);
+    const token = generateRandomToken();
+    const tokenHash = hashString(token);
 
-	await prisma.userConfirmation.create({
-		data: {
-			id: generateDbId(),
-			userId: targetUser.id,
-			confirmationType: ConfirmationType.CHANGE_ACCOUNT_PASSWORD,
-			accessCode: tokenHash,
-		},
-	});
+    await prisma.userConfirmation.create({
+        data: {
+            id: generateDbId(),
+            userId: targetUser.id,
+            confirmationType: ConfirmationType.CHANGE_ACCOUNT_PASSWORD,
+            accessCode: tokenHash,
+        },
+    });
 
-	sendChangePasswordEmail({
-		name: targetUser.name || targetUser.userName,
-		code: token,
-		receiverEmail: targetUser.email,
-	});
+    sendChangePasswordEmail({
+        name: targetUser.name || targetUser.userName,
+        code: token,
+        receiverEmail: targetUser.email,
+    });
 
-	return {
-		data: {
-			success: true,
-			message: "You should receive an email with a link to change your password if you entered correct email address.",
-		},
-		status: HTTP_STATUS.OK,
-	};
+    return {
+        data: {
+            success: true,
+            message:
+                "You should receive an email with a link to change your password if you entered correct email address.",
+        },
+        status: HTTP_STATUS.OK,
+    };
 }
 
 export async function changeUserPassword(
-	ctx: Context,
-	token: string,
-	formData: z.infer<typeof setNewPasswordFormSchema>,
-	userSession: UserSessionData | null,
+    ctx: Context,
+    token: string,
+    formData: z.infer<typeof setNewPasswordFormSchema>,
+    userSession: UserSessionData | null,
 ) {
-	if (formData.newPassword !== formData.confirmNewPassword) return invalidRequestResponseData("Passwords do not match");
+    if (formData.newPassword !== formData.confirmNewPassword)
+        return invalidRequestResponseData("Passwords do not match");
 
-	const tokenHash = hashString(token);
-	const confirmationEmail = await prisma.userConfirmation.findUnique({
-		where: {
-			accessCode: tokenHash,
-			confirmationType: ConfirmationType.CHANGE_ACCOUNT_PASSWORD,
-		},
-	});
+    const tokenHash = hashString(token);
+    const confirmationEmail = await prisma.userConfirmation.findUnique({
+        where: {
+            accessCode: tokenHash,
+            confirmationType: ConfirmationType.CHANGE_ACCOUNT_PASSWORD,
+        },
+    });
 
-	if (!confirmationEmail?.id) {
-		await addInvalidAuthAttempt(ctx);
-		return invalidRequestResponseData();
-	}
+    if (!confirmationEmail?.id) {
+        await addInvalidAuthAttempt(ctx);
+        return invalidRequestResponseData();
+    }
 
-	if (
-		!confirmationEmail?.userId ||
-		!isExpired(confirmationEmail.dateCreated, CHANGE_ACCOUNT_PASSWORD_EMAIL_VALIDITY_ms)
-	) {
-		return invalidRequestResponseData();
-	}
-	const hashedPassword = await hashPassword(formData.newPassword);
+    if (
+        !confirmationEmail?.userId ||
+        !isExpired(confirmationEmail.dateCreated, CHANGE_ACCOUNT_PASSWORD_EMAIL_VALIDITY_ms)
+    ) {
+        return invalidRequestResponseData();
+    }
+    const hashedPassword = await hashPassword(formData.newPassword);
 
-	await UpdateUser({
-		where: {
-			id: confirmationEmail.userId,
-		},
-		data: {
-			password: hashedPassword,
-		},
-	});
+    await UpdateUser({
+        where: {
+            id: confirmationEmail.userId,
+        },
+        data: {
+            password: hashedPassword,
+        },
+    });
 
-	// Delete all confirmation emails for the user
-	await prisma.userConfirmation.deleteMany({
-		where: {
-			userId: confirmationEmail.userId,
-			confirmationType: {
-				in: [ConfirmationType.CHANGE_ACCOUNT_PASSWORD, ConfirmationType.CONFIRM_NEW_PASSWORD],
-			},
-		},
-	});
+    // Delete all confirmation emails for the user
+    await prisma.userConfirmation.deleteMany({
+        where: {
+            userId: confirmationEmail.userId,
+            confirmationType: {
+                in: [ConfirmationType.CHANGE_ACCOUNT_PASSWORD, ConfirmationType.CONFIRM_NEW_PASSWORD],
+            },
+        },
+    });
 
-	// Logout all other sessions
-	await invalidateAllOtherUserSessions(confirmationEmail.userId, userSession?.sessionId || "");
+    // Logout all other sessions
+    await invalidateAllOtherUserSessions(confirmationEmail.userId, userSession?.sessionId || "");
 
-	return {
-		data: {
-			success: true,
-			message: "Successfully changed account password",
-		},
-		status: HTTP_STATUS.OK,
-	};
+    return {
+        data: {
+            success: true,
+            message: "Successfully changed account password",
+        },
+        status: HTTP_STATUS.OK,
+    };
 }
 
 export async function deleteUserAccountConfirmationEmail(userSession: UserSessionData) {
-	const token = generateRandomToken();
-	const tokenHash = hashString(token);
+    const token = generateRandomToken();
+    const tokenHash = hashString(token);
 
-	await prisma.userConfirmation.create({
-		data: {
-			id: generateDbId(),
-			userId: userSession.id,
-			confirmationType: ConfirmationType.DELETE_USER_ACCOUNT,
-			accessCode: tokenHash,
-		},
-	});
+    await prisma.userConfirmation.create({
+        data: {
+            id: generateDbId(),
+            userId: userSession.id,
+            confirmationType: ConfirmationType.DELETE_USER_ACCOUNT,
+            accessCode: tokenHash,
+        },
+    });
 
-	sendDeleteUserAccountEmail({
-		fullName: userSession.name || userSession.userName,
-		code: token,
-		receiverEmail: userSession.email,
-	});
-	return {
-		data: { success: true, message: "You should receive a confirmation email shortly" },
-		status: HTTP_STATUS.OK,
-	};
+    sendDeleteUserAccountEmail({
+        fullName: userSession.name || userSession.userName,
+        code: token,
+        receiverEmail: userSession.email,
+    });
+    return {
+        data: { success: true, message: "You should receive a confirmation email shortly" },
+        status: HTTP_STATUS.OK,
+    };
 }

@@ -15,56 +15,56 @@ import {
 } from "./controller";
 
 const patRouter = new Hono()
-	.use(AuthenticationMiddleware, invalidAuthAttemptLimiter)
-	.get("/", pat_get)
-	.post("/", pat_post)
-	.patch("/:patId", pat_patch)
-	.delete("/:patId", pat_delete);
+    .use(AuthenticationMiddleware, invalidAuthAttemptLimiter)
+    .get("/", pat_get)
+    .post("/", pat_post)
+    .patch("/:patId", pat_patch)
+    .delete("/:patId", pat_delete);
 
 async function pat_get(ctx: Context) {
-	const sessionUser = getSessionUser(ctx, API_SCOPE.PAT_READ);
-	if (!sessionUser) return invalidRequestResponse(ctx);
+    const sessionUser = getSessionUser(ctx, API_SCOPE.PAT_READ);
+    if (!sessionUser) return invalidRequestResponse(ctx);
 
-	const res = await getAllUserPATs(sessionUser);
-	return ctx.json(res.data, res.status);
+    const res = await getAllUserPATs(sessionUser);
+    return ctx.json(res.data, res.status);
 }
 
 async function pat_post(ctx: Context) {
-	const sessionUser = getSessionUser(ctx, API_SCOPE.PAT_CREATE);
-	if (!sessionUser) return invalidRequestResponse(ctx);
+    const sessionUser = getSessionUser(ctx, API_SCOPE.PAT_CREATE);
+    if (!sessionUser) return invalidRequestResponse(ctx);
 
-	const body = ctx.get(REQ_BODY_NAMESPACE);
-	const { data, error } = await zodParse(createPAT_FormSchema, body);
-	if (error || !data) return invalidRequestResponse(ctx, error);
+    const body = ctx.get(REQ_BODY_NAMESPACE);
+    const { data, error } = await zodParse(createPAT_FormSchema, body);
+    if (error || !data) return invalidRequestResponse(ctx, error);
 
-	const res = await createPersonalAccessToken(sessionUser, data);
-	return ctx.json(res.data, res.status);
+    const res = await createPersonalAccessToken(sessionUser, data);
+    return ctx.json(res.data, res.status);
 }
 
 async function pat_patch(ctx: Context) {
-	const sessionUser = getSessionUser(ctx, API_SCOPE.PAT_WRITE);
-	if (!sessionUser) return invalidRequestResponse(ctx);
+    const sessionUser = getSessionUser(ctx, API_SCOPE.PAT_WRITE);
+    if (!sessionUser) return invalidRequestResponse(ctx);
 
-	const patId = ctx.req.param("patId");
-	if (!patId) return invalidRequestResponse(ctx, "PAT ID is required");
+    const patId = ctx.req.param("patId");
+    if (!patId) return invalidRequestResponse(ctx, "PAT ID is required");
 
-	const body = ctx.get(REQ_BODY_NAMESPACE);
-	const { data, error } = await zodParse(createPAT_FormSchema, body);
-	if (error || !data) return invalidRequestResponse(ctx, error);
+    const body = ctx.get(REQ_BODY_NAMESPACE);
+    const { data, error } = await zodParse(createPAT_FormSchema, body);
+    if (error || !data) return invalidRequestResponse(ctx, error);
 
-	const res = await editPersonalAccessToken(sessionUser, patId, data);
-	return ctx.json(res.data, res.status);
+    const res = await editPersonalAccessToken(sessionUser, patId, data);
+    return ctx.json(res.data, res.status);
 }
 
 async function pat_delete(ctx: Context) {
-	const sessionUser = getSessionUser(ctx, API_SCOPE.PAT_DELETE);
-	if (!sessionUser) return invalidRequestResponse(ctx);
+    const sessionUser = getSessionUser(ctx, API_SCOPE.PAT_DELETE);
+    if (!sessionUser) return invalidRequestResponse(ctx);
 
-	const patId = ctx.req.param("patId");
-	if (!patId) return invalidRequestResponse(ctx, "PAT ID is required");
+    const patId = ctx.req.param("patId");
+    if (!patId) return invalidRequestResponse(ctx, "PAT ID is required");
 
-	const res = await deletePersonalAccessToken(sessionUser, patId);
-	return ctx.json(res.data, res.status);
+    const res = await deletePersonalAccessToken(sessionUser, patId);
+    return ctx.json(res.data, res.status);
 }
 
 export default patRouter;

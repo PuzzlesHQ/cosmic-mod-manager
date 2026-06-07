@@ -10,39 +10,39 @@ import { getSessionUser } from "~/utils/router";
 import { generateRandomId } from "~/utils/str";
 
 export async function AuthenticationMiddleware(ctx: Context, next: Next) {
-	const user = await validateContextSession(ctx);
-	const ipAddr = getUserIpAddress(ctx);
-	const isCdnReq = IsCdnRequest(ctx);
+    const user = await validateContextSession(ctx);
+    const ipAddr = getUserIpAddress(ctx);
+    const isCdnReq = IsCdnRequest(ctx);
 
-	// do not set cookie for CDN requests
-	if (!user && !isCdnReq) {
-		// Set a guest session cookie
-		if (!getCookie(ctx, "guest-session")) {
-			const randomId = generateRandomId(32);
-			setCookie(ctx, "guest-session", randomId, { maxAge: GUEST_SESSION_ID_VALIDITY_s });
-			ctx.set("guest-session", randomId);
-		} else {
-			ctx.set("guest-session", getCookie(ctx, "guest-session"));
-		}
-	} else if (!isCdnReq && getCookie(ctx, "guest-session")) {
-		deleteCookie(ctx, "guest-session");
-	}
+    // do not set cookie for CDN requests
+    if (!user && !isCdnReq) {
+        // Set a guest session cookie
+        if (!getCookie(ctx, "guest-session")) {
+            const randomId = generateRandomId(32);
+            setCookie(ctx, "guest-session", randomId, { maxAge: GUEST_SESSION_ID_VALIDITY_s });
+            ctx.set("guest-session", randomId);
+        } else {
+            ctx.set("guest-session", getCookie(ctx, "guest-session"));
+        }
+    } else if (!isCdnReq && getCookie(ctx, "guest-session")) {
+        deleteCookie(ctx, "guest-session");
+    }
 
-	ctx.set(CTX_USER_NAMESPACE, user);
-	ctx.set("ip", ipAddr);
-	await next();
+    ctx.set(CTX_USER_NAMESPACE, user);
+    ctx.set("ip", ipAddr);
+    await next();
 }
 
 export async function LoginProtectedRoute(ctx: Context, next: Next) {
-	const sessionUser = getSessionUser(ctx);
-	if (!sessionUser?.id) {
-		return unauthenticatedReqResponse(ctx, "You're not logged in");
-	}
+    const sessionUser = getSessionUser(ctx);
+    if (!sessionUser?.id) {
+        return unauthenticatedReqResponse(ctx, "You're not logged in");
+    }
 
-	await next();
+    await next();
 }
 
 function IsCdnRequest(ctx: Context) {
-	if (env.NODE_ENV === "development") return false;
-	return ctx.req.header("CDN-Secret") === env.CDN_SECRET;
+    if (env.NODE_ENV === "development") return false;
+    return ctx.req.header("CDN-Secret") === env.CDN_SECRET;
 }

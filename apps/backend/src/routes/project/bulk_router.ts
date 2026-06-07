@@ -8,39 +8,39 @@ import { getSessionUser } from "~/utils/router";
 import { getHomePageCarouselProjects, getManyProjects, getRandomProjects } from "./controllers";
 
 const bulkProjectsRouter = new Hono()
-	.use(invalidAuthAttemptLimiter)
-	.use(AuthenticationMiddleware)
+    .use(invalidAuthAttemptLimiter)
+    .use(AuthenticationMiddleware)
 
-	.get("/", strictGetReqRateLimiter, projects_get)
-	.get("/random", strictGetReqRateLimiter, projectsRandom_get)
-	.get("/home-page-carousel", getReqRateLimiter, homePageCarousel_get);
+    .get("/", strictGetReqRateLimiter, projects_get)
+    .get("/random", strictGetReqRateLimiter, projectsRandom_get)
+    .get("/home-page-carousel", getReqRateLimiter, homePageCarousel_get);
 
 async function projects_get(ctx: Context) {
-	const projectIds = ctx.req.query("ids");
-	const userSession = getSessionUser(ctx, API_SCOPE.PROJECT_READ);
-	if (!projectIds) return invalidRequestResponse(ctx);
+    const projectIds = ctx.req.query("ids");
+    const userSession = getSessionUser(ctx, API_SCOPE.PROJECT_READ);
+    if (!projectIds) return invalidRequestResponse(ctx);
 
-	const idsArray = decodeStringArray(projectIds);
-	if (idsArray.length > 100) {
-		return invalidRequestResponse(ctx, "Maximum of 100 projects can be fetched at once");
-	}
+    const idsArray = decodeStringArray(projectIds);
+    if (idsArray.length > 100) {
+        return invalidRequestResponse(ctx, "Maximum of 100 projects can be fetched at once");
+    }
 
-	const res = await getManyProjects(userSession, idsArray);
-	return ctx.json(res.data, res.status);
+    const res = await getManyProjects(userSession, idsArray);
+    return ctx.json(res.data, res.status);
 }
 
 async function projectsRandom_get(ctx: Context) {
-	const userSession = getSessionUser(ctx, API_SCOPE.PROJECT_READ);
-	const count = Number.parseInt(ctx.req.query("count") || "", 10);
+    const userSession = getSessionUser(ctx, API_SCOPE.PROJECT_READ);
+    const count = Number.parseInt(ctx.req.query("count") || "", 10);
 
-	const res = await getRandomProjects(userSession, count);
-	return ctx.json(res.data, res.status);
+    const res = await getRandomProjects(userSession, count);
+    return ctx.json(res.data, res.status);
 }
 
 async function homePageCarousel_get(ctx: Context) {
-	const userSession = getSessionUser(ctx, API_SCOPE.PROJECT_READ);
-	const res = await getHomePageCarouselProjects(userSession);
-	return ctx.json(res.data, res.status);
+    const userSession = getSessionUser(ctx, API_SCOPE.PROJECT_READ);
+    const res = await getHomePageCarouselProjects(userSession);
+    return ctx.json(res.data, res.status);
 }
 
 export default bulkProjectsRouter;

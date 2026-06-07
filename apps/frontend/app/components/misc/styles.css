@@ -1,156 +1,156 @@
 /* ? Search List Item List View*/
 .search-list-item.list {
-	display: grid;
-	grid-template-columns: max-content 1fr;
-	grid-template-rows: min-content 1fr min-content min-content;
-	grid-template-areas:
-		"icon title"
-		"icon summary"
-		"tags tags"
-		"stats stats";
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-rows: min-content 1fr min-content min-content;
+    grid-template-areas:
+        "icon title"
+        "icon summary"
+        "tags tags"
+        "stats stats";
 }
 
 .search-list-item.gallery {
-	display: grid;
-	grid-template-columns: max-content 1fr;
-	grid-template-rows: min-content min-content 1fr min-content min-content;
-	grid-template-areas:
-		"gallery gallery"
-		"icon title"
-		"summary summary"
-		"tags tags"
-		"stats stats";
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-rows: min-content min-content 1fr min-content min-content;
+    grid-template-areas:
+        "gallery gallery"
+        "icon title"
+        "summary summary"
+        "tags tags"
+        "stats stats";
 }
 
 /* MD+ */
 @media screen and (min-width: 48rem) {
-	.search-list-item.list {
-		grid-template-areas:
-			"icon title"
-			"icon summary"
-			"icon tags"
-			"stats stats";
-	}
+    .search-list-item.list {
+        grid-template-areas:
+            "icon title"
+            "icon summary"
+            "icon tags"
+            "stats stats";
+    }
 
-	.search-list-item.gallery {
-		grid-template-rows: min-content min-content 1fr min-content min-content;
-		grid-template-areas:
-			"gallery gallery"
-			"icon title"
-			"summary summary"
-			"tags tags"
-			"stats stats";
-	}
+    .search-list-item.gallery {
+        grid-template-rows: min-content min-content 1fr min-content min-content;
+        grid-template-areas:
+            "gallery gallery"
+            "icon title"
+            "summary summary"
+            "tags tags"
+            "stats stats";
+    }
 }
 
 /* LG+ */
 @media screen and (min-width: 64rem) {
-	.search-list-item.list {
-		grid-template-columns: max-content 1fr min-content;
-		grid-template-rows: min-content 1fr auto;
-		grid-template-areas:
-			"icon title stats"
-			"icon summary stats"
-			"icon tags stats";
-	}
+    .search-list-item.list {
+        grid-template-columns: max-content 1fr min-content;
+        grid-template-rows: min-content 1fr auto;
+        grid-template-areas:
+            "icon title stats"
+            "icon summary stats"
+            "icon tags stats";
+    }
 
-	.search-list-item.gallery {
-		grid-template-rows: min-content min-content 1fr min-content min-content;
-		grid-template-areas:
-			"gallery gallery"
-			"icon title"
-			"summary summary"
-			"tags tags"
-			"stats stats";
-	}
+    .search-list-item.gallery {
+        grid-template-rows: min-content min-content 1fr min-content min-content;
+        grid-template-areas:
+            "gallery gallery"
+            "icon title"
+            "summary summary"
+            "tags tags"
+            "stats stats";
+    }
 }
 
 .mobile-break-words {
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	word-break: break-all;
-	hyphens: auto;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-all;
+    hyphens: auto;
 }
 
 @media screen and (min-width: 26rem) {
-	.mobile-break-words {
-		word-wrap: break-word;
-		overflow-wrap: break-word;
-		word-break: normal;
-		hyphens: none;
-	}
+    .mobile-break-words {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        word-break: normal;
+        hyphens: none;
+    }
 }
 
 /* Page header */
 .header-content-sidebar-layout {
-	display: grid;
-	grid-template-rows: auto 1fr auto;
-	grid-template-columns: 1fr;
-	grid-template-areas:
-		"header"
-		"content"
-		"sidebar";
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        "header"
+        "content"
+        "sidebar";
 }
 
 .page-header {
-	grid-area: header;
+    grid-area: header;
 }
 
 .page-sidebar {
-	grid-area: sidebar;
+    grid-area: sidebar;
 }
 
 .page-content {
-	grid-area: content;
+    grid-area: content;
 }
 
 @media (min-width: 64rem) {
-	.header-content-sidebar-layout {
-		grid-template-rows: auto auto 1fr;
-		grid-template-columns: max-content 1fr;
-		grid-template-areas:
-			"header header"
-			"sidebar content"
-			"dummy content";
-	}
+    .header-content-sidebar-layout {
+        grid-template-rows: auto auto 1fr;
+        grid-template-columns: max-content 1fr;
+        grid-template-areas:
+            "header header"
+            "sidebar content"
+            "dummy content";
+    }
 }
 
 /* ? Download animation */
 .download-animation {
-	--radius: 10rem;
-	--duration: 0.3s;
+    --radius: 10rem;
+    --duration: 0.3s;
 
-	scale: 1;
-	opacity: 1;
-	transition: all 0.5s ease-out;
+    scale: 1;
+    opacity: 1;
+    transition: all 0.5s ease-out;
 }
 
 .download-animation .circle-1,
 .download-animation .circle-2,
 .download-animation .circle-3 {
-	scale: 1;
-	height: var(--radius);
-	width: var(--radius);
-	transition: all var(--duration) ease-out;
+    scale: 1;
+    height: var(--radius);
+    width: var(--radius);
+    transition: all var(--duration) ease-out;
 }
 
 .download-animation.animation-hidden .circle-1 {
-	scale: 1;
-	--radius: 13rem;
+    scale: 1;
+    --radius: 13rem;
 }
 
 .download-animation.animation-hidden .circle-2 {
-	scale: 1;
-	--radius: 25rem;
+    scale: 1;
+    --radius: 25rem;
 }
 
 .download-animation.animation-hidden .circle-3 {
-	scale: 1;
-	--radius: 50rem;
+    scale: 1;
+    --radius: 50rem;
 }
 
 .download-animation.animation-hidden {
-	--duration: 0.25s;
-	scale: 1.6;
-	opacity: 0;
+    --duration: 0.25s;
+    scale: 1.6;
+    opacity: 0;
 }

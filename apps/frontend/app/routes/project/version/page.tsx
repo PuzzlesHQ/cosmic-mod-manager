@@ -18,89 +18,91 @@ import type { Route } from "./+types/page";
 import { findProjectVersion } from "./find-version";
 
 export default function () {
-	const { t } = useTranslation();
-	const ctx = useProjectData();
-	const { projectSlug, versionSlug } = useParams();
-	const [searchParams] = useSearchParams();
-	const navigate = useNavigate();
-	const versionData = findProjectVersion(ctx.allProjectVersions, versionSlug, searchParams);
+    const { t } = useTranslation();
+    const ctx = useProjectData();
+    const { projectSlug, versionSlug } = useParams();
+    const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
+    const versionData = findProjectVersion(ctx.allProjectVersions, versionSlug, searchParams);
 
-	useEffect(() => {
-		if (versionSlug !== "latest" || !projectSlug || !versionData) return;
-		// If the version slug is "latest", we redirect to the specific version page
-		// This is to ensure that the URL is always specific to a version
-		// and not just "latest", which can be confusing for users.
-		navigate(VersionPagePath(ctx.projectType, projectSlug, versionData.slug));
-	}, [versionSlug]);
+    useEffect(() => {
+        if (versionSlug !== "latest" || !projectSlug || !versionData) return;
+        // If the version slug is "latest", we redirect to the specific version page
+        // This is to ensure that the URL is always specific to a version
+        // and not just "latest", which can be confusing for users.
+        navigate(VersionPagePath(ctx.projectType, projectSlug, versionData.slug));
+    }, [versionSlug]);
 
-	if (!versionData?.id || !projectSlug || !versionSlug) {
-		return (
-			<NotFoundPage
-				className="no_full_page py-16"
-				title={t.error.versionNotFound}
-				description={t.error.versionNotFoundDesc(
-					ctx.projectData.name,
-					t.navbar[getProjectTypeFromName(ctx.projectData.type[0])],
-				)}
-				linkLabel={t.error.gotoVersionsList}
-				linkHref={ProjectPagePath(ctx.projectType, projectSlug || "", "versions")}
-			/>
-		);
-	}
+    if (!versionData?.id || !projectSlug || !versionSlug) {
+        return (
+            <NotFoundPage
+                className="no_full_page py-16"
+                title={t.error.versionNotFound}
+                description={t.error.versionNotFoundDesc(
+                    ctx.projectData.name,
+                    t.navbar[getProjectTypeFromName(ctx.projectData.type[0])],
+                )}
+                linkLabel={t.error.gotoVersionsList}
+                linkHref={ProjectPagePath(ctx.projectType, projectSlug || "", "versions")}
+            />
+        );
+    }
 
-	return <VersionPage ctx={ctx} versionData={versionData} projectSlug={projectSlug} />;
+    return <VersionPage ctx={ctx} versionData={versionData} projectSlug={projectSlug} />;
 }
 
 export function meta(props: Route.MetaArgs) {
-	const { t, formattedLocaleName } = useTranslation();
-	const ctx = getProjectLoaderData(props.matches, props.location.pathname);
-	const project = ctx?.projectData;
-	const versionSlug = props.params?.versionSlug;
+    const { t, formattedLocaleName } = useTranslation();
+    const ctx = getProjectLoaderData(props.matches, props.location.pathname);
+    const project = ctx?.projectData;
+    const versionSlug = props.params?.versionSlug;
 
-	const version = findProjectVersion(ctx.versions, versionSlug, new URLSearchParams(props.location.search));
+    const version = findProjectVersion(ctx.versions, versionSlug, new URLSearchParams(props.location.search));
 
-	if (!project?.id) {
-		return null;
-	}
+    if (!project?.id) {
+        return null;
+    }
 
-	if (!version?.id) {
-		return MetaTags({
-			location: props.location,
-			title: t.meta.addContext(t.error.versionNotFound, project.name),
-			description: t.error.versionNotFoundDesc(project.name, t.navbar[getProjectTypeFromName(project.type[0])]),
-			image: project.icon || Config.SITE_ICON,
-			url: undefined,
-			parentMetaTags: props.matches[1].meta,
-		});
-	}
+    if (!version?.id) {
+        return MetaTags({
+            location: props.location,
+            title: t.meta.addContext(t.error.versionNotFound, project.name),
+            description: t.error.versionNotFoundDesc(project.name, t.navbar[getProjectTypeFromName(project.type[0])]),
+            image: project.icon || Config.SITE_ICON,
+            url: undefined,
+            parentMetaTags: props.matches[1].meta,
+        });
+    }
 
-	const loaders = version.loaders.length ? version.loaders.map((l) => CapitalizeAndFormatString(l)).join(" & ") : null;
-	const publishedAt = FormatDate_ToLocaleString(version.datePublished, {
-		locale: formattedLocaleName,
-		includeTime: false,
-		shortMonthNames: false,
-		utc: true,
-	});
+    const loaders = version.loaders.length
+        ? version.loaders.map((l) => CapitalizeAndFormatString(l)).join(" & ")
+        : null;
+    const publishedAt = FormatDate_ToLocaleString(version.datePublished, {
+        locale: formattedLocaleName,
+        includeTime: false,
+        shortMonthNames: false,
+        utc: true,
+    });
 
-	const titleIncludesProjectName = version.title.toLowerCase().includes(project.name.toLowerCase());
+    const titleIncludesProjectName = version.title.toLowerCase().includes(project.name.toLowerCase());
 
-	const description = t.meta.versionPageDesc({
-		project: project.name,
-		versionNumber: version.versionNumber,
-		siteName_short: Config.SITE_NAME_SHORT,
-		supportedGameVersions: formatVersionsForDisplay(version.gameVersions).join(", "),
-		loaders: loaders,
-		publishedAt: publishedAt,
-		author: version.author.userName,
-		downloads: FormatCount(version.downloads, formattedLocaleName),
-	});
+    const description = t.meta.versionPageDesc({
+        project: project.name,
+        versionNumber: version.versionNumber,
+        siteName_short: Config.SITE_NAME_SHORT,
+        supportedGameVersions: formatVersionsForDisplay(version.gameVersions).join(", "),
+        loaders: loaders,
+        publishedAt: publishedAt,
+        author: version.author.userName,
+        downloads: FormatCount(version.downloads, formattedLocaleName),
+    });
 
-	return MetaTags({
-		location: props.location,
-		title: titleIncludesProjectName ? version.title : t.meta.addContext(version.title, project.name),
-		description: description,
-		image: project.icon || "",
-		url: Config.FRONTEND_URL + ProjectPagePath(project.type?.[0], project.slug, `version/${version.slug}`),
-		parentMetaTags: props.matches[1].meta,
-	});
+    return MetaTags({
+        location: props.location,
+        title: titleIncludesProjectName ? version.title : t.meta.addContext(version.title, project.name),
+        description: description,
+        image: project.icon || "",
+        url: Config.FRONTEND_URL + ProjectPagePath(project.type?.[0], project.slug, `version/${version.slug}`),
+        parentMetaTags: props.matches[1].meta,
+    });
 }

@@ -7,20 +7,20 @@ import { MetaTags } from "~/utils/meta";
 import type { Route } from "./+types/profile";
 
 export default function () {
-	const session = useSession();
+    const session = useSession();
 
-	if (!session?.id) return <Redirect to="/login" />;
-	return <ProfileSettingsPage session={session} />;
+    if (!session?.id) return <Redirect to="/login" />;
+    return <ProfileSettingsPage session={session} />;
 }
 
 export function meta(props: Route.MetaArgs) {
-	const { t } = useTranslation();
+    const { t } = useTranslation();
 
-	return MetaTags({
-		location: props.location,
-		title: t.meta.addContext(t.common.settings, t.settings.publicProfile),
-		description: t.settings.publicProfile,
-		image: Config.SITE_ICON,
-		url: `${Config.FRONTEND_URL}/settings/profile`,
-	});
+    return MetaTags({
+        location: props.location,
+        title: t.meta.addContext(t.common.settings, t.settings.publicProfile),
+        description: t.settings.publicProfile,
+        image: Config.SITE_ICON,
+        url: `${Config.FRONTEND_URL}/settings/profile`,
+    });
 }

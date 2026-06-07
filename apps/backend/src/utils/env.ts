@@ -1,53 +1,53 @@
 const envKeys = [
-	"FRONTEND_URL",
-	"CORS_ALLOWED_URLS",
-	"OAUTH_REDIRECT_URI",
+    "FRONTEND_URL",
+    "CORS_ALLOWED_URLS",
+    "OAUTH_REDIRECT_URI",
 
-	"CDN_SERVER_URL", // the main server that serves files
-	"CACHE_CDN_URL", // fastly cache cdn
+    "CDN_SERVER_URL", // the main server that serves files
+    "CACHE_CDN_URL", // fastly cache cdn
 
-	"COOKIE_DOMAIN",
-	"PG_DATABASE_URL",
-	"HASH_SECRET_KEY",
-	"GITHUB_ID",
-	"GITHUB_SECRET",
-	"DISCORD_ID",
-	"DISCORD_SECRET",
-	"GOOGLE_ID",
-	"GOOGLE_SECRET",
-	"GITLAB_ID",
-	"GITLAB_SECRET",
-	"MEILISEARCH_MASTER_KEY",
-	"NODE_ENV",
-	"CDN_SECRET",
-	"CLOUDFLARE_SECRET",
+    "COOKIE_DOMAIN",
+    "PG_DATABASE_URL",
+    "HASH_SECRET_KEY",
+    "GITHUB_ID",
+    "GITHUB_SECRET",
+    "DISCORD_ID",
+    "DISCORD_SECRET",
+    "GOOGLE_ID",
+    "GOOGLE_SECRET",
+    "GITLAB_ID",
+    "GITLAB_SECRET",
+    "MEILISEARCH_MASTER_KEY",
+    "NODE_ENV",
+    "CDN_SECRET",
+    "CLOUDFLARE_SECRET",
 
-	"NOREPLY_SMTP_RELAY",
-	"NOREPLY_SMTP_PORT",
-	"NOREPLY_SMTP_USER",
-	"NOREPLY_SMTP_KEY",
-	"SUPPORT_NOREPLY_EMAIL",
+    "NOREPLY_SMTP_RELAY",
+    "NOREPLY_SMTP_PORT",
+    "NOREPLY_SMTP_USER",
+    "NOREPLY_SMTP_KEY",
+    "SUPPORT_NOREPLY_EMAIL",
 
-	"SAFE_BROWSING_API_KEY",
-	"BACKBLAZE_BACKUP_API_KEY_ID",
-	"BACKBLAZE_BACKUP_API_KEY",
-	"ARCHIVE_USER_ID",
-	"CLICKHOUSE_PORT",
-	"CLICKHOUSE_USER",
-	"CLICKHOUSE_PASSWORD",
+    "SAFE_BROWSING_API_KEY",
+    "BACKBLAZE_BACKUP_API_KEY_ID",
+    "BACKBLAZE_BACKUP_API_KEY",
+    "ARCHIVE_USER_ID",
+    "CLICKHOUSE_PORT",
+    "CLICKHOUSE_USER",
+    "CLICKHOUSE_PASSWORD",
 ] as const;
 
 type EnvKeys = (typeof envKeys)[number];
 const env = {} as Record<EnvKeys, string>;
 
 for (const key of envKeys) {
-	const value = process.env[key];
-	if (value === undefined && process.env.NODE_ENV !== "test") {
-		console.error(`Missing environment variable: ${key}`);
-		process.exit(1);
-	}
+    const value = process.env[key];
+    if (value === undefined && process.env.NODE_ENV !== "test") {
+        console.error(`Missing environment variable: ${key}`);
+        process.exit(1);
+    }
 
-	if (value) env[key] = value;
+    if (value) env[key] = value;
 }
 
 export default env;

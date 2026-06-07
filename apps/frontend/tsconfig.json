@@ -1,37 +1,37 @@
 {
-	"include": [".", "./.react-router/types"],
-	"exclude": ["node_modules", "build", "pm2.config.cjs"],
-	"compilerOptions": {
-		"lib": ["ESNext", "DOM.Iterable", "DOM"],
-		"types": ["vite/client"],
-		"composite": true,
-		"target": "ESNext",
-		"module": "ESNext",
-		"moduleDetection": "force",
-		"jsx": "react-jsx",
-		"allowJs": true,
-		"moduleResolution": "bundler",
-		"allowImportingTsExtensions": true,
-		"esModuleInterop": true,
-		"verbatimModuleSyntax": true,
-		"emitDeclarationOnly": true,
-		"resolveJsonModule": true,
-		"skipLibCheck": true,
-		"strict": true,
-		"noFallthroughCasesInSwitch": true,
-		"noUnusedLocals": false,
-		"noUnusedParameters": false,
-		"noPropertyAccessFromIndexSignature": false,
-		"rootDirs": [".", "./.react-router/types"],
-		"paths": {
-			"~/*": ["./app/*"],
-			"@/*": ["./*"],
-			"@app/utils/*": ["./../../packages/utils/src/*"]
-		}
-	},
-	"references": [
-		{
-			"path": "./../../packages/utils"
-		}
-	]
+    "include": [".", "./.react-router/types"],
+    "exclude": ["node_modules", "build", "pm2.config.cjs"],
+    "compilerOptions": {
+        "lib": ["ESNext", "DOM.Iterable", "DOM"],
+        "types": ["vite/client"],
+        "composite": true,
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleDetection": "force",
+        "jsx": "react-jsx",
+        "allowJs": true,
+        "moduleResolution": "bundler",
+        "allowImportingTsExtensions": true,
+        "esModuleInterop": true,
+        "verbatimModuleSyntax": true,
+        "emitDeclarationOnly": true,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "noPropertyAccessFromIndexSignature": false,
+        "rootDirs": [".", "./.react-router/types"],
+        "paths": {
+            "~/*": ["./app/*"],
+            "@/*": ["./*"],
+            "@app/utils/*": ["./../../packages/utils/src/*"]
+        }
+    },
+    "references": [
+        {
+            "path": "./../../packages/utils"
+        }
+    ]
 }

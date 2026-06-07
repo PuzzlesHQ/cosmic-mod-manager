@@ -12,82 +12,82 @@ import { useTranslation } from "~/locales/provider";
 import { ImgWrapper } from "./ui/avatar";
 
 interface IconPickerProps {
-	icon: File | string | null;
-	fieldName: string;
-	onChange: (file: File | null) => void;
-	fallbackIcon: React.ReactNode;
-	originalIcon: string;
-	vtId?: string;
-	previewClassName?: string;
+    icon: File | string | null;
+    fieldName: string;
+    onChange: (file: File | null) => void;
+    fallbackIcon: React.ReactNode;
+    originalIcon: string;
+    vtId?: string;
+    previewClassName?: string;
 }
 
 export default function IconPicker(props: IconPickerProps) {
-	const { t } = useTranslation();
+    const { t } = useTranslation();
 
-	return (
-		<FormItem>
-			<FormLabel className="font-bold">{t.form.icon}</FormLabel>
-			<div className="flex flex-wrap items-center justify-start gap-4">
-				<input
-					hidden
-					className="hidden"
-					id="project-icon-input"
-					accept={validImgFileExtensions.join(", ")}
-					type="file"
-					value=""
-					name={props.fieldName}
-					onChange={async (e) => {
-						const file = e.target.files?.[0];
-						if (!file) return;
+    return (
+        <FormItem>
+            <FormLabel className="font-bold">{t.form.icon}</FormLabel>
+            <div className="flex flex-wrap items-center justify-start gap-4">
+                <input
+                    hidden
+                    className="hidden"
+                    id="project-icon-input"
+                    accept={validImgFileExtensions.join(", ")}
+                    type="file"
+                    value=""
+                    name={props.fieldName}
+                    onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
 
-						if (!isImageFile(await getFileType(file))) {
-							toast.error("Invalid image file type");
-							return;
-						}
+                        if (!isImageFile(await getFileType(file))) {
+                            toast.error("Invalid image file type");
+                            return;
+                        }
 
-						props.onChange(file);
-					}}
-				/>
+                        props.onChange(file);
+                    }}
+                />
 
-				<ImgWrapper
-					alt={t.form.icon}
-					src={(() => {
-						const image = props.icon;
-						if (image instanceof File) return URL.createObjectURL(image);
-						if (!image) return "";
+                <ImgWrapper
+                    alt={t.form.icon}
+                    src={(() => {
+                        const image = props.icon;
+                        if (image instanceof File) return URL.createObjectURL(image);
+                        if (!image) return "";
 
-						return imageUrl(props.originalIcon || "");
-					})()}
-					className={cn("rounded", props.previewClassName)}
-					fallback={props.fallbackIcon}
-					// Only set view transition id if the icon has not changed
-					vtId={!(props.icon instanceof File) ? props.vtId : undefined}
-				/>
+                        return imageUrl(props.originalIcon || "");
+                    })()}
+                    className={cn("rounded", props.previewClassName)}
+                    fallback={props.fallbackIcon}
+                    // Only set view transition id if the icon has not changed
+                    vtId={!(props.icon instanceof File) ? props.vtId : undefined}
+                />
 
-				<div className="flex flex-col items-start justify-center gap-2">
-					<InteractiveLabel
-						htmlFor="project-icon-input"
-						className={cn(buttonVariants({ variant: "secondary", size: "default" }), "cursor-pointer")}
-					>
-						<UploadIcon aria-hidden className="h-btn-icon w-btn-icon" />
-						{t.form.uploadIcon}
-					</InteractiveLabel>
-					{props.icon ? (
-						<Button
-							variant="secondary"
-							type="button"
-							onClick={() => {
-								props.onChange(null);
-							}}
-						>
-							<Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
-							{t.form.removeIcon}
-						</Button>
-					) : null}
-				</div>
-			</div>
+                <div className="flex flex-col items-start justify-center gap-2">
+                    <InteractiveLabel
+                        htmlFor="project-icon-input"
+                        className={cn(buttonVariants({ variant: "secondary", size: "default" }), "cursor-pointer")}
+                    >
+                        <UploadIcon aria-hidden className="h-btn-icon w-btn-icon" />
+                        {t.form.uploadIcon}
+                    </InteractiveLabel>
+                    {props.icon ? (
+                        <Button
+                            variant="secondary"
+                            type="button"
+                            onClick={() => {
+                                props.onChange(null);
+                            }}
+                        >
+                            <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
+                            {t.form.removeIcon}
+                        </Button>
+                    ) : null}
+                </div>
+            </div>
 
-			<FormMessage />
-		</FormItem>
-	);
+            <FormMessage />
+        </FormItem>
+    );
 }

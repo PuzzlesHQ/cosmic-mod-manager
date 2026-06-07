@@ -13,56 +13,56 @@ import { getHintLocale } from "~/locales/utils";
 const ABORT_DELAY = 5000;
 
 export default function handleRequest(
-	request: Request,
-	responseStatusCode: number,
-	responseHeaders: Headers,
-	routerContext: EntryContext,
+    request: Request,
+    responseStatusCode: number,
+    responseHeaders: Headers,
+    routerContext: EntryContext,
 ) {
-	return new Promise((resolve, reject) => {
-		let shellRendered = false;
-		const userAgent = request.headers.get("user-agent");
+    return new Promise((resolve, reject) => {
+        let shellRendered = false;
+        const userAgent = request.headers.get("user-agent");
 
-		const readyOption: keyof RenderToPipeableStreamOptions =
-			(userAgent && isbot(userAgent)) || routerContext.isSpaMode ? "onAllReady" : "onShellReady";
+        const readyOption: keyof RenderToPipeableStreamOptions =
+            (userAgent && isbot(userAgent)) || routerContext.isSpaMode ? "onAllReady" : "onShellReady";
 
-		const hintLocale = getHintLocale(new URL(request.url).searchParams);
-		getLocale(hintLocale).then(async (initLocaleModule) => {
-			const initLocaleMetadata = getMetadataFromLocaleCode(hintLocale);
+        const hintLocale = getHintLocale(new URL(request.url).searchParams);
+        getLocale(hintLocale).then(async (initLocaleModule) => {
+            const initLocaleMetadata = getMetadataFromLocaleCode(hintLocale);
 
-			const { pipe, abort } = ReactDomServer.renderToPipeableStream(
-				<LocaleProvider initLocale={initLocaleModule} initMetadata={initLocaleMetadata}>
-					<ServerRouter context={routerContext} url={request.url} />
-				</LocaleProvider>,
-				{
-					[readyOption]() {
-						shellRendered = true;
-						const body = new PassThrough();
-						const stream = createReadableStreamFromReadable(body);
+            const { pipe, abort } = ReactDomServer.renderToPipeableStream(
+                <LocaleProvider initLocale={initLocaleModule} initMetadata={initLocaleMetadata}>
+                    <ServerRouter context={routerContext} url={request.url} />
+                </LocaleProvider>,
+                {
+                    [readyOption]() {
+                        shellRendered = true;
+                        const body = new PassThrough();
+                        const stream = createReadableStreamFromReadable(body);
 
-						responseHeaders.set("Content-Type", "text/html");
+                        responseHeaders.set("Content-Type", "text/html");
 
-						resolve(
-							new Response(stream, {
-								headers: responseHeaders,
-								status: responseStatusCode,
-							}),
-						);
+                        resolve(
+                            new Response(stream, {
+                                headers: responseHeaders,
+                                status: responseStatusCode,
+                            }),
+                        );
 
-						pipe(body);
-					},
-					onShellError(error: unknown) {
-						reject(error);
-					},
-					onError(error: unknown) {
-						responseStatusCode = 500;
-						if (shellRendered) {
-							console.error(error);
-						}
-					},
-				},
-			);
+                        pipe(body);
+                    },
+                    onShellError(error: unknown) {
+                        reject(error);
+                    },
+                    onError(error: unknown) {
+                        responseStatusCode = 500;
+                        if (shellRendered) {
+                            console.error(error);
+                        }
+                    },
+                },
+            );
 
-			setTimeout(abort, ABORT_DELAY);
-		});
-	});
+            setTimeout(abort, ABORT_DELAY);
+        });
+    });
 }

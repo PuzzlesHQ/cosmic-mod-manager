@@ -29,210 +29,222 @@ import EditCollection from "./edit-collection";
 import useCollections from "./provider";
 
 interface Props {
-	collection: Collection;
-	projects: ProjectListItem[];
-	owner: CollectionOwner;
+    collection: Collection;
+    projects: ProjectListItem[];
+    owner: CollectionOwner;
 }
 
 export default function CollectionPageLayout(props: Props) {
-	const { t } = useTranslation();
-	const collectionsContext = useCollections();
-	const session = useSession();
-	const navigate = useNavigate();
-	const location = useLocation();
+    const { t } = useTranslation();
+    const collectionsContext = useCollections();
+    const session = useSession();
+    const navigate = useNavigate();
+    const location = useLocation();
 
-	const [removingProjects, setRemovingProjects] = useState(false);
-	const [markedProjects, setMarkedProjects] = useState<string[]>([]);
+    const [removingProjects, setRemovingProjects] = useState(false);
+    const [markedProjects, setMarkedProjects] = useState<string[]>([]);
 
-	function addMarkedProject(projectId: string) {
-		if (markedProjects.includes(projectId)) return;
-		setMarkedProjects((prev) => [...prev, projectId]);
-	}
+    function addMarkedProject(projectId: string) {
+        if (markedProjects.includes(projectId)) return;
+        setMarkedProjects((prev) => [...prev, projectId]);
+    }
 
-	function removeMarkedProject(projectId: string) {
-		setMarkedProjects((prev) => prev.filter((id) => id !== projectId));
-	}
+    function removeMarkedProject(projectId: string) {
+        setMarkedProjects((prev) => prev.filter((id) => id !== projectId));
+    }
 
-	const aggregatedProjectTypes = new Set<string>();
-	for (const project of props.projects || []) {
-		for (const type of project.type) {
-			aggregatedProjectTypes.add(type);
-		}
-	}
-	const projectTypesList = Array.from(aggregatedProjectTypes);
+    const aggregatedProjectTypes = new Set<string>();
+    for (const project of props.projects || []) {
+        for (const type of project.type) {
+            aggregatedProjectTypes.add(type);
+        }
+    }
+    const projectTypesList = Array.from(aggregatedProjectTypes);
 
-	async function DeleteCollection() {
-		const success = await collectionsContext.deleteCollection(props.collection.id);
-		if (!success) return;
+    async function DeleteCollection() {
+        const success = await collectionsContext.deleteCollection(props.collection.id);
+        if (!success) return;
 
-		RefreshPage(navigate, "/dashboard/collections");
-	}
+        RefreshPage(navigate, "/dashboard/collections");
+    }
 
-	async function RemoveCollectionProjects() {
-		if (removingProjects) return;
-		try {
-			setRemovingProjects(true);
-			await collectionsContext.removeProjectsFromCollection(props.collection.id, markedProjects);
-			setMarkedProjects([]);
-		} finally {
-			RefreshPage(navigate, location);
-			setRemovingProjects(false);
-		}
-	}
+    async function RemoveCollectionProjects() {
+        if (removingProjects) return;
+        try {
+            setRemovingProjects(true);
+            await collectionsContext.removeProjectsFromCollection(props.collection.id, markedProjects);
+            setMarkedProjects([]);
+        } finally {
+            RefreshPage(navigate, location);
+            setRemovingProjects(false);
+        }
+    }
 
-	const isFollowsCollection = props.collection.id === FOLLOWS_COLLECTIONS_ID;
-	const icon =
-		props.collection.id === FOLLOWS_COLLECTIONS_ID ? (
-			<HeartIcon aria-hidden className="h-[65%] w-[65%] fill-current text-accent-bg" />
-		) : (
-			imageUrl(props.collection.icon)
-		);
+    const isFollowsCollection = props.collection.id === FOLLOWS_COLLECTIONS_ID;
+    const icon =
+        props.collection.id === FOLLOWS_COLLECTIONS_ID ? (
+            <HeartIcon aria-hidden className="h-[65%] w-[65%] fill-current text-accent-bg" />
+        ) : (
+            imageUrl(props.collection.icon)
+        );
 
-	return (
-		<main className="header-content-sidebar-layout gap-panel-cards pb-12">
-			<PageHeader
-				vtId={props.collection.id}
-				icon={icon}
-				title={props.collection.name}
-				fallbackIcon={fallbackProjectIcon}
-				description={props.collection.description || ""}
-				titleBadge={
-					<LabelledIcon
-						className="ms-2 font-bold text-foreground-extra-muted"
-						icon={<CubeIcon aria-hidden className="h-btn-icon w-btn-icon" />}
-					>
-						{t.dashboard.collection}
-					</LabelledIcon>
-				}
-				actionBtns={
-					markedProjects.length > 0 ? (
-						<Button variant="secondary-destructive" onClick={RemoveCollectionProjects} disabled={removingProjects}>
-							{removingProjects ? <LoadingSpinner size="xs" /> : <Trash2Icon className="h-btn-icon w-btn-icon" />}
-							{t.form.remove}
-						</Button>
-					) : null
-				}
-				threeDotMenu={
-					<>
-						<PopoverClose asChild>
-							<Button
-								className="w-full"
-								variant="ghost"
-								size="sm"
-								onClick={() => {
-									navigator.clipboard.writeText(props.collection.id);
-								}}
-							>
-								<ClipboardCopyIcon aria-hidden className="h-btn-icon w-btn-icon" />
-								{t.common.copyId}
-								<span itemProp={MicrodataItemProps.itemid} className="sr-only">
-									{props.collection.id}
-								</span>
-							</Button>
-						</PopoverClose>
+    return (
+        <main className="header-content-sidebar-layout gap-panel-cards pb-12">
+            <PageHeader
+                vtId={props.collection.id}
+                icon={icon}
+                title={props.collection.name}
+                fallbackIcon={fallbackProjectIcon}
+                description={props.collection.description || ""}
+                titleBadge={
+                    <LabelledIcon
+                        className="ms-2 font-bold text-foreground-extra-muted"
+                        icon={<CubeIcon aria-hidden className="h-btn-icon w-btn-icon" />}
+                    >
+                        {t.dashboard.collection}
+                    </LabelledIcon>
+                }
+                actionBtns={
+                    markedProjects.length > 0 ? (
+                        <Button
+                            variant="secondary-destructive"
+                            onClick={RemoveCollectionProjects}
+                            disabled={removingProjects}
+                        >
+                            {removingProjects ? (
+                                <LoadingSpinner size="xs" />
+                            ) : (
+                                <Trash2Icon className="h-btn-icon w-btn-icon" />
+                            )}
+                            {t.form.remove}
+                        </Button>
+                    ) : null
+                }
+                threeDotMenu={
+                    <>
+                        <PopoverClose asChild>
+                            <Button
+                                className="w-full"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                    navigator.clipboard.writeText(props.collection.id);
+                                }}
+                            >
+                                <ClipboardCopyIcon aria-hidden className="h-btn-icon w-btn-icon" />
+                                {t.common.copyId}
+                                <span itemProp={MicrodataItemProps.itemid} className="sr-only">
+                                    {props.collection.id}
+                                </span>
+                            </Button>
+                        </PopoverClose>
 
-						{!isFollowsCollection && (props.collection.userId === session?.id || isModerator(session?.role)) ? (
-							<>
-								<Separator />
+                        {!isFollowsCollection &&
+                        (props.collection.userId === session?.id || isModerator(session?.role)) ? (
+                            <>
+                                <Separator />
 
-								<EditCollection collection={props.collection} />
+                                <EditCollection collection={props.collection} />
 
-								<ConfirmDialog
-									title={t.collection.deleteCollection}
-									description={t.collection.sureToDeleteCollection}
-									confirmText={t.form.delete}
-									variant="destructive"
-									onConfirm={DeleteCollection}
-								>
-									<Button variant="ghost-destructive" size="sm" className="w-full">
-										<Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
-										{t.form.delete}
-									</Button>
-								</ConfirmDialog>
-							</>
-						) : null}
-					</>
-				}
-			>
-				<LabelledIcon className="font-semibold" icon={<CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />}>
-					{t.count.projects(props.collection.projects.length, props.collection.projects.length)}
-				</LabelledIcon>
+                                <ConfirmDialog
+                                    title={t.collection.deleteCollection}
+                                    description={t.collection.sureToDeleteCollection}
+                                    confirmText={t.form.delete}
+                                    variant="destructive"
+                                    onConfirm={DeleteCollection}
+                                >
+                                    <Button variant="ghost-destructive" size="sm" className="w-full">
+                                        <Trash2Icon aria-hidden className="h-btn-icon w-btn-icon" />
+                                        {t.form.delete}
+                                    </Button>
+                                </ConfirmDialog>
+                            </>
+                        ) : null}
+                    </>
+                }
+            >
+                <LabelledIcon
+                    className="font-semibold"
+                    icon={<CubeIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />}
+                >
+                    {t.count.projects(props.collection.projects.length, props.collection.projects.length)}
+                </LabelledIcon>
 
-				<LabelledIcon
-					className="font-semibold"
-					icon={
-						props.collection.visibility === CollectionVisibility.PRIVATE ? (
-							<LockIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-						) : (
-							<EarthIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-						)
-					}
-				>
-					{t.projectSettings[props.collection.visibility]}
-				</LabelledIcon>
+                <LabelledIcon
+                    className="font-semibold"
+                    icon={
+                        props.collection.visibility === CollectionVisibility.PRIVATE ? (
+                            <LockIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
+                        ) : (
+                            <EarthIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
+                        )
+                    }
+                >
+                    {t.projectSettings[props.collection.visibility]}
+                </LabelledIcon>
 
-				<LabelledIcon
-					className="font-semibold"
-					icon={<CalendarIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />}
-				>
-					{t.settings.created(TimePassedSince({ date: props.collection.dateCreated }))}
-				</LabelledIcon>
-			</PageHeader>
+                <LabelledIcon
+                    className="font-semibold"
+                    icon={<CalendarIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />}
+                >
+                    {t.settings.created(TimePassedSince({ date: props.collection.dateCreated }))}
+                </LabelledIcon>
+            </PageHeader>
 
-			<div className="page-content grid h-fit grid-cols-1 gap-panel-cards">
-				{projectTypesList?.length > 1 && props.projects.length > 1 ? (
-					<SecondaryNav
-						className="rounded-lg bg-card-background px-3 py-2"
-						urlBase={CollectionPagePath(props.collection.id)}
-						links={[
-							{ label: t.common.all, href: "" },
-							...getProjectTypesFromNames(projectTypesList).map((type) => ({
-								label: t.navbar[`${type}s`],
-								href: `/${type}s`,
-							})),
-						]}
-					/>
-				) : null}
+            <div className="page-content grid h-fit grid-cols-1 gap-panel-cards">
+                {projectTypesList?.length > 1 && props.projects.length > 1 ? (
+                    <SecondaryNav
+                        className="rounded-lg bg-card-background px-3 py-2"
+                        urlBase={CollectionPagePath(props.collection.id)}
+                        links={[
+                            { label: t.common.all, href: "" },
+                            ...getProjectTypesFromNames(projectTypesList).map((type) => ({
+                                label: t.navbar[`${type}s`],
+                                href: `/${type}s`,
+                            })),
+                        ]}
+                    />
+                ) : null}
 
-				<Outlet
-					context={
-						{
-							...props,
-							markedProjects,
-							addMarkedProject,
-							removeMarkedProject,
-						} satisfies CollectionOutletData
-					}
-				/>
-			</div>
+                <Outlet
+                    context={
+                        {
+                            ...props,
+                            markedProjects,
+                            addMarkedProject,
+                            removeMarkedProject,
+                        } satisfies CollectionOutletData
+                    }
+                />
+            </div>
 
-			<PageSidebar owner={props.owner} />
-		</main>
-	);
+            <PageSidebar owner={props.owner} />
+        </main>
+    );
 }
 
 export interface CollectionOutletData extends Props {
-	markedProjects: string[];
-	addMarkedProject: (projectId: string) => void;
-	removeMarkedProject: (projectId: string) => void;
+    markedProjects: string[];
+    addMarkedProject: (projectId: string) => void;
+    removeMarkedProject: (projectId: string) => void;
 }
 
 function PageSidebar(props: { owner: CollectionOwner }) {
-	const { t } = useTranslation();
+    const { t } = useTranslation();
 
-	return (
-		<div className="page-sidebar flex w-full flex-col gap-panel-cards lg:w-sidebar">
-			<ContentCardTemplate title={t.collection.curatedBy} titleClassName="text-lg">
-				<TeamMember_Card
-					vtId={props.owner.id}
-					isOwner={false}
-					userName={props.owner.userName}
-					roleName={t.projectSettings.owner}
-					avatarImageUrl={imageUrl(props.owner.avatar)}
-					url={UserProfilePath(props.owner.userName)}
-					fallbackIcon={fallbackUserIcon}
-				/>
-			</ContentCardTemplate>
-		</div>
-	);
+    return (
+        <div className="page-sidebar flex w-full flex-col gap-panel-cards lg:w-sidebar">
+            <ContentCardTemplate title={t.collection.curatedBy} titleClassName="text-lg">
+                <TeamMember_Card
+                    vtId={props.owner.id}
+                    isOwner={false}
+                    userName={props.owner.userName}
+                    roleName={t.projectSettings.owner}
+                    avatarImageUrl={imageUrl(props.owner.avatar)}
+                    url={UserProfilePath(props.owner.userName)}
+                    fallbackIcon={fallbackUserIcon}
+                />
+            </ContentCardTemplate>
+        </div>
+    );
 }

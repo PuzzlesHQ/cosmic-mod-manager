@@ -14,91 +14,97 @@ import { CollectionPagePath } from "~/utils/urls";
 import CreateNewCollection_Dialog from "./new-collection";
 
 interface Props {
-	collections: Collection[];
+    collections: Collection[];
 }
 
 export default function CollectionsDashboardPage(props: Props) {
-	const { t } = useTranslation();
-	const ctx = useCollections();
+    const { t } = useTranslation();
+    const ctx = useCollections();
 
-	const [search, setSearch] = useState("");
+    const [search, setSearch] = useState("");
 
-	return (
-		<Card className="w-full overflow-hidden">
-			<CardHeader className="flex w-full flex-row flex-wrap items-center justify-between gap-x-6 gap-y-2">
-				<CardTitle>{t.dashboard.collections}</CardTitle>
-			</CardHeader>
+    return (
+        <Card className="w-full overflow-hidden">
+            <CardHeader className="flex w-full flex-row flex-wrap items-center justify-between gap-x-6 gap-y-2">
+                <CardTitle>{t.dashboard.collections}</CardTitle>
+            </CardHeader>
 
-			<CardContent className="grid gap-panel-cards">
-				<div className="flex w-full flex-wrap items-center justify-between gap-3 sm:flex-nowrap">
-					<Input
-						value={search}
-						onChange={(e) => setSearch(e.target.value)}
-						placeholder={t.collection.searchCollections}
-					/>
+            <CardContent className="grid gap-panel-cards">
+                <div className="flex w-full flex-wrap items-center justify-between gap-3 sm:flex-nowrap">
+                    <Input
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder={t.collection.searchCollections}
+                    />
 
-					<CreateNewCollection_Dialog>
-						<Button>
-							<PlusIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-							{t.form.createNew}
-						</Button>
-					</CreateNewCollection_Dialog>
-				</div>
+                    <CreateNewCollection_Dialog>
+                        <Button>
+                            <PlusIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
+                            {t.form.createNew}
+                        </Button>
+                    </CreateNewCollection_Dialog>
+                </div>
 
-				<div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
-					{!search || t.collection.followedProjects.toLowerCase().includes(search.toLowerCase()) ? (
-						<FollowsCollectionItem followingProjects={ctx.followingProjects.length} />
-					) : null}
+                <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
+                    {!search || t.collection.followedProjects.toLowerCase().includes(search.toLowerCase()) ? (
+                        <FollowsCollectionItem followingProjects={ctx.followingProjects.length} />
+                    ) : null}
 
-					{(props.collections || []).map((collection) => {
-						if (search.length > 0 && !collection.name.includes(search)) return null;
+                    {(props.collections || []).map((collection) => {
+                        if (search.length > 0 && !collection.name.includes(search)) return null;
 
-						return (
-							<CollectionListItemCard
-								vtId={collection.id}
-								key={collection.id}
-								title={collection.name}
-								url={CollectionPagePath(collection.id)}
-								icon={imageUrl(collection.icon)}
-								description={collection.description || ""}
-								projects={collection.projects.length}
-								visibility={
-									<div className="inline-flex items-center justify-center gap-1">
-										{collection.visibility === CollectionVisibility.PRIVATE ? (
-											<LockIcon aria-hidden className="h-btn-icon w-btn-icon" />
-										) : (
-											<EarthIcon aria-hidden className="h-btn-icon w-btn-icon" />
-										)}
-										{t.projectSettings[collection.visibility === CollectionVisibility.PRIVATE ? "private" : "public"]}
-									</div>
-								}
-							/>
-						);
-					})}
-				</div>
-			</CardContent>
-		</Card>
-	);
+                        return (
+                            <CollectionListItemCard
+                                vtId={collection.id}
+                                key={collection.id}
+                                title={collection.name}
+                                url={CollectionPagePath(collection.id)}
+                                icon={imageUrl(collection.icon)}
+                                description={collection.description || ""}
+                                projects={collection.projects.length}
+                                visibility={
+                                    <div className="inline-flex items-center justify-center gap-1">
+                                        {collection.visibility === CollectionVisibility.PRIVATE ? (
+                                            <LockIcon aria-hidden className="h-btn-icon w-btn-icon" />
+                                        ) : (
+                                            <EarthIcon aria-hidden className="h-btn-icon w-btn-icon" />
+                                        )}
+                                        {
+                                            t.projectSettings[
+                                                collection.visibility === CollectionVisibility.PRIVATE
+                                                    ? "private"
+                                                    : "public"
+                                            ]
+                                        }
+                                    </div>
+                                }
+                            />
+                        );
+                    })}
+                </div>
+            </CardContent>
+        </Card>
+    );
 }
 
 export function FollowsCollectionItem(props: { followingProjects: number; className?: string }) {
-	const { t } = useTranslation();
+    const { t } = useTranslation();
 
-	return (
-		<CollectionListItemCard
-			vtId={FOLLOWS_COLLECTIONS_ID}
-			title={t.collection.followedProjects}
-			url={CollectionPagePath(FOLLOWS_COLLECTIONS_ID)}
-			icon={<HeartIcon aria-hidden className="h-[60%] w-[60%] fill-current text-accent-bg" />}
-			description={t.collection.followedProjectsDesc}
-			projects={props.followingProjects}
-			className={props.className}
-			visibility={
-				<div className="inline-flex items-center justify-center gap-1">
-					<LockIcon aria-hidden className="h-btn-icon w-btn-icon" />
-					{t.projectSettings.private}
-				</div>
-			}
-		/>
-	);
+    return (
+        <CollectionListItemCard
+            vtId={FOLLOWS_COLLECTIONS_ID}
+            title={t.collection.followedProjects}
+            url={CollectionPagePath(FOLLOWS_COLLECTIONS_ID)}
+            icon={<HeartIcon aria-hidden className="h-[60%] w-[60%] fill-current text-accent-bg" />}
+            description={t.collection.followedProjectsDesc}
+            projects={props.followingProjects}
+            className={props.className}
+            visibility={
+                <div className="inline-flex items-center justify-center gap-1">
+                    <LockIcon aria-hidden className="h-btn-icon w-btn-icon" />
+                    {t.projectSettings.private}
+                </div>
+            }
+        />
+    );
 }

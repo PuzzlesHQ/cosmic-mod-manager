@@ -7,32 +7,33 @@ import type { UserSessionData } from "~/types";
 import { HTTP_STATUS, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
 
 export async function updateProjectDescription(
-	projectId: string,
-	userSession: UserSessionData,
-	form: z.infer<typeof updateDescriptionFormSchema>,
+    projectId: string,
+    userSession: UserSessionData,
+    form: z.infer<typeof updateDescriptionFormSchema>,
 ) {
-	const project = await GetProject_ListItem(projectId);
-	if (!project?.id) return notFoundResponseData();
+    const project = await GetProject_ListItem(projectId);
+    if (!project?.id) return notFoundResponseData();
 
-	const memberObj = getCurrMember(
-		userSession.id,
-		project.team?.members || [],
-		project.organisation?.team.members || [],
-	);
-	const hasEditAccess = doesMemberHaveAccess(
-		ProjectPermission.EDIT_DESCRIPTION,
-		memberObj?.permissions as ProjectPermission[],
-		memberObj?.isOwner,
-		userSession.role,
-	);
-	if (!hasEditAccess) return unauthorizedReqResponseData("You don't have the permission to update project description");
+    const memberObj = getCurrMember(
+        userSession.id,
+        project.team?.members || [],
+        project.organisation?.team.members || [],
+    );
+    const hasEditAccess = doesMemberHaveAccess(
+        ProjectPermission.EDIT_DESCRIPTION,
+        memberObj?.permissions as ProjectPermission[],
+        memberObj?.isOwner,
+        userSession.role,
+    );
+    if (!hasEditAccess)
+        return unauthorizedReqResponseData("You don't have the permission to update project description");
 
-	await UpdateProject({
-		where: { id: project.id },
-		data: {
-			description: form.description || "",
-		},
-	});
+    await UpdateProject({
+        where: { id: project.id },
+        data: {
+            description: form.description || "",
+        },
+    });
 
-	return { data: { success: true, message: "Project description updated" }, status: HTTP_STATUS.OK };
+    return { data: { success: true, message: "Project description updated" }, status: HTTP_STATUS.OK };
 }

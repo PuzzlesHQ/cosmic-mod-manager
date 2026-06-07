@@ -10,48 +10,48 @@ import { getSessionUser } from "~/utils/router";
 import { CreateThreadMessage, DeleteThreadMessage, GetThreadMessages } from "./controllers";
 
 const threadRouter = new Hono()
-	.use(invalidAuthAttemptLimiter)
-	.use(AuthenticationMiddleware)
-	.use(LoginProtectedRoute)
+    .use(invalidAuthAttemptLimiter)
+    .use(AuthenticationMiddleware)
+    .use(LoginProtectedRoute)
 
-	.get("/:threadId", getReqRateLimiter, thread_get)
-	.post("/:threadId", modifyReqRateLimiter, thread_post)
-	.delete("/message/:messageId", modifyReqRateLimiter, threadMessage_delete);
+    .get("/:threadId", getReqRateLimiter, thread_get)
+    .post("/:threadId", modifyReqRateLimiter, thread_post)
+    .delete("/message/:messageId", modifyReqRateLimiter, threadMessage_delete);
 
 async function thread_get(ctx: Context) {
-	const threadId = ctx.req.param("threadId");
-	if (!threadId) return invalidRequestResponse(ctx);
+    const threadId = ctx.req.param("threadId");
+    if (!threadId) return invalidRequestResponse(ctx);
 
-	const sessionUser = getSessionUser(ctx, API_SCOPE.THREAD_READ);
-	if (!sessionUser) return unauthenticatedReqResponse(ctx);
+    const sessionUser = getSessionUser(ctx, API_SCOPE.THREAD_READ);
+    if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-	const res = await GetThreadMessages(sessionUser, threadId);
-	return ctx.json(res.data, res.status);
+    const res = await GetThreadMessages(sessionUser, threadId);
+    return ctx.json(res.data, res.status);
 }
 
 async function thread_post(ctx: Context) {
-	const sessionUser = getSessionUser(ctx, API_SCOPE.THREAD_WRITE);
-	if (!sessionUser) return unauthenticatedReqResponse(ctx);
+    const sessionUser = getSessionUser(ctx, API_SCOPE.THREAD_WRITE);
+    if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-	const threadId = ctx.req.param("threadId");
-	if (!threadId) return invalidRequestResponse(ctx);
+    const threadId = ctx.req.param("threadId");
+    if (!threadId) return invalidRequestResponse(ctx);
 
-	const { data, error } = await zodParse(createThreadMessage_Schema, ctx.get(REQ_BODY_NAMESPACE));
-	if (!data || error) return invalidRequestResponse(ctx, error);
+    const { data, error } = await zodParse(createThreadMessage_Schema, ctx.get(REQ_BODY_NAMESPACE));
+    if (!data || error) return invalidRequestResponse(ctx, error);
 
-	const res = await CreateThreadMessage(sessionUser, threadId, data);
-	return ctx.json(res.data, res.status);
+    const res = await CreateThreadMessage(sessionUser, threadId, data);
+    return ctx.json(res.data, res.status);
 }
 
 async function threadMessage_delete(ctx: Context) {
-	const sessionUser = getSessionUser(ctx, API_SCOPE.THREAD_WRITE);
-	if (!sessionUser) return unauthenticatedReqResponse(ctx);
+    const sessionUser = getSessionUser(ctx, API_SCOPE.THREAD_WRITE);
+    if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
-	const messageId = ctx.req.param("messageId");
-	if (!messageId) return invalidRequestResponse(ctx);
+    const messageId = ctx.req.param("messageId");
+    if (!messageId) return invalidRequestResponse(ctx);
 
-	const res = await DeleteThreadMessage(sessionUser, messageId);
-	return ctx.json(res.data, res.status);
+    const res = await DeleteThreadMessage(sessionUser, messageId);
+    return ctx.json(res.data, res.status);
 }
 
 export default threadRouter;

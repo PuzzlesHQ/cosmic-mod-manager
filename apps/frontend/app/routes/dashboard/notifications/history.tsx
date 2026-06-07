@@ -8,32 +8,32 @@ import type { Route } from "./+types/history";
 import { clientLoader as NotificationsDataLoader } from "./page";
 
 export default function () {
-	const data = useLoaderData<typeof clientLoader>();
+    const data = useLoaderData<typeof clientLoader>();
 
-	return (
-		<NotificationsHistoryPage
-			notifications={data.notifications || []}
-			relatedProjects={data.projects || []}
-			relatedUsers={data.users || []}
-			relatedOrgs={data.orgs || []}
-		/>
-	);
+    return (
+        <NotificationsHistoryPage
+            notifications={data.notifications || []}
+            relatedProjects={data.projects || []}
+            relatedUsers={data.users || []}
+            relatedOrgs={data.orgs || []}
+        />
+    );
 }
 
 export const clientLoader = NotificationsDataLoader;
 
 export function HydrateFallback() {
-	return <SuspenseFallback />;
+    return <SuspenseFallback />;
 }
 
 export function meta(props: Route.MetaArgs) {
-	const { t } = useTranslation();
+    const { t } = useTranslation();
 
-	return MetaTags({
-		location: props.location,
-		title: t.meta.addContext(t.dashboard.notifHistory, Config.SITE_NAME_SHORT),
-		description: t.dashboard.viewNotifHistory,
-		image: Config.SITE_ICON,
-		url: undefined,
-	});
+    return MetaTags({
+        location: props.location,
+        title: t.meta.addContext(t.dashboard.notifHistory, Config.SITE_NAME_SHORT),
+        description: t.dashboard.viewNotifHistory,
+        image: Config.SITE_ICON,
+        url: undefined,
+    });
 }

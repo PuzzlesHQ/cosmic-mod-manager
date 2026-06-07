@@ -1,9 +1,9 @@
 import {
-	categoryFilterParamNamespace,
-	environmentFilterParamNamespace,
-	gameVersionFilterParamNamespace,
-	licenseFilterParamNamespace,
-	loaderFilterParamNamespace,
+    categoryFilterParamNamespace,
+    environmentFilterParamNamespace,
+    gameVersionFilterParamNamespace,
+    licenseFilterParamNamespace,
+    loaderFilterParamNamespace,
 } from "@app/utils/config/search";
 import { getALlLoaderFilters, getValidProjectCategories } from "@app/utils/project";
 import GAME_VERSIONS, { isExperimentalGameVersion } from "@app/utils/src/constants/game-versions";
@@ -27,414 +27,414 @@ import { NOT, removePageOffsetSearchParam, toggleSearchParam, updateTernaryState
 const SHOW_ENV_FILTER_FOR_TYPES = [ProjectType.MOD, ProjectType.MODPACK /*, ProjectType.DATAMOD */];
 
 interface Props {
-	type: ProjectType[];
-	sectionsDefaultOpen?: boolean;
+    type: ProjectType[];
+    sectionsDefaultOpen?: boolean;
 }
 
 function matchesSearch(strings: string[], query: string) {
-	const queryLower = query.toLowerCase();
-	for (const str of strings) {
-		const strLower = str.toLowerCase();
+    const queryLower = query.toLowerCase();
+    for (const str of strings) {
+        const strLower = str.toLowerCase();
 
-		if (strLower.includes(queryLower) || queryLower.includes(strLower)) {
-			return true;
-		}
-	}
-	return false;
+        if (strLower.includes(queryLower) || queryLower.includes(strLower)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 const filtersKeyList = [
-	loaderFilterParamNamespace,
-	gameVersionFilterParamNamespace,
-	environmentFilterParamNamespace,
-	categoryFilterParamNamespace,
-	licenseFilterParamNamespace,
+    loaderFilterParamNamespace,
+    gameVersionFilterParamNamespace,
+    environmentFilterParamNamespace,
+    categoryFilterParamNamespace,
+    licenseFilterParamNamespace,
 ];
 
 function SearchFilters({ type, sectionsDefaultOpen }: Props) {
-	const { t } = useTranslation();
-	const [searchParams, setSearchParams] = useSearchParams();
-	const [showAllVersions, setShowAllVersions] = useState(false);
-	const [query, setQuery] = useState("");
+    const { t } = useTranslation();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [showAllVersions, setShowAllVersions] = useState(false);
+    const [query, setQuery] = useState("");
 
-	// Labels
-	const loadersFilterLabel = t.search.loaders;
-	const gameVersionsFilterLabel = t.search.gameVersions;
-	const environmentFilterLabel = t.search.environment;
-	const categoryFilterLabel = t.search.category;
-	const featureFilterLabel = t.search.feature;
-	const resolutionFilterLabel = t.search.resolution;
-	const performanceFilterLabel = t.search.performance_impact;
-	const licenseFilterLabel = t.search.license;
+    // Labels
+    const loadersFilterLabel = t.search.loaders;
+    const gameVersionsFilterLabel = t.search.gameVersions;
+    const environmentFilterLabel = t.search.environment;
+    const categoryFilterLabel = t.search.category;
+    const featureFilterLabel = t.search.feature;
+    const resolutionFilterLabel = t.search.resolution;
+    const performanceFilterLabel = t.search.performance_impact;
+    const licenseFilterLabel = t.search.license;
 
-	// Filters list
-	const loaderFilters = getALlLoaderFilters(type);
-	// Project Loader filters
-	const loaderFilterOptions = loaderFilters
-		.map((loader) => loader.name)
-		.filter((loader) => matchesSearch([loader, loadersFilterLabel], query));
+    // Filters list
+    const loaderFilters = getALlLoaderFilters(type);
+    // Project Loader filters
+    const loaderFilterOptions = loaderFilters
+        .map((loader) => loader.name)
+        .filter((loader) => matchesSearch([loader, loadersFilterLabel], query));
 
-	// Game version filters
-	const gameVersionFilterOptions = GAME_VERSIONS.filter((version) => {
-		if (!showAllVersions && isExperimentalGameVersion(version.releaseType)) return false;
-		return true;
-	})
-		.map((version) => ({ value: version.value, label: version.label }))
-		.filter((version) => {
-			if (!version) return false;
-			return matchesSearch([version.label, version.value, gameVersionsFilterLabel], query);
-		});
+    // Game version filters
+    const gameVersionFilterOptions = GAME_VERSIONS.filter((version) => {
+        if (!showAllVersions && isExperimentalGameVersion(version.releaseType)) return false;
+        return true;
+    })
+        .map((version) => ({ value: version.value, label: version.label }))
+        .filter((version) => {
+            if (!version) return false;
+            return matchesSearch([version.label, version.value, gameVersionsFilterLabel], query);
+        });
 
-	// Environment filters
-	const environmentFilterOptions = ["client", "server"].filter((env) =>
-		matchesSearch([env, environmentFilterLabel], query),
-	);
+    // Environment filters
+    const environmentFilterOptions = ["client", "server"].filter((env) =>
+        matchesSearch([env, environmentFilterLabel], query),
+    );
 
-	// Category filters
-	const categoryFilterOptions = getValidProjectCategories(type, TagType.CATEGORY)
-		.map((c) => c.name)
-		.filter((category) => matchesSearch([category, categoryFilterLabel], query));
+    // Category filters
+    const categoryFilterOptions = getValidProjectCategories(type, TagType.CATEGORY)
+        .map((c) => c.name)
+        .filter((category) => matchesSearch([category, categoryFilterLabel], query));
 
-	// Feature filters
-	const featureFilterOptions = getValidProjectCategories(type, TagType.FEATURE)
-		.map((f) => f.name)
-		.filter((feature) => matchesSearch([feature, featureFilterLabel], query));
+    // Feature filters
+    const featureFilterOptions = getValidProjectCategories(type, TagType.FEATURE)
+        .map((f) => f.name)
+        .filter((feature) => matchesSearch([feature, featureFilterLabel], query));
 
-	// Resolution filters
-	const resolutionFilterOptions = getValidProjectCategories(type, TagType.RESOLUTION)
-		.map((r) => r.name)
-		.filter((resolution) => matchesSearch([resolution, resolutionFilterLabel], query));
+    // Resolution filters
+    const resolutionFilterOptions = getValidProjectCategories(type, TagType.RESOLUTION)
+        .map((r) => r.name)
+        .filter((resolution) => matchesSearch([resolution, resolutionFilterLabel], query));
 
-	// Performance impact filters
-	const performanceFilterOptions = getValidProjectCategories(type, TagType.PERFORMANCE_IMPACT)
-		.map((p) => p.name)
-		.filter((performance) => matchesSearch([performance, performanceFilterLabel], query));
+    // Performance impact filters
+    const performanceFilterOptions = getValidProjectCategories(type, TagType.PERFORMANCE_IMPACT)
+        .map((p) => p.name)
+        .filter((performance) => matchesSearch([performance, performanceFilterLabel], query));
 
-	// License filters
-	const licenseFilterOptions = [{ value: "oss", label: t.search.openSourceOnly }].filter((license) =>
-		matchesSearch([license.label, license.value, licenseFilterLabel], query),
-	);
+    // License filters
+    const licenseFilterOptions = [{ value: "oss", label: t.search.openSourceOnly }].filter((license) =>
+        matchesSearch([license.label, license.value, licenseFilterLabel], query),
+    );
 
-	const isUniversalSearchPage = type.length > 1;
-	const defaultOpenAdditionalFilters = !isUniversalSearchPage;
+    const isUniversalSearchPage = type.length > 1;
+    const defaultOpenAdditionalFilters = !isUniversalSearchPage;
 
-	function clearFilters() {
-		setSearchParams((prev) => {
-			for (const key of filtersKeyList) {
-				prev.delete(key);
-			}
+    function clearFilters() {
+        setSearchParams((prev) => {
+            for (const key of filtersKeyList) {
+                prev.delete(key);
+            }
 
-			return prev;
-		});
-	}
+            return prev;
+        });
+    }
 
-	function isFilteredThroughSearch<T>(filterItems: T[]) {
-		if (!query?.length) return undefined;
-		if (!filterItems?.length) return undefined;
-		return true;
-	}
+    function isFilteredThroughSearch<T>(filterItems: T[]) {
+        if (!query?.length) return undefined;
+        if (!filterItems?.length) return undefined;
+        return true;
+    }
 
-	return (
-		<>
-			<SkipNav />
+    return (
+        <>
+            <SkipNav />
 
-			<div className="flex items-center justify-center gap-2">
-				<Input
-					placeholder={t.search.searchFilters}
-					value={query}
-					onChange={(e) => {
-						setQuery(e.target.value);
-					}}
-				/>
+            <div className="flex items-center justify-center gap-2">
+                <Input
+                    placeholder={t.search.searchFilters}
+                    value={query}
+                    onChange={(e) => {
+                        setQuery(e.target.value);
+                    }}
+                />
 
-				<Button
-					onClick={clearFilters}
-					variant="secondary"
-					className="!w-10 !h-10 shrink-0"
-					title={t.search.clearFilters}
-					size="icon"
-				>
-					<FilterXIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
-				</Button>
-			</div>
+                <Button
+                    onClick={clearFilters}
+                    variant="secondary"
+                    className="!w-10 !h-10 shrink-0"
+                    title={t.search.clearFilters}
+                    size="icon"
+                >
+                    <FilterXIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />
+                </Button>
+            </div>
 
-			<FilterCategory
-				items={loaderFilterOptions}
-				selectedItems={searchParams.getAll(loaderFilterParamNamespace)}
-				label={loadersFilterLabel}
-				filterToggledUrl={(loaderName) => {
-					const params = new URLSearchParams(searchParams);
+            <FilterCategory
+                items={loaderFilterOptions}
+                selectedItems={searchParams.getAll(loaderFilterParamNamespace)}
+                label={loadersFilterLabel}
+                filterToggledUrl={(loaderName) => {
+                    const params = new URLSearchParams(searchParams);
 
-					return updateTernaryState_SearchParam({
-						searchParams: params,
-						key: loaderFilterParamNamespace,
-						value: loaderName,
-						searchParamModifier: removePageOffsetSearchParam,
-					});
-				}}
-				defaultOpen={sectionsDefaultOpen}
-				overrideOpenState={isFilteredThroughSearch(loaderFilterOptions)}
-			/>
+                    return updateTernaryState_SearchParam({
+                        searchParams: params,
+                        key: loaderFilterParamNamespace,
+                        value: loaderName,
+                        searchParamModifier: removePageOffsetSearchParam,
+                    });
+                }}
+                defaultOpen={sectionsDefaultOpen}
+                overrideOpenState={isFilteredThroughSearch(loaderFilterOptions)}
+            />
 
-			<FilterCategory
-				items={gameVersionFilterOptions}
-				selectedItems={searchParams.getAll(gameVersionFilterParamNamespace)}
-				label={gameVersionsFilterLabel}
-				listWrapperClassName="max-h-[clamp(14rem,_30vh,_28rem)] overflow-y-auto px-0.5 gap-2.5"
-				formatLabel={false}
-				filterToggledUrl={(version) => {
-					const params = new URLSearchParams(searchParams);
+            <FilterCategory
+                items={gameVersionFilterOptions}
+                selectedItems={searchParams.getAll(gameVersionFilterParamNamespace)}
+                label={gameVersionsFilterLabel}
+                listWrapperClassName="max-h-[clamp(14rem,_30vh,_28rem)] overflow-y-auto px-0.5 gap-2.5"
+                formatLabel={false}
+                filterToggledUrl={(version) => {
+                    const params = new URLSearchParams(searchParams);
 
-					return toggleSearchParam({
-						key: gameVersionFilterParamNamespace,
-						value: version,
-						searchParams: params,
-						searchParamModifier: removePageOffsetSearchParam,
-					});
-				}}
-				footerItem={
-					<LabelledCheckbox
-						checked={showAllVersions}
-						onCheckedChange={(checked) => {
-							setShowAllVersions(checked === true);
-						}}
-						className="ms-0.5 mt-3 text-foreground-extra-muted"
-					>
-						{t.form.showAllVersions}
-					</LabelledCheckbox>
-				}
-				defaultOpen={sectionsDefaultOpen}
-				overrideOpenState={isFilteredThroughSearch(gameVersionFilterOptions)}
-			/>
+                    return toggleSearchParam({
+                        key: gameVersionFilterParamNamespace,
+                        value: version,
+                        searchParams: params,
+                        searchParamModifier: removePageOffsetSearchParam,
+                    });
+                }}
+                footerItem={
+                    <LabelledCheckbox
+                        checked={showAllVersions}
+                        onCheckedChange={(checked) => {
+                            setShowAllVersions(checked === true);
+                        }}
+                        className="ms-0.5 mt-3 text-foreground-extra-muted"
+                    >
+                        {t.form.showAllVersions}
+                    </LabelledCheckbox>
+                }
+                defaultOpen={sectionsDefaultOpen}
+                overrideOpenState={isFilteredThroughSearch(gameVersionFilterOptions)}
+            />
 
-			{SHOW_ENV_FILTER_FOR_TYPES.some((t) => type.includes(t)) && (
-				<FilterCategory
-					items={environmentFilterOptions}
-					selectedItems={searchParams.getAll(environmentFilterParamNamespace)}
-					label={environmentFilterLabel}
-					filterToggledUrl={(env) => {
-						const params = new URLSearchParams(searchParams);
+            {SHOW_ENV_FILTER_FOR_TYPES.some((t) => type.includes(t)) && (
+                <FilterCategory
+                    items={environmentFilterOptions}
+                    selectedItems={searchParams.getAll(environmentFilterParamNamespace)}
+                    label={environmentFilterLabel}
+                    filterToggledUrl={(env) => {
+                        const params = new URLSearchParams(searchParams);
 
-						return toggleSearchParam({
-							key: environmentFilterParamNamespace,
-							value: env,
-							searchParams: params,
-							searchParamModifier: removePageOffsetSearchParam,
-						});
-					}}
-					defaultOpen={sectionsDefaultOpen ?? defaultOpenAdditionalFilters}
-					overrideOpenState={isFilteredThroughSearch(environmentFilterOptions)}
-				/>
-			)}
+                        return toggleSearchParam({
+                            key: environmentFilterParamNamespace,
+                            value: env,
+                            searchParams: params,
+                            searchParamModifier: removePageOffsetSearchParam,
+                        });
+                    }}
+                    defaultOpen={sectionsDefaultOpen ?? defaultOpenAdditionalFilters}
+                    overrideOpenState={isFilteredThroughSearch(environmentFilterOptions)}
+                />
+            )}
 
-			<FilterCategory
-				items={categoryFilterOptions}
-				selectedItems={searchParams.getAll(categoryFilterParamNamespace)}
-				label={categoryFilterLabel}
-				filterToggledUrl={(category) => {
-					const params = new URLSearchParams(searchParams);
+            <FilterCategory
+                items={categoryFilterOptions}
+                selectedItems={searchParams.getAll(categoryFilterParamNamespace)}
+                label={categoryFilterLabel}
+                filterToggledUrl={(category) => {
+                    const params = new URLSearchParams(searchParams);
 
-					return updateTernaryState_SearchParam({
-						searchParams: params,
-						key: categoryFilterParamNamespace,
-						value: category,
-						searchParamModifier: removePageOffsetSearchParam,
-					});
-				}}
-				defaultOpen={sectionsDefaultOpen ?? defaultOpenAdditionalFilters}
-				overrideOpenState={isFilteredThroughSearch(categoryFilterOptions)}
-			/>
+                    return updateTernaryState_SearchParam({
+                        searchParams: params,
+                        key: categoryFilterParamNamespace,
+                        value: category,
+                        searchParamModifier: removePageOffsetSearchParam,
+                    });
+                }}
+                defaultOpen={sectionsDefaultOpen ?? defaultOpenAdditionalFilters}
+                overrideOpenState={isFilteredThroughSearch(categoryFilterOptions)}
+            />
 
-			<FilterCategory
-				items={featureFilterOptions}
-				selectedItems={searchParams.getAll(categoryFilterParamNamespace)}
-				label={featureFilterLabel}
-				filterToggledUrl={(feature) => {
-					const params = new URLSearchParams(searchParams);
+            <FilterCategory
+                items={featureFilterOptions}
+                selectedItems={searchParams.getAll(categoryFilterParamNamespace)}
+                label={featureFilterLabel}
+                filterToggledUrl={(feature) => {
+                    const params = new URLSearchParams(searchParams);
 
-					return updateTernaryState_SearchParam({
-						searchParams: params,
-						key: categoryFilterParamNamespace,
-						value: feature,
-						searchParamModifier: removePageOffsetSearchParam,
-					});
-				}}
-				defaultOpen={sectionsDefaultOpen ?? defaultOpenAdditionalFilters}
-				overrideOpenState={isFilteredThroughSearch(featureFilterOptions)}
-			/>
+                    return updateTernaryState_SearchParam({
+                        searchParams: params,
+                        key: categoryFilterParamNamespace,
+                        value: feature,
+                        searchParamModifier: removePageOffsetSearchParam,
+                    });
+                }}
+                defaultOpen={sectionsDefaultOpen ?? defaultOpenAdditionalFilters}
+                overrideOpenState={isFilteredThroughSearch(featureFilterOptions)}
+            />
 
-			<FilterCategory
-				items={resolutionFilterOptions}
-				selectedItems={searchParams.getAll(categoryFilterParamNamespace)}
-				label={resolutionFilterLabel}
-				filterToggledUrl={(resolution) => {
-					const params = new URLSearchParams(searchParams);
+            <FilterCategory
+                items={resolutionFilterOptions}
+                selectedItems={searchParams.getAll(categoryFilterParamNamespace)}
+                label={resolutionFilterLabel}
+                filterToggledUrl={(resolution) => {
+                    const params = new URLSearchParams(searchParams);
 
-					return updateTernaryState_SearchParam({
-						searchParams: params,
-						key: categoryFilterParamNamespace,
-						value: resolution,
-						searchParamModifier: removePageOffsetSearchParam,
-					});
-				}}
-				defaultOpen={sectionsDefaultOpen ?? defaultOpenAdditionalFilters}
-				overrideOpenState={isFilteredThroughSearch(resolutionFilterOptions)}
-			/>
+                    return updateTernaryState_SearchParam({
+                        searchParams: params,
+                        key: categoryFilterParamNamespace,
+                        value: resolution,
+                        searchParamModifier: removePageOffsetSearchParam,
+                    });
+                }}
+                defaultOpen={sectionsDefaultOpen ?? defaultOpenAdditionalFilters}
+                overrideOpenState={isFilteredThroughSearch(resolutionFilterOptions)}
+            />
 
-			<FilterCategory
-				items={performanceFilterOptions}
-				selectedItems={searchParams.getAll(categoryFilterParamNamespace)}
-				label={performanceFilterLabel}
-				filterToggledUrl={(performance) => {
-					const params = new URLSearchParams(searchParams);
+            <FilterCategory
+                items={performanceFilterOptions}
+                selectedItems={searchParams.getAll(categoryFilterParamNamespace)}
+                label={performanceFilterLabel}
+                filterToggledUrl={(performance) => {
+                    const params = new URLSearchParams(searchParams);
 
-					return updateTernaryState_SearchParam({
-						searchParams: params,
-						key: categoryFilterParamNamespace,
-						value: performance,
-						searchParamModifier: removePageOffsetSearchParam,
-					});
-				}}
-				defaultOpen={sectionsDefaultOpen ?? defaultOpenAdditionalFilters}
-				overrideOpenState={isFilteredThroughSearch(performanceFilterOptions)}
-			/>
+                    return updateTernaryState_SearchParam({
+                        searchParams: params,
+                        key: categoryFilterParamNamespace,
+                        value: performance,
+                        searchParamModifier: removePageOffsetSearchParam,
+                    });
+                }}
+                defaultOpen={sectionsDefaultOpen ?? defaultOpenAdditionalFilters}
+                overrideOpenState={isFilteredThroughSearch(performanceFilterOptions)}
+            />
 
-			<FilterCategory
-				items={licenseFilterOptions}
-				selectedItems={searchParams.getAll(licenseFilterParamNamespace)}
-				label={licenseFilterLabel}
-				filterToggledUrl={(license) => {
-					const params = new URLSearchParams(searchParams);
+            <FilterCategory
+                items={licenseFilterOptions}
+                selectedItems={searchParams.getAll(licenseFilterParamNamespace)}
+                label={licenseFilterLabel}
+                filterToggledUrl={(license) => {
+                    const params = new URLSearchParams(searchParams);
 
-					return updateTernaryState_SearchParam({
-						searchParams: params,
-						key: licenseFilterParamNamespace,
-						value: license,
-						searchParamModifier: removePageOffsetSearchParam,
-					});
-				}}
-				defaultOpen={sectionsDefaultOpen ?? defaultOpenAdditionalFilters}
-				overrideOpenState={isFilteredThroughSearch(licenseFilterOptions)}
-			/>
-		</>
-	);
+                    return updateTernaryState_SearchParam({
+                        searchParams: params,
+                        key: licenseFilterParamNamespace,
+                        value: license,
+                        searchParamModifier: removePageOffsetSearchParam,
+                    });
+                }}
+                defaultOpen={sectionsDefaultOpen ?? defaultOpenAdditionalFilters}
+                overrideOpenState={isFilteredThroughSearch(licenseFilterOptions)}
+            />
+        </>
+    );
 }
 
 export default SearchFilters;
 
 interface FilterItem {
-	value: string;
-	label: string;
+    value: string;
+    label: string;
 }
 
 interface FilterCategoryProps {
-	items: FilterItem[] | string[];
-	selectedItems: string[];
-	label: string;
-	// The function is expected to return the search params after toggling the filter
-	filterToggledUrl: (prevVal: string) => URLSearchParams;
-	listWrapperClassName?: string;
-	className?: string;
-	formatLabel?: boolean;
-	footerItem?: React.ReactNode;
-	collapsible?: boolean;
-	defaultOpen?: boolean;
-	overrideOpenState?: boolean;
+    items: FilterItem[] | string[];
+    selectedItems: string[];
+    label: string;
+    // The function is expected to return the search params after toggling the filter
+    filterToggledUrl: (prevVal: string) => URLSearchParams;
+    listWrapperClassName?: string;
+    className?: string;
+    formatLabel?: boolean;
+    footerItem?: React.ReactNode;
+    collapsible?: boolean;
+    defaultOpen?: boolean;
+    overrideOpenState?: boolean;
 }
 
 function FilterCategory({
-	items,
-	selectedItems,
-	label,
-	filterToggledUrl,
-	className,
-	listWrapperClassName,
-	formatLabel = true,
-	footerItem,
-	collapsible = true,
-	defaultOpen = true,
-	overrideOpenState,
+    items,
+    selectedItems,
+    label,
+    filterToggledUrl,
+    className,
+    listWrapperClassName,
+    formatLabel = true,
+    footerItem,
+    collapsible = true,
+    defaultOpen = true,
+    overrideOpenState,
 }: FilterCategoryProps) {
-	const { t } = useTranslation();
-	const [_, setSearchParams] = useSearchParams();
-	const [_isOpen, setIsOpen] = useState(defaultOpen);
-	const isOpen = overrideOpenState ?? _isOpen;
+    const { t } = useTranslation();
+    const [_, setSearchParams] = useSearchParams();
+    const [_isOpen, setIsOpen] = useState(defaultOpen);
+    const isOpen = overrideOpenState ?? _isOpen;
 
-	if (!items.length) return null;
+    if (!items.length) return null;
 
-	function toggleVisibility(e?: React.MouseEvent) {
-		e?.stopPropagation();
-		setIsOpen((prev) => !prev);
-	}
+    function toggleVisibility(e?: React.MouseEvent) {
+        e?.stopPropagation();
+        setIsOpen((prev) => !prev);
+    }
 
-	const isVisible = isOpen || !collapsible;
+    const isVisible = isOpen || !collapsible;
 
-	return (
-		<section className={cn("filterCategory grid grid-cols-1", className)}>
-			{/** biome-ignore lint/a11y/noStaticElementInteractions: -- */}
-			<div
-				className={cn("flex items-center justify-between gap-x-2 p-0.5", collapsible && "cursor-pointer")}
-				onClick={toggleVisibility}
-				onKeyDown={(e) => {
-					if (e.code === "Enter") toggleVisibility();
-				}}
-			>
-				<h3 className="font-bold text-base">{label}</h3>
-				{collapsible && (
-					<button
-						type="button"
-						onClick={toggleVisibility}
-						className="text-foreground-extra-muted"
-						aria-label="Toggle visibility"
-					>
-						{isOpen ? (
-							<ChevronUpIcon aria-hidden className="h-5 w-5" />
-						) : (
-							<ChevronDownIcon aria-hidden className="h-5 w-5" />
-						)}
-					</button>
-				)}
-			</div>
+    return (
+        <section className={cn("filterCategory grid grid-cols-1", className)}>
+            {/** biome-ignore lint/a11y/noStaticElementInteractions: -- */}
+            <div
+                className={cn("flex items-center justify-between gap-x-2 p-0.5", collapsible && "cursor-pointer")}
+                onClick={toggleVisibility}
+                onKeyDown={(e) => {
+                    if (e.code === "Enter") toggleVisibility();
+                }}
+            >
+                <h3 className="font-bold text-base">{label}</h3>
+                {collapsible && (
+                    <button
+                        type="button"
+                        onClick={toggleVisibility}
+                        className="text-foreground-extra-muted"
+                        aria-label="Toggle visibility"
+                    >
+                        {isOpen ? (
+                            <ChevronUpIcon aria-hidden className="h-5 w-5" />
+                        ) : (
+                            <ChevronDownIcon aria-hidden className="h-5 w-5" />
+                        )}
+                    </button>
+                )}
+            </div>
 
-			<div className={cn("grid ps-1", collapsibleBoxClassName(isVisible))}>
-				<div>
-					<div className={cn("grid gap-1 py-1", listWrapperClassName)}>
-						{items.map((item) => {
-							const itemValue = typeof item === "string" ? item : item.value;
-							let _itemLabel = typeof item === "string" ? item : item.label;
+            <div className={cn("grid ps-1", collapsibleBoxClassName(isVisible))}>
+                <div>
+                    <div className={cn("grid gap-1 py-1", listWrapperClassName)}>
+                        {items.map((item) => {
+                            const itemValue = typeof item === "string" ? item : item.value;
+                            let _itemLabel = typeof item === "string" ? item : item.label;
 
-							// @ts-expect-error
-							const tagTranslation = t.search.tags[itemValue];
-							if (tagTranslation) {
-								_itemLabel = tagTranslation;
-							}
+                            // @ts-expect-error
+                            const tagTranslation = t.search.tags[itemValue];
+                            if (tagTranslation) {
+                                _itemLabel = tagTranslation;
+                            }
 
-							const itemLabel = formatLabel ? CapitalizeAndFormatString(_itemLabel) || "" : _itemLabel;
-							const state = selectedItems.includes(itemValue)
-								? TernaryStates.INCLUDED
-								: selectedItems.includes(NOT(itemValue))
-									? TernaryStates.EXCLUDED
-									: TernaryStates.UNCHECKED;
+                            const itemLabel = formatLabel ? CapitalizeAndFormatString(_itemLabel) || "" : _itemLabel;
+                            const state = selectedItems.includes(itemValue)
+                                ? TernaryStates.INCLUDED
+                                : selectedItems.includes(NOT(itemValue))
+                                  ? TernaryStates.EXCLUDED
+                                  : TernaryStates.UNCHECKED;
 
-							return (
-								<LabelledTernaryCheckbox
-									key={itemValue}
-									state={state}
-									onCheckedChange={() => {
-										const params = filterToggledUrl(itemValue);
-										setSearchParams(params, { preventScrollReset: true });
-									}}
-									icon={<TagIcon name={itemValue} />}
-								>
-									{itemLabel}
-								</LabelledTernaryCheckbox>
-							);
-						})}
-					</div>
+                            return (
+                                <LabelledTernaryCheckbox
+                                    key={itemValue}
+                                    state={state}
+                                    onCheckedChange={() => {
+                                        const params = filterToggledUrl(itemValue);
+                                        setSearchParams(params, { preventScrollReset: true });
+                                    }}
+                                    icon={<TagIcon name={itemValue} />}
+                                >
+                                    {itemLabel}
+                                </LabelledTernaryCheckbox>
+                            );
+                        })}
+                    </div>
 
-					{footerItem}
-				</div>
-			</div>
-		</section>
-	);
+                    {footerItem}
+                </div>
+            </div>
+        </section>
+    );
 }

@@ -1,8 +1,8 @@
 export interface CopyrightProps {
-	title: string;
-	adminEmail: string;
-	siteName_Short: string;
-	siteName_Long: string;
+    title: string;
+    adminEmail: string;
+    siteName_Short: string;
+    siteName_Long: string;
 }
 
 export const CopyrightPolicy = (props: CopyrightProps) => `

@@ -8,11 +8,11 @@ import type { z } from "zod/v4";
 import { GetManyCollections, UpdateCollection } from "~/db/collection_item";
 import { CreateFile, DeleteFile_ByID, DeleteManyFiles_ByID } from "~/db/file_item";
 import {
-	DeleteProject,
-	GetProject_Details,
-	GetProject_ListItem,
-	UpdateOrRemoveProject_FromSearchIndex,
-	UpdateProject,
+    DeleteProject,
+    GetProject_Details,
+    GetProject_ListItem,
+    UpdateOrRemoveProject_FromSearchIndex,
+    UpdateProject,
 } from "~/db/project_item";
 import { DeleteTeam } from "~/db/team_item";
 import { Delete_UserProjectsCache, GetManyUsers, UpdateUser } from "~/db/user_item";
@@ -23,363 +23,363 @@ import { deleteDirectory, deleteProjectFile, deleteProjectVersionDirectory, save
 import { projectsDir } from "~/services/storage/utils";
 import { FILE_STORAGE_SERVICE, type UserSessionData } from "~/types";
 import {
-	HTTP_STATUS,
-	invalidRequestResponseData,
-	notFoundResponseData,
-	unauthorizedReqResponseData,
+    HTTP_STATUS,
+    invalidRequestResponseData,
+    notFoundResponseData,
+    unauthorizedReqResponseData,
 } from "~/utils/http";
 import { getAverageColor, resizeImageToWebp } from "~/utils/images";
 import { generateDbId } from "~/utils/str";
 import { isProjectIndexable } from "../../utils";
 
 export async function updateGeneralProjectData(
-	projectId: string,
-	userSession: UserSessionData,
-	formData: z.infer<typeof generalProjectSettingsFormSchema>,
+    projectId: string,
+    userSession: UserSessionData,
+    formData: z.infer<typeof generalProjectSettingsFormSchema>,
 ) {
-	const project = await GetProject_ListItem(projectId);
-	if (!project?.id) return { data: { success: false }, status: HTTP_STATUS.NOT_FOUND };
+    const project = await GetProject_ListItem(projectId);
+    if (!project?.id) return { data: { success: false }, status: HTTP_STATUS.NOT_FOUND };
 
-	const currMember = getCurrMember(
-		userSession.id,
-		project.team?.members || [],
-		project.organisation?.team.members || [],
-	);
-	const canEditProject = doesMemberHaveAccess(
-		ProjectPermission.EDIT_DETAILS,
-		currMember?.permissions as ProjectPermission[],
-		currMember?.isOwner,
-		userSession.role,
-	);
-	if (!canEditProject) return unauthorizedReqResponseData("You don't have the permission to update project details");
+    const currMember = getCurrMember(
+        userSession.id,
+        project.team?.members || [],
+        project.organisation?.team.members || [],
+    );
+    const canEditProject = doesMemberHaveAccess(
+        ProjectPermission.EDIT_DETAILS,
+        currMember?.permissions as ProjectPermission[],
+        currMember?.isOwner,
+        userSession.role,
+    );
+    if (!canEditProject) return unauthorizedReqResponseData("You don't have the permission to update project details");
 
-	// If the project slug has been updated
-	if (formData.slug !== project.slug) {
-		// Check if the slug is available
-		const existingProjectWithSameSlug = await GetProject_ListItem(formData.slug, formData.slug);
-		if (existingProjectWithSameSlug?.id)
-			return invalidRequestResponseData(`The slug "${formData.slug}" is already taken`);
-	}
+    // If the project slug has been updated
+    if (formData.slug !== project.slug) {
+        // Check if the slug is available
+        const existingProjectWithSameSlug = await GetProject_ListItem(formData.slug, formData.slug);
+        if (existingProjectWithSameSlug?.id)
+            return invalidRequestResponseData(`The slug "${formData.slug}" is already taken`);
+    }
 
-	// Check if the icon was updated
-	// If the formdata icon is empty and the project has an icon, delete the icon
-	if (!formData.icon && project.iconFileId) {
-		await deleteProjectIcon(userSession, project.slug);
-	}
+    // Check if the icon was updated
+    // If the formdata icon is empty and the project has an icon, delete the icon
+    if (!formData.icon && project.iconFileId) {
+        await deleteProjectIcon(userSession, project.slug);
+    }
 
-	// If the formdata icon is a file, update the project icon
-	if (formData.icon instanceof File) {
-		await updateProjectIcon(userSession, project.slug, formData.icon);
-	}
+    // If the formdata icon is a file, update the project icon
+    if (formData.icon instanceof File) {
+        await updateProjectIcon(userSession, project.slug, formData.icon);
+    }
 
-	const EnvSupport = GetProjectEnvironment(formData.type, formData.clientSide, formData.serverSide);
+    const EnvSupport = GetProjectEnvironment(formData.type, formData.clientSide, formData.serverSide);
 
-	const validTags = getValidProjectCategories(formData.type).map((t) => t.name);
-	const updatedTags = project.categories.filter((c) => validTags.includes(c));
-	const updatedFeaturedTags = project.featuredCategories.filter((c) => updatedTags.includes(c));
+    const validTags = getValidProjectCategories(formData.type).map((t) => t.name);
+    const updatedTags = project.categories.filter((c) => validTags.includes(c));
+    const updatedFeaturedTags = project.featuredCategories.filter((c) => updatedTags.includes(c));
 
-	const UpdatedProject = await UpdateProject({
-		where: {
-			id: project.id,
-		},
-		data: {
-			name: formData.name,
-			slug: formData.slug,
-			type: formData.type,
-			visibility: formData.visibility,
-			clientSide: EnvSupport.clientSide,
-			serverSide: EnvSupport.serverSide,
-			summary: formData.summary,
-			categories: updatedTags,
-			featuredCategories: updatedFeaturedTags,
-		},
-	});
+    const UpdatedProject = await UpdateProject({
+        where: {
+            id: project.id,
+        },
+        data: {
+            name: formData.name,
+            slug: formData.slug,
+            type: formData.type,
+            visibility: formData.visibility,
+            clientSide: EnvSupport.clientSide,
+            serverSide: EnvSupport.serverSide,
+            summary: formData.summary,
+            categories: updatedTags,
+            featuredCategories: updatedFeaturedTags,
+        },
+    });
 
-	// Update the project in the search index
-	await UpdateOrRemoveProject_FromSearchIndex(
-		project.id,
-		{
-			visibility: project.visibility,
-			status: project.status,
-		},
-		{
-			visibility: UpdatedProject.visibility,
-			status: UpdatedProject.status,
-		},
-	);
+    // Update the project in the search index
+    await UpdateOrRemoveProject_FromSearchIndex(
+        project.id,
+        {
+            visibility: project.visibility,
+            status: project.status,
+        },
+        {
+            visibility: UpdatedProject.visibility,
+            status: UpdatedProject.status,
+        },
+    );
 
-	return {
-		data: { success: true, message: "Project details updated", slug: UpdatedProject.slug },
-		status: HTTP_STATUS.OK,
-	};
+    return {
+        data: { success: true, message: "Project details updated", slug: UpdatedProject.slug },
+        status: HTTP_STATUS.OK,
+    };
 }
 
 export async function deleteProject(userSession: UserSessionData, projectId: string) {
-	const project = await GetProject_Details(projectId);
-	if (!project?.id) return notFoundResponseData("Project not found");
+    const project = await GetProject_Details(projectId);
+    if (!project?.id) return notFoundResponseData("Project not found");
 
-	// Check if the user has the permission to delete the project
-	const memberObj = getCurrMember(
-		userSession.id,
-		project.team?.members || [],
-		project.organisation?.team.members || [],
-	);
-	const hasDeleteAccess = doesMemberHaveAccess(
-		ProjectPermission.DELETE_PROJECT,
-		memberObj?.permissions as ProjectPermission[],
-		memberObj?.isOwner,
-		userSession.role,
-	);
-	if (!hasDeleteAccess) return unauthorizedReqResponseData("You don't have the permission to delete the project");
+    // Check if the user has the permission to delete the project
+    const memberObj = getCurrMember(
+        userSession.id,
+        project.team?.members || [],
+        project.organisation?.team.members || [],
+    );
+    const hasDeleteAccess = doesMemberHaveAccess(
+        ProjectPermission.DELETE_PROJECT,
+        memberObj?.permissions as ProjectPermission[],
+        memberObj?.isOwner,
+        userSession.role,
+    );
+    if (!hasDeleteAccess) return unauthorizedReqResponseData("You don't have the permission to delete the project");
 
-	// Get all the project versions
-	const Versions = (await GetVersions(project.id))?.versions || [];
-	const versionIds = Versions.map((version) => version.id);
-	const dbFileIds = Versions.flatMap((version) => version.files.map((file) => file.fileId));
-	const galleryFileIds = project.gallery.map((file) => file.imageFileId);
+    // Get all the project versions
+    const Versions = (await GetVersions(project.id))?.versions || [];
+    const versionIds = Versions.map((version) => version.id);
+    const dbFileIds = Versions.flatMap((version) => version.files.map((file) => file.fileId));
+    const galleryFileIds = project.gallery.map((file) => file.imageFileId);
 
-	await Promise.all([
-		deleteVersionsData(project.id, versionIds, dbFileIds, false),
+    await Promise.all([
+        deleteVersionsData(project.id, versionIds, dbFileIds, false),
 
-		// Delete all the image files
-		galleryFileIds.length > 0 ? DeleteManyFiles_ByID(galleryFileIds) : null,
+        // Delete all the image files
+        galleryFileIds.length > 0 ? DeleteManyFiles_ByID(galleryFileIds) : null,
 
-		// Delete project icon file
-		project.iconFileId ? DeleteFile_ByID(project.iconFileId) : null,
+        // Delete project icon file
+        project.iconFileId ? DeleteFile_ByID(project.iconFileId) : null,
 
-		// Delete the project
-		DeleteProject({
-			where: {
-				id: project.id,
-			},
-		}),
+        // Delete the project
+        DeleteProject({
+            where: {
+                id: project.id,
+            },
+        }),
 
-		// Delete the project's storage folder
-		deleteDirectory(FILE_STORAGE_SERVICE.LOCAL, projectsDir(project.id)),
+        // Delete the project's storage folder
+        deleteDirectory(FILE_STORAGE_SERVICE.LOCAL, projectsDir(project.id)),
 
-		// Delete the projects list cache from all team members
-		...project.team.members.map((member) => {
-			return Delete_UserProjectsCache(member.userId);
-		}),
+        // Delete the projects list cache from all team members
+        ...project.team.members.map((member) => {
+            return Delete_UserProjectsCache(member.userId);
+        }),
 
-		// Delete the project from following list of all the members
-		deleteProjectFromUserFollows(project.id),
+        // Delete the project from following list of all the members
+        deleteProjectFromUserFollows(project.id),
 
-		// Delete the project from all collections
-		deleteProjectFromUserCollections(project.id),
-	]);
+        // Delete the project from all collections
+        deleteProjectFromUserCollections(project.id),
+    ]);
 
-	await prisma.thread.delete({
-		where: {
-			id: project.threadId,
-		},
-	});
+    await prisma.thread.delete({
+        where: {
+            id: project.threadId,
+        },
+    });
 
-	try {
-		await prisma.projectDailyStats.delete({
-			where: {
-				projectId: project.id,
-			},
-		});
-	} catch {}
+    try {
+        await prisma.projectDailyStats.delete({
+            where: {
+                projectId: project.id,
+            },
+        });
+    } catch {}
 
-	// Delete the project associated team
-	await DeleteTeam({
-		where: {
-			id: project.team.id,
-		},
-	});
-	// ? All the teamMember tables will be automatically deleted
+    // Delete the project associated team
+    await DeleteTeam({
+        where: {
+            id: project.team.id,
+        },
+    });
+    // ? All the teamMember tables will be automatically deleted
 
-	return {
-		data: {
-			success: true,
-			message: "Project deleted",
-		},
-		status: HTTP_STATUS.OK,
-	};
+    return {
+        data: {
+            success: true,
+            message: "Project deleted",
+        },
+        status: HTTP_STATUS.OK,
+    };
 }
 
 export async function deleteVersionsData(
-	projectId: string,
-	ids: string[],
-	fileIds: string[],
-	deleteUploadedFiles = true,
+    projectId: string,
+    ids: string[],
+    fileIds: string[],
+    deleteUploadedFiles = true,
 ) {
-	await Promise.all([
-		// Delete all the dbFiles
-		DeleteManyFiles_ByID(fileIds),
+    await Promise.all([
+        // Delete all the dbFiles
+        DeleteManyFiles_ByID(fileIds),
 
-		// ? No need to manually delete the versionFile tables as the version deletion will automatically delete the versionFile tables
-		// ? Same for version dependencies
+        // ? No need to manually delete the versionFile tables as the version deletion will automatically delete the versionFile tables
+        // ? Same for version dependencies
 
-		DeleteManyVersions_ByIds(ids, projectId),
-	]);
+        DeleteManyVersions_ByIds(ids, projectId),
+    ]);
 
-	if (!deleteUploadedFiles) return;
-	await Promise.all(
-		ids.map((versionId) => deleteProjectVersionDirectory(FILE_STORAGE_SERVICE.LOCAL, projectId, versionId)),
-	);
+    if (!deleteUploadedFiles) return;
+    await Promise.all(
+        ids.map((versionId) => deleteProjectVersionDirectory(FILE_STORAGE_SERVICE.LOCAL, projectId, versionId)),
+    );
 }
 
 export async function updateProjectIcon(userSession: UserSessionData, projectId: string, icon: File) {
-	const Project = await GetProject_ListItem(projectId);
-	if (!Project) return { data: { success: false, message: "Project not found" }, status: HTTP_STATUS.NOT_FOUND };
+    const Project = await GetProject_ListItem(projectId);
+    if (!Project) return { data: { success: false, message: "Project not found" }, status: HTTP_STATUS.NOT_FOUND };
 
-	const memberObj = getCurrMember(
-		userSession.id,
-		Project.team?.members || [],
-		Project.organisation?.team.members || [],
-	);
-	const hasEditAccess = doesMemberHaveAccess(
-		ProjectPermission.EDIT_DETAILS,
-		memberObj?.permissions as ProjectPermission[],
-		memberObj?.isOwner,
-		userSession.role,
-	);
-	if (!hasEditAccess) return unauthorizedReqResponseData("You don't have the permission to update project icon");
+    const memberObj = getCurrMember(
+        userSession.id,
+        Project.team?.members || [],
+        Project.organisation?.team.members || [],
+    );
+    const hasEditAccess = doesMemberHaveAccess(
+        ProjectPermission.EDIT_DETAILS,
+        memberObj?.permissions as ProjectPermission[],
+        memberObj?.isOwner,
+        userSession.role,
+    );
+    if (!hasEditAccess) return unauthorizedReqResponseData("You don't have the permission to update project icon");
 
-	// Delete the previous icon if it exists
-	if (Project.iconFileId) {
-		const deletedDbFile = await DeleteFile_ByID(Project.iconFileId);
-		await deleteProjectFile(deletedDbFile?.storageService as FILE_STORAGE_SERVICE, Project.id, deletedDbFile?.name);
-	}
+    // Delete the previous icon if it exists
+    if (Project.iconFileId) {
+        const deletedDbFile = await DeleteFile_ByID(Project.iconFileId);
+        await deleteProjectFile(deletedDbFile?.storageService as FILE_STORAGE_SERVICE, Project.id, deletedDbFile?.name);
+    }
 
-	const uploadedImg_Type = await getFileType(icon);
-	if (!uploadedImg_Type)
-		return { data: { success: false, message: "Invalid file type" }, status: HTTP_STATUS.BAD_REQUEST };
+    const uploadedImg_Type = await getFileType(icon);
+    if (!uploadedImg_Type)
+        return { data: { success: false, message: "Invalid file type" }, status: HTTP_STATUS.BAD_REQUEST };
 
-	const iconImg_Type = FileType.WEBP;
-	const iconImg_Webp = await resizeImageToWebp(icon, uploadedImg_Type, {
-		width: ICON_WIDTH,
-		height: ICON_WIDTH,
-		fit: "cover",
-	});
-	const iconImg_Id = `${generateDbId()}_${ICON_WIDTH}.${iconImg_Type}`;
-	const icon_SaveUrl = await saveProjectFile(FILE_STORAGE_SERVICE.LOCAL, Project.id, iconImg_Webp, iconImg_Id);
-	if (!icon_SaveUrl)
-		return { data: { success: false, message: "Failed to save the icon" }, status: HTTP_STATUS.SERVER_ERROR };
+    const iconImg_Type = FileType.WEBP;
+    const iconImg_Webp = await resizeImageToWebp(icon, uploadedImg_Type, {
+        width: ICON_WIDTH,
+        height: ICON_WIDTH,
+        fit: "cover",
+    });
+    const iconImg_Id = `${generateDbId()}_${ICON_WIDTH}.${iconImg_Type}`;
+    const icon_SaveUrl = await saveProjectFile(FILE_STORAGE_SERVICE.LOCAL, Project.id, iconImg_Webp, iconImg_Id);
+    if (!icon_SaveUrl)
+        return { data: { success: false, message: "Failed to save the icon" }, status: HTTP_STATUS.SERVER_ERROR };
 
-	const projectColor = await getAverageColor(iconImg_Webp);
+    const projectColor = await getAverageColor(iconImg_Webp);
 
-	await Promise.all([
-		CreateFile({
-			data: {
-				id: iconImg_Id,
-				name: iconImg_Id,
-				size: iconImg_Webp.size,
-				type: iconImg_Type,
-				url: icon_SaveUrl,
-				storageService: FILE_STORAGE_SERVICE.LOCAL,
-			},
-		}),
+    await Promise.all([
+        CreateFile({
+            data: {
+                id: iconImg_Id,
+                name: iconImg_Id,
+                size: iconImg_Webp.size,
+                type: iconImg_Type,
+                url: icon_SaveUrl,
+                storageService: FILE_STORAGE_SERVICE.LOCAL,
+            },
+        }),
 
-		UpdateProject({
-			where: {
-				id: Project.id,
-			},
-			data: {
-				iconFileId: iconImg_Id,
-				color: projectColor,
-			},
-		}),
-	]);
+        UpdateProject({
+            where: {
+                id: Project.id,
+            },
+            data: {
+                iconFileId: iconImg_Id,
+                color: projectColor,
+            },
+        }),
+    ]);
 
-	// Update the project in the search index
-	isProjectIndexable(Project.visibility, Project.status) ? UpdateProjects_SearchIndex([Project.id]) : null;
+    // Update the project in the search index
+    isProjectIndexable(Project.visibility, Project.status) ? UpdateProjects_SearchIndex([Project.id]) : null;
 
-	return { data: { success: true, message: "Project icon updated" }, status: HTTP_STATUS.OK };
+    return { data: { success: true, message: "Project icon updated" }, status: HTTP_STATUS.OK };
 }
 
 export async function deleteProjectIcon(userSession: UserSessionData, projectId: string) {
-	const project = await GetProject_ListItem(projectId);
-	if (!project) return notFoundResponseData("Project not found");
-	if (!project.iconFileId) return invalidRequestResponseData("Project does not have any icon");
+    const project = await GetProject_ListItem(projectId);
+    if (!project) return notFoundResponseData("Project not found");
+    if (!project.iconFileId) return invalidRequestResponseData("Project does not have any icon");
 
-	const memberObj = getCurrMember(
-		userSession.id,
-		project.team?.members || [],
-		project.organisation?.team.members || [],
-	);
-	const hasEditAccess = doesMemberHaveAccess(
-		ProjectPermission.EDIT_DETAILS,
-		memberObj?.permissions as ProjectPermission[],
-		memberObj?.isOwner,
-		userSession.role,
-	);
-	if (!hasEditAccess) return unauthorizedReqResponseData("You don't have the permission to delete project icon");
+    const memberObj = getCurrMember(
+        userSession.id,
+        project.team?.members || [],
+        project.organisation?.team.members || [],
+    );
+    const hasEditAccess = doesMemberHaveAccess(
+        ProjectPermission.EDIT_DETAILS,
+        memberObj?.permissions as ProjectPermission[],
+        memberObj?.isOwner,
+        userSession.role,
+    );
+    if (!hasEditAccess) return unauthorizedReqResponseData("You don't have the permission to delete project icon");
 
-	const deletedDbFile = await DeleteFile_ByID(project.iconFileId);
-	await Promise.all([
-		deleteProjectFile(deletedDbFile.storageService as FILE_STORAGE_SERVICE, project.id, deletedDbFile.name),
+    const deletedDbFile = await DeleteFile_ByID(project.iconFileId);
+    await Promise.all([
+        deleteProjectFile(deletedDbFile.storageService as FILE_STORAGE_SERVICE, project.id, deletedDbFile.name),
 
-		UpdateProject({
-			where: {
-				id: project.id,
-			},
-			data: {
-				iconFileId: null,
-				color: null,
-			},
-		}),
-	]);
+        UpdateProject({
+            where: {
+                id: project.id,
+            },
+            data: {
+                iconFileId: null,
+                color: null,
+            },
+        }),
+    ]);
 
-	// Update the project in the search index
-	isProjectIndexable(project.visibility, project.status) ? UpdateProjects_SearchIndex([project.id]) : null;
+    // Update the project in the search index
+    isProjectIndexable(project.visibility, project.status) ? UpdateProjects_SearchIndex([project.id]) : null;
 
-	return { data: { success: true, message: "Project icon deleted" }, status: HTTP_STATUS.OK };
+    return { data: { success: true, message: "Project icon deleted" }, status: HTTP_STATUS.OK };
 }
 
 async function deleteProjectFromUserFollows(projectId: string) {
-	const users = await GetManyUsers({
-		where: {
-			followingProjects: {
-				has: projectId,
-			},
-		},
-	});
+    const users = await GetManyUsers({
+        where: {
+            followingProjects: {
+                has: projectId,
+            },
+        },
+    });
 
-	const promises = [];
-	for (const user of users) {
-		const updatedFollowingProjects = user.followingProjects.filter((id) => id !== projectId);
-		promises.push(
-			UpdateUser({
-				where: {
-					id: user.id,
-				},
-				data: {
-					followingProjects: updatedFollowingProjects,
-				},
-			}),
-		);
-	}
+    const promises = [];
+    for (const user of users) {
+        const updatedFollowingProjects = user.followingProjects.filter((id) => id !== projectId);
+        promises.push(
+            UpdateUser({
+                where: {
+                    id: user.id,
+                },
+                data: {
+                    followingProjects: updatedFollowingProjects,
+                },
+            }),
+        );
+    }
 
-	return await Promise.all(promises);
+    return await Promise.all(promises);
 }
 
 async function deleteProjectFromUserCollections(projectId: string) {
-	const collections = await GetManyCollections({
-		where: {
-			projects: {
-				has: projectId,
-			},
-		},
-	});
+    const collections = await GetManyCollections({
+        where: {
+            projects: {
+                has: projectId,
+            },
+        },
+    });
 
-	const promises = [];
-	for (const collection of collections) {
-		const updatedProjects = collection.projects.filter((id) => id !== projectId);
-		promises.push(
-			UpdateCollection({
-				where: {
-					id: collection.id,
-				},
-				data: {
-					projects: updatedProjects,
-				},
-			}),
-		);
-	}
+    const promises = [];
+    for (const collection of collections) {
+        const updatedProjects = collection.projects.filter((id) => id !== projectId);
+        promises.push(
+            UpdateCollection({
+                where: {
+                    id: collection.id,
+                },
+                data: {
+                    projects: updatedProjects,
+                },
+            }),
+        );
+    }
 
-	return await Promise.all(promises);
+    return await Promise.all(promises);
 }

@@ -10,28 +10,28 @@ import { resJson, serverFetch } from "~/utils/server-fetch";
 import type { Route } from "./+types/organizations";
 
 export default function () {
-	const session = useSession();
-	const orgs = useLoaderData<typeof loader>();
+    const session = useSession();
+    const orgs = useLoaderData<typeof loader>();
 
-	if (!session?.id) return <Redirect to="/login" />;
-	return <OrganisationDashboardPage organisations={orgs} />;
+    if (!session?.id) return <Redirect to="/login" />;
+    return <OrganisationDashboardPage organisations={orgs} />;
 }
 
 export async function loader(props: Route.LoaderArgs): Promise<Organisation[]> {
-	const res = await serverFetch(props.request, "/api/organization");
-	const orgs = await resJson<Organisation[]>(res);
+    const res = await serverFetch(props.request, "/api/organization");
+    const orgs = await resJson<Organisation[]>(res);
 
-	return orgs || [];
+    return orgs || [];
 }
 
 export function meta(props: Route.MetaArgs) {
-	const { t } = useTranslation();
+    const { t } = useTranslation();
 
-	return MetaTags({
-		location: props.location,
-		title: t.meta.addContext(t.dashboard.organizations, Config.SITE_NAME_SHORT),
-		description: t.dashboard.organizations,
-		image: Config.SITE_ICON,
-		url: undefined,
-	});
+    return MetaTags({
+        location: props.location,
+        title: t.meta.addContext(t.dashboard.organizations, Config.SITE_NAME_SHORT),
+        description: t.dashboard.organizations,
+        image: Config.SITE_ICON,
+        url: undefined,
+    });
 }

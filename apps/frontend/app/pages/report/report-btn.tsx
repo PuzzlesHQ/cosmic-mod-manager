@@ -8,44 +8,48 @@ import { LoginDialog } from "~/pages/auth/login/login-card";
 import { ITEM_ID_PARAM_KEY, ITEM_TYPE_PARAM_KEY } from "~/pages/report/page";
 
 interface Props {
-	itemType: ReportItemType;
-	itemId: string;
-	className?: string;
-	btnVariant?: ButtonVariants_T["variant"];
-	btnSize?: ButtonVariants_T["size"];
+    itemType: ReportItemType;
+    itemId: string;
+    className?: string;
+    btnVariant?: ButtonVariants_T["variant"];
+    btnSize?: ButtonVariants_T["size"];
 }
 
 export default function ReportButton(props: Props) {
-	const { t } = useTranslation();
-	const session = useSession();
-	const navigate = useNavigate();
+    const { t } = useTranslation();
+    const session = useSession();
+    const navigate = useNavigate();
 
-	function handleClick() {
-		navigate(
-			`/report?${ITEM_TYPE_PARAM_KEY}=${props.itemType}&${ITEM_ID_PARAM_KEY}=${encodeURIComponent(props.itemId)}`,
-		);
-	}
+    function handleClick() {
+        navigate(
+            `/report?${ITEM_TYPE_PARAM_KEY}=${props.itemType}&${ITEM_ID_PARAM_KEY}=${encodeURIComponent(props.itemId)}`,
+        );
+    }
 
-	if (!session?.id) {
-		return (
-			<LoginDialog>
-				<Button variant={props.btnVariant || "secondary-destructive"} size={props.btnSize} className={props.className}>
-					<FlagIcon aria-hidden className="h-btn-icon w-btn-icon" />
-					{t.common.report}
-				</Button>
-			</LoginDialog>
-		);
-	}
+    if (!session?.id) {
+        return (
+            <LoginDialog>
+                <Button
+                    variant={props.btnVariant || "secondary-destructive"}
+                    size={props.btnSize}
+                    className={props.className}
+                >
+                    <FlagIcon aria-hidden className="h-btn-icon w-btn-icon" />
+                    {t.common.report}
+                </Button>
+            </LoginDialog>
+        );
+    }
 
-	return (
-		<Button
-			variant={props.btnVariant || "secondary-destructive"}
-			size={props.btnSize}
-			className={props.className}
-			onClick={handleClick}
-		>
-			<FlagIcon aria-hidden className="h-btn-icon w-btn-icon" />
-			{t.common.report}
-		</Button>
-	);
+    return (
+        <Button
+            variant={props.btnVariant || "secondary-destructive"}
+            size={props.btnSize}
+            className={props.className}
+            onClick={handleClick}
+        >
+            <FlagIcon aria-hidden className="h-btn-icon w-btn-icon" />
+            {t.common.report}
+        </Button>
+    );
 }

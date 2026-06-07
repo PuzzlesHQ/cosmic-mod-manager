@@ -7,20 +7,20 @@ import { resJson, serverFetch } from "~/utils/server-fetch";
 import type { Route } from "./+types/page";
 
 export default function () {
-	const data = useLoaderData<typeof loader>();
-	if (!data) return <NotFoundPage />;
+    const data = useLoaderData<typeof loader>();
+    if (!data) return <NotFoundPage />;
 
-	return <ReportDetails data={data} />;
+    return <ReportDetails data={data} />;
 }
 
 export async function loader(props: Route.LoaderArgs): Promise<DetailedReport | null> {
-	const reportId = props.params.reportId;
-	const res = await serverFetch(props.request, `/api/report/${reportId}`);
-	const report = await resJson<Report>(res);
+    const reportId = props.params.reportId;
+    const res = await serverFetch(props.request, `/api/report/${reportId}`);
+    const report = await resJson<Report>(res);
 
-	if (!report) return null;
-	const data = getDetailedReports(await ReportsDataLoader(props.request, [report]))[0];
+    if (!report) return null;
+    const data = getDetailedReports(await ReportsDataLoader(props.request, [report]))[0];
 
-	if (!data?.id || !data.reporterUser?.id) return null;
-	return data;
+    if (!data?.id || !data.reporterUser?.id) return null;
+    return data;
 }

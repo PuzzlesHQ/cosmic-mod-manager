@@ -1,25 +1,25 @@
 .search-page-grid-layout {
-	display: grid;
-	grid-template-rows: auto 1fr;
-	grid-template-columns: 1fr;
-	grid-template-areas:
-		"sidebar"
-		"content";
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        "sidebar"
+        "content";
 }
 
 @media (min-width: 64rem) {
-	.search-page-grid-layout {
-		grid-template-rows: 1fr;
-		grid-template-columns: 19rem 1fr;
-		grid-template-areas: "sidebar content";
-	}
+    .search-page-grid-layout {
+        grid-template-rows: 1fr;
+        grid-template-columns: 19rem 1fr;
+        grid-template-areas: "sidebar content";
+    }
 }
 
 .filterCategory {
-	@apply pb-3 border-b border-border;
+    @apply pb-3 border-b border-border;
 }
 
 .filterCategory:last-child {
-	border: none;
-	padding-bottom: 0;
+    border: none;
+    padding-bottom: 0;
 }

@@ -12,142 +12,142 @@ import { orgIconUrl, userFileUrl } from "~/utils/urls";
 import { getManyProjects } from "../../controllers";
 
 export async function getOrganisationById(userSession: UserSessionData | null, slug: string) {
-	const organisation = await GetOrganization_Data(slug, slug);
-	if (!organisation) {
-		return notFoundResponseData("Organisation not found");
-	}
-	const currMember = getCurrMember(userSession?.id, [], organisation.team.members);
-	const isMember = currMember?.accepted === true;
+    const organisation = await GetOrganization_Data(slug, slug);
+    if (!organisation) {
+        return notFoundResponseData("Organisation not found");
+    }
+    const currMember = getCurrMember(userSession?.id, [], organisation.team.members);
+    const isMember = currMember?.accepted === true;
 
-	const formattedData = {
-		id: organisation.id,
-		teamId: organisation.teamId,
-		name: organisation.name,
-		slug: organisation.slug,
-		icon: orgIconUrl(organisation.id, organisation.iconFileId),
-		description: organisation.description,
-		members: organisation.team.members.map((member) => {
-			return {
-				id: member.id,
-				userId: member.userId,
-				teamId: member.teamId,
-				userName: member.user.userName,
-				avatar: userFileUrl(member.user.id, member.user.avatar),
-				role: member.role,
-				isOwner: member.isOwner,
-				accepted: member.accepted,
-				permissions: (isMember ? member.permissions : []) as ProjectPermission[],
-				organisationPermissions: (isMember ? member.organisationPermissions : []) as OrganisationPermission[],
-			};
-		}),
-	} satisfies Organisation;
+    const formattedData = {
+        id: organisation.id,
+        teamId: organisation.teamId,
+        name: organisation.name,
+        slug: organisation.slug,
+        icon: orgIconUrl(organisation.id, organisation.iconFileId),
+        description: organisation.description,
+        members: organisation.team.members.map((member) => {
+            return {
+                id: member.id,
+                userId: member.userId,
+                teamId: member.teamId,
+                userName: member.user.userName,
+                avatar: userFileUrl(member.user.id, member.user.avatar),
+                role: member.role,
+                isOwner: member.isOwner,
+                accepted: member.accepted,
+                permissions: (isMember ? member.permissions : []) as ProjectPermission[],
+                organisationPermissions: (isMember ? member.organisationPermissions : []) as OrganisationPermission[],
+            };
+        }),
+    } satisfies Organisation;
 
-	return { data: formattedData, status: HTTP_STATUS.OK };
+    return { data: formattedData, status: HTTP_STATUS.OK };
 }
 
 export async function getUserOrganisations(userSession: UserSessionData | null, userSlug: string) {
-	let userId = userSlug.toLowerCase() === userSession?.userName.toLowerCase() ? userSession.id : null;
-	if (!userId) {
-		const user = await GetUser_ByIdOrUsername(userSlug, userSlug);
+    let userId = userSlug.toLowerCase() === userSession?.userName.toLowerCase() ? userSession.id : null;
+    if (!userId) {
+        const user = await GetUser_ByIdOrUsername(userSlug, userSlug);
 
-		if (!user) return notFoundResponseData("User not found");
-		userId = user.id;
-	}
+        if (!user) return notFoundResponseData("User not found");
+        userId = user.id;
+    }
 
-	const UserOrgs_Id = await Get_UserOrganizations(userId);
-	if (!UserOrgs_Id) return { data: [], status: HTTP_STATUS.OK };
+    const UserOrgs_Id = await Get_UserOrganizations(userId);
+    if (!UserOrgs_Id) return { data: [], status: HTTP_STATUS.OK };
 
-	const UserOrganizations = await GetManyOrganizations_ById(UserOrgs_Id);
+    const UserOrganizations = await GetManyOrganizations_ById(UserOrgs_Id);
 
-	const organisationsList: Organisation[] = [];
-	for (const org of UserOrganizations) {
-		const currMember = getCurrMember(userSession?.id, [], org.team.members);
+    const organisationsList: Organisation[] = [];
+    for (const org of UserOrganizations) {
+        const currMember = getCurrMember(userSession?.id, [], org.team.members);
 
-		organisationsList.push({
-			id: org.id,
-			teamId: org.teamId,
-			name: org.name,
-			slug: org.slug,
-			description: org.description,
-			icon: orgIconUrl(org.id, org.iconFileId),
-			members: org.team.members.map((member) => ({
-				id: member.id,
-				userId: member.userId,
-				teamId: member.teamId,
-				userName: member.user.userName,
-				avatar: userFileUrl(member.user.id, member.user.avatar),
-				role: member.role,
-				isOwner: member.isOwner,
-				accepted: member.accepted,
-				permissions: (currMember?.accepted === true ? member.permissions : []) as ProjectPermission[],
-				organisationPermissions: (currMember?.accepted === true
-					? member.organisationPermissions
-					: []) as OrganisationPermission[],
-			})),
-		});
-	}
+        organisationsList.push({
+            id: org.id,
+            teamId: org.teamId,
+            name: org.name,
+            slug: org.slug,
+            description: org.description,
+            icon: orgIconUrl(org.id, org.iconFileId),
+            members: org.team.members.map((member) => ({
+                id: member.id,
+                userId: member.userId,
+                teamId: member.teamId,
+                userName: member.user.userName,
+                avatar: userFileUrl(member.user.id, member.user.avatar),
+                role: member.role,
+                isOwner: member.isOwner,
+                accepted: member.accepted,
+                permissions: (currMember?.accepted === true ? member.permissions : []) as ProjectPermission[],
+                organisationPermissions: (currMember?.accepted === true
+                    ? member.organisationPermissions
+                    : []) as OrganisationPermission[],
+            })),
+        });
+    }
 
-	return { data: organisationsList, status: HTTP_STATUS.OK };
+    return { data: organisationsList, status: HTTP_STATUS.OK };
 }
 
 export async function createOrganisation(
-	userSession: UserSessionData,
-	formData: z.infer<typeof createOrganisationFormSchema>,
+    userSession: UserSessionData,
+    formData: z.infer<typeof createOrganisationFormSchema>,
 ) {
-	const existingOrgWithSameSlug = await GetOrganization_Data(formData.slug, formData.slug);
-	if (existingOrgWithSameSlug) {
-		return invalidRequestResponseData("Organisation with the same slug already exists");
-	}
+    const existingOrgWithSameSlug = await GetOrganization_Data(formData.slug, formData.slug);
+    if (existingOrgWithSameSlug) {
+        return invalidRequestResponseData("Organisation with the same slug already exists");
+    }
 
-	const newOrganisation = await CreateOrganization(
-		{
-			data: {
-				id: generateDbId(),
-				name: formData.name,
-				slug: formData.slug,
-				description: formData.description,
+    const newOrganisation = await CreateOrganization(
+        {
+            data: {
+                id: generateDbId(),
+                name: formData.name,
+                slug: formData.slug,
+                description: formData.description,
 
-				// Create the org team
-				team: {
-					create: {
-						id: generateDbId(),
+                // Create the org team
+                team: {
+                    create: {
+                        id: generateDbId(),
 
-						// Create the org owner member
-						members: {
-							create: {
-								id: generateDbId(),
-								userId: userSession.id,
-								role: "Owner",
-								isOwner: true,
-								accepted: true,
-								dateAccepted: new Date(),
-							},
-						},
-					},
-				},
-			},
-		},
+                        // Create the org owner member
+                        members: {
+                            create: {
+                                id: generateDbId(),
+                                userId: userSession.id,
+                                role: "Owner",
+                                isOwner: true,
+                                accepted: true,
+                                dateAccepted: new Date(),
+                            },
+                        },
+                    },
+                },
+            },
+        },
 
-		userSession.id,
-	);
+        userSession.id,
+    );
 
-	return {
-		data: {
-			success: true,
-			slug: newOrganisation.slug,
-		},
-		status: HTTP_STATUS.OK,
-	};
+    return {
+        data: {
+            success: true,
+            slug: newOrganisation.slug,
+        },
+        status: HTTP_STATUS.OK,
+    };
 }
 
 export async function getOrganisationProjects(userSession: UserSessionData | null, slug: string, listedOnly = false) {
-	const Org = await GetOrganization_Data(slug, slug);
-	if (!Org) return notFoundResponseData("Organisation not found");
-	if (!Org.projects) return { data: [], status: HTTP_STATUS.OK };
+    const Org = await GetOrganization_Data(slug, slug);
+    if (!Org) return notFoundResponseData("Organisation not found");
+    if (!Org.projects) return { data: [], status: HTTP_STATUS.OK };
 
-	return await getManyProjects(
-		userSession,
-		Org.projects.map((project) => project.id),
-		listedOnly,
-	);
+    return await getManyProjects(
+        userSession,
+        Org.projects.map((project) => project.id),
+        listedOnly,
+    );
 }

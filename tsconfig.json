@@ -1,48 +1,48 @@
 {
-	"compilerOptions": {
-		"lib": ["ESNext", "DOM"],
-		"types": ["bun-types"],
-		"composite": true,
-		"target": "ESNext",
-		"module": "ESNext",
-		"moduleDetection": "force",
-		"jsx": "react-jsx",
-		"allowJs": true,
-		"moduleResolution": "bundler",
-		"allowImportingTsExtensions": true,
-		"verbatimModuleSyntax": true,
-		"declaration": true,
-		"emitDeclarationOnly": true,
-		"strict": true,
-		"skipLibCheck": true,
-		"noFallthroughCasesInSwitch": true,
-		"noUnusedLocals": false,
-		"noUnusedParameters": false,
-		"noPropertyAccessFromIndexSignature": false,
-		"paths": {
-			"@root/*": ["./*"]
-		}
-	},
-	"references": [
-		{
-			"path": "./apps/backend"
-		},
-		{
-			"path": "./apps/frontend"
-		},
-		{
-			"path": "./packages/utils"
-		}
-	],
-	"exclude": [
-		"node_modules/",
-		"launcher/backend/",
-		"build/",
-		"dist/",
-		"wailsjs/",
-		"*.mod",
-		"*.sum",
-		"launcher/**/*.go",
-		"apps/backend/prisma/**/*"
-	]
+    "compilerOptions": {
+        "lib": ["ESNext", "DOM"],
+        "types": ["bun-types"],
+        "composite": true,
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleDetection": "force",
+        "jsx": "react-jsx",
+        "allowJs": true,
+        "moduleResolution": "bundler",
+        "allowImportingTsExtensions": true,
+        "verbatimModuleSyntax": true,
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "strict": true,
+        "skipLibCheck": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "noPropertyAccessFromIndexSignature": false,
+        "paths": {
+            "@root/*": ["./*"]
+        }
+    },
+    "references": [
+        {
+            "path": "./apps/backend"
+        },
+        {
+            "path": "./apps/frontend"
+        },
+        {
+            "path": "./packages/utils"
+        }
+    ],
+    "exclude": [
+        "node_modules/",
+        "launcher/backend/",
+        "build/",
+        "dist/",
+        "wailsjs/",
+        "*.mod",
+        "*.sum",
+        "launcher/**/*.go",
+        "apps/backend/prisma/**/*"
+    ]
 }

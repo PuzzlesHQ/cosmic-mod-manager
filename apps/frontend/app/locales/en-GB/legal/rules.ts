@@ -1,9 +1,9 @@
 export interface RulesProps {
-	title: string;
-	supportEmail: string;
-	privacyPageUrl: string;
-	termsPageUrl: string;
-	siteName_Short: string;
+    title: string;
+    supportEmail: string;
+    privacyPageUrl: string;
+    termsPageUrl: string;
+    siteName_Short: string;
 }
 
 export const Rules = (props: RulesProps) => `
