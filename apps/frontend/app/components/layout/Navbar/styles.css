@@ -20,7 +20,7 @@
 
 .ham_menu_line_1,
 .ham_menu_line_3 {
-	transform-origin: 0% 0%;
+	transform-origin: 50% 50%;
 	transform-box: content-box;
 	transition:
 		rotate var(--rotate-duration) ease-in-out,
