@@ -39,7 +39,7 @@ import notificationRouter from "~/routes/user/notification/router";
 import userRouter from "~/routes/user/router";
 import { versionFileRouter, versionFiles_Router } from "~/routes/version-file/router";
 import versionsRouter from "~/routes/versions/router";
-import { ErrorLogWithTimestamp } from "./services/storage/utils";
+import { Log } from "./utils/logger";
 
 const corsAllowedOrigins = env.CORS_ALLOWED_URLS.split(" ");
 const app = new Hono()
@@ -111,7 +111,7 @@ const app = new Hono()
     })
 
     .onError((err, ctx) => {
-        ErrorLogWithTimestamp(err.name, err.message, "\n", err.cause, "\n", err.stack);
+        Log([err.name, err.message, err.cause, err.stack].join("\n"))
         return serverErrorResponse(ctx);
     });
 

@@ -1,6 +1,6 @@
 import { type BunFile, S3Client, type S3File } from "bun";
 import env from "~/utils/env";
-import { LogWithTimestamp } from "../utils";
+import { Log, LogType } from "~/utils/logger";
 
 const b2_client = new S3Client({
     bucket: "crmm-project-files",
@@ -39,7 +39,7 @@ async function UploadBackupFile(file: BunFile, s3_ref: S3File) {
     const stream = file.stream();
     const reader = stream.getReader();
 
-    LogWithTimestamp(`Uploading backup file to backblaze. Ref: ${s3_ref.name}`);
+    Log(`Uploading backup file to backblaze. Ref: ${s3_ref.name}`, LogType.INFO);
     while (true) {
         const _res = await reader.read();
         if (_res.done) break;
@@ -49,7 +49,7 @@ async function UploadBackupFile(file: BunFile, s3_ref: S3File) {
 
     await reader.cancel();
     await writer.end();
-    LogWithTimestamp(`Backup file uploaded to backblaze. ${s3_ref.name} ${file.size} bytes`);
+    Log(`Backup file uploaded to backblaze. ${s3_ref.name} ${file.size} bytes`, LogType.INFO);
 }
 
 function AltFileName(fileName: string) {

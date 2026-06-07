@@ -11,11 +11,11 @@ import {
     UpdateOrRemoveProject_FromSearchIndex,
     UpdateProject,
 } from "~/db/project_item";
-import { Log, Log_SubType } from "~/middleware/logger";
 import { createNotification } from "~/routes/user/notification/controllers/helpers";
 import prisma from "~/services/prisma";
 import type { UserSessionData } from "~/types";
 import { HTTP_STATUS, notFoundResponseData, serverErrorResponseData } from "~/utils/http";
+import { Log, Log_SubType } from "~/utils/logger";
 import { generateDbId } from "~/utils/str";
 import { orgIconUrl, projectIconUrl, userFileUrl } from "~/utils/urls";
 
@@ -86,7 +86,6 @@ export async function updateModerationProject(id: string, status: string, userSe
     const project = await GetProject_Details(id);
     if (!project) return notFoundResponseData("Project not found");
 
-    // let projectOwner
     const projectOwner = getProjectOwner(project.team.members, project.organisation?.team.members || []);
     if (!projectOwner?.id) return serverErrorResponseData("Couldn't find project owner, idk why :)");
 
@@ -100,25 +99,22 @@ export async function updateModerationProject(id: string, status: string, userSe
         };
     }
 
-    let updatedStatus = ProjectPublishingStatus.DRAFT;
-    switch (status.toLowerCase()) {
-        case ProjectPublishingStatus.APPROVED:
-            updatedStatus = ProjectPublishingStatus.APPROVED;
-            break;
-        case ProjectPublishingStatus.REJECTED:
-            updatedStatus = ProjectPublishingStatus.REJECTED;
-            break;
-        case ProjectPublishingStatus.WITHHELD:
-            updatedStatus = ProjectPublishingStatus.WITHHELD;
-            break;
+    const updatedStatus = status as ProjectPublishingStatus;
+    if (!Object.values(ProjectPublishingStatus).some((v) => v === updatedStatus)) {
+        return {
+            data: {
+                success: false,
+                message: "Invalid value for the project 'status'"
+            },
+            status: HTTP_STATUS.BAD_REQUEST
+        }
     }
 
     const updateData: Prisma.ProjectUpdateInput = {};
     if (updatedStatus === ProjectPublishingStatus.APPROVED) {
-        updateData.dateQueued = null;
-        updateData.dateApproved = new Date();
-        updateData.requestedStatus = null;
         updateData.status = updatedStatus;
+        updateData.requestedStatus = null;
+        updateData.dateApproved = new Date();
     } else {
         updateData.status = updatedStatus;
         updateData.requestedStatus = null;

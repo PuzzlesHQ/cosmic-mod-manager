@@ -6,11 +6,11 @@ import { ProjectPublishingStatus } from "@app/utils/types";
 import { NotificationType } from "@app/utils/types/api/notification";
 import { type MessageBody, MessageType } from "@app/utils/types/api/thread";
 import { GetProject_Details, UpdateProject } from "~/db/project_item";
-import { Log, Log_SubType } from "~/middleware/logger";
 import { createNotification } from "~/routes/user/notification/controllers/helpers";
 import prisma from "~/services/prisma";
 import type { UserSessionData } from "~/types";
 import { HTTP_STATUS, invalidRequestResponseData } from "~/utils/http";
+import { Log, Log_SubType } from "~/utils/logger";
 import { generateDbId } from "~/utils/str";
 
 export async function QueueProjectForApproval(projectId: string, userSession: UserSessionData) {
