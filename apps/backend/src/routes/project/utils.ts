@@ -18,8 +18,14 @@ export function isProjectPrivate(visibility: string) {
     return visibility === ProjectVisibility.PRIVATE;
 }
 
-export function isProjectListed(visibility: string) {
-    return [ProjectVisibility.LISTED, ProjectVisibility.ARCHIVED].includes(visibility as ProjectVisibility);
+export function isProjectListed(visibility: string, publishingStatus: string) {
+    if (!isProjectPublic(visibility, publishingStatus)) {
+        return false;
+    } else if (visibility === ProjectVisibility.UNLISTED) {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 export function isProjectPublic(visibility: string, publishingStatus: string) {

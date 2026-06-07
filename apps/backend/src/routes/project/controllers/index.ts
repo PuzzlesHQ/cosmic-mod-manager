@@ -155,7 +155,9 @@ export async function getManyProjects(userSession: UserSessionData | null, proje
 
     for (const project of list) {
         if (!project) continue;
-        if (listedOnly === true && !isProjectListed(project.visibility)) continue;
+        if (listedOnly === true && !isProjectListed(project.visibility, project.status)) {
+            continue;
+        }
 
         const projectAccessible = isProjectAccessible({
             visibility: project.visibility,
