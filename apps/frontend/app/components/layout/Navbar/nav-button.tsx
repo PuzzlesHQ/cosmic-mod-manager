@@ -3,15 +3,15 @@ import { MODERATOR_ROLES } from "@app/utils/src/constants/roles";
 import type { LoggedInUserData } from "@app/utils/types";
 import { imageUrl } from "@app/utils/url";
 import {
-	BellIcon,
-	Building2Icon,
-	LayoutDashboardIcon,
-	LayoutListIcon,
-	LogInIcon,
-	LogOutIcon,
-	ScaleIcon,
-	Settings2Icon,
-	UserIcon,
+    BellIcon,
+    Building2Icon,
+    LayoutDashboardIcon,
+    LayoutListIcon,
+    LogInIcon,
+    LogOutIcon,
+    ScaleIcon,
+    Settings2Icon,
+    UserIcon,
 } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "react-router";
@@ -60,7 +60,7 @@ export default function NavButton({ session }: NavbuttonProps) {
 						src={imageUrl(session.avatar)}
 						alt={`Profile picture of ${session?.userName}`}
 						fallback={fallbackUserIcon}
-						className="h-nav-item w-nav-item rounded-full border-none bg-raised-background p-[1px]"
+						className="h-nav-item w-nav-item rounded-full border-none bg-raised-background p-px"
 					/>
 				</Button>
 			</PopoverTrigger>

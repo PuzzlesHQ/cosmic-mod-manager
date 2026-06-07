@@ -4,13 +4,13 @@ import { getCookie } from "@app/utils/cookie";
 import type { LoggedInUserData } from "@app/utils/types";
 import type { LinkDescriptor } from "react-router";
 import {
-	Links,
-	Meta,
-	Outlet,
-	Scripts,
-	ScrollRestoration,
-	type ShouldRevalidateFunctionArgs,
-	useLoaderData,
+    Links,
+    Meta,
+    Outlet,
+    Scripts,
+    ScrollRestoration,
+    type ShouldRevalidateFunctionArgs,
+    useLoaderData,
 } from "react-router";
 import ClientOnly from "~/components/client-only";
 import Footer from "~/components/layout/footer";
@@ -82,7 +82,7 @@ export default function App() {
 			{/* A portal for the grid_bg_div inserted from the pages/page.tsx */}
 			<div id="hero_section_bg_portal" className="absolute top-0 left-0" aria-hidden />
 
-			<div className="relative grid min-h-[100vh] w-full grid-rows-[auto_1fr_auto]">
+			<div className="relative grid min-h-lvh w-full grid-rows-[auto_1fr_auto]">
 				<Navbar />
 
 				<div className="full_page content-container">

@@ -104,7 +104,7 @@ export default function Navbar() {
 						}}
 					>
 						<BrandIcon className="h-7 w-7" strokeWidth={26} />
-						<span className="flex items-end justify-center rounded-lg bg-accent-bg bg-cover bg-gradient-to-b from-foreground-bright via-accent-bg to-accent-bg bg-clip-text px-1 font-bold text-lg text-transparent drop-shadow-2xl">
+						<span className="flex items-end justify-center rounded-lg bg-accent-bg bg-cover bg-linear-to-b from-foreground-bright via-accent-bg to-accent-bg bg-clip-text px-1 font-bold text-lg text-transparent drop-shadow-2xl">
 							{Config.SITE_NAME_SHORT}
 						</span>
 					</Link>

@@ -25,7 +25,7 @@ export function MobileNav({ session, isNavMenuOpen, NavLinks }: MobileNavProps) 
 	return (
 		<div
 			className={cn(
-				"nav_items_container fixed top-0 z-30 grid h-[100vh] w-full grid-rows-[4rem_1fr] overflow-y-hidden bg-background opacity-[0.97]",
+				"nav_items_container fixed top-0 z-30 grid h-screen w-full grid-rows-[4rem_1fr] overflow-y-hidden bg-background opacity-[0.97]",
 				isNavMenuOpen && "nav_open",
 			)}
 			aria-hidden={!isNavMenuOpen}
@@ -149,9 +149,9 @@ export function HamMenu({ isNavMenuOpen, toggleNavMenu }: HamMenuProps) {
 			aria-label="Menu"
 		>
 			<div className={`ham_menu_icon ${isNavMenuOpen && "ham_menu_open"} relative aspect-square w-full`}>
-				<i className="ham_menu_line_1 absolute start-1/2 top-[33%] block h-[0.12rem] w-[50%] translate-x-[-50%] translate-y-[-50%] rounded-full bg-current" />
-				<i className="ham_menu_line_2 absolute start-1/2 top-[50%] block h-[0.12rem] w-[50%] translate-x-[-50%] translate-y-[-50%] rounded-full bg-current" />
-				<i className="ham_menu_line_3 absolute start-1/2 top-[67%] block h-[0.12rem] w-[50%] translate-x-[-50%] translate-y-[-50%] rounded-full bg-current" />
+				<i className="ham_menu_line_1 absolute inset-s-1/2 top-[33%] block h-[0.12rem] w-[50%] translate-x-[-50%] translate-y-[-50%] rounded-full bg-current" />
+				<i className="ham_menu_line_2 absolute inset-s-1/2 top-[50%] block h-[0.12rem] w-[50%] translate-x-[-50%] translate-y-[-50%] rounded-full bg-current" />
+				<i className="ham_menu_line_3 absolute inset-s-1/2 top-[67%] block h-[0.12rem] w-[50%] translate-x-[-50%] translate-y-[-50%] rounded-full bg-current" />
 			</div>
 		</button>
 	);
