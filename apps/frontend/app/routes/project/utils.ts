@@ -7,8 +7,6 @@ export function getProjectLoaderData<T extends Route.MetaArgs["matches"]>(matche
 
     type RouteData = {
         [K in keyof typeof _data]-?: NonNullable<(typeof _data)[K]>;
-    } & {
-        projectType: typeof projectType;
     };
 
     return {
