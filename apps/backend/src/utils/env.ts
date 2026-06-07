@@ -1,3 +1,5 @@
+import { Log } from "~/utils/logger";
+
 const envKeys = [
     "FRONTEND_URL",
     "CORS_ALLOWED_URLS",
@@ -43,7 +45,7 @@ const env = {} as Record<EnvKeys, string>;
 for (const key of envKeys) {
     const value = process.env[key];
     if (value === undefined && process.env.NODE_ENV !== "test") {
-        console.error(`Missing environment variable: ${key}`);
+        Log(`Missing environment variable: ${key}`);
         process.exit(1);
     }
 

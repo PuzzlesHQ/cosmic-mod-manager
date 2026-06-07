@@ -9,7 +9,7 @@ import {
     strictGetReqRateLimiter,
 } from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
-import { serverErrorResponse, unauthorizedReqResponse } from "~/utils/http";
+import { unauthorizedReqResponse } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";
 import { getModerationProjects, updateModerationProject } from "./controller";
 
@@ -21,38 +21,28 @@ const moderationRouter = new Hono()
     .post("/project/:id", critModifyReqRateLimiter, moderationProject_post);
 
 async function moderationProjects_get(ctx: Context) {
-    try {
-        const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_READ);
-        if (!sessionUser?.id || !MODERATOR_ROLES.includes(sessionUser.role)) {
-            await addInvalidAuthAttempt(ctx);
-            return unauthorizedReqResponse(ctx);
-        }
-
-        const res = await getModerationProjects();
-        return ctx.json(res.data, res.status);
-    } catch (error) {
-        console.error(error);
-        return serverErrorResponse(ctx);
+    const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_READ);
+    if (!sessionUser?.id || !MODERATOR_ROLES.includes(sessionUser.role)) {
+        await addInvalidAuthAttempt(ctx);
+        return unauthorizedReqResponse(ctx);
     }
+
+    const res = await getModerationProjects();
+    return ctx.json(res.data, res.status);
 }
 
 async function moderationProject_post(ctx: Context) {
-    try {
-        const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
-        if (!sessionUser?.id || !MODERATOR_ROLES.includes(sessionUser.role)) {
-            await addInvalidAuthAttempt(ctx);
-            return unauthorizedReqResponse(ctx);
-        }
-        const id = ctx.req.param("id");
-        const body = ctx.get(REQ_BODY_NAMESPACE);
-        const newStatus = body.status;
-
-        const res = await updateModerationProject(id, newStatus, sessionUser);
-        return ctx.json(res.data, res.status);
-    } catch (error) {
-        console.error(error);
-        return serverErrorResponse(ctx);
+    const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
+    if (!sessionUser?.id || !MODERATOR_ROLES.includes(sessionUser.role)) {
+        await addInvalidAuthAttempt(ctx);
+        return unauthorizedReqResponse(ctx);
     }
+    const id = ctx.req.param("id");
+    const body = ctx.get(REQ_BODY_NAMESPACE);
+    const newStatus = body.status;
+
+    const res = await updateModerationProject(id, newStatus, sessionUser);
+    return ctx.json(res.data, res.status);
 }
 
 export default moderationRouter;

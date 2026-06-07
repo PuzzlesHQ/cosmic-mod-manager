@@ -1,5 +1,6 @@
 import { type ClickHouseClient, createClient } from "@clickhouse/client";
 import env from "~/utils/env";
+import { Log } from "~/utils/logger";
 
 let clickhouse: ClickHouseClient;
 
@@ -49,8 +50,8 @@ async function InitializeClickhouseSchemas() {
 
 		console.log("Clickhouse schemas initialized");
 	} catch (error) {
-		console.error("Error initializing Clickhouse schemas");
-		console.error(error);
+		Log("Error initializing Clickhouse schemas");
+		Log(error);
 	}
 }
 await InitializeClickhouseSchemas();

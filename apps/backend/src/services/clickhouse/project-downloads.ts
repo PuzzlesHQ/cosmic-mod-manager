@@ -1,4 +1,5 @@
 import { ISO_DateStr } from "@app/utils/date";
+import { Log } from "~/utils/logger";
 import clickhouse, { ANALYTICS_DB } from "./index";
 
 export async function getLast15Days_ProjectDownloads(projectIds: string[]) {
@@ -74,6 +75,7 @@ export async function Analytics_InsertProjectDownloads(items: ProjectDownload_It
 			format: "JSONEachRow",
 		});
 	} catch (error) {
-		console.error("Error in insertProjectDownloads:", error);
+		Log("Error in insertProjectDownloads:");
+        Log(error);
 	}
 }

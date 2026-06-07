@@ -4,6 +4,7 @@ import { MEILISEARCH_PROJECT_INDEX, type ProjectSearchDocument } from "~/routes/
 import meilisearch from "~/services/meilisearch";
 import { getFileFromLocalStorage, saveFileToLocalStorage } from "~/services/storage/local";
 import env from "~/utils/env";
+import { Log, LogType } from "~/utils/logger";
 
 const BATCH_SIZE = 1000;
 const SITEMAP_REFRESH_INTERVAL_s = 86400; // 24 hours
@@ -19,7 +20,8 @@ export async function startSitemapGenerator() {
     try {
         await generateSitemap();
     } catch (error) {
-        console.error("Failed to generate sitemap", error);
+        Log("Failed to generate sitemap");
+        Log(error);
     }
     setInterval(generateSitemap, SITEMAP_REFRESH_INTERVAL_s * 1000);
 }
@@ -34,9 +36,9 @@ export async function generateSitemap() {
         if (res.estimatedTotalHits === 0) {
             startupTries -= 1;
             if (startupTries > 0) {
-                console.log("Waiting for projects to be indexed...");
+                Log("Waiting for projects to be indexed...", LogType.INFO);
             } else {
-                console.error("Failed to generate sitemap, no projects found");
+                Log("Failed to generate sitemap, no projects found");
                 return;
             }
 
@@ -189,7 +191,8 @@ async function saveSitemap(name: string, content: string) {
     try {
         await saveFileToLocalStorage(`sitemap/sitemap-${name}.xml`, content);
     } catch (error) {
-        console.error("Failed to save sitemap", error);
+        Log("Failed to save sitemap");
+        Log(error);
     }
 }
 
@@ -199,6 +202,7 @@ export async function getSitemap(name: string) {
 
         return await getFileFromLocalStorage(`sitemap/${name}`);
     } catch (error) {
-        console.error("Failed to get sitemap", error);
+        Log("Failed to get sitemap");
+        Log(error);
     }
 }

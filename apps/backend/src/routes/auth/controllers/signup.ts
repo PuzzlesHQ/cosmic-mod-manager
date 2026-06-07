@@ -11,6 +11,7 @@ import { getUserAvatar } from "~/routes/user/controllers/profile";
 import prisma from "~/services/prisma";
 import { getImageFromHttpUrl } from "~/utils/file";
 import { HTTP_STATUS } from "~/utils/http";
+import { Log } from "~/utils/logger";
 import { generateDbId } from "~/utils/str";
 
 export async function oAuthSignUpHandler(ctx: Context, authProvider: string, tokenExchangeCode: string) {
@@ -79,8 +80,8 @@ export async function oAuthSignUpHandler(ctx: Context, authProvider: string, tok
         const avatarFile = await getImageFromHttpUrl(oAuthData.avatarImage || "");
         if (avatarFile) avatarImgId = await getUserAvatar(userId, null, avatarFile);
     } catch (error) {
-        console.error("Error creating avatar image");
-        console.error(error);
+        Log("Error creating avatar image");
+        Log(error);
     }
 
     // Finally create a user

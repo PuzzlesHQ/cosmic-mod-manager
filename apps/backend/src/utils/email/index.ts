@@ -5,7 +5,8 @@ import {
 } from "@app/utils/constants";
 import { FormatDate_ToLocaleString } from "@app/utils/date";
 import { sendEmail } from "~/services/email";
-import env from "../env";
+import env from "~/utils/env";
+import { Log } from "~/utils/logger";
 import {
     changeAccountPasswordEmailTemplate,
     confirmNewPasswordEmailTemplate,
@@ -61,7 +62,7 @@ export async function sendNewSigninAlertEmail({
 
         return { success: true, message: "Email sent successfully" };
     } catch (err) {
-        console.error(err);
+        Log(err);
         return {
             success: false,
             message: "Error while sending email",
@@ -95,7 +96,7 @@ export async function sendConfirmNewPasswordEmail({
 
         return { success: true, message: "Email send successfully" };
     } catch (err) {
-        console.error(err);
+        Log(err);
         return { success: false, message: "Error sending the email" };
     }
 }
@@ -126,7 +127,7 @@ export async function sendChangePasswordEmail({
 
         return { success: true, message: "Email send successfully" };
     } catch (err) {
-        console.error(err);
+        Log(err);
         return { success: false, message: "Error sending the email" };
     }
 }
@@ -157,7 +158,7 @@ export async function sendDeleteUserAccountEmail({
 
         return { success: true, message: "Email send successfully" };
     } catch (err) {
-        console.error(err);
+        Log(err);
         return { success: false, message: "Error sending the email" };
     }
 }

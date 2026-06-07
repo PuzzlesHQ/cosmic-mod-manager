@@ -2,7 +2,7 @@ import { decodeStringArray } from "@app/utils/string";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware } from "~/middleware/auth";
 import { invalidAuthAttemptLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limiter";
-import { invalidRequestResponse, serverErrorResponse } from "~/utils/http";
+import { invalidRequestResponse } from "~/utils/http";
 import { getManyUsers } from "./controller";
 
 const bulkUserActionsRouter = new Hono()
@@ -12,21 +12,16 @@ const bulkUserActionsRouter = new Hono()
     .get("/", strictGetReqRateLimiter, users_get);
 
 async function users_get(ctx: Context) {
-    try {
-        const userIds = ctx.req.query("ids");
-        if (!userIds) return invalidRequestResponse(ctx);
+    const userIds = ctx.req.query("ids");
+    if (!userIds) return invalidRequestResponse(ctx);
 
-        const idsArray = decodeStringArray(userIds);
-        if (idsArray.length > 100) {
-            return invalidRequestResponse(ctx, "Maximum 100 users can be fetched at once");
-        }
-
-        const res = await getManyUsers(idsArray);
-        return ctx.json(res.data, res.status);
-    } catch (error) {
-        console.error(error);
-        return serverErrorResponse(ctx);
+    const idsArray = decodeStringArray(userIds);
+    if (idsArray.length > 100) {
+        return invalidRequestResponse(ctx, "Maximum 100 users can be fetched at once");
     }
+
+    const res = await getManyUsers(idsArray);
+    return ctx.json(res.data, res.status);
 }
 
 export default bulkUserActionsRouter;

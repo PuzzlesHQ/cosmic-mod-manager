@@ -228,15 +228,10 @@ async function deleteAccountConfirmation_post(ctx: Context) {
 }
 
 // async function sendEmailChangeConfirmationCode_post(ctx: Context) {
-//
-//         const sessionUser = getSessionUser(ctx, API_SCOPE.USER_WRITE_EMAIL);
-//         if (!sessionUser?.id) {
-//             await addInvalidAuthAttempt(ctx);
-//             return unauthenticatedReqResponse(ctx);
-//         }
-//     } catch (error) {
-//         console.error(error);
-//         return serverErrorResponse(ctx);
+//     const sessionUser = getSessionUser(ctx, API_SCOPE.USER_WRITE_EMAIL);
+//     if (!sessionUser?.id) {
+//         await addInvalidAuthAttempt(ctx);
+//         return unauthenticatedReqResponse(ctx);
 //     }
 // }
 

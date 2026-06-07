@@ -18,6 +18,7 @@ import { getGoogleUserProfileData } from "~/routes/auth/providers/google";
 import prisma from "~/services/prisma";
 import env from "~/utils/env";
 import { setCookie } from "~/utils/http";
+import { Log } from "~/utils/logger";
 import { generateDbId, generateRandomId } from "~/utils/str";
 
 const oAuthUrlTemplates = {
@@ -73,7 +74,7 @@ export async function getAuthProviderProfileData(authProvider: string, code: str
                 return null;
         }
     } catch (error) {
-        console.error(error);
+        Log(error);
         return null;
     }
 }

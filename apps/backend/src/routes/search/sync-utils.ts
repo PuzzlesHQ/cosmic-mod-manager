@@ -4,6 +4,7 @@ import { isProjectIndexable } from "~/routes/project/utils";
 import { getLast15Days_ProjectDownloads } from "~/services/clickhouse/project-downloads";
 import meilisearch from "~/services/meilisearch";
 import prisma from "~/services/prisma";
+import { Log } from "~/utils/logger";
 import { projectGalleryFileUrl, projectIconUrl } from "~/utils/urls";
 
 export const MEILISEARCH_PROJECT_INDEX = "projects";
@@ -41,7 +42,7 @@ export async function InitialiseSearchDb() {
             if (!cursor) break;
         }
     } catch (error) {
-        console.error(error);
+        Log(error);
     }
 }
 
@@ -109,7 +110,7 @@ async function _SyncBatch(cursor: null | string) {
         if (formattedProjectsData.length < SYNC_BATCH_SIZE) return null;
         return _Projects_Ids_Res.at(-1)?.id;
     } catch (error) {
-        console.error(error);
+        Log(error);
     }
 }
 

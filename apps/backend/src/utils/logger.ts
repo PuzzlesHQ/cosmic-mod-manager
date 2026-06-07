@@ -9,7 +9,7 @@ export enum LogType {
 
 const LogDebugMessages = false;
 
-export function Log(msg: string, level = LogType.ERROR, subType?: string) {
+export function Log(msg: string | unknown, level = LogType.ERROR, subType?: string) {
     if (level === LogType.DEBUG && !LogDebugMessages) return;
 
     const logParts: string[] = [];
@@ -18,12 +18,10 @@ export function Log(msg: string, level = LogType.ERROR, subType?: string) {
     if (subType) logParts.push(`[${level} / ${subType}]`);
     else logParts.push(`[${level}]`);
 
-    logParts.push(msg);
-
     let logFn = console.log;
     if (level === LogType.ERROR) logFn = console.error;
 
-    logFn(logParts.join(" "));
+    logFn(logParts.join(" "), msg);
 }
 
 export enum Log_SubType {
