@@ -103,7 +103,7 @@ export function ProjectsListTable({ projects }: { projects: ProjectListItem[] })
                                 </TableCell>
 
                                 {/* AGGREGATED PROJECT DETAILS: VISIBLE ON MOBILE WIDTH ONLY */}
-                                <TableCell className="!ps-0 sm:ps-2 md:hidden">
+                                <TableCell className="ps-0! sm:ps-2 md:hidden">
                                     <div className="flex flex-col items-start justify-center gap-1">
                                         <Link
                                             to={ProjectPagePath(project.type[0], project.slug)}

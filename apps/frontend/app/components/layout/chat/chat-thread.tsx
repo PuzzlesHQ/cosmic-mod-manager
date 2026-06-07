@@ -248,7 +248,7 @@ export function ChatThread(props: ChatThreadProps) {
                         <Button
                             variant="secondary"
                             size="icon"
-                            className="!p-0.5 !w-fit !h-fit aspect-square rounded-full"
+                            className="aspect-square h-fit! w-fit! rounded-full p-0.5!"
                             onClick={() => setReplyingTo(null)}
                         >
                             <XIcon className="h-btn-icon-sm w-btn-icon-sm" />
@@ -620,7 +620,7 @@ function ThreadMessage(props: ThreadMessageProps) {
                     <div style={{ gridArea: "reply-illustration" }} className="relative grid h-full w-12 shrink-0">
                         <div
                             className={cn(
-                                "absolute start-[1.25rem] end-0 top-[50%] bottom-[-0.2rem] rounded-ss-sm border-s-[0.1rem] border-t-[0.1rem]",
+                                "absolute inset-e-0 inset-s-5 top-[50%] bottom-[-0.2rem] rounded-ss-sm border-s-[0.1rem] border-t-[0.1rem]",
                                 "border-hover-background-strong group-hover/replied-msg-preview:border-foreground-extra-muted",
                             )}
                         />
@@ -677,7 +677,7 @@ function ThreadMessage(props: ThreadMessageProps) {
 
             {props.message.type === MessageType.TEXT && (
                 <Popover>
-                    <PopoverTrigger className="invisible absolute end-0 top-0 ms-auto translate-y-[-25%] rounded-md bg-raised-background px-1 py-0.5 group-focus-within/chat-msg:visible group-hover/chat-msg:visible">
+                    <PopoverTrigger className="invisible absolute inset-e-0 top-0 ms-auto translate-y-[-25%] rounded-md bg-raised-background px-1 py-0.5 group-focus-within/chat-msg:visible group-hover/chat-msg:visible">
                         <MoreHorizontalIcon className="h-btn-icon-lg w-btn-icon-lg" />
                     </PopoverTrigger>
                     <PopoverContent className="min-w-0 p-1" align="end">

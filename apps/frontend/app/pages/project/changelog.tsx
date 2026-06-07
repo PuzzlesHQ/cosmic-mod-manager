@@ -134,7 +134,7 @@ function ChangelogBar({
     return (
         <div
             className={cn(
-                "changelog-bar absolute start-2 top-2.5 h-full w-1 rounded-full",
+                "changelog-bar absolute inset-s-2 top-2.5 h-full w-1 rounded-full",
                 releaseChannel === VersionReleaseChannel.RELEASE
                     ? "text-blue-500 dark:text-blue-400"
                     : releaseChannel === VersionReleaseChannel.BETA
@@ -146,7 +146,7 @@ function ChangelogBar({
                 isDuplicate && "duplicate",
             )}
         >
-            <span className="absolute top-0 left-[-0.5rem] h-4 w-4 translate-x-[0.125rem] rounded-full bg-current" />
+            <span className="absolute top-0 -left-2 h-4 w-4 translate-x-0.5 rounded-full bg-current" />
         </div>
     );
 }

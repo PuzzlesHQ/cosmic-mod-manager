@@ -72,7 +72,7 @@ export default function OAuthCallbackPage() {
     }, [authProvider]);
 
     return (
-        <main className="flex h-[100vh] min-h-[720px] w-full flex-col items-center justify-center gap-4">
+        <main className="flex h-screen min-h-[45rem] w-full flex-col items-center justify-center gap-4">
             {errorMsg ? (
                 <div className="flex w-full max-w-md flex-col items-center justify-center gap-4">
                     <FormErrorMessage text={errorMsg} />

@@ -180,7 +180,7 @@ export default function GeneralSettingsPage() {
                                         />
                                         <span className="px-1 text-foreground-muted text-sm lg:text-base">
                                             {Config.FRONTEND_URL}/{form.getValues().type?.[0] || ctx.projectType}/
-                                            <em className="font-[500] text-foreground not-italic">
+                                            <em className="font-medium text-foreground not-italic">
                                                 {form.getValues().slug}
                                             </em>
                                         </span>

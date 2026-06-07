@@ -169,11 +169,11 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
                                                     />
                                                     <FileIcon
                                                         aria-hidden
-                                                        className="h-btn-icon w-btn-icon flex-shrink-0 text-foreground-muted"
+                                                        className="h-btn-icon w-btn-icon shrink-0 text-foreground-muted"
                                                     />
                                                     {field.value ? (
                                                         <div className="flex flex-wrap items-center justify-start gap-x-2">
-                                                            <span className="break-words break-all font-semibold">
+                                                            <span className="wrap-break-word break-all font-semibold">
                                                                 {field.value.name}
                                                             </span>
                                                         </div>
@@ -195,7 +195,7 @@ export default function UploadGalleryImageForm({ projectData }: Props) {
                                                 </InteractiveLabel>
                                             </div>
                                             {field.value ? (
-                                                <div className="aspect-[2/1] w-full overflow-hidden rounded rounded-t-none bg-zinc-900">
+                                                <div className="aspect-2/1 w-full overflow-hidden rounded rounded-t-none bg-zinc-900">
                                                     <img
                                                         src={URL.createObjectURL(field.value)}
                                                         alt="img"

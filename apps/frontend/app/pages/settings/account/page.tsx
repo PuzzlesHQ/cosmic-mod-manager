@@ -28,7 +28,7 @@ export default function AccountSettingsPage({ session, linkedAuthProviders }: Pr
                     </div>
 
                     <div className="flex w-full flex-wrap items-end justify-between gap-2 gap-x-8">
-                        <div className="flex flex-shrink-0 flex-col items-start justify-start gap-1.5">
+                        <div className="flex shrink-0 flex-col items-start justify-start gap-1.5">
                             <Label>{t.auth.password}</Label>
                             {session.hasAPassword ? (
                                 <p className="text-foreground-muted">{t.settings.changePassTitle}</p>

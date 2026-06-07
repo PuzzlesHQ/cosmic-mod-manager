@@ -282,7 +282,7 @@ export default function ProjectPageLayout() {
                                             className="invisible group-focus-within/card:visible group-hover/card:visible"
                                         >
                                             <Button
-                                                className="noClickRedirect !w-10 !h-10 flex-shrink-0 rounded-full"
+                                                className="noClickRedirect h-10! w-10! shrink-0 rounded-full"
                                                 variant={isVersionDetailsPage ? "secondary-dark" : "default"}
                                                 size="icon"
                                                 aria-label={t.project.downloadItem(version.primaryFile?.name || "")}

@@ -123,7 +123,7 @@ function GalleryItemCard({
             itemScope
             itemProp={MicrodataItemProps.image}
             itemType={itemType(MicrodataItemType.ImageObject)}
-            className="grid grid-cols-1 grid-rows-[min-content,_1fr] rounded-lg bg-card-background p-2"
+            className="grid grid-cols-1 grid-rows-[min-content,1fr] rounded-lg bg-card-background p-2"
         >
             <button
                 type="button"
@@ -254,7 +254,7 @@ function ImageDialog({
                 </VisuallyHidden>
                 <div
                     id="image_popup_content"
-                    className="relative flex h-[100dvh] w-full flex-col items-center justify-center"
+                    className="relative flex h-vh w-full flex-col items-center justify-center"
                 >
                     <DialogClose asChild>
                         <div className="absolute top-0 left-0 z-0 h-full w-full" />
@@ -271,7 +271,7 @@ function ImageDialog({
                         )}
                     />
 
-                    <div className="group absolute bottom-[0.5rem] left-[50%] z-20 flex w-fit max-w-full translate-x-[-50%] flex-col items-center justify-center gap-4 rounded p-16 pt-24 pb-4">
+                    <div className="group absolute bottom-2 left-[50%] z-20 flex w-fit max-w-full translate-x-[-50%] flex-col items-center justify-center gap-4 rounded p-16 pt-24 pb-4">
                         <div className="flex w-max max-w-full translate-y-[2rem] scale-50 flex-col items-center justify-center text-foreground opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100">
                             <span className="rounded-[0.1rem] bg-card-background px-1 py-0.5 text-center font-bold text-lg">
                                 {galleryItem.name}

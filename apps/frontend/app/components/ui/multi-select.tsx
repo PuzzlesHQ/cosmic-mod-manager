@@ -175,7 +175,7 @@ export const MultiSelect = ({
             </PopoverTrigger>
 
             <PopoverContent
-                className={cn("w-min min-w-[var(--radix-popover-trigger-width)] border-none p-0", popoverClassname)}
+                className={cn("w-min min-w-(--radix-popover-trigger-width) border-none p-0", popoverClassname)}
                 align="start"
                 onEscapeKeyDown={() => handleTogglePopover(false)}
             >

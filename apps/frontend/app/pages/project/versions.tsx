@@ -208,7 +208,7 @@ function ProjectVersionsListTable({
                                         <Button
                                             variant="outline"
                                             size="icon"
-                                            className="noClickRedirect !w-10 !h-10 shrink-0 rounded-full"
+                                            className="noClickRedirect h-10! w-10! shrink-0 rounded-full"
                                             aria-label={t.project.downloadItem(version.primaryFile?.name || "")}
                                             onClick={() => downloadFile(version.primaryFile?.url)}
                                         >
@@ -246,7 +246,7 @@ function Row({ children, className, ...props }: React.ComponentProps<"div">) {
     return (
         <div
             className={cn(
-                "table_row col-[1/-1] grid grid-cols-subgrid items-center gap-x-4 border-background border-b px-4 py-4 last:border-none first-of-type:pt-5 hover:bg-background/25 md:px-8",
+                "table_row col-span-full grid grid-cols-subgrid items-center gap-x-4 border-background border-b px-4 py-4 last:border-none first-of-type:pt-5 hover:bg-background/25 md:px-8",
                 className,
             )}
             {...props}
@@ -399,7 +399,7 @@ function ThreeDotMenu(props: ThreeDotMenuProps) {
                 <Button
                     variant="ghost"
                     size="icon"
-                    className="noClickRedirect !w-10 !h-10 shrink-0 rounded-full"
+                    className="noClickRedirect h-10! w-10! shrink-0 rounded-full"
                     aria-label="more options"
                 >
                     <MoreVerticalIcon aria-hidden className="h-btn-icon-md w-btn-icon-md" />

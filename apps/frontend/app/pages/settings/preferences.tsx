@@ -88,7 +88,7 @@ export function ThemeSwitcher() {
                 <CardTitle>{t.settings.colorTheme}</CardTitle>
                 <CardDescription>{t.settings.colorThemeDesc}</CardDescription>
             </CardHeader>
-            <CardContent className="grid grid-cols-[repeat(auto-fit,_minmax(14rem,1fr))] gap-panel-cards">
+            <CardContent className="grid grid-cols-[repeat(auto-fit,minmax(14rem,1fr))] gap-panel-cards">
                 {Themes.map((themeItem) => {
                     const resolvedTheme = themeItem.name === ThemePreference.SYSTEM ? systemTheme : themeItem.name;
                     const label =

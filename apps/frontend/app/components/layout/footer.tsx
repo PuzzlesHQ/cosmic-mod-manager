@@ -232,7 +232,7 @@ export function LangSwitcher() {
 
                         return (
                             <SelectItem key={label} value={formatLocaleCode(locale)} aria-label={label} title={label}>
-                                <div className="flex w-full items-center justify-center gap-1.5 break-words">
+                                <div className="wrap-break-word flex w-full items-center justify-center gap-1.5">
                                     <span className="flex items-end justify-center align-bottom">
                                         {locale.displayName}
                                     </span>

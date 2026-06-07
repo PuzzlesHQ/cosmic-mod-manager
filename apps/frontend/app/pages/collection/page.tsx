@@ -53,7 +53,7 @@ export default function CollectionProjectsList() {
                         dateUpdated={new Date(project.dateUpdated)}
                         datePublished={new Date(project.datePublished)}
                         author={project?.author || ""}
-                        isOrgOwned={project.isOrgOwned}
+                        isOrgOwned={!!project.isOrgOwned}
                         visibility={project.visibility}
                     />
                 );
@@ -67,7 +67,7 @@ export default function CollectionProjectsList() {
                         <label
                             htmlFor={project.slug}
                             className={cn(
-                                "absolute end-0 bottom-0 flex h-full w-12 translate-x-[100%] cursor-pointer items-center justify-center rounded-r-lg bg-card-background shadow-background shadow-xl transition-transform",
+                                "absolute inset-e-0 bottom-0 flex h-full w-12 translate-x-full cursor-pointer items-center justify-center rounded-r-lg bg-card-background shadow-background shadow-xl transition-transform",
                                 "group-focus-within/search-item:translate-x-0 group-hover/search-item:translate-x-0",
                                 isChecked && "translate-x-0",
                             )}

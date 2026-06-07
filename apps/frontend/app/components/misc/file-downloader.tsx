@@ -10,7 +10,7 @@ export function DownloadRipple() {
         <div
             aria-hidden
             className={cn(
-                "download-animation fixed inset-0 top-0 left-0 z-[9999] grid h-full w-full place-items-center",
+                "download-animation fixed inset-0 top-0 left-0 z-9999 grid h-full w-full place-items-center",
                 !isAnimationPlaying && "animation-hidden",
                 !isVisible && "-z-50",
             )}

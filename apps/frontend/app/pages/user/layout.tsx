@@ -44,7 +44,9 @@ export default function UserPageLayout(props: Props) {
     const navigate = useNavigate();
 
     const { resolvedTheme, prefersOLED } = usePreferences();
-    const isActiveTheme_Dark = getThemeClassName(resolvedTheme, prefersOLED).some((cls) => cls === ThemeVariant.DARK);
+    const isActiveTheme_Dark = getThemeClassName(resolvedTheme, prefersOLED).some(
+        (cls) => cls.toString() === ThemeVariant.DARK.toString(),
+    );
 
     const aggregatedDownloads = (props.projectsList || [])?.reduce((acc, project) => acc + project.downloads, 0) || 0;
     const totalProjects = (props.projectsList || [])?.length;
@@ -111,7 +113,7 @@ export default function UserPageLayout(props: Props) {
                     autoPlay
                     loop
                     playsInline
-                    className="absolute inset-0 h-full w-full object-cover [z-index:-1]"
+                    className="absolute inset-0 z-[-1] h-full w-full object-cover"
                 />
             )}
 
@@ -255,7 +257,7 @@ function ProfilePageHeader({ userData, totalProjects, totalDownloads }: ProfileP
             description={userData.bio || ""}
             titleBadge={
                 title ? (
-                    <Chip className={cn("!text-tiny bg-card-background font-semibold uppercase", roleColor)}>
+                    <Chip className={cn("bg-card-background font-semibold text-tiny! uppercase", roleColor)}>
                         {title}
                     </Chip>
                 ) : null

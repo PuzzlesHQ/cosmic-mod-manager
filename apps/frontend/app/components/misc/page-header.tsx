@@ -72,7 +72,7 @@ export function PageHeader({
                     <div
                         className={cn(
                             "mt-auto flex flex-wrap gap-x-4 pt-2 text-foreground-muted",
-                            "[&>*:last-child]:border-0 [&>*]:border-raised-background [&>*]:border-e [&>*]:pe-4",
+                            "*:border-raised-background *:border-e *:pe-4 [&>*:last-child]:border-0",
                         )}
                     >
                         {children}

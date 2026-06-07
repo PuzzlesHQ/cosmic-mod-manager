@@ -113,7 +113,7 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
                                     <div className="flex w-full items-center justify-start gap-1.5">
                                         <FileIcon
                                             aria-hidden
-                                            className="h-btn-icon w-btn-icon flex-shrink-0 text-foreground-muted"
+                                            className="h-btn-icon w-btn-icon shrink-0 text-foreground-muted"
                                         />
 
                                         <div className="flex flex-wrap items-center justify-start gap-x-2">
@@ -121,7 +121,7 @@ export default function EditGalleryImage({ galleryItem, projectData }: Props) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="aspect-[2/1] w-full overflow-hidden rounded rounded-t-none bg-zinc-900">
+                                <div className="aspect-2/1 w-full overflow-hidden rounded rounded-t-none bg-zinc-900">
                                     <img
                                         src={imageUrl(galleryItem.image)}
                                         alt="img"

@@ -75,10 +75,10 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                 </Breadcrumb>
 
                 <div className="flex w-full flex-wrap items-center justify-start gap-x-4">
-                    <h2 className="font-[700] text-2xl text-foreground leading-tight">{versionData.title}</h2>
+                    <h2 className="font-bold text-2xl text-foreground leading-tight">{versionData.title}</h2>
                     {versionData.featured ? (
                         <span className="text-foreground-extra-muted italic">
-                            <StarIcon aria-hidden className="-mt-[0.4ch] inline h-btn-icon w-btn-icon" />{" "}
+                            <StarIcon aria-hidden className="mt-[-0.4ch] inline h-btn-icon w-btn-icon" />{" "}
                             {t.version.featured}
                         </span>
                     ) : null}

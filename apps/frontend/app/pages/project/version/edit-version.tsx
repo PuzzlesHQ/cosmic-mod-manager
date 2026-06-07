@@ -206,7 +206,7 @@ export default function EditVersionPage({ versionData }: EditVersionPageProps) {
                                 <div className="flex items-center justify-start gap-1.5">
                                     <FileIcon
                                         aria-hidden
-                                        className="h-btn-icon w-btn-icon flex-shrink-0 text-foreground-muted"
+                                        className="h-btn-icon w-btn-icon shrink-0 text-foreground-muted"
                                     />
 
                                     <div className="flex flex-wrap items-center justify-start gap-x-2">

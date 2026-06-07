@@ -22,11 +22,11 @@ export const authProvidersList = [
     },
     {
         name: AuthProvider.GOOGLE,
-        icon: <GoogleIcon className="aspect-square h-[100%]" />,
+        icon: <GoogleIcon className="aspect-square h-full" />,
     },
     {
         name: AuthProvider.GITLAB,
-        icon: <GitlabIcon className="aspect-square h-[100%]" />,
+        icon: <GitlabIcon className="aspect-square h-full" />,
     },
 ];
 

@@ -251,7 +251,7 @@ export function PublishingChecklist() {
 
             <div className={collapsibleBoxClassName(dropdownOpen)}>
                 <div>
-                    <CardContent className="grid grid-cols-1 gap-panel-cards sm:grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))]">
+                    <CardContent className="grid grid-cols-1 gap-panel-cards sm:grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]">
                         {steps.map((step) => {
                             if (!step.condition || step.hide === true) return null;
 

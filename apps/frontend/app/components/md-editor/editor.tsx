@@ -405,9 +405,9 @@ export default function MarkdownEditor({
                         name="markdown-textarea"
                         placeholder={placeholder}
                         className={cn(
-                            "group-focus-within/editor:!bg-transparent group-focus-within/editor:focus_ring group-focus-within/editor:text-foreground-bright",
+                            "group-focus-within/editor:focus_ring group-focus-within/editor:bg-transparent! group-focus-within/editor:text-foreground-bright",
                             "h-[32rem] min-h-[16rem] w-full resize-y rounded-lg font-mono text-base text-foreground-muted",
-                            wordWrap === true ? "overflow-x-auto whitespace-nowrap" : "break-words",
+                            wordWrap === true ? "overflow-x-auto whitespace-nowrap" : "wrap-break-word",
                             textAreaClassName,
                         )}
                         ref={editorTextarea}

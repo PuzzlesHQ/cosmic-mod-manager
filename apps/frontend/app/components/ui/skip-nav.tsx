@@ -19,7 +19,7 @@ export function SkipNav({ mainId, children }: SkipNavProps) {
     return (
         <a
             href={`#${mainId || "main"}`}
-            className="!w-fit !px-6 !py-0.5 !absolute sr-only start-1 top-1 rounded-md bg-background text-foreground underline focus:not-sr-only"
+            className="absolute! sr-only inset-s-1 top-1 w-fit! rounded-md bg-background px-6! py-0.5! text-foreground underline focus:not-sr-only"
             onClick={handleClick}
         >
             {children ? children : t.navbar.skipToMainContent}

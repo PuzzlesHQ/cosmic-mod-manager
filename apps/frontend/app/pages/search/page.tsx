@@ -106,13 +106,13 @@ export default function SearchPage() {
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value || "")}
                                 placeholder={`${searchLabel}...`}
-                                className="!ps-9 font-medium text-md focus:[&>kbd]:invisible"
+                                className="ps-9! font-medium text-md focus:[&>kbd]:invisible"
                                 id="search-input"
                                 name={searchQueryParamNamespace}
                                 aria-label={searchLabel}
                             />
 
-                            <kbd className="absolute end-3 top-1/2 -translate-y-1/2 rounded-[0.3rem] border border-hover-background bg-raised-background px-1">
+                            <kbd className="absolute inset-e-3 top-1/2 -translate-y-1/2 rounded-[0.3rem] border border-hover-background bg-raised-background px-1">
                                 /
                             </kbd>
                         </label>
@@ -228,7 +228,7 @@ function SearchBarIcon() {
     const { showSpinner } = useSpinnerCtx();
 
     return (
-        <span className="absolute start-2.5 top-[50%] grid translate-y-[-50%] grid-cols-1 grid-rows-1">
+        <span className="absolute inset-s-2.5 top-[50%] grid translate-y-[-50%] grid-cols-1 grid-rows-1">
             <Spinner className={cn("col-span-full row-span-full opacity-0", showSpinner && "opacity-100")} />
             <SearchIcon
                 aria-hidden

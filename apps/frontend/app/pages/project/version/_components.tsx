@@ -65,7 +65,7 @@ export function VersionTitleInput({ name, value, disabled, inputRef, onChange }:
     return (
         <Input
             placeholder={t.version.enterVersionTitle}
-            className="!h-12 !py-1 !px-4 !text-foreground-muted font-semibold text-xl"
+            className="h-12! px-4! py-1! font-semibold text-foreground-muted! text-xl"
             name={name}
             value={value}
             disabled={disabled}
@@ -677,7 +677,7 @@ export function SelectPrimaryFileInput({ children, selectedFile, inputId }: Prim
             <div>
                 <FileIcon
                     aria-hidden
-                    className="me-1.5 inline h-btn-icon w-btn-icon flex-shrink-0 text-foreground-muted"
+                    className="me-1.5 inline h-btn-icon w-btn-icon shrink-0 text-foreground-muted"
                 />
                 {selectedFile ? (
                     <span className="inline-flex flex-wrap items-center justify-start gap-x-2">

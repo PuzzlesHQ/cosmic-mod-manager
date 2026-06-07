@@ -15,7 +15,7 @@ function Separator({
             orientation={orientation}
             className={cn(
                 "shrink-0 bg-border",
-                orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]",
+                orientation === "horizontal" ? "h-px w-full" : "h-full w-px",
                 className,
             )}
             {...props}
@@ -27,5 +27,5 @@ Separator.displayName = SeparatorPrimitive.Root.displayName;
 export { Separator };
 
 export function DotSeparator({ className }: { className?: string }) {
-    return <i className={cn("flex h-1 w-1 flex-shrink-0 rounded-full bg-foreground/40", className)} />;
+    return <i className={cn("flex h-1 w-1 shrink-0 rounded-full bg-foreground/40", className)} />;
 }

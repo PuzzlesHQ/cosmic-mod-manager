@@ -49,7 +49,7 @@ function TableHead({ ref, className, ...props }: React.ComponentProps<"th">) {
         <th
             ref={ref}
             className={cn(
-                "px-2 pt-2.5 pb-1.5 text-start align-middle font-bold text-foreground [&:has([role=checkbox])]:pe-0 [&>[role=checkbox]]:translate-y-[2px]",
+                "px-2 pt-2.5 pb-1.5 text-start align-middle font-bold text-foreground has-[[role=checkbox]]:pe-0 *:[[role=checkbox]]:translate-y-0.5",
                 className,
             )}
             {...props}
@@ -63,7 +63,7 @@ function TableCell({ ref, className, ...props }: React.ComponentProps<"td">) {
         <td
             ref={ref}
             className={cn(
-                "px-2 py-5 pe-4 align-middle [&:has([role=checkbox])]:pe-0 [&>[role=checkbox]]:translate-y-[2px]",
+                "px-2 py-5 pe-4 align-middle has-[[role=checkbox]]:pe-0 *:[[role=checkbox]]:translate-y-0.5",
                 className,
             )}
             {...props}

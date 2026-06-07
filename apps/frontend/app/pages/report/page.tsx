@@ -76,7 +76,7 @@ export default function ReportPage({ data }: { data: LoaderData }) {
                             ? t.report.alreadyReported(reportingItem || t.report.content)
                             : t.report.reportToMods(reportingItem || t.report.content)}
                     </h1>
-                    <div className="h-[1px] bg-gradient-to-l from-moderation-btn-bg/5 via-moderation-btn-bg to-moderation-btn-bg/5" />
+                    <div className="h-px bg-linear-to-l from-moderation-btn-bg/5 via-moderation-btn-bg to-moderation-btn-bg/5" />
                 </div>
 
                 {props.children}
@@ -261,7 +261,7 @@ function ReportSelectedItem(props: { itemId: string; itemType: ReportItemType; i
             </div>
 
             {(violationType === RuleViolationType.REUPLOADED_WORK || RuleViolationType.MALICIOUS === violationType) && (
-                <div className="grid grid-cols-[min-content,_1fr] gap-2 rounded border-2 border-warning-fg bg-warning-bg p-card-surround text-foreground-bright">
+                <div className="grid grid-cols-[min-content,1fr] gap-2 rounded border-2 border-warning-fg bg-warning-bg p-card-surround text-foreground-bright">
                     <AlertTriangleIcon className="mt-[0.15em] h-btn-icon-lg w-btn-icon-lg text-warning-fg" />
 
                     <div className="grid gap-2">

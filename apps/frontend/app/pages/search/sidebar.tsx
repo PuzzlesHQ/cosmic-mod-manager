@@ -150,7 +150,7 @@ function SearchFilters({ type, sectionsDefaultOpen }: Props) {
                 <Button
                     onClick={clearFilters}
                     variant="secondary"
-                    className="!w-10 !h-10 shrink-0"
+                    className="h-10! w-10! shrink-0"
                     title={t.search.clearFilters}
                     size="icon"
                 >

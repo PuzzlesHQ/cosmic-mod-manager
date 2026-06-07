@@ -146,7 +146,7 @@ export default function GeneralOrgSettings() {
                                         />
                                         <span className="px-1 text-foreground-muted text-sm lg:text-base">
                                             {Config.FRONTEND_URL}/organization/
-                                            <em className="font-[500] text-foreground not-italic">
+                                            <em className="font-medium text-foreground not-italic">
                                                 {form.getValues().slug}
                                             </em>
                                         </span>

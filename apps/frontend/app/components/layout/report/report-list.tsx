@@ -152,7 +152,7 @@ function ReportedItem({ report }: { report: DetailedReport }) {
                     url={VersionPagePath("project", version.projectId, version.id)}
                     imgAlt={version.title}
                     icon={null}
-                    fallback={<GitCommitHorizontalIcon className="h-[100%] w-[100%] text-foreground-extra-muted" />}
+                    fallback={<GitCommitHorizontalIcon className="h-full w-full text-foreground-extra-muted" />}
                     itemTitle={version.title}
                     itemType={report.itemType}
                     itemType_translated={t.version.version}
