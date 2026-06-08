@@ -49,6 +49,7 @@ export default {
         skipToMainContent: "Hopp til hovudinnhald",
     },
     project: {
+        joinDiscord: "Meld deg på discord-sørvaren",
         featuredVersions: "Framheva versjonar",
         featureImg: "Framheva bilete",
         unfeatureImg: "Sluta å framheva biletet",
@@ -70,18 +71,22 @@ export default {
         featured: "Framheva",
     },
     projectSettings: {
+        discordInviteDesc: "Ein invitasjon til ein Discord-sørvar",
         featuredCategories: "Framheva kategoriar",
         serverSide: "Sørvarsidig",
         clientOrServer: "Klinet eller sørvar",
         clientAndServer: "Klient og sørvar",
         required: "Krevjast",
     },
+    legal: {
+        aboutUs: AboutUs,
+    },
+    moderation: {
+        underReview_msg: (discord_invite) => `Prosjektet ditt er for tida under vurdering. Dersom det tek meir enn 48 timar, kan du gjerne kontakta oss på [Discord-sørvaren vår](${discord_*invite})`,
+    },
     form: {
         featured: "Framheva",
         uploadIcon: "Last opp profilbilete",
         removeIcon: "Fjern profilbilete",
-    },
-    legal: {
-        aboutUs: AboutUs,
     },
 } satisfies PartialLocale;
