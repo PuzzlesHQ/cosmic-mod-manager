@@ -33,5 +33,5 @@ export default {
     tweaks: "Justeringar",
     utility: "Nyttigheit",
     worldgen: "Verdsgenerering",
-    server: "Servar",
+    server: "Sørvar",
 } satisfies Partial<typeof tags>;
