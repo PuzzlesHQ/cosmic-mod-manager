@@ -254,7 +254,7 @@ function ImageDialog({
                 </VisuallyHidden>
                 <div
                     id="image_popup_content"
-                    className="relative flex h-vh w-full flex-col items-center justify-center"
+                    className="relative flex h-svh w-full flex-col items-center justify-center"
                 >
                     <DialogClose asChild>
                         <div className="absolute top-0 left-0 z-0 h-full w-full" />
