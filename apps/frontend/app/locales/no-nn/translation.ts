@@ -82,7 +82,7 @@ export default {
         aboutUs: AboutUs,
     },
     moderation: {
-        underReview_msg: (discord_invite) => `Prosjektet ditt er for tida under vurdering. Dersom det tek meir enn 48 timar, kan du gjerne kontakta oss på [Discord-sørvaren vår](${discord_*invite})`,
+        underReview_msg: (discord_invite) => `Prosjektet ditt er for tida under vurdering. Dersom det tek meir enn 48 timar, kan du gjerne kontakta oss på [Discord-sørvaren vår](${discord_invite})`,
     },
     form: {
         featured: "Framheva",
