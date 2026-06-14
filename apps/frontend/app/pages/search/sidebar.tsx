@@ -180,7 +180,7 @@ function SearchFilters({ type, sectionsDefaultOpen }: Props) {
                 items={gameVersionFilterOptions}
                 selectedItems={searchParams.getAll(gameVersionFilterParamNamespace)}
                 label={gameVersionsFilterLabel}
-                listWrapperClassName="max-h-[clamp(14rem,_30vh,_28rem)] overflow-y-auto px-0.5 gap-2.5"
+                listWrapperClassName="max-h-[clamp(14rem,_30vh,_28rem)] overflow-y-auto px-0.5"
                 formatLabel={false}
                 filterToggledUrl={(version) => {
                     const params = new URLSearchParams(searchParams);
@@ -398,7 +398,7 @@ function FilterCategory({
 
             <div className={cn("grid ps-1", collapsibleBoxClassName(isVisible))}>
                 <div>
-                    <div className={cn("grid gap-1 py-1", listWrapperClassName)}>
+                    <div className={cn("grid py-1", listWrapperClassName)}>
                         {items.map((item) => {
                             const itemValue = typeof item === "string" ? item : item.value;
                             let _itemLabel = typeof item === "string" ? item : item.label;
@@ -425,6 +425,7 @@ function FilterCategory({
                                         setSearchParams(params, { preventScrollReset: true });
                                     }}
                                     icon={<TagIcon name={itemValue} />}
+                                    className="py-[0.3em]"
                                 >
                                     {itemLabel}
                                 </LabelledTernaryCheckbox>
