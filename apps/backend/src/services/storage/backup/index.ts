@@ -11,10 +11,10 @@ const filesDir = path.resolve(LOCAL_BASE_STORAGE_PATH);
 const zipPath = path.resolve(LOCAL_BASE_STORAGE_PATH, FILES_BACKUP_NAME);
 const dbBackupPath = path.resolve(LOCAL_BASE_STORAGE_PATH, DB_BACKUP_NAME);
 
-export async function BackupLocalData() {
+async function BackupLocalData() {
     await RemoveOldBackupFiles();
 
-    Log("Starting project files backup...", LogType.INFO);
+    Log("\nStarting project files backup...", LogType.INFO);
     const projectFilesBackupZip = await CreateProjectFilesBackupZip();
     await BackupToBackblaze(projectFilesBackupZip, FILES_BACKUP_NAME);
     Log("Project files backup completed successfully!", LogType.INFO);
@@ -22,7 +22,7 @@ export async function BackupLocalData() {
     Log("Starting db backup...", LogType.INFO);
     const dbBackup = await CreateDbBackupZip();
     await BackupToBackblaze(dbBackup, DB_BACKUP_NAME);
-    Log("DB backup completed successfully!", LogType.INFO);
+    Log("DB backup completed successfully!\n\n", LogType.INFO);
 }
 await BackupLocalData();
 
