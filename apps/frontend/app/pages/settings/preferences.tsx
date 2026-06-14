@@ -1,12 +1,12 @@
 import { CapitalizeAndFormatString } from "@app/utils/string";
 import type React from "react";
-import { ThemePreference, Themes } from "~/components/themes/config";
+import { findTheme, ThemePreference, Themes } from "~/components/themes/config";
 import { ImgWrapper } from "~/components/ui/avatar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
 import { Switch } from "~/components/ui/switch";
 import { cn } from "~/components/utils";
 import { usePreferences } from "~/hooks/preferences";
-import { getThemeClassName, resolveThemePreference } from "~/hooks/preferences/theme";
+import { resolveThemePreference } from "~/hooks/preferences/theme";
 import { useTranslation } from "~/locales/provider";
 
 export default function PreferencesPage() {
@@ -90,7 +90,7 @@ export function ThemeSwitcher() {
             </CardHeader>
             <CardContent className="grid grid-cols-[repeat(auto-fit,minmax(14rem,1fr))] gap-panel-cards">
                 {Themes.map((themeItem) => {
-                    const resolvedTheme = themeItem.name === ThemePreference.SYSTEM ? systemTheme : themeItem.name;
+                    const effectiveTheme = themeItem.name === ThemePreference.SYSTEM ? systemTheme : themeItem.name;
                     const label =
                         themeItem.name === ThemePreference.SYSTEM
                             ? t.settings.system
@@ -103,7 +103,7 @@ export function ThemeSwitcher() {
                             checked={currTheme === themeItem.name}
                             onClick={(e) => updateThemePreference(e, themeItem.name)}
                         >
-                            <ThemePreview isActive={themeItem.name === currTheme} resolvedTheme={resolvedTheme} />
+                            <ThemePreview isActive={themeItem.name === currTheme} effectiveTheme={effectiveTheme} />
                         </RadioBtnSelector>
                     );
                 })}
@@ -152,14 +152,13 @@ function RadioBtnSelector(props: RadioBtnSelectorProps) {
     );
 }
 
-function ThemePreview({ isActive, resolvedTheme }: { isActive: boolean; resolvedTheme: ThemePreference }) {
-    const classNames = getThemeClassName(resolvedTheme, false);
-    const themeObj = Themes.find((t) => t.name === resolvedTheme);
+function ThemePreview({ isActive, effectiveTheme }: { isActive: boolean; effectiveTheme: ThemePreference }) {
+    const themeObj = findTheme(effectiveTheme);
 
     if (!themeObj) return null;
 
     return (
-        <div className={cn("bg-background p-8", ...classNames)}>
+        <div className={cn("bg-background p-8", effectiveTheme)}>
             <div className="grid grid-cols-[min-content_1fr] gap-panel-cards rounded bg-card-background p-card-surround">
                 <ImgWrapper
                     src={null}

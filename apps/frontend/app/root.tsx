@@ -17,9 +17,8 @@ import Footer from "~/components/layout/footer";
 import Navbar from "~/components/layout/Navbar/navbar";
 import LoaderBar from "~/components/misc/loader-bar";
 import { shouldForceRevalidate } from "~/components/misc/refresh-page";
-import { cn } from "~/components/utils";
 import { getUserConfig } from "~/hooks/preferences/helpers";
-import { getThemeClassName } from "~/hooks/preferences/theme";
+import { resolveThemePreference } from "~/hooks/preferences/theme";
 import type { UserPreferences } from "~/hooks/preferences/types";
 import { formatLocaleCode, getValidLocaleCode } from "~/locales";
 import SupportedLocales, { DefaultLocale_Meta, getMetadataFromLocaleCode } from "~/locales/meta";
@@ -33,6 +32,7 @@ import Config from "~/utils/config";
 import { MetaTags } from "~/utils/meta";
 import { resJson, serverFetch } from "~/utils/server-fetch";
 import type { Route } from "./+types/root";
+import { findTheme } from "./components/themes/config";
 
 const ASSETS_SERVER_URL = import.meta.env.BASE_URL;
 
@@ -46,10 +46,15 @@ export interface RootOutletData {
 
 export function Layout({ children }: { children: React.ReactNode }) {
     const data = useLoaderData() as RootOutletData;
-    const classes = getThemeClassName(data.userConfig.theme, data.userConfig.prefersOLED);
+    const theme = findTheme(resolveThemePreference(data.userConfig.theme, data.userConfig.prefersOLED));
 
     return (
-        <html lang={formatLocaleCode(data.locale)} className={cn(classes)} dir={data.locale.dir || "ltr"}>
+        <html
+            lang={formatLocaleCode(data.locale)}
+            className={theme.name}
+            data-theme-variant={theme.variant ?? "undefined"}
+            dir={data.locale.dir || "ltr"}
+        >
             <head>
                 <meta charSet="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
