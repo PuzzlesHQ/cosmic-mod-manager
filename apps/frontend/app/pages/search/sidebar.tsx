@@ -425,7 +425,6 @@ function FilterCategory({
                                         setSearchParams(params, { preventScrollReset: true });
                                     }}
                                     icon={<TagIcon name={itemValue} />}
-                                    className="py-[0.3em]"
                                 >
                                     {itemLabel}
                                 </LabelledTernaryCheckbox>

@@ -66,7 +66,7 @@ export function LabelledTernaryCheckbox(props: LabelledCheckboxProps) {
     return (
         <Label
             className={cn(
-                "flex cursor-not-allowed items-center justify-start gap-x-2 font-normal text-base text-foreground-muted opacity-75 transition",
+                "flex cursor-not-allowed items-center justify-start gap-x-2 py-1.25 font-normal text-base text-foreground-muted opacity-75 transition",
                 !props.disabled && "cursor-pointer opacity-100 hover:brightness-90 dark:hover:brightness-115",
                 props.state === TernaryStates.EXCLUDED && "text-error-fg",
                 props.className,
