@@ -12,7 +12,7 @@ import { Outlet } from "react-router";
 import { CubeIcon, fallbackOrgIcon, fallbackUserIcon } from "~/components/icons";
 import { itemType, MicrodataItemProps, MicrodataItemType } from "~/components/microdata";
 import { PageHeader } from "~/components/misc/page-header";
-import { DefaultTheme, ThemeVariant } from "~/components/themes/config";
+import { DefaultTheme } from "~/components/themes/config";
 import { ImgWrapper } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -23,7 +23,7 @@ import Link, { LinkPrefetchStrategy, useNavigate, VariantButtonLink } from "~/co
 import { PopoverClose } from "~/components/ui/popover";
 import { cn } from "~/components/utils";
 import { usePreferences } from "~/hooks/preferences";
-import { getThemeClassName } from "~/hooks/preferences/theme";
+import { isThemeDark } from "~/hooks/preferences/theme";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import SecondaryNav from "~/pages/project/secondary-nav";
@@ -43,10 +43,8 @@ export default function UserPageLayout(props: Props) {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const { resolvedTheme, prefersOLED } = usePreferences();
-    const isActiveTheme_Dark = getThemeClassName(resolvedTheme, prefersOLED).some(
-        (cls) => cls.toString() === ThemeVariant.DARK.toString(),
-    );
+    const { resolvedTheme } = usePreferences();
+    const isActiveTheme_Dark = isThemeDark(resolvedTheme);
 
     const aggregatedDownloads = (props.projectsList || [])?.reduce((acc, project) => acc + project.downloads, 0) || 0;
     const totalProjects = (props.projectsList || [])?.length;
@@ -121,7 +119,7 @@ export default function UserPageLayout(props: Props) {
                 data-showbg="true"
                 className={cn(
                     "header-content-sidebar-layout gap-y-panel-cards pb-12 content-container",
-                    bgFileUrl && !isActiveTheme_Dark && [DefaultTheme.variant, DefaultTheme.name],
+                    bgFileUrl && !isActiveTheme_Dark && DefaultTheme.name,
                     bgFileUrl && "has-bg-image",
                     sidebar && "gap-x-panel-cards",
                 )}
