@@ -18,26 +18,19 @@ export function resolveThemePreference(prefersTheme: ThemePreference, prefersOLE
     else return ThemePreference.DARK;
 }
 
-export function applyTheme(theme: ThemePreference, prefersOLED: boolean, doc: HTMLElement, e?: MediaMatchEvent) {
-    const classes = getThemeClassName(theme, prefersOLED, e || true);
-    applyThemeClasses(classes, doc);
-}
-
-export function getThemeClassName(theme: ThemePreference, prefersOLED: boolean, e?: MediaMatchEvent) {
-    const effectiveTheme = resolveThemePreference(theme, prefersOLED, e);
-    const themeObj = findTheme(effectiveTheme);
-
-    return [themeObj.name];
-}
-
 const allThemesClasses = [...Object.values(ThemeVariant), ...Object.values(ThemePreference)];
 
-function applyThemeClasses(classes: string[], doc: HTMLElement) {
+export function applyTheme(theme: ThemePreference, prefersOLED: boolean, doc: HTMLElement, e?: MediaMatchEvent) {
     if (!doc) throw new Error("Document element is required to apply themes");
 
-    // Remove all existing theme classes
-    if (allThemesClasses.length) doc.classList.remove(...allThemesClasses);
+    const themeInfo = findTheme(resolveThemePreference(theme, prefersOLED, e || true));
 
-    // Add new classes
-    if (classes.length) doc.classList.add(...classes);
+    if (allThemesClasses.length) doc.classList.remove(...allThemesClasses);
+    doc.classList.add(themeInfo.name);
+    doc.setAttribute("data-theme-variant", themeInfo.variant ?? "undefined");
+}
+
+export function isThemeDark(theme: ThemePreference) {
+    const themeObj = findTheme(theme);
+    return themeObj.variant === ThemeVariant.DARK;
 }
