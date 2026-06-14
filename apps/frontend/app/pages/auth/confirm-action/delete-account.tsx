@@ -29,7 +29,7 @@ export default function DeleteAccountConfirmationCard({ code }: { code: string }
 
             const result = await response.json();
             if (result?.success === true) {
-                return setSuccessMessage(result?.message || t.common.success);
+                return setSuccessMessage(t.auth.deleteAccountSuccess);
             }
 
             return toast.error(result?.message || t.common.error);

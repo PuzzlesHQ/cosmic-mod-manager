@@ -107,13 +107,16 @@ export default {
         confirmNewPass: "Confirm new password",
         confirmNewPassDesc:
             "A new password was recently added to your account and is awaiting confirmation. Confirm below if this was you.",
+        addNewPassSuccess: "New password created successfully",
         newPass: "New password",
         newPass_label: "Enter your new password",
         confirmPass: "Confirm password",
         confirmPass_label: "Re-enter your password",
+        changePassSuccess: "Account password changed successfully",
         deleteAccount: "Delete account",
         deleteAccountDesc:
             "Deleting your account will remove all of your data from our database. There is no going back after you delete your account.",
+        deleteAccountSuccess: "Account deleted successfully",
         enterEmail: "Enter your email address",
     },
 

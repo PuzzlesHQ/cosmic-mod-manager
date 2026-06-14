@@ -137,7 +137,13 @@ export async function confirmAddingNewPassword(code: string) {
         },
     });
 
-    return { data: { success: true, message: "Successfully added the new password" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Successfully added the new password",
+        },
+        status: HTTP_STATUS.OK,
+    };
 }
 
 export async function removeAccountPassword(

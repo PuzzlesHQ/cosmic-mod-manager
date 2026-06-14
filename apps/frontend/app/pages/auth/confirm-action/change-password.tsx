@@ -40,11 +40,11 @@ export default function ChangePasswordCard({ code }: { code: string }) {
             });
             const result = await response.json();
 
-            if (!response.ok || !result?.success) {
-                return toast.error(result?.message || t.common.error);
+            if (result?.success === true) {
+                return setSuccessMessage(t.auth.changePassSuccess);
             }
-
-            return setSuccessMessage(result?.message || t.common.success);
+            
+            return toast.error(result?.message || t.common.error);
         } finally {
             setIsLoading({ value: false, action: null });
         }
