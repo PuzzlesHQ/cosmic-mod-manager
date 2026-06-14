@@ -391,7 +391,7 @@ export function DoorClosedLockedIcon(props: React.ComponentProps<"svg">) {
     );
 }
 
-const defaultIconClass = "inline w-4 leading-[0] aspect-square";
+const defaultIconClass = "inline w-[1.05em] h-[1.05em] leading-[0] aspect-square";
 
 type IconNames = keyof CategoriesT | (typeof loaders_list)[number]["name"] | "client" | "server";
 
