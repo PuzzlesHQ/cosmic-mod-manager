@@ -23,6 +23,7 @@ import {
     DownloadIcon,
     GitCommitHorizontalIcon,
     HeartIcon,
+    LinkIcon,
     SettingsIcon,
     TagsIcon,
 } from "lucide-react";
@@ -522,6 +523,24 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
                             btnSize="sm"
                             className="w-full justify-start"
                         />
+
+                        <PopoverClose asChild>
+                            <Button
+                                className="w-full justify-start"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                    const permanentUrl = window.location.href.replace(
+                                        `/${projectData.slug}`,
+                                        `/${projectData.id}`,
+                                    );
+                                    navigator.clipboard.writeText(permanentUrl);
+                                }}
+                            >
+                                <LinkIcon aria-hidden className="h-btn-icon w-btn-icon" />
+                                {t.project.copyLink}
+                            </Button>
+                        </PopoverClose>
 
                         <PopoverClose asChild>
                             <Button
