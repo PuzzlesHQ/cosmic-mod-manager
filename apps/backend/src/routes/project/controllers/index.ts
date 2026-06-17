@@ -1,3 +1,4 @@
+import { isModerator } from "@app/utils/constants/roles";
 import { isNumber } from "@app/utils/number";
 import { combineProjectMembers, sortVersionsWithReference } from "@app/utils/project";
 import { gameVersionsList } from "@app/utils/src/constants/game-versions";
@@ -29,8 +30,6 @@ export async function getProjectData(slug: string, userSession: UserSessionData 
         return { data: { success: false, message: "Project not found" }, status: HTTP_STATUS.NOT_FOUND };
     }
 
-    const allMembers = combineProjectMembers(project.team.members, project.organisation?.team.members || []);
-
     const projectAccessible = isProjectAccessible({
         visibility: project.visibility,
         publishingStatus: project.status,
@@ -42,7 +41,9 @@ export async function getProjectData(slug: string, userSession: UserSessionData 
     if (!projectAccessible) {
         return { data: { success: false, message: "Project not found" }, status: HTTP_STATUS.NOT_FOUND };
     }
-    const currSessionMember = allMembers.get(userSession?.id || "");
+
+    const allMembers = combineProjectMembers(project.team.members, project.organisation?.team.members || []);
+    const isSessionUserProjectMember = userSession?.id ? !!allMembers.get(userSession.id) : false;
     const org = project.organisation;
 
     const FormattedData: ProjectDetailsData = {
@@ -94,7 +95,9 @@ export async function getProjectData(slug: string, userSession: UserSessionData 
                 };
             })
             .filter((item) => item !== null),
-        members: project.team.members.map((member) => formatProjectMember(member, currSessionMember)),
+        members: project.team.members.map((member) =>
+            formatProjectMember(member, isSessionUserProjectMember, userSession?.role),
+        ),
         organisation: org
             ? {
                   id: org.id,
@@ -102,7 +105,9 @@ export async function getProjectData(slug: string, userSession: UserSessionData 
                   slug: org.slug,
                   description: org.description,
                   icon: orgIconUrl(org.id, org.iconFileId),
-                  members: org.team.members.map((member) => formatProjectMember(member, currSessionMember)),
+                  members: org.team.members.map((member) =>
+                      formatProjectMember(member, isSessionUserProjectMember, userSession?.role),
+                  ),
               }
             : null,
     };
@@ -124,7 +129,13 @@ interface FormatMemberProps extends DBTeamMember {
     };
 }
 
-function formatProjectMember<T extends FormatMemberProps>(member: T, currMember?: { id?: string }) {
+function formatProjectMember<T extends FormatMemberProps>(
+    member: T,
+    isSessionUserProjectMember: boolean,
+    sessionUserRole: string | undefined,
+) {
+    const canSeeMemberPerms = isSessionUserProjectMember || isModerator(sessionUserRole);
+
     return {
         id: member.id,
         userId: member.user.id,
@@ -134,8 +145,8 @@ function formatProjectMember<T extends FormatMemberProps>(member: T, currMember?
         role: member.role,
         isOwner: member.isOwner,
         accepted: member.accepted,
-        permissions: currMember?.id ? (member.permissions as ProjectPermission[]) : [],
-        organisationPermissions: currMember?.id ? (member.organisationPermissions as OrganisationPermission[]) : [],
+        permissions: canSeeMemberPerms ? (member.permissions as ProjectPermission[]) : [],
+        organisationPermissions: canSeeMemberPerms ? (member.organisationPermissions as OrganisationPermission[]) : [],
     };
 }
 
