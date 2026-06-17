@@ -1,0 +1,26 @@
+.img-popup-desc-box {
+    .img-desc {
+        translate: 0 2rem;
+        scale: 0.5;
+        opacity: 0;
+    }
+
+    .popup-btns {
+        scale: 0.9;
+        opacity: 0.45;
+    }
+}
+
+.img-popup-desc-box:hover,
+.img-popup-desc-box:has(*:focus-visible) {
+    .img-desc {
+        translate: 0;
+        scale: 1;
+        opacity: 1;
+    }
+
+    .popup-btns {
+        scale: 1;
+        opacity: 1;
+    }
+}
