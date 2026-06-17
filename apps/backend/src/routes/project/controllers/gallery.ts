@@ -29,8 +29,19 @@ export async function addNewGalleryImage(
 ) {
     const project = await GetProject_Details(projectId);
     if (!project?.id) return notFoundResponseData();
-    if (project.gallery.length >= MAX_PROJECT_GALLERY_IMAGES_COUNT)
-        return invalidRequestResponseData(`Maximum of ${MAX_PROJECT_GALLERY_IMAGES_COUNT} gallery images allowed!`);
+
+    let maxImagesAllowed = MAX_PROJECT_GALLERY_IMAGES_COUNT;
+    if (project.dateApproved) {
+        const projectAge_months = (Date.now() - new Date(project.datePublished).getTime()) / (30 * 24 * 60 * 60 * 1000);
+        // larger quota for older projects
+        if (projectAge_months >= 6) {
+            maxImagesAllowed = MAX_PROJECT_GALLERY_IMAGES_COUNT * 2;
+        }
+    }
+
+    if (project.gallery.length >= maxImagesAllowed) {
+        return invalidRequestResponseData(`Maximum of ${maxImagesAllowed} gallery images allowed!`);
+    }
 
     // Check if the order index is not already occupied
     for (const item of project.gallery) {
