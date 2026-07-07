@@ -49,8 +49,9 @@ import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { ReleaseChannelBadge } from "~/components/ui/release-channel-pill";
 import { Separator } from "~/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
+import { VerticalScroll } from "~/components/ui/vertical-scroller";
 import { cn } from "~/components/utils";
-import { useProjectData } from "~/hooks/project";
+import { type ProjectContextData, useProjectData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import ReportButton from "~/pages/report/report-btn";
@@ -74,7 +75,6 @@ import UpdateProjectStatusDialog from "./update-project-status";
 
 export default function ProjectPageLayout() {
     const { t } = useTranslation();
-    const { downloadFile } = use(FileDownloader);
 
     const session = useSession();
     const ctx = useProjectData();
@@ -82,16 +82,6 @@ export default function ProjectPageLayout() {
 
     const navigate = useNavigate();
     const location = useLocation();
-
-    const isVersionDetailsPage = isCurrLinkActive(
-        ProjectPagePath(ctx.projectType, projectData.slug, "version"),
-        location.pathname,
-        false,
-    );
-    const isVersionListPage = isCurrLinkActive(
-        ProjectPagePath(ctx.projectType, projectData.slug, "versions"),
-        location.pathname,
-    );
 
     const projectEnvironments = ProjectSupprotedEnvironments({
         clientSide: projectData.clientSide,
@@ -237,90 +227,7 @@ export default function ProjectPageLayout() {
                     </Card>
                 ) : null}
 
-                {(ctx.featuredProjectVersions?.length || 0) > 0 ? (
-                    <Card className="grid grid-cols-1 gap-1 p-card-surround">
-                        <div className="mb-2 flex flex-wrap items-center justify-between gap-x-2">
-                            <h2 className="font-bold text-lg">{t.project.featuredVersions}</h2>
-
-                            {!isVersionListPage && (
-                                <TextLink
-                                    to={ProjectPagePath(ctx.projectType, projectData.slug, "versions")}
-                                    className=""
-                                >
-                                    {t.dashboard.seeAll}
-                                    <ChevronRightIcon className="inline h-4 w-4" />
-                                </TextLink>
-                            )}
-                        </div>
-
-                        {ctx.featuredProjectVersions?.map((version) => (
-                            // biome-ignore lint/a11y/useKeyWithClickEvents: --
-                            // biome-ignore lint/a11y/noStaticElementInteractions: --
-                            <div
-                                key={version.id}
-                                className="bg_hover_stagger group/card flex w-full cursor-pointer items-start justify-start gap-2 rounded p-2 pb-2.5 text-foreground-muted hover:bg-raised-background"
-                                onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-                                    if (
-                                        // @ts-expect-error
-                                        !e.target.closest(".noClickRedirect")
-                                    ) {
-                                        const link = VersionPagePath(ctx.projectType, projectData.slug, version.slug);
-                                        if (window.location.pathname !== link) {
-                                            navigate(link);
-                                        }
-                                    }
-                                }}
-                            >
-                                <div className="relative flex min-w-10 items-center justify-center">
-                                    <ReleaseChannelBadge
-                                        releaseChannel={version.releaseChannel}
-                                        className="absolute group-focus-within/card:invisible group-hover/card:invisible"
-                                    />
-
-                                    <Tooltip>
-                                        <TooltipTrigger
-                                            asChild
-                                            className="invisible group-focus-within/card:visible group-hover/card:visible"
-                                        >
-                                            <Button
-                                                className="noClickRedirect h-10! w-10! shrink-0 rounded-full"
-                                                variant={isVersionDetailsPage ? "secondary-dark" : "default"}
-                                                size="icon"
-                                                aria-label={t.project.downloadItem(version.primaryFile?.name || "")}
-                                                onClick={() => downloadFile(version.primaryFile?.url)}
-                                            >
-                                                <DownloadIcon
-                                                    aria-hidden
-                                                    className="h-[1.07rem] w-[1.07rem]"
-                                                    strokeWidth={2.2}
-                                                />
-                                            </Button>
-                                        </TooltipTrigger>
-
-                                        <TooltipContent>
-                                            {version?.primaryFile?.name} (
-                                            {parseFileSize(version.primaryFile?.size || 0)})
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </div>
-
-                                <div className="flex h-full w-fit grow select-text flex-col">
-                                    <Link
-                                        prefetch={LinkPrefetchStrategy.Render}
-                                        to={VersionPagePath(ctx.projectType, projectData.slug, version.slug)}
-                                        className="noClickRedirect w-fit"
-                                    >
-                                        <p className="font-bold leading-tight">{version.title}</p>
-                                    </Link>
-                                    <p className="text-pretty leading-tight">
-                                        {version.loaders.map((loader) => CapitalizeAndFormatString(loader)).join(", ")}{" "}
-                                        {formatVersionsForDisplay(version.gameVersions).join(", ")}
-                                    </p>
-                                </div>
-                            </div>
-                        ))}
-                    </Card>
-                ) : null}
+                {ctx.featuredProjectVersions?.length ? <FeaturedVersionsCard ctx={ctx} /> : null}
 
                 <Card className="grid grid-cols-1 gap-1 p-card-surround">
                     <h2 className="pb-1 font-bold text-lg">{t.project.creators}</h2>
@@ -704,6 +611,111 @@ export function TeamMember_Card({
                 <span className="font-medium text-foreground-muted/75 text-sm leading-tight">{roleName}</span>
             </div>
         </VariantButtonLink>
+    );
+}
+
+interface FeaturedVersionsCardProps {
+    ctx: ProjectContextData;
+}
+
+function FeaturedVersionsCard({ ctx }: FeaturedVersionsCardProps) {
+    const { t } = useTranslation();
+    const { downloadFile } = use(FileDownloader);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const projectData = ctx.projectData;
+
+    const isVersionDetailsPage = isCurrLinkActive(
+        ProjectPagePath(ctx.projectType, projectData.slug, "version"),
+        location.pathname,
+        false,
+    );
+    const isVersionListPage = isCurrLinkActive(
+        ProjectPagePath(ctx.projectType, ctx.projectData.slug, "versions"),
+        location.pathname,
+    );
+
+    return (
+        <Card className="grid grid-cols-1 gap-1 p-card-surround">
+            <div className="mb-2 flex flex-wrap items-center justify-between gap-x-2">
+                <h2 className="font-bold text-lg">{t.project.featuredVersions}</h2>
+
+                {!isVersionListPage && (
+                    <TextLink to={ProjectPagePath(ctx.projectType, ctx.projectData.slug, "versions")}>
+                        {t.dashboard.seeAll}
+                        <ChevronRightIcon className="inline h-4 w-4" />
+                    </TextLink>
+                )}
+            </div>
+
+            <VerticalScroll className="grid max-h-[26rem] gap-1">
+                {ctx.featuredProjectVersions?.map((version) => (
+                    // biome-ignore lint/a11y/useKeyWithClickEvents: --
+                    // biome-ignore lint/a11y/noStaticElementInteractions: --
+                    <div
+                        key={version.id}
+                        className="bg_hover_stagger group/card flex w-full cursor-pointer items-start justify-start gap-2 rounded p-2 pb-2.5 text-foreground-muted hover:bg-raised-background"
+                        onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+                            if (
+                                // @ts-expect-error
+                                !e.target.closest(".noClickRedirect")
+                            ) {
+                                const link = VersionPagePath(ctx.projectType, projectData.slug, version.slug);
+                                if (window.location.pathname !== link) {
+                                    navigate(link);
+                                }
+                            }
+                        }}
+                    >
+                        <div className="relative flex min-w-10 items-center justify-center">
+                            <ReleaseChannelBadge
+                                releaseChannel={version.releaseChannel}
+                                className="absolute group-focus-within/card:invisible group-hover/card:invisible"
+                            />
+
+                            <Tooltip>
+                                <TooltipTrigger
+                                    asChild
+                                    className="invisible group-focus-within/card:visible group-hover/card:visible"
+                                >
+                                    <Button
+                                        className="noClickRedirect h-10! w-10! shrink-0 rounded-full"
+                                        variant={isVersionDetailsPage ? "secondary-dark" : "default"}
+                                        size="icon"
+                                        aria-label={t.project.downloadItem(version.primaryFile?.name || "")}
+                                        onClick={() => downloadFile(version.primaryFile?.url)}
+                                    >
+                                        <DownloadIcon
+                                            aria-hidden
+                                            className="h-[1.07rem] w-[1.07rem]"
+                                            strokeWidth={2.2}
+                                        />
+                                    </Button>
+                                </TooltipTrigger>
+
+                                <TooltipContent>
+                                    {version?.primaryFile?.name} ({parseFileSize(version.primaryFile?.size || 0)})
+                                </TooltipContent>
+                            </Tooltip>
+                        </div>
+
+                        <div className="flex h-full w-fit grow select-text flex-col">
+                            <Link
+                                prefetch={LinkPrefetchStrategy.Render}
+                                to={VersionPagePath(ctx.projectType, projectData.slug, version.slug)}
+                                className="noClickRedirect w-fit"
+                            >
+                                <p className="font-bold leading-tight">{version.title}</p>
+                            </Link>
+                            <p className="text-pretty leading-tight">
+                                {version.loaders.map((loader) => CapitalizeAndFormatString(loader)).join(", ")}{" "}
+                                {formatVersionsForDisplay(version.gameVersions).join(", ")}
+                            </p>
+                        </div>
+                    </div>
+                ))}
+            </VerticalScroll>
+        </Card>
     );
 }
 

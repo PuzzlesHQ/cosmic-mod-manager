@@ -11,7 +11,7 @@ import { CapitalizeAndFormatString } from "@app/utils/string";
 import { ProjectType, TagType } from "@app/utils/types";
 import { ChevronDownIcon, ChevronUpIcon, FilterXIcon } from "lucide-react";
 import type React from "react";
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 import { useSearchParams } from "react-router";
 import { TagIcon } from "~/components/icons/tag-icons";
 import { Button } from "~/components/ui/button";
@@ -20,6 +20,7 @@ import { collapsibleBoxClassName } from "~/components/ui/collapsible";
 import { Input } from "~/components/ui/input";
 import { SkipNav } from "~/components/ui/skip-nav";
 import { LabelledTernaryCheckbox, TernaryStates } from "~/components/ui/ternary-checkbox";
+import { VerticalScroll } from "~/components/ui/vertical-scroller";
 import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import { NOT, removePageOffsetSearchParam, toggleSearchParam, updateTernaryState_SearchParam } from "./provider";
@@ -180,7 +181,9 @@ function SearchFilters({ type, sectionsDefaultOpen }: Props) {
                 items={gameVersionFilterOptions}
                 selectedItems={searchParams.getAll(gameVersionFilterParamNamespace)}
                 label={gameVersionsFilterLabel}
-                listWrapperClassName="max-h-[clamp(14rem,_30vh,_28rem)] overflow-y-auto px-0.5"
+                ListWrapper={(p: { children: ReactNode }) => (
+                    <VerticalScroll className="max-h-[clamp(18rem,_30vh,_30rem)] px-0.5">{p.children}</VerticalScroll>
+                )}
                 formatLabel={false}
                 filterToggledUrl={(version) => {
                     const params = new URLSearchParams(searchParams);
@@ -333,7 +336,7 @@ interface FilterCategoryProps {
     label: string;
     // The function is expected to return the search params after toggling the filter
     filterToggledUrl: (prevVal: string) => URLSearchParams;
-    listWrapperClassName?: string;
+    ListWrapper?: (p: { children: ReactNode }) => React.JSX.Element;
     className?: string;
     formatLabel?: boolean;
     footerItem?: React.ReactNode;
@@ -348,7 +351,7 @@ function FilterCategory({
     label,
     filterToggledUrl,
     className,
-    listWrapperClassName,
+    ListWrapper,
     formatLabel = true,
     footerItem,
     collapsible = true,
@@ -368,6 +371,38 @@ function FilterCategory({
     }
 
     const isVisible = isOpen || !collapsible;
+
+    const options = items.map((item) => {
+        const itemValue = typeof item === "string" ? item : item.value;
+        let _itemLabel = typeof item === "string" ? item : item.label;
+
+        // @ts-expect-error
+        const tagTranslation = t.search.tags[itemValue];
+        if (tagTranslation) {
+            _itemLabel = tagTranslation;
+        }
+
+        const itemLabel = formatLabel ? CapitalizeAndFormatString(_itemLabel) || "" : _itemLabel;
+        const state = selectedItems.includes(itemValue)
+            ? TernaryStates.INCLUDED
+            : selectedItems.includes(NOT(itemValue))
+              ? TernaryStates.EXCLUDED
+              : TernaryStates.UNCHECKED;
+
+        return (
+            <LabelledTernaryCheckbox
+                key={itemValue}
+                state={state}
+                onCheckedChange={() => {
+                    const params = filterToggledUrl(itemValue);
+                    setSearchParams(params, { preventScrollReset: true });
+                }}
+                icon={<TagIcon name={itemValue} />}
+            >
+                {itemLabel}
+            </LabelledTernaryCheckbox>
+        );
+    });
 
     return (
         <section className={cn("filterCategory grid grid-cols-1", className)}>
@@ -398,39 +433,7 @@ function FilterCategory({
 
             <div className={cn("grid ps-1", collapsibleBoxClassName(isVisible))}>
                 <div>
-                    <div className={cn("grid py-1", listWrapperClassName)}>
-                        {items.map((item) => {
-                            const itemValue = typeof item === "string" ? item : item.value;
-                            let _itemLabel = typeof item === "string" ? item : item.label;
-
-                            // @ts-expect-error
-                            const tagTranslation = t.search.tags[itemValue];
-                            if (tagTranslation) {
-                                _itemLabel = tagTranslation;
-                            }
-
-                            const itemLabel = formatLabel ? CapitalizeAndFormatString(_itemLabel) || "" : _itemLabel;
-                            const state = selectedItems.includes(itemValue)
-                                ? TernaryStates.INCLUDED
-                                : selectedItems.includes(NOT(itemValue))
-                                  ? TernaryStates.EXCLUDED
-                                  : TernaryStates.UNCHECKED;
-
-                            return (
-                                <LabelledTernaryCheckbox
-                                    key={itemValue}
-                                    state={state}
-                                    onCheckedChange={() => {
-                                        const params = filterToggledUrl(itemValue);
-                                        setSearchParams(params, { preventScrollReset: true });
-                                    }}
-                                    icon={<TagIcon name={itemValue} />}
-                                >
-                                    {itemLabel}
-                                </LabelledTernaryCheckbox>
-                            );
-                        })}
-                    </div>
+                    {ListWrapper ? <ListWrapper>{options}</ListWrapper> : <div className="grid py-1">{options}</div>}
 
                     {footerItem}
                 </div>

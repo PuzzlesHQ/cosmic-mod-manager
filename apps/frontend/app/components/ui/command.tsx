@@ -3,6 +3,7 @@ import { SearchIcon } from "lucide-react";
 import type { Dialog as DialogPrimitive } from "radix-ui";
 import { Dialog, DialogContent } from "~/components/ui/dialog";
 import { cn } from "~/components/utils";
+import { VerticalScroll } from "./vertical-scroller";
 
 function Command({ ref, className, ...props }: React.ComponentProps<typeof CommandPrimitive>) {
     return (
@@ -55,8 +56,12 @@ function CommandInput({
 
 CommandInput.displayName = CommandPrimitive.Input.displayName;
 
-function CommandList({ ref, className, ...props }: React.ComponentProps<typeof CommandPrimitive.List>) {
-    return <CommandPrimitive.List ref={ref} className={cn("max-h-[18rem] overflow-y-auto", className)} {...props} />;
+function CommandList({ ref, className, children, ...props }: React.ComponentProps<typeof CommandPrimitive.List>) {
+    return (
+        <VerticalScroll ref={ref} className={cn("max-h-[18rem] overflow-y-auto", className)} {...props}>
+            {children}
+        </VerticalScroll>
+    );
 }
 CommandList.displayName = CommandPrimitive.List.displayName;
 
@@ -114,5 +119,6 @@ export {
     CommandItem,
     CommandList,
     CommandSeparator,
-    CommandShortcut,
+    CommandShortcut
 };
+

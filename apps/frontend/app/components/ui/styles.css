@@ -81,3 +81,32 @@
 [data-view-transition="theme-switch"] .view-transition-item {
     view-transition-name: unset;
 }
+
+/* --- vertical-scroller.tsx --- START */
+@property --scroller-mask-top {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: black;
+}
+
+@property --scroller-mask-bottom {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: black;
+}
+
+.vertical-scroller {
+    mask-image: linear-gradient(to bottom, var(--scroller-mask-top), black 3rem, black calc(100% - 3rem), var(--scroller-mask-bottom));
+    transition-property: --scroller-mask-top, --scroller-mask-bottom;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+}
+
+.vertical-scroller.fade-top {
+    --scroller-mask-top: transparent;
+}
+
+.vertical-scroller.fade-bottom {
+    --scroller-mask-bottom: transparent;
+}
+/* --- vertical-scroller.tsx --- END */
