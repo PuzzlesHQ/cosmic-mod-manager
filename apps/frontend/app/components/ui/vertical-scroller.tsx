@@ -7,7 +7,6 @@ export function VerticalScroll({ children, className, ...props }: ComponentProps
 
         if (Math.floor((el.scrollHeight - el.offsetHeight) / 10) < 1) {
             el.classList.remove("fade-top", "fade-bottom");
-            console.log("removed both");
             return;
         }
 
