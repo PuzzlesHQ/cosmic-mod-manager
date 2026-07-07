@@ -19,7 +19,10 @@ function BreadcrumbList({ ref, className, ...props }: React.ComponentProps<"ol">
     return (
         <ol
             ref={ref}
-            className={cn("wrap-break-word flex flex-wrap items-center gap-x-1 text-base text-foreground-muted", className)}
+            className={cn(
+                "wrap-break-word flex flex-wrap items-center gap-x-1 text-base text-foreground-muted",
+                className,
+            )}
             {...props}
         />
     );
@@ -99,6 +102,5 @@ export {
     BreadcrumbLink,
     BreadcrumbList,
     BreadcrumbPage,
-    BreadcrumbSeparator
+    BreadcrumbSeparator,
 };
-

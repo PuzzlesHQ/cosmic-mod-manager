@@ -43,7 +43,7 @@ export default function ChangePasswordCard({ code }: { code: string }) {
             if (result?.success === true) {
                 return setSuccessMessage(t.auth.changePassSuccess);
             }
-            
+
             return toast.error(result?.message || t.common.error);
         } finally {
             setIsLoading({ value: false, action: null });

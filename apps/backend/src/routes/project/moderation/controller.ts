@@ -104,10 +104,10 @@ export async function updateModerationProject(id: string, status: string, userSe
         return {
             data: {
                 success: false,
-                message: "Invalid value for the project 'status'"
+                message: "Invalid value for the project 'status'",
             },
-            status: HTTP_STATUS.BAD_REQUEST
-        }
+            status: HTTP_STATUS.BAD_REQUEST,
+        };
     }
 
     const updateData: Prisma.ProjectUpdateInput = {};

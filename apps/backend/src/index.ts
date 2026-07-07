@@ -111,7 +111,7 @@ const app = new Hono()
     })
 
     .onError((err, ctx) => {
-        Log([err.name, err.message, err.cause, err.stack].join("\n"))
+        Log([err.name, err.message, err.cause, err.stack].join("\n"));
         return serverErrorResponse(ctx);
     });
 

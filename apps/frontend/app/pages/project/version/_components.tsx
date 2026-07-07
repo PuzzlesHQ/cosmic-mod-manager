@@ -675,10 +675,7 @@ export function SelectPrimaryFileInput({ children, selectedFile, inputId }: Prim
             {children}
 
             <div>
-                <FileIcon
-                    aria-hidden
-                    className="me-1.5 inline h-btn-icon w-btn-icon shrink-0 text-foreground-muted"
-                />
+                <FileIcon aria-hidden className="me-1.5 inline h-btn-icon w-btn-icon shrink-0 text-foreground-muted" />
                 {selectedFile ? (
                     <span className="inline-flex flex-wrap items-center justify-start gap-x-2">
                         <strong className="font-semibold">{selectedFile.name}</strong>{" "}

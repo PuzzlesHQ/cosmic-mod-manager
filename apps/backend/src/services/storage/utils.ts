@@ -1,5 +1,4 @@
-
-// Store files outeside of the project folder
+// Store files outside of the project folder
 export const LOCAL_BASE_STORAGE_PATH = "./../../../uploads";
 
 export const USERS_FOLDER_NAMESPACE = "users";
