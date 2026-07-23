@@ -34,6 +34,7 @@ function UpdateLocaleOnHintChange() {
         const updatedLocale = getValidLocaleCode(getHintLocale(new URLSearchParams(location.search)));
         if (updatedLocale !== formattedLocaleName) {
             setLocale(updatedLocale);
+            document.documentElement.setAttribute("lang", updatedLocale);
         }
     }, [locationStr]);
 
