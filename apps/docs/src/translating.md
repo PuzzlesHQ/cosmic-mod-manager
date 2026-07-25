@@ -27,10 +27,10 @@ Add an entry to [apps/frontend/app/locales/meta.ts](/apps/frontend/app/locales/m
     name: "Spanish",        // Name in English
     displayName: "Español", // Name in the language itself
     dir: "ltr",             // "ltr" (left-to-right) or "rtl" (right-to-left)
-    fallback: "fr"
+    fallbacks: ["fr", "ja"]
 }
 ```
-Optionally you can set a `fallback` locale, when a translation key is missing, it'll try this locale before falling back to English. Useful for regional variants or closely related languages.
+Optionally you can set `fallbacks`, when a translation key is missing, it'll try the fallbacks in order before falling back to English. Useful for regional variants or closely related languages.
 
 
 If you're adding a **regional variant** (e.g. Latin American Spanish), also include a `region` field:
