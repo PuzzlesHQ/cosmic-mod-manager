@@ -193,7 +193,7 @@ export function ChatThread(props: ChatThreadProps) {
                 {thread.messages.map((msg, i) => {
                     const createdAt = DateFromStr(msg.createdAt);
                     const inResponseTo_msg =
-                        msg.type === MessageType.TEXT && !!msg.body.replying_to
+                        msg.type === MessageType.TEXT && msg.body.replying_to
                             ? thread.messages.find((m) => m.id === msg.body.replying_to)
                             : null;
 

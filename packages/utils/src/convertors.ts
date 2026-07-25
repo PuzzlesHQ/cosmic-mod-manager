@@ -78,7 +78,7 @@ export async function getFileType(file: File | BunFile) {
     if (!fileExtensionType) return null;
 
     const fileSignatureType = await getFileSignatures(file);
-    if (!fileSignatureType || !fileSignatureType.includes(fileExtensionType)) return null;
+    if (!fileSignatureType?.includes(fileExtensionType)) return null;
 
     return fileExtensionType;
 }

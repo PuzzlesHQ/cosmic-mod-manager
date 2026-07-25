@@ -64,12 +64,12 @@ async function versionFromHashUpdate_get(ctx: Context) {
     }
 
     let loader = body?.loader;
-    if (!loader || !loader.length || typeof loader !== "string") {
+    if (!loader?.length || typeof loader !== "string") {
         loader = undefined;
     }
 
     let releaseChannel = body.releaseChannel;
-    if (!releaseChannel || !releaseChannel.length || typeof releaseChannel !== "string") {
+    if (!releaseChannel?.length || typeof releaseChannel !== "string") {
         // unset it if it's wrong type
         releaseChannel = undefined;
     }
@@ -126,12 +126,12 @@ async function versionUpdatesFromHashes_post(ctx: Context) {
     }
 
     let loader = body?.loader;
-    if (!loader || !loader.length || typeof loader !== "string") {
+    if (!loader?.length || typeof loader !== "string") {
         loader = undefined;
     }
 
     let releaseChannel = body.releaseChannel;
-    if (!releaseChannel || !releaseChannel.length || typeof releaseChannel !== "string") {
+    if (!releaseChannel?.length || typeof releaseChannel !== "string") {
         releaseChannel = GetReleaseChannelFilter();
     }
 

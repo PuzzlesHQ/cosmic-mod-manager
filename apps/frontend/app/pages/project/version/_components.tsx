@@ -784,7 +784,7 @@ function AdditionalFiles({
                 <div className="my-2 flex w-full flex-col items-start justify-center gap-2">
                     {selectedFiles?.map((file, index) => (
                         <div
-                            key={`${file.name}-${index}`}
+                            key={`${file.name}-${file.type}-${file.size}`}
                             className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded bg-raised-background px-4 py-2 sm:flex-nowrap"
                         >
                             <div className="text-foreground-muted">

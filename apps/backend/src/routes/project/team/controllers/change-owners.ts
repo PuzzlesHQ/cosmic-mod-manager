@@ -22,7 +22,7 @@ export async function changeTeamOwner(
     if (!team) return notFoundResponseData();
 
     const newOwner = team.members.find((member) => member.userId === newOwner_UserId);
-    if (!newOwner || !newOwner.accepted) return notFoundResponseData("Member not found");
+    if (!newOwner?.accepted) return notFoundResponseData("Member not found");
 
     const currOwner = team.members.find((member) => member.isOwner);
     const currMember = team.members.find((member) => member.userId === userSession.id);

@@ -90,7 +90,7 @@ export default defineConfig({
 
                     // Locales
                     if (id.includes("/app/locales/")) {
-                        const match = id.match(/app\/+locales\/+([^\/]+)\//);
+                        const match = id.match(/app\/+locales\/+([^/]+)\//);
                         if (match) return `${match[1]}-locale`;
                     }
 

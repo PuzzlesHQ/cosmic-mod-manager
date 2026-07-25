@@ -35,7 +35,7 @@ function resolveFallbacks(localeName: string): string[] {
         fallbacksList.push(localeCode);
 
         const metadata = getMetadataFromLocaleCode(localeCode);
-        if (!metadata || !metadata.fallbacks) return;
+        if (!metadata?.fallbacks) return;
 
         for (const fallback of metadata.fallbacks) {
             visit(fallback);

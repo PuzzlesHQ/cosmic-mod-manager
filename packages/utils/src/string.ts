@@ -111,7 +111,7 @@ export function ParseInt(str: string) {
 
 export function encodeArrayIntoStr(items: Set<string> | string[]) {
     const arr = items instanceof Set ? Array.from(items) : items;
-    if (!arr || !arr.length || !Array.isArray(arr)) return "";
+    if (!arr?.length || !Array.isArray(arr)) return "";
 
     let result = "";
     for (let i = 0; i < arr.length; i++) {
