@@ -96,7 +96,13 @@
 }
 
 .vertical-scroller {
-    mask-image: linear-gradient(to bottom, var(--scroller-mask-top), black 3rem, black calc(100% - 3rem), var(--scroller-mask-bottom));
+    mask-image: linear-gradient(
+        to bottom,
+        var(--scroller-mask-top),
+        black 3rem,
+        black calc(100% - 3rem),
+        var(--scroller-mask-bottom)
+    );
     transition-property: --scroller-mask-top, --scroller-mask-bottom;
     transition-duration: 200ms;
     transition-timing-function: ease-in-out;
