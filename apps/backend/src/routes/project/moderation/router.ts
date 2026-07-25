@@ -1,5 +1,5 @@
 import { API_SCOPE } from "@app/utils/pats";
-import { MODERATOR_ROLES } from "@app/utils/src/constants/roles";
+import { isModerator } from "@app/utils/src/constants/roles";
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware } from "~/middleware/auth";
 import {
@@ -22,7 +22,7 @@ const moderationRouter = new Hono()
 
 async function moderationProjects_get(ctx: Context) {
     const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_READ);
-    if (!sessionUser?.id || !MODERATOR_ROLES.includes(sessionUser.role)) {
+    if (!sessionUser?.id || !isModerator(sessionUser.role)) {
         await addInvalidAuthAttempt(ctx);
         return unauthorizedReqResponse(ctx);
     }
@@ -33,10 +33,11 @@ async function moderationProjects_get(ctx: Context) {
 
 async function moderationProject_post(ctx: Context) {
     const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_WRITE);
-    if (!sessionUser?.id || !MODERATOR_ROLES.includes(sessionUser.role)) {
+    if (!sessionUser?.id || !isModerator(sessionUser.role)) {
         await addInvalidAuthAttempt(ctx);
         return unauthorizedReqResponse(ctx);
     }
+
     const id = ctx.req.param("id");
     const body = ctx.get(REQ_BODY_NAMESPACE);
     const newStatus = body.status;

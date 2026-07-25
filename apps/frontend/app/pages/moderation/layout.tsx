@@ -1,5 +1,4 @@
-import { MODERATOR_ROLES } from "@app/utils/src/constants/roles";
-import type { GlobalUserRole } from "@app/utils/types";
+import { isModerator } from "@app/utils/src/constants/roles";
 import { BarChart2Icon, FlagIcon, LayoutDashboardIcon, ScaleIcon } from "lucide-react";
 import { Outlet } from "react-router";
 import { Panel, PanelContent, SidePanel } from "~/components/misc/panel";
@@ -11,7 +10,7 @@ export default function ModerationPagesLayout() {
     const { t } = useTranslation();
     const mod = t.moderation;
 
-    if (!MODERATOR_ROLES.includes(session?.role as GlobalUserRole)) {
+    if (!isModerator(session?.role)) {
         return (
             <div className="full_page flex items-center justify-center">
                 <span className="text-foreground-muted text-xl italic">Lacking permissions to access this page.</span>

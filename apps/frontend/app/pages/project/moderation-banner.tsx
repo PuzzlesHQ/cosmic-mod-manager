@@ -1,4 +1,4 @@
-import { MODERATOR_ROLES } from "@app/utils/src/constants/roles";
+import { isModerator } from "@app/utils/src/constants/roles";
 import { ProjectPublishingStatus } from "@app/utils/types";
 import { MoreVerticalIcon, XIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
@@ -14,7 +14,7 @@ export default function ModerationBanner() {
     const ctx = useProjectData();
     const session = useSession();
 
-    if (!session?.id || !MODERATOR_ROLES.includes(session.role)) return null;
+    if (!session?.id || !isModerator(session.role)) return null;
     if (!ctx.projectData.requestedStatus) return null;
 
     return (

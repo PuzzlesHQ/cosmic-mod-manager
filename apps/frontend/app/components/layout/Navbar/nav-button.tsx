@@ -1,5 +1,5 @@
 import { disableInteractions } from "@app/utils/dom";
-import { MODERATOR_ROLES } from "@app/utils/src/constants/roles";
+import { isModerator } from "@app/utils/src/constants/roles";
 import type { LoggedInUserData } from "@app/utils/types";
 import { imageUrl } from "@app/utils/url";
 import {
@@ -152,7 +152,7 @@ export default function NavButton({ session }: NavbuttonProps) {
                         </ButtonLink>
                     );
                 })}
-                {MODERATOR_ROLES.includes(session.role) ? (
+                {isModerator(session.role) ? (
                     <ButtonLink url="/moderation/review" exactTailMatch={false}>
                         <ScaleIcon aria-hidden className="h-btn-icon w-btn-icon" aria-label={t.moderation.moderation} />
                         {t.moderation.moderation}

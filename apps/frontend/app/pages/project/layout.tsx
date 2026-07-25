@@ -3,7 +3,7 @@ import type { LoaderNames } from "@app/utils/constants/loaders";
 import { getLoadersFromNames } from "@app/utils/convertors";
 import { parseFileSize } from "@app/utils/number";
 import SPDX_LICENSE_LIST from "@app/utils/src/constants/license-list";
-import { isModerator, MODERATOR_ROLES } from "@app/utils/src/constants/roles";
+import { isModerator } from "@app/utils/src/constants/roles";
 import { Capitalize, CapitalizeAndFormatString } from "@app/utils/string";
 import { ProjectPublishingStatus, ProjectVisibility } from "@app/utils/types";
 import type { ProjectDetailsData, TeamMember } from "@app/utils/types/api";
@@ -371,9 +371,10 @@ interface HeaderProps {
 function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetchProjectData }: HeaderProps) {
     const { t } = useTranslation();
     const session = useSession();
-    const isMod = session?.id && MODERATOR_ROLES.includes(session.role);
-    let invitedMember = null;
+    const showUpdateStatusButtons =
+        isModerator(session?.role) && !RejectedStatuses.includes(projectData.status) && !projectData.requestedStatus;
 
+    let invitedMember = null;
     if (currUsersMembership?.accepted !== true) {
         for (const member of projectData.members) {
             if (member.userId === session?.id && member.accepted === false) {
@@ -463,7 +464,7 @@ function ProjectInfoHeader({ projectData, projectType, currUsersMembership, fetc
                             </Button>
                         </PopoverClose>
 
-                        {isMod && !RejectedStatuses.includes(projectData.status) && !projectData.requestedStatus ? (
+                        {showUpdateStatusButtons ? (
                             <>
                                 <Separator />
 
