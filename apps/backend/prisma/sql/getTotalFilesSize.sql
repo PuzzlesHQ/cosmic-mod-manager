@@ -1,0 +1,1 @@
+SELECT SUM(f.size) FROM "File" f;

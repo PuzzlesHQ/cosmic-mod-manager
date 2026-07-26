@@ -1,7 +1,7 @@
 generator client {
     provider        = "prisma-client"
     output          = "client"
-    previewFeatures = ["postgresqlExtensions"]
+    previewFeatures = ["postgresqlExtensions", "typedSql"]
 }
 
 datasource db {
@@ -231,7 +231,7 @@ model Dependency {
 
 model GalleryItem {
     id              String   @id @db.VarChar(32)
-    imageFileId     String   @db.VarChar(32) // @File.id
+    imageFileId     String   @unique @db.VarChar(32) // @File.id
     thumbnailFileId String   @db.VarChar(32)
     projectId       String   @db.VarChar(32)
     name            String   @db.VarChar(64)
