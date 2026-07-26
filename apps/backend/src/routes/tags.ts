@@ -7,7 +7,7 @@ import type { ProjectType } from "@app/utils/types";
 import { type Context, Hono } from "hono";
 import { applyCacheHeaders } from "~/middleware/cache";
 import { searchReqRateLimiter } from "~/middleware/rate-limiter";
-import { HTTP_STATUS } from "~/utils/http";
+import { HTTP_STATUS, notFoundResponse } from "~/utils/http";
 
 const tagsRouter = new Hono()
     .use(searchReqRateLimiter)
@@ -53,9 +53,8 @@ async function licenses_get(ctx: Context) {
     const licenseId = ctx.req.param("id")?.toLowerCase();
     if (licenseId) {
         const license = SPDX_LICENSE_LIST.find((l) => l.licenseId.toLowerCase() === licenseId);
-        if (!license) {
-            return ctx.json({ success: false, message: "License not found" }, HTTP_STATUS.NOT_FOUND);
-        }
+        if (!license) notFoundResponse(ctx, "License not found");
+
         return ctx.json(license, HTTP_STATUS.OK);
     }
 

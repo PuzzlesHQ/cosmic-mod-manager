@@ -5,7 +5,7 @@ import { type Context, Hono } from "hono";
 import { LoginProtectedRoute } from "~/middleware/auth";
 import { critModifyReqRateLimiter, getReqRateLimiter, modifyReqRateLimiter } from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
-import { HTTP_STATUS, invalidRequestResponse, notFoundResponse, unauthenticatedReqResponse } from "~/utils/http";
+import { invalidRequestResponse, notFoundResponse, unauthenticatedReqResponse } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";
 import { getAllProjectVersions, getLatestVersion, getProjectVersionData } from "./controllers";
 import { createNewVersion } from "./controllers/new-version";
@@ -84,9 +84,7 @@ async function version_post(ctx: Context) {
     if (!projectId) return invalidRequestResponse(ctx);
 
     const formData = ctx.get(REQ_BODY_NAMESPACE);
-    if (!formData) {
-        return ctx.json({ success: false, message: "No form data found" }, HTTP_STATUS.BAD_REQUEST);
-    }
+    if (!formData) return invalidRequestResponse(ctx, "No form data found");
 
     const dependencies = formData.get("dependencies");
     const loaders = formData.get("loaders");
@@ -124,6 +122,8 @@ async function version_patch(ctx: Context) {
     if (!projectId || !versionId) return invalidRequestResponse(ctx);
 
     const formData = ctx.get(REQ_BODY_NAMESPACE);
+    if (!formData) return invalidRequestResponse(ctx, "No form data found");
+
     const dependencies = formData.get("dependencies");
     const loaders = formData.get("loaders");
     const gameVersions = formData.get("gameVersions");
