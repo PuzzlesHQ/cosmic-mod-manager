@@ -3,9 +3,9 @@
     "module": "src/index.ts",
     "type": "module",
     "scripts": {
-        "dev": "bun run --hot src/index.ts",
+        "dev": "bun run --watch src/index.ts",
         "start": "bun src/index.ts",
-        "prisma-generate": "prisma generate",
+        "prisma-generate": "prisma generate --sql",
         "prisma-push": "prisma db push",
         "deploy": "cross-env NODE_ENV=production pm2 deploy pm2.config.cjs backend",
         "file-backup": "bun run src/services/storage/backup/index.ts"

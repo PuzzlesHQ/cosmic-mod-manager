@@ -1,9 +1,48 @@
-import type { Statistics } from "@app/utils/types/api/stats";
+import { parseFileSize } from "@app/utils/number";
+import type { Statistics, StorageUsageStats } from "@app/utils/types/api/stats";
+import { Label, Pie, PieChart } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+    type ChartConfig,
+    ChartContainer,
+    ChartLegend,
+    ChartLegendContent,
+    ChartTooltip,
+    ChartTooltipContent,
+} from "~/components/ui/chart";
 import { useTranslation } from "~/locales/provider";
 
-export default function StatsPage({ stats }: { stats: Statistics }) {
+interface Props {
+    stats: Statistics;
+    storageStats: StorageUsageStats;
+}
+
+export default function StatsPage({ stats, storageStats }: Props) {
     const { t } = useTranslation();
+
+    const storageUsageData = [
+        { usedBy: "versions", usedStorage: storageStats.breakdown.versionFiles, fill: "var(--color-versions)" },
+        { usedBy: "gallery", usedStorage: storageStats.breakdown.galleryImages, fill: "var(--color-gallery)" },
+        { usedBy: "icons", usedStorage: storageStats.breakdown.iconImages, fill: "var(--color-icons)" },
+    ];
+
+    const chartConfig = {
+        usedStorage: {
+            label: "Storage Used",
+        },
+        versions: {
+            label: "Versions",
+            color: "hsla(var(--chart-1))",
+        },
+        gallery: {
+            label: "Gallery Images",
+            color: "hsla(var(--chart-2))",
+        },
+        icons: {
+            label: "Icons",
+            color: "hsla(var(--chart-3))",
+        },
+    } satisfies ChartConfig;
 
     return (
         <>
@@ -26,10 +65,61 @@ export default function StatsPage({ stats }: { stats: Statistics }) {
                 </CardHeader>
 
                 <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-[repeat(auto-fit,minmax(15rem,1fr))]">
-                    <StatCard label={t.dashboard.projects} value={stats.projects} />
-                    <StatCard label={t.project.versions} value={stats.versions} />
-                    <StatCard label={t.version.files} value={stats.files} />
-                    <StatCard label={t.moderation.authors} value={stats.authors} />
+                    <ChartContainer config={chartConfig} className="mx-auto min-h-[32rem] aspect-square">
+                        <PieChart>
+                            <ChartTooltip
+                                cursor={false}
+                                content={
+                                    <ChartTooltipContent
+                                        hideLabel
+                                        valueFormatter={(val) => (typeof val === "number" ? parseFileSize(val) : val)}
+                                    />
+                                }
+                            />
+                            <Pie
+                                data={storageUsageData}
+                                nameKey="usedBy"
+                                dataKey="usedStorage"
+                                innerRadius={80}
+                                strokeWidth={5}
+                            >
+                                <Label
+                                    content={({ viewBox }) => {
+                                        if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                                            return (
+                                                <text
+                                                    x={viewBox.cx}
+                                                    y={viewBox.cy}
+                                                    textAnchor="middle"
+                                                    dominantBaseline="middle"
+                                                >
+                                                    <tspan
+                                                        x={viewBox.cx}
+                                                        y={viewBox.cy}
+                                                        className="fill-foreground text-xl font-bold"
+                                                    >
+                                                        {parseFileSize(storageStats.totalUsed)}
+                                                    </tspan>
+                                                    <tspan
+                                                        x={viewBox.cx}
+                                                        y={(viewBox.cy || 0) + 24}
+                                                        className="fill-foreground"
+                                                    >
+                                                        Visitors
+                                                    </tspan>
+                                                </text>
+                                            );
+                                        }
+                                    }}
+                                />
+
+                                <ChartLegend
+                                    content={<ChartLegendContent nameKey="usedBy" />}
+                                    className="-translate-y-2 flex-wrap gap-2 *:basis-1/4 *:justify-center"
+                                />
+                            </Pie>
+                        </PieChart>
+                    </ChartContainer>
                 </CardContent>
             </Card>
         </>

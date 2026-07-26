@@ -11,3 +11,12 @@ export interface ProjectDownloads_Analytics {
         [date: string]: number;
     };
 }
+
+export interface StorageUsageStats {
+    totalUsed: number;
+    breakdown: {
+        versionFiles: number;
+        galleryImages: number;
+        iconImages: number;
+    };
+}

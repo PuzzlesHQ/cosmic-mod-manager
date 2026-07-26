@@ -11,7 +11,6 @@ import { queueSearchIndexUpdate } from "~/routes/search/search-db";
 // Middlewares
 
 import bodyParserMiddleware from "~/middleware/body-parser";
-import { applyCacheHeaders } from "~/middleware/cache";
 import { logger } from "~/middleware/http-logger";
 import { ddosProtectionRateLimiter } from "~/middleware/rate-limiter";
 import { startSitemapGenerator } from "~/services/sitemap-gen";
@@ -31,7 +30,6 @@ import projectRouter from "~/routes/project/router";
 import teamRouter from "~/routes/project/team/router";
 import reportRouter from "~/routes/report/router";
 import searchRouter from "~/routes/search/router";
-import { getStatistics } from "~/routes/statistics";
 import tagsRouter from "~/routes/tags";
 import threadRouter from "~/routes/thread/router";
 import bulkUserActionsRouter from "~/routes/user/bulk_actions/router";
@@ -39,6 +37,7 @@ import notificationRouter from "~/routes/user/notification/router";
 import userRouter from "~/routes/user/router";
 import { versionFileRouter, versionFiles_Router } from "~/routes/version-file/router";
 import versionsRouter from "~/routes/versions/router";
+import statsRouter from "./routes/statistics/router";
 import { Log } from "./utils/logger";
 
 const corsAllowedOrigins = env.CORS_ALLOWED_URLS.split(" ");
@@ -98,6 +97,7 @@ const app = new Hono()
     .route("/api/analytics", analyticsRouter)
 
     .route("/cdn", cdnRouter)
+    .route("/api/statistics", statsRouter)
 
     // Some inlined routes
     .get("/favicon.ico", async (ctx: Context) => {
@@ -106,9 +106,6 @@ const app = new Hono()
 
     .get("/", apiDetails)
     .get("/api", apiDetails)
-    .get("/api/statistics", applyCacheHeaders({ browserTTL_s: 600, cdnTTL_s: 12 * 3600 }), async (ctx: Context) => {
-        return ctx.json(await getStatistics(), HTTP_STATUS.OK);
-    })
 
     .onError((err, ctx) => {
         Log([err.name, err.message, err.cause, err.stack].join("\n"));

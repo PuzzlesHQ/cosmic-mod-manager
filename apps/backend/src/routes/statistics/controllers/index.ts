@@ -1,5 +1,6 @@
 import { ProjectPublishingStatus, ProjectVisibility } from "@app/utils/types";
-import type { Statistics } from "@app/utils/types/api/stats";
+import type { Statistics, StorageUsageStats } from "@app/utils/types/api/stats";
+import { getGalleryFilesSize, getTotalFilesSize, getVersionFilesSize } from "~/../prisma/client/sql";
 import { GetData_FromCache, SetCache, STATISTICS_CACHE_EXPIRY_seconds } from "~/db/_cache";
 import prisma from "~/services/prisma";
 import { STATISTICS_CACHE_KEY } from "~/types/namespaces";
@@ -73,4 +74,27 @@ export async function getStatistics(): Promise<Statistics | null> {
     await SetCache(STATISTICS_CACHE_KEY, "", data, STATISTICS_CACHE_EXPIRY_seconds);
 
     return stats;
+}
+
+export async function getStorageUsage() {
+    const [total, versionFiles, galleryFiles] = await Promise.all([
+        prisma.$queryRawTyped(getTotalFilesSize()),
+        prisma.$queryRawTyped(getVersionFilesSize()),
+        prisma.$queryRawTyped(getGalleryFilesSize()),
+    ]);
+
+    const totalSize = Number(total[0].sum);
+    const versionFilesSize = Number(versionFiles[0].sum);
+    const galleryFilesSize = Number(galleryFiles[0].sum);
+
+    if (!totalSize || !versionFilesSize || !galleryFilesSize) return null;
+
+    return {
+        totalUsed: totalSize,
+        breakdown: {
+            versionFiles: versionFilesSize,
+            galleryImages: galleryFilesSize,
+            iconImages: totalSize - (versionFilesSize + galleryFilesSize),
+        },
+    } satisfies StorageUsageStats;
 }

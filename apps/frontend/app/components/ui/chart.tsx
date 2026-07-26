@@ -69,9 +69,9 @@ function ChartContainer({
 }
 
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
-    const colorConfig = Object.entries(config).filter(([, config]) => config.theme ?? config.color);
+    const configOptions = Object.entries(config);
 
-    if (!colorConfig.length) {
+    if (!configOptions.length) {
         return null;
     }
 
@@ -80,9 +80,10 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
             dangerouslySetInnerHTML={{
                 __html: `
 [data-chart=${id}] {
-${colorConfig
+${configOptions
     .map(([key, itemConfig]) => {
-        return itemConfig.color ? `  --color-${key}: ${itemConfig.color};` : null;
+        if (itemConfig.color) return `  --color-${key}: ${itemConfig.color};`;
+        return null;
     })
     .join("\n")}
 }
@@ -104,6 +105,7 @@ function ChartTooltipContent({
     label,
     labelFormatter,
     labelClassName,
+    valueFormatter,
     formatter,
     color,
     nameKey,
@@ -115,6 +117,7 @@ function ChartTooltipContent({
         indicator?: "line" | "dot" | "dashed";
         nameKey?: string;
         labelKey?: string;
+        valueFormatter?: (val: unknown) => unknown;
     } & Omit<RechartsPrimitive.DefaultTooltipContentProps<TooltipValueType, TooltipNameType>, "accessibilityLayer">) {
     const { config } = useChart();
 
@@ -160,6 +163,7 @@ function ChartTooltipContent({
                         const key = `${nameKey ?? item.name ?? item.dataKey ?? "value"}`;
                         const itemConfig = getPayloadConfigFromPayload(config, item, key);
                         const indicatorColor = color ?? item.payload?.fill ?? item.color;
+                        const itemVal = valueFormatter ? valueFormatter(item.value) : item.value;
 
                         return (
                             <div
@@ -199,7 +203,7 @@ function ChartTooltipContent({
                                         )}
                                         <div
                                             className={cn(
-                                                "flex flex-1 justify-between leading-none",
+                                                "flex flex-1 justify-between gap-2 leading-none",
                                                 nestLabel ? "items-end" : "items-center",
                                             )}
                                         >
@@ -209,11 +213,11 @@ function ChartTooltipContent({
                                                     {itemConfig?.label ?? item.name}
                                                 </span>
                                             </div>
-                                            {item.value != null && (
+                                            {itemVal != null && (
                                                 <span className="font-medium font-mono text-foreground-bright tabular-nums">
-                                                    {typeof item.value === "number"
-                                                        ? item.value.toLocaleString()
-                                                        : String(item.value)}
+                                                    {typeof itemVal === "number"
+                                                        ? itemVal.toLocaleString()
+                                                        : String(itemVal)}
                                                 </span>
                                             )}
                                         </div>
@@ -276,7 +280,7 @@ function ChartLegendContent({
                                     }}
                                 />
                             )}
-                            {itemConfig?.label}
+                            <span style={{ textBox: "trim-both cap alphabetic" }}>{itemConfig?.label}</span>
                         </div>
                     );
                 })}
