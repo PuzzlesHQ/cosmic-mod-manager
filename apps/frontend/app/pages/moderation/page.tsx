@@ -65,7 +65,7 @@ export default function StatsPage({ stats, storageStats }: Props) {
                 </CardHeader>
 
                 <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-[repeat(auto-fit,minmax(15rem,1fr))]">
-                    <ChartContainer config={chartConfig} className="mx-auto min-h-[32rem] aspect-square">
+                    <ChartContainer config={chartConfig} className="mx-auto min-w-[22rem] w-full max-w-[32rem] aspect-square">
                         <PieChart>
                             <ChartTooltip
                                 cursor={false}
@@ -80,7 +80,7 @@ export default function StatsPage({ stats, storageStats }: Props) {
                                 data={storageUsageData}
                                 nameKey="usedBy"
                                 dataKey="usedStorage"
-                                innerRadius={80}
+                                innerRadius={75}
                                 strokeWidth={5}
                             >
                                 <Label
@@ -95,17 +95,17 @@ export default function StatsPage({ stats, storageStats }: Props) {
                                                 >
                                                     <tspan
                                                         x={viewBox.cx}
-                                                        y={viewBox.cy}
-                                                        className="fill-foreground text-xl font-bold"
+                                                        y={(viewBox.cy || 0) - 22}
+                                                        className="fill-foreground font-bold text-3xl"
                                                     >
-                                                        {parseFileSize(storageStats.totalUsed)}
+                                                        {parseFileSize(storageStats.totalUsed).split(" ")[0]}
                                                     </tspan>
                                                     <tspan
                                                         x={viewBox.cx}
-                                                        y={(viewBox.cy || 0) + 24}
-                                                        className="fill-foreground"
+                                                        y={(viewBox.cy || 0) + 14}
+                                                        className="fill-foreground-muted font-bold text-xl"
                                                     >
-                                                        Visitors
+                                                        {parseFileSize(storageStats.totalUsed).split(" ")?.[1]}
                                                     </tspan>
                                                 </text>
                                             );
