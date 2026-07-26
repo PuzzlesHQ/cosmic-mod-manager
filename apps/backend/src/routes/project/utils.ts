@@ -114,10 +114,10 @@ export async function createVersionFiles({ versionId, projectId, files }: create
         const fileType = await getFileType(file);
         if (!fileType) continue;
 
-        const sha1_hash = await createHashFromFile(file, "sha1");
-        if (createdFiles.includes(sha1_hash)) continue;
-
         const sha512_hash = await createHashFromFile(file, "sha512");
+        if (createdFiles.includes(sha512_hash)) continue;
+
+        const sha1_hash = await createHashFromFile(file, "sha1");
         const fileName = createFilePathSafeString(file.name);
         const path = await saveProjectVersionFile(storageService, projectId, versionId, file, fileName);
         if (!path) continue;
@@ -141,7 +141,7 @@ export async function createVersionFiles({ versionId, projectId, files }: create
             isPrimary: isPrimary,
         });
 
-        createdFiles.push(sha1_hash);
+        createdFiles.push(sha512_hash);
     }
 
     await Promise.all([
