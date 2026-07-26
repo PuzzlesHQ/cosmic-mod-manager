@@ -5,11 +5,10 @@ import {
     RemoveProjects_FromSearchIndex,
     UpdateProjects_SearchIndex,
 } from "~/routes/search/search-db";
-import { cacheKey } from "~/services/cache/utils";
 import prisma from "~/services/prisma";
 import valkey from "~/services/redis";
 import { PROJECT_DETAILS_CACHE_KEY, PROJECT_LIST_ITEM_CACHE_KEY } from "~/types/namespaces";
-import { GetData_FromCache, PROJECT_CACHE_EXPIRY_seconds, SetCache } from "./_cache";
+import { cacheKey, GetData_FromCache, PROJECT_CACHE_EXPIRY_seconds, SetCache } from "./_cache";
 import { Delete_OrganizationCache_All, GetManyOrganizations_ById, GetOrganization_Data } from "./organization_item";
 import { GetManyTeams_ById, GetTeam } from "./team_item";
 

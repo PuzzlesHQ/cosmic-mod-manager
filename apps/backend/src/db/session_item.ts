@@ -1,9 +1,8 @@
 import { USER_SESSION_VALIDITY_ms } from "@app/utils/constants";
 import type { Prisma } from "@prisma-client";
-import { cacheKey } from "~/services/cache/utils";
 import prisma from "~/services/prisma";
 import { USER_SESSION_CACHE_KEY } from "~/types/namespaces";
-import { DeleteCache, GetData_FromCache, SetCache, USER_SESSION_CACHE_EXPIRY_seconds } from "./_cache";
+import { cacheKey, DeleteCache, GetData_FromCache, SetCache, USER_SESSION_CACHE_EXPIRY_seconds } from "./_cache";
 
 export type GetSession_ReturnType = Awaited<ReturnType<typeof GetSession_ByTokenHash_FromDb>>;
 async function GetSession_ByTokenHash_FromDb(tokenHash: string) {

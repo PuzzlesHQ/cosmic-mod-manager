@@ -1,9 +1,8 @@
 import type { Prisma } from "@prisma-client";
-import { cacheKey } from "~/services/cache/utils";
 import prisma from "~/services/prisma";
 import valkey from "~/services/redis";
 import { FILE_ITEM_CACHE_KEY } from "~/types/namespaces";
-import { FILE_ITEM_EXPIRY_seconds, GetData_FromCache, SetCache } from "./_cache";
+import { cacheKey, FILE_ITEM_EXPIRY_seconds, GetData_FromCache, SetCache } from "./_cache";
 
 export type GetFile_ReturnType = Awaited<ReturnType<typeof GetFile_FromDb>>;
 function GetFile_FromDb(id: string) {

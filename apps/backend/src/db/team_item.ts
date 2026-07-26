@@ -1,9 +1,8 @@
 import type { Prisma } from "@prisma-client";
-import { cacheKey } from "~/services/cache/utils";
 import prisma from "~/services/prisma";
 import valkey from "~/services/redis";
 import { TEAM_DATA_CACHE_KEY } from "~/types/namespaces";
-import { GetData_FromCache, SetCache, TEAM_DATA_CACHE_EXPIRY_seconds } from "./_cache";
+import { cacheKey, GetData_FromCache, SetCache, TEAM_DATA_CACHE_EXPIRY_seconds } from "./_cache";
 import { TEAM_SELECT_FIELDS } from "./_queries";
 import { GetManyUsers_ByIds } from "./user_item";
 

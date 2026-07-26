@@ -1,8 +1,7 @@
 import type { Prisma } from "@prisma-client";
-import { cacheKey } from "~/services/cache/utils";
 import prisma from "~/services/prisma";
 import { PAT_CACHE_KEY as PAT_DATA_CACHE_KEY, PAT_ID_TO_HASH_CACHE_KEY, USER_PATs_CACHE_KEY } from "~/types/namespaces";
-import { DeleteCache, GetData_FromCache, PAT_CACHE_EXPIRY_seconds, SetCache } from "./_cache";
+import { cacheKey, DeleteCache, GetData_FromCache, PAT_CACHE_EXPIRY_seconds, SetCache } from "./_cache";
 
 export type GetPAT_ReturnType = Awaited<ReturnType<typeof GetPAT_FromDb>>;
 async function GetPAT_FromDb(tokenHash: string) {

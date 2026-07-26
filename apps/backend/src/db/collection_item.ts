@@ -1,9 +1,8 @@
 import type { Prisma } from "@prisma-client";
-import { cacheKey } from "~/services/cache/utils";
 import prisma from "~/services/prisma";
 import valkey from "~/services/redis";
 import { COLLECTION_DATA_CACHE_KEY, USER_COLLECTIONS_LIST_CACHE_KEY } from "~/types/namespaces";
-import { COLLECTION_CACHE_EXPIRY_seconds, GetData_FromCache, SetCache } from "./_cache";
+import { COLLECTION_CACHE_EXPIRY_seconds, cacheKey, GetData_FromCache, SetCache } from "./_cache";
 
 const COLLECTION_SELECT_FIELDS = {
     id: true,

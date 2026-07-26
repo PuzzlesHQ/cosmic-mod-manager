@@ -1,11 +1,11 @@
 import { ProjectPublishingStatus, ProjectVisibility } from "@app/utils/types";
 import type { Statistics } from "@app/utils/types/api/stats";
-import { getStatisticsCache, setStatisticsCache } from "~/services/cache/statistics";
+import { GetData_FromCache, SetCache, STATISTICS_CACHE_EXPIRY_seconds } from "~/db/_cache";
 import prisma from "~/services/prisma";
+import { STATISTICS_CACHE_KEY } from "~/types/namespaces";
 
 export async function getStatistics(): Promise<Statistics | null> {
-    // Check cache
-    const cachedStats = await getStatisticsCache();
+    const cachedStats = await GetData_FromCache<Statistics>(STATISTICS_CACHE_KEY);
     if (cachedStats) return cachedStats;
 
     const users = prisma.user.count();
@@ -69,7 +69,8 @@ export async function getStatistics(): Promise<Statistics | null> {
     };
 
     // STATISTICS CACHE: set
-    setStatisticsCache(stats);
+    const data = JSON.stringify(stats);
+    await SetCache(STATISTICS_CACHE_KEY, "", data, STATISTICS_CACHE_EXPIRY_seconds);
 
     return stats;
 }

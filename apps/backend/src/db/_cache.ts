@@ -1,4 +1,3 @@
-import { cacheKey } from "~/services/cache/utils";
 import valkey from "~/services/redis";
 import { parseJson } from "~/utils/str";
 
@@ -52,4 +51,8 @@ export async function SetCache(NAMESPACE: string, key: string, data: string, exp
 
 export async function DeleteCache(...keys: string[]) {
     await valkey.del(keys);
+}
+
+export function cacheKey(key: string, namespace: string) {
+    return `${namespace}:${key}`;
 }

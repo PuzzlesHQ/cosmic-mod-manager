@@ -1,9 +1,8 @@
 import type { Prisma } from "@prisma-client";
-import { cacheKey } from "~/services/cache/utils";
 import prisma from "~/services/prisma";
 import valkey from "~/services/redis";
 import { PROJECT_VERSIONS_CACHE_KEY } from "~/types/namespaces";
-import { GetData_FromCache, SetCache, VERSION_CACHE_EXPIRY_seconds } from "./_cache";
+import { cacheKey, GetData_FromCache, SetCache, VERSION_CACHE_EXPIRY_seconds } from "./_cache";
 import { Delete_ProjectCache_All } from "./project_item";
 
 export const VERSION_SELECT = {
