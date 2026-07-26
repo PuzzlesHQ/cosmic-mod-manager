@@ -1,4 +1,5 @@
 import type React from "react";
+import type { ElementType } from "react";
 import { cn } from "~/components/utils";
 import { type ButtonProps, buttonVariants } from "./button";
 
@@ -22,15 +23,30 @@ function Chip({ children, className, style }: ChipProps) {
     );
 }
 
-export function ChipButton({ ref, variant = "secondary", className, children, id, onClick, style }: ButtonProps) {
+interface ChipButtonProps extends ButtonProps {
+    element?: ElementType;
+}
+
+export function ChipButton({
+    ref,
+    variant = "secondary",
+    className,
+    children,
+    id,
+    onClick,
+    style,
+    element,
+}: ChipButtonProps) {
+    const Elem = element ?? "button";
+
     return (
-        <button
+        <Elem
             ref={ref}
-            type="button"
+            role="button"
             className={cn(
                 buttonVariants({ variant }),
                 "h-fit w-fit cursor-pointer rounded-full border-foreground/25 font-semibold text-[0.85rem] text-foreground underline-offset-2",
-                "min-h-6 gap-x-1.5 px-2 py-1 leading-[0]",
+                "min-h-6 gap-x-1.5 px-2 py-1 leading-0",
                 className,
             )}
             id={id}
@@ -38,7 +54,7 @@ export function ChipButton({ ref, variant = "secondary", className, children, id
             style={style}
         >
             {children}
-        </button>
+        </Elem>
     );
 }
 

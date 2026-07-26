@@ -133,6 +133,7 @@ export const MultiSelect = ({
                                         const IconComponent = option?.icon;
                                         return (
                                             <ChipButton
+                                                element="div"
                                                 variant="outline"
                                                 key={value}
                                                 className="m-[0.17rem] gap-1 pe-1 has-[svg:hover]:underline"
@@ -151,6 +152,7 @@ export const MultiSelect = ({
                                     })}
                                     {selectedValues.length > maxCount && (
                                         <ChipButton
+                                            element="div"
                                             variant="outline"
                                             className="m-[0.17rem] gap-1 pe-1 has-[svg:hover]:underline"
                                         >
