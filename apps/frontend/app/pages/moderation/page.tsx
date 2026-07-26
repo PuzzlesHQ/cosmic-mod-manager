@@ -25,21 +25,21 @@ export default function StatsPage({ stats, storageStats }: Props) {
         { usedBy: "gallery", usedStorage: storageStats.breakdown.galleryImages, fill: "var(--color-gallery)" },
         { usedBy: "icons", usedStorage: storageStats.breakdown.iconImages, fill: "var(--color-icons)" },
     ];
-
+t.navbar
     const chartConfig = {
         usedStorage: {
             label: "Storage Used",
         },
         versions: {
-            label: "Versions",
+            label: t.project.versions,
             color: "hsla(var(--chart-1))",
         },
         gallery: {
-            label: "Gallery Images",
+            label: t.project.gallery,
             color: "hsla(var(--chart-2))",
         },
         icons: {
-            label: "Icons",
+            label: t.form.icon,
             color: "hsla(var(--chart-3))",
         },
     } satisfies ChartConfig;
