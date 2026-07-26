@@ -6,18 +6,33 @@ export default function StatsPage({ stats }: { stats: Statistics }) {
     const { t } = useTranslation();
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>{t.moderation.statistics}</CardTitle>
-            </CardHeader>
+        <>
+            <Card>
+                <CardHeader>
+                    <CardTitle>{t.moderation.statistics}</CardTitle>
+                </CardHeader>
 
-            <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-[repeat(auto-fit,minmax(15rem,1fr))]">
-                <StatCard label={t.dashboard.projects} value={stats.projects} />
-                <StatCard label={t.project.versions} value={stats.versions} />
-                <StatCard label={t.version.files} value={stats.files} />
-                <StatCard label={t.moderation.authors} value={stats.authors} />
-            </CardContent>
-        </Card>
+                <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-[repeat(auto-fit,minmax(15rem,1fr))]">
+                    <StatCard label={t.dashboard.projects} value={stats.projects} />
+                    <StatCard label={t.project.versions} value={stats.versions} />
+                    <StatCard label={t.version.files} value={stats.files} />
+                    <StatCard label={t.moderation.authors} value={stats.authors} />
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>{t.moderation.storage}</CardTitle>
+                </CardHeader>
+
+                <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-[repeat(auto-fit,minmax(15rem,1fr))]">
+                    <StatCard label={t.dashboard.projects} value={stats.projects} />
+                    <StatCard label={t.project.versions} value={stats.versions} />
+                    <StatCard label={t.version.files} value={stats.files} />
+                    <StatCard label={t.moderation.authors} value={stats.authors} />
+                </CardContent>
+            </Card>
+        </>
     );
 }
 

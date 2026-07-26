@@ -720,6 +720,7 @@ export default {
         reports: "Reports",
         moderation: "Moderation",
         statistics: "Statistics",
+        storage: "Storage",
         authors: "Authors",
         projectsInQueue: (count: number) => {
             if (count === 1) return "There is 1 project in the queue.";
@@ -730,7 +731,7 @@ export default {
             if (count === 1) return `1 project has been in the queue for over ${hours} hours.`;
             return `${count} projects have been in the queue for over ${hours} hours.`;
         },
-        submitted: (when: string) => `Submitted ${when}`, // eg: Submitted 4 hours ago, (the date string comes from the localized phrases defined at end of the file)
+        submitted: (when: string) => `Submitted ${when}`, // eg: Submitted 4 hours ago, (the date string comes from the browser's Intl API)
         viewProject: "View project",
         awaitingApproval: "Project is queued for approval",
         draft: "Draft",
