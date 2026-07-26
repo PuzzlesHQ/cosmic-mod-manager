@@ -21,7 +21,6 @@ export const TEAM_DATA_CACHE_EXPIRY_seconds = TIME_12HR;
 export const FILE_ITEM_EXPIRY_seconds = TIME_12HR;
 
 export const STATISTICS_CACHE_EXPIRY_seconds = TIME_12HR;
-export const STORAGE_STATISTICS_CACHE_EXPIRY_seconds = TIME_12HR;
 
 export async function GetData_FromCache<T extends object | null>(NAMESPACE: string, key?: string): Promise<T | null> {
     const rawData = await GetRawData_FromCache(NAMESPACE, key);
