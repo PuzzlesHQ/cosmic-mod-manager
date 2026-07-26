@@ -1,9 +1,14 @@
 import { ProjectPublishingStatus, ProjectVisibility } from "@app/utils/types";
 import type { Statistics, StorageUsageStats } from "@app/utils/types/api/stats";
 import { getGalleryFilesSize, getTotalFilesSize, getVersionFilesSize } from "~/../prisma/client/sql";
-import { GetData_FromCache, SetCache, STATISTICS_CACHE_EXPIRY_seconds } from "~/db/_cache";
+import {
+    GetData_FromCache,
+    SetCache,
+    STATISTICS_CACHE_EXPIRY_seconds,
+    STORAGE_STATISTICS_CACHE_EXPIRY_seconds,
+} from "~/db/_cache";
 import prisma from "~/services/prisma";
-import { STATISTICS_CACHE_KEY } from "~/types/namespaces";
+import { STATISTICS_CACHE_KEY, STORAGE_STATISTICS_CACHE_KEY } from "~/types/namespaces";
 
 export async function getStatistics(): Promise<Statistics | null> {
     const cachedStats = await GetData_FromCache<Statistics>(STATISTICS_CACHE_KEY);
@@ -76,7 +81,10 @@ export async function getStatistics(): Promise<Statistics | null> {
     return stats;
 }
 
-export async function getStorageUsage() {
+export async function getStorageUsage(): Promise<StorageUsageStats | null> {
+    const cachedStats = await GetData_FromCache<StorageUsageStats>(STORAGE_STATISTICS_CACHE_KEY);
+    if (cachedStats) return cachedStats;
+
     const [total, versionFiles, galleryFiles] = await Promise.all([
         prisma.$queryRawTyped(getTotalFilesSize()),
         prisma.$queryRawTyped(getVersionFilesSize()),
@@ -89,12 +97,15 @@ export async function getStorageUsage() {
 
     if (!totalSize || !versionFilesSize || !galleryFilesSize) return null;
 
-    return {
+    const storageStats = {
         totalUsed: totalSize,
         breakdown: {
             versionFiles: versionFilesSize,
             galleryImages: galleryFilesSize,
             iconImages: totalSize - (versionFilesSize + galleryFilesSize),
         },
-    } satisfies StorageUsageStats;
+    };
+
+    await SetCache(STORAGE_STATISTICS_CACHE_KEY, "", JSON.stringify(storageStats), STORAGE_STATISTICS_CACHE_EXPIRY_seconds);
+    return storageStats;
 }

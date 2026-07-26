@@ -16,6 +16,7 @@ export const PAT_ID_TO_HASH_CACHE_KEY = "pat:id-to-hash";
 export const USER_SESSION_CACHE_KEY = "user_session:data";
 
 export const STATISTICS_CACHE_KEY = "statistics";
+export const STORAGE_STATISTICS_CACHE_KEY = "statistics:storage";
 
 // Project
 export const PROJECT_DETAILS_CACHE_KEY = "project:details";
