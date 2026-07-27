@@ -25,7 +25,7 @@ export default function StatsPage({ stats, storageStats }: Props) {
         { usedBy: "gallery", usedStorage: storageStats.breakdown.galleryImages, fill: "var(--color-gallery)" },
         { usedBy: "icons", usedStorage: storageStats.breakdown.iconImages, fill: "var(--color-icons)" },
     ];
-t.navbar
+    t.navbar;
     const chartConfig = {
         usedStorage: {
             label: "Storage Used",
@@ -65,7 +65,7 @@ t.navbar
                 </CardHeader>
 
                 <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-[repeat(auto-fit,minmax(15rem,1fr))]">
-                    <ChartContainer config={chartConfig} className="mx-auto min-w-[22rem] w-full max-w-[32rem] aspect-square">
+                    <ChartContainer config={chartConfig} className="mx-auto aspect-square w-full max-w-[32rem]">
                         <PieChart>
                             <ChartTooltip
                                 cursor={false}
