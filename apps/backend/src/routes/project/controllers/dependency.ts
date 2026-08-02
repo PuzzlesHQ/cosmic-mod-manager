@@ -1,3 +1,4 @@
+import { mapObjectList } from "@app/utils/arrays";
 import type { DependencyType, EnvironmentSupport, ProjectPublishingStatus, ProjectVisibility } from "@app/utils/types";
 import type { DependencyListData, ProjectListItem } from "@app/utils/types/api";
 import { GetManyProjects_ListItem, GetProject_ListItem } from "~/db/project_item";
@@ -19,8 +20,8 @@ export async function getProjectDependencies(slug: string, userSession: UserSess
         visibility: project.visibility,
         publishingStatus: project.status,
         userId: userSession?.id,
-        teamMembers: project.team.members,
-        orgMembers: project.organisation?.team.members || [],
+        teamMembers: mapObjectList(project.team.members, "userId"),
+        orgMembers: mapObjectList(project.organisation?.team.members || [], "userId"),
         sessionUserRole: userSession?.role,
     });
     if (!projectAccessible) {

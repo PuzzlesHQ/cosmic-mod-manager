@@ -1,3 +1,4 @@
+import { mapObjectList } from "@app/utils/arrays";
 import { getCurrMember } from "@app/utils/project";
 import type { ProjectVersionData } from "@app/utils/types/api";
 import type { Prisma } from "@prisma-client";
@@ -26,8 +27,8 @@ export async function getAllProjectVersions(slug: string, userSession: UserSessi
         visibility: project.visibility,
         publishingStatus: project.status,
         userId: userSession?.id,
-        teamMembers: project.team.members,
-        orgMembers: project.organisation?.team.members || [],
+        teamMembers: mapObjectList(project.team.members, "userId"),
+        orgMembers: mapObjectList(project.organisation?.team.members || [], "userId"),
         sessionUserRole: userSession?.role,
     });
     if (!projectAccessible) {

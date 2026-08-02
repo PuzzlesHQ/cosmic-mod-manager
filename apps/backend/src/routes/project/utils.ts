@@ -1,6 +1,6 @@
 import { type Loader, loaders } from "@app/utils/constants/loaders";
 import { getFileType } from "@app/utils/convertors";
-import { combineProjectMembers, type PartialTeamMember, sortVersionsWithReference } from "@app/utils/project";
+import { sortVersionsWithReference } from "@app/utils/project";
 import { gameVersionsList } from "@app/utils/src/constants/game-versions";
 import { isModerator } from "@app/utils/src/constants/roles";
 import { type GlobalUserRole, ProjectPublishingStatus, ProjectVisibility } from "@app/utils/types";
@@ -39,26 +39,26 @@ export function isProjectIndexable(visibility: string, publishingStatus: string)
     return isProjectPublic(visibility, publishingStatus) && visibility !== ProjectVisibility.UNLISTED;
 }
 
-interface IsProjectAccessibleProps<T> {
+interface IsProjectAccessibleProps {
     visibility: string;
     publishingStatus: string;
     userId: string | undefined | null;
-    teamMembers: T[];
-    orgMembers: T[];
+    teamMembers: string[];
+    orgMembers: string[];
     sessionUserRole: GlobalUserRole | undefined | null;
 }
 
-export function isProjectAccessible<T extends PartialTeamMember>({
+export function isProjectAccessible({
     visibility,
     publishingStatus,
     userId,
     teamMembers,
     orgMembers,
     sessionUserRole,
-}: IsProjectAccessibleProps<T>) {
+}: IsProjectAccessibleProps) {
     if (isModerator(sessionUserRole) === true) return true;
 
-    const combinedMembers = combineProjectMembers(teamMembers, orgMembers);
+    const combinedMembers = new Set([...teamMembers, ...orgMembers]);
     const isMember = userId ? combinedMembers.has(userId) : false;
     const isPublic = isProjectPublic(visibility, publishingStatus);
 

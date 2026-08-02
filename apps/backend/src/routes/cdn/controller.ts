@@ -1,3 +1,4 @@
+import { mapObjectList } from "@app/utils/arrays";
 import { getMimeFromType } from "@app/utils/file-signature";
 import type { Context } from "hono";
 import { GetFile, GetManyFiles_ByID } from "~/db/file_item";
@@ -30,8 +31,8 @@ export async function serveVersionFile(
         visibility: project.visibility,
         publishingStatus: project.status,
         userId: userSession?.id,
-        teamMembers: project.team.members,
-        orgMembers: project.organisation?.team.members || [],
+        teamMembers: mapObjectList(project.team.members, "userId"),
+        orgMembers: mapObjectList(project.organisation?.team.members || [], "userId"),
         sessionUserRole: userSession?.role,
     });
     if (!accessibleToCurrentSession) {

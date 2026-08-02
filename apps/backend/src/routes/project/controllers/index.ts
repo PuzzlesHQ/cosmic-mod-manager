@@ -1,3 +1,4 @@
+import { mapObjectList } from "@app/utils/arrays";
 import { isModerator } from "@app/utils/constants/roles";
 import { isNumber } from "@app/utils/number";
 import { combineProjectMembers, sortVersionsWithReference } from "@app/utils/project";
@@ -34,8 +35,8 @@ export async function getProjectData(slug: string, userSession: UserSessionData 
         visibility: project.visibility,
         publishingStatus: project.status,
         userId: userSession?.id,
-        teamMembers: project.team.members,
-        orgMembers: project.organisation?.team.members || [],
+        teamMembers: mapObjectList(project.team.members, "userId"),
+        orgMembers: mapObjectList(project.organisation?.team.members || [], "userId"),
         sessionUserRole: userSession?.role,
     });
     if (!projectAccessible) {
@@ -174,8 +175,8 @@ export async function getManyProjects(userSession: UserSessionData | null, proje
             visibility: project.visibility,
             publishingStatus: project.status,
             userId: userSession?.id,
-            teamMembers: project.team.members,
-            orgMembers: project.organisation?.team.members || [],
+            teamMembers: mapObjectList(project.team.members, "userId"),
+            orgMembers: mapObjectList(project.organisation?.team.members || [], "userId"),
             sessionUserRole: userSession?.role,
         });
         if (!projectAccessible) continue;
