@@ -68,14 +68,15 @@ async function galleryImage_get(ctx: Context) {
     });
 }
 
-const ALLOWED_EXTERNAL_USER_AGENTS = ["CRLauncher/"];
+const ALLOWED_EXTERNAL_USER_AGENTS = ["CRLauncher/", "Apache-Maven/"];
 async function versionFile_get(ctx: Context) {
     const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_READ, API_SCOPE.VERSION_READ);
     const { projectId, versionId, fileName } = ctx.req.param();
     if (!projectId || !versionId || !fileName) return invalidRequestResponse(ctx);
 
     const userAgent = ctx.req.header("User-Agent");
-    if (!userAgent) return invalidRequestResponse(ctx, "User-Agent header is missing");
+    if (!userAgent) return invalidRequestResponse(ctx);
+
     const isABot = isbot(userAgent);
     let isExplicitlyAllowed = false;
 
