@@ -11,7 +11,7 @@ import prisma from "~/services/prisma";
 import { deleteProjectVersionFile, saveProjectVersionFile } from "~/services/storage";
 import { createFilePathSafeString } from "~/services/storage/utils";
 import type { FILE_STORAGE_SERVICE } from "~/types";
-import { createHashFromFile } from "~/utils/file";
+import { genHashFromFile } from "~/utils/file";
 import { generateRandomId } from "~/utils/str";
 
 export function isProjectPrivate(visibility: string) {
@@ -114,10 +114,10 @@ export async function createVersionFiles({ versionId, projectId, files }: create
         const fileType = await getFileType(file);
         if (!fileType) continue;
 
-        const sha512_hash = await createHashFromFile(file, "sha512");
+        const sha512_hash = await genHashFromFile(file, "sha512");
         if (createdFiles.includes(sha512_hash)) continue;
 
-        const sha1_hash = await createHashFromFile(file, "sha1");
+        const sha1_hash = await genHashFromFile(file, "sha1");
         const fileName = createFilePathSafeString(file.name);
         const path = await saveProjectVersionFile(storageService, projectId, versionId, file, fileName);
         if (!path) continue;
@@ -200,7 +200,7 @@ interface isAnyDuplicateFileProps {
 export async function isAnyDuplicateFile({ projectId, files }: isAnyDuplicateFileProps) {
     const sha1_hashes: string[] = [];
     for (const file of files) {
-        const hash = await createHashFromFile(file, "sha1");
+        const hash = await genHashFromFile(file, "sha1");
         sha1_hashes.push(hash);
     }
 

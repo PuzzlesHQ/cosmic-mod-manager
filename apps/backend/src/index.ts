@@ -21,6 +21,7 @@ import analyticsRouter from "~/routes/analytics/router";
 import authRouter from "~/routes/auth/router";
 import cdnRouter from "~/routes/cdn/router";
 import collectionsRouter from "~/routes/collections/router";
+import mavenRouter from "~/routes/maven/router";
 import patRouter from "~/routes/pat/router";
 import bulkProjectsRouter from "~/routes/project/bulk_router";
 import moderationRouter from "~/routes/project/moderation/router";
@@ -30,6 +31,7 @@ import projectRouter from "~/routes/project/router";
 import teamRouter from "~/routes/project/team/router";
 import reportRouter from "~/routes/report/router";
 import searchRouter from "~/routes/search/router";
+import statsRouter from "~/routes/statistics/router";
 import tagsRouter from "~/routes/tags";
 import threadRouter from "~/routes/thread/router";
 import bulkUserActionsRouter from "~/routes/user/bulk_actions/router";
@@ -37,7 +39,6 @@ import notificationRouter from "~/routes/user/notification/router";
 import userRouter from "~/routes/user/router";
 import { versionFileRouter, versionFiles_Router } from "~/routes/version-file/router";
 import versionsRouter from "~/routes/versions/router";
-import statsRouter from "./routes/statistics/router";
 import { Log } from "./utils/logger";
 
 const corsAllowedOrigins = env.CORS_ALLOWED_URLS.split(" ");
@@ -98,6 +99,7 @@ const app = new Hono()
 
     .route("/cdn", cdnRouter)
     .route("/api/statistics", statsRouter)
+    .route("/api/maven", mavenRouter)
 
     // Some inlined routes
     .get("/favicon.ico", async (ctx: Context) => {

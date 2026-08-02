@@ -28,6 +28,10 @@ export async function AuthenticationMiddleware(ctx: Context, next: Next) {
         deleteCookie(ctx, "guest-session");
     }
 
+    if (!user) {
+        ctx.res.headers.set("WWW-Authenticate", `Bearer realm="CrMods API", Basic realm="CrMods API"`);
+    }
+
     ctx.set(CTX_USER_NAMESPACE, user);
     ctx.set("ip", ipAddr);
     await next();

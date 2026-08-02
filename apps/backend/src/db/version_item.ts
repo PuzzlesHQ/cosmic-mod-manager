@@ -106,7 +106,7 @@ export async function GetVersions(projectId?: string, projectSlug?: string): Pro
 
     const cachedData = await GetData_FromCache<TVersionsFromDB>(
         PROJECT_VERSIONS_CACHE_KEY,
-        projectId || projectSlug?.toLowerCase(),
+        projectSlug?.toLowerCase() || projectId,
     );
     if (cachedData) return cachedData;
 

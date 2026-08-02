@@ -66,15 +66,21 @@ export async function getProjectVersionData(
     userSession: UserSessionData | null,
 ) {
     const res = await getAllProjectVersions(projectSlug, userSession, false);
-
-    if (("success" in res.data && res.data.success === false) || !("data" in res.data))
+    if (res.data.success === false) {
         return { data: res.data, status: res.status } as const;
+    }
 
     const list = res.data.data || [];
     const targetVersion = list.find((version) => version.id === versionId || version.slug === versionId);
     if (!targetVersion?.id) return notFoundResponseData(`Version "${versionId}" not found`);
 
-    return { data: { success: true, data: targetVersion }, status: res.status } as const;
+    return {
+        data: {
+            success: true,
+            data: targetVersion,
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }
 
 interface GetLatestVersionFilters {

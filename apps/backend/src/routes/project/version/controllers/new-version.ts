@@ -278,7 +278,7 @@ export async function deleteExcessDevReleases<T extends deleteExcessDevReleasesO
     const devVersions = versions
         .filter((version) => version.releaseChannel === VersionReleaseChannel.DEV)
         .toSorted((a, b) => {
-            return date(b.datePublished)?.getTime() - date(a.datePublished)?.getTime();
+            return (date(b.datePublished)?.getTime() || 0) - (date(a.datePublished)?.getTime() || 0);
         });
 
     // TODO: Don't use a hardcoded value for the max number of dev releases

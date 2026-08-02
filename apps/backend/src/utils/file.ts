@@ -1,13 +1,13 @@
 import type { BunFile, SupportedCryptoAlgorithms } from "bun";
 
-export async function createHashFromBuffer(fileBuffer: ArrayBuffer, algorithm: SupportedCryptoAlgorithms = "sha256") {
+export function generateHash(fileBuffer: ArrayBuffer | string, algorithm: SupportedCryptoAlgorithms = "sha256") {
     const hash = Bun.CryptoHasher.hash(algorithm, fileBuffer).toString("hex");
     return hash;
 }
 
-export async function createHashFromFile(file: File | BunFile, algorithm: SupportedCryptoAlgorithms) {
+export async function genHashFromFile(file: File | BunFile, algorithm: SupportedCryptoAlgorithms) {
     const fileBuffer = await file.arrayBuffer();
-    return await createHashFromBuffer(fileBuffer, algorithm);
+    return generateHash(fileBuffer, algorithm);
 }
 
 export async function getImageFromHttpUrl(url: string) {

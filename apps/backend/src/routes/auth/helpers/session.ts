@@ -177,20 +177,34 @@ async function getUserFromPAT(token: string): Promise<UserSessionData | null> {
 }
 
 const BEARER_PREFIX = "Bearer ";
+const BASIC_PREFIX = "Basic ";
 export async function validateContextSession(ctx: Context): Promise<UserSessionData | null> {
-    const cookie = getUserSessionCookie(ctx);
-    let authorizationHeader = ctx.req.header("Authorization") ?? "";
-    if (authorizationHeader.startsWith(BEARER_PREFIX)) {
-        authorizationHeader = authorizationHeader.slice(BEARER_PREFIX.length);
+    const authHeader = ctx.req.header("Authorization") ?? "";
+    if (authHeader.startsWith(BASIC_PREFIX)) {
+        const basicCredentials = authHeader.slice(BASIC_PREFIX.length);
+
+        try {
+            const decoded = atob(basicCredentials);
+            const colonIndex = decoded.indexOf(":");
+            const basicToken = colonIndex !== -1 ? decoded.slice(colonIndex + 1) : decoded;
+
+            return await getUserFromPAT(basicToken);
+        } catch {
+            return null;
+        }
     }
 
-    if (authorizationHeader) {
-        return await getUserFromPAT(authorizationHeader);
-    } else if (cookie) {
-        return await getUserFromSessionToken(ctx, cookie);
-    } else {
-        return null;
+    if (authHeader) {
+        const bearerToken = authHeader.startsWith(BEARER_PREFIX) ? authHeader.slice(BEARER_PREFIX.length) : authHeader;
+        return await getUserFromPAT(bearerToken);
     }
+
+    const cookie = getUserSessionCookie(ctx);
+    if (cookie) {
+        return await getUserFromSessionToken(ctx, cookie);
+    }
+
+    return null;
 }
 
 export function invalidateSessionFromId(sessionId: string, userId?: string) {
