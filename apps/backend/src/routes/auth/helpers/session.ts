@@ -13,6 +13,7 @@ import {
     GetManySessions,
     GetSession,
     GetSession_ByTokenHash,
+    UpdateSession,
 } from "~/db/session_item";
 import { GetUser_ByIdOrUsername } from "~/db/user_item";
 import type { UserSessionData } from "~/types";
@@ -95,10 +96,31 @@ export async function createUserSession({ userId, providerName, ctx, isFirstSign
     return sessionToken;
 }
 
-async function getUserFromSessionToken(token: string): Promise<UserSessionData | null> {
+async function getUserFromSessionToken(ctx: Context, token: string) {
     const tokenHash = hashString(token);
     const session = await GetSession_ByTokenHash(tokenHash);
-    if (!session) return null;
+    if (!session) {
+        deleteSessionCookie(ctx);
+        return null;
+    }
+
+    // extend session if it's nearing expiry
+    const now = Date.now();
+    const timeToExpire = session.dateExpires.getTime() - now;
+
+    if (timeToExpire <= 0) {
+        deleteSessionCookie(ctx);
+        await DeleteSession({ where: { id: session.id } });
+        return null;
+    } else if (timeToExpire < USER_SESSION_VALIDITY_ms / 3) {
+        setSessionCookie(ctx, token);
+        await UpdateSession({
+            where: { id: session.id },
+            data: {
+                dateExpires: new Date(now + USER_SESSION_VALIDITY_ms),
+            },
+        });
+    }
 
     const sessionUser = await GetUser_ByIdOrUsername(undefined, session.userId);
     if (!sessionUser) return null;
@@ -166,10 +188,7 @@ export async function validateContextSession(ctx: Context): Promise<UserSessionD
     if (authorizationHeader) {
         return await getUserFromPAT(authorizationHeader);
     } else if (cookie) {
-        const sessionData = await getUserFromSessionToken(cookie);
-        if (!sessionData) deleteSessionCookie(ctx);
-
-        return sessionData;
+        return await getUserFromSessionToken(ctx, cookie);
     } else {
         return null;
     }
