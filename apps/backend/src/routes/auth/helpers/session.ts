@@ -155,9 +155,13 @@ async function getUserFromPAT(token: string): Promise<UserSessionData | null> {
     } satisfies UserSessionData;
 }
 
+const BEARER_PREFIX = "Bearer ";
 export async function validateContextSession(ctx: Context): Promise<UserSessionData | null> {
     const cookie = getUserSessionCookie(ctx);
-    const authorizationHeader = ctx.req.header("Authorization");
+    let authorizationHeader = ctx.req.header("Authorization") ?? "";
+    if (authorizationHeader.startsWith(BEARER_PREFIX)) {
+        authorizationHeader = authorizationHeader.slice(BEARER_PREFIX.length);
+    }
 
     if (authorizationHeader) {
         return await getUserFromPAT(authorizationHeader);
