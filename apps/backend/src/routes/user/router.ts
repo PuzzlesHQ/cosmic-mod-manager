@@ -34,7 +34,7 @@ import {
     updateUserProfile,
 } from "~/routes/user/controllers/profile";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
-import { HTTP_STATUS, invalidRequestResponse, unauthenticatedReqResponse } from "~/utils/http";
+import { invalidRequestResponse, unauthenticatedReqResponse } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";
 import { confirmUserAccountDeletion } from "./controllers/delete-account";
 

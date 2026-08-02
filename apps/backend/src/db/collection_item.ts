@@ -26,8 +26,8 @@ function GetCollectionFromDB(id: string) {
     });
 }
 
-export type TCollection = TCollectionFromDB;
-export async function GetCollection(id: string): Promise<TCollection> {
+export type TCollection = NonNullable<TCollectionFromDB>;
+export async function GetCollection(id: string): Promise<TCollection | null> {
     const cached = await GetData_FromCache<TCollectionFromDB>(COLLECTION_DATA_CACHE_KEY, id);
     if (cached) return cached;
 
