@@ -6,15 +6,15 @@ import { HTTP_STATUS, invalidRequestResponse, notFoundResponse, serverErrorRespo
 import { getSessionUser } from "~/utils/router";
 import { versionFileUrl } from "~/utils/urls";
 import { getProjectVersionData } from "../project/version/controllers";
-import { GROUP_ID } from "./consts";
+import { GROUP_ID_PATH } from "./consts";
 import { GetProjectMetadata, GetVersionMetadata } from "./controllers/maven-metadata";
 
 const mavenRouter = new Hono()
     .use(invalidAuthAttemptLimiter)
     .use(AuthenticationMiddleware)
-    .get(`/${GROUP_ID}/:project/maven-metadata.xml`, mavenMetadataGet)
-    .get(`/${GROUP_ID}/:project/maven-metadata.xml.sha1`, mavenMetadataGet)
-    .get(`/${GROUP_ID}/:project/:version/:file`, mavenFileGet);
+    .get(`/${GROUP_ID_PATH}/:project/maven-metadata.xml`, mavenMetadataGet)
+    .get(`/${GROUP_ID_PATH}/:project/maven-metadata.xml.sha1`, mavenMetadataGet)
+    .get(`/${GROUP_ID_PATH}/:project/:version/:file`, mavenFileGet);
 
 async function mavenMetadataGet(ctx: Context) {
     try {
