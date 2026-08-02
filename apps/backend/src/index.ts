@@ -97,9 +97,9 @@ const app = new Hono()
     .route("/api/collections", collectionsRouter)
     .route("/api/analytics", analyticsRouter)
 
-    .route("/cdn", cdnRouter)
     .route("/api/statistics", statsRouter)
-    .route("/api/maven", mavenRouter)
+    .route("/cdn", cdnRouter)
+    .route("/maven", mavenRouter)
 
     // Some inlined routes
     .get("/favicon.ico", async (ctx: Context) => {
