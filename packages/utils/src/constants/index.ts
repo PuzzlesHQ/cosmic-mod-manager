@@ -10,6 +10,7 @@ export const CSRF_STATE_COOKIE_NAMESPACE = "csrfState";
 export const AUTHTOKEN_COOKIE_NAMESPACE = "auth-token";
 
 // AUTH
+export const SESSION_COOKIE_VALIDITY_s = 31104000; // a year
 export const USER_SESSION_VALIDITY_s = 2592000; // 30 days
 export const USER_SESSION_VALIDITY_ms = USER_SESSION_VALIDITY_s * 1000;
 export const GUEST_SESSION_ID_VALIDITY_s = 2592000; // 30 days

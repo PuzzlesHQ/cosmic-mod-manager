@@ -1,4 +1,4 @@
-import { AUTHTOKEN_COOKIE_NAMESPACE, USER_SESSION_VALIDITY_ms, USER_SESSION_VALIDITY_s } from "@app/utils/constants";
+import { AUTHTOKEN_COOKIE_NAMESPACE, SESSION_COOKIE_VALIDITY_s, USER_SESSION_VALIDITY_ms } from "@app/utils/constants";
 import { getSessionIp, getSessionMetadata } from "@app/utils/headers";
 import { ALL_PAT_SCOPES } from "@app/utils/pats";
 import { type GlobalUserRole, UserSessionStates } from "@app/utils/types";
@@ -48,6 +48,33 @@ export async function createUserSession({ userId, providerName, ctx, isFirstSign
     });
     const sessionMetadata = getSessionMetadata(getHeader, sessionIp);
 
+    if (!isFirstSignIn) {
+        const significantIp = (sessionMetadata.ipAddr || "")?.slice(0, 9);
+        const similarSession = await GetSession({
+            where: {
+                userId: userId,
+                ip: {
+                    startsWith: significantIp,
+                },
+            },
+        });
+
+        // Send email alert if the user is signing in from a new location
+        if (!similarSession?.id) {
+            sendNewSigninAlertEmail({
+                fullName: user.name || user.userName,
+                receiverEmail: user.email,
+                region: sessionMetadata.city || "",
+                country: sessionMetadata.country || "",
+                ip: sessionMetadata.ipAddr || "",
+                browserName: sessionMetadata.browserName || "",
+                osName: sessionMetadata.os.name || "",
+                authProviderName: providerName || "",
+                revokeAccessCode: revokeAccessCode,
+            });
+        }
+    }
+
     await CreateSession({
         data: {
             id: generateDbId(),
@@ -66,33 +93,6 @@ export async function createUserSession({ userId, providerName, ctx, isFirstSign
         },
     });
 
-    if (isFirstSignIn) return sessionToken;
-
-    const significantIp = (sessionMetadata.ipAddr || "")?.slice(0, 9);
-    const similarSession = await GetSession({
-        where: {
-            userId: userId,
-            ip: {
-                startsWith: significantIp,
-            },
-        },
-    });
-
-    // Send email alert if the user is signing in from a new location
-    if (!similarSession?.id) {
-        sendNewSigninAlertEmail({
-            fullName: user.name || user.userName,
-            receiverEmail: user.email,
-            region: sessionMetadata.city || "",
-            country: sessionMetadata.country || "",
-            ip: sessionMetadata.ipAddr || "",
-            browserName: sessionMetadata.browserName || "",
-            osName: sessionMetadata.os.name || "",
-            authProviderName: providerName || "",
-            revokeAccessCode: revokeAccessCode,
-        });
-    }
-
     return sessionToken;
 }
 
@@ -106,14 +106,13 @@ async function getUserFromSessionToken(ctx: Context, token: string) {
 
     // extend session if it's nearing expiry
     const now = Date.now();
-    const timeToExpire = session.dateExpires.getTime() - now;
+    const timeToExpire = new Date(session.dateExpires).getTime() - now;
 
     if (timeToExpire <= 0) {
         deleteSessionCookie(ctx);
         await DeleteSession({ where: { id: session.id } });
         return null;
     } else if (timeToExpire < USER_SESSION_VALIDITY_ms / 3) {
-        setSessionCookie(ctx, token);
         await UpdateSession({
             where: { id: session.id },
             data: {
@@ -251,7 +250,7 @@ export function setSessionCookie(ctx: Context, value: string, options?: CookieOp
     return setCookie(ctx, AUTHTOKEN_COOKIE_NAMESPACE, value, {
         httpOnly: true,
         secure: true,
-        maxAge: USER_SESSION_VALIDITY_s,
+        maxAge: SESSION_COOKIE_VALIDITY_s,
         ...options,
     });
 }
