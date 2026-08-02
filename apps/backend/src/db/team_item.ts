@@ -3,7 +3,7 @@ import prisma from "~/services/prisma";
 import valkey from "~/services/redis";
 import { TEAM_DATA_CACHE_KEY } from "~/types/namespaces";
 import { cacheKey, GetData_FromCache, SetCache, TEAM_DATA_CACHE_EXPIRY_seconds } from "./_cache";
-import { GetManyUsers_ByIds } from "./user_item";
+import { GetManyUsers_ByIds, type TUser } from "./user_item";
 
 function TEAM_SELECT_FIELDS() {
     return {
@@ -54,7 +54,19 @@ function GetTeam_FromDb(teamId: string) {
     });
 }
 
-export type TTeam = NonNullable<TTeamFromDb>;
+type TBaseMember = NonNullable<TTeamFromDb>["members"][number];
+type TExtendedMember = Omit<TBaseMember, "user"> & {
+    user: {
+        id: TUser["id"];
+        userName: TUser["userName"];
+        avatar: TUser["avatar"];
+    };
+};
+
+export type TTeam = Omit<NonNullable<TTeamFromDb>, "members"> & {
+    members: TExtendedMember[];
+};
+
 export async function GetTeam(teamId: string): Promise<TTeam | null> {
     let team = await GetData_FromCache<TTeamFromDb>(TEAM_DATA_CACHE_KEY, teamId);
     if (!team) team = await GetTeam_FromDb(teamId);
@@ -66,17 +78,17 @@ export async function GetTeam(teamId: string): Promise<TTeam | null> {
     const teamUserIds = team.members.map((member) => member.userId);
     const users = await GetManyUsers_ByIds(teamUserIds);
 
-    const members = [];
+    const members: TExtendedMember[] = [];
     for (const member of team.members) {
-        const User = users.find((user) => user.id === member.userId);
-        if (!User) continue;
+        const user = users.find((user) => user.id === member.userId);
+        if (!user) continue;
 
         members.push({
             ...member,
             user: {
-                id: User.id,
-                userName: User.userName,
-                avatar: User.avatar,
+                id: user.id,
+                userName: user.userName,
+                avatar: user.avatar,
             },
         });
     }
@@ -143,12 +155,20 @@ export async function GetManyTeams_ById(ids: string[]): Promise<TManyTeams> {
 
     // Attach user data to the team members
     const formattedTeams: TManyTeams = teams.map((team) => {
-        const members: TTeam["members"] = [];
+        const members: TExtendedMember[] = [];
         for (const member of team.members) {
             const user = users.find((user) => user.id === member.userId);
             if (!user) continue;
 
-            members.push(Object.assign(member, { user: user }));
+            members.push(
+                Object.assign(member, {
+                    user: {
+                        id: user.id,
+                        userName: user.userName,
+                        avatar: user.avatar,
+                    },
+                }),
+            );
         }
 
         return { ...team, members: members };

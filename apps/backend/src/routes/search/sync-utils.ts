@@ -76,7 +76,7 @@ async function _SyncBatch(cursor: null | string) {
     try {
         const index = meilisearch.index(MEILISEARCH_PROJECT_INDEX);
 
-        const _Projects_Ids_Res = await prisma.project.findMany({
+        const projectIds = await prisma.project.findMany({
             where: {
                 visibility: {
                     in: [ProjectVisibility.LISTED, ProjectVisibility.ARCHIVED],
@@ -91,34 +91,38 @@ async function _SyncBatch(cursor: null | string) {
             },
         });
 
-        if (_Projects_Ids_Res.length === 0) return;
-        const _ProjectIds = _Projects_Ids_Res.map((p) => p.id);
+        if (projectIds.length === 0) return;
+        const projectIdsList = projectIds.map((p) => p.id);
 
-        const Projects = await GetManyProjects_Details(_ProjectIds);
-        const recentDownloadsCount_Map = await getLast15Days_ProjectDownloads(_ProjectIds);
+        const Projects = await GetManyProjects_Details(projectIdsList);
+        const recentDownloadsCount_Map = await getLast15Days_ProjectDownloads(projectIdsList);
         const formattedProjectsData: ProjectSearchDocument[] = [];
 
-        for (const Project of Projects) {
-            if (!Project) continue;
-            if (!isProjectIndexable(Project.visibility, Project.status)) continue;
+        for (const project of Projects) {
+            if (!project) continue;
+            if (!isProjectIndexable(project.visibility, project.status)) continue;
 
-            formattedProjectsData.push(FormatSearchDocument(Project, recentDownloadsCount_Map.get(Project.id) || 0));
+            formattedProjectsData.push(FormatSearchDocument(project, recentDownloadsCount_Map.get(project.id) || 0));
         }
 
         await index.addDocuments(formattedProjectsData).waitTask();
 
         if (formattedProjectsData.length < SYNC_BATCH_SIZE) return null;
-        return _Projects_Ids_Res.at(-1)?.id;
+        return projectIds.at(-1)?.id;
     } catch (error) {
         Log(error);
     }
 }
 
-export function FormatSearchDocument<T extends NonNullable<TProjectDetails>>(
-    project: T,
-    recentDownloads: number,
-) {
-    const author = project.organisation?.slug || project.team.members?.[0]?.user?.userName;
+export function FormatSearchDocument<T extends NonNullable<TProjectDetails>>(project: T, recentDownloads: number) {
+    let author = "";
+    if (project.team.members) {
+        author = project.team.members.find((m) => m.isOwner)?.user.userName ?? "";
+    } else if (project.organisation) {
+        author = project.organisation.slug;
+    }
+
+    // const author = project.organisation?.slug || project.team.members?.[0]?.user.userName;
     const FeaturedGalleryItem = project.gallery.find((item) => item.featured === true);
     const featured_gallery = FeaturedGalleryItem
         ? projectGalleryFileUrl(project.id, FeaturedGalleryItem.thumbnailFileId)
