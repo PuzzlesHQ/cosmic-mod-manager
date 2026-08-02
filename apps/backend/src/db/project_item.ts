@@ -9,8 +9,13 @@ import prisma from "~/services/prisma";
 import valkey from "~/services/redis";
 import { PROJECT_DETAILS_CACHE_KEY, PROJECT_LIST_ITEM_CACHE_KEY } from "~/types/namespaces";
 import { cacheKey, GetData_FromCache, PROJECT_CACHE_EXPIRY_seconds, SetCache } from "./_cache";
-import { Delete_OrganizationCache_All, GetManyOrganizations_ById, GetOrganization_Data } from "./organization_item";
-import { GetManyTeams_ById, GetTeam } from "./team_item";
+import {
+    Delete_OrganizationCache_All,
+    GetManyOrganizations_ById,
+    GetOrganization_Data,
+    type TOrganizationData,
+} from "./organization_item";
+import { GetManyTeams_ById, GetTeam, type TTeam } from "./team_item";
 
 // ? Select fields
 function PROJECT_DETAILS_SELECT_FIELDS() {
@@ -104,12 +109,11 @@ function PROJECT_LIST_ITEM_SELECT_FIELDS() {
 }
 
 // ? Get project functions
-export type GetProject_Details_FromDb_ReturnType = Awaited<ReturnType<typeof GetProject_Details_FromDb>>;
+type TProjectDetailsFromDB = Awaited<ReturnType<typeof GetProject_Details_FromDb>>;
 async function GetProject_Details_FromDb(id?: string, slug?: string) {
     if (!slug && !id) throw new Error("Either the project id or slug is required!");
 
     let data = null;
-    // If both id and slug are provided, check if any table matches either one
     if (id && slug) {
         data = await prisma.project.findFirst({
             where: {
@@ -124,10 +128,10 @@ async function GetProject_Details_FromDb(id?: string, slug?: string) {
             },
             select: PROJECT_DETAILS_SELECT_FIELDS(),
         });
-    } else {
+    } else if (slug) {
         data = await prisma.project.findUnique({
             where: {
-                slug: slug?.toLowerCase(),
+                slug: slug.toLowerCase(),
             },
             select: PROJECT_DETAILS_SELECT_FIELDS(),
         });
@@ -136,11 +140,20 @@ async function GetProject_Details_FromDb(id?: string, slug?: string) {
     return data;
 }
 
-export type GetProject_Details_ReturnType = Awaited<ReturnType<typeof GetProject_Details>>;
-export async function GetProject_Details(id?: string, slug?: string) {
+type Project_OrgAndTeamData = {
+    organisation: TOrganizationData | null;
+    team: NonNullable<TTeam>;
+};
+
+export type TProjectDetails = TProjectDetailsFromDB & Project_OrgAndTeamData;
+
+export async function GetProject_Details(id: string, slug?: undefined): Promise<TProjectDetails | null>;
+export async function GetProject_Details(id: undefined, slug: string): Promise<TProjectDetails | null>;
+export async function GetProject_Details(id: string, slug: string): Promise<TProjectDetails | null>;
+export async function GetProject_Details(id?: string, slug?: string): Promise<TProjectDetails | null> {
     if (!slug && !id) throw new Error("Either the project id or slug is required!");
 
-    let project = await GetData_FromCache<GetProject_Details_FromDb_ReturnType>(PROJECT_DETAILS_CACHE_KEY, id || slug);
+    let project = await GetData_FromCache<TProjectDetailsFromDB>(PROJECT_DETAILS_CACHE_KEY, slug || id);
     if (!project) project = await GetProject_Details_FromDb(id, slug);
     if (!project) return null;
 
@@ -155,47 +168,43 @@ export async function GetProject_Details(id?: string, slug?: string) {
     return Object.assign(project, { organisation: org, team: projectTeam });
 }
 
-export type GetManyProjects_Details_ReturnType = Awaited<ReturnType<typeof GetManyProjects_Details>>;
-export async function GetManyProjects_Details(_ProjectIds: string[]) {
-    const ProjectIds = Array.from(new Set(_ProjectIds));
+export type TManyProjectsDetails = TProjectDetails[];
+export async function GetManyProjects_Details(projectIds: string[]): Promise<TManyProjectsDetails> {
+    const uniqueProjectIds = Array.from(new Set(projectIds));
 
-    const Projects = [];
-    const _OrgIds = new Set<string>();
-    const _TeamIds = new Set<string>();
+    const projects = [];
+    const orgIds = new Set<string>();
+    const teamIds = new Set<string>();
 
-    const ProjectIds_RetrievedFromCache: string[] = [];
+    const projectsFromCache: string[] = [];
 
     // Get all the project from cache
     {
-        const _cachedDetails_promises = [];
-        for (const id of ProjectIds) {
+        const promises = [];
+        for (const id of uniqueProjectIds) {
             if (!id) continue;
-            _cachedDetails_promises.push(
-                GetData_FromCache<GetProject_Details_FromDb_ReturnType>(PROJECT_DETAILS_CACHE_KEY, id),
-            );
+            promises.push(GetData_FromCache<TProjectDetailsFromDB>(PROJECT_DETAILS_CACHE_KEY, id));
         }
 
-        const _cachedDetails = await Promise.all(_cachedDetails_promises);
-        for (let i = 0; i < _cachedDetails.length; i++) {
-            const _project = _cachedDetails[i];
-            if (!_project?.id) continue;
+        for (const cachedProject of await Promise.all(promises)) {
+            if (!cachedProject?.id) continue;
 
-            ProjectIds_RetrievedFromCache.push(_project.id);
-            Projects.push(_project);
-            if (_project.organisationId) _OrgIds.add(_project.organisationId);
-            _TeamIds.add(_project.teamId);
+            projectsFromCache.push(cachedProject.id);
+            projects.push(cachedProject);
+            if (cachedProject.organisationId) orgIds.add(cachedProject.organisationId);
+            teamIds.add(cachedProject.teamId);
         }
     }
 
     // Get all non-cached projects
-    const RemainingProjectIds = ProjectIds.filter((id) => !ProjectIds_RetrievedFromCache.includes(id));
+    const remainingProjectIds = uniqueProjectIds.filter((id) => !projectsFromCache.includes(id));
 
-    const _Db_ProjectItems =
-        RemainingProjectIds.length > 0
+    const remainingProjects =
+        remainingProjectIds.length > 0
             ? await prisma.project.findMany({
                   where: {
                       id: {
-                          in: RemainingProjectIds,
+                          in: remainingProjectIds,
                       },
                   },
                   select: PROJECT_DETAILS_SELECT_FIELDS(),
@@ -204,38 +213,38 @@ export async function GetManyProjects_Details(_ProjectIds: string[]) {
 
     // Set cache for all non-cached projects
     {
-        const _setCache_promises = [];
-        for (const project of _Db_ProjectItems) {
+        const promises = [];
+        for (const project of remainingProjects) {
             if (!project?.id) continue;
-            _setCache_promises.push(Set_ProjectCache(PROJECT_DETAILS_CACHE_KEY, project));
+            promises.push(Set_ProjectCache(PROJECT_DETAILS_CACHE_KEY, project));
 
-            Projects.push(project);
-            if (project.organisationId) _OrgIds.add(project.organisationId);
-            _TeamIds.add(project.teamId);
+            projects.push(project);
+            if (project.organisationId) orgIds.add(project.organisationId);
+            teamIds.add(project.teamId);
         }
 
-        await Promise.all(_setCache_promises);
+        await Promise.all(promises);
     }
 
-    const [_OrgItems, _TeamItems] = await Promise.all([
-        GetManyOrganizations_ById(Array.from(_OrgIds)),
-        GetManyTeams_ById(Array.from(_TeamIds)),
+    const [orgs, teams] = await Promise.all([
+        GetManyOrganizations_ById(Array.from(orgIds)),
+        GetManyTeams_ById(Array.from(teamIds)),
     ]);
 
-    const FormattedProjects = [];
-    for (let i = 0; i < Projects.length; i++) {
-        const project = Projects[i];
-        const _project_team = _TeamItems.find((team) => team?.id === project.teamId);
-        if (!_project_team) continue;
+    const formattedProjects: TManyProjectsDetails = [];
+    for (let i = 0; i < projects.length; i++) {
+        const project = projects[i];
+        const team = teams.find((team) => team?.id === project.teamId);
+        if (!team) continue;
 
-        const _project_org = _OrgItems.find((org) => org?.id === project.organisationId);
-        FormattedProjects.push(Object.assign(project, { organisation: _project_org || null, team: _project_team }));
+        const org = orgs.find((org) => org?.id === project.organisationId);
+        formattedProjects.push(Object.assign(project, { organisation: org || null, team: team }));
     }
 
-    return FormattedProjects;
+    return formattedProjects;
 }
 
-export type GetProject_ListItem_ReturnType = Awaited<ReturnType<typeof GetProject_ListItem_FromDb>>;
+type TProjectListItemFromDB = Awaited<ReturnType<typeof GetProject_ListItem_FromDb>>;
 async function GetProject_ListItem_FromDb(id?: string, slug?: string) {
     if (!slug && !id) throw new Error("Either the project id or slug is required!");
 
@@ -256,7 +265,7 @@ async function GetProject_ListItem_FromDb(id?: string, slug?: string) {
             },
             select: PROJECT_LIST_ITEM_SELECT_FIELDS(),
         });
-    } else {
+    } else if (slug) {
         data = await prisma.project.findUnique({
             where: {
                 slug: slug?.toLowerCase(),
@@ -268,64 +277,65 @@ async function GetProject_ListItem_FromDb(id?: string, slug?: string) {
     return data;
 }
 
-export async function GetProject_ListItem(id?: string, slug?: string) {
+export type TProjectListItem = TProjectListItemFromDB & Project_OrgAndTeamData;
+
+export async function GetProject_ListItem(id: string, slug?: undefined): Promise<TProjectListItem | null>;
+export async function GetProject_ListItem(id: undefined, slug: string): Promise<TProjectListItem | null>;
+export async function GetProject_ListItem(id: string, slug: string): Promise<TProjectListItem | null>;
+export async function GetProject_ListItem(id?: string, slug?: string): Promise<TProjectListItem | null> {
     if (!slug && !id) throw new Error("Either the project id or slug is required!");
 
-    let Project = await GetData_FromCache<GetProject_ListItem_ReturnType>(PROJECT_LIST_ITEM_CACHE_KEY, id || slug);
-    if (!Project) Project = await GetProject_ListItem_FromDb(id, slug);
-    if (!Project) return null;
+    let project = await GetData_FromCache<TProjectListItemFromDB>(PROJECT_LIST_ITEM_CACHE_KEY, id || slug);
+    if (!project) project = await GetProject_ListItem_FromDb(id, slug);
+    if (!project) return null;
 
-    await Set_ProjectCache(PROJECT_LIST_ITEM_CACHE_KEY, Project);
+    await Set_ProjectCache(PROJECT_LIST_ITEM_CACHE_KEY, project);
 
     const [org, projectTeam] = await Promise.all([
-        Project.organisationId ? GetOrganization_Data(Project.organisationId) : null,
-        GetTeam(Project.teamId),
+        project.organisationId ? GetOrganization_Data(project.organisationId) : null,
+        GetTeam(project.teamId),
     ]);
     if (!projectTeam) return null;
 
-    return Object.assign(Project, { organisation: org, team: projectTeam });
+    return Object.assign(project, { organisation: org, team: projectTeam });
 }
 
-export type GetManyProjects_ListItem_ReturnType = Awaited<ReturnType<typeof GetManyProjects_ListItem>>;
-export async function GetManyProjects_ListItem(ids: string[]) {
-    const ProjectIds = Array.from(new Set(ids));
+export type ManyProjectsListItem_T = TProjectListItem[];
+export async function GetManyProjects_ListItem(projectIds: string[]): Promise<ManyProjectsListItem_T> {
+    const uniqueProjectIds = Array.from(new Set(projectIds));
 
     const projects = [];
-    const _OrgIds = new Set<string>();
-    const _TeamIds = new Set<string>();
+    const orgIds = new Set<string>();
+    const teamIds = new Set<string>();
 
-    const ProjectIds_RetrievedFromCache: string[] = [];
+    const projectsFromCache: string[] = [];
 
     // Get all the project from cache
     {
-        const _cachedListItems_promises = [];
-        for (const id of ProjectIds) {
+        const promises = [];
+        for (const id of uniqueProjectIds) {
             if (!id) continue;
-            _cachedListItems_promises.push(
-                GetData_FromCache<GetProject_ListItem_ReturnType>(PROJECT_LIST_ITEM_CACHE_KEY, id),
-            );
+            promises.push(GetData_FromCache<TProjectListItemFromDB>(PROJECT_LIST_ITEM_CACHE_KEY, id));
         }
 
-        const _cachedListItems = await Promise.all(_cachedListItems_promises);
-        for (let i = 0; i < _cachedListItems.length; i++) {
-            const _project = _cachedListItems[i];
-            if (!_project?.id) continue;
+        for (const proj of await Promise.all(promises)) {
+            if (!proj?.id) continue;
 
-            ProjectIds_RetrievedFromCache.push(_project.id);
-            projects.push(_project);
-            if (_project.organisationId) _OrgIds.add(_project.organisationId);
-            _TeamIds.add(_project.teamId);
+            projectsFromCache.push(proj.id);
+            projects.push(proj);
+            if (proj.organisationId) orgIds.add(proj.organisationId);
+            teamIds.add(proj.teamId);
         }
     }
 
     // Get all non-cached projects
-    const RemainingProjectIds = ProjectIds.filter((id) => !ProjectIds_RetrievedFromCache.includes(id));
-    const _Db_ProjectItems =
-        RemainingProjectIds.length > 0
+    const remainingProjectIds = uniqueProjectIds.filter((id) => !projectsFromCache.includes(id));
+    const remainingProjects =
+        remainingProjectIds.length > 0
             ? await prisma.project.findMany({
                   where: {
                       id: {
-                          in: RemainingProjectIds,
+                          in: remainingProjectIds,
                       },
                   },
                   select: PROJECT_LIST_ITEM_SELECT_FIELDS(),
@@ -334,35 +344,35 @@ export async function GetManyProjects_ListItem(ids: string[]) {
 
     // Set cache for all non-cached projects
     {
-        const _setCache_promises = [];
-        for (const project of _Db_ProjectItems) {
+        const promises = [];
+        for (const project of remainingProjects) {
             if (!project?.id) continue;
-            _setCache_promises.push(Set_ProjectCache(PROJECT_LIST_ITEM_CACHE_KEY, project));
+            promises.push(Set_ProjectCache(PROJECT_LIST_ITEM_CACHE_KEY, project));
 
             projects.push(project);
-            if (project.organisationId) _OrgIds.add(project.organisationId);
-            _TeamIds.add(project.teamId);
+            if (project.organisationId) orgIds.add(project.organisationId);
+            teamIds.add(project.teamId);
         }
 
-        await Promise.all(_setCache_promises);
+        await Promise.all(promises);
     }
 
-    const [_OrgItems, _TeamItems] = await Promise.all([
-        GetManyOrganizations_ById(Array.from(_OrgIds)),
-        GetManyTeams_ById(Array.from(_TeamIds)),
+    const [orgs, teams] = await Promise.all([
+        GetManyOrganizations_ById(Array.from(orgIds)),
+        GetManyTeams_ById(Array.from(teamIds)),
     ]);
 
-    const FormattedProjects = [];
+    const formattedProjects: ManyProjectsListItem_T = [];
     for (let i = 0; i < projects.length; i++) {
         const project = projects[i];
-        const _project_team = _TeamItems.find((team) => team?.id === project.teamId);
-        if (!_project_team) continue;
+        const team = teams.find((team) => team?.id === project.teamId);
+        if (!team) continue;
 
-        const _project_org = _OrgItems.find((org) => org.id === project.organisationId);
-        FormattedProjects.push(Object.assign(project, { organisation: _project_org || null, team: _project_team }));
+        const org = orgs.find((org) => org.id === project.organisationId);
+        formattedProjects.push(Object.assign(project, { organisation: org || null, team: team }));
     }
 
-    return FormattedProjects;
+    return formattedProjects;
 }
 
 export async function CreateProject<T extends Prisma.ProjectCreateArgs>(
@@ -405,11 +415,11 @@ export async function UpdateManyProjects<T extends Prisma.ProjectUpdateManyArgs>
     args: Prisma.SelectSubset<T, Prisma.ProjectUpdateManyArgs>,
     projectIds: string[],
 ) {
-    const _deleteCache_promises = [];
+    const promises = [];
     for (const id of projectIds) {
-        _deleteCache_promises.push(Delete_ProjectCache_All(id));
+        promises.push(Delete_ProjectCache_All(id));
     }
-    await Promise.all(_deleteCache_promises);
+    await Promise.all(promises);
 
     return await prisma.project.updateMany(args);
 }
@@ -417,16 +427,16 @@ export async function UpdateManyProjects<T extends Prisma.ProjectUpdateManyArgs>
 export async function DeleteProject<T extends Prisma.ProjectDeleteArgs>(
     args: Prisma.SelectSubset<T, Prisma.ProjectDeleteArgs>,
 ) {
-    const Project = await prisma.project.delete(args);
-    if (Project?.id) await Delete_ProjectCache_All(Project.id, Project.slug);
-    if (Project?.organisationId) await Delete_OrganizationCache_All(Project.organisationId);
-    if (isProjectIndexable(Project.visibility, Project.status)) await RemoveProjects_FromSearchIndex([Project.id]);
+    const project = await prisma.project.delete(args);
+    if (project?.id) await Delete_ProjectCache_All(project.id, project.slug);
+    if (project?.organisationId) await Delete_OrganizationCache_All(project.organisationId);
+    if (isProjectIndexable(project.visibility, project.status)) await RemoveProjects_FromSearchIndex([project.id]);
 
-    return Project;
+    return project;
 }
 
 // ? Caching functions
-// Cache structure: ProjectId -> ProjectData
+// Cache structure: ProjectId -> ProjectSlug
 //                  ProjectSlug -> ProjectData
 
 export async function Delete_ProjectCache_All(id: string, slug?: string) {
@@ -434,12 +444,12 @@ export async function Delete_ProjectCache_All(id: string, slug?: string) {
 
     // If slug is not provided, get it from the cache
     if (!projectSlug) {
-        const [_slug1, _slug2] = await Promise.all([
+        const [slug1, slug2] = await Promise.all([
             valkey.get(cacheKey(id, PROJECT_DETAILS_CACHE_KEY)),
             valkey.get(cacheKey(id, PROJECT_LIST_ITEM_CACHE_KEY)),
         ]);
 
-        projectSlug = _slug1 || _slug2 || "";
+        projectSlug = slug1 || slug2 || "";
     }
 
     return await valkey.del([
@@ -456,11 +466,11 @@ interface SetCache_Data {
 }
 async function Set_ProjectCache<T extends SetCache_Data | null>(NAMESPACE: string, project: T) {
     if (!project?.id) return;
-    const json_string = JSON.stringify(project);
+    const jsonStr = JSON.stringify(project);
     const slug = project.slug.toLowerCase();
 
     const p1 = SetCache(NAMESPACE, project.id, slug, PROJECT_CACHE_EXPIRY_seconds);
-    const p2 = SetCache(NAMESPACE, slug, json_string, PROJECT_CACHE_EXPIRY_seconds);
+    const p2 = SetCache(NAMESPACE, slug, jsonStr, PROJECT_CACHE_EXPIRY_seconds);
     await Promise.all([p1, p2]);
 }
 
@@ -471,19 +481,19 @@ interface IndexCriteriaFields {
 }
 
 export async function UpdateOrRemoveProject_FromSearchIndex(
-    ProjectId: string,
-    OldStats: IndexCriteriaFields,
-    NewStats: IndexCriteriaFields,
+    projectId: string,
+    oldStats: IndexCriteriaFields,
+    newStats: IndexCriteriaFields,
 ) {
-    const wasPreviouslyIndexable = isProjectIndexable(OldStats.visibility, OldStats.status);
-    const isNowIndexable = isProjectIndexable(NewStats.visibility, NewStats.status);
+    const wasPreviouslyIndexable = isProjectIndexable(oldStats.visibility, oldStats.status);
+    const isNowIndexable = isProjectIndexable(newStats.visibility, newStats.status);
 
     // Remove the project from the search index if it was previously indexable and but is not indexable anymore
-    if (wasPreviouslyIndexable && !isNowIndexable) await RemoveProjects_FromSearchIndex([ProjectId]);
+    if (wasPreviouslyIndexable && !isNowIndexable) await RemoveProjects_FromSearchIndex([projectId]);
     // Add the project to the search index if it was not previously indexable
-    else if (!wasPreviouslyIndexable && isNowIndexable) await AddProjects_ToSearchIndex([ProjectId]);
+    else if (!wasPreviouslyIndexable && isNowIndexable) await AddProjects_ToSearchIndex([projectId]);
     // Update the project in the search index if it was previously indexable and still is indexable
-    else if (wasPreviouslyIndexable && isNowIndexable) await UpdateProjects_SearchIndex([ProjectId]);
+    else if (wasPreviouslyIndexable && isNowIndexable) await UpdateProjects_SearchIndex([projectId]);
 }
 
 function isNonEmpty<T>(value: T | undefined): boolean {

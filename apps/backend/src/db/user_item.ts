@@ -20,7 +20,7 @@ const USER_DATA_SELECT_FIELDS = {
     profilePageBg: true,
 } satisfies Prisma.UserSelect;
 
-export type GetUser_ReturnType = Awaited<ReturnType<typeof GetUser_FromDb>>;
+type TUserFromDB = Awaited<ReturnType<typeof GetUser_FromDb>>;
 async function GetUser_FromDb(userName?: string, id?: string) {
     if (!userName && !id) throw new Error("Either userName or id is required!");
 
@@ -29,12 +29,7 @@ async function GetUser_FromDb(userName?: string, id?: string) {
     if (id && userName) {
         data = await prisma.user.findFirst({
             where: {
-                OR: [
-                    { id: id },
-                    {
-                        userNameLower: userName,
-                    },
-                ],
+                OR: [{ id: id }, { userNameLower: userName }],
             },
             select: USER_DATA_SELECT_FIELDS,
         });
@@ -57,11 +52,12 @@ async function GetUser_FromDb(userName?: string, id?: string) {
     return data;
 }
 
-export async function GetUser_ByIdOrUsername(userName?: string, id?: string) {
+export type TUser = NonNullable<TUserFromDB>;
+export async function GetUser_ByIdOrUsername(userName?: string, id?: string): Promise<TUser | null> {
     if (!userName && !id) throw new Error("Either userName or id is required!");
     const userNameLower = userName?.toLowerCase();
 
-    const cachedData = await GetData_FromCache<GetUser_ReturnType>(USER_DATA_CACHE_KEY, userNameLower || id);
+    const cachedData = await GetData_FromCache<TUserFromDB>(USER_DATA_CACHE_KEY, userNameLower || id);
     if (cachedData) return cachedData;
 
     const user = await GetUser_FromDb(userNameLower, id);
@@ -70,56 +66,56 @@ export async function GetUser_ByIdOrUsername(userName?: string, id?: string) {
     return user;
 }
 
-export async function GetManyUsers_ByIds(ids: string[]) {
-    const UserIds = Array.from(new Set(ids));
-    const Users = [];
+export type TManyUsers = TUser[];
+export async function GetManyUsers_ByIds(ids: string[]): Promise<TManyUsers> {
+    const uniqueUserIds = Array.from(new Set(ids));
+    const users = [];
 
     // Get cached users from redis
-    const UserIds_RetrievedFromCache: string[] = [];
+    const usersFromCache: string[] = [];
     {
-        const _cachedUsers_promises: Promise<GetUser_ReturnType>[] = [];
-        for (const id of UserIds) {
-            const cachedUser = GetData_FromCache<GetUser_ReturnType>(USER_DATA_CACHE_KEY, id);
-            _cachedUsers_promises.push(cachedUser);
+        const promises: Promise<TUserFromDB>[] = [];
+        for (const id of uniqueUserIds) {
+            const cachedUser = GetData_FromCache<TUserFromDB>(USER_DATA_CACHE_KEY, id);
+            promises.push(cachedUser);
         }
 
-        const _cachedUsers = await Promise.all(_cachedUsers_promises);
-        for (const user of _cachedUsers) {
+        for (const user of await Promise.all(promises)) {
             if (!user) continue;
-            UserIds_RetrievedFromCache.push(user.id);
-            Users.push(user);
+            usersFromCache.push(user.id);
+            users.push(user);
         }
     }
 
     // Get remaining users from db
-    const UserIds_ToFetchFromDb = UserIds.filter((id) => !UserIds_RetrievedFromCache.includes(id));
-    const _DB_Users =
-        UserIds_ToFetchFromDb.length > 0
+    const remainingUsersIds = uniqueUserIds.filter((id) => !usersFromCache.includes(id));
+    const remainingUsers =
+        remainingUsersIds.length > 0
             ? await prisma.user.findMany({
-                  where: { id: { in: UserIds_ToFetchFromDb } },
+                  where: { id: { in: remainingUsersIds } },
               })
             : [];
 
     // Set cache for remaining users
     {
-        const _setCache_promises = [];
-        for (const user of _DB_Users) {
+        const promises = [];
+        for (const user of remainingUsers) {
             const setCache = Set_UserCache(user);
-            _setCache_promises.push(setCache);
-            Users.push(user);
+            promises.push(setCache);
+            users.push(user);
         }
 
-        await Promise.all(_setCache_promises);
+        await Promise.all(promises);
     }
 
-    return Users;
+    return users;
 }
 
 export async function Get_UserProjects(userId: string) {
-    const CachedData = await GetData_FromCache<string[]>(USER_PROJECTS_CACHE_KEY, userId);
-    if (CachedData) return CachedData;
+    const cached = await GetData_FromCache<string[]>(USER_PROJECTS_CACHE_KEY, userId);
+    if (cached) return cached;
 
-    const UserProjects = await prisma.project.findMany({
+    const userProjects = await prisma.project.findMany({
         where: {
             team: {
                 members: {
@@ -134,16 +130,16 @@ export async function Get_UserProjects(userId: string) {
         },
     });
 
-    const ProjectIds = UserProjects.map((project) => project.id);
-    await SetCache(USER_PROJECTS_CACHE_KEY, userId, JSON.stringify(ProjectIds), USER_DATA_CACHE_EXPIRY_seconds);
-    return ProjectIds;
+    const projectIds = userProjects.map((project) => project.id);
+    await SetCache(USER_PROJECTS_CACHE_KEY, userId, JSON.stringify(projectIds), USER_DATA_CACHE_EXPIRY_seconds);
+    return projectIds;
 }
 
 export async function Get_UserOrganizations(userId: string) {
-    const CachedData = await GetData_FromCache<string[]>(USER_ORGANIZATIONS_CACHE_KEY, userId);
-    if (CachedData) return CachedData;
+    const cached = await GetData_FromCache<string[]>(USER_ORGANIZATIONS_CACHE_KEY, userId);
+    if (cached) return cached;
 
-    const UserOrgs = await prisma.organisation.findMany({
+    const userOrgs = await prisma.organisation.findMany({
         where: {
             team: {
                 members: {
@@ -157,10 +153,10 @@ export async function Get_UserOrganizations(userId: string) {
             id: true,
         },
     });
-    const UserOrgs_Id = UserOrgs.map((org) => org.id);
-    await SetCache(USER_ORGANIZATIONS_CACHE_KEY, userId, JSON.stringify(UserOrgs_Id), USER_DATA_CACHE_EXPIRY_seconds);
+    const orgIds = userOrgs.map((org) => org.id);
+    await SetCache(USER_ORGANIZATIONS_CACHE_KEY, userId, JSON.stringify(orgIds), USER_DATA_CACHE_EXPIRY_seconds);
 
-    return UserOrgs_Id;
+    return orgIds;
 }
 
 export function GetUser_Unique<T extends Prisma.UserFindUniqueArgs>(

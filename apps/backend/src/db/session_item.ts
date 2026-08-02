@@ -1,10 +1,9 @@
-import { USER_SESSION_VALIDITY_ms } from "@app/utils/constants";
 import type { Prisma } from "@prisma-client";
 import prisma from "~/services/prisma";
 import { USER_SESSION_CACHE_KEY } from "~/types/namespaces";
 import { cacheKey, DeleteCache, GetData_FromCache, SetCache, USER_SESSION_CACHE_EXPIRY_seconds } from "./_cache";
 
-export type GetSession_ReturnType = Awaited<ReturnType<typeof GetSession_ByTokenHash_FromDb>>;
+type TSessionFromDB = Awaited<ReturnType<typeof GetSession_ByTokenHash_FromDb>>;
 async function GetSession_ByTokenHash_FromDb(tokenHash: string) {
     try {
         return await prisma.session.update({
@@ -18,30 +17,15 @@ async function GetSession_ByTokenHash_FromDb(tokenHash: string) {
     }
 }
 
-export async function GetSession_ByTokenHash(tokenHash: string): Promise<GetSession_ReturnType> {
-    const cachedSession = await GetData_FromCache<GetSession_ReturnType>(USER_SESSION_CACHE_KEY, tokenHash);
+export type TSession = NonNullable<TSessionFromDB>;
+export async function GetSession_ByTokenHash(tokenHash: string): Promise<TSession | null> {
+    const cachedSession = await GetData_FromCache<TSessionFromDB>(USER_SESSION_CACHE_KEY, tokenHash);
     if (cachedSession) return cachedSession;
 
     const session = await GetSession_ByTokenHash_FromDb(tokenHash);
-    if (session) {
-        // ? extend session if it's nearing expiry
-        const now = Date.now();
-        const timeToExpire = session.dateExpires.getTime() - now;
+    if (!session) return null;
 
-        if (timeToExpire <= 0) {
-            await DeleteSession({ where: { id: session.id } });
-            return null;
-        } else if (timeToExpire < USER_SESSION_VALIDITY_ms / 4) {
-            await UpdateSession({
-                where: { id: session.id },
-                data: {
-                    dateExpires: new Date(now + USER_SESSION_VALIDITY_ms),
-                },
-            });
-        }
-
-        await SetCache(USER_SESSION_CACHE_KEY, tokenHash, JSON.stringify(session), USER_SESSION_CACHE_EXPIRY_seconds);
-    }
+    await SetCache(USER_SESSION_CACHE_KEY, tokenHash, JSON.stringify(session), USER_SESSION_CACHE_EXPIRY_seconds);
     return session;
 }
 

@@ -43,7 +43,7 @@ export const VERSION_SELECT = {
     },
 } satisfies Prisma.VersionSelect;
 
-export type GetVersions_ReturnType = Awaited<ReturnType<typeof GetVersions_FromDb>>;
+type TVersionsFromDB = Awaited<ReturnType<typeof GetVersions_FromDb>>;
 async function GetVersions_FromDb(projectId?: string, projectSlug?: string) {
     if (!projectSlug && !projectId) throw new Error("Either the project id or slug is required!");
 
@@ -77,10 +77,10 @@ async function GetVersions_FromDb(projectId?: string, projectSlug?: string) {
                 },
             },
         });
-    } else {
+    } else if (projectSlug) {
         data = await prisma.project.findUnique({
             where: {
-                slug: projectSlug?.toLowerCase(),
+                slug: projectSlug.toLowerCase(),
             },
             select: {
                 id: true,
@@ -96,10 +96,15 @@ async function GetVersions_FromDb(projectId?: string, projectSlug?: string) {
     return data;
 }
 
-export async function GetVersions(projectId?: string, projectSlug?: string) {
+export type TVersions = NonNullable<TVersionsFromDB>;
+
+export async function GetVersions(projectId: string, projectSlug?: undefined): Promise<TVersions | null>;
+export async function GetVersions(projectId: undefined, projectSlug: string): Promise<TVersions | null>;
+export async function GetVersions(projectId: string, projectSlug: string): Promise<TVersions | null>;
+export async function GetVersions(projectId?: string, projectSlug?: string): Promise<TVersions | null> {
     if (!projectSlug && !projectId) throw new Error("Either the project id or slug is required!");
 
-    const cachedData = await GetData_FromCache<GetVersions_ReturnType>(
+    const cachedData = await GetData_FromCache<TVersionsFromDB>(
         PROJECT_VERSIONS_CACHE_KEY,
         projectId || projectSlug?.toLowerCase(),
     );
@@ -111,34 +116,34 @@ export async function GetVersions(projectId?: string, projectSlug?: string) {
     return data;
 }
 
-export async function GetMany_ProjectsVersions(_ProjectIds: string[]) {
-    const ProjectIds = Array.from(new Set(_ProjectIds));
-    const Projects = [];
+export type TManyVersions = TVersions[];
+export async function GetMany_ProjectsVersions(projectIds: string[]): Promise<TManyVersions> {
+    const uniqueProjectIds = Array.from(new Set(projectIds));
+    const projects = [];
 
     // Get cached projects from redis
-    const ProjectIds_RetrievedFromCache: string[] = [];
+    const projectsFromCache: string[] = [];
     {
-        const _CachedVersionsPromises = [];
-        for (const projectId of ProjectIds) {
-            const cachedData = GetData_FromCache<GetVersions_ReturnType>(PROJECT_VERSIONS_CACHE_KEY, projectId);
-            _CachedVersionsPromises.push(cachedData);
+        const promises = [];
+        for (const projectId of uniqueProjectIds) {
+            const cachedData = GetData_FromCache<TVersionsFromDB>(PROJECT_VERSIONS_CACHE_KEY, projectId);
+            promises.push(cachedData);
         }
 
-        const _CachedVersions = await Promise.all(_CachedVersionsPromises);
-        for (const project of _CachedVersions) {
+        for (const project of await Promise.all(promises)) {
             if (!project) continue;
-            ProjectIds_RetrievedFromCache.push(project.id);
-            Projects.push(project);
+            projectsFromCache.push(project.id);
+            projects.push(project);
         }
     }
 
     // Get the remaining projects from the database
-    const ProjectIds_ToRetrieve = ProjectIds.filter((id) => !ProjectIds_RetrievedFromCache.includes(id));
-    if (ProjectIds_ToRetrieve.length === 0) return Projects;
+    const remainingProjectIds = uniqueProjectIds.filter((id) => !projectsFromCache.includes(id));
+    if (remainingProjectIds.length === 0) return projects;
 
-    const Remaining_ProjectVersions = await prisma.project.findMany({
+    const remainingProjects = await prisma.project.findMany({
         where: {
-            id: { in: ProjectIds_ToRetrieve },
+            id: { in: remainingProjectIds },
         },
         select: {
             id: true,
@@ -152,16 +157,16 @@ export async function GetMany_ProjectsVersions(_ProjectIds: string[]) {
 
     // Set cache for the remaining projects
     {
-        const _SetCachePromises = [];
-        for (const project of Remaining_ProjectVersions) {
-            _SetCachePromises.push(Set_VersionsCache(PROJECT_VERSIONS_CACHE_KEY, project));
-            Projects.push(project);
+        const promises = [];
+        for (const project of remainingProjects) {
+            promises.push(Set_VersionsCache(PROJECT_VERSIONS_CACHE_KEY, project));
+            projects.push(project);
         }
 
-        await Promise.all(_SetCachePromises);
+        await Promise.all(promises);
     }
 
-    return Projects;
+    return projects;
 }
 
 export async function CreateVersion<T extends Prisma.VersionCreateArgs>(
@@ -223,13 +228,13 @@ interface SetCache_Data {
     id: string;
     slug: string;
 }
-async function Set_VersionsCache<T extends SetCache_Data | null>(NAMESPACE: string, project_withVersions: T) {
-    if (!project_withVersions) return;
-    const json_string = JSON.stringify(project_withVersions);
-    const slug = project_withVersions.slug.toLowerCase();
+async function Set_VersionsCache<T extends SetCache_Data | null>(NAMESPACE: string, projectWithVersions: T) {
+    if (!projectWithVersions) return;
+    const jsonStr = JSON.stringify(projectWithVersions);
+    const slug = projectWithVersions.slug.toLowerCase();
 
-    const p1 = SetCache(NAMESPACE, project_withVersions.id, slug, VERSION_CACHE_EXPIRY_seconds);
-    const p2 = SetCache(NAMESPACE, slug, json_string, VERSION_CACHE_EXPIRY_seconds);
+    const p1 = SetCache(NAMESPACE, projectWithVersions.id, slug, VERSION_CACHE_EXPIRY_seconds);
+    const p2 = SetCache(NAMESPACE, slug, jsonStr, VERSION_CACHE_EXPIRY_seconds);
     await Promise.all([p1, p2]);
 }
 

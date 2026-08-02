@@ -1,5 +1,5 @@
 import { type EnvironmentSupport, ProjectPublishingStatus, ProjectVisibility } from "@app/utils/types";
-import { GetManyProjects_Details, type GetProject_Details_ReturnType } from "~/db/project_item";
+import { GetManyProjects_Details, type TProjectDetails } from "~/db/project_item";
 import { isProjectIndexable } from "~/routes/project/utils";
 import { getLast15Days_ProjectDownloads } from "~/services/clickhouse/project-downloads";
 import meilisearch from "~/services/meilisearch";
@@ -114,7 +114,7 @@ async function _SyncBatch(cursor: null | string) {
     }
 }
 
-export function FormatSearchDocument<T extends NonNullable<GetProject_Details_ReturnType>>(
+export function FormatSearchDocument<T extends NonNullable<TProjectDetails>>(
     project: T,
     recentDownloads: number,
 ) {

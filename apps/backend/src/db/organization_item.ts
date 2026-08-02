@@ -3,7 +3,7 @@ import prisma from "~/services/prisma";
 import valkey from "~/services/redis";
 import { ORGANIZATION_DATA_CACHE_KEY, USER_ORGANIZATIONS_CACHE_KEY } from "~/types/namespaces";
 import { cacheKey, GetData_FromCache, ORGANIZATION_DATA_CACHE_EXPIRY_seconds, SetCache } from "./_cache";
-import { GetManyTeams_ById, GetTeam } from "./team_item";
+import { GetManyTeams_ById, GetTeam, type TTeam } from "./team_item";
 
 const ORGANIZATION_SELECT_FIELDS = {
     id: true,
@@ -20,7 +20,7 @@ const ORGANIZATION_SELECT_FIELDS = {
     },
 } satisfies Prisma.OrganisationSelect;
 
-export type GetOrganization_ReturnType = Awaited<ReturnType<typeof GetOrganization_FromDb>>;
+type TOrganizationFromDB = Awaited<ReturnType<typeof GetOrganization_FromDb>>;
 async function GetOrganization_FromDb(id?: string, slug?: string) {
     if (!slug && !id) throw new Error("Either slug or id is required!");
 
@@ -52,54 +52,58 @@ async function GetOrganization_FromDb(id?: string, slug?: string) {
     return org;
 }
 
-export async function GetOrganization_Data(id?: string, _slug?: string) {
+export type TOrganizationData = TOrganizationFromDB & { team: NonNullable<TTeam> };
+
+export async function GetOrganization_Data(id: string, _slug?: undefined): Promise<TOrganizationData | null>;
+export async function GetOrganization_Data(id: undefined, _slug: string): Promise<TOrganizationData | null>;
+export async function GetOrganization_Data(id: string, _slug: string): Promise<TOrganizationData | null>;
+export async function GetOrganization_Data(id?: string, _slug?: string): Promise<TOrganizationData | null> {
     if (!_slug && !id) throw new Error("Either slug or id is required!");
     const slug = _slug?.toLowerCase();
 
-    let OrgData = await GetData_FromCache<GetOrganization_ReturnType>(ORGANIZATION_DATA_CACHE_KEY, id || slug);
-    if (!OrgData) OrgData = await GetOrganization_FromDb(id, slug);
-    if (!OrgData) return null;
+    let orgData = await GetData_FromCache<TOrganizationFromDB>(ORGANIZATION_DATA_CACHE_KEY, id || slug);
+    if (!orgData) orgData = await GetOrganization_FromDb(id, slug);
+    if (!orgData) return null;
 
-    await Set_OrganizationCache(ORGANIZATION_DATA_CACHE_KEY, OrgData);
+    await Set_OrganizationCache(ORGANIZATION_DATA_CACHE_KEY, orgData);
 
-    const OrgTeam = await GetTeam(OrgData.teamId);
-    if (!OrgTeam) return null;
+    const orgTeam = await GetTeam(orgData.teamId);
+    if (!orgTeam) return null;
 
-    return Object.assign(OrgData, { team: OrgTeam });
+    return Object.assign(orgData, { team: orgTeam });
 }
 
-export type GetManyOrganizations_ReturnType = Awaited<ReturnType<typeof GetManyOrganizations_ById>>;
-export async function GetManyOrganizations_ById(ids: string[]) {
-    const OrgIds = Array.from(new Set(ids));
-    const Organizations = [];
-    const _OrgTeamIds = [];
+export type TManyOrganizations = TOrganizationData[];
+export async function GetManyOrganizations_ById(orgIds: string[]): Promise<TManyOrganizations> {
+    const uniqueOrgIds = Array.from(new Set(orgIds));
+    const organizations = [];
+    const orgTeamIds = [];
 
     // Getting cached items
-    const OrgsIds_RetrievedFromCache: string[] = [];
+    const orgsFromCache: string[] = [];
     {
-        const _CachedOrgs_promises = [];
-        for (const id of OrgIds) {
-            const cachedOrg = GetData_FromCache<GetOrganization_ReturnType>(ORGANIZATION_DATA_CACHE_KEY, id);
-            _CachedOrgs_promises.push(cachedOrg);
+        const promises = [];
+        for (const id of uniqueOrgIds) {
+            const cachedOrg = GetData_FromCache<TOrganizationFromDB>(ORGANIZATION_DATA_CACHE_KEY, id);
+            promises.push(cachedOrg);
         }
 
-        const _CachedOrgs = await Promise.all(_CachedOrgs_promises);
-        for (const org of _CachedOrgs) {
+        for (const org of await Promise.all(promises)) {
             if (!org) continue;
-            OrgsIds_RetrievedFromCache.push(org.id);
-            Organizations.push(org);
-            _OrgTeamIds.push(org.teamId);
+            orgsFromCache.push(org.id);
+            organizations.push(org);
+            orgTeamIds.push(org.teamId);
         }
     }
 
     // Get the items that were not found in the cache
-    const OrgsIds_ToRetrieve = OrgIds.filter((id) => !OrgsIds_RetrievedFromCache.includes(id));
-    const _RemainingOrgItems =
-        OrgsIds_ToRetrieve.length > 0
+    const remainingOrgIds = uniqueOrgIds.filter((id) => !orgsFromCache.includes(id));
+    const remainingOrgs =
+        remainingOrgIds.length > 0
             ? await prisma.organisation.findMany({
                   where: {
                       id: {
-                          in: OrgsIds_ToRetrieve,
+                          in: remainingOrgIds,
                       },
                   },
                   select: ORGANIZATION_SELECT_FIELDS,
@@ -108,30 +112,30 @@ export async function GetManyOrganizations_ById(ids: string[]) {
 
     // Cache the items that were not found in the cache
     {
-        const _Set_OrganizationCache_promises = [];
-        for (const org of _RemainingOrgItems) {
-            _Set_OrganizationCache_promises.push(Set_OrganizationCache(ORGANIZATION_DATA_CACHE_KEY, org));
+        const promises = [];
+        for (const org of remainingOrgs) {
+            promises.push(Set_OrganizationCache(ORGANIZATION_DATA_CACHE_KEY, org));
 
-            Organizations.push(org);
-            _OrgTeamIds.push(org.teamId);
+            organizations.push(org);
+            orgTeamIds.push(org.teamId);
         }
-        await Promise.all(_Set_OrganizationCache_promises);
+        await Promise.all(promises);
     }
 
     // Get the teams for the organizations
-    const OrgItems_Teams = await GetManyTeams_ById(_OrgTeamIds);
+    const orgTeams = await GetManyTeams_ById(orgTeamIds);
 
-    const FormattedOrgs = [];
+    const orgsList: TManyOrganizations = [];
     // Combine the organizations with their teams
-    for (let i = 0; i < Organizations.length; i++) {
-        const org = Organizations[i];
-        const team = OrgItems_Teams.find((t) => t.id === org.teamId);
+    for (let i = 0; i < organizations.length; i++) {
+        const org = organizations[i];
+        const team = orgTeams.find((t) => t.id === org.teamId);
         if (!team) continue;
 
-        FormattedOrgs.push(Object.assign(org, { team: team }));
+        orgsList.push(Object.assign(org, { team: team }));
     }
 
-    return FormattedOrgs;
+    return orgsList;
 }
 
 export function GetOrganization_Unique<T extends Prisma.OrganisationFindUniqueArgs>(
@@ -193,11 +197,11 @@ interface SetCache_Data {
 }
 async function Set_OrganizationCache<T extends SetCache_Data | null>(NAMESPACE: string, org: T) {
     if (!org?.id) return;
-    const json_string = JSON.stringify(org);
+    const jsonStr = JSON.stringify(org);
     const slug = org.slug.toLowerCase();
 
     const p1 = SetCache(NAMESPACE, org.id, slug, ORGANIZATION_DATA_CACHE_EXPIRY_seconds);
-    const p2 = SetCache(NAMESPACE, slug, json_string, ORGANIZATION_DATA_CACHE_EXPIRY_seconds);
+    const p2 = SetCache(NAMESPACE, slug, jsonStr, ORGANIZATION_DATA_CACHE_EXPIRY_seconds);
     await Promise.all([p1, p2]);
 }
 

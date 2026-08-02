@@ -1,5 +1,5 @@
 import type { GlobalUserRole } from "@app/utils/types";
-import type { GetUser_ReturnType } from "~/db/user_item";
+import type { TUser } from "~/db/user_item";
 
 export interface SessionDeviceDetails {
     os: {
@@ -12,7 +12,7 @@ export interface SessionDeviceDetails {
     country: string;
 }
 
-export interface UserSessionData extends NonNullable<GetUser_ReturnType> {
+export interface UserSessionData extends NonNullable<TUser> {
     role: GlobalUserRole;
     apiScopes: bigint;
 

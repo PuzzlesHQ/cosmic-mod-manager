@@ -4,11 +4,11 @@ import type { DependencyType, VersionReleaseChannel } from "@app/utils/types";
 import type { VersionFile } from "@app/utils/types/api";
 import type { UnwrapArray } from "@app/utils/types/helpers";
 import type { File as DBFile } from "@prisma-client";
-import type { GetVersions_ReturnType } from "~/db/version_item";
+import type { TVersions } from "~/db/version_item";
 import { DELETED_USER_AUTHOR_OBJ } from "~/routes/project/utils";
 import { userFileUrl, versionFileUrl } from "~/utils/urls";
 
-type VersionProp = UnwrapArray<NonNullable<GetVersions_ReturnType>["versions"]>;
+type VersionProp = UnwrapArray<NonNullable<TVersions>["versions"]>;
 type VersionFilesMap = Map<string, DBFile>;
 
 export function formatVersionData(v: VersionProp, versionFilesMap: VersionFilesMap, authorRole?: string) {
