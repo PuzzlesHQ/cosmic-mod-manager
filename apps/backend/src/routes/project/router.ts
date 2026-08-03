@@ -87,12 +87,14 @@ async function project_get(ctx: Context) {
     const featuredVersionsOnly = ctx.req.query("featuredOnly") === "true";
     const res = await getProjectData(slug, sessionUser);
 
-    if (includeVersions !== true || !isSuccessResponse(res)) {
-        return ctx.json(res.data, res.status);
+    if (!isSuccessResponse(res)) return ctx.json(res.data, res.status);
+
+    if (includeVersions !== true) {
+        return ctx.json({ success: true, project: res.data.data }, res.status);
     }
 
     // Fetch the project versions if it's to be included
-    const project = res.data.data as ProjectDetailsData & { versions: ProjectVersionData[] };
+    const project = res.data.data as typeof res.data.data & { versions: ProjectVersionData[] };
     const versions = await getAllProjectVersions(slug, sessionUser, featuredVersionsOnly);
 
     if (isSuccessResponse(versions)) {
