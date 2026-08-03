@@ -3,7 +3,7 @@ import { getFileType } from "@app/utils/convertors";
 import { sortVersionsWithReference } from "@app/utils/project";
 import { gameVersionsList } from "@app/utils/src/constants/game-versions";
 import { isModerator } from "@app/utils/src/constants/roles";
-import { type GlobalUserRole, ProjectPublishingStatus, ProjectVisibility } from "@app/utils/types";
+import { ProjectPublishingStatus, ProjectVisibility } from "@app/utils/types";
 import type { File as DBFile, VersionFile } from "@prisma-client";
 import { rsort } from "semver";
 import { CreateManyFiles, DeleteManyFiles_ByID, GetManyFiles } from "~/db/file_item";
@@ -39,28 +39,35 @@ export function isProjectIndexable(visibility: string, publishingStatus: string)
     return isProjectPublic(visibility, publishingStatus) && visibility !== ProjectVisibility.UNLISTED;
 }
 
-interface IsProjectAccessibleProps {
-    visibility: string;
-    publishingStatus: string;
-    userId: string | undefined | null;
-    teamMembers: string[];
-    orgMembers: string[];
-    sessionUserRole: GlobalUserRole | undefined | null;
+interface _Team {
+    members: {
+        userId: string;
+    }[];
 }
 
-export function isProjectAccessible({
-    visibility,
-    publishingStatus,
-    userId,
-    teamMembers,
-    orgMembers,
-    sessionUserRole,
-}: IsProjectAccessibleProps) {
-    if (isModerator(sessionUserRole) === true) return true;
+interface IProject {
+    visibility: string;
+    status: string;
+    team: _Team;
+    organisation: {
+        team: _Team;
+    } | null;
+}
 
-    const combinedMembers = new Set([...teamMembers, ...orgMembers]);
-    const isMember = userId ? combinedMembers.has(userId) : false;
-    const isPublic = isProjectPublic(visibility, publishingStatus);
+interface IUser {
+    id: string;
+    role: string;
+}
+
+export function isProjectAccessible(project: IProject, user: IUser | null) {
+    if (isModerator(user?.role) === true) return true;
+
+    const combinedMembers = new Set([
+        ...project.team.members.map((u) => u.userId),
+        ...(project.organisation?.team.members ?? []).map((u) => u.userId),
+    ]);
+    const isMember = user?.id ? combinedMembers.has(user.id) : false;
+    const isPublic = isProjectPublic(project.visibility, project.status);
 
     return isPublic || isMember;
 }

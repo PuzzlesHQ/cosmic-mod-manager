@@ -1,4 +1,3 @@
-import { mapObjectList } from "@app/utils/arrays";
 import { isModerator } from "@app/utils/constants/roles";
 import { isNumber } from "@app/utils/number";
 import { combineProjectMembers, sortVersionsWithReference } from "@app/utils/project";
@@ -31,15 +30,7 @@ export async function getProjectData(slug: string, userSession: SessionUserData 
         return { data: { success: false, message: "Project not found" }, status: HTTP_STATUS.NOT_FOUND };
     }
 
-    const projectAccessible = isProjectAccessible({
-        visibility: project.visibility,
-        publishingStatus: project.status,
-        userId: userSession?.id,
-        teamMembers: mapObjectList(project.team.members, "userId"),
-        orgMembers: mapObjectList(project.organisation?.team.members || [], "userId"),
-        sessionUserRole: userSession?.role,
-    });
-    if (!projectAccessible) {
+    if (!isProjectAccessible(project, userSession)) {
         return { data: { success: false, message: "Project not found" }, status: HTTP_STATUS.NOT_FOUND };
     }
 
@@ -171,15 +162,7 @@ export async function getManyProjects(userSession: SessionUserData | null, proje
             continue;
         }
 
-        const projectAccessible = isProjectAccessible({
-            visibility: project.visibility,
-            publishingStatus: project.status,
-            userId: userSession?.id,
-            teamMembers: mapObjectList(project.team.members, "userId"),
-            orgMembers: mapObjectList(project.organisation?.team.members || [], "userId"),
-            sessionUserRole: userSession?.role,
-        });
-        if (!projectAccessible) continue;
+        if (!isProjectAccessible(project, userSession)) continue;
 
         const isOrgOwned = !!project.organisationId;
         const author = isOrgOwned

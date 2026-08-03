@@ -1,4 +1,3 @@
-import { mapObjectList } from "@app/utils/arrays";
 import { getCurrMember } from "@app/utils/project";
 import type { ProjectVersionData } from "@app/utils/types/api";
 import type { Prisma } from "@prisma-client";
@@ -23,15 +22,7 @@ export async function getAllProjectVersions(slug: string, userSession: SessionUs
         projectVersions.push(version);
     }
 
-    const projectAccessible = isProjectAccessible({
-        visibility: project.visibility,
-        publishingStatus: project.status,
-        userId: userSession?.id,
-        teamMembers: mapObjectList(project.team.members, "userId"),
-        orgMembers: mapObjectList(project.organisation?.team.members || [], "userId"),
-        sessionUserRole: userSession?.role,
-    });
-    if (!projectAccessible) {
+    if (!isProjectAccessible(project, userSession)) {
         return notFoundResponseData("Project not found");
     }
 

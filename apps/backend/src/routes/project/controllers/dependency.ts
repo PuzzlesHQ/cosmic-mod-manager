@@ -1,4 +1,3 @@
-import { mapObjectList } from "@app/utils/arrays";
 import type { DependencyType, EnvironmentSupport, ProjectPublishingStatus, ProjectVisibility } from "@app/utils/types";
 import type { DependencyListData, ProjectListItem } from "@app/utils/types/api";
 import { GetManyProjects_ListItem, GetProject_ListItem } from "~/db/project_item";
@@ -16,15 +15,7 @@ export async function getProjectDependencies(slug: string, userSession: SessionU
     }
 
     // CHECK PERMISSIONS
-    const projectAccessible = isProjectAccessible({
-        visibility: project.visibility,
-        publishingStatus: project.status,
-        userId: userSession?.id,
-        teamMembers: mapObjectList(project.team.members, "userId"),
-        orgMembers: mapObjectList(project.organisation?.team.members || [], "userId"),
-        sessionUserRole: userSession?.role,
-    });
-    if (!projectAccessible) {
+    if (!isProjectAccessible(project, userSession)) {
         return { data: { success: false, message: "Project not found" }, status: HTTP_STATUS.NOT_FOUND };
     }
 

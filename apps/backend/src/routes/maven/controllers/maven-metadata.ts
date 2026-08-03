@@ -1,4 +1,3 @@
-import { mapObjectList } from "@app/utils/arrays";
 import { VersionReleaseChannel } from "@app/utils/types";
 import { GetProject_ListItem } from "~/db/project_item";
 import { GetVersions, type TVersions } from "~/db/version_item";
@@ -10,16 +9,7 @@ import { GROUP_ID } from "../consts";
 export async function GetProjectMetadata(projectSlug: string, sessionUser: SessionUserData | null) {
     const project = await GetProject_ListItem(projectSlug, projectSlug);
     if (!project) return notFoundResponseData();
-    if (
-        !isProjectAccessible({
-            visibility: project.visibility,
-            publishingStatus: project.status,
-            userId: sessionUser?.id,
-            sessionUserRole: sessionUser?.role,
-            teamMembers: mapObjectList(project.team.members, "userId"),
-            orgMembers: mapObjectList(project.organisation?.team.members ?? [], "userId"),
-        })
-    ) {
+    if (!isProjectAccessible(project, sessionUser)) {
         return notFoundResponseData();
     }
 
