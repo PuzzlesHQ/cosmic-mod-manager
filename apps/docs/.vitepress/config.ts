@@ -89,6 +89,10 @@ export default defineConfig({
                 text: "Tags",
                 items: [{ text: "Tags", link: "/tags/tags" }],
             },
+            {
+                text: "Maven",
+                items: [{ text: "Maven Setup", link: "/maven/setup" }],
+            },
         ],
 
         socialLinks: [{ icon: "github", link: "https://github.com/PuzzlesHQ/cosmic-mod-manager" }],
