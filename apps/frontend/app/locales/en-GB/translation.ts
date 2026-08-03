@@ -520,6 +520,8 @@ export default {
             " on ",
             publish_date,
         ],
+
+        developerInfo: "Developer Information"
     },
 
     projectSettings: {

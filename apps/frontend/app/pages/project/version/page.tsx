@@ -2,12 +2,21 @@ import { parseFileSize } from "@app/utils/number";
 import { doesMemberHaveAccess } from "@app/utils/project";
 import { CapitalizeAndFormatString } from "@app/utils/string";
 import { ProjectPermission } from "@app/utils/types";
-import type { ProjectVersionData } from "@app/utils/types/api";
+import type { ProjectDetailsData, ProjectVersionData } from "@app/utils/types/api";
 import { ReportItemType } from "@app/utils/types/api/report";
 import { imageUrl } from "@app/utils/url";
 import { formatVersionsForDisplay } from "@app/utils/version/format";
-import { ChevronRightIcon, CopyIcon, DownloadIcon, Edit3Icon, FileIcon, LinkIcon, StarIcon } from "lucide-react";
-import { use } from "react";
+import {
+    ChevronDownIcon,
+    ChevronRightIcon,
+    CopyIcon,
+    DownloadIcon,
+    Edit3Icon,
+    FileIcon,
+    LinkIcon,
+    StarIcon,
+} from "lucide-react";
+import { use, useState } from "react";
 import { fallbackProjectIcon, fallbackUserIcon } from "~/components/icons";
 import MarkdownRenderBox from "~/components/md-editor/md-renderer";
 import { FileDownloader } from "~/components/misc/file-downloader";
@@ -24,6 +33,7 @@ import {
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import Chip from "~/components/ui/chip";
+import { collapsibleBoxClassName } from "~/components/ui/collapsible";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "~/components/ui/context-menu";
 import CopyBtn, { copyTextToClipboard } from "~/components/ui/copy-btn";
 import { FormattedCount } from "~/components/ui/count";
@@ -31,6 +41,7 @@ import { FormattedDate } from "~/components/ui/date";
 import Link, { LinkPrefetchStrategy, VariantButtonLink } from "~/components/ui/link";
 import ReleaseChannelChip from "~/components/ui/release-channel-pill";
 import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
+import { cn } from "~/components/utils";
 import type { ProjectContextData } from "~/hooks/project";
 import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
@@ -234,6 +245,8 @@ export default function VersionPage({ ctx, versionData, projectSlug }: Props) {
                               })
                             : null}
                     </ContentCardTemplate>
+
+                    <DeveloperInformation project={ctx.projectData} version={versionData} />
                 </div>
 
                 <Card className="grid w-full grid-cols-1 gap-3 p-card-surround text-foreground-muted sm:min-w-[19rem]">
@@ -387,5 +400,77 @@ function FileDetailsItem({
                 </ContextMenuItem>
             </ContextMenuContent>
         </ContextMenu>
+    );
+}
+
+interface DeveloperInformationProps {
+    project: ProjectDetailsData;
+    version: ProjectVersionData;
+}
+
+function DeveloperInformation(props: DeveloperInformationProps) {
+    const { t } = useTranslation();
+    const [isOpen, setIsOpen] = useState(true);
+
+    const mavenCoords = `maven.crmods:${props.project.slug}:${props.version.slug}`;
+
+    return (
+        <section className="grid w-full rounded-lg border-[0.07rem] border-border bg-card-background/50">
+            <button
+                type="button"
+                className={cn(
+                    "flex items-center justify-start gap-3 rounded-lg border-transparent border-b-[0.07rem] bg-card-background px-4 py-3 duration-300",
+                    isOpen && "rounded-b-none border-border",
+                )}
+                onClick={() => setIsOpen((p) => !p)}
+            >
+                <ChevronDownIcon className={cn("transition-all", isOpen && "rotate-180")} />
+                <h3 className="font-semibold text-foreground-muted text-lg">{t.version.developerInfo}</h3>
+            </button>
+
+            <div className={cn("px-5 transition-all", collapsibleBoxClassName(isOpen, "py-4", "py-0"))}>
+                <div>
+                    <h4 className="mbe-1 font-semibold text-base text-foreground">Maven Coordinates</h4>
+                    <CopyBtn
+                        className="mbe-6 bg-hover-background"
+                        text={mavenCoords}
+                        label={mavenCoords}
+                        labelClassName="px-1 py-2"
+                    />
+
+                    <h4 className="font-semibold text-base text-foreground">build.gradle:</h4>
+                    <MarkdownRenderBox
+                        className="on-dim-bg"
+                        text={`
+\`\`\`groovy
+repositories {
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "CrMods"
+                url = "https://api.crmods.org/maven/"
+            }
+        }
+        filter {
+            includeGroup "${mavenCoords}"
+        }
+    }
+}
+
+// Standard Gradle dependency
+dependencies {
+    implementation "${mavenCoords}"
+}
+
+// Legacy Loom dependency
+dependencies {
+    modImplementation "${mavenCoords}"
+}
+\`\`\`
+`}
+                    />
+                </div>
+            </div>
+        </section>
     );
 }

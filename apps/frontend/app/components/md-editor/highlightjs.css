@@ -146,16 +146,25 @@ html:is(.dark).markdown-body img[src$="#gh-light-mode-only"] {
     display: none;
 }
 
+.markdown-body code {
+    @apply max-w-full py-0.5 px-2 text-[90%] rounded-md bg-raised-background font-mono;
+}
+
+.markdown-body.on-dim-bg code {
+    @apply bg-raised-background/50;
+}
+
 .markdown-body pre {
     @apply mt-3 py-4 px-5 w-full inline-block text-foreground bg-raised-background rounded overflow-x-auto;
 }
 
-.markdown-body pre code {
-    @apply p-0 rounded-none text-[90%] bg-transparent dark:bg-transparent;
+.markdown-body.on-dim-bg pre {
+    @apply bg-raised-background/50;
 }
 
-.markdown-body code {
-    @apply max-w-full py-0.5 px-2 text-[90%] rounded-md bg-raised-background font-mono;
+.markdown-body pre code {
+    background-color: transparent !important;
+    @apply p-0 rounded-none text-[90%] dark:bg-transparent;
 }
 
 .markdown-body hr {

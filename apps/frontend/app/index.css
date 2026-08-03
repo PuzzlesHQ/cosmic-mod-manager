@@ -112,7 +112,7 @@ body.no-scrollbar {
     a,
     button,
     input[type="checkbox"] {
-        @apply focus-visible:outline-none focus-visible:keyboard_focus_ring rounded transition-[filter];
+        @apply focus-visible:outline-none focus-visible:keyboard_focus_ring rounded transition-[filter,border-radius];
     }
 
     .lucide-arrow-up-right {
