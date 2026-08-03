@@ -22,6 +22,7 @@ import { FILE_STORAGE_SERVICE, type SessionUserData } from "~/types";
 import {
     HTTP_STATUS,
     invalidRequestResponseData,
+    isSuccessResponse,
     notFoundResponseData,
     serverErrorResponseData,
     unauthorizedReqResponseData,
@@ -66,9 +67,9 @@ export async function updateOrg(
 
     // Update the org icon
     if (formData.icon instanceof File) {
-        const UpdateIconRes = await updateOrgIcon(ctx, userSession, orgId, formData.icon);
-        if ("newIcon" in UpdateIconRes.data) {
-            icon = UpdateIconRes.data.newIcon || null;
+        const updateIconRes = await updateOrgIcon(ctx, userSession, orgId, formData.icon);
+        if (isSuccessResponse(updateIconRes)) {
+            icon = updateIconRes.data.data;
         }
     }
 
@@ -129,8 +130,7 @@ export async function updateOrgIcon(
     });
     const iconImg_Id = `${generateDbId()}_${ICON_WIDTH}.${savedImg_Type}`;
     const icon_SaveUrl = await saveOrgFile(FILE_STORAGE_SERVICE.LOCAL, org.id, orgIcon_Webp, iconImg_Id);
-    if (!icon_SaveUrl)
-        return { data: { success: false, message: "Failed to save the icon" }, status: HTTP_STATUS.SERVER_ERROR };
+    if (!icon_SaveUrl) return serverErrorResponseData("Failed to save the icon");
 
     await CreateFile({
         data: {
@@ -155,9 +155,9 @@ export async function updateOrgIcon(
     }
 
     return {
-        data: { success: true, message: "Organization icon updated", newIcon: iconImg_Id },
+        data: { success: true, message: "Organization icon updated", data: iconImg_Id },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function deleteOrgIcon(ctx: Context, userSession: SessionUserData, orgId: string) {

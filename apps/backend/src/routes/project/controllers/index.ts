@@ -19,26 +19,22 @@ import meilisearch from "~/services/meilisearch";
 import prisma from "~/services/prisma";
 import valkey from "~/services/redis";
 import type { SessionUserData } from "~/types";
-import { HTTP_STATUS } from "~/utils/http";
+import { HTTP_STATUS, notFoundResponseData } from "~/utils/http";
 import { parseJson } from "~/utils/str";
 import { orgIconUrl, projectGalleryFileUrl, projectIconUrl, userFileUrl } from "~/utils/urls";
 import { isProjectAccessible, isProjectListed } from "../utils";
 
 export async function getProjectData(slug: string, userSession: SessionUserData | null) {
     const project = await GetProject_Details(slug, slug);
-    if (!project?.id) {
-        return { data: { success: false, message: "Project not found" }, status: HTTP_STATUS.NOT_FOUND };
-    }
-
-    if (!isProjectAccessible(project, userSession)) {
-        return { data: { success: false, message: "Project not found" }, status: HTTP_STATUS.NOT_FOUND };
+    if (!project?.id || !isProjectAccessible(project, userSession)) {
+        return notFoundResponseData("Project not found");
     }
 
     const allMembers = combineProjectMembers(project.team.members, project.organisation?.team.members || []);
     const isSessionUserProjectMember = userSession?.id ? !!allMembers.get(userSession.id) : false;
     const org = project.organisation;
 
-    const FormattedData: ProjectDetailsData = {
+    const formattedProject: ProjectDetailsData = {
         id: project.id,
         threadId: project.threadId,
         teamId: project.team.id,
@@ -107,10 +103,10 @@ export async function getProjectData(slug: string, userSession: SessionUserData 
     return {
         data: {
             success: true,
-            project: FormattedData,
+            data: formattedProject,
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 interface FormatMemberProps extends DBTeamMember {

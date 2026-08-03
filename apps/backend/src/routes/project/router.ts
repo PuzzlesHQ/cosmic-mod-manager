@@ -23,7 +23,7 @@ import {
     strictGetReqRateLimiter,
 } from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
-import { invalidRequestResponse, unauthenticatedReqResponse } from "~/utils/http";
+import { invalidRequestResponse, isSuccessResponse, unauthenticatedReqResponse } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";
 import { getAllVisibleProjects } from "../user/controllers/profile";
 import { checkProjectSlugValidity, getProjectData } from "./controllers";
@@ -87,28 +87,21 @@ async function project_get(ctx: Context) {
     const featuredVersionsOnly = ctx.req.query("featuredOnly") === "true";
     const res = await getProjectData(slug, sessionUser);
 
-    if (includeVersions !== true || !res.data.project) {
+    if (includeVersions !== true || !isSuccessResponse(res)) {
         return ctx.json(res.data, res.status);
-    } else {
-        // Fetch the project versions if it's to be included
-        const project = res.data.project as ProjectDetailsData & { versions: ProjectVersionData[] };
-        const versions = await getAllProjectVersions(slug, sessionUser, featuredVersionsOnly);
-
-        if ("data" in versions.data && versions.data.data) {
-            project.versions = versions.data.data;
-        } else {
-            project.versions = [];
-        }
-
-        return ctx.json(
-            {
-                success: res.data.success,
-                message: res.data.message,
-                project: project,
-            },
-            res.status,
-        );
     }
+
+    // Fetch the project versions if it's to be included
+    const project = res.data.data as ProjectDetailsData & { versions: ProjectVersionData[] };
+    const versions = await getAllProjectVersions(slug, sessionUser, featuredVersionsOnly);
+
+    if (isSuccessResponse(versions)) {
+        project.versions = versions.data.data;
+    } else {
+        project.versions = [];
+    }
+
+    return ctx.json({ success: true, project: project }, res.status);
 }
 
 async function projectDependencies_get(ctx: Context) {

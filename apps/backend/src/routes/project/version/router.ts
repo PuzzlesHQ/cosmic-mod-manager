@@ -5,7 +5,7 @@ import { type Context, Hono } from "hono";
 import { LoginProtectedRoute } from "~/middleware/auth";
 import { critModifyReqRateLimiter, getReqRateLimiter, modifyReqRateLimiter } from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
-import { invalidRequestResponse, notFoundResponse, unauthenticatedReqResponse } from "~/utils/http";
+import { invalidRequestResponse, isSuccessResponse, notFoundResponse, unauthenticatedReqResponse } from "~/utils/http";
 import { getSessionUser } from "~/utils/router";
 import { getAllProjectVersions, getLatestVersion, getProjectVersionData } from "./controllers";
 import { createNewVersion } from "./controllers/new-version";
@@ -58,8 +58,7 @@ async function version_get(ctx: Context, download = false) {
               })
             : await getProjectVersionData(projectSlug, versionId, sessionUser);
 
-    if (download !== true) return ctx.json(res.data, res.status);
-    if ("success" in res.data && res.data.success === false) return ctx.json(res.data, res.status);
+    if (download !== true || !isSuccessResponse(res)) return ctx.json(res.data, res.status);
 
     const fileName = ctx.req.param("fileName");
     const version = res.data.data;
