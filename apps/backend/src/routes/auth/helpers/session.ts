@@ -16,7 +16,7 @@ import {
     UpdateSession,
 } from "~/db/session_item";
 import { GetUser_ByIdOrUsername } from "~/db/user_item";
-import type { UserSessionData } from "~/types";
+import type { SessionUserData } from "~/types";
 import { sendNewSigninAlertEmail } from "~/utils/email";
 import env from "~/utils/env";
 import { deleteCookie, setCookie } from "~/utils/http";
@@ -142,10 +142,10 @@ async function getUserFromSessionToken(ctx: Context, token: string) {
         apiScopes: ALL_PAT_SCOPES,
         sessionId: session.id,
         patID: null,
-    } satisfies UserSessionData;
+    } satisfies SessionUserData;
 }
 
-async function getUserFromPAT(token: string): Promise<UserSessionData | null> {
+async function getUserFromPAT(token: string): Promise<SessionUserData | null> {
     const tokenHash = hashString(token);
     const pat = await GetPAT(tokenHash);
 
@@ -173,12 +173,12 @@ async function getUserFromPAT(token: string): Promise<UserSessionData | null> {
         apiScopes: pat.scopes,
         sessionId: null,
         patID: pat.id,
-    } satisfies UserSessionData;
+    } satisfies SessionUserData;
 }
 
 const BEARER_PREFIX = "Bearer ";
 const BASIC_PREFIX = "Basic ";
-export async function validateContextSession(ctx: Context): Promise<UserSessionData | null> {
+export async function validateContextSession(ctx: Context): Promise<SessionUserData | null> {
     const authHeader = ctx.req.header("Authorization") ?? "";
     if (authHeader.startsWith(BASIC_PREFIX)) {
         const basicCredentials = authHeader.slice(BASIC_PREFIX.length);

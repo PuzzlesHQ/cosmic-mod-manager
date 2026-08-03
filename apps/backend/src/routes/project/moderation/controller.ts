@@ -13,7 +13,7 @@ import {
 } from "~/db/project_item";
 import { createNotification } from "~/routes/user/notification/controllers/helpers";
 import prisma from "~/services/prisma";
-import type { UserSessionData } from "~/types";
+import type { SessionUserData } from "~/types";
 import { HTTP_STATUS, notFoundResponseData, serverErrorResponseData } from "~/utils/http";
 import { Log, Log_SubType } from "~/utils/logger";
 import { generateDbId } from "~/utils/str";
@@ -82,7 +82,7 @@ export async function getModerationProjects() {
     };
 }
 
-export async function updateModerationProject(id: string, status: string, userSession: UserSessionData) {
+export async function updateModerationProject(id: string, status: string, userSession: SessionUserData) {
     const project = await GetProject_Details(id);
     if (!project) return notFoundResponseData("Project not found");
 

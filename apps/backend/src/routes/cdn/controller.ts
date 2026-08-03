@@ -7,7 +7,7 @@ import { GetVersions } from "~/db/version_item";
 import { getUserIpAddress } from "~/routes/auth/helpers";
 import { isProjectAccessible, isProjectPublic } from "~/routes/project/utils";
 import { getProjectVersionFile } from "~/services/storage";
-import type { FILE_STORAGE_SERVICE, UserSessionData } from "~/types";
+import type { FILE_STORAGE_SERVICE, SessionUserData } from "~/types";
 import { HTTP_STATUS, notFoundResponse } from "~/utils/http";
 import { versionFileUrl } from "~/utils/urls";
 import { addToDownloadsQueue } from "./downloads-counter";
@@ -17,7 +17,7 @@ export async function serveVersionFile(
     projectId: string,
     versionId: string,
     fileName: string,
-    userSession: UserSessionData | null,
+    userSession: SessionUserData | null,
     isCdnRequest = true,
 ) {
     const [project, _projectVersions] = await Promise.all([GetProject_ListItem(projectId), GetVersions(projectId)]);

@@ -4,7 +4,7 @@ import { UpdateTeamMember } from "~/db/team-member_item";
 import { GetTeam } from "~/db/team_item";
 import { addInvalidAuthAttempt } from "~/middleware/rate-limiter";
 import { UpdateProjects_SearchIndex } from "~/routes/search/search-db";
-import type { UserSessionData } from "~/types";
+import type { SessionUserData } from "~/types";
 import {
     HTTP_STATUS,
     invalidRequestResponseData,
@@ -14,7 +14,7 @@ import {
 
 export async function changeTeamOwner(
     ctx: Context,
-    userSession: UserSessionData,
+    userSession: SessionUserData,
     teamId: string,
     newOwner_UserId: string,
 ) {

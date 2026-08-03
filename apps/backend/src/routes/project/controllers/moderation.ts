@@ -8,12 +8,12 @@ import { type MessageBody, MessageType } from "@app/utils/types/api/thread";
 import { GetProject_Details, UpdateProject } from "~/db/project_item";
 import { createNotification } from "~/routes/user/notification/controllers/helpers";
 import prisma from "~/services/prisma";
-import type { UserSessionData } from "~/types";
+import type { SessionUserData } from "~/types";
 import { HTTP_STATUS, invalidRequestResponseData } from "~/utils/http";
 import { Log, Log_SubType } from "~/utils/logger";
 import { generateDbId } from "~/utils/str";
 
-export async function QueueProjectForApproval(projectId: string, userSession: UserSessionData) {
+export async function QueueProjectForApproval(projectId: string, userSession: SessionUserData) {
     const project = await GetProject_Details(projectId);
     if (!project?.id) return invalidRequestResponseData("Project not found");
 

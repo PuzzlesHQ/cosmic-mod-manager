@@ -38,7 +38,7 @@ async function versionFromHash_get(ctx: Context, download = false) {
         if (!version.primaryFile) return notFoundResponse(ctx, "Couldn't find the version's primary file!");
 
         return ctx.redirect(
-            versionFileUrl(version.projectId, version.id, version.primaryFile?.name) as string,
+            versionFileUrl(version.projectId, version.id, version.primaryFile.name) as string,
             HTTP_STATUS.TEMPORARY_REDIRECT,
         );
     }

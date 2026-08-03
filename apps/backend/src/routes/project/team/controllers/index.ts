@@ -15,7 +15,7 @@ import { GetTeam } from "~/db/team_item";
 import { GetUser_ByIdOrUsername } from "~/db/user_item";
 import { addInvalidAuthAttempt } from "~/middleware/rate-limiter";
 import { createNotification } from "~/routes/user/notification/controllers/helpers";
-import type { UserSessionData } from "~/types";
+import type { SessionUserData } from "~/types";
 import {
     HTTP_STATUS,
     invalidRequestResponseData,
@@ -24,7 +24,7 @@ import {
 } from "~/utils/http";
 import { generateDbId } from "~/utils/str";
 
-export async function inviteMember(ctx: Context, userSession: UserSessionData, userSlug: string, teamId: string) {
+export async function inviteMember(ctx: Context, userSession: SessionUserData, userSlug: string, teamId: string) {
     const Team = await GetTeam(teamId);
     if (!Team) return notFoundResponseData("Team not found");
 
@@ -135,7 +135,7 @@ export async function inviteMember(ctx: Context, userSession: UserSessionData, u
     return { data: { success: true }, status: HTTP_STATUS.OK };
 }
 
-export async function acceptProjectTeamInvite(ctx: Context, userSession: UserSessionData, teamId: string) {
+export async function acceptProjectTeamInvite(ctx: Context, userSession: SessionUserData, teamId: string) {
     const Team = await GetTeam(teamId);
     if (!Team) return notFoundResponseData();
 
@@ -158,7 +158,7 @@ export async function acceptProjectTeamInvite(ctx: Context, userSession: UserSes
     return { data: { success: true, message: "Joined successfully" }, status: HTTP_STATUS.OK };
 }
 
-export async function leaveProjectTeam(ctx: Context, userSession: UserSessionData, teamId: string) {
+export async function leaveProjectTeam(ctx: Context, userSession: SessionUserData, teamId: string) {
     const Team = await GetTeam(teamId);
     if (!Team) return notFoundResponseData();
 
@@ -205,7 +205,7 @@ export async function leaveProjectTeam(ctx: Context, userSession: UserSessionDat
 
 export async function editProjectMember(
     ctx: Context,
-    userSession: UserSessionData,
+    userSession: SessionUserData,
     targetMemberId: string,
     teamId: string,
     formData: z.infer<typeof updateTeamMemberFormSchema>,
@@ -287,7 +287,7 @@ export async function editProjectMember(
 
 export async function overrideOrgMember(
     ctx: Context,
-    userSession: UserSessionData,
+    userSession: SessionUserData,
     teamId: string,
     formData: z.infer<typeof overrideOrgMemberFormSchema>,
 ) {
@@ -347,7 +347,7 @@ export async function overrideOrgMember(
 
 export async function removeProjectMember(
     ctx: Context,
-    userSession: UserSessionData,
+    userSession: SessionUserData,
     targetMemberId: string,
     teamId: string,
 ) {

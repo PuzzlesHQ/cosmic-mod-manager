@@ -2,12 +2,12 @@ import { isModerator } from "@app/utils/constants/roles";
 import type { Context } from "hono";
 import { addInvalidAuthAttempt } from "~/middleware/rate-limiter";
 import prisma from "~/services/prisma";
-import type { UserSessionData } from "~/types";
+import type { SessionUserData } from "~/types";
 import { HTTP_STATUS, notFoundResponseData, unauthorizedReqResponseData } from "~/utils/http";
 
 export async function getUserNotifications(
     ctx: Context,
-    userSession: UserSessionData,
+    userSession: SessionUserData,
     notifUserSlug: string | undefined,
 ) {
     if (!hasNotificationAccess(userSession, notifUserSlug || userSession.id)) {
@@ -33,7 +33,7 @@ export async function getUserNotifications(
     return { data: notifications, status: HTTP_STATUS.OK };
 }
 
-export async function getNotificationById(ctx: Context, userSession: UserSessionData, notifId: string) {
+export async function getNotificationById(ctx: Context, userSession: SessionUserData, notifId: string) {
     const notification = await prisma.notification.findFirst({
         where: { id: notifId },
     });
@@ -53,7 +53,7 @@ export async function getNotificationById(ctx: Context, userSession: UserSession
 
 export async function markNotificationAsRead(
     ctx: Context,
-    sessionUser: UserSessionData,
+    sessionUser: SessionUserData,
     notificationIds: string[],
     notifUserSlug: string | undefined,
 ) {
@@ -101,7 +101,7 @@ export async function markNotificationAsRead(
 
 export async function deleteNotifications(
     ctx: Context,
-    userSession: UserSessionData,
+    userSession: SessionUserData,
     userSlug: string | undefined,
     notificationIds: string[],
 ) {
@@ -137,7 +137,7 @@ export async function deleteNotifications(
 }
 
 // Helpers
-export function hasNotificationAccess(session: UserSessionData, notificationUser: string) {
+export function hasNotificationAccess(session: SessionUserData, notificationUser: string) {
     return (
         session.id === notificationUser ||
         session.userName.toLowerCase() === notificationUser.toLowerCase() ||

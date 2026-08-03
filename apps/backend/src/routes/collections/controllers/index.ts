@@ -21,14 +21,14 @@ import { GetUser_ByIdOrUsername } from "~/db/user_item";
 import { getManyProjects } from "~/routes/project/controllers";
 import { addProjectsToUserFollows, removeProjectsFromUserFollows } from "~/routes/project/controllers/follows";
 import { deleteCollectionDirectory, deleteCollectionFile, saveCollectionFile } from "~/services/storage";
-import { FILE_STORAGE_SERVICE, type UserSessionData } from "~/types";
+import { FILE_STORAGE_SERVICE, type SessionUserData } from "~/types";
 import { HTTP_STATUS, notFoundResponseData, serverErrorResponseData, unauthorizedReqResponseData } from "~/utils/http";
 import { resizeImageToWebp } from "~/utils/images";
 import { generateDbId } from "~/utils/str";
 import { collectionIconUrl, userFileUrl } from "~/utils/urls";
 import { CanEditCollection, CollectionAccessible } from "../utils";
 
-export async function GetUserCollections(userSlug: string, userSession: UserSessionData | null) {
+export async function GetUserCollections(userSlug: string, userSession: SessionUserData | null) {
     let userId: string;
     if (userSession?.userName === userSlug || userSession?.id === userSlug) userId = userSession.id;
     else {
@@ -80,7 +80,7 @@ export async function GetUserCollections(userSlug: string, userSession: UserSess
     };
 }
 
-export async function GetUserCollection_ByCollectionId(collectionId: string, userSession: UserSessionData | null) {
+export async function GetUserCollection_ByCollectionId(collectionId: string, userSession: SessionUserData | null) {
     if (collectionId.toLowerCase() === FOLLOWS_COLLECTIONS_ID && userSession?.id) {
         return {
             data: {
@@ -121,7 +121,7 @@ export async function GetUserCollection_ByCollectionId(collectionId: string, use
     };
 }
 
-export async function GetCollectionProjects(collectionId: string, sessionUser: UserSessionData | null) {
+export async function GetCollectionProjects(collectionId: string, sessionUser: SessionUserData | null) {
     if (collectionId.toLowerCase() === FOLLOWS_COLLECTIONS_ID && sessionUser?.id) {
         return await getManyProjects(sessionUser, sessionUser.followingProjects);
     }
@@ -134,7 +134,7 @@ export async function GetCollectionProjects(collectionId: string, sessionUser: U
     return await getManyProjects(sessionUser, collection.projects);
 }
 
-export async function GetCollectionOwner(collectionId: string, userSession: UserSessionData | null) {
+export async function GetCollectionOwner(collectionId: string, userSession: SessionUserData | null) {
     if (collectionId.toLowerCase() === FOLLOWS_COLLECTIONS_ID && userSession?.id) {
         return {
             data: {
@@ -168,7 +168,7 @@ export async function GetCollectionOwner(collectionId: string, userSession: User
 
 export async function CreateNewCollection(
     formData: z.infer<typeof createCollectionFormSchema>,
-    userSession: UserSessionData,
+    userSession: SessionUserData,
 ) {
     const collection = await CreateCollection({
         data: {
@@ -193,7 +193,7 @@ export async function CreateNewCollection(
 export async function AddProjectsToCollection(
     collectionId: string,
     projectIds: string[],
-    sessionUser: UserSessionData,
+    sessionUser: SessionUserData,
 ) {
     if (collectionId?.toLowerCase() === FOLLOWS_COLLECTIONS_ID && sessionUser.id) {
         return await addProjectsToUserFollows(projectIds, sessionUser);
@@ -236,7 +236,7 @@ export async function AddProjectsToCollection(
 export async function DeleteProjectsFromCollection(
     collectionId: string,
     projectIds: string[],
-    sessionUser: UserSessionData,
+    sessionUser: SessionUserData,
 ) {
     if (collectionId?.toLowerCase() === FOLLOWS_COLLECTIONS_ID && sessionUser.id) {
         return await removeProjectsFromUserFollows(projectIds, sessionUser);
@@ -271,7 +271,7 @@ export async function DeleteProjectsFromCollection(
     };
 }
 
-export async function deleteUserCollection(collectionId: string, sessionUser: UserSessionData) {
+export async function deleteUserCollection(collectionId: string, sessionUser: SessionUserData) {
     const collection = await GetCollection(collectionId);
     if (!collection) return notFoundResponseData("Collection not found!");
 
@@ -298,7 +298,7 @@ export async function deleteUserCollection(collectionId: string, sessionUser: Us
     };
 }
 
-export async function deleteAllUserCollections(user_id: string, sessionUser: Pick<UserSessionData, "id" | "role">) {
+export async function deleteAllUserCollections(user_id: string, sessionUser: Pick<SessionUserData, "id" | "role">) {
     const collections = await GetCollections_ByUserId(user_id);
     if (!CanEditCollection(user_id, sessionUser)) {
         return unauthorizedReqResponseData("You don't have permission to delete these collections!");
@@ -328,7 +328,7 @@ export async function deleteAllUserCollections(user_id: string, sessionUser: Pic
 export async function editUserCollectionDetails(
     formData: z.infer<typeof updateCollectionFormSchema>,
     collectionId: string,
-    sessionUser: UserSessionData,
+    sessionUser: SessionUserData,
 ) {
     const collection = await GetCollection(collectionId);
     if (!collection) return notFoundResponseData("Collection not found!");

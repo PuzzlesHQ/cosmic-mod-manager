@@ -4,11 +4,11 @@ import type { Context } from "hono";
 import { GetManySessions, GetSession } from "~/db/session_item";
 import { addInvalidAuthAttempt } from "~/middleware/rate-limiter";
 import { deleteSessionCookie, invalidateSessionFromId } from "~/routes/auth/helpers/session";
-import type { UserSessionData } from "~/types";
+import type { SessionUserData } from "~/types";
 import { HTTP_STATUS, invalidRequestResponseData } from "~/utils/http";
 import { hashString } from "../helpers";
 
-export async function getUserSessions(userSession: UserSessionData) {
+export async function getUserSessions(userSession: SessionUserData) {
     const sessions = await GetManySessions({
         where: {
             userId: userSession.id,
@@ -44,7 +44,7 @@ export async function getUserSessions(userSession: UserSessionData) {
     };
 }
 
-export async function deleteUserSession(ctx: Context, userSession: UserSessionData, sessionId: string) {
+export async function deleteUserSession(ctx: Context, userSession: SessionUserData, sessionId: string) {
     const deletedSession = await invalidateSessionFromId(sessionId, userSession.id);
 
     if (!deletedSession?.id) {

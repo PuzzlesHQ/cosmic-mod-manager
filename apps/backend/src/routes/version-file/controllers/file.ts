@@ -26,14 +26,14 @@ export async function GetVersionsFromFileHashes(hashes: string[], algorithm: Has
     if (hashList.length > 50)
         return invalidRequestResponseData("Maximum of 50 versions can be retrieved from hashes at once!");
 
-    let FilesWhere: Prisma.FileWhereInput = {
+    let filesWhere: Prisma.FileWhereInput = {
         sha512_hash: {
             in: hashList,
         },
     };
 
     if (algorithm === HashAlgorithms.SHA1) {
-        FilesWhere = {
+        filesWhere = {
             sha1_hash: {
                 in: hashList,
             },
@@ -41,7 +41,7 @@ export async function GetVersionsFromFileHashes(hashes: string[], algorithm: Has
     }
 
     const files = await GetManyFiles({
-        where: FilesWhere,
+        where: filesWhere,
     });
     if (!files.length) return notFoundResponseData("No versions found from the provided hashes!");
 

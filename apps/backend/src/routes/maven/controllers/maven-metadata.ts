@@ -3,11 +3,11 @@ import { VersionReleaseChannel } from "@app/utils/types";
 import { GetProject_ListItem } from "~/db/project_item";
 import { GetVersions, type TVersions } from "~/db/version_item";
 import { isProjectAccessible } from "~/routes/project/utils";
-import type { UserSessionData } from "~/types";
+import type { SessionUserData } from "~/types";
 import { HTTP_STATUS, notFoundResponseData } from "~/utils/http";
 import { GROUP_ID } from "../consts";
 
-export async function GetProjectMetadata(projectSlug: string, sessionUser: UserSessionData | null) {
+export async function GetProjectMetadata(projectSlug: string, sessionUser: SessionUserData | null) {
     const project = await GetProject_ListItem(projectSlug, projectSlug);
     if (!project) return notFoundResponseData();
     if (
