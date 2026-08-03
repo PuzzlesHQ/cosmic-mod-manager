@@ -18,6 +18,7 @@ import type { SessionUserData } from "~/types";
 import {
     HTTP_STATUS,
     invalidRequestResponseData,
+    isSuccessResponse,
     notFoundResponseData,
     unauthorizedReqResponseData,
 } from "~/utils/http";
@@ -29,7 +30,7 @@ export async function createReport(data: z.infer<typeof newReportFormSchema>, us
     }
 
     const existingReport = await getExistingReport(data.itemType, data.itemId, user);
-    if (existingReport?.data?.id) {
+    if (isSuccessResponse(existingReport) && existingReport.data.data.id) {
         return invalidRequestResponseData(
             "You have already reported this item. Please wait for the moderators to review your report.",
         );
@@ -109,13 +110,7 @@ export async function getExistingReport(itemType: ReportItemType, itemId: string
             closed: false,
         },
     });
-
-    if (!existingReport) {
-        return {
-            data: null,
-            status: HTTP_STATUS.NOT_FOUND,
-        };
-    }
+    if (!existingReport) return notFoundResponseData();
 
     const report: Report = {
         id: existingReport.id,
@@ -130,9 +125,12 @@ export async function getExistingReport(itemType: ReportItemType, itemId: string
     };
 
     return {
-        data: report,
+        data: {
+            success: true,
+            data: report,
+        },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 async function getReportEntityData(itemType: ReportItemType, itemId: string) {

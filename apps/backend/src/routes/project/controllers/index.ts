@@ -142,7 +142,7 @@ export async function checkProjectSlugValidity(slug: string) {
     const project = await GetProject_ListItem(slug, slug);
 
     if (!project) {
-        return { data: { success: false, message: "Project not found" }, status: HTTP_STATUS.NOT_FOUND };
+        return notFoundResponseData("Project not found");
     }
 
     return { data: { id: project.id }, status: HTTP_STATUS.OK };

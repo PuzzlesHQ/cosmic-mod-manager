@@ -38,7 +38,7 @@ export async function updateGeneralProjectData(
     formData: z.infer<typeof generalProjectSettingsFormSchema>,
 ) {
     const project = await GetProject_ListItem(projectId);
-    if (!project?.id) return { data: { success: false }, status: HTTP_STATUS.NOT_FOUND };
+    if (!project?.id) return notFoundResponseData();
 
     const currMember = getCurrMember(
         userSession.id,
@@ -223,13 +223,13 @@ export async function deleteVersionsData(
 }
 
 export async function updateProjectIcon(userSession: SessionUserData, projectId: string, icon: File) {
-    const Project = await GetProject_ListItem(projectId);
-    if (!Project) return { data: { success: false, message: "Project not found" }, status: HTTP_STATUS.NOT_FOUND };
+    const project = await GetProject_ListItem(projectId);
+    if (!project) return notFoundResponseData("Project not found");
 
     const memberObj = getCurrMember(
         userSession.id,
-        Project.team?.members || [],
-        Project.organisation?.team.members || [],
+        project.team?.members || [],
+        project.organisation?.team.members || [],
     );
     const hasEditAccess = doesMemberHaveAccess(
         ProjectPermission.EDIT_DETAILS,
@@ -240,9 +240,9 @@ export async function updateProjectIcon(userSession: SessionUserData, projectId:
     if (!hasEditAccess) return unauthorizedReqResponseData("You don't have the permission to update project icon");
 
     // Delete the previous icon if it exists
-    if (Project.iconFileId) {
-        const deletedDbFile = await DeleteFile_ByID(Project.iconFileId);
-        await deleteProjectFile(deletedDbFile?.storageService as FILE_STORAGE_SERVICE, Project.id, deletedDbFile?.name);
+    if (project.iconFileId) {
+        const deletedDbFile = await DeleteFile_ByID(project.iconFileId);
+        await deleteProjectFile(deletedDbFile?.storageService as FILE_STORAGE_SERVICE, project.id, deletedDbFile?.name);
     }
 
     const uploadedImg_Type = await getFileType(icon);
@@ -256,7 +256,7 @@ export async function updateProjectIcon(userSession: SessionUserData, projectId:
         fit: "cover",
     });
     const iconImg_Id = `${generateDbId()}_${ICON_WIDTH}.${iconImg_Type}`;
-    const icon_SaveUrl = await saveProjectFile(FILE_STORAGE_SERVICE.LOCAL, Project.id, iconImg_Webp, iconImg_Id);
+    const icon_SaveUrl = await saveProjectFile(FILE_STORAGE_SERVICE.LOCAL, project.id, iconImg_Webp, iconImg_Id);
     if (!icon_SaveUrl)
         return { data: { success: false, message: "Failed to save the icon" }, status: HTTP_STATUS.SERVER_ERROR };
 
@@ -276,7 +276,7 @@ export async function updateProjectIcon(userSession: SessionUserData, projectId:
 
         UpdateProject({
             where: {
-                id: Project.id,
+                id: project.id,
             },
             data: {
                 iconFileId: iconImg_Id,
@@ -286,7 +286,7 @@ export async function updateProjectIcon(userSession: SessionUserData, projectId:
     ]);
 
     // Update the project in the search index
-    isProjectIndexable(Project.visibility, Project.status) ? UpdateProjects_SearchIndex([Project.id]) : null;
+    isProjectIndexable(project.visibility, project.status) ? UpdateProjects_SearchIndex([project.id]) : null;
 
     return { data: { success: true, message: "Project icon updated" }, status: HTTP_STATUS.OK };
 }

@@ -69,7 +69,7 @@ export async function updateOrg(
     if (formData.icon instanceof File) {
         const updateIconRes = await updateOrgIcon(ctx, userSession, orgId, formData.icon);
         if (isSuccessResponse(updateIconRes)) {
-            icon = updateIconRes.data.data;
+            icon = updateIconRes.data.data.newIcon;
         }
     }
 
@@ -155,7 +155,7 @@ export async function updateOrgIcon(
     }
 
     return {
-        data: { success: true, message: "Organization icon updated", data: iconImg_Id },
+        data: { success: true, message: "Organization icon updated", data: { newIcon: iconImg_Id } },
         status: HTTP_STATUS.OK,
     } as const;
 }

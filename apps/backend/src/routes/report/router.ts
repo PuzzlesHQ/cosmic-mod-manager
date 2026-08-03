@@ -14,7 +14,12 @@ import {
     strictGetReqRateLimiter,
 } from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
-import { invalidRequestResponse, unauthenticatedReqResponse, unauthorizedReqResponse } from "~/utils/http";
+import {
+    invalidRequestResponse,
+    isSuccessResponse,
+    unauthenticatedReqResponse,
+    unauthorizedReqResponse,
+} from "~/utils/http";
 import { getSessionUser } from "~/utils/router";
 import {
     createReport,
@@ -95,6 +100,7 @@ async function existingReport_get(ctx: Context) {
     if (!itemType || !itemId) return invalidRequestResponse(ctx, "Item type and item ID are required.");
 
     const res = await getExistingReport(itemType as ReportItemType, itemId, sessionUser);
+    if (isSuccessResponse(res)) return ctx.json(res.data.data, res.status);
     return ctx.json(res.data, res.status);
 }
 

@@ -4,19 +4,14 @@ import { GetManyProjects_ListItem, GetProject_ListItem } from "~/db/project_item
 import { GetVersions } from "~/db/version_item";
 import prisma from "~/services/prisma";
 import type { SessionUserData } from "~/types";
-import { HTTP_STATUS } from "~/utils/http";
+import { HTTP_STATUS, notFoundResponseData } from "~/utils/http";
 import { projectIconUrl } from "~/utils/urls";
 import { isProjectAccessible } from "../utils";
 
 export async function getProjectDependencies(slug: string, userSession: SessionUserData | null) {
     const [project, _projectVersions] = await Promise.all([GetProject_ListItem(slug, slug), GetVersions(slug, slug)]);
-    if (!project?.id) {
-        return { data: { success: false, message: "Project not found" }, status: HTTP_STATUS.NOT_FOUND };
-    }
-
-    // CHECK PERMISSIONS
-    if (!isProjectAccessible(project, userSession)) {
-        return { data: { success: false, message: "Project not found" }, status: HTTP_STATUS.NOT_FOUND };
+    if (!project?.id || !isProjectAccessible(project, userSession)) {
+        return notFoundResponseData("Project not found");
     }
 
     // Aggregate all dependencies

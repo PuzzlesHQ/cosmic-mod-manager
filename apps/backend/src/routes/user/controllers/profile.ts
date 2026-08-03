@@ -24,7 +24,7 @@ import { userFileUrl } from "~/utils/urls";
 
 export async function getUserProfileData(slug: string) {
     const user = await GetUser_ByIdOrUsername(slug, slug);
-    if (!user) return { data: { success: false, message: "User not found" }, status: HTTP_STATUS.NOT_FOUND };
+    if (!user) return notFoundResponseData("User not found");
 
     const dataObj = {
         id: user.id,
@@ -197,7 +197,7 @@ export async function getAllVisibleProjects(
     listedProjectsOnly: boolean,
 ) {
     const user = await GetUser_ByIdOrUsername(userSlug, userSlug);
-    if (!user) return { data: { success: false, message: "user not found" }, status: HTTP_STATUS.NOT_FOUND };
+    if (!user) return notFoundResponseData("user not found");
 
     const UserProjects_Id = await Get_UserProjects(user.id);
     if (!UserProjects_Id.length) return { data: [], status: HTTP_STATUS.OK };
