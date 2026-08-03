@@ -6,7 +6,7 @@ import { GetVersions } from "~/db/version_item";
 import { getFilesFromId } from "~/routes/project/queries/file";
 import { isProjectAccessible } from "~/routes/project/utils";
 import type { SessionUserData } from "~/types";
-import { HTTP_STATUS, notFoundResponseData } from "~/utils/http";
+import { HTTP_STATUS, isSuccessResponse, notFoundResponseData } from "~/utils/http";
 import { GetReleaseChannelFilter } from "~/utils/project";
 import { formatVersionData } from "./utils";
 
@@ -57,9 +57,7 @@ export async function getProjectVersionData(
     userSession: SessionUserData | null,
 ) {
     const res = await getAllProjectVersions(projectSlug, userSession, false);
-    if (res.data.success === false) {
-        return { data: res.data, status: res.status } as const;
-    }
+    if (!isSuccessResponse(res)) return res;
 
     const list = res.data.data || [];
     const targetVersion = list.find((version) => version.id === versionId || version.slug === versionId);
@@ -106,9 +104,7 @@ export async function getLatestVersion(
     }
 
     const res = await getAllProjectVersions(projectSlug, userSession, false);
-
-    if (("success" in res.data && res.data.success === false) || !("data" in res.data))
-        return { data: { success: false, message: res.data.message }, status: res.status } as const;
+    if (!isSuccessResponse(res)) return res;
 
     const list = res.data.data;
     if (!list.length) return notFoundResponseData("No version found for your query!");

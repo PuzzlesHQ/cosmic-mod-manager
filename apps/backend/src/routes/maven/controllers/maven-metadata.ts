@@ -1,6 +1,6 @@
 import { VersionReleaseChannel } from "@app/utils/types";
 import { GetProject_ListItem } from "~/db/project_item";
-import { GetVersions, type TVersions } from "~/db/version_item";
+import { GetVersions } from "~/db/version_item";
 import { isProjectAccessible } from "~/routes/project/utils";
 import type { SessionUserData } from "~/types";
 import { HTTP_STATUS, notFoundResponseData } from "~/utils/http";
@@ -17,14 +17,7 @@ export async function GetProjectMetadata(projectSlug: string, sessionUser: Sessi
     if (!versions?.versions?.length) return notFoundResponseData();
 
     const latest = versions.versions[0];
-    let stableRelease: TVersions["versions"][number] | undefined;
-
-    for (const v of versions.versions) {
-        if (v.releaseChannel === VersionReleaseChannel.RELEASE) {
-            stableRelease = v;
-            break;
-        }
-    }
+    let stableRelease = versions.versions.find((v) => v.releaseChannel === VersionReleaseChannel.RELEASE);
     if (!stableRelease) stableRelease = latest;
 
     // Maven expects timestamps in exactly YYYYMMDDHHMMSS format
@@ -41,7 +34,7 @@ export async function GetProjectMetadata(projectSlug: string, sessionUser: Sessi
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <metadata>
     <groupId>${GROUP_ID}</groupId>
-    <artifactId>${project.slug}</artifactId>
+    <artifactId>${projectSlug}</artifactId>
     <versioning>
         <latest>${latest.slug}</latest>
         <release>${stableRelease.slug}</release>
@@ -55,14 +48,14 @@ ${versionsXml}
     return {
         data: {
             success: true,
-            metadata: xml,
+            data: xml,
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function GetVersionMetadata(artifactId: string, version: string) {
-    const xml = `<?xml version="1.0" encoding="UTF-8"?>
+    return `<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" 
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -71,12 +64,4 @@ export async function GetVersionMetadata(artifactId: string, version: string) {
     <artifactId>${artifactId}</artifactId>
     <version>${version}</version>
 </project>`;
-
-    return {
-        data: {
-            success: true,
-            metadata: xml,
-        },
-        status: HTTP_STATUS.OK,
-    };
 }

@@ -3,6 +3,20 @@ import { deleteCookie as honoDeleteCookie, setCookie as honoSetCookie } from "ho
 import type { CookieOptions } from "hono/utils/cookie";
 import env from "~/utils/env";
 
+export type ApiError = {
+    data: { success: false; message: string };
+    status: THttpStatus;
+};
+export type ApiSuccess<T> = {
+    data: { success: true; data: T };
+    status: THttpStatus;
+};
+export type ApiResponse<T> = ApiError | ApiSuccess<T>;
+
+export function isSuccessResponse<T>(res: ApiResponse<T>): res is ApiSuccess<T> {
+    return res.data.success === true;
+}
+
 export const HTTP_STATUS = {
     OK: 200,
     CREATED: 201,
@@ -17,6 +31,7 @@ export const HTTP_STATUS = {
     TEMPORARY_REDIRECT: 307,
     PERMANENT_REDIRECT: 308,
 } as const;
+export type THttpStatus = (typeof HTTP_STATUS)[keyof typeof HTTP_STATUS];
 
 export function serverErrorResponse(ctx: Context, message?: string) {
     const res = serverErrorResponseData(message);

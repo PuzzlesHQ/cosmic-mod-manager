@@ -1,11 +1,17 @@
 import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware } from "~/middleware/auth";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limiter";
+import { getProjectVersionData } from "~/routes/project/version/controllers";
 import { generateHash } from "~/utils/file";
-import { HTTP_STATUS, invalidRequestResponse, notFoundResponse, serverErrorResponse } from "~/utils/http";
+import {
+    HTTP_STATUS,
+    invalidRequestResponse,
+    isSuccessResponse,
+    notFoundResponse,
+    serverErrorResponse,
+} from "~/utils/http";
 import { getSessionUser } from "~/utils/router";
 import { versionFileUrl } from "~/utils/urls";
-import { getProjectVersionData } from "../project/version/controllers";
 import { GROUP_ID_PATH } from "./consts";
 import { GetProjectMetadata, GetVersionMetadata } from "./controllers/maven-metadata";
 
@@ -26,7 +32,7 @@ async function mavenMetadataGet(ctx: Context) {
             return ctx.json(res.data, res.status);
         }
 
-        const xmlMetadata = res.data.metadata;
+        const xmlMetadata = res.data.data;
         if (ctx.req.path.endsWith(".sha1")) {
             return ctx.text(generateHash(xmlMetadata, "sha1"), HTTP_STATUS.OK);
         }
@@ -42,21 +48,24 @@ async function mavenMetadataGet(ctx: Context) {
 
 async function mavenFileGet(ctx: Context) {
     try {
-        const project = ctx.req.param("project");
-        const version = ctx.req.param("version");
+        const projectId = ctx.req.param("project");
+        const versionId = ctx.req.param("version");
         const fileName = ctx.req.param("file");
 
-        if (!project || !version || !fileName) return invalidRequestResponse(ctx);
+        if (!projectId || !versionId || !fileName) return invalidRequestResponse(ctx);
+
+        const sessionUser = getSessionUser(ctx);
+        const res = await getProjectVersionData(projectId, versionId, sessionUser);
+        if (!isSuccessResponse(res)) return ctx.json(res.data, res.status);
+        const version = res.data.data;
 
         if (fileName.endsWith(".pom") || fileName.endsWith(".pom.sha1")) {
-            const res = await GetVersionMetadata(project, version);
-            if (!res.data.success) return ctx.json(res.data, res.status);
+            const xmlMetadata = await GetVersionMetadata(projectId, versionId);
 
             if (fileName.endsWith(".pom.sha1")) {
-                return ctx.text(generateHash(res.data.metadata, "sha1"), HTTP_STATUS.OK);
+                return ctx.text(generateHash(xmlMetadata, "sha1"), HTTP_STATUS.OK);
             }
-
-            return ctx.text(res.data.metadata, HTTP_STATUS.OK, {
+            return ctx.text(xmlMetadata, HTTP_STATUS.OK, {
                 "Content-Type": "text/xml",
             });
         }
@@ -65,19 +74,8 @@ async function mavenFileGet(ctx: Context) {
             return ctx.text("md5 is not supported", HTTP_STATUS.NOT_IMPLEMENTED);
         }
 
-        const sessionUser = getSessionUser(ctx);
-        const res = await getProjectVersionData(project, version, sessionUser);
-        if (res.data.success === false) return ctx.json(res.data, res.status);
-
-        const versionData = res.data.data;
-        let vFile: (typeof versionData)["files"][number] | undefined;
-        for (const file of versionData.files) {
-            if (file.name === fileName || file.id === fileName) {
-                vFile = file;
-                break;
-            }
-        }
-        if (!vFile && versionData.primaryFile) vFile = versionData.primaryFile;
+        let vFile = version.files.find((file) => file.name === fileName || file.id === fileName);
+        if (!vFile && version.primaryFile) vFile = version.primaryFile;
         if (!vFile) return notFoundResponse(ctx, "File not found");
 
         if (fileName.endsWith(".sha1")) {
@@ -85,7 +83,7 @@ async function mavenFileGet(ctx: Context) {
         }
 
         return ctx.redirect(
-            `${versionFileUrl(versionData.projectId, versionData.id, vFile.name, true)}`,
+            `${versionFileUrl(version.projectId, version.id, vFile.name, true)}`,
             HTTP_STATUS.TEMPORARY_REDIRECT,
         );
     } catch (err) {
