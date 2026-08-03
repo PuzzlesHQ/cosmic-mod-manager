@@ -19,11 +19,11 @@ Most read endpoints are public and require no authentication. Write endpoints re
 
 ### Personal Access Tokens (recommended)
 
-For scripts and apps, PATs are preferred. Create one on the [CRMM settings page](https://crmods.org/settings/account) and pass it in the `Authorization` header:
+For scripts and apps, PATs are preferred. Create one on the [CRMM settings page](https://crmods.org/settings/pats) and pass it in the `Authorization` header:
 
 ```bash
 curl -X PATCH \
-  --header "Authorization: YOUR_PAT_TOKEN" \
+  --header "Authorization: Bearer YOUR_PAT_TOKEN" \
   --form "icon=@./icon.webp" \
   https://api.crmods.org/api/project/my-project/icon
 ```
