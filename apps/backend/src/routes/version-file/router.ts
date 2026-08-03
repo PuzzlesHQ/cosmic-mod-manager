@@ -5,6 +5,7 @@ import { HashAlgorithms } from "~/types";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { HTTP_STATUS, invalidRequestResponse, notFoundResponse } from "~/utils/http";
 import { GetReleaseChannelFilter } from "~/utils/project";
+import { getSessionUser } from "~/utils/router";
 import { versionFileUrl } from "~/utils/urls";
 import {
     GetLatestProjectVersionFromHash,
@@ -30,7 +31,8 @@ async function versionFromHash_get(ctx: Context, download = false) {
         hashAlgorithm = HashAlgorithms.SHA1;
     }
 
-    const res = await GetVersionFromFileHash(hash, hashAlgorithm);
+    const sessionUser = getSessionUser(ctx);
+    const res = await GetVersionFromFileHash(hash, hashAlgorithm, sessionUser);
     if (res.status !== HTTP_STATUS.OK) return ctx.json(res.data, res.status);
 
     if (download) {
@@ -74,11 +76,17 @@ async function versionFromHashUpdate_get(ctx: Context) {
         releaseChannel = undefined;
     }
 
-    const res = await GetLatestProjectVersionFromHash(hash, hashAlgorithm, {
-        gameVersions: gameVersions,
-        loader: loader,
-        releaseChannel: releaseChannel,
-    });
+    const sessionUser = getSessionUser(ctx);
+    const res = await GetLatestProjectVersionFromHash(
+        hash,
+        hashAlgorithm,
+        {
+            gameVersions: gameVersions,
+            loader: loader,
+            releaseChannel: releaseChannel,
+        },
+        sessionUser,
+    );
     return ctx.json(res.data, res.status);
 }
 
@@ -101,7 +109,8 @@ async function versionFiles_post(ctx: Context) {
         hashAlgorithm = HashAlgorithms.SHA1;
     }
 
-    const res = await GetVersionsFromFileHashes(hashes, hashAlgorithm);
+    const sessionUser = getSessionUser(ctx);
+    const res = await GetVersionsFromFileHashes(hashes, hashAlgorithm, sessionUser);
     return ctx.json(res.data, res.status);
 }
 
@@ -135,11 +144,17 @@ async function versionUpdatesFromHashes_post(ctx: Context) {
         releaseChannel = GetReleaseChannelFilter();
     }
 
-    const res = await GetLatestProjectVersionsFromHashes(hashes, hashAlgorithm, {
-        gameVersions: gameVersions,
-        loader: loader,
-        releaseChannel: releaseChannel,
-    });
+    const sessionUser = getSessionUser(ctx);
+    const res = await GetLatestProjectVersionsFromHashes(
+        hashes,
+        hashAlgorithm,
+        {
+            gameVersions: gameVersions,
+            loader: loader,
+            releaseChannel: releaseChannel,
+        },
+        sessionUser,
+    );
     return ctx.json(res.data, res.status);
 }
 
