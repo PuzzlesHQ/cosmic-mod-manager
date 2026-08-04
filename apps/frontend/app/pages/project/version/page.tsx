@@ -1,7 +1,7 @@
 import { parseFileSize } from "@app/utils/number";
 import { doesMemberHaveAccess } from "@app/utils/project";
 import { CapitalizeAndFormatString } from "@app/utils/string";
-import { ProjectPermission } from "@app/utils/types";
+import { EnvironmentSupport, ProjectPermission, ProjectType } from "@app/utils/types";
 import type { ProjectDetailsData, ProjectVersionData } from "@app/utils/types/api";
 import { ReportItemType } from "@app/utils/types/api/report";
 import { imageUrl } from "@app/utils/url";
@@ -412,6 +412,19 @@ function DeveloperInformation(props: DeveloperInformationProps) {
     const { t } = useTranslation();
     const [isOpen, setIsOpen] = useState(true);
 
+    if (!props.project.type.includes(ProjectType.MOD)) return null;
+
+    const serverSide = props.project.serverSide;
+    const clientSide = props.project.clientSide;
+
+    let side = "client";
+    const hasSupport = [EnvironmentSupport.REQUIRED, EnvironmentSupport.OPTIONAL];
+    if (hasSupport.includes(serverSide) && hasSupport.includes(clientSide)) {
+        side = "common";
+    } else if (serverSide === EnvironmentSupport.REQUIRED) {
+        side = "server";
+    }
+
     const mavenCoords = `maven.crmods:${props.project.slug}:${props.version.slug}`;
 
     return (
@@ -452,7 +465,7 @@ repositories {
             }
         }
         filter {
-            includeGroup "${mavenCoords}"
+            includeGroup "maven.crmods"
         }
     }
 }
@@ -462,9 +475,9 @@ dependencies {
     implementation "${mavenCoords}"
 }
 
-// Legacy Loom dependency
+// For Puzzle Loader
 dependencies {
-    modImplementation "${mavenCoords}"
+    ${side}Implementation "${mavenCoords}"
 }
 \`\`\`
 `}
