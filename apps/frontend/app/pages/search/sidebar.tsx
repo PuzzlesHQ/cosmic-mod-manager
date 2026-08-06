@@ -11,7 +11,7 @@ import { CapitalizeAndFormatString } from "@app/utils/string";
 import { ProjectType, TagType } from "@app/utils/types";
 import { ChevronDownIcon, ChevronUpIcon, FilterXIcon } from "lucide-react";
 import type React from "react";
-import { type ReactNode, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router";
 import { TagIcon } from "~/components/icons/tag-icons";
 import { Button } from "~/components/ui/button";
@@ -181,9 +181,7 @@ function SearchFilters({ type, sectionsDefaultOpen }: Props) {
                 items={gameVersionFilterOptions}
                 selectedItems={searchParams.getAll(gameVersionFilterParamNamespace)}
                 label={gameVersionsFilterLabel}
-                ListWrapper={(p: { children: ReactNode }) => (
-                    <VerticalScroll className="max-h-[clamp(18rem,_30vh,_30rem)] px-0.5">{p.children}</VerticalScroll>
-                )}
+                isScrollable
                 formatLabel={false}
                 filterToggledUrl={(version) => {
                     const params = new URLSearchParams(searchParams);
@@ -336,13 +334,13 @@ interface FilterCategoryProps {
     label: string;
     // The function is expected to return the search params after toggling the filter
     filterToggledUrl: (prevVal: string) => URLSearchParams;
-    ListWrapper?: (p: { children: ReactNode }) => React.JSX.Element;
     className?: string;
     formatLabel?: boolean;
     footerItem?: React.ReactNode;
     collapsible?: boolean;
     defaultOpen?: boolean;
     overrideOpenState?: boolean;
+    isScrollable?: boolean;
 }
 
 function FilterCategory({
@@ -351,12 +349,12 @@ function FilterCategory({
     label,
     filterToggledUrl,
     className,
-    ListWrapper,
     formatLabel = true,
     footerItem,
     collapsible = true,
     defaultOpen = true,
     overrideOpenState,
+    isScrollable = false,
 }: FilterCategoryProps) {
     const { t } = useTranslation();
     const [_, setSearchParams] = useSearchParams();
@@ -433,7 +431,11 @@ function FilterCategory({
 
             <div className={cn("grid ps-1", collapsibleBoxClassName(isVisible))}>
                 <div>
-                    {ListWrapper ? <ListWrapper>{options}</ListWrapper> : <div className="grid py-1">{options}</div>}
+                    {isScrollable ? (
+                        <VerticalScroll className="max-h-[clamp(18rem,_30vh,_30rem)] px-0.5">{options}</VerticalScroll>
+                    ) : (
+                        <div className="grid py-1">{options}</div>
+                    )}
 
                     {footerItem}
                 </div>
