@@ -107,12 +107,4 @@
     transition-duration: 200ms;
     transition-timing-function: ease-in-out;
 }
-
-.vertical-scroller.fade-top {
-    --scroller-mask-top: transparent;
-}
-
-.vertical-scroller.fade-bottom {
-    --scroller-mask-bottom: transparent;
-}
 /* --- vertical-scroller.tsx --- END */

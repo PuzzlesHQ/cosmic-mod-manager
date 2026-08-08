@@ -1,36 +1,52 @@
-import type { ComponentProps } from "react";
+import { type ComponentProps, useLayoutEffect, useRef } from "react";
 import { cn } from "~/components/utils";
 
 export function VerticalScroll({ children, className, ...props }: ComponentProps<"div">) {
-    function handleScroll(el: HTMLDivElement | null) {
-        if (!el) return;
+    const scroller = useRef<HTMLDivElement | null>(null);
+    const topMarker = useRef<HTMLDivElement | null>(null);
+    const bottomMarker = useRef<HTMLDivElement | null>(null);
 
-        if (Math.floor((el.scrollHeight - el.offsetHeight) / 10) < 1) {
-            el.classList.remove("fade-top", "fade-bottom");
-            return;
-        }
+    useLayoutEffect(() => {
+        const root = scroller.current;
+        const topEl = topMarker.current;
+        const bottomEl = bottomMarker.current;
+        if (!root || !topEl || !bottomEl) return;
 
-        if (el.scrollTop > 0) {
-            el.classList.add("fade-top");
-        } else {
-            el.classList.remove("fade-top");
-        }
+        const observer = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries) {
+                    if (entry.target === topEl) {
+                        root.style.setProperty("--scroller-mask-top", entry.isIntersecting ? "black" : "transparent");
+                    }
 
-        if (el.scrollHeight - (el.scrollTop + el.offsetHeight) > 5) {
-            el.classList.add("fade-bottom");
-        } else {
-            el.classList.remove("fade-bottom");
-        }
-    }
+                    if (entry.target === bottomEl) {
+                        root.style.setProperty(
+                            "--scroller-mask-bottom",
+                            entry.isIntersecting ? "black" : "transparent",
+                        );
+                    }
+                }
+            },
+            {
+                root: root,
+                threshold: 1,
+                rootMargin: "4px 0px",
+            },
+        );
+
+        observer.observe(topEl);
+        observer.observe(bottomEl);
+
+        return () => {
+            observer.disconnect();
+        };
+    }, []);
 
     return (
-        <div
-            className={cn("vertical-scroller overflow-x-auto", className)}
-            {...props}
-            onScroll={(e) => handleScroll(e.currentTarget)}
-            ref={handleScroll}
-        >
+        <div className={cn("vertical-scroller overflow-x-auto", className)} {...props} ref={scroller}>
+            <div className="invisible h-px w-full" ref={topMarker}></div>
             {children}
+            <div className="invisible h-px w-full" ref={bottomMarker}></div>
         </div>
     );
 }
