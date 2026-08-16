@@ -11,7 +11,7 @@ import { generalProjectSettingsFormSchema } from "@app/utils/schemas/project/set
 import { updateProjectLicenseFormSchema } from "@app/utils/schemas/project/settings/license";
 import { updateExternalLinksFormSchema } from "@app/utils/schemas/project/settings/links";
 import { zodParse } from "@app/utils/schemas/utils";
-import type { ProjectDetailsData, ProjectVersionData } from "@app/utils/types/api";
+import type { ProjectVersionData } from "@app/utils/types/api";
 import { type Context, Hono } from "hono";
 import type { z } from "zod/v4";
 import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";

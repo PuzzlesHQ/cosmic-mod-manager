@@ -202,5 +202,10 @@ export async function getAllVisibleProjects(
     const UserProjects_Id = await Get_UserProjects(user.id);
     if (!UserProjects_Id.length) return { data: [], status: HTTP_STATUS.OK };
 
-    return await getManyProjects(userSession, UserProjects_Id, listedProjectsOnly);
+    return await getManyProjects(
+        userSession,
+        UserProjects_Id,
+        listedProjectsOnly,
+        listedProjectsOnly ? user.id : undefined,
+    );
 }

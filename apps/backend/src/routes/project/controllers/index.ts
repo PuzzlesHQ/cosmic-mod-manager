@@ -1,6 +1,6 @@
 import { isModerator } from "@app/utils/constants/roles";
 import { isNumber } from "@app/utils/number";
-import { combineProjectMembers, sortVersionsWithReference } from "@app/utils/project";
+import { combineProjectMembers, getCurrMember, sortVersionsWithReference } from "@app/utils/project";
 import { gameVersionsList } from "@app/utils/src/constants/game-versions";
 import type {
     EnvironmentSupport,
@@ -148,7 +148,12 @@ export async function checkProjectSlugValidity(slug: string) {
     return { data: { id: project.id }, status: HTTP_STATUS.OK };
 }
 
-export async function getManyProjects(userSession: SessionUserData | null, projectIds: string[], listedOnly = false) {
+export async function getManyProjects(
+    userSession: SessionUserData | null,
+    projectIds: string[],
+    listedOnly = false,
+    acceptedMember = "",
+) {
     const list = await GetManyProjects_ListItem(projectIds);
     const projectsList: ProjectListItem[] = [];
 
@@ -156,6 +161,16 @@ export async function getManyProjects(userSession: SessionUserData | null, proje
         if (!project) continue;
         if (listedOnly === true && !isProjectListed(project.visibility, project.status)) {
             continue;
+        }
+
+        if (acceptedMember) {
+            const member = getCurrMember(
+                acceptedMember,
+                project.team.members,
+                project.organisation?.team.members ?? [],
+            );
+
+            if (!member?.accepted) continue;
         }
 
         if (!isProjectAccessible(project, userSession)) continue;
