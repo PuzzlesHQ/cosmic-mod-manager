@@ -1,15 +1,13 @@
 import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
-import Config from "./app/utils/config";
 
 export default defineConfig({
     server: {
         port: 3000,
         proxy: {
             "/api": {
-                target: Config.BACKEND_URL_PUBLIC,
+                target: "https://api.crmods.org",
                 changeOrigin: true,
                 secure: true,
             },
@@ -19,97 +17,87 @@ export default defineConfig({
         process.env.NODE_ENV === "production" && process.env.VITE_ASSETS_SERVER_URL
             ? process.env.VITE_ASSETS_SERVER_URL
             : "/",
+    resolve: {
+        tsconfigPaths: true,
+    },
     build: {
-        rollupOptions: {
+        rolldownOptions: {
+            optimization: {
+                inlineConst: {
+                    mode: "smart",
+                    pass: 1,
+                },
+            },
             output: {
-                experimentalMinChunkSize: 307200, // 300 KiB
-                manualChunks(id) {
-                    // Vendor
-                    if (id.includes("node_modules")) {
-                        // Special cases
-                        if (id.includes("d3-")) return "vendor/d3";
-                        if (id.includes("radix-ui")) return "vendor/radix-ui";
+                codeSplitting: {
+                    groups: [
+                        {
+                            name: "modules/d3",
+                            test: /node_modules.*d3-/,
+                        },
+                        {
+                            name: "modules/radix-ui",
+                            test: /node_modules.*radix-ui/,
+                        },
+                        {
+                            name: "modules/misc",
+                            test: /node_modules.*(punycode|uc\.micro|eventemitter|internmap|tiny-invariant|decimal\.js|lodash|get-nonce|tslib|ua-parser-js|turbo-stream|scheduler)/,
+                        },
+                        {
+                            name: "modules/tailwind",
+                            test: /node_modules.*(tailwind-merge|clsx|class-variance-authority)/,
+                        },
+                        {
+                            name: "modules/react-libs",
+                            test: /node_modules.*(react-remove|react-is|aria-hidden|@hookform|react-hook-form|react-style|@floating-ui|cmdk|fast-equals|prop-types|react-smooth|sonner)/,
+                        },
+                        {
+                            name: "modules/recharts",
+                            test: /node_modules.*recharts/,
+                        },
+                        {
+                            name: "modules/md-renderer",
+                            test: /node_modules.*(highlight\.js|xss|markdown-it|cssfilter|mdurl|linkify-it)/,
+                        },
+                        {
+                            name: "modules/react-router",
+                            test: /node_modules.*\/react-router\//,
+                        },
 
-                        if (
-                            [
-                                "punycode",
-                                "uc.micro",
-                                "eventemitter",
-                                "internmap",
-                                "tiny-invariant",
-                                "decimal.js",
-                                "lodash",
-                                "get-nonce",
-                                "tslib",
-                                "ua-parser-js",
-                                "turbo-stream",
-                                "scheduler",
-                            ].some((pkg) => id.includes(pkg))
-                        ) {
-                            return "vendor/misc";
-                        }
+                        {
+                            name: "pkg-utils",
+                            test: /packages[\\/]utils[\\/]src/,
+                        },
+                        {
+                            name: "styles",
+                            test: /\.css$/,
+                        },
 
-                        if (["tailwind-merge", "clsx", "class-variance-authority"].some((pkg) => id.includes(pkg))) {
-                            return "vendor/tailwind";
-                        }
-
-                        if (
-                            [
-                                "react-remove",
-                                "react-is",
-                                "aria-hidden",
-                                "@hookform",
-                                "react-hook-form",
-                                "react-style",
-                                "@floating-ui",
-                                "cmdk",
-                                "fast-equals",
-                                "prop-types",
-                                "react-smooth",
-                                "sonner",
-                            ].some((pkg) => id.includes(pkg))
-                        ) {
-                            return "vendor/react-libs";
-                        }
-
-                        if (id.includes("recharts")) return "vendor/recharts";
-
-                        if (
-                            ["highlight.js", "xss", "markdown-it", "cssfilter", "mdurl", "linkify-it"].some((pkg) =>
-                                id.includes(pkg),
-                            )
-                        ) {
-                            return "vendor/md-renderer";
-                        }
-
-                        if (id.includes("/react-router/")) return "vendor/react-router";
-
-                        const parts = id.split("/node_modules/")[1].split("/");
-                        return `vendor/${parts[0]}`;
-                    }
-
-                    // Locales
-                    if (id.includes("/app/locales/")) {
-                        const match = id.match(/app\/+locales\/+([^/]+)\//);
-                        if (match) return `${match[1]}-locale`;
-                    }
-
-                    // Utils package
-                    if (id.includes("packages/utils/src")) return "pkg-utils";
-
-                    // Styles
-                    if (id.endsWith(".css")) return "styles";
-
-                    // Icons
-                    if (id.includes("app/components/icons/tag-icons")) return "tag-icons";
-                    if (id.includes("app/components/icons")) return "icons";
-                    if (id.includes("app/components/ui")) return "ui-components";
-                    if (id.includes("app/components/misc")) return "misc-components";
-                    if (id.includes("app/components")) return "components";
+                        {
+                            name: "tag-icons",
+                            test: /app[\\/]components[\\/]icons[\\/]tag-icons/,
+                        },
+                        {
+                            name: "icons",
+                            test: /app[\\/]components[\\/]icons/,
+                        },
+                        {
+                            name: "ui-components",
+                            test: /app[\\/]components[\\/]ui/,
+                        },
+                        {
+                            name: "misc-components",
+                            test: /app[\\/]components[\\/]misc/,
+                        },
+                        {
+                            name: "components",
+                            test: /app[\\/]components/,
+                        },
+                    ],
                 },
             },
         },
     },
 
-    plugins: [tsconfigPaths(), tailwindcss(), reactRouter()],
+    plugins: [tailwindcss(), reactRouter()],
 });

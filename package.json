@@ -3,14 +3,14 @@
     "type": "module",
     "module": "index.ts",
     "dependencies": {
-        "isbot": "^5.1.31",
-        "zod": "^4.1.9"
+        "isbot": "^5.2.1",
+        "zod": "^4.4.3"
     },
     "devDependencies": {
-        "@biomejs/biome": "^2.3.10",
+        "@biomejs/biome": "^2.5.8",
         "@types/bun": "latest",
         "cross-env": "^10.1.0",
-        "dotenv": "^17.2.3",
+        "dotenv": "^17.4.2",
         "typescript": "^5.9.3"
     },
     "scripts": {

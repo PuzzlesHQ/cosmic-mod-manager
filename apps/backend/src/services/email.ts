@@ -1,7 +1,7 @@
-import * as nodemailer from "nodemailer";
+import { createTransport } from "nodemailer";
 import env from "~/utils/env";
 
-const noReplyEmailTransporter = nodemailer.createTransport({
+const noReplyEmailTransporter = createTransport({
     host: env.NOREPLY_SMTP_RELAY,
     port: Number.parseInt(env.NOREPLY_SMTP_PORT, 10) || 587,
     secure: false,
