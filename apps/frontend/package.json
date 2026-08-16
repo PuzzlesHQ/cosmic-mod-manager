@@ -2,12 +2,12 @@
     "name": "@app/frontend",
     "type": "module",
     "scripts": {
-        "build": "cross-env NODE_ENV=production react-router build",
+        "build": "NODE_ENV=production react-router build",
         "dev": "react-router dev",
         "lint": "biome lint",
         "start": "react-router-serve ./build/server/index.js",
         "typecheck": "react-router typegen && tsc",
-        "deploy": "cross-env NODE_ENV=production pm2 deploy pm2.config.cjs frontend"
+        "deploy": "NODE_ENV=production pm2 deploy pm2.config.cjs frontend"
     },
     "dependencies": {
         "@app/utils": "workspace:*",
