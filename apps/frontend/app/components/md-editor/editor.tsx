@@ -41,6 +41,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip
 import { cn } from "~/components/utils";
 import { useTranslation } from "~/locales/provider";
 import type { Locale } from "~/locales/types";
+import { UndoRedoHistory } from "./history";
 
 interface Props {
     editorValue: string;
@@ -50,21 +51,17 @@ interface Props {
     showInfoRow?: boolean;
 }
 
-const textSeparatorChar = "{|}";
+const textSeparatorChar = "}|{";
 
-export default function MarkdownEditor({
-    editorValue,
-    setEditorValue,
-    placeholder,
-    textAreaClassName,
-    showInfoRow,
-}: Props) {
+export default function MarkdownEditor({ editorValue, placeholder, textAreaClassName, showInfoRow, ...props }: Props) {
     const { t } = useTranslation();
     const [previewOpen, setPreviewOn] = useState(false);
     const editorTextarea = useRef<HTMLTextAreaElement>(null);
     const [lastSelectionRange, setLastSelectionRange] = useState<number[] | null>();
     const [wordWrap, setWordWrap] = useState(false);
     const [keyboardShortcutsModalOpen, setKeyboardShortcutsModalOpen] = useState(false);
+
+    const history = useRef(new UndoRedoHistory());
 
     function toggleTextAtCursorsLine(
         text: string,
@@ -73,11 +70,16 @@ export default function MarkdownEditor({
         replaceSelectedText: string | null = null,
     ) {
         if (editorTextarea.current?.selectionStart === undefined) return;
-        // selectionStart and selectionEnd index, if nothing's selected both will be the same
+
         const selectionStart = editorTextarea.current.selectionStart;
         const selectionEnd = editorTextarea.current.selectionEnd;
 
-        // If the text has to be added at the line start of around the selection
+        history.current.push(editorValue, selectionStart, selectionEnd);
+
+        let updatedSelectionStart = selectionStart;
+        let updatedSelectionEnd = selectionEnd;
+        let updatedEditorText = editorValue;
+
         if (atLineStart === true) {
             const firstSelectedLineIndex = editorValue.slice(0, selectionStart).lastIndexOf("\n") + 1; // Start index of the first selected line
             const linesBeforeSelection = editorValue.slice(0, firstSelectedLineIndex); // All the other ines before first selected line
@@ -86,24 +88,19 @@ export default function MarkdownEditor({
 
             let action: "ADD_FRAGMENT" | "DELETE_FRAGMENT" | "" = actionType || "";
             if (!action) {
-                // If the first line starts with that text regardless of the other lines, this will be a delete action
                 if (selectedLines[0].startsWith(text)) action = "DELETE_FRAGMENT";
                 else action = "ADD_FRAGMENT";
             }
 
             let newSelectedLinesText = "";
             if (action === "ADD_FRAGMENT") {
-                // Loop through each line and add the text at the start of each, then add them up
                 for (const line of selectedLines) {
                     newSelectedLinesText = `${newSelectedLinesText}${text}${line}\n`;
                 }
 
-                setLastSelectionRange([
-                    selectionStart + text.length,
-                    selectionEnd + text.length * selectedLines.length,
-                ]);
+                updatedSelectionStart = selectionStart + text.length;
+                updatedSelectionEnd = selectionEnd + text.length * selectedLines.length;
             } else if (action === "DELETE_FRAGMENT") {
-                // Same way, loop through each line, but check if the text is at the line start before removing anything
                 let charactersDeletedCount = 0;
                 for (const line of selectedLines) {
                     if (line.startsWith(text)) {
@@ -114,14 +111,18 @@ export default function MarkdownEditor({
                     }
                 }
 
-                // If the selection is upto the first character of that line, make sure not to decrease the startIndex
-                if (editorValue[selectionStart - 1] === "\n" || selectionStart === 0) {
-                    setLastSelectionRange([selectionStart, selectionEnd - charactersDeletedCount]);
+                const firstLineDeleted = selectedLines[0].startsWith(text);
+                const isAtLineStart = editorValue[selectionStart - 1] === "\n" || selectionStart === 0;
+
+                if (!isAtLineStart && firstLineDeleted) {
+                    updatedSelectionStart = selectionStart - text.length;
                 } else {
-                    setLastSelectionRange([selectionStart - text.length, selectionEnd - charactersDeletedCount]);
+                    updatedSelectionStart = selectionStart;
                 }
+                updatedSelectionEnd = selectionEnd - charactersDeletedCount;
             }
-            setEditorValue(`${linesBeforeSelection}${newSelectedLinesText.slice(0, -1)}${textAfterSelection}`);
+
+            updatedEditorText = `${linesBeforeSelection}${newSelectedLinesText.slice(0, -1)}${textAfterSelection}`;
         } else {
             const textFragments = text.split(textSeparatorChar);
             const editorValueFragments = [
@@ -131,37 +132,33 @@ export default function MarkdownEditor({
             ];
 
             let newText = editorValue;
+
             if (
                 editorValueFragments[0].endsWith(textFragments[0]) &&
                 editorValueFragments[2].startsWith(textFragments[1])
             ) {
-                newText = `${editorValue.slice(0, selectionStart - textFragments[0].length)}${editorValueFragments[1] ? editorValueFragments[1] : ""}${editorValue.slice(selectionEnd + textFragments[1].length)}`;
-                setLastSelectionRange([
-                    selectionStart - textFragments[0].length,
-                    selectionEnd - textFragments[0].length,
-                ]);
-            } else {
-                newText = `${editorValue.slice(0, selectionStart)}${textFragments[0]}${replaceSelectedText ? replaceSelectedText : editorValueFragments[1] ? editorValueFragments[1] : ""}${textFragments[1]}${editorValue.slice(selectionEnd)}`;
+                const replacement = replaceSelectedText ?? editorValueFragments[1] ?? "";
+                newText = `${editorValue.slice(0, selectionStart - textFragments[0].length)}${replacement}${editorValue.slice(selectionEnd + textFragments[1].length)}`;
 
-                if (replaceSelectedText !== null) {
-                    setLastSelectionRange([
-                        selectionStart + textFragments[0].length,
-                        selectionEnd -
-                            editorValueFragments[1].length +
-                            replaceSelectedText.length +
-                            textFragments[0].length,
-                    ]);
-                } else {
-                    setLastSelectionRange([
-                        selectionStart + textFragments[0].length,
-                        selectionEnd + textFragments[0].length,
-                    ]);
-                }
+                updatedSelectionStart = selectionStart - textFragments[0].length;
+                updatedSelectionEnd = selectionStart - textFragments[0].length + replacement.length;
+            } else {
+                const replacement = replaceSelectedText ?? editorValueFragments[1] ?? "";
+
+                newText = `${editorValue.slice(0, selectionStart)}${textFragments[0]}${replacement}${textFragments[1]}${editorValue.slice(selectionEnd)}`;
+
+                updatedSelectionStart = selectionStart + textFragments[0].length;
+                updatedSelectionEnd = selectionStart + textFragments[0].length + replacement.length;
             }
 
-            setEditorValue(newText);
+            updatedEditorText = newText;
         }
 
+        updateEditorValue(updatedEditorText, true, {
+            start: updatedSelectionStart,
+            end: updatedSelectionEnd,
+        });
+        setLastSelectionRange([updatedSelectionStart, updatedSelectionEnd]);
         editorTextarea.current.focus();
     }
 
@@ -187,6 +184,67 @@ export default function MarkdownEditor({
         toggleTextAtCursorsLine(`<details>\n<summary>Spoiler</summary>\n\n${textSeparatorChar}\n\n</details>`);
     }
 
+    function updateEditorValue(val: string, instantHistory = false, selection?: { start: number; end: number }) {
+        props.setEditorValue(val);
+
+        let selectionStart = selection?.start ?? 0;
+        let selectionEnd = selection?.end ?? 0;
+
+        if (!selection && editorTextarea.current) {
+            selectionStart = editorTextarea.current.selectionStart;
+            selectionEnd = editorTextarea.current.selectionEnd;
+        }
+
+        (instantHistory ? history.current.push : history.current.pushDebounced)(val, selectionStart, selectionEnd);
+    }
+
+    function handleTextAreaKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+        const pressedKey = e.key.toLowerCase();
+
+        const isMac = navigator.userAgent.includes("Mac");
+        const modKey = isMac ? e.metaKey : e.ctrlKey;
+
+        if (modKey && pressedKey === "z") {
+            e.preventDefault();
+
+            if (e.shiftKey) {
+                history.current.redo(props.setEditorValue, setLastSelectionRange);
+            } else {
+                history.current.undo(props.setEditorValue, setLastSelectionRange);
+            }
+        } else if (!isMac && modKey && pressedKey === "y") {
+            e.preventDefault();
+            history.current.redo(props.setEditorValue, setLastSelectionRange);
+        }
+
+        if (pressedKey === "escape") return editorTextarea.current?.blur();
+
+        if (pressedKey === "tab") {
+            e.preventDefault();
+
+            if (e.shiftKey === true) {
+                toggleTextAtCursorsLine("  ", true, "DELETE_FRAGMENT");
+            } else {
+                toggleTextAtCursorsLine("  ", true, "ADD_FRAGMENT");
+            }
+        }
+
+        if (e.shiftKey) return;
+
+        if (e.altKey) {
+            e.preventDefault();
+
+            if (pressedKey === "z") setWordWrap((prev) => !prev);
+            else if (pressedKey === "b") bold();
+            else if (pressedKey === "i") italic();
+            else if (pressedKey === "u") underline();
+            else if (pressedKey === "c") codeBlock();
+            else if (pressedKey === "s") spoiler();
+            else if (pressedKey === "q") quote();
+            else if (pressedKey === "l") unorderedList();
+        }
+    }
+
     useEffect(() => {
         if (lastSelectionRange?.length) {
             setCursorPosition(editorTextarea.current, lastSelectionRange);
@@ -195,6 +253,8 @@ export default function MarkdownEditor({
     }, [editorValue]);
 
     useEffect(() => {
+        history.current.push(editorValue, 0, 0);
+
         let blockKeydownEvent = false;
         function handler(e: KeyboardEvent) {
             if (e.key === "/" && e.ctrlKey) {
@@ -313,11 +373,8 @@ export default function MarkdownEditor({
                                 const linkLabel = altText || selectedText || url;
                                 return `[${isPreview === true ? linkLabel : ""}${textSeparatorChar}](${url})`;
                             }}
-                            insertFragmentFunc={(markdownString: string, url: string, altText: string) => {
-                                let selectedText = "";
-                                if (editorTextarea.current)
-                                    selectedText = getTextareaSelectedText(editorTextarea.current);
-                                const linkLabel = altText || selectedText || url;
+                            insertFragmentFunc={(markdownString: string, altText: string) => {
+                                const linkLabel = altText || null;
                                 toggleTextAtCursorsLine(markdownString, false, "ADD_FRAGMENT", linkLabel);
                             }}
                             altTextInputLabel={t.editor.label}
@@ -342,11 +399,8 @@ export default function MarkdownEditor({
                                 const linkLabel = altText || selectedText || url;
                                 return `![${isPreview ? linkLabel : ""}${textSeparatorChar}](${url})`;
                             }}
-                            insertFragmentFunc={(markdownString: string, url: string, altText: string) => {
-                                let selectedText = "";
-                                if (editorTextarea.current)
-                                    selectedText = getTextareaSelectedText(editorTextarea.current);
-                                const linkLabel = altText || selectedText || url;
+                            insertFragmentFunc={(markdownString: string, altText: string) => {
+                                const linkLabel = altText || null;
                                 toggleTextAtCursorsLine(markdownString, false, "ADD_FRAGMENT", linkLabel);
                             }}
                             altTextInputLabel={t.editor.imgAlt}
@@ -365,7 +419,7 @@ export default function MarkdownEditor({
                             disabled={previewOpen}
                             modalTitle={t.editor.inserYtVideo}
                             getMarkdownString={getYoutubeIframe}
-                            insertFragmentFunc={(markdownString: string, _url: string, _altText: string) => {
+                            insertFragmentFunc={(markdownString: string, _altText: string) => {
                                 toggleTextAtCursorsLine(markdownString, false, "ADD_FRAGMENT");
                             }}
                             altTextInputLabel=""
@@ -413,37 +467,9 @@ export default function MarkdownEditor({
                         ref={editorTextarea}
                         value={editorValue}
                         onChange={(e) => {
-                            setEditorValue(e.target.value);
+                            updateEditorValue(e.target.value);
                         }}
-                        onKeyDown={(e) => {
-                            const pressedKey = e.key.toLowerCase();
-                            if (pressedKey === "escape") return editorTextarea.current?.blur();
-
-                            if (pressedKey === "tab") {
-                                e.preventDefault();
-
-                                if (e.shiftKey === true) {
-                                    toggleTextAtCursorsLine("  ", true, "DELETE_FRAGMENT");
-                                } else {
-                                    toggleTextAtCursorsLine("  ", true, "ADD_FRAGMENT");
-                                }
-                            }
-
-                            if (e.shiftKey) return;
-
-                            if (e.altKey) {
-                                e.preventDefault();
-
-                                if (pressedKey === "z") setWordWrap((prev) => !prev);
-                                else if (pressedKey === "b") bold();
-                                else if (pressedKey === "i") italic();
-                                else if (pressedKey === "u") underline();
-                                else if (pressedKey === "c") codeBlock();
-                                else if (pressedKey === "s") spoiler();
-                                else if (pressedKey === "q") quote();
-                                else if (pressedKey === "l") unorderedList();
-                            }
-                        }}
+                        onKeyDown={handleTextAreaKeyDown}
                         spellCheck={false}
                     />
 
@@ -634,7 +660,7 @@ interface InsertLinkModalProps {
     urlInputLabel: string;
     children: React.ReactNode;
     urlInputPlaceholder: string;
-    insertFragmentFunc: (markdownString: string, url: string, altText: string) => void;
+    insertFragmentFunc: (markdownString: string, altText: string) => void;
     getMarkdownString: (url: string, altText: string, isPreview?: boolean) => string;
 }
 
@@ -684,7 +710,7 @@ function LinkInsertionModal({
                 if (!url || urlValidationError) return;
                 if (isAltTextRequired && !urlAltText) return;
 
-                insertFragmentFunc(getMarkdownString(url, urlAltText, false), url, urlAltText);
+                insertFragmentFunc(getMarkdownString(url, urlAltText, false), urlAltText);
 
                 setUrl("");
                 setUrlAltText("");
