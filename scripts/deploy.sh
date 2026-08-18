@@ -5,7 +5,7 @@ FRONTEND_DIR="$PROJECT_DIR/apps/frontend"
 BACKEND_DIR="$PROJECT_DIR/apps/backend"
 
 cd "$PROJECT_DIR" || exit 1
-git pull origin deploy
+git pull --rebase origin deploy
 git checkout deploy
 bun install --frozen-lockfile
 
