@@ -1,14 +1,14 @@
-import { MeiliSearch } from "meilisearch";
+import { Meilisearch } from "meilisearch";
 import env from "~/utils/env";
 
 function newMeilisearchClient() {
-    return new MeiliSearch({
+    return new Meilisearch({
         host: "http://127.0.0.1:7700",
         apiKey: env.MEILISEARCH_MASTER_KEY,
     });
 }
 
-let meilisearch: MeiliSearch;
+let meilisearch: Meilisearch;
 
 if (env.NODE_ENV === "production") {
     meilisearch = newMeilisearchClient();

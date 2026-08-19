@@ -1,6 +1,6 @@
 import { FileType } from "@app/utils/types";
 import type { BunFile } from "bun";
-import sharp from "sharp";
+import * as sharp from "sharp";
 
 interface ResizeProps {
     width?: number;
@@ -19,7 +19,7 @@ export async function resizeImageToWebp(
     const isAnimated = [FileType.GIF, FileType.WEBP].includes(inputFileType);
 
     const imgBuffer = await file.arrayBuffer();
-    const sharpInstance = sharp(imgBuffer, { animated: isAnimated });
+    const sharpInstance = sharp.sharp(imgBuffer, { animated: isAnimated });
 
     const metadata = await sharpInstance.metadata();
     // Don't use nearest neighbor for large images
@@ -48,7 +48,7 @@ export async function ConvertToWebp(file: File | BunFile, inputFileType: FileTyp
     const isAnimated = [FileType.GIF, FileType.WEBP].includes(inputFileType);
 
     const imgBuffer = await file.arrayBuffer();
-    const sharpInstance = sharp(imgBuffer, { animated: isAnimated });
+    const sharpInstance = sharp.sharp(imgBuffer, { animated: isAnimated });
 
     const resizedImgBuffer = await sharpInstance.webp({ quality: quality }).toArray();
     return new File(resizedImgBuffer, "__webp-img__");
@@ -57,7 +57,7 @@ export async function ConvertToWebp(file: File | BunFile, inputFileType: FileTyp
 export async function getAverageColor(file: File) {
     try {
         const buffer = await file.arrayBuffer();
-        const { data } = await sharp(buffer).resize(1, 1).raw().toBuffer({ resolveWithObject: true });
+        const { data } = await sharp.sharp(buffer).resize(1, 1).raw().toBuffer({ resolveWithObject: true });
 
         const hexColor = rgbToHex(data[0], data[1], data[2]);
         return hexColor;

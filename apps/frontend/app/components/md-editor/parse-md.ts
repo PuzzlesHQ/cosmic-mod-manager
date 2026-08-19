@@ -171,7 +171,7 @@ export function md(options = {}) {
             const href = token.attrs?.[index][1];
 
             try {
-                const url = new URL(href || "");
+                const url = new URL(typeof href === "string" ? href : "");
                 const allowedHostnames: string[] = [];
 
                 if (allowedHostnames.includes(url.hostname)) {
