@@ -116,13 +116,12 @@ async function _SyncBatch(cursor: null | string) {
 
 export function FormatSearchDocument<T extends NonNullable<TProjectDetails>>(project: T, recentDownloads: number) {
     let author = "";
-    if (project.team.members) {
-        author = project.team.members.find((m) => m.isOwner)?.user.userName ?? "";
-    } else if (project.organisation) {
+    if (project.organisation) {
         author = project.organisation.slug;
+    } else if (project.team.members) {
+        author = project.team.members.find((m) => m.isOwner)?.user.userName ?? "";
     }
 
-    // const author = project.organisation?.slug || project.team.members?.[0]?.user.userName;
     const FeaturedGalleryItem = project.gallery.find((item) => item.featured === true);
     const featured_gallery = FeaturedGalleryItem
         ? projectGalleryFileUrl(project.id, FeaturedGalleryItem.thumbnailFileId)
