@@ -25,23 +25,13 @@ export async function linkAuthProviderHandler(
         let msg = "Invalid profile data received from the auth provider, most likely the code provided was invalid.";
         if (error) msg += `\nERROR: ${error}`;
 
-        return {
-            data: {
-                message: msg,
-                success: false,
-            },
-            status: HTTP_STATUS.BAD_REQUEST,
-        };
+        return invalidRequestResponseData(msg);
     }
 
     if (!oAuthData.emailVerified) {
-        return {
-            data: {
-                success: false,
-                message: `The email associated with the ${Capitalize(oAuthData.providerName)} account is not verified`,
-            },
-            status: HTTP_STATUS.BAD_REQUEST,
-        };
+        return invalidRequestResponseData(
+            `The email associated with the ${Capitalize(oAuthData.providerName)} account is not verified`,
+        );
     }
 
     // Return if an auth account already exists with the same provider
@@ -52,13 +42,9 @@ export async function linkAuthProviderHandler(
         },
     });
     if (possiblyAlreadyExistingAuthAccount?.id) {
-        return {
-            data: {
-                success: false,
-                message: `The ${Capitalize(oAuthData.providerName)} account is already linked to a user account`,
-            },
-            status: HTTP_STATUS.BAD_REQUEST,
-        };
+        return invalidRequestResponseData(
+            `The ${Capitalize(oAuthData.providerName)} account is already linked to a user account`,
+        );
     }
 
     // Return if the same type of provider is already linked with the user
@@ -81,7 +67,7 @@ export async function linkAuthProviderHandler(
             message: `Successfully linked ${Capitalize(oAuthData.providerName)} to your account`,
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function unlinkAuthProvider(ctx: Context, userSession: SessionUserData, authProvider: string) {
@@ -125,7 +111,7 @@ export async function unlinkAuthProvider(ctx: Context, userSession: SessionUserD
     return {
         data: { success: true, message: `Unlinked ${Capitalize(providerName)} from your account.` },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function getLinkedAuthProviders(userSession: SessionUserData) {
@@ -145,5 +131,5 @@ export async function getLinkedAuthProviders(userSession: SessionUserData) {
         });
     }
 
-    return { data: providersList, status: HTTP_STATUS.OK };
+    return { data: providersList, status: HTTP_STATUS.OK } as const;
 }

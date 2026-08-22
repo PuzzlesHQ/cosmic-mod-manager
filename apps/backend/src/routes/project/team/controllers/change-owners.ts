@@ -1,7 +1,7 @@
 import { hasFullItemAccess } from "@app/utils/constants/roles";
 import type { Context } from "hono";
-import { UpdateTeamMember } from "~/db/team-member_item";
 import { GetTeam } from "~/db/team_item";
+import { UpdateTeamMember } from "~/db/team-member_item";
 import { addInvalidAuthAttempt } from "~/middleware/rate-limiter";
 import { UpdateProjects_SearchIndex } from "~/routes/search/search-db";
 import type { SessionUserData } from "~/types";
@@ -65,5 +65,11 @@ export async function changeTeamOwner(
     // Update the index of team's project
     if (team.project?.id) await UpdateProjects_SearchIndex([team.project.id]);
 
-    return { data: { success: true, message: "Team owner changed" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Team owner changed",
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }

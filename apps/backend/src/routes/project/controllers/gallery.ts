@@ -124,7 +124,13 @@ export async function addNewGalleryImage(
         },
     });
 
-    return { data: { success: true, message: "Added the new gallery image" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Added the new gallery image",
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }
 
 export async function removeGalleryImage(projectId: string, userSession: SessionUserData, galleryItemId: string) {
@@ -166,7 +172,13 @@ export async function removeGalleryImage(projectId: string, userSession: Session
         );
     }
 
-    return { data: { success: true, message: "Gallery image deleted" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Gallery image deleted",
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }
 
 export async function updateGalleryImage(
@@ -219,5 +231,11 @@ export async function updateGalleryImage(
         },
     });
 
-    return { data: { success: true, message: "Image updated" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Image updated",
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }

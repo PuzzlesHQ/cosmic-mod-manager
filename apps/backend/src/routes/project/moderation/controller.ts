@@ -14,7 +14,7 @@ import {
 import { createNotification } from "~/routes/user/notification/controllers/helpers";
 import prisma from "~/services/prisma";
 import type { SessionUserData } from "~/types";
-import { HTTP_STATUS, notFoundResponseData, serverErrorResponseData } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData, serverErrorResponseData } from "~/utils/http";
 import { Log, Log_SubType } from "~/utils/logger";
 import { generateDbId } from "~/utils/str";
 import { orgIconUrl, projectIconUrl, userFileUrl } from "~/utils/urls";
@@ -79,7 +79,7 @@ export async function getModerationProjects() {
     return {
         data: projectsList,
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function updateModerationProject(id: string, status: string, userSession: SessionUserData) {
@@ -96,18 +96,12 @@ export async function updateModerationProject(id: string, status: string, userSe
                 message: `The project status is already '${status}'`,
             },
             status: HTTP_STATUS.OK,
-        };
+        } as const;
     }
 
     const updatedStatus = status as ProjectPublishingStatus;
     if (!Object.values(ProjectPublishingStatus).some((v) => v === updatedStatus)) {
-        return {
-            data: {
-                success: false,
-                message: "Invalid value for the project 'status'",
-            },
-            status: HTTP_STATUS.BAD_REQUEST,
-        };
+        return invalidRequestResponseData("Invalid value for the project 'status'");
     }
 
     const updateData: Prisma.ProjectUpdateInput = {};
@@ -182,5 +176,5 @@ export async function updateModerationProject(id: string, status: string, userSe
             message: `Project status updated to: ${updatedStatus}`,
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }

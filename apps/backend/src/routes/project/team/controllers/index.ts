@@ -10,8 +10,8 @@ import type { Context } from "hono";
 import type { z } from "zod/v4";
 import { GetOrganization_Data } from "~/db/organization_item";
 import { GetManyProjects_ListItem, GetProject_ListItem } from "~/db/project_item";
-import { CreateTeamMember, Delete_ManyTeamMembers, DeleteTeamMember, UpdateTeamMember } from "~/db/team-member_item";
 import { GetTeam } from "~/db/team_item";
+import { CreateTeamMember, Delete_ManyTeamMembers, DeleteTeamMember, UpdateTeamMember } from "~/db/team-member_item";
 import { GetUser_ByIdOrUsername } from "~/db/user_item";
 import { addInvalidAuthAttempt } from "~/middleware/rate-limiter";
 import { createNotification } from "~/routes/user/notification/controllers/helpers";
@@ -104,7 +104,7 @@ export async function inviteMember(ctx: Context, userSession: SessionUserData, u
         },
     });
 
-    if (defaultAccepted) return { data: { success: true }, status: HTTP_STATUS.OK };
+    if (defaultAccepted) return { data: { success: true }, status: HTTP_STATUS.OK } as const;
 
     if (TeamOrg?.id) {
         await createNotification({
@@ -132,7 +132,7 @@ export async function inviteMember(ctx: Context, userSession: SessionUserData, u
         });
     }
 
-    return { data: { success: true }, status: HTTP_STATUS.OK };
+    return { data: { success: true }, status: HTTP_STATUS.OK } as const;
 }
 
 export async function acceptProjectTeamInvite(ctx: Context, userSession: SessionUserData, teamId: string) {
@@ -155,7 +155,13 @@ export async function acceptProjectTeamInvite(ctx: Context, userSession: Session
         },
     });
 
-    return { data: { success: true, message: "Joined successfully" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Joined successfully",
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }
 
 export async function leaveProjectTeam(ctx: Context, userSession: SessionUserData, teamId: string) {
@@ -200,7 +206,13 @@ export async function leaveProjectTeam(ctx: Context, userSession: SessionUserDat
         await removeMemberFromAllOrgProjects(Team.organisation.id, TargetMember.userId);
     }
 
-    return { data: { success: true, message: "Left the project team" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Left the project team",
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }
 
 export async function editProjectMember(
@@ -282,7 +294,13 @@ export async function editProjectMember(
         },
     });
 
-    return { data: { success: true, message: "Member updated" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Member updated",
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }
 
 export async function overrideOrgMember(
@@ -342,7 +360,7 @@ export async function overrideOrgMember(
         },
     });
 
-    return { data: { success: true }, status: HTTP_STATUS.OK };
+    return { data: { success: true }, status: HTTP_STATUS.OK } as const;
 }
 
 export async function removeProjectMember(
@@ -398,7 +416,7 @@ export async function removeProjectMember(
         await removeMemberFromAllOrgProjects(Team.organisation.id, targetMember.userId);
     }
 
-    return { data: { success: true }, status: HTTP_STATUS.OK };
+    return { data: { success: true }, status: HTTP_STATUS.OK } as const;
 }
 
 async function removeMemberFromAllOrgProjects(orgId: string, userId: string) {

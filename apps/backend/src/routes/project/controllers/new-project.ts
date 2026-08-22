@@ -94,5 +94,5 @@ export async function createNewProject(userSession: SessionUserData, formData: z
             type: newProject.type,
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }

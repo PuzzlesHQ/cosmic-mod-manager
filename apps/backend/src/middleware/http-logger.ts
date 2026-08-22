@@ -68,7 +68,7 @@ export function logger(fn: PrintFunc = console.log) {
         // @ts-expect-error
         const method = HTTP_VERB[ctx.req?.method] || ctx.req?.method;
         const path = getPath(ctx.req.raw);
-        const ipAddress = getUserIpAddress(ctx, false) || "";
+        const ipAddress = getUserIpAddress(ctx, false);
 
         log(fn, LogPrefix.Incoming, method, path, undefined, ipAddress);
 

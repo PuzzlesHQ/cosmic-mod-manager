@@ -10,7 +10,7 @@ import { OAuthProfileDataSchema } from "~/routes/auth/providers/_schema";
 import { getUserAvatar } from "~/routes/user/controllers/profile";
 import prisma from "~/services/prisma";
 import { getImageFromHttpUrl } from "~/utils/file";
-import { HTTP_STATUS } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData } from "~/utils/http";
 import { Log } from "~/utils/logger";
 import { generateDbId } from "~/utils/str";
 
@@ -26,13 +26,7 @@ export async function oAuthSignUpHandler(ctx: Context, authProvider: string, tok
         let msg = "Invalid profile data received from the auth provider, most likely the code provided was invalid.";
         if (error) msg += `\nERROR: ${error}`;
 
-        return {
-            data: {
-                message: msg,
-                success: false,
-            },
-            status: HTTP_STATUS.BAD_REQUEST,
-        };
+        return invalidRequestResponseData(msg);
     }
 
     // Return if an auth account already exists with the same provider
@@ -44,10 +38,7 @@ export async function oAuthSignUpHandler(ctx: Context, authProvider: string, tok
     });
     if (possiblyAlreadyExistingAuthAccount?.id) {
         await addInvalidAuthAttempt(ctx);
-        return {
-            data: { success: false, message: "A user already exists with this account, try logging in instead" },
-            status: HTTP_STATUS.BAD_REQUEST,
-        };
+        return invalidRequestResponseData("A user already exists with this account, try logging in instead");
     }
 
     // Return if a user already exists with the same email
@@ -58,10 +49,7 @@ export async function oAuthSignUpHandler(ctx: Context, authProvider: string, tok
     });
     if (possiblyAlreadyExistingUser?.id) {
         await addInvalidAuthAttempt(ctx);
-        return {
-            data: { success: false, message: "A user already exists with the email you are trying to sign up with." },
-            status: HTTP_STATUS.BAD_REQUEST,
-        };
+        return invalidRequestResponseData("A user already exists with the email you are trying to sign up with.");
     }
 
     const userId = generateDbId();
@@ -116,5 +104,5 @@ export async function oAuthSignUpHandler(ctx: Context, authProvider: string, tok
             message: `Successfully signed up using ${authProvider} as ${newUser.name}`,
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }

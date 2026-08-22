@@ -2,6 +2,7 @@ import { decodeStringArray } from "@app/utils/string";
 import { type Context, Hono } from "hono";
 import { strictGetReqRateLimiter } from "~/middleware/rate-limiter";
 import { invalidRequestResponse } from "~/utils/http";
+import { respondJson } from "~/utils/jsonRes";
 import { getManyOrgs } from "./controllers/get-many";
 
 const bulkOrgsRouter = new Hono().get("/", strictGetReqRateLimiter, orgs_get);
@@ -16,7 +17,7 @@ async function orgs_get(ctx: Context) {
     }
 
     const res = await getManyOrgs(idsArray);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 export default bulkOrgsRouter;

@@ -7,7 +7,12 @@ import { ProjectPermission } from "@app/utils/types";
 import type { z } from "zod/v4";
 import { GetProject_ListItem, UpdateProject } from "~/db/project_item";
 import type { SessionUserData } from "~/types";
-import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData } from "~/utils/http";
+import {
+    HTTP_STATUS,
+    invalidRequestResponseData,
+    notFoundResponseData,
+    unauthorizedReqResponseData,
+} from "~/utils/http";
 
 export async function updateProjectTags(
     projectId: string,
@@ -29,10 +34,7 @@ export async function updateProjectTags(
         userSession.role,
     );
     if (!hasEditAccess) {
-        return {
-            data: { success: false, message: "You don't have the permission to update project tags" },
-            status: HTTP_STATUS.UNAUTHORIZED,
-        };
+        return unauthorizedReqResponseData("You don't have the permission to update project tags");
     }
 
     const availableCategories = getValidProjectCategories(project.type).map((category) => category.name);
@@ -47,7 +49,13 @@ export async function updateProjectTags(
         },
     });
 
-    return { data: { success: true, message: "Project tags updated" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Project tags updated",
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }
 
 export async function updateProjectExternalLinks(
@@ -70,10 +78,7 @@ export async function updateProjectExternalLinks(
         userSession.role,
     );
     if (!hasEditAccess) {
-        return {
-            data: { success: false, message: "You don't the permission to update links" },
-            status: HTTP_STATUS.UNAUTHORIZED,
-        };
+        return unauthorizedReqResponseData("You don't the permission to update links");
     }
 
     await UpdateProject({
@@ -86,7 +91,13 @@ export async function updateProjectExternalLinks(
         },
     });
 
-    return { data: { success: true, message: "External links updated" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "External links updated",
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }
 
 export async function updateProjectLicense(
@@ -109,10 +120,7 @@ export async function updateProjectLicense(
         userSession.role,
     );
     if (!hasEditAccess) {
-        return {
-            data: { success: false, message: "You don't have the permission to update project license" },
-            status: HTTP_STATUS.UNAUTHORIZED,
-        };
+        return unauthorizedReqResponseData("You don't have the permission to update project license");
     }
 
     if (!formData.name && !formData.id) {
@@ -139,5 +147,11 @@ export async function updateProjectLicense(
         },
     });
 
-    return { data: { success: true, message: "Project license updated" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Project license updated",
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }

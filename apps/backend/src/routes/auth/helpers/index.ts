@@ -96,7 +96,7 @@ export async function createNewAuthAccount(userId: string, data: ValidatedOAuthP
     });
 }
 
-export function getUserIpAddress(ctx: Context, strip = true): string | null {
+export function getUserIpAddress(ctx: Context, strip = true): string {
     function getHeader(key: string) {
         return ctx.req.header(key);
     }
@@ -107,10 +107,10 @@ export function getUserIpAddress(ctx: Context, strip = true): string | null {
         cloudflareSecret: env.CLOUDFLARE_SECRET,
     });
 
-    if (!ipStr) return null;
+    if (!ipStr) return "::1";
 
     const IPv6 = convertToIPv6(ipStr);
-    if (!IPv6) return null;
+    if (!IPv6) return "::1";
 
     // Strip the IP address to prevent abuse due to IPv6 (to be used in rate limiting)
     if (strip === false) return IPv6;

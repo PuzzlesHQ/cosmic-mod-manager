@@ -6,6 +6,7 @@ import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth
 import { critModifyReqRateLimiter, invalidAuthAttemptLimiter } from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { invalidRequestResponse, unauthenticatedReqResponse } from "~/utils/http";
+import { respondJson } from "~/utils/jsonRes";
 import { getSessionUser } from "~/utils/router";
 import {
     acceptProjectTeamInvite,
@@ -46,7 +47,7 @@ async function teamInvite_post(ctx: Context) {
     if (!userName || !teamId) return invalidRequestResponse(ctx);
 
     const res = await inviteMember(ctx, sessionUser, userName, teamId);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function teamInvite_patch(ctx: Context) {
@@ -57,7 +58,7 @@ async function teamInvite_patch(ctx: Context) {
     if (!teamId) return invalidRequestResponse(ctx);
 
     const res = await acceptProjectTeamInvite(ctx, sessionUser, teamId);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function teamLeave_post(ctx: Context) {
@@ -68,7 +69,7 @@ async function teamLeave_post(ctx: Context) {
     if (!teamId) return invalidRequestResponse(ctx);
 
     const res = await leaveProjectTeam(ctx, sessionUser, teamId);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function teamOwner_patch(ctx: Context) {
@@ -80,7 +81,7 @@ async function teamOwner_patch(ctx: Context) {
     if (!teamId || !newOwner) return invalidRequestResponse(ctx);
 
     const res = await changeTeamOwner(ctx, sessionUser, teamId, newOwner);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function teamMembers_post(ctx: Context) {
@@ -94,7 +95,7 @@ async function teamMembers_post(ctx: Context) {
     if (error || !data) return invalidRequestResponse(ctx, error);
 
     const res = await overrideOrgMember(ctx, sessionUser, teamId, data);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function teamMember_patch(ctx: Context) {
@@ -108,7 +109,7 @@ async function teamMember_patch(ctx: Context) {
     if (error || !data) return invalidRequestResponse(ctx, error);
 
     const res = await editProjectMember(ctx, sessionUser, memberId, teamId, data);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function teamMember_delete(ctx: Context) {
@@ -119,7 +120,7 @@ async function teamMember_delete(ctx: Context) {
     if (!memberId || !teamId) return invalidRequestResponse(ctx);
 
     const res = await removeProjectMember(ctx, sessionUser, memberId, teamId);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 export default teamRouter;

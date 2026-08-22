@@ -10,6 +10,7 @@ import {
     markNotificationAsRead as markNotificationsAsRead,
 } from "~/routes/user/notification/controllers";
 import { invalidRequestResponse, unauthenticatedReqResponse } from "~/utils/http";
+import { respondJson } from "~/utils/jsonRes";
 import { getSessionUser } from "~/utils/router";
 
 const notificationRouter = new Hono()
@@ -30,7 +31,7 @@ async function userNotifications_get(ctx: Context) {
 
     const userSlug = ctx.req.param("userId") as string | undefined;
     const res = await getUserNotifications(ctx, sessionUser, userSlug);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function notification_get(ctx: Context) {
@@ -41,7 +42,7 @@ async function notification_get(ctx: Context) {
     if (!notifId) return invalidRequestResponse(ctx);
 
     const res = await getNotificationById(ctx, sessionUser, notifId);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function notification_patch(ctx: Context) {
@@ -53,7 +54,7 @@ async function notification_patch(ctx: Context) {
     if (!notificationId) return invalidRequestResponse(ctx);
 
     const res = await markNotificationsAsRead(ctx, sessionUser, [notificationId], userSlug);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function bulkNotifications_patch(ctx: Context) {
@@ -65,7 +66,7 @@ async function bulkNotifications_patch(ctx: Context) {
     if (!notificationIds.length) return invalidRequestResponse(ctx);
 
     const res = await markNotificationsAsRead(ctx, sessionUser, notificationIds, userSlug);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function notification_delete(ctx: Context) {
@@ -77,7 +78,7 @@ async function notification_delete(ctx: Context) {
     if (!notifId) return invalidRequestResponse(ctx);
 
     const res = await deleteNotifications(ctx, sessionUser, userSlug, [notifId]);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function bulkNotifications_delete(ctx: Context) {
@@ -89,7 +90,7 @@ async function bulkNotifications_delete(ctx: Context) {
     if (!notificationIds.length) return invalidRequestResponse(ctx);
 
     const res = await deleteNotifications(ctx, sessionUser, userSlug, notificationIds);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 export default notificationRouter;

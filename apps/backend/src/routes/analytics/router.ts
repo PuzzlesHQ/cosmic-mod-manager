@@ -7,6 +7,7 @@ import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth
 import { applyCacheHeaders } from "~/middleware/cache";
 import { invalidAuthAttemptLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limiter";
 import { invalidRequestResponse, unauthenticatedReqResponse, unauthorizedReqResponse } from "~/utils/http";
+import { respondJson } from "~/utils/jsonRes";
 import { getSessionUser } from "~/utils/router";
 import { getAllProjects_DownloadsAnalyticsData, getDownloadsAnalyticsData } from "./controllers";
 
@@ -54,7 +55,7 @@ async function downloadsAnalytics_get(ctx: Context) {
         timeline: timeline,
     });
 
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function allProjectsDownloadsAnalytics_get(ctx: Context) {
@@ -89,7 +90,7 @@ async function allProjectsDownloadsAnalytics_get(ctx: Context) {
         timeline: timeline,
     });
 
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 export default analyticsRouter;

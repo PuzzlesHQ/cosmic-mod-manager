@@ -4,6 +4,7 @@ import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware } from "~/middleware/auth";
 import { getReqRateLimiter, invalidAuthAttemptLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limiter";
 import { invalidRequestResponse } from "~/utils/http";
+import { respondJson } from "~/utils/jsonRes";
 import { getSessionUser } from "~/utils/router";
 import { getHomePageCarouselProjects, getManyProjects, getRandomProjects } from "./controllers";
 
@@ -26,7 +27,7 @@ async function projects_get(ctx: Context) {
     }
 
     const res = await getManyProjects(userSession, idsArray);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function projectsRandom_get(ctx: Context) {
@@ -34,13 +35,13 @@ async function projectsRandom_get(ctx: Context) {
     const count = Number.parseInt(ctx.req.query("count") || "", 10);
 
     const res = await getRandomProjects(userSession, count);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function homePageCarousel_get(ctx: Context) {
     const userSession = getSessionUser(ctx, API_SCOPE.PROJECT_READ);
     const res = await getHomePageCarouselProjects(userSession);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 export default bulkProjectsRouter;

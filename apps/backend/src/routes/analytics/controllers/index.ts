@@ -93,7 +93,7 @@ export async function getDownloadsAnalyticsData(user: SessionUserData, props: ge
     return {
         data: downloadsData_Map,
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function getAllProjects_DownloadsAnalyticsData(user: SessionUserData, props: getAnalyticsDataProps) {
@@ -150,5 +150,5 @@ export async function getAllProjects_DownloadsAnalyticsData(user: SessionUserDat
     return {
         data: downloadsData_Map,
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }

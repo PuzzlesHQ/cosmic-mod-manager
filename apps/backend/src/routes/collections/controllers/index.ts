@@ -77,7 +77,7 @@ export async function GetUserCollections(userSlug: string, userSession: SessionU
         // Sort by date created
         data: formattedData,
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function GetUserCollection_ByCollectionId(collectionId: string, userSession: SessionUserData | null) {
@@ -95,7 +95,7 @@ export async function GetUserCollection_ByCollectionId(collectionId: string, use
                 projects: userSession.followingProjects,
             },
             status: HTTP_STATUS.OK,
-        };
+        } as const;
     }
 
     const collection = await GetCollection(collectionId);
@@ -118,7 +118,7 @@ export async function GetUserCollection_ByCollectionId(collectionId: string, use
     return {
         data: collectionData,
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function GetCollectionProjects(collectionId: string, sessionUser: SessionUserData | null) {
@@ -143,7 +143,7 @@ export async function GetCollectionOwner(collectionId: string, userSession: Sess
                 avatar: userFileUrl(userSession.id, userSession.avatar),
             } satisfies CollectionOwner,
             status: HTTP_STATUS.OK,
-        };
+        } as const;
     }
 
     const collection = await GetCollection(collectionId);
@@ -163,7 +163,7 @@ export async function GetCollectionOwner(collectionId: string, userSession: Sess
     return {
         data: ownerData,
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function CreateNewCollection(
@@ -187,7 +187,7 @@ export async function CreateNewCollection(
             collectionId: collection.id,
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function AddProjectsToCollection(
@@ -230,7 +230,7 @@ export async function AddProjectsToCollection(
             message: `${count} project(s) added to collection!`,
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function DeleteProjectsFromCollection(
@@ -268,7 +268,7 @@ export async function DeleteProjectsFromCollection(
             message: `${projectIds.length} project(s) removed from the collection!`,
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function deleteUserCollection(collectionId: string, sessionUser: SessionUserData) {
@@ -295,7 +295,7 @@ export async function deleteUserCollection(collectionId: string, sessionUser: Se
             message: "Collection deleted!",
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function deleteAllUserCollections(user_id: string, sessionUser: Pick<SessionUserData, "id" | "role">) {
@@ -322,7 +322,7 @@ export async function deleteAllUserCollections(user_id: string, sessionUser: Pic
     return {
         data: null,
         status: HTTP_STATUS.NO_CONTENT,
-    };
+    } as const;
 }
 
 export async function editUserCollectionDetails(
@@ -395,5 +395,5 @@ export async function editUserCollectionDetails(
             message: "Collection updated!",
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }

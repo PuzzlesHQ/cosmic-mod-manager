@@ -145,7 +145,7 @@ export async function checkProjectSlugValidity(slug: string) {
         return notFoundResponseData("Project not found");
     }
 
-    return { data: { id: project.id }, status: HTTP_STATUS.OK };
+    return { data: { id: project.id }, status: HTTP_STATUS.OK } as const;
 }
 
 export async function getManyProjects(
@@ -211,7 +211,7 @@ export async function getManyProjects(
         // sort in descending order by downloads
         data: projectsList.sort((a, b) => b.downloads - a.downloads),
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function getRandomProjects(userSession: SessionUserData | null, count: number) {
@@ -244,7 +244,7 @@ export async function getHomePageCarouselProjects(userSession: SessionUserData |
     const cache = await valkey.get(homePageProjects_CacheKey(projectsCount));
     const cachedData = await parseJson<ProjectListItem[]>(cache);
     if (cachedData) {
-        return { data: cachedData, status: HTTP_STATUS.OK };
+        return { data: cachedData, status: HTTP_STATUS.OK } as const;
     }
 
     const trendingProjects_count = Math.floor(projectsCount / 3);
@@ -291,5 +291,5 @@ export async function getHomePageCarouselProjects(userSession: SessionUserData |
     }
 
     await valkey.set(homePageProjects_CacheKey(projectsCount), JSON.stringify(projectsList), "EX", 600);
-    return { data: projectsList, status: HTTP_STATUS.OK };
+    return { data: projectsList, status: HTTP_STATUS.OK } as const;
 }

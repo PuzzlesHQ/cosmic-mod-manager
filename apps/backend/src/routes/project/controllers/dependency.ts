@@ -90,5 +90,5 @@ export async function getProjectDependencies(slug: string, userSession: SessionU
             versions: dependencyVersions,
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }

@@ -260,7 +260,7 @@ export async function updateVersionData(
             },
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function deleteProjectVersion(
@@ -342,5 +342,5 @@ export async function deleteProjectVersion(
     return {
         data: { success: true, message: `Version "${deletedVersion.title}" deleted successfully.` },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }

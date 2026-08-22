@@ -26,6 +26,7 @@ import {
     HTTP_STATUS,
     invalidRequestResponseData,
     notFoundResponseData,
+    serverErrorResponseData,
     unauthorizedReqResponseData,
 } from "~/utils/http";
 import { getAverageColor, resizeImageToWebp } from "~/utils/images";
@@ -109,9 +110,13 @@ export async function updateGeneralProjectData(
     );
 
     return {
-        data: { success: true, message: "Project details updated", slug: UpdatedProject.slug },
+        data: {
+            success: true,
+            message: "Project details updated",
+            slug: UpdatedProject.slug,
+        },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function deleteProject(userSession: SessionUserData, projectId: string) {
@@ -197,7 +202,7 @@ export async function deleteProject(userSession: SessionUserData, projectId: str
             message: "Project deleted",
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function deleteVersionsData(
@@ -246,8 +251,7 @@ export async function updateProjectIcon(userSession: SessionUserData, projectId:
     }
 
     const uploadedImg_Type = await getFileType(icon);
-    if (!uploadedImg_Type)
-        return { data: { success: false, message: "Invalid file type" }, status: HTTP_STATUS.BAD_REQUEST };
+    if (!uploadedImg_Type) return invalidRequestResponseData("Invalid file type");
 
     const iconImg_Type = FileType.WEBP;
     const iconImg_Webp = await resizeImageToWebp(icon, uploadedImg_Type, {
@@ -257,8 +261,7 @@ export async function updateProjectIcon(userSession: SessionUserData, projectId:
     });
     const iconImg_Id = `${generateDbId()}_${ICON_WIDTH}.${iconImg_Type}`;
     const icon_SaveUrl = await saveProjectFile(FILE_STORAGE_SERVICE.LOCAL, project.id, iconImg_Webp, iconImg_Id);
-    if (!icon_SaveUrl)
-        return { data: { success: false, message: "Failed to save the icon" }, status: HTTP_STATUS.SERVER_ERROR };
+    if (!icon_SaveUrl) return serverErrorResponseData("Failed to save the icon");
 
     const projectColor = await getAverageColor(iconImg_Webp);
 
@@ -288,7 +291,13 @@ export async function updateProjectIcon(userSession: SessionUserData, projectId:
     // Update the project in the search index
     isProjectIndexable(project.visibility, project.status) ? UpdateProjects_SearchIndex([project.id]) : null;
 
-    return { data: { success: true, message: "Project icon updated" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Project icon updated",
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }
 
 export async function deleteProjectIcon(userSession: SessionUserData, projectId: string) {
@@ -327,7 +336,13 @@ export async function deleteProjectIcon(userSession: SessionUserData, projectId:
     // Update the project in the search index
     isProjectIndexable(project.visibility, project.status) ? UpdateProjects_SearchIndex([project.id]) : null;
 
-    return { data: { success: true, message: "Project icon deleted" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Project icon deleted",
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }
 
 async function deleteProjectFromUserFollows(projectId: string) {

@@ -6,6 +6,7 @@ import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth
 import { critModifyReqRateLimiter, getReqRateLimiter, invalidAuthAttemptLimiter } from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { invalidRequestResponse, unauthenticatedReqResponse } from "~/utils/http";
+import { respondJson } from "~/utils/jsonRes";
 import { getSessionUser } from "~/utils/router";
 import {
     AddProjectsToCollection,
@@ -40,7 +41,7 @@ async function collections_get(ctx: Context) {
     if (!sessionUser?.id) return unauthenticatedReqResponse(ctx);
 
     const res = await GetUserCollections(sessionUser.id, sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function collection_post(ctx: Context) {
@@ -51,7 +52,7 @@ async function collection_post(ctx: Context) {
     if (!data || error) return invalidRequestResponse(ctx, error);
 
     const res = await CreateNewCollection(data, sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function collection_byID_get(ctx: Context) {
@@ -60,7 +61,7 @@ async function collection_byID_get(ctx: Context) {
 
     const sessionUser = getSessionUser(ctx, API_SCOPE.COLLECTION_READ);
     const res = await GetUserCollection_ByCollectionId(collectionId, sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function collection_byID_patch(ctx: Context) {
@@ -83,7 +84,7 @@ async function collection_byID_patch(ctx: Context) {
     if (!data || error) return invalidRequestResponse(ctx, error);
 
     const res = await editUserCollectionDetails(data, collectionId, sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function collection_byID_delete(ctx: Context) {
@@ -94,7 +95,7 @@ async function collection_byID_delete(ctx: Context) {
     if (!sessionUser?.id) return unauthenticatedReqResponse(ctx);
 
     const res = await deleteUserCollection(collectionId, sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function collectionProjects_get(ctx: Context) {
@@ -104,7 +105,7 @@ async function collectionProjects_get(ctx: Context) {
     const sessionUser = getSessionUser(ctx, API_SCOPE.COLLECTION_READ);
 
     const res = await GetCollectionProjects(collectionId, sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function collectionOwner_get(ctx: Context) {
@@ -114,7 +115,7 @@ async function collectionOwner_get(ctx: Context) {
     const sessionUser = getSessionUser(ctx, API_SCOPE.COLLECTION_READ);
 
     const res = await GetCollectionOwner(collectionId, sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function collectionProjects_patch(ctx: Context) {
@@ -128,7 +129,7 @@ async function collectionProjects_patch(ctx: Context) {
     if (!projects?.length) return invalidRequestResponse(ctx);
 
     const res = await AddProjectsToCollection(collectionId, projects, sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function collectionProjects_delete(ctx: Context) {
@@ -142,7 +143,7 @@ async function collectionProjects_delete(ctx: Context) {
     if (!projects?.length) return invalidRequestResponse(ctx);
 
     const res = await DeleteProjectsFromCollection(collectionId, projects, sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 export default collectionsRouter;

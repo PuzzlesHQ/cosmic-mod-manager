@@ -37,13 +37,13 @@ export async function getUserProfileData(slug: string) {
         profilePageBg: userFileUrl(user.id, user.profilePageBg),
     } satisfies UserProfileData;
 
-    return { data: dataObj, status: HTTP_STATUS.OK };
+    return { data: dataObj, status: HTTP_STATUS.OK } as const;
 }
 
 export async function getUserFollowedProjects(userSlug: string, userSession: SessionUserData | null, idsOnly = true) {
     // If it's the current user's profile, return their following projects directly
     if (userSession && (userSlug === userSession.userName || userSlug === userSession.id)) {
-        if (idsOnly) return { data: userSession.followingProjects, status: HTTP_STATUS.OK };
+        if (idsOnly) return { data: userSession.followingProjects, status: HTTP_STATUS.OK } as const;
 
         return getManyProjects(userSession, userSession.followingProjects);
     }
@@ -56,7 +56,7 @@ export async function getUserFollowedProjects(userSlug: string, userSession: Ses
     const userData = await GetUser_ByIdOrUsername(userSlug, userSlug);
     if (!userData?.id) return notFoundResponseData("User not found");
 
-    if (idsOnly) return { data: userData.followingProjects, status: HTTP_STATUS.OK };
+    if (idsOnly) return { data: userData.followingProjects, status: HTTP_STATUS.OK } as const;
     return await getManyProjects(userSession, userData.followingProjects);
 }
 
@@ -77,7 +77,10 @@ export async function updateUserProfile(
     if (profileData.userName.toLowerCase() !== user.userName.toLowerCase()) {
         const existingUserWithSameUserName = await GetUser_ByIdOrUsername(profileData.userName);
         if (existingUserWithSameUserName) {
-            return { data: { success: false, message: "Username already taken" }, status: HTTP_STATUS.BAD_REQUEST };
+            return {
+                data: { success: false, message: "Username already taken" },
+                status: HTTP_STATUS.BAD_REQUEST,
+            } as const;
         }
 
         // Update project's search index so that the new username is reflected
@@ -139,7 +142,10 @@ export async function updateUserProfile(
         },
     });
 
-    return { data: { success: true, message: "Profile updated successfully", profileData }, status: HTTP_STATUS.OK };
+    return {
+        data: { success: true, message: "Profile updated successfully", profileData },
+        status: HTTP_STATUS.OK,
+    } as const;
 }
 
 export async function getUserAvatar(

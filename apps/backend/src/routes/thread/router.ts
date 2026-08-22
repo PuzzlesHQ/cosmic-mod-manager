@@ -6,6 +6,7 @@ import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth
 import { getReqRateLimiter, invalidAuthAttemptLimiter, modifyReqRateLimiter } from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { invalidRequestResponse, unauthenticatedReqResponse } from "~/utils/http";
+import { respondJson } from "~/utils/jsonRes";
 import { getSessionUser } from "~/utils/router";
 import { CreateThreadMessage, DeleteThreadMessage, GetThreadMessages } from "./controllers";
 
@@ -26,7 +27,7 @@ async function thread_get(ctx: Context) {
     if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
     const res = await GetThreadMessages(sessionUser, threadId);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function thread_post(ctx: Context) {
@@ -40,7 +41,7 @@ async function thread_post(ctx: Context) {
     if (!data || error) return invalidRequestResponse(ctx, error);
 
     const res = await CreateThreadMessage(sessionUser, threadId, data);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function threadMessage_delete(ctx: Context) {
@@ -51,7 +52,7 @@ async function threadMessage_delete(ctx: Context) {
     if (!messageId) return invalidRequestResponse(ctx);
 
     const res = await DeleteThreadMessage(sessionUser, messageId);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 export default threadRouter;

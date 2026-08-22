@@ -8,6 +8,7 @@ import { type Context, Hono } from "hono";
 import { applyCacheHeaders } from "~/middleware/cache";
 import { searchReqRateLimiter } from "~/middleware/rate-limiter";
 import { HTTP_STATUS, notFoundResponse } from "~/utils/http";
+import { respondJson } from "~/utils/jsonRes";
 
 const tagsRouter = new Hono()
     .use(searchReqRateLimiter)
@@ -29,24 +30,24 @@ async function categories_get(ctx: Context) {
     const categories = getValidProjectCategories(projectType ? [projectType] : []);
     if (namesOnly) {
         const names = categories.map((category) => category.name);
-        return ctx.json(names, HTTP_STATUS.OK);
+        return respondJson(ctx, { data: names, status: HTTP_STATUS.OK });
     }
 
-    return ctx.json(categories, HTTP_STATUS.OK);
+    return respondJson(ctx, { data: categories, status: HTTP_STATUS.OK });
 }
 
 async function gameVersions_get(ctx: Context) {
-    return ctx.json(GAME_VERSIONS, HTTP_STATUS.OK);
+    return respondJson(ctx, { data: GAME_VERSIONS, status: HTTP_STATUS.OK });
 }
 
 async function loaders_get(ctx: Context) {
     const projectType = (ctx.req.query("type")?.toLowerCase() as ProjectType) || undefined;
     const loaders = getAllLoaderCategories(projectType);
-    return ctx.json(loaders, HTTP_STATUS.OK);
+    return respondJson(ctx, { data: loaders, status: HTTP_STATUS.OK });
 }
 
 async function featuredLicenses_get(ctx: Context) {
-    return ctx.json(FEATURED_LICENSE_OPTIONS.slice(1), HTTP_STATUS.OK);
+    return respondJson(ctx, { data: FEATURED_LICENSE_OPTIONS.slice(1), status: HTTP_STATUS.OK });
 }
 
 async function licenses_get(ctx: Context) {
@@ -55,18 +56,18 @@ async function licenses_get(ctx: Context) {
         const license = SPDX_LICENSE_LIST.find((l) => l.licenseId.toLowerCase() === licenseId);
         if (!license) notFoundResponse(ctx, "License not found");
 
-        return ctx.json(license, HTTP_STATUS.OK);
+        return respondJson(ctx, { data: license, status: HTTP_STATUS.OK });
     }
 
-    return ctx.json(SPDX_LICENSE_LIST, HTTP_STATUS.OK);
+    return respondJson(ctx, { data: SPDX_LICENSE_LIST, status: HTTP_STATUS.OK });
 }
 
 async function projectTypes_get(ctx: Context) {
-    return ctx.json(projectTypes, HTTP_STATUS.OK);
+    return respondJson(ctx, { data: projectTypes, status: HTTP_STATUS.OK });
 }
 
 async function apiScopes_get(ctx: Context) {
-    return ctx.json(Object.values(API_SCOPE), HTTP_STATUS.OK);
+    return respondJson(ctx, { data: Object.values(API_SCOPE), status: HTTP_STATUS.OK });
 }
 
 export default tagsRouter;

@@ -20,5 +20,5 @@ export async function getManyOrgs(orgIds: string[]) {
         });
     }
 
-    return { data: orgsList, status: HTTP_STATUS.OK };
+    return { data: orgsList, status: HTTP_STATUS.OK } as const;
 }

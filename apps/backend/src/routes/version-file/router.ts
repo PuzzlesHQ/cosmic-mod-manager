@@ -4,6 +4,7 @@ import { getReqRateLimiter, invalidAuthAttemptLimiter, strictGetReqRateLimiter }
 import { HashAlgorithms } from "~/types";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { HTTP_STATUS, invalidRequestResponse, notFoundResponse } from "~/utils/http";
+import { respondJson } from "~/utils/jsonRes";
 import { GetReleaseChannelFilter } from "~/utils/project";
 import { getSessionUser } from "~/utils/router";
 import { versionFileUrl } from "~/utils/urls";
@@ -33,7 +34,7 @@ async function versionFromHash_get(ctx: Context, download = false) {
 
     const sessionUser = getSessionUser(ctx);
     const res = await GetVersionFromFileHash(hash, hashAlgorithm, sessionUser);
-    if (res.status !== HTTP_STATUS.OK) return ctx.json(res.data, res.status);
+    if (res.status !== HTTP_STATUS.OK) return respondJson(ctx, res);
 
     if (download) {
         const version = res.data;
@@ -45,7 +46,7 @@ async function versionFromHash_get(ctx: Context, download = false) {
         );
     }
 
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function versionFromHashUpdate_get(ctx: Context) {
@@ -87,7 +88,7 @@ async function versionFromHashUpdate_get(ctx: Context) {
         },
         sessionUser,
     );
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 const versionFiles_Router = new Hono()
@@ -111,7 +112,7 @@ async function versionFiles_post(ctx: Context) {
 
     const sessionUser = getSessionUser(ctx);
     const res = await GetVersionsFromFileHashes(hashes, hashAlgorithm, sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function versionUpdatesFromHashes_post(ctx: Context) {
@@ -155,7 +156,7 @@ async function versionUpdatesFromHashes_post(ctx: Context) {
         },
         sessionUser,
     );
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 export { versionFileRouter, versionFiles_Router };

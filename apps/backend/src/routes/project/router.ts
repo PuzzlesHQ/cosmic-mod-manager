@@ -24,6 +24,7 @@ import {
 } from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { invalidRequestResponse, isSuccessResponse, unauthenticatedReqResponse } from "~/utils/http";
+import { respondJson } from "~/utils/jsonRes";
 import { getSessionUser } from "~/utils/router";
 import { getAllVisibleProjects } from "../user/controllers/profile";
 import { checkProjectSlugValidity, getProjectData } from "./controllers";
@@ -75,7 +76,7 @@ async function projects_get(ctx: Context) {
 
     const listedProjectsOnly = ctx.req.query("listedOnly") === "true";
     const res = await getAllVisibleProjects(sessionUser, sessionUser.userName, listedProjectsOnly);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function project_get(ctx: Context) {
@@ -87,10 +88,13 @@ async function project_get(ctx: Context) {
     const featuredVersionsOnly = ctx.req.query("featuredOnly") === "true";
     const res = await getProjectData(slug, sessionUser);
 
-    if (!isSuccessResponse(res)) return ctx.json(res.data, res.status);
+    if (!isSuccessResponse(res)) return respondJson(ctx, res);
 
     if (includeVersions !== true) {
-        return ctx.json({ success: true, project: res.data.data }, res.status);
+        return respondJson(ctx, {
+            data: { success: true, project: res.data.data },
+            status: res.status,
+        });
     }
 
     // Fetch the project versions if it's to be included
@@ -103,7 +107,10 @@ async function project_get(ctx: Context) {
         project.versions = [];
     }
 
-    return ctx.json({ success: true, project: project }, res.status);
+    return respondJson(ctx, {
+        data: { success: true, project: project },
+        status: res.status,
+    });
 }
 
 async function projectDependencies_get(ctx: Context) {
@@ -112,7 +119,7 @@ async function projectDependencies_get(ctx: Context) {
 
     const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_READ);
     const res = await getProjectDependencies(slug, sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function projectCheck_get(ctx: Context) {
@@ -120,7 +127,7 @@ async function projectCheck_get(ctx: Context) {
     if (!slug) return invalidRequestResponse(ctx);
 
     const res = await checkProjectSlugValidity(slug);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function projectFollow_post(ctx: Context) {
@@ -132,7 +139,7 @@ async function projectFollow_post(ctx: Context) {
     if (!projectId) return invalidRequestResponse(ctx);
 
     const res = await addProjectsToUserFollows([projectId], sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function projectFollow_delete(ctx: Context) {
@@ -143,7 +150,7 @@ async function projectFollow_delete(ctx: Context) {
     if (!projectId) return invalidRequestResponse(ctx);
 
     const res = await removeProjectsFromUserFollows([projectId], sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function project_post(ctx: Context) {
@@ -154,7 +161,7 @@ async function project_post(ctx: Context) {
     if (error || !data) return invalidRequestResponse(ctx, error);
 
     const res = await createNewProject(sessionUser, data);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function project_patch(ctx: Context) {
@@ -180,7 +187,7 @@ async function project_patch(ctx: Context) {
     if (error || !data) return invalidRequestResponse(ctx, error);
 
     const res = await updateGeneralProjectData(projectId, sessionUser, data);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function project_delete(ctx: Context) {
@@ -191,7 +198,7 @@ async function project_delete(ctx: Context) {
     if (!projectId) return invalidRequestResponse(ctx);
 
     const res = await deleteProject(sessionUser, projectId);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function project_queueForApproval_post(ctx: Context) {
@@ -202,7 +209,7 @@ async function project_queueForApproval_post(ctx: Context) {
     if (!projectId) return invalidRequestResponse(ctx);
 
     const res = await QueueProjectForApproval(projectId, sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function projectIcon_patch(ctx: Context) {
@@ -221,7 +228,7 @@ async function projectIcon_patch(ctx: Context) {
     }
 
     const res = await updateProjectIcon(sessionUser, projectId, data);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function projectIcon_delete(ctx: Context) {
@@ -232,7 +239,7 @@ async function projectIcon_delete(ctx: Context) {
     if (!projectId) return invalidRequestResponse(ctx, "Invalid data");
 
     const res = await deleteProjectIcon(sessionUser, projectId);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function description_patch(ctx: Context) {
@@ -246,7 +253,7 @@ async function description_patch(ctx: Context) {
     if (error || !data) return invalidRequestResponse(ctx, error);
 
     const res = await updateProjectDescription(projectId, sessionUser, data);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function tags_patch(ctx: Context) {
@@ -260,7 +267,7 @@ async function tags_patch(ctx: Context) {
     if (error || !data) return invalidRequestResponse(ctx, error);
 
     const res = await updateProjectTags(projectId, sessionUser, data);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function externalLinks_patch(ctx: Context) {
@@ -274,7 +281,7 @@ async function externalLinks_patch(ctx: Context) {
     if (error || !data) return invalidRequestResponse(ctx, error);
 
     const res = await updateProjectExternalLinks(sessionUser, projectId, data);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function license_patch(ctx: Context) {
@@ -288,7 +295,7 @@ async function license_patch(ctx: Context) {
     if (error || !data) return invalidRequestResponse(ctx, error);
 
     const res = await updateProjectLicense(sessionUser, projectId, data);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function gallery_post(ctx: Context) {
@@ -311,7 +318,7 @@ async function gallery_post(ctx: Context) {
     if (error || !data) return invalidRequestResponse(ctx, error);
 
     const res = await addNewGalleryImage(projectId, sessionUser, data);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function galleryItem_patch(ctx: Context) {
@@ -326,7 +333,7 @@ async function galleryItem_patch(ctx: Context) {
     if (error || !data) return invalidRequestResponse(ctx, error);
 
     const res = await updateGalleryImage(projectId, sessionUser, galleryId, data);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function galleryItem_delete(ctx: Context) {
@@ -338,7 +345,7 @@ async function galleryItem_delete(ctx: Context) {
     if (!projectId || !galleryId) return invalidRequestResponse(ctx);
 
     const res = await removeGalleryImage(projectId, sessionUser, galleryId);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 export default projectRouter;

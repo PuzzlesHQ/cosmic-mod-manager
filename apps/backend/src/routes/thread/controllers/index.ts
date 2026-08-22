@@ -124,7 +124,7 @@ export async function GetThreadMessages(user: SessionUserData, threadId: string)
     return {
         data: formatted_thread,
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function CreateThreadMessage(
@@ -168,7 +168,7 @@ export async function CreateThreadMessage(
             success: true,
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function DeleteThreadMessage(user: SessionUserData, messageId: string) {
@@ -212,7 +212,7 @@ export async function DeleteThreadMessage(user: SessionUserData, messageId: stri
             success: true,
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 async function canUserAccessThread(user: SessionUserData, thread: DB_Thread) {

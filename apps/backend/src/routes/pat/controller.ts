@@ -27,7 +27,7 @@ export async function getAllUserPATs(user: SessionUserData) {
     return {
         data: res,
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function createPersonalAccessToken(user: SessionUserData, formData: z.infer<typeof createPAT_FormSchema>) {
@@ -69,7 +69,7 @@ export async function createPersonalAccessToken(user: SessionUserData, formData:
         token: token,
     } satisfies PATData;
 
-    return { data: formatted, status: HTTP_STATUS.OK };
+    return { data: formatted, status: HTTP_STATUS.OK } as const;
 }
 
 export async function editPersonalAccessToken(
@@ -109,7 +109,7 @@ export async function editPersonalAccessToken(
             message: "PAT updated successfully",
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function deletePersonalAccessToken(user: SessionUserData, patId: string) {
@@ -127,5 +127,5 @@ export async function deletePersonalAccessToken(user: SessionUserData, patId: st
             message: "PAT deleted successfully",
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }

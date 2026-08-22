@@ -4,6 +4,7 @@ import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth
 import { applyCacheHeaders } from "~/middleware/cache";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limiter";
 import { HTTP_STATUS, unauthorizedReqResponse } from "~/utils/http";
+import { respondJson } from "~/utils/jsonRes";
 import { getSessionUser } from "~/utils/router";
 import { getStatistics, getStorageUsage } from "./controllers";
 
@@ -12,14 +13,14 @@ const statsRouter = new Hono()
     .get("/storage", invalidAuthAttemptLimiter, AuthenticationMiddleware, LoginProtectedRoute, storageStatGet);
 
 async function statsGet(ctx: Context) {
-    return ctx.json(await getStatistics(), HTTP_STATUS.OK);
+    return respondJson(ctx, { data: await getStatistics(), status: HTTP_STATUS.OK });
 }
 
 async function storageStatGet(ctx: Context) {
     const sessionUser = getSessionUser(ctx);
     if (!isAdmin(sessionUser?.role)) return unauthorizedReqResponse(ctx);
 
-    return ctx.json(await getStorageUsage(), HTTP_STATUS.OK);
+    return respondJson(ctx, { data: await getStorageUsage(), status: HTTP_STATUS.OK });
 }
 
 export default statsRouter;

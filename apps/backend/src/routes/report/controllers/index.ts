@@ -70,7 +70,7 @@ export async function createReport(data: z.infer<typeof newReportFormSchema>, us
             reportId: report.id,
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function getReportData(reportId: string, user: SessionUserData) {
@@ -98,7 +98,7 @@ export async function getReportData(reportId: string, user: SessionUserData) {
     return {
         data: reportData,
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function getExistingReport(itemType: ReportItemType, itemId: string, user: SessionUserData) {
@@ -230,7 +230,7 @@ export async function getAllUserReports(user: SessionUserData, userId?: string, 
     return {
         data: reportList,
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function patchReport(reportId: string, closed: boolean, user: SessionUserData) {
@@ -274,5 +274,5 @@ export async function patchReport(reportId: string, closed: boolean, user: Sessi
             success: true,
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }

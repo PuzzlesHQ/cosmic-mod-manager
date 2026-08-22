@@ -45,7 +45,7 @@ export async function serveVersionFile(
     if (!isCdnRequest && versionFile?.isPrimary === true) {
         // add download count
         await addToDownloadsQueue({
-            ipAddress: getUserIpAddress(ctx) || "",
+            ipAddress: getUserIpAddress(ctx),
             userId: userSession?.id || ctx.get("guest-session"),
             projectId: project.id,
             versionId: associatedProjectVersion.id,

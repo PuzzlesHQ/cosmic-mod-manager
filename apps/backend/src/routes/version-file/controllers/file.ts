@@ -169,7 +169,7 @@ export async function GetVersionsFromFileHashes(
     return {
         data: hashToVersionMap,
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 interface VersionFilter {
@@ -376,5 +376,5 @@ export async function GetLatestProjectVersionsFromHashes(
     return {
         data: latestVersionMap,
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }

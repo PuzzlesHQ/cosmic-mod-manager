@@ -21,13 +21,7 @@ export async function oAuthSignInHandler(ctx: Context, authProvider: string, tok
         let msg = "Invalid profile data received from the auth provider, most likely the code provided was invalid.";
         if (error) msg += `\nERROR: ${error}`;
 
-        return {
-            data: {
-                message: msg,
-                success: false,
-            },
-            status: HTTP_STATUS.BAD_REQUEST,
-        };
+        return invalidRequestResponseData(msg);
     }
 
     const authAccount = await prisma.authAccount.findFirst({
@@ -73,5 +67,5 @@ export async function oAuthSignInHandler(ctx: Context, authProvider: string, tok
             message: `Successfuly logged in using ${oAuthData.providerName} as ${authAccount.user.userName}`,
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }

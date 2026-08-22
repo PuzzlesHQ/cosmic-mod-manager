@@ -177,7 +177,7 @@ export async function createNewVersion(
             slug: newVersion.slug,
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function createVersionDependencies(dependentVersionId: string, list: z.infer<typeof VersionDependencies>) {

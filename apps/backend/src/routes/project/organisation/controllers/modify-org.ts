@@ -88,7 +88,10 @@ export async function updateOrg(
     // Update the index of org projects
     UpdateProjects_SearchIndex(org.projects.map((project) => project.id));
 
-    return { data: { success: true, message: "Organization updated", slug: updatedOrg.slug }, status: HTTP_STATUS.OK };
+    return {
+        data: { success: true, message: "Organization updated", slug: updatedOrg.slug },
+        status: HTTP_STATUS.OK,
+    } as const;
 }
 
 export async function updateOrgIcon(
@@ -189,7 +192,13 @@ export async function deleteOrgIcon(ctx: Context, userSession: SessionUserData, 
         },
     });
 
-    return { data: { success: true, message: "Organization icon deleted" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Organization icon deleted",
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }
 
 export async function deleteOrg(ctx: Context, userSession: SessionUserData, orgId: string) {
@@ -287,7 +296,13 @@ export async function deleteOrg(ctx: Context, userSession: SessionUserData, orgI
         UpdateProjects_SearchIndex(orgProjectIds),
     ]);
 
-    return { data: { success: true, message: "Organization deleted" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Organization deleted",
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }
 
 export async function addProjectToOrganisation(userSession: SessionUserData, orgId: string, projectId: string) {
@@ -339,7 +354,13 @@ export async function addProjectToOrganisation(userSession: SessionUserData, org
         Delete_OrganizationCache_All(org.id, org.slug),
     ]);
 
-    return { data: { success: true, message: "Project added to organization" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Project added to organization",
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }
 
 export async function removeProjectFromOrg(
@@ -408,5 +429,11 @@ export async function removeProjectFromOrg(
         Delete_OrganizationCache_All(org.id, org.slug),
     ]);
 
-    return { data: { success: true, message: "Project removed from organization" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Project removed from organization",
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }

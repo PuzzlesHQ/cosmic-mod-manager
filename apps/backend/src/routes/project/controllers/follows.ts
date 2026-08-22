@@ -62,7 +62,7 @@ export async function addProjectsToUserFollows(projectIds: string[], userSession
             success: true,
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function removeProjectsFromUserFollows(projectIds: string[], userSession: SessionUserData) {
@@ -112,5 +112,5 @@ export async function removeProjectsFromUserFollows(projectIds: string[], userSe
             success: true,
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }

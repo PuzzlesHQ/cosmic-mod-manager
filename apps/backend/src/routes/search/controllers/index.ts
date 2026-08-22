@@ -77,7 +77,7 @@ export async function searchProjects(props: Props) {
     if (props.type) filters.push(formatFilterItems("type", [props.type], " OR "));
     if (props.openSourceOnly) filters.push(formatFilterItems("openSource", [props.openSourceOnly], " AND "));
 
-    const index = meilisearch.index(MEILISEARCH_PROJECT_INDEX);
+    const index = meilisearch.index<ProjectSearchDocument>(MEILISEARCH_PROJECT_INDEX);
     const result = await index.search(props.query, {
         sort: sortBy ? [sortBy] : [],
         limit: props.limit,
@@ -86,15 +86,22 @@ export async function searchProjects(props: Props) {
     });
 
     const projects: ProjectListItem[] = [];
-    const hits = result.hits as ProjectSearchDocument[];
 
-    for (const project of hits) {
+    for (const project of result.hits) {
         projects.push(mapSearchProjectToListItem(project));
     }
 
-    result.hits = projects;
-
-    return { data: result, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            hits: projects,
+            query: result.query,
+            limit: result.limit,
+            offset: result.offset,
+            estimatedTotalHits: result.estimatedTotalHits,
+            processingTimeMs: result.processingTimeMs,
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }
 
 function formatFilterItems(name: string, values: string[], join: string) {

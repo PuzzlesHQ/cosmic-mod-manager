@@ -20,6 +20,7 @@ import {
     unauthenticatedReqResponse,
     unauthorizedReqResponse,
 } from "~/utils/http";
+import { respondJson } from "~/utils/jsonRes";
 import { getSessionUser } from "~/utils/router";
 import {
     createReport,
@@ -50,7 +51,7 @@ async function report_post(ctx: Context) {
     }
 
     const res = await createReport(data, sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function userReports_get(ctx: Context) {
@@ -61,7 +62,7 @@ async function userReports_get(ctx: Context) {
     const userId = url.searchParams.get("userId");
 
     const res = await getManyReports(sessionUser, userId || sessionUser.id);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function getAllReports(ctx: Context) {
@@ -87,7 +88,7 @@ async function getAllReports(ctx: Context) {
     }
 
     const res = await getManyReports(sessionUser, undefined, filters);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function existingReport_get(ctx: Context) {
@@ -100,8 +101,10 @@ async function existingReport_get(ctx: Context) {
     if (!itemType || !itemId) return invalidRequestResponse(ctx, "Item type and item ID are required.");
 
     const res = await getExistingReport(itemType as ReportItemType, itemId, sessionUser);
-    if (isSuccessResponse(res)) return ctx.json(res.data.data, res.status);
-    return ctx.json(res.data, res.status);
+    if (isSuccessResponse(res)) {
+        return respondJson(ctx, { data: res.data.data, status: res.status });
+    }
+    return respondJson(ctx, res);
 }
 
 async function report_get(ctx: Context) {
@@ -112,7 +115,7 @@ async function report_get(ctx: Context) {
     if (!reportId) return invalidRequestResponse(ctx, "Report ID is required.");
 
     const res = await getReportData(reportId, sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function report_patch(ctx: Context) {
@@ -123,7 +126,7 @@ async function report_patch(ctx: Context) {
     if (!reportId) return invalidRequestResponse(ctx, "Report ID is required.");
 
     const res = await patchReport(reportId, ctx.get(REQ_BODY_NAMESPACE).closed === true, sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 export default reportRouter;

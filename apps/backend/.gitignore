@@ -11,3 +11,5 @@ dumps
 data.ms
 
 prisma/client/*
+.hono-docs
+openapi

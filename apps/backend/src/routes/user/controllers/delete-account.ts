@@ -118,7 +118,7 @@ export async function confirmUserAccountDeletion(token: string) {
             message: `Successfully deleted your ${SITE_NAME_SHORT} account`,
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 // Transfers the ownership of the projects to a user,

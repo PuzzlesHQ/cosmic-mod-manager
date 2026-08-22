@@ -6,6 +6,7 @@ import { AuthenticationMiddleware } from "~/middleware/auth";
 import { invalidAuthAttemptLimiter } from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { invalidRequestResponse } from "~/utils/http";
+import { respondJson } from "~/utils/jsonRes";
 import { getSessionUser } from "~/utils/router";
 import {
     createPersonalAccessToken,
@@ -26,7 +27,7 @@ async function pat_get(ctx: Context) {
     if (!sessionUser) return invalidRequestResponse(ctx);
 
     const res = await getAllUserPATs(sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function pat_post(ctx: Context) {
@@ -38,7 +39,7 @@ async function pat_post(ctx: Context) {
     if (error || !data) return invalidRequestResponse(ctx, error);
 
     const res = await createPersonalAccessToken(sessionUser, data);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function pat_patch(ctx: Context) {
@@ -53,7 +54,7 @@ async function pat_patch(ctx: Context) {
     if (error || !data) return invalidRequestResponse(ctx, error);
 
     const res = await editPersonalAccessToken(sessionUser, patId, data);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function pat_delete(ctx: Context) {
@@ -64,7 +65,7 @@ async function pat_delete(ctx: Context) {
     if (!patId) return invalidRequestResponse(ctx, "PAT ID is required");
 
     const res = await deletePersonalAccessToken(sessionUser, patId);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 export default patRouter;

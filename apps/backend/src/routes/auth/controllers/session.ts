@@ -20,7 +20,7 @@ export async function getUserSessions(userSession: SessionUserData) {
         return invalidRequestResponseData();
     }
 
-    const list: SessionListData[] = [];
+    const list = [];
     for (const session of sessions) {
         list.push({
             id: session.id,
@@ -35,13 +35,13 @@ export async function getUserSessions(userSession: SessionUserData) {
             country: session.country,
             ip: session.ip,
             userAgent: session.userAgent,
-        });
+        } satisfies SessionListData);
     }
 
     return {
         data: list,
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function deleteUserSession(ctx: Context, userSession: SessionUserData, sessionId: string) {
@@ -56,7 +56,7 @@ export async function deleteUserSession(ctx: Context, userSession: SessionUserDa
     return {
         data: { success: true, message: `Session with id: ${sessionId} logged out successfully` },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function revokeSessionFromAccessCode(ctx: Context, code: string) {
@@ -68,9 +68,15 @@ export async function revokeSessionFromAccessCode(ctx: Context, code: string) {
     });
     if (!targetSession?.id) {
         await addInvalidAuthAttempt(ctx);
-        return { data: { success: false, message: "Invalid access code" }, status: HTTP_STATUS.BAD_REQUEST };
+        return invalidRequestResponseData("Invalid access code");
     }
 
     await invalidateSessionFromId(targetSession.id);
-    return { data: { success: true, message: "Successfully revoked the session access" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Successfully revoked the session access",
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }

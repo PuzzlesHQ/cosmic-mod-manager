@@ -35,6 +35,7 @@ import {
 } from "~/routes/user/controllers/profile";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { invalidRequestResponse, unauthenticatedReqResponse } from "~/utils/http";
+import { respondJson } from "~/utils/jsonRes";
 import { getSessionUser } from "~/utils/router";
 import { confirmUserAccountDeletion } from "./controllers/delete-account";
 
@@ -71,7 +72,7 @@ async function user_get(ctx: Context) {
     if (!slug) return invalidRequestResponse(ctx);
 
     const res = await getUserProfileData(slug);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 // Get the list of projects the user follows
@@ -85,7 +86,7 @@ async function userFollows_get(ctx: Context) {
     const idsOnly = ctx.req.query("idsOnly") === "true";
 
     const res = await getUserFollowedProjects(slug, sessionUser, idsOnly);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 // Get all projects of the user
@@ -96,7 +97,7 @@ async function userProjects_get(ctx: Context) {
     const sessionUser = getSessionUser(ctx, API_SCOPE.USER_READ, API_SCOPE.PROJECT_READ);
 
     const res = await getAllVisibleProjects(sessionUser, slug, listedProjectsOnly);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 // Get all projects of the user
@@ -106,7 +107,7 @@ async function userCollections_get(ctx: Context) {
     const sessionUser = getSessionUser(ctx, API_SCOPE.USER_READ, API_SCOPE.COLLECTION_READ);
 
     const res = await GetUserCollections(slug, sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 // Update user profile
@@ -124,7 +125,7 @@ async function user_patch(ctx: Context) {
     if (!data) return invalidRequestResponse(ctx, error);
 
     const res = await updateUserProfile(sessionUser, data);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 // Delete user account
@@ -136,7 +137,7 @@ async function user_delete(ctx: Context) {
     }
 
     const res = await confirmUserAccountDeletion(token);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 // Get confirmation_action_type
@@ -145,7 +146,7 @@ async function userConfirmationAction_post(ctx: Context) {
     if (!token) invalidRequestResponse(ctx);
 
     const res = await getConfirmActionTypeFromCode(token);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 // Delete confirmation_action_code
@@ -154,7 +155,7 @@ async function userConfirmationAction_delete(ctx: Context) {
     if (!code) invalidRequestResponse(ctx);
 
     const res = await deleteConfirmationActionCode(code);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 // Send new password confirmation email
@@ -166,7 +167,7 @@ async function addPasswordConfirmation_post(ctx: Context) {
     if (error || !data) return invalidRequestResponse(ctx, error);
 
     const res = await addNewPassword_ConfirmationEmail(sessionUser, data);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 // Add the new password
@@ -175,7 +176,7 @@ async function addPasswordConfirmation_put(ctx: Context) {
     if (!token) return invalidRequestResponse(ctx);
 
     const res = await confirmAddingNewPassword(token);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 // Remove user password
@@ -188,7 +189,7 @@ async function userPassword_delete(ctx: Context) {
     if (!sessionUser?.password) return invalidRequestResponse(ctx);
 
     const res = await removeAccountPassword(ctx, sessionUser, data);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 // Send change password confirmation email
@@ -197,7 +198,7 @@ async function changePasswordConfirmationEmail_post(ctx: Context) {
     if (error || !data) return invalidRequestResponse(ctx, error);
 
     const res = await sendAccountPasswordChangeLink(ctx, data);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 // Change user password
@@ -210,7 +211,7 @@ async function userPassword_patch(ctx: Context) {
     if (!code) return invalidRequestResponse(ctx);
 
     const res = await changeUserPassword(ctx, code, data, sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 // Send delete account confirmation email
@@ -222,7 +223,7 @@ async function deleteAccountConfirmation_post(ctx: Context) {
     }
 
     const res = await deleteUserAccountConfirmationEmail(sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 // async function sendEmailChangeConfirmationCode_post(ctx: Context) {

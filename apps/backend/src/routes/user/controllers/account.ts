@@ -29,8 +29,9 @@ export async function addNewPassword_ConfirmationEmail(
     userSession: SessionUserData,
     formData: z.infer<typeof setNewPasswordFormSchema>,
 ) {
-    if (formData.newPassword !== formData.confirmNewPassword)
-        return { data: { success: false, message: "Passwords do not match" }, status: HTTP_STATUS.BAD_REQUEST };
+    if (formData.newPassword !== formData.confirmNewPassword) {
+        return invalidRequestResponseData("Passwords do not match");
+    }
 
     if (userSession.password) return invalidRequestResponseData();
 
@@ -57,7 +58,7 @@ export async function addNewPassword_ConfirmationEmail(
     return {
         data: { message: "You should receive a confirmation email shortly.", success: true },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function getConfirmActionTypeFromCode(token: string) {
@@ -74,7 +75,13 @@ export async function getConfirmActionTypeFromCode(token: string) {
     if (!isExpired(confirmationEmail.dateCreated, confirmationEmailValidityDict[actionType]))
         return invalidRequestResponseData("Invalid or expired code");
 
-    return { data: { actionType: actionType, success: true }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            actionType: actionType,
+            success: true,
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }
 
 export async function deleteConfirmationActionCode(token: string) {
@@ -92,7 +99,13 @@ export async function deleteConfirmationActionCode(token: string) {
         },
     });
 
-    return { data: { success: true, message: "Cancelled successfully" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Cancelled successfully",
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }
 
 export async function confirmAddingNewPassword(code: string) {
@@ -143,7 +156,7 @@ export async function confirmAddingNewPassword(code: string) {
             message: "Successfully added the new password",
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function removeAccountPassword(
@@ -189,7 +202,7 @@ export async function removeAccountPassword(
             message: "Account password removed successfully",
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function sendAccountPasswordChangeLink(ctx: Context, formData: z.infer<typeof emailFormSchema>) {
@@ -208,7 +221,7 @@ export async function sendAccountPasswordChangeLink(ctx: Context, formData: z.in
                     "You should receive an email with a link to change your password if you entered correct email address.",
             },
             status: HTTP_STATUS.OK,
-        };
+        } as const;
     }
 
     const token = generateRandomToken();
@@ -236,7 +249,7 @@ export async function sendAccountPasswordChangeLink(ctx: Context, formData: z.in
                 "You should receive an email with a link to change your password if you entered correct email address.",
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function changeUserPassword(
@@ -297,7 +310,7 @@ export async function changeUserPassword(
             message: "Successfully changed account password",
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function deleteUserAccountConfirmationEmail(userSession: SessionUserData) {
@@ -321,5 +334,5 @@ export async function deleteUserAccountConfirmationEmail(userSession: SessionUse
     return {
         data: { success: true, message: "You should receive a confirmation email shortly" },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }

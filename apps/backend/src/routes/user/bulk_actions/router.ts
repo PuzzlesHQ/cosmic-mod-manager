@@ -3,6 +3,7 @@ import { type Context, Hono } from "hono";
 import { AuthenticationMiddleware } from "~/middleware/auth";
 import { invalidAuthAttemptLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limiter";
 import { invalidRequestResponse } from "~/utils/http";
+import { respondJson } from "~/utils/jsonRes";
 import { getManyUsers } from "./controller";
 
 const bulkUserActionsRouter = new Hono()
@@ -21,7 +22,7 @@ async function users_get(ctx: Context) {
     }
 
     const res = await getManyUsers(idsArray);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 export default bulkUserActionsRouter;

@@ -36,7 +36,7 @@ export async function getVersionsData(ids: string[]) {
     return {
         data: formattedList,
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function getVersionById(id: string) {
@@ -48,5 +48,5 @@ export async function getVersionById(id: string) {
     return {
         data: version.data[0],
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }

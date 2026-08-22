@@ -30,7 +30,7 @@ export async function getUserNotifications(
         },
     });
 
-    return { data: notifications, status: HTTP_STATUS.OK };
+    return { data: notifications, status: HTTP_STATUS.OK } as const;
 }
 
 export async function getNotificationById(ctx: Context, userSession: SessionUserData, notifId: string) {
@@ -48,7 +48,7 @@ export async function getNotificationById(ctx: Context, userSession: SessionUser
         return unauthorizedReqResponseData();
     }
 
-    return { data: notification, status: HTTP_STATUS.OK };
+    return { data: notification, status: HTTP_STATUS.OK } as const;
 }
 
 export async function markNotificationAsRead(
@@ -96,7 +96,7 @@ export async function markNotificationAsRead(
             message: "Notifications marked as read.",
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function deleteNotifications(
@@ -133,7 +133,7 @@ export async function deleteNotifications(
             message: "Notifications deleted.",
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 // Helpers

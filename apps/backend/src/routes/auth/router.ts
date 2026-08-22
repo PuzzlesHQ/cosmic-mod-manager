@@ -14,6 +14,7 @@ import {
 } from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { HTTP_STATUS, invalidRequestResponse, unauthenticatedReqResponse } from "~/utils/http";
+import { respondJson } from "~/utils/jsonRes";
 import { getSessionUser } from "~/utils/router";
 import { userFileUrl } from "~/utils/urls";
 import { getLinkedAuthProviders, linkAuthProviderHandler, unlinkAuthProvider } from "./controllers/link-provider";
@@ -58,7 +59,7 @@ async function currSession_get(ctx: Context) {
     const sessionUser = getSessionUser(ctx, API_SCOPE.USER_READ);
     if (!sessionUser) return unauthenticatedReqResponse(ctx, "You're not logged in!");
 
-    const formattedObject = {
+    const formattedObject: LoggedInUserData = {
         id: sessionUser.id,
         email: sessionUser.email,
         userName: sessionUser.userName,
@@ -70,35 +71,23 @@ async function currSession_get(ctx: Context) {
         profilePageBg: userFileUrl(sessionUser.id, sessionUser.profilePageBg),
         sessionId: sessionUser.sessionId,
         patId: sessionUser.patID,
-    } satisfies LoggedInUserData;
+    };
 
     if (!hasScope(sessionUser.apiScopes, API_SCOPE.USER_READ_EMAIL)) {
         formattedObject.email = "";
         Object.defineProperty(formattedObject, "email", { enumerable: false });
     }
 
-    return ctx.json(formattedObject, HTTP_STATUS.OK);
+    return respondJson(ctx, { data: formattedObject, status: HTTP_STATUS.OK });
 }
 
 async function validateSession_get(ctx: Context) {
     const sessionUser = getSessionUser(ctx);
-    if (!sessionUser) {
-        return ctx.json(
-            {
-                sessionValid: false,
-            },
-            HTTP_STATUS.OK,
-        );
-    }
 
-    return ctx.json(
-        {
-            sessionValid: true,
-            sessionId: sessionUser.sessionId,
-            patId: sessionUser.patID,
-        },
-        HTTP_STATUS.OK,
-    );
+    return respondJson(ctx, {
+        data: { sessionValid: !!sessionUser },
+        status: HTTP_STATUS.OK,
+    });
 }
 
 async function oAuthUrl_get(ctx: Context, intent: AuthActionIntent) {
@@ -116,7 +105,10 @@ async function oAuthUrl_get(ctx: Context, intent: AuthActionIntent) {
         return ctx.redirect(url);
     }
 
-    return ctx.json({ success: true, url }, HTTP_STATUS.OK);
+    return respondJson(ctx, {
+        data: { success: true, url },
+        status: HTTP_STATUS.OK,
+    });
 }
 
 async function credentialSignin_post(ctx: Context) {
@@ -124,7 +116,7 @@ async function credentialSignin_post(ctx: Context) {
     if (error || !data) return invalidRequestResponse(ctx, error);
 
     const result = await credentialSignIn(ctx, data);
-    return ctx.json(result.data, result.status);
+    return respondJson(ctx, result);
 }
 
 async function oAuthSignIn_post(ctx: Context) {
@@ -141,7 +133,7 @@ async function oAuthSignIn_post(ctx: Context) {
     }
 
     const result = await oAuthSignInHandler(ctx, authProvider, code);
-    return ctx.json(result.data, result.status);
+    return respondJson(ctx, result);
 }
 
 async function oAuthSignUp_post(ctx: Context) {
@@ -158,7 +150,7 @@ async function oAuthSignUp_post(ctx: Context) {
     }
 
     const result = await oAuthSignUpHandler(ctx, authProvider, code);
-    return ctx.json(result.data, result.status);
+    return respondJson(ctx, result);
 }
 
 async function oAuthLinkProvider_post(ctx: Context) {
@@ -176,7 +168,7 @@ async function oAuthLinkProvider_post(ctx: Context) {
     }
 
     const result = await linkAuthProviderHandler(ctx, sessionUser, authProvider, code);
-    return ctx.json(result.data, result.status);
+    return respondJson(ctx, result);
 }
 
 async function oAuthLinkProvider_delete(ctx: Context) {
@@ -189,7 +181,7 @@ async function oAuthLinkProvider_delete(ctx: Context) {
     if (!authProvider) return invalidRequestResponse(ctx);
 
     const result = await unlinkAuthProvider(ctx, sessionUser, authProvider);
-    return ctx.json(result.data, result.status);
+    return respondJson(ctx, result);
 }
 
 async function sessions_get(ctx: Context) {
@@ -197,7 +189,7 @@ async function sessions_get(ctx: Context) {
     if (!sessionUser) return unauthenticatedReqResponse(ctx);
 
     const result = await getUserSessions(sessionUser);
-    return ctx.json(result.data, result.status);
+    return respondJson(ctx, result);
 }
 
 async function linkedProviders_get(ctx: Context) {
@@ -205,7 +197,7 @@ async function linkedProviders_get(ctx: Context) {
     if (!sessionUser?.id) return invalidRequestResponse(ctx);
 
     const result = await getLinkedAuthProviders(sessionUser);
-    return ctx.json(result.data, result.status);
+    return respondJson(ctx, result);
 }
 
 async function session_delete(ctx: Context) {
@@ -216,7 +208,7 @@ async function session_delete(ctx: Context) {
     if (!targetSessionId) return invalidRequestResponse(ctx, "Session id is required");
 
     const result = await deleteUserSession(ctx, sessionUser, targetSessionId);
-    return ctx.json(result.data, result.status);
+    return respondJson(ctx, result);
 }
 
 async function revokeSession_delete(ctx: Context) {
@@ -224,7 +216,7 @@ async function revokeSession_delete(ctx: Context) {
     if (!code) return invalidRequestResponse(ctx);
 
     const result = await revokeSessionFromAccessCode(ctx, code);
-    return ctx.json(result.data, result.status);
+    return respondJson(ctx, result);
 }
 
 export default authRouter;

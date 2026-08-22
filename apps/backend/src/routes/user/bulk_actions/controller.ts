@@ -21,5 +21,5 @@ export async function getManyUsers(ids: string[]) {
         });
     }
 
-    return { data: list, status: HTTP_STATUS.OK };
+    return { data: list, status: HTTP_STATUS.OK } as const;
 }

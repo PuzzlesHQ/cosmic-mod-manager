@@ -6,6 +6,7 @@ import { LoginProtectedRoute } from "~/middleware/auth";
 import { critModifyReqRateLimiter, getReqRateLimiter, modifyReqRateLimiter } from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { invalidRequestResponse, isSuccessResponse, notFoundResponse, unauthenticatedReqResponse } from "~/utils/http";
+import { respondJson } from "~/utils/jsonRes";
 import { getSessionUser } from "~/utils/router";
 import { getAllProjectVersions, getLatestVersion, getProjectVersionData } from "./controllers";
 import { createNewVersion } from "./controllers/new-version";
@@ -35,7 +36,7 @@ async function versions_get(ctx: Context) {
     const featuredOnly = ctx.req.query("featured") === "true";
 
     const res = await getAllProjectVersions(projectSlug, sessionUser, featuredOnly);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function version_get(ctx: Context, download = false) {
@@ -58,7 +59,7 @@ async function version_get(ctx: Context, download = false) {
               })
             : await getProjectVersionData(projectSlug, versionId, sessionUser);
 
-    if (download !== true || !isSuccessResponse(res)) return ctx.json(res.data, res.status);
+    if (download !== true || !isSuccessResponse(res)) return respondJson(ctx, res);
 
     const fileName = ctx.req.param("fileName");
     const version = res.data.data;
@@ -72,7 +73,7 @@ async function version_get(ctx: Context, download = false) {
     // Redirect to the primary file by default
     if (version.primaryFile) return ctx.redirect(version.primaryFile.url);
 
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function version_post(ctx: Context) {
@@ -109,7 +110,7 @@ async function version_post(ctx: Context) {
     if (error || !data) return invalidRequestResponse(ctx, error);
 
     const res = await createNewVersion(ctx, sessionUser, projectId, data);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function version_patch(ctx: Context) {
@@ -147,7 +148,7 @@ async function version_patch(ctx: Context) {
     if (error || !data) return invalidRequestResponse(ctx, error);
 
     const res = await updateVersionData(ctx, projectId, versionId, sessionUser, data);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function version_delete(ctx: Context) {
@@ -159,7 +160,7 @@ async function version_delete(ctx: Context) {
     if (!projectId || !versionId) return invalidRequestResponse(ctx);
 
     const res = await deleteProjectVersion(ctx, projectId, versionId, sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 export default versionRouter;

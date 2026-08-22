@@ -39,6 +39,8 @@ import notificationRouter from "~/routes/user/notification/router";
 import userRouter from "~/routes/user/router";
 import { versionFileRouter, versionFiles_Router } from "~/routes/version-file/router";
 import versionsRouter from "~/routes/versions/router";
+import docsRouter from "./routes/docs/router";
+import { respondJson } from "./utils/jsonRes";
 import { Log } from "./utils/logger";
 
 const corsAllowedOrigins = env.CORS_ALLOWED_URLS.split(" ");
@@ -100,6 +102,7 @@ const app = new Hono()
     .route("/api/statistics", statsRouter)
     .route("/cdn", cdnRouter)
     .route("/maven", mavenRouter)
+    .route("/api/docs", docsRouter)
 
     // Some inlined routes
     .get("/favicon.ico", async (ctx: Context) => {
@@ -115,16 +118,16 @@ const app = new Hono()
     });
 
 async function apiDetails(ctx: Context) {
-    return ctx.json(
-        {
+    return respondJson(ctx, {
+        data: {
             message: "Hello visitor! Welcome to the CRMM API.",
             website: env.FRONTEND_URL,
             docs: `https://docs${env.COOKIE_DOMAIN}`,
             status: `https://status${env.COOKIE_DOMAIN}`,
             cdn: env.CACHE_CDN_URL,
         },
-        HTTP_STATUS.OK,
-    );
+        status: HTTP_STATUS.OK,
+    });
 }
 
 try {
@@ -142,3 +145,4 @@ Bun.serve({
 });
 
 export { app };
+export type AppType = typeof app;

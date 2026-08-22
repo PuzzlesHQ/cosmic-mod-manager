@@ -35,5 +35,11 @@ export async function updateProjectDescription(
         },
     });
 
-    return { data: { success: true, message: "Project description updated" }, status: HTTP_STATUS.OK };
+    return {
+        data: {
+            success: true,
+            message: "Project description updated",
+        },
+        status: HTTP_STATUS.OK,
+    } as const;
 }

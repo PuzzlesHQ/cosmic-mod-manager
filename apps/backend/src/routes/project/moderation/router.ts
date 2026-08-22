@@ -9,7 +9,8 @@ import {
     strictGetReqRateLimiter,
 } from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
-import { unauthorizedReqResponse } from "~/utils/http";
+import { invalidRequestResponse, unauthorizedReqResponse } from "~/utils/http";
+import { respondJson } from "~/utils/jsonRes";
 import { getSessionUser } from "~/utils/router";
 import { getModerationProjects, updateModerationProject } from "./controller";
 
@@ -28,7 +29,7 @@ async function moderationProjects_get(ctx: Context) {
     }
 
     const res = await getModerationProjects();
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function moderationProject_post(ctx: Context) {
@@ -40,10 +41,12 @@ async function moderationProject_post(ctx: Context) {
 
     const id = ctx.req.param("id");
     const body = ctx.get(REQ_BODY_NAMESPACE);
+    if (!id || !body) return invalidRequestResponse(ctx);
+
     const newStatus = body.status;
 
     const res = await updateModerationProject(id, newStatus, sessionUser);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 export default moderationRouter;

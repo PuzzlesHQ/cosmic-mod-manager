@@ -1,5 +1,6 @@
 import { type Context, Hono } from "hono";
 import { invalidRequestResponse } from "~/utils/http";
+import { respondJson } from "~/utils/jsonRes";
 import { getVersionById, getVersionsData } from "./handler";
 
 const versionsRouter = new Hono().get("/", versions_get).get("/:versionId", version_get);
@@ -18,7 +19,7 @@ async function versions_get(ctx: Context) {
     }
 
     const res = await getVersionsData(versionIds);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function version_get(ctx: Context) {
@@ -26,7 +27,7 @@ async function version_get(ctx: Context) {
     if (!versionId) return invalidRequestResponse(ctx, "No version id provided!");
 
     const res = await getVersionById(versionId);
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 export default versionsRouter;

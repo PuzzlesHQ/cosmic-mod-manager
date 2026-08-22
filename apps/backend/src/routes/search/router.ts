@@ -19,6 +19,7 @@ import { type Context, Hono } from "hono";
 import { applyCacheHeaders } from "~/middleware/cache";
 import { searchReqRateLimiter } from "~/middleware/rate-limiter";
 import { HTTP_STATUS, invalidRequestResponse } from "~/utils/http";
+import { respondJson } from "~/utils/jsonRes";
 import { searchProjects } from "./controllers";
 
 const searchRouter = new Hono()
@@ -83,7 +84,7 @@ async function search_get(ctx: Context) {
         limit: limit,
         type: type,
     });
-    return ctx.json(res.data, res.status);
+    return respondJson(ctx, res);
 }
 
 async function sortByFilters_get(ctx: Context) {
@@ -94,10 +95,15 @@ async function sortByFilters_get(ctx: Context) {
         SearchResultSortMethod.RECENTLY_UPDATED,
         SearchResultSortMethod.RECENTLY_PUBLISHED,
     ];
-    return ctx.json(
-        { success: true, queryKey: sortByParamNamespace, default: defaultSortBy, list: list },
-        HTTP_STATUS.OK,
-    );
+    return respondJson(ctx, {
+        data: {
+            success: true,
+            queryKey: sortByParamNamespace,
+            default: defaultSortBy,
+            list: list,
+        },
+        status: HTTP_STATUS.OK,
+    });
 }
 
 async function loaders_get(ctx: Context) {
@@ -107,11 +113,17 @@ async function loaders_get(ctx: Context) {
     }
 
     const loaderFilters = getAllLoaderCategories(projectType);
-    return ctx.json({ success: true, queryKey: loaderFilterParamNamespace, list: loaderFilters }, HTTP_STATUS.OK);
+    return respondJson(ctx, {
+        data: { success: true, queryKey: loaderFilterParamNamespace, list: loaderFilters },
+        status: HTTP_STATUS.OK,
+    });
 }
 
 async function gameVersions_get(ctx: Context) {
-    return ctx.json({ success: true, queryKey: gameVersionFilterParamNamespace, list: GAME_VERSIONS }, HTTP_STATUS.OK);
+    return respondJson(ctx, {
+        data: { success: true, queryKey: gameVersionFilterParamNamespace, list: GAME_VERSIONS },
+        status: HTTP_STATUS.OK,
+    });
 }
 
 async function categories_get(ctx: Context) {
@@ -121,7 +133,10 @@ async function categories_get(ctx: Context) {
     }
 
     const categories = getValidProjectCategories([projectType], TagType.CATEGORY).map((category) => category.name);
-    return ctx.json({ success: true, queryKey: categoryFilterParamNamespace, list: categories }, HTTP_STATUS.OK);
+    return respondJson(ctx, {
+        data: { success: true, queryKey: categoryFilterParamNamespace, list: categories },
+        status: HTTP_STATUS.OK,
+    });
 }
 
 async function features_get(ctx: Context) {
@@ -131,7 +146,10 @@ async function features_get(ctx: Context) {
     }
 
     const categories = getValidProjectCategories([projectType], TagType.FEATURE).map((category) => category.name);
-    return ctx.json({ success: true, queryKey: categoryFilterParamNamespace, list: categories }, HTTP_STATUS.OK);
+    return respondJson(ctx, {
+        data: { success: true, queryKey: categoryFilterParamNamespace, list: categories },
+        status: HTTP_STATUS.OK,
+    });
 }
 
 async function resolutions_get(ctx: Context) {
@@ -141,7 +159,10 @@ async function resolutions_get(ctx: Context) {
     }
 
     const categories = getValidProjectCategories([projectType], TagType.RESOLUTION).map((category) => category.name);
-    return ctx.json({ success: true, queryKey: categoryFilterParamNamespace, list: categories }, HTTP_STATUS.OK);
+    return respondJson(ctx, {
+        data: { success: true, queryKey: categoryFilterParamNamespace, list: categories },
+        status: HTTP_STATUS.OK,
+    });
 }
 
 async function performanceImpacts_get(ctx: Context) {
@@ -153,11 +174,17 @@ async function performanceImpacts_get(ctx: Context) {
     const categories = getValidProjectCategories([projectType], TagType.PERFORMANCE_IMPACT).map(
         (category) => category.name,
     );
-    return ctx.json({ success: true, queryKey: categoryFilterParamNamespace, list: categories }, HTTP_STATUS.OK);
+    return respondJson(ctx, {
+        data: { success: true, queryKey: categoryFilterParamNamespace, list: categories },
+        status: HTTP_STATUS.OK,
+    });
 }
 
 async function licenses_get(ctx: Context) {
-    return ctx.json({ success: true, queryKey: licenseFilterParamNamespace, list: ["oss"] }, HTTP_STATUS.OK);
+    return respondJson(ctx, {
+        data: { success: true, queryKey: licenseFilterParamNamespace, list: ["oss"] },
+        status: HTTP_STATUS.OK,
+    });
 }
 
 export default searchRouter;

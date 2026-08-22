@@ -42,7 +42,7 @@ export async function getOrganisationById(userSession: SessionUserData | null, s
         }),
     } satisfies Organisation;
 
-    return { data: formattedData, status: HTTP_STATUS.OK };
+    return { data: formattedData, status: HTTP_STATUS.OK } as const;
 }
 
 export async function getUserOrganisations(userSession: SessionUserData | null, userSlug: string) {
@@ -87,7 +87,7 @@ export async function getUserOrganisations(userSession: SessionUserData | null, 
         });
     }
 
-    return { data: organisationsList, status: HTTP_STATUS.OK };
+    return { data: organisationsList, status: HTTP_STATUS.OK } as const;
 }
 
 export async function createOrganisation(
@@ -137,7 +137,7 @@ export async function createOrganisation(
             slug: newOrganisation.slug,
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export async function getOrganisationProjects(userSession: SessionUserData | null, slug: string, listedOnly = false) {

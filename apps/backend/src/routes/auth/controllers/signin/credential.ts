@@ -6,7 +6,7 @@ import { GetUser_Unique } from "~/db/user_item";
 import { addInvalidAuthAttempt } from "~/middleware/rate-limiter";
 import { matchPassword } from "~/routes/auth/helpers";
 import { createUserSession, setSessionCookie } from "~/routes/auth/helpers/session";
-import { HTTP_STATUS } from "~/utils/http";
+import { HTTP_STATUS, invalidRequestResponseData } from "~/utils/http";
 
 const RESPONSE_DELAY_ms = 2000;
 
@@ -23,10 +23,7 @@ async function credentialSignIn(ctx: Context, formData: z.infer<typeof loginForm
         await addInvalidAuthAttempt(ctx);
         await new Promise((resolve) => setTimeout(resolve, RESPONSE_DELAY_ms));
 
-        return {
-            data: { success: false, message: wrongCredsMsg },
-            status: HTTP_STATUS.BAD_REQUEST,
-        };
+        return invalidRequestResponseData(wrongCredsMsg);
     }
 
     const [isCorrectPassword] = await Promise.all([
@@ -36,10 +33,7 @@ async function credentialSignIn(ctx: Context, formData: z.infer<typeof loginForm
 
     if (!isCorrectPassword) {
         await addInvalidAuthAttempt(ctx);
-        return {
-            data: { success: false, message: wrongCredsMsg },
-            status: HTTP_STATUS.BAD_REQUEST,
-        };
+        return invalidRequestResponseData(wrongCredsMsg);
     }
 
     const newSession = await createUserSession({
@@ -54,7 +48,7 @@ async function credentialSignIn(ctx: Context, formData: z.infer<typeof loginForm
     return {
         data: { success: true, message: `Logged in as ${user.name}` },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
 
 export default credentialSignIn;

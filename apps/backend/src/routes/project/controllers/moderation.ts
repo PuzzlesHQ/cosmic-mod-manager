@@ -102,5 +102,5 @@ export async function QueueProjectForApproval(projectId: string, userSession: Se
             message: "Project successfully queued for approval! Expect it to be done in 24-48 hours!",
         },
         status: HTTP_STATUS.OK,
-    };
+    } as const;
 }
