@@ -43,7 +43,7 @@ function UpdateLocaleOnHintChange() {
 
 function ValidateClientSession() {
     useEffect(() => {
-        clientFetch("/api/auth/me");
+        clientFetch("/api/auth/validate-session");
     }, []);
 
     return null;

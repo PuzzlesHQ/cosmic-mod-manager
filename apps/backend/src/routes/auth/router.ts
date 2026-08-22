@@ -31,6 +31,7 @@ const authRouter = new Hono()
 
     // Route Definitions
     .get("/me", getReqRateLimiter, currSession_get)
+    .get("/validate-session", getReqRateLimiter, validateSession_get)
 
     // Routes to get OAuth URL
     .get("/signin/:authProvider", strictGetReqRateLimiter, async (ctx: Context) =>
@@ -79,6 +80,27 @@ async function currSession_get(ctx: Context) {
     return ctx.json(formattedObject, HTTP_STATUS.OK);
 }
 
+async function validateSession_get(ctx: Context) {
+    const sessionUser = getSessionUser(ctx);
+    if (!sessionUser) {
+        return ctx.json(
+            {
+                sessionValid: false,
+            },
+            HTTP_STATUS.OK,
+        );
+    }
+
+    return ctx.json(
+        {
+            sessionValid: true,
+            sessionId: sessionUser.sessionId,
+            patId: sessionUser.patID,
+        },
+        HTTP_STATUS.OK,
+    );
+}
+
 async function oAuthUrl_get(ctx: Context, intent: AuthActionIntent) {
     const sessionUser = getSessionUser(ctx);
     if (sessionUser?.id && intent !== AuthActionIntent.LINK)
@@ -112,6 +134,7 @@ async function oAuthSignIn_post(ctx: Context) {
 
     const authProvider = ctx.req.param("authProvider");
     const code = ctx.get(REQ_BODY_NAMESPACE)?.code;
+    if (!authProvider || !code) return invalidRequestResponse(ctx);
 
     if (!authProvidersList.includes(authProvider.toLowerCase() as AuthProvider) || !code) {
         return invalidRequestResponse(ctx);
@@ -128,6 +151,8 @@ async function oAuthSignUp_post(ctx: Context) {
 
     const authProvider = ctx.req.param("authProvider");
     const code = ctx.get(REQ_BODY_NAMESPACE)?.code;
+    if (!authProvider || !code) return invalidRequestResponse(ctx);
+
     if (!authProvidersList.includes(authProvider.toLowerCase() as AuthProvider) || !code) {
         return invalidRequestResponse(ctx);
     }
@@ -144,6 +169,8 @@ async function oAuthLinkProvider_post(ctx: Context) {
 
     const authProvider = ctx.req.param("authProvider");
     const code = ctx.get(REQ_BODY_NAMESPACE)?.code;
+    if (!authProvider || !code) return invalidRequestResponse(ctx);
+
     if (!authProvidersList.includes(getAuthProviderFromString(authProvider)) || !code) {
         return invalidRequestResponse(ctx);
     }
@@ -159,6 +186,8 @@ async function oAuthLinkProvider_delete(ctx: Context) {
     }
 
     const authProvider = ctx.req.param("authProvider");
+    if (!authProvider) return invalidRequestResponse(ctx);
+
     const result = await unlinkAuthProvider(ctx, sessionUser, authProvider);
     return ctx.json(result.data, result.status);
 }
