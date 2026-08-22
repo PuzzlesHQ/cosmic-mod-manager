@@ -1,6 +1,5 @@
 const envKeys = [
     "FRONTEND_URL",
-    "BACKEND_URL",
     "CORS_ALLOWED_URLS",
     "OAUTH_REDIRECT_URI",
 
