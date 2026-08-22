@@ -4,12 +4,13 @@
     "type": "module",
     "scripts": {
         "dev": "bun run --watch src/index.ts",
-        "start": "bun src/index.ts",
+        "build": "bun run build.ts",
+        "start": "bun run build/index.js",
         "prisma-generate": "prisma generate --sql",
         "prisma-push": "prisma db push",
         "deploy": "NODE_ENV=production pm2 deploy pm2.config.cjs backend",
         "file-backup": "bun run src/services/storage/backup/index.ts",
-        "docs": "bunx @rcmade/hono-docs generate --config ./hono-docs.ts"
+        "openapi-docs": "bunx @rcmade/hono-docs generate --config ./hono-docs.ts"
     },
     "dependencies": {
         "@app/utils": "workspace:*",

@@ -21,6 +21,7 @@ cd "$BACKEND_DIR" || exit 1
 bun run src/routes/cdn/process-downloads.ts
 bun run prisma-generate > /dev/null
 bun run prisma-push > /dev/null
+bun run build
 pm2 reload crmm-backend -s --update-env
 pm2 reload crmm-github-webhook -s --update-env
 

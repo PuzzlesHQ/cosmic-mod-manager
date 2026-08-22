@@ -12,7 +12,7 @@ export default defineConfig({
         servers: [{ url: "", description: "Prod" }],
     },
     outputs: {
-        openApiJson: "./openapi/openapi.json",
+        openApiJson: "./openapi/openapi.json.txt",
     },
     apis: [
         {

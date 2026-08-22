@@ -1,8 +1,8 @@
-import fs from "node:fs/promises";
-import path from "node:path";
 import { Scalar } from "@scalar/hono-api-reference";
 import { Hono } from "hono";
 import { getReqRateLimiter } from "~/middleware/rate-limiter";
+
+const openapiData = await import("~/../openapi/openapi.json.txt", { with: { type: "text" } });
 
 const docsRouter = new Hono()
     .use(getReqRateLimiter)
@@ -14,19 +14,18 @@ const docsRouter = new Hono()
             layout: "modern",
             defaultHttpClient: { targetKey: "js", clientKey: "fetch" },
             mcp: {
-                disabled: true
+                disabled: true,
             },
             agent: {
-                disabled: true
+                disabled: true,
             },
-            
+
             telemetry: false,
-            hideModels: true
+            hideModels: true,
         }),
     )
     .get("/open-api", async (c) => {
-        const raw = await fs.readFile(path.join(process.cwd(), "./openapi/openapi.json"), "utf-8");
-        return c.json(JSON.parse(raw));
+        return c.text(openapiData.default);
     });
 
 export default docsRouter;
