@@ -19,7 +19,7 @@ export default defineConfig({
     },
     apis: [
         {
-            name: "CrMods API",
+            name: "API",
             apiPrefix: "",
             appTypePath: "src/index.ts",
         },

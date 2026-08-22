@@ -9,8 +9,9 @@ const docsRouter = new Hono()
     .get(
         "/",
         Scalar({
+            title: "API Reference Docs",
             url: "/api/docs/open-api",
-            theme: "kepler",
+            theme: "deepSpace",
             layout: "modern",
             defaultHttpClient: { targetKey: "js", clientKey: "fetch" },
             mcp: {
