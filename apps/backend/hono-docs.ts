@@ -9,14 +9,17 @@ export default defineConfig({
             version: "1.0.0",
             description: "CrMods API reference",
         },
-        servers: [{ url: "", description: "Prod" }],
+        servers: [
+            { url: "https://api.crmods.org", description: "Prod" },
+            { url: "http://localhost:5500", description: "Local" },
+        ],
     },
     outputs: {
         openApiJson: "./openapi/openapi.json.txt",
     },
     apis: [
         {
-            name: "",
+            name: "CrMods API",
             apiPrefix: "",
             appTypePath: "src/index.ts",
         },

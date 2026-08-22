@@ -22,6 +22,7 @@ const docsRouter = new Hono()
 
             telemetry: false,
             hideModels: true,
+            hideClientButton: true,
         }),
     )
     .get("/open-api", async (c) => {
