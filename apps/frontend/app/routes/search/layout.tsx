@@ -19,7 +19,7 @@ export default function () {
 }
 
 export async function loader(props: Route.LoaderArgs): Promise<SearchResultData> {
-    const reqUrl = new URL(props.request.url);
+    const reqUrl = props.url;
     const pathFrags = reqUrl.pathname.split("?")[0].split("/").filter(Boolean);
     const type = (pathFrags.at(-1) || "")?.slice(0, -1);
 
