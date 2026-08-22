@@ -20,7 +20,7 @@
         }
     },
     "include": [".", "./../../packages/utils/src"],
-    "exclude": ["node_modules", "dist", "pm2.config.cjs"],
+    "exclude": ["node_modules", "dist", "pm2.config.cjs", "build"],
     "references": [
         {
             "path": "./../../packages/utils"
