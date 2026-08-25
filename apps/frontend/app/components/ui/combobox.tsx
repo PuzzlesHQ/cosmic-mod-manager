@@ -92,7 +92,7 @@ function ComboBox(props: ComboBoxProps) {
     }, [props.value, props.options, !!searchVal?.trim()]);
 
     return (
-        <Popover open={open} onOpenChange={setOpen} modal={true}>
+        <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>{props.children}</PopoverTrigger>
             <PopoverContent align="end" className="border-none p-0 sm:min-w-md">
                 <Command className="border border-border">

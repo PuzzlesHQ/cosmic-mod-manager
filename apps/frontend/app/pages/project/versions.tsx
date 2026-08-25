@@ -39,7 +39,8 @@ import { useSession } from "~/hooks/session";
 import { useTranslation } from "~/locales/provider";
 import Config from "~/utils/config";
 import { joinPaths, ProjectPagePath, VersionPagePath } from "~/utils/urls";
-import VersionFilters from "./version-filters";
+import { VersionFilters } from "./utils/version-filters/component";
+import useVersionFilters from "./utils/version-filters/hook";
 import DeleteVersionDialog from "./version/delete-version";
 
 export default function ProjectVersionsPage() {
@@ -48,7 +49,7 @@ export default function ProjectVersionsPage() {
     const ctx = useProjectData();
     const projectData = ctx.projectData;
 
-    const versionFilterRes = VersionFilters({
+    const filter = useVersionFilters({
         allProjectVersions: ctx.allProjectVersions,
         supportedGameVersions: projectData.gameVersions,
         showDevVersions_Default: false,
@@ -67,12 +68,12 @@ export default function ProjectVersionsPage() {
                 <UploadVersionLinkCard uploadPageUrl={VersionPagePath(ctx.projectType, projectData.slug, "new")} />
             ) : null}
 
-            {versionFilterRes.FilterComponent}
+            <VersionFilters hook={filter} />
 
             <ProjectVersionsListTable
                 projectType={ctx.projectType}
                 projectData={projectData}
-                allProjectVersions={versionFilterRes.filteredItems}
+                allProjectVersions={filter.filteredResults}
                 canEditVersion={doesMemberHaveAccess(
                     ProjectPermission.UPLOAD_VERSION,
                     ctx.currUsersMembership?.permissions || [],
@@ -85,7 +86,7 @@ export default function ProjectVersionsPage() {
                     ctx.currUsersMembership?.isOwner === true,
                     session?.role,
                 )}
-                anyFilterEnabled={versionFilterRes.anyFilterEnabled}
+                anyFilterEnabled={filter.activeFiltersCount > 0}
             />
         </>
     );

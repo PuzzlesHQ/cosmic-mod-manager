@@ -15,7 +15,8 @@ import { cn } from "~/components/utils";
 import { useProjectData } from "~/hooks/project";
 import { useTranslation } from "~/locales/provider";
 import { UserProfilePath, VersionPagePath } from "~/utils/urls";
-import VersionFilters from "./version-filters";
+import { VersionFilters } from "./utils/version-filters/component";
+import useVersionFilters from "./utils/version-filters/hook";
 
 const ITEMS_PER_PAGE = 15;
 const pageSearchParamKey = "page";
@@ -30,20 +31,20 @@ export default function VersionChangelogs() {
     const pagesCount = Math.ceil((allProjectVersions?.length || 0) / ITEMS_PER_PAGE);
     const activePage = ParseInt(page) <= pagesCount ? ParseInt(page) : 1;
 
-    const filter = VersionFilters({
+    const filter = useVersionFilters({
         allProjectVersions: allProjectVersions,
         supportedGameVersions: projectData.gameVersions,
         showDevVersions_Default: true,
     });
 
-    const visibleVersionItems = filter.filteredItems.slice(
+    const visibleVersionItems = filter.filteredResults.slice(
         (activePage - 1) * ITEMS_PER_PAGE,
         activePage * ITEMS_PER_PAGE,
     );
 
     return (
         <>
-            {filter.FilterComponent}
+            <VersionFilters hook={filter} />
 
             <Card className="flex w-full flex-col items-start justify-start p-5">
                 {visibleVersionItems.map((version, index) => {
@@ -113,13 +114,13 @@ export default function VersionChangelogs() {
                 })}
             </Card>
 
-            {(filter.filteredItems.length || 0) > ITEMS_PER_PAGE ? (
+            {filter.filteredResults.length > ITEMS_PER_PAGE && (
                 <PaginatedNavigation
                     pagesCount={pagesCount}
                     activePage={activePage}
                     searchParamKey={pageSearchParamKey}
                 />
-            ) : null}
+            )}
         </>
     );
 }

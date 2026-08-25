@@ -177,11 +177,14 @@ export const MultiSelect = ({
             </PopoverTrigger>
 
             <PopoverContent
-                className={cn("w-min min-w-(--radix-popover-trigger-width) border-none p-0", popoverClassname)}
+                className={cn(
+                    "w-min min-w-(--radix-popover-trigger-width) border-none bg-transparent p-0",
+                    popoverClassname,
+                )}
                 align="start"
                 onEscapeKeyDown={() => handleTogglePopover(false)}
             >
-                <Command className="border border-border">
+                <Command className="border border-border px-1">
                     {searchBox !== false && (
                         <CommandInput
                             placeholder={inputPlaceholder || "Search..."}
@@ -216,7 +219,7 @@ export const MultiSelect = ({
                                         key={option.value}
                                         onSelect={() => toggleOption(option.value)}
                                         className={cn(
-                                            "ps-3",
+                                            "whitespace-nowrap ps-3",
                                             isSelected
                                                 ? "text-accent-text data-[selected=true]:text-accent-text"
                                                 : "text-foreground-muted",
@@ -233,7 +236,7 @@ export const MultiSelect = ({
                                                     : "border-hover-background-strong [&_svg]:invisible",
                                             )}
                                         >
-                                            <CheckIcon aria-hidden className="h-3.5 w-3.5" strokeWidth={2.8} />
+                                            <CheckIcon aria-hidden className="h-3 w-3" strokeWidth={3} />
                                         </div>
                                     </CommandItem>
                                 );

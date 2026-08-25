@@ -6,10 +6,11 @@ import { createURLSafeSlug } from "~/string";
 import { ProjectType, ProjectVisibility } from "~/types";
 import { mustBeURLSafe } from "../utils";
 
-// export const stringUrl = z.preprocess((val: string) => (val === "" ? null : val), z.url({ protocol: /^https?/ }));
 export const nullableStringUrl = z
-    .preprocess((val: string) => (val === "" ? null : val), z.url({ protocol: /^https?/ }).nullable())
-    .nullable();
+    .url({ protocol: /^https?/ })
+    .or(z.literal(""))
+    .nullable()
+    .transform((val) => (!val ? null : val));
 
 export const ProjectTypeField = z
     .enum(ProjectType)

@@ -94,7 +94,7 @@ function CommandItem({ ref, className, ...props }: React.ComponentProps<typeof C
         <CommandPrimitive.Item
             ref={ref}
             className={cn(
-                "relative flex cursor-default select-none items-center rounded-md px-2.5 py-1.5 font-medium text-foreground-muted text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected=true]:bg-raised-background data-[selected=true]:text-foreground data-[disabled=true]:opacity-50",
+                "relative flex cursor-default select-none items-center gap-x-4 rounded-md px-2.5 py-1.5 font-medium text-foreground-muted text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected=true]:bg-raised-background data-[selected=true]:text-foreground data-[disabled=true]:opacity-50",
                 className,
             )}
             {...props}
