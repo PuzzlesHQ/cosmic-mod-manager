@@ -30,7 +30,7 @@ export function VerticalScroll({ children, className, ...props }: ComponentProps
             {
                 root: root,
                 threshold: 1,
-                rootMargin: "4px 0px",
+                rootMargin: "10px 0px",
             },
         );
 

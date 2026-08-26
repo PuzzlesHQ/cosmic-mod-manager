@@ -184,19 +184,19 @@ export const MultiSelect = ({
                 align="start"
                 onEscapeKeyDown={() => handleTogglePopover(false)}
             >
-                <Command className="border border-border px-1">
-                    {searchBox !== false && (
-                        <CommandInput
-                            placeholder={inputPlaceholder || "Search..."}
-                            onKeyDown={handleInputKeyDown}
-                            size={1}
-                            className="w-full"
-                            value={searchVal}
-                            onValueChange={setSearchVal}
-                        />
-                    )}
+                <Command className="border border-border">
+                    <CommandInput
+                        placeholder={inputPlaceholder || "Search..."}
+                        onKeyDown={handleInputKeyDown}
+                        size={1}
+                        className="w-full"
+                        value={searchVal}
+                        onValueChange={setSearchVal}
+                        readOnly={!searchBox}
+                        wrapperClassName={!searchBox ? "h-0 opacity-0 overflow-hidden" : ""}
+                    />
 
-                    <CommandList className="grid gap-y-1">
+                    <CommandList>
                         <CommandEmpty>
                             {(NoResultsElement &&
                                 (typeof NoResultsElement === "function" ? (

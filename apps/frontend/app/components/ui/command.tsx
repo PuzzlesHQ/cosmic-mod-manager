@@ -56,11 +56,13 @@ function CommandInput({
 
 CommandInput.displayName = CommandPrimitive.Input.displayName;
 
-function CommandList({ ref, className, children, ...props }: React.ComponentProps<typeof CommandPrimitive.List>) {
+function CommandList({ className, children, ...props }: React.ComponentProps<typeof CommandPrimitive.List>) {
     return (
-        <VerticalScroll ref={ref} className={cn("max-h-[18rem] overflow-y-auto", className)} {...props}>
-            {children}
-        </VerticalScroll>
+        <CommandPrimitive.List>
+            <VerticalScroll className={cn("max-h-[18rem] overflow-y-auto", className)} {...props}>
+                {children}
+            </VerticalScroll>
+        </CommandPrimitive.List>
     );
 }
 CommandList.displayName = CommandPrimitive.List.displayName;
@@ -94,7 +96,7 @@ function CommandItem({ ref, className, ...props }: React.ComponentProps<typeof C
         <CommandPrimitive.Item
             ref={ref}
             className={cn(
-                "relative flex cursor-default select-none items-center gap-x-4 rounded-md px-2.5 py-1.5 font-medium text-foreground-muted text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected=true]:bg-raised-background data-[selected=true]:text-foreground data-[disabled=true]:opacity-50",
+                "relative flex cursor-default select-none items-center gap-x-3 rounded-md px-2.5 py-1.5 font-medium text-foreground-muted text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected=true]:bg-raised-background data-[selected=true]:text-foreground data-[disabled=true]:opacity-50",
                 className,
             )}
             {...props}

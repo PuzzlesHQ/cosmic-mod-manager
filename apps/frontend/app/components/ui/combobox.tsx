@@ -58,7 +58,7 @@ function ComboBox(props: ComboBoxProps) {
                             "text-error-fg data-[selected=true]:bg-raised-background data-[selected=true]:text-error-fg",
                     )}
                 >
-                    <Check className={cn("me-2 h-4 w-4", props.value === option.value ? "opacity-100" : "opacity-0")} />
+                    <Check className={cn("h-4 w-4", props.value === option.value ? "opacity-100" : "opacity-0")} />
                     {option.label}
 
                     {option?.disabled === true ? (
@@ -94,7 +94,12 @@ function ComboBox(props: ComboBoxProps) {
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>{props.children}</PopoverTrigger>
-            <PopoverContent align="end" className="border-none p-0 sm:min-w-md">
+            <PopoverContent
+                align="end"
+                className="border-none p-0 sm:min-w-md"
+                onWheel={(e) => e.stopPropagation()}
+                onTouchMove={(e) => e.stopPropagation()}
+            >
                 <Command className="border border-border">
                     {props.inputBox === false ? null : (
                         <CommandInput
