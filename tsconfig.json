@@ -21,7 +21,7 @@
         "noPropertyAccessFromIndexSignature": false,
         "paths": {
             "@root/*": ["./*"]
-        },
+        }
     },
     "references": [
         {
@@ -34,11 +34,5 @@
             "path": "./packages/utils"
         }
     ],
-    "exclude": [
-        "node_modules/",
-        "build/",
-        "dist/",
-        "apps/backend/prisma/**/*",
-        "apps/backend/build/**/*",
-    ]
+    "exclude": ["node_modules/", "build/", "dist/", "apps/backend/prisma/**/*", "apps/backend/build/**/*"]
 }

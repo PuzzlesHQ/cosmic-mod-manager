@@ -521,7 +521,7 @@ export default {
             publish_date,
         ],
 
-        developerInfo: "Developer Information"
+        developerInfo: "Developer Information",
     },
 
     projectSettings: {
