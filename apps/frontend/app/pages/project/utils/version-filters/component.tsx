@@ -31,7 +31,7 @@ export function VersionFilters(props: Props) {
         <>
             {filterOptions.anyFilterVisible || props.hook.hasDevVersion ? (
                 <div className="flex flex-wrap items-center justify-start gap-2">
-                    {filterOptions.loaders.length > 0 ? (
+                    {filterOptions.loaders.length > 1 ? (
                         <MultiSelect
                             selectedValues={activeFilters.loaders}
                             options={filterOptions.loaders.map((loader) => ({
@@ -54,7 +54,7 @@ export function VersionFilters(props: Props) {
                         />
                     ) : null}
 
-                    {filterOptions.gameVersions.length > 0 ? (
+                    {filterOptions.gameVersions.length > 1 ? (
                         <MultiSelect
                             searchBox={filterOptions.gameVersions.length > 5}
                             selectedValues={activeFilters.gameVersions}
@@ -93,7 +93,7 @@ export function VersionFilters(props: Props) {
                         />
                     ) : null}
 
-                    {filterOptions.releaseChannels.length > 0 ? (
+                    {filterOptions.releaseChannels.length > 1 ? (
                         <MultiSelect
                             searchBox={false}
                             selectedValues={activeFilters.releaseChannels}
