@@ -98,7 +98,7 @@ export async function loader(props: Route.LoaderArgs): Promise<LoaderData> {
 export function meta(props: Route.MetaArgs): MetaDescriptor[] {
     const { t } = useTranslation();
     const userSlug = props.params.userName;
-    const userData = props.data?.userData;
+    const userData = props.loaderData?.userData;
 
     if (!userData?.id) {
         return MetaTags({

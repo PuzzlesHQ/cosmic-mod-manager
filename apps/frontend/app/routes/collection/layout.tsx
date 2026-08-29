@@ -82,7 +82,7 @@ export function shouldRevalidate({
 
 export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
-    const collection = props.data?.collection;
+    const collection = props.loaderData?.collection;
 
     if (!collection?.id) {
         return MetaTags({

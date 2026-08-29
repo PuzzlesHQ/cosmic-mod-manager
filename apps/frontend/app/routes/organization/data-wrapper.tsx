@@ -73,7 +73,7 @@ export function shouldRevalidate({
 
 export function meta(props: Route.MetaArgs) {
     const { t } = useTranslation();
-    const data = props.data as OrgLoaderData;
+    const data = props.loaderData as OrgLoaderData;
     const orgData = data?.orgData;
 
     if (!orgData?.id) {
