@@ -224,7 +224,6 @@ export default function GeneralSettingsPage() {
 
                                     <div>
                                         <MultiSelect
-                                            searchBox={false}
                                             options={projectTypes.map((type) => ({
                                                 label: Capitalize(t.navbar[type]),
                                                 value: type,

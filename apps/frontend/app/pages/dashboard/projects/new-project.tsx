@@ -193,7 +193,6 @@ export default function CreateNewProjectDialog({ orgId, trigger }: Props) {
                                         </div>
 
                                         <MultiSelect
-                                            searchBox={false}
                                             open={typeSelectorOpen}
                                             onOpenChange={setTypeSelectorOpen}
                                             selectedValues={field.value || []}

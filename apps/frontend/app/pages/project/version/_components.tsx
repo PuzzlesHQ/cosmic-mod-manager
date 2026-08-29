@@ -257,7 +257,6 @@ export function MetadataInputCard<FieldsT extends {}>(props: {
                                 onValueChange={field.onChange}
                                 selectedValues={field.value || []}
                                 placeholder={t.version.selectLoaders}
-                                searchBox={false}
                                 noResultsElement={t.common.noResults}
                                 inputPlaceholder={t.common.search}
                             />
@@ -274,6 +273,7 @@ export function MetadataInputCard<FieldsT extends {}>(props: {
                         <FormLabel htmlFor="supported-game-versions-filter-input">{t.search.gameVersions}</FormLabel>
 
                         <MultiSelect
+                            searchBox={true}
                             options={GAME_VERSIONS.filter(
                                 (version) => showAllVersions || !isExperimentalGameVersion(version.releaseType),
                             ).map((version) => ({ label: version.label, value: version.value }))}
@@ -291,7 +291,7 @@ export function MetadataInputCard<FieldsT extends {}>(props: {
                                     <LabelledCheckbox
                                         checked={showAllVersions}
                                         onCheckedChange={(checked) => setShowAllVersions(checked === true)}
-                                        className="mt-1 ps-3.5 text-foreground-extra-muted"
+                                        className="mt-1 ps-3.5 pb-2 text-foreground-extra-muted"
                                     >
                                         {t.form.showAllVersions}
                                     </LabelledCheckbox>

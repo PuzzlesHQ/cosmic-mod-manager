@@ -41,7 +41,6 @@ export function VersionFilters(props: Props) {
                             onValueChange={(values) => {
                                 setActiveFilters({ ...activeFilters, loaders: values });
                             }}
-                            searchBox={false}
                             customTrigger={
                                 <Button variant="secondary">
                                     <FilterIcon aria-hidden className="h-btn-icon w-btn-icon" />
@@ -95,7 +94,6 @@ export function VersionFilters(props: Props) {
 
                     {filterOptions.releaseChannels.length > 1 ? (
                         <MultiSelect
-                            searchBox={false}
                             selectedValues={activeFilters.releaseChannels}
                             options={filterOptions.releaseChannels.map((channel) => ({
                                 label: CapitalizeAndFormatString(channel) || "",
