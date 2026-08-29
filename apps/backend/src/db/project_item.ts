@@ -8,7 +8,7 @@ import {
 import prisma from "~/services/prisma";
 import valkey from "~/services/redis";
 import { PROJECT_DETAILS_CACHE_KEY, PROJECT_LIST_ITEM_CACHE_KEY } from "~/types/namespaces";
-import { cacheKey, GetData_FromCache, PROJECT_CACHE_EXPIRY_seconds, SetCache } from "./_cache";
+import { cacheKey, DeleteCache, GetData_FromCache, PROJECT_CACHE_EXPIRY_seconds, SetCache } from "./_cache";
 import {
     Delete_OrganizationCache_All,
     GetManyOrganizations_ById,
@@ -452,7 +452,7 @@ export async function Delete_ProjectCache_All(id: string, slug?: string) {
         projectSlug = slug1 || slug2 || "";
     }
 
-    return await valkey.del([
+    return await DeleteCache([
         cacheKey(id, PROJECT_LIST_ITEM_CACHE_KEY),
         cacheKey(projectSlug, PROJECT_LIST_ITEM_CACHE_KEY),
         cacheKey(id, PROJECT_DETAILS_CACHE_KEY),

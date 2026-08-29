@@ -1,8 +1,7 @@
 import type { Prisma } from "@prisma-client";
 import prisma from "~/services/prisma";
-import valkey from "~/services/redis";
 import { COLLECTION_DATA_CACHE_KEY, USER_COLLECTIONS_LIST_CACHE_KEY } from "~/types/namespaces";
-import { COLLECTION_CACHE_EXPIRY_seconds, cacheKey, GetData_FromCache, SetCache } from "./_cache";
+import { COLLECTION_CACHE_EXPIRY_seconds, cacheKey, DeleteCache, GetData_FromCache, SetCache } from "./_cache";
 
 const COLLECTION_SELECT_FIELDS = {
     id: true,
@@ -162,7 +161,7 @@ async function SetCollectionCache<T extends SetCache_Data | null>(data: T) {
 }
 
 export async function Delete_CollectionCache(id: string) {
-    return await valkey.del(cacheKey(id, COLLECTION_DATA_CACHE_KEY));
+    return await DeleteCache(cacheKey(id, COLLECTION_DATA_CACHE_KEY));
 }
 
 async function Set_UserCollectionsListCache(userId: string, collections: string[]) {
@@ -171,5 +170,5 @@ async function Set_UserCollectionsListCache(userId: string, collections: string[
 }
 
 export async function Delete_UserCollectionsListCache(userId: string) {
-    return await valkey.del(cacheKey(userId, USER_COLLECTIONS_LIST_CACHE_KEY));
+    return await DeleteCache(cacheKey(userId, USER_COLLECTIONS_LIST_CACHE_KEY));
 }

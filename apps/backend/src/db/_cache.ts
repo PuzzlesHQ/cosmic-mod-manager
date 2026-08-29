@@ -49,7 +49,16 @@ export async function SetCache(NAMESPACE: string, key: string, data: string, exp
     await valkey.set(cacheKey(key, NAMESPACE), data, "EX", expiry_seconds);
 }
 
-export async function DeleteCache(...keys: string[]) {
+export async function DeleteCache(...args: string[] | [string[]]) {
+    const firstArg = args[0];
+    let keys: string[];
+    if (Array.isArray(firstArg)) {
+        keys = firstArg;
+    } else {
+        keys = args as string[];
+    }
+
+    if (!keys.length) return;
     await valkey.del(keys);
 }
 

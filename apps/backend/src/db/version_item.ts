@@ -2,7 +2,7 @@ import type { Prisma } from "@prisma-client";
 import prisma from "~/services/prisma";
 import valkey from "~/services/redis";
 import { PROJECT_VERSIONS_CACHE_KEY } from "~/types/namespaces";
-import { cacheKey, GetData_FromCache, SetCache, VERSION_CACHE_EXPIRY_seconds } from "./_cache";
+import { cacheKey, DeleteCache, GetData_FromCache, SetCache, VERSION_CACHE_EXPIRY_seconds } from "./_cache";
 import { Delete_ProjectCache_All } from "./project_item";
 
 export const VERSION_SELECT = {
@@ -246,7 +246,7 @@ export async function Delete_VersionCache(projectId: string, _projectSlug?: stri
         projectSlug = (await valkey.get(cacheKey(projectId, PROJECT_VERSIONS_CACHE_KEY))) || "";
     }
 
-    const delKeys = valkey.del([
+    const delKeys = DeleteCache([
         cacheKey(projectId, PROJECT_VERSIONS_CACHE_KEY),
         cacheKey(projectSlug, PROJECT_VERSIONS_CACHE_KEY),
     ]);

@@ -2,7 +2,7 @@ import type { Prisma } from "@prisma-client";
 import prisma from "~/services/prisma";
 import valkey from "~/services/redis";
 import { ORGANIZATION_DATA_CACHE_KEY, USER_ORGANIZATIONS_CACHE_KEY } from "~/types/namespaces";
-import { cacheKey, GetData_FromCache, ORGANIZATION_DATA_CACHE_EXPIRY_seconds, SetCache } from "./_cache";
+import { cacheKey, DeleteCache, GetData_FromCache, ORGANIZATION_DATA_CACHE_EXPIRY_seconds, SetCache } from "./_cache";
 import { GetManyTeams_ById, GetTeam, type TTeam } from "./team_item";
 
 const ORGANIZATION_SELECT_FIELDS = {
@@ -156,7 +156,7 @@ export async function CreateOrganization<T extends Prisma.OrganisationCreateArgs
     args: Prisma.SelectSubset<T, Prisma.OrganisationCreateArgs>,
     ownerUserId: string,
 ) {
-    await valkey.del(cacheKey(ownerUserId, USER_ORGANIZATIONS_CACHE_KEY));
+    await DeleteCache(cacheKey(ownerUserId, USER_ORGANIZATIONS_CACHE_KEY));
     return await prisma.organisation.create(args);
 }
 
@@ -212,7 +212,7 @@ export async function Delete_OrganizationCache_All(id: string, slug?: string) {
         orgSlug = (await valkey.get(cacheKey(id, ORGANIZATION_DATA_CACHE_KEY))) || "";
     }
 
-    return await valkey.del([
+    return await DeleteCache([
         cacheKey(id, ORGANIZATION_DATA_CACHE_KEY),
         cacheKey(orgSlug, ORGANIZATION_DATA_CACHE_KEY),
     ]);

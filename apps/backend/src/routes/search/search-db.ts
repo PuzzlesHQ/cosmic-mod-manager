@@ -1,3 +1,4 @@
+import { DeleteCache } from "~/db/_cache";
 import { GetManyProjects_Details } from "~/db/project_item";
 import { getLast15Days_ProjectDownloads } from "~/services/clickhouse/project-downloads";
 import meilisearch from "~/services/meilisearch";
@@ -98,7 +99,7 @@ async function getAddedItems() {
 }
 
 async function flushAddedItemsQueue() {
-    await valkey.del(ADDED_ITEMS_QUEUE);
+    await DeleteCache(ADDED_ITEMS_QUEUE);
 }
 
 async function getRemovedItems() {
@@ -110,7 +111,7 @@ async function getRemovedItems() {
 }
 
 async function flushRemovedItemsQueue() {
-    await valkey.del(REMOVED_ITEMS_QUEUE);
+    await DeleteCache(REMOVED_ITEMS_QUEUE);
 }
 
 // Queue functions

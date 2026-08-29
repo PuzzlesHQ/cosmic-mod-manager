@@ -2,7 +2,7 @@ import type { Prisma } from "@prisma-client";
 import prisma from "~/services/prisma";
 import valkey from "~/services/redis";
 import { USER_DATA_CACHE_KEY, USER_ORGANIZATIONS_CACHE_KEY, USER_PROJECTS_CACHE_KEY } from "~/types/namespaces";
-import { cacheKey, GetData_FromCache, SetCache, USER_DATA_CACHE_EXPIRY_seconds } from "./_cache";
+import { cacheKey, DeleteCache, GetData_FromCache, SetCache, USER_DATA_CACHE_EXPIRY_seconds } from "./_cache";
 
 const USER_DATA_SELECT_FIELDS = {
     id: true,
@@ -206,7 +206,10 @@ export async function Delete_UserCache(id: string, _userName?: string) {
         userName = (await valkey.get(cacheKey(id, USER_DATA_CACHE_KEY))) || "";
     }
 
-    return await valkey.del([cacheKey(id, USER_DATA_CACHE_KEY), cacheKey(userName.toLowerCase(), USER_DATA_CACHE_KEY)]);
+    return await DeleteCache([
+        cacheKey(id, USER_DATA_CACHE_KEY),
+        cacheKey(userName.toLowerCase(), USER_DATA_CACHE_KEY),
+    ]);
 }
 
 interface SetCache_Data {
@@ -224,9 +227,9 @@ async function Set_UserCache<T extends SetCache_Data | null>(user: T) {
 }
 
 export async function Delete_UserProjectsCache(userId: string) {
-    return await valkey.del(cacheKey(userId, USER_PROJECTS_CACHE_KEY));
+    return await DeleteCache(cacheKey(userId, USER_PROJECTS_CACHE_KEY));
 }
 
 export async function Delete_UserOrganizationsCache(userId: string) {
-    return await valkey.del(cacheKey(userId, USER_ORGANIZATIONS_CACHE_KEY));
+    return await DeleteCache(cacheKey(userId, USER_ORGANIZATIONS_CACHE_KEY));
 }

@@ -1,4 +1,5 @@
 import { DateFromStr, ISO_DateStr } from "@app/utils/date";
+import { DeleteCache } from "~/db/_cache";
 import { UpdateProject } from "~/db/project_item";
 import { UpdateVersion } from "~/db/version_item";
 import { Analytics_InsertProjectDownloads } from "~/services/clickhouse/project-downloads";
@@ -41,7 +42,7 @@ async function getDownloadsHistory() {
 }
 
 async function refreshDownloadsHistory() {
-    await valkey.del(DOWNLOADS_HISTORY_KEY);
+    await DeleteCache(DOWNLOADS_HISTORY_KEY);
 }
 
 async function addToHistory(item: DownloadsQueueItem) {
@@ -58,7 +59,7 @@ function queueDownloadsHistoryRefresh() {
 }
 
 async function flushDownloadsCounterQueue() {
-    await valkey.del(DOWNLOADS_QUEUE_KEY);
+    await DeleteCache(DOWNLOADS_QUEUE_KEY);
 }
 
 async function getDownloadsCounterQueue(flushQueue = false) {
