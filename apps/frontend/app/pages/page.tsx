@@ -1,3 +1,4 @@
+import { projectTypes } from "@app/utils/config/project";
 import type { ProjectListItem } from "@app/utils/types/api";
 import { imageUrl } from "@app/utils/url";
 import { CompassIcon, LayoutDashboardIcon, LogInIcon } from "lucide-react";
@@ -23,15 +24,6 @@ export default function HomePage({ projects }: Props) {
     const timeoutRef = useRef<number | undefined>(undefined);
     const session = useSession();
 
-    const nav = t.navbar;
-
-    // The animation keyframes in "@/app/styles.css" need to be updated according to the number of items in the list
-    const showcaseItems = [nav.mods, nav.plugins, nav["resource-packs"], nav.modpacks, nav.shaders, nav.mods];
-
-    useEffect(() => {
-        setGridBgPortal(document.querySelector("#hero_section_bg_portal"));
-    }, []);
-
     function recreateBackground() {
         if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
         timeoutRef.current = window.setTimeout(() => {
@@ -53,6 +45,10 @@ export default function HomePage({ projects }: Props) {
         };
     }, [gridBgPortal]);
 
+    useEffect(() => {
+        setGridBgPortal(document.querySelector("#hero_section_bg_portal"));
+    }, []);
+
     return (
         <>
             {gridBgPortal
@@ -73,31 +69,7 @@ export default function HomePage({ projects }: Props) {
 
                     <div className="flex w-full max-w-4xl flex-col items-center justify-center gap-4">
                         <h1 className="inline-flex flex-wrap items-center justify-center gap-x-2.5 text-center font-medium text-4xl text-foreground lg:gap-x-4 lg:text-6xl">
-                            {t.homePage.title(
-                                <div
-                                    key="project-type"
-                                    className="mb-1 inline-block h-12 max-w-full overflow-hidden lg:h-18"
-                                >
-                                    <span className="hero_section_showcase inline-flex flex-col items-center justify-center [--unit-height:3rem] lg:[--unit-height:4.5rem]">
-                                        {showcaseItems?.map((item, index) => {
-                                            return (
-                                                <strong
-                                                    // biome-ignore lint/suspicious/noArrayIndexKey: --
-                                                    key={`${item}${index}`}
-                                                    className={cn(
-                                                        "flex h-12 items-center justify-center whitespace-nowrap text-nowrap bg-clip-text font-bold text-4xl leading-loose lg:h-18 lg:text-6xl",
-                                                        "bg-accent-bg bg-cover bg-linear-to-b from-foreground-bright via-accent-bg to-accent-bg text-transparent",
-                                                    )}
-                                                    // @ts-expect-error
-                                                    style={{ "--index": index + 1 }}
-                                                >
-                                                    {item}
-                                                </strong>
-                                            );
-                                        })}
-                                    </span>
-                                </div>,
-                            )}
+                            {t.homePage.title(<HeroSectionAnimation key="hero-section-animation" />)}
                         </h1>
 
                         <div className="flex w-full max-w-2xl flex-col items-center justify-center">
@@ -148,13 +120,85 @@ export default function HomePage({ projects }: Props) {
                     </div>
                 </section>
 
-                <ShowCase projects={projects || []} />
+                <ProjectsMarquee projects={projects || []} />
             </main>
         </>
     );
 }
 
-function ShowCase({ projects }: { projects: ProjectListItem[] }) {
+function round(percent: number) {
+    return Math.round(percent * 100) / 100;
+}
+
+function HeroSectionAnimation() {
+    const { t, formattedLocaleName } = useTranslation();
+    const showcaseItems = projectTypes.map((type) => t.navbar[type]);
+
+    const timePerItem = 2;
+    const duration = showcaseItems.length * timePerItem;
+
+    const percentSharePerItem = 100 / showcaseItems.length;
+    const timeForSlide = percentSharePerItem / 6;
+
+    return (
+        <div
+            className="hero-section-showcase inline-flex h-12 max-w-full flex-col overflow-hidden lg:h-18"
+            key={formattedLocaleName}
+        >
+            {showcaseItems.map((item, index) => {
+                return (
+                    <strong
+                        key={item}
+                        className={cn(
+                            "flex h-12 items-center justify-center whitespace-nowrap text-nowrap bg-clip-text font-bold text-4xl leading-loose lg:h-18 lg:text-6xl",
+                            "bg-accent-bg bg-cover bg-linear-to-b from-foreground-bright via-accent-bg to-accent-bg text-transparent",
+                        )}
+                        // @ts-expect-error
+                        style={{ "--index": index }}
+                    >
+                        {item}
+                    </strong>
+                );
+            })}
+
+            <style
+                dangerouslySetInnerHTML={{
+                    __html: `
+                    .hero-section-showcase {
+                        --duration: ${duration}s;
+                    }
+                    
+                    .hero-section-showcase strong {
+                        --baseline: calc(var(--index) * -100%);
+                        animation: vertical-scroll var(--duration) calc(var(--index) * -${timePerItem}s) infinite;
+                    }
+                    
+                    @keyframes vertical-scroll {
+                        0% {
+                            transform: translateY(calc(var(--baseline) + 100%));
+                            opacity: 0;
+                        }
+                        
+                        ${round(timeForSlide)}%,
+                        ${round(percentSharePerItem)}% {
+                            transform: translateY(var(--baseline));
+                            opacity: 1;
+                        }
+                    
+                        ${round(percentSharePerItem + timeForSlide)}%,
+                        100% {
+                            transform: translateY(calc(var(--baseline) - 100%));
+                            opacity: 0;
+                        }
+                    }
+                `,
+                }}
+            />
+        </div>
+    );
+}
+
+function ProjectsMarquee({ projects }: { projects: ProjectListItem[] }) {
     const rows = useMemo(() => {
         if (!projects || projects.length === 0) return [];
 
