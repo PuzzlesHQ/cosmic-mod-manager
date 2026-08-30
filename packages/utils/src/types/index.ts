@@ -35,10 +35,10 @@ export interface LoggedInUserData {
 
 export enum ProjectType {
     MOD = "mod",
-    MODPACK = "modpack",
-    SHADER = "shader",
-    RESOURCE_PACK = "resource-pack",
     DATAMOD = "datamod",
+    RESOURCE_PACK = "resource-pack",
+    SHADER = "shader",
+    MODPACK = "modpack",
     PLUGIN = "plugin",
     WORLD = "world",
 }
