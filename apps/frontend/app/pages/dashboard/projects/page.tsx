@@ -1,4 +1,4 @@
-import { FormatProjectTypes } from "@app/utils/project";
+import type { ProjectType } from "@app/utils/types";
 import type { ProjectListItem } from "@app/utils/types/api";
 import { imageUrl } from "@app/utils/url";
 import { SettingsIcon } from "lucide-react";
@@ -9,6 +9,7 @@ import CopyBtn from "~/components/ui/copy-btn";
 import Link, { useNavigate, VariantButtonLink } from "~/components/ui/link";
 import { ProjectStatusBadge } from "~/components/ui/project-status-badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
+import { formatList } from "~/lib/locale-utils/list-format";
 import { useTranslation } from "~/locales/provider";
 import { ProjectPagePath } from "~/utils/urls";
 import CreateNewProjectDialog from "./new-project";
@@ -40,7 +41,7 @@ export default function ProjectsPage({ projects }: Props) {
 }
 
 export function ProjectsListTable({ projects }: { projects: ProjectListItem[] }) {
-    const { t } = useTranslation();
+    const { t, formattedLocaleName } = useTranslation();
     const navigate = useNavigate();
 
     return (
@@ -73,6 +74,11 @@ export function ProjectsListTable({ projects }: { projects: ProjectListItem[] })
                 </TableHeader>
                 <TableBody>
                     {(projects || []).map((project) => {
+                        const formattedProjectType = formatList(
+                            project.type.map((type) => t.navbar[type as ProjectType] ?? type),
+                            formattedLocaleName,
+                        );
+
                         return (
                             <TableRow
                                 key={project.id}
@@ -114,7 +120,7 @@ export function ProjectsListTable({ projects }: { projects: ProjectListItem[] })
 
                                         <ProjectStatusBadge status={project.status} t={t} />
 
-                                        <span className="leading-none">{FormatProjectTypes(project.type)}</span>
+                                        <span className="leading-none">{formattedProjectType}</span>
                                         <CopyBtn
                                             text={project.id}
                                             label={project.id}
@@ -148,7 +154,7 @@ export function ProjectsListTable({ projects }: { projects: ProjectListItem[] })
 
                                 {/* TYPE */}
                                 <TableCell className="hidden md:table-cell">
-                                    <span className="leading-none">{FormatProjectTypes(project.type)}</span>
+                                    <span className="leading-none">{formattedProjectType}</span>
                                 </TableCell>
 
                                 {/* STATUS */}

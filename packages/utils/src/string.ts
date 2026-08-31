@@ -6,13 +6,13 @@ export function trimWhitespaces(str: string) {
     return str.replace(/\s/g, "");
 }
 
-export function Capitalize(str: string, eachWord = false) {
+export function Capitalize(str: string, eachWord = false, locale = "en") {
     if (!str) return "";
-    if (eachWord === false) return `${str[0].toUpperCase()}${str.slice(1)}`;
+    if (eachWord === false) return `${str[0].toLocaleUpperCase(locale)}${str.slice(1)}`;
 
     let newStr = "";
     for (const word of str.split(" ")) {
-        newStr += `${word[0].toUpperCase()}${word.length > 1 ? word.slice(1) : ""} `;
+        newStr += `${word[0].toLocaleUpperCase(locale)}${word.length > 1 ? word.slice(1) : ""} `;
     }
 
     return newStr.slice(0, -1); // Remove the trailing space

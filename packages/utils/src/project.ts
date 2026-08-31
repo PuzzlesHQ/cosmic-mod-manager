@@ -1,7 +1,6 @@
 import { type CategoryT, categories } from "~/constants/categories";
 import { type Loader, loaders } from "~/constants/loaders";
 import { getRolePerms } from "~/constants/roles";
-import { CapitalizeAndFormatString } from "~/string";
 import {
     GlobalUserRole,
     type OrganisationPermission,
@@ -119,7 +118,7 @@ export function sortVersionsWithReference(versions: string[], referenceList: str
 
 export function getProjectCategoriesDataFromNames(categoryNames: string[]) {
     const uniqueCategoryNames = Array.from(new Set(categoryNames));
-    const categoriesData = [];
+    const categoriesData: CategoryT[] = [];
 
     for (const name of uniqueCategoryNames) {
         const category = getProjectCategoryDataFromName(name);
@@ -184,7 +183,7 @@ export const compatibleProjectTypes = {
     [ProjectType.DATAMOD]: [ProjectType.MOD],
     [ProjectType.MOD]: [ProjectType.PLUGIN, ProjectType.DATAMOD],
     [ProjectType.PLUGIN]: [ProjectType.MOD],
-};
+} satisfies Record<ProjectType, ProjectType[]>;
 
 export function filterInCompatibleProjectTypes(primaryType: ProjectType, currTypes: ProjectType[]) {
     const filteredTypes = [primaryType];
@@ -212,17 +211,4 @@ export function validateProjectTypesCompatibility(types: ProjectType[]) {
     if (types.includes(ProjectType.PLUGIN)) return filterInCompatibleProjectTypes(ProjectType.PLUGIN, types);
 
     return [ProjectType.MOD];
-}
-
-export function FormatProjectTypes(types: string[]) {
-    if (types.length === 1) return CapitalizeAndFormatString(types[0]);
-    if (types.length === 2) return `${CapitalizeAndFormatString(types[0])} and ${CapitalizeAndFormatString(types[1])}`;
-
-    let str = "";
-    for (const type of types.slice(0, -2)) {
-        str += `${CapitalizeAndFormatString(type)}, `;
-    }
-
-    str += `${CapitalizeAndFormatString(types.at(-2))} and ${CapitalizeAndFormatString(types.at(-1))}`;
-    return str;
 }
