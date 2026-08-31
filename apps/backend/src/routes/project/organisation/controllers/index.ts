@@ -1,3 +1,4 @@
+import { isModerator } from "@app/utils/constants/roles";
 import { getCurrMember } from "@app/utils/project";
 import type { createOrganisationFormSchema } from "@app/utils/schemas/organisation";
 import type { OrganisationPermission, ProjectPermission } from "@app/utils/types";
@@ -18,6 +19,7 @@ export async function getOrganisationById(userSession: SessionUserData | null, s
     }
     const currMember = getCurrMember(userSession?.id, [], organisation.team.members);
     const isMember = currMember?.accepted === true;
+    const showPerms = isMember || isModerator(userSession?.role);
 
     const formattedData = {
         id: organisation.id,
@@ -36,8 +38,8 @@ export async function getOrganisationById(userSession: SessionUserData | null, s
                 role: member.role,
                 isOwner: member.isOwner,
                 accepted: member.accepted,
-                permissions: (isMember ? member.permissions : []) as ProjectPermission[],
-                organisationPermissions: (isMember ? member.organisationPermissions : []) as OrganisationPermission[],
+                permissions: (showPerms ? member.permissions : []) as ProjectPermission[],
+                organisationPermissions: (showPerms ? member.organisationPermissions : []) as OrganisationPermission[],
             };
         }),
     } satisfies Organisation;
@@ -54,14 +56,15 @@ export async function getUserOrganisations(userSession: SessionUserData | null, 
         userId = user.id;
     }
 
-    const UserOrgs_Id = await Get_UserOrganizations(userId);
-    if (!UserOrgs_Id) return { data: [], status: HTTP_STATUS.OK };
+    const userOrgIds = await Get_UserOrganizations(userId);
+    if (!userOrgIds) return { data: [], status: HTTP_STATUS.OK };
 
-    const UserOrganizations = await GetManyOrganizations_ById(UserOrgs_Id);
+    const userOrgs = await GetManyOrganizations_ById(userOrgIds);
 
     const organisationsList: Organisation[] = [];
-    for (const org of UserOrganizations) {
+    for (const org of userOrgs) {
         const currMember = getCurrMember(userSession?.id, [], org.team.members);
+        const showPerms = currMember?.accepted === true || isModerator(userSession?.role);
 
         organisationsList.push({
             id: org.id,
@@ -79,10 +82,8 @@ export async function getUserOrganisations(userSession: SessionUserData | null, 
                 role: member.role,
                 isOwner: member.isOwner,
                 accepted: member.accepted,
-                permissions: (currMember?.accepted === true ? member.permissions : []) as ProjectPermission[],
-                organisationPermissions: (currMember?.accepted === true
-                    ? member.organisationPermissions
-                    : []) as OrganisationPermission[],
+                permissions: (showPerms ? member.permissions : []) as ProjectPermission[],
+                organisationPermissions: (showPerms ? member.organisationPermissions : []) as OrganisationPermission[],
             })),
         });
     }
