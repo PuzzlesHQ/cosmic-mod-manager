@@ -138,11 +138,11 @@ function HeroSectionAnimation() {
     const duration = showcaseItems.length * timePerItem;
 
     const percentSharePerItem = 100 / showcaseItems.length;
-    const timeForSlide = percentSharePerItem / 6;
+    const timeForSlide = percentSharePerItem / 5;
 
     return (
         <div
-            className="hero-section-showcase inline-flex h-12 max-w-full flex-col overflow-hidden lg:h-18"
+            className="hero-section-showcase h-12 max-w-full overflow-hidden lg:h-18"
             key={formattedLocaleName}
         >
             {showcaseItems.map((item, index) => {
@@ -166,28 +166,33 @@ function HeroSectionAnimation() {
                     __html: `
                     .hero-section-showcase {
                         --duration: ${duration}s;
+
+                        display: grid;
+                        grid-template-columns: 1fr;
+                        grid-template-rows: 1fr;
                     }
                     
                     .hero-section-showcase strong {
-                        --baseline: calc(var(--index) * -100%);
+                        grid-row: 1 / -1;
+                        grid-column: 1 / -1;
                         animation: vertical-scroll var(--duration) calc(var(--index) * -${timePerItem}s) infinite;
                     }
                     
                     @keyframes vertical-scroll {
                         0% {
-                            transform: translateY(calc(var(--baseline) + 100%));
+                            transform: translateY(100%);
                             opacity: 0;
                         }
                         
                         ${round(timeForSlide)}%,
                         ${round(percentSharePerItem)}% {
-                            transform: translateY(var(--baseline));
+                            transform: translateY(0);
                             opacity: 1;
                         }
                     
                         ${round(percentSharePerItem + timeForSlide)}%,
                         100% {
-                            transform: translateY(calc(var(--baseline) - 100%));
+                            transform: translateY(-100%);
                             opacity: 0;
                         }
                     }
