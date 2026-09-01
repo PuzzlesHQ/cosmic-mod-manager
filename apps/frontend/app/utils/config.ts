@@ -25,9 +25,9 @@ if (isDev === true) {
     Config.FRONTEND_URL = "http://localhost:3000";
     Config.BACKEND_URL_LOCAL = "http://localhost:5500";
     Config.BACKEND_URL_PUBLIC = "http://localhost:5500";
-    Config.BACKEND_URL_LOCAL = "https://api.crmods.org";
-    Config.BACKEND_URL_PUBLIC = "https://api.crmods.org";
-    Config.proxy = true;
+    // Config.BACKEND_URL_LOCAL = "https://api.crmods.org";
+    // Config.BACKEND_URL_PUBLIC = "https://api.crmods.org";
+    // Config.proxy = true;
 }
 
 export default Config;

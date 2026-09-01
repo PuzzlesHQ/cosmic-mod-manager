@@ -55,6 +55,8 @@ model Session {
     userAgent String  @db.VarChar(256)
 
     user User @relation(name: "UserSessions", fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId, dateLastActive(sort: Desc)])
 }
 
 model PersonalAccessToken {
@@ -66,6 +68,8 @@ model PersonalAccessToken {
     dateExpires  DateTime
     dateLastUsed DateTime?
     scopes       BigInt    @default(0)
+
+    @@index([userId, dateCreated(sort: Desc)])
 }
 
 model AuthAccount {
@@ -81,6 +85,10 @@ model AuthAccount {
     authorizationScope   String? @db.VarChar(256)
 
     user User @relation(name: "UserAuthAccounts", fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([providerName, providerAccountId])
+    @@index([userId])
+    @@index([providerAccountEmail])
 }
 
 model UserConfirmation {
@@ -92,6 +100,8 @@ model UserConfirmation {
     contextData      String?
 
     user User @relation(name: "UserConfirmations", fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId, confirmationType])
 }
 
 model Organisation {
@@ -137,6 +147,9 @@ model TeamMember {
 
     team Team @relation(name: "TeamMembers", fields: [teamId], references: [id], onDelete: Cascade)
     user User @relation(name: "TeamMemberships", fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
+    @@index([teamId, dateAccepted])
 }
 
 model Project {
@@ -186,6 +199,9 @@ model Project {
     team         Team          @relation(name: "ProjectTeam", fields: [teamId], references: [id])
     gallery      GalleryItem[] @relation(name: "ProjectGallery")
     organisation Organisation? @relation(name: "OrganisationProjects", fields: [organisationId], references: [id])
+
+    @@index([organisationId])
+    @@index([status, visibility])
 }
 
 model Version {
@@ -208,6 +224,8 @@ model Version {
     author       User?         @relation(name: "UserAuthoredVersions", fields: [authorId], references: [id], onDelete: SetNull)
     // Dependencies this project has
     dependencies Dependency[]  @relation(name: "VersionDependencies")
+
+    @@index([projectId, datePublished(sort: Desc)])
 }
 
 model VersionFile {
@@ -217,6 +235,8 @@ model VersionFile {
     fileId    String  @unique @db.VarChar(32) // @File.id
 
     version Version @relation(name: "VersionFiles", fields: [versionId], references: [id], onDelete: Cascade)
+
+    @@index([versionId])
 }
 
 model Dependency {
@@ -227,12 +247,15 @@ model Dependency {
     dependencyType     String  @db.VarChar(32)
 
     dependentVersion Version @relation(name: "VersionDependencies", fields: [dependentVersionId], references: [id], onDelete: Cascade)
+
+    @@index([projectId])
+    @@index([dependentVersionId])
 }
 
 model GalleryItem {
     id              String   @id @db.VarChar(32)
     imageFileId     String   @unique @db.VarChar(32) // @File.id
-    thumbnailFileId String   @db.VarChar(32)
+    thumbnailFileId String   @unique @db.VarChar(32)
     projectId       String   @db.VarChar(32)
     name            String   @db.VarChar(64)
     description     String   @db.VarChar(512)
@@ -241,6 +264,8 @@ model GalleryItem {
     orderIndex      Int
 
     project Project @relation(name: "ProjectGallery", fields: [projectId], references: [id], onDelete: Cascade)
+
+    @@index([projectId, orderIndex(sort: Desc)])
 }
 
 model File {
@@ -253,6 +278,9 @@ model File {
     sha512_hash    String? @db.VarChar(256)
     url            String  @db.VarChar(256)
     storageService String  @db.VarChar(32)
+
+    @@index([sha1_hash])
+    @@index([sha512_hash])
 }
 
 // NOTIFICATIONS AND STUFF
@@ -266,6 +294,8 @@ model Notification {
     body        Json
 
     user User @relation(name: "UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId, dateCreated(sort: Desc)])
 }
 
 model Collection {
@@ -280,6 +310,8 @@ model Collection {
     projects    String[] // Project IDs
 
     user User @relation(name: "UserCollections", fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
 }
 
 // Non-Project related stuff
@@ -314,6 +346,8 @@ model ThreadMessage {
     body         Json?
 
     thread Thread @relation(name: "ThreadMessages", references: [id], fields: [threadId], onDelete: Cascade)
+
+    @@index([threadId, created])
 }
 
 // Report
@@ -328,4 +362,7 @@ model Report {
     reportType String   @db.VarChar(32)
     createdAt  DateTime @default(now())
     threadId   String   @db.VarChar(32)
+
+    @@index([itemId])
+    @@index([reporter, createdAt(sort: Desc)])
 }
