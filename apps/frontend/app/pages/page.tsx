@@ -22,6 +22,8 @@ export default function HomePage({ projects }: Props) {
     const { t } = useTranslation();
     const [gridBgPortal, setGridBgPortal] = useState<Element | null>(null);
     const timeoutRef = useRef<number | undefined>(undefined);
+    const prevWindowDimensions = useRef({ w: 0, h: 0 });
+
     const session = useSession();
 
     function recreateBackground() {
@@ -31,16 +33,31 @@ export default function HomePage({ projects }: Props) {
         }, 250);
     }
 
+    function handleWindowResize() {
+        if (
+            Math.abs(prevWindowDimensions.current.h - window.innerHeight) < 140 &&
+            Math.abs(prevWindowDimensions.current.w - window.innerWidth) < 10
+        ) {
+            return;
+        }
+
+        recreateBackground();
+        prevWindowDimensions.current.w = window.innerWidth;
+        prevWindowDimensions.current.h = window.innerHeight;
+    }
+
     useEffect(() => {
         if (!gridBgPortal) return;
         drawBackground();
+        prevWindowDimensions.current.w = window.innerWidth;
+        prevWindowDimensions.current.h = window.innerHeight;
 
-        window.addEventListener("resize", recreateBackground);
+        window.addEventListener("resize", handleWindowResize);
         const observer = new MutationObserver(recreateBackground);
         observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
 
         return () => {
-            window.removeEventListener("resize", recreateBackground);
+            window.removeEventListener("resize", handleWindowResize);
             observer.disconnect();
         };
     }, [gridBgPortal]);
@@ -141,10 +158,7 @@ function HeroSectionAnimation() {
     const timeForSlide = percentSharePerItem / 5;
 
     return (
-        <div
-            className="hero-section-showcase h-12 max-w-full overflow-hidden lg:h-18"
-            key={formattedLocaleName}
-        >
+        <div className="hero-section-showcase h-12 max-w-full overflow-hidden lg:h-18" key={formattedLocaleName}>
             {showcaseItems.map((item, index) => {
                 return (
                     <strong
