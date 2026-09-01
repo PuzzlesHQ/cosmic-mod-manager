@@ -56,7 +56,7 @@ model Session {
 
     user User @relation(name: "UserSessions", fields: [userId], references: [id], onDelete: Cascade)
 
-    @@index([userId, dateLastActive(sort: Desc)])
+    @@index([userId])
 }
 
 model PersonalAccessToken {
@@ -69,7 +69,7 @@ model PersonalAccessToken {
     dateLastUsed DateTime?
     scopes       BigInt    @default(0)
 
-    @@index([userId, dateCreated(sort: Desc)])
+    @@index([userId])
 }
 
 model AuthAccount {
@@ -86,8 +86,8 @@ model AuthAccount {
 
     user User @relation(name: "UserAuthAccounts", fields: [userId], references: [id], onDelete: Cascade)
 
-    @@unique([providerName, providerAccountId])
     @@index([userId])
+    @@unique([providerAccountId, providerName])
     @@index([providerAccountEmail])
 }
 
@@ -101,7 +101,7 @@ model UserConfirmation {
 
     user User @relation(name: "UserConfirmations", fields: [userId], references: [id], onDelete: Cascade)
 
-    @@index([userId, confirmationType])
+    @@index([userId])
 }
 
 model Organisation {
@@ -149,7 +149,7 @@ model TeamMember {
     user User @relation(name: "TeamMemberships", fields: [userId], references: [id], onDelete: Cascade)
 
     @@index([userId])
-    @@index([teamId, dateAccepted])
+    @@index([teamId])
 }
 
 model Project {
@@ -248,7 +248,6 @@ model Dependency {
 
     dependentVersion Version @relation(name: "VersionDependencies", fields: [dependentVersionId], references: [id], onDelete: Cascade)
 
-    @@index([projectId])
     @@index([dependentVersionId])
 }
 
@@ -265,7 +264,7 @@ model GalleryItem {
 
     project Project @relation(name: "ProjectGallery", fields: [projectId], references: [id], onDelete: Cascade)
 
-    @@index([projectId, orderIndex(sort: Desc)])
+    @@index([projectId])
 }
 
 model File {
@@ -364,5 +363,5 @@ model Report {
     threadId   String   @db.VarChar(32)
 
     @@index([itemId])
-    @@index([reporter, createdAt(sort: Desc)])
+    @@index([reporter])
 }
