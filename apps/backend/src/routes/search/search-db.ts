@@ -74,7 +74,7 @@ async function Process_AddedProjects(ProjectIds: string[]) {
     const documents = [];
     for (let i = 0; i < Projects.length; i++) {
         const Project = Projects[i];
-        if (!isProjectIndexable(Project.visibility, Project.status)) {
+        if (!isProjectIndexable(Project)) {
             RemoveProjects_FromSearchIndex([Project.id]);
         }
 

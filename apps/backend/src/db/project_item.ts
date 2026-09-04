@@ -390,7 +390,7 @@ export async function UpdateProject<T extends Prisma.ProjectUpdateArgs>(
 ) {
     const project = await prisma.project.update(args);
     if (project?.id) await Delete_ProjectCache_All(project.id);
-    if (isProjectIndexable(project.visibility, project.status)) {
+    if (isProjectIndexable(project)) {
         const shouldUpdateIndex = [
             args.data.gameVersions,
             args.data.loaders,
@@ -403,6 +403,8 @@ export async function UpdateProject<T extends Prisma.ProjectUpdateArgs>(
             args.data.type,
             args.data.iconFileId,
             args.data.organisationId,
+            args.data.clientSide,
+            args.data.serverSide,
         ].some(isNonEmpty);
 
         if (shouldUpdateIndex) UpdateProjects_SearchIndex([project.id]);
@@ -430,7 +432,7 @@ export async function DeleteProject<T extends Prisma.ProjectDeleteArgs>(
     const project = await prisma.project.delete(args);
     if (project?.id) await Delete_ProjectCache_All(project.id, project.slug);
     if (project?.organisationId) await Delete_OrganizationCache_All(project.organisationId);
-    if (isProjectIndexable(project.visibility, project.status)) await RemoveProjects_FromSearchIndex([project.id]);
+    if (isProjectIndexable(project)) await RemoveProjects_FromSearchIndex([project.id]);
 
     return project;
 }
@@ -475,18 +477,15 @@ async function Set_ProjectCache<T extends SetCache_Data | null>(NAMESPACE: strin
 }
 
 // Search index functions
-interface IndexCriteriaFields {
-    visibility: string;
-    status: string;
-}
+type IndexCriteriaFields = Parameters<typeof isProjectIndexable>[0];
 
 export async function UpdateOrRemoveProject_FromSearchIndex(
     projectId: string,
     oldStats: IndexCriteriaFields,
     newStats: IndexCriteriaFields,
 ) {
-    const wasPreviouslyIndexable = isProjectIndexable(oldStats.visibility, oldStats.status);
-    const isNowIndexable = isProjectIndexable(newStats.visibility, newStats.status);
+    const wasPreviouslyIndexable = isProjectIndexable(oldStats);
+    const isNowIndexable = isProjectIndexable(newStats);
 
     // Remove the project from the search index if it was previously indexable and but is not indexable anymore
     if (wasPreviouslyIndexable && !isNowIndexable) await RemoveProjects_FromSearchIndex([projectId]);

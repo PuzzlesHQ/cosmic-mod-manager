@@ -3,7 +3,7 @@ import { getFileType } from "@app/utils/convertors";
 import { sortVersionsWithReference } from "@app/utils/project";
 import { gameVersionsList } from "@app/utils/src/constants/game-versions";
 import { isModerator } from "@app/utils/src/constants/roles";
-import { ProjectPublishingStatus, ProjectVisibility } from "@app/utils/types";
+import { EnvironmentSupport, ProjectPublishingStatus, ProjectVisibility } from "@app/utils/types";
 import type { File as DBFile, VersionFile } from "@prisma-client";
 import { rsort } from "semver";
 import { CreateManyFiles, DeleteManyFiles_ByID, GetManyFiles } from "~/db/file_item";
@@ -35,8 +35,17 @@ export function isProjectPublic(visibility: string, publishingStatus: string) {
     return isPublic && isPublished;
 }
 
-export function isProjectIndexable(visibility: string, publishingStatus: string) {
-    return isProjectPublic(visibility, publishingStatus) && visibility !== ProjectVisibility.UNLISTED;
+interface IsProjectIndexableProps {
+    visibility: string;
+    status: string;
+    clientSide: string;
+    serverSide: string;
+}
+
+export function isProjectIndexable(p: IsProjectIndexableProps) {
+    if (p.clientSide === EnvironmentSupport.UNSUPPORTED && p.serverSide === EnvironmentSupport.UNSUPPORTED)
+        return false;
+    return isProjectPublic(p.visibility, p.status) && p.visibility !== ProjectVisibility.UNLISTED;
 }
 
 interface _Team {

@@ -120,17 +120,7 @@ export async function updateModerationProject(id: string, status: string, userSe
     });
 
     // Update the search index
-    await UpdateOrRemoveProject_FromSearchIndex(
-        project.id,
-        {
-            visibility: project.visibility,
-            status: project.status,
-        },
-        {
-            visibility: UpdatedProject.visibility,
-            status: UpdatedProject.status,
-        },
-    );
+    await UpdateOrRemoveProject_FromSearchIndex(project.id, project, UpdatedProject);
 
     Log(
         `Status of project ${id} updated to ${updatedStatus} from ${project.status} by ${userSession.id}`,

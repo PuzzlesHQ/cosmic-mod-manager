@@ -100,7 +100,7 @@ async function _SyncBatch(cursor: null | string) {
 
         for (const project of Projects) {
             if (!project) continue;
-            if (!isProjectIndexable(project.visibility, project.status)) continue;
+            if (!isProjectIndexable(project)) continue;
 
             formattedProjectsData.push(FormatSearchDocument(project, recentDownloadsCount_Map.get(project.id) || 0));
         }

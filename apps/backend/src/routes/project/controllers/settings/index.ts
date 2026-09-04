@@ -97,17 +97,7 @@ export async function updateGeneralProjectData(
     });
 
     // Update the project in the search index
-    await UpdateOrRemoveProject_FromSearchIndex(
-        project.id,
-        {
-            visibility: project.visibility,
-            status: project.status,
-        },
-        {
-            visibility: UpdatedProject.visibility,
-            status: UpdatedProject.status,
-        },
-    );
+    await UpdateOrRemoveProject_FromSearchIndex(project.id, project, UpdatedProject);
 
     return {
         data: {
@@ -289,7 +279,7 @@ export async function updateProjectIcon(userSession: SessionUserData, projectId:
     ]);
 
     // Update the project in the search index
-    isProjectIndexable(project.visibility, project.status) ? UpdateProjects_SearchIndex([project.id]) : null;
+    isProjectIndexable(project) ? UpdateProjects_SearchIndex([project.id]) : null;
 
     return {
         data: {
@@ -334,7 +324,7 @@ export async function deleteProjectIcon(userSession: SessionUserData, projectId:
     ]);
 
     // Update the project in the search index
-    isProjectIndexable(project.visibility, project.status) ? UpdateProjects_SearchIndex([project.id]) : null;
+    isProjectIndexable(project) ? UpdateProjects_SearchIndex([project.id]) : null;
 
     return {
         data: {
