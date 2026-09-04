@@ -7,7 +7,9 @@ import {
     ProjectType,
 } from "~/types";
 
-export const authProvidersList = Object.values(AuthProvider).filter((v) => v !== AuthProvider.UNKNOWN) as AuthProvider[];
+export const authProvidersList = Object.values(AuthProvider).filter(
+    (v) => v !== AuthProvider.UNKNOWN,
+) as AuthProvider[];
 
 export const projectTypes = Object.values(ProjectType);
 
@@ -59,7 +61,7 @@ export function GetProjectEnvironment(
     }
 
     return {
-        clientSide: clientSide || EnvironmentSupport.UNKNOWN,
-        serverSide: serverSide || EnvironmentSupport.UNKNOWN,
+        clientSide: clientSide || EnvironmentSupport.UNSUPPORTED,
+        serverSide: serverSide || EnvironmentSupport.UNSUPPORTED,
     };
 }

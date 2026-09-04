@@ -153,7 +153,6 @@ export enum FileType {
 }
 
 export enum EnvironmentSupport {
-    UNKNOWN = "unknown",
     REQUIRED = "required",
     OPTIONAL = "optional",
     UNSUPPORTED = "unsupported",

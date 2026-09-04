@@ -155,10 +155,8 @@ export function PublishingChecklist() {
         {
             hide: hideEnvSettingsCard,
             condition:
-                project.clientSide === EnvironmentSupport.UNKNOWN ||
-                project.serverSide === EnvironmentSupport.UNKNOWN ||
-                (project.clientSide === EnvironmentSupport.UNSUPPORTED &&
-                    project.serverSide === EnvironmentSupport.UNSUPPORTED),
+                project.clientSide === EnvironmentSupport.UNSUPPORTED &&
+                project.serverSide === EnvironmentSupport.UNSUPPORTED,
             id: "select-environments",
             title: pubChecklist.selectEnv,
             description: pubChecklist.selectEnvDesc(t.navbar[project.type[0]]),

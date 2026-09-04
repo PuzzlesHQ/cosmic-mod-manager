@@ -71,8 +71,6 @@ export default function ProjectSupportedEnv({
     if (serverSide === EnvironmentSupport.OPTIONAL) return <ServerSide className={className} />;
     if (clientSide === EnvironmentSupport.OPTIONAL) return <ClientSide className={className} />;
 
-    if (serverSide === EnvironmentSupport.UNKNOWN || clientSide === EnvironmentSupport.UNKNOWN) return null;
-
     return <Unsupported className={className} />;
 }
 
