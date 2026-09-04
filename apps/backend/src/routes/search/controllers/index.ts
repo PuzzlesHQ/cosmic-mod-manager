@@ -56,11 +56,11 @@ export async function searchProjects(props: Props) {
     const envFilter: string[] = [];
     const envs = props.environments;
     if (envs.includes("client") || envs.includes("!client")) {
-        envFilter.push(formatFilterItems("clientSide", [EnvironmentSupport.UNSUPPORTED], " AND "));
+        envFilter.push(formatFilterItems("clientSide", [EnvironmentSupport.UNSUPPORTED], " AND ", true));
     }
 
     if (envs.includes("server") || envs.includes("!server")) {
-        envFilter.push(formatFilterItems("serverSide", [EnvironmentSupport.UNSUPPORTED], " AND "));
+        envFilter.push(formatFilterItems("serverSide", [EnvironmentSupport.UNSUPPORTED], " AND ", true));
     }
 
     const filters = [
