@@ -37,7 +37,8 @@ _*ids is not json encoded, it's just a comma separated list_
 - **IDs** \
     key: `ids` \
     type: `string[]` \
-    max: `100`
+    max: `100` \
+    format: `ID1,ID2,ID3` _(comma separated list)_
 
 - **Include** \
     key: `include` \
@@ -49,5 +50,5 @@ _*ids is not json encoded, it's just a comma separated list_
 - **version-info-limit** \
     key: `version-info-limit` \
     type: `number` \
-    default: `15`
+    default: `15` \
     _Limits the number of versions returned when `include=version-info`. This is done to prevent the response from getting gigantic_
