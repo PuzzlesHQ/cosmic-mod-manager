@@ -55,12 +55,17 @@ export async function searchProjects(props: Props) {
 
     const envFilter: string[] = [];
     const envs = props.environments;
-    if (envs.includes("client") || envs.includes("!client")) {
-        envFilter.push(formatFilterItems("clientSide", [EnvironmentSupport.UNSUPPORTED], " AND ", true));
+
+    if (envs.includes("client")) {
+        envFilter.push(`clientSide != ${EnvironmentSupport.UNSUPPORTED}`);
+    } else if (envs.includes("!client")) {
+        envFilter.push(`clientSide = ${EnvironmentSupport.UNSUPPORTED}`);
     }
 
-    if (envs.includes("server") || envs.includes("!server")) {
-        envFilter.push(formatFilterItems("serverSide", [EnvironmentSupport.UNSUPPORTED], " AND ", true));
+    if (envs.includes("server")) {
+        envFilter.push(`serverSide != ${EnvironmentSupport.UNSUPPORTED}`);
+    } else if (envs.includes("!server")) {
+        envFilter.push(`serverSide = ${EnvironmentSupport.UNSUPPORTED}`);
     }
 
     const filters = [
@@ -100,20 +105,11 @@ export async function searchProjects(props: Props) {
     } as const;
 }
 
-function formatFilterItems(name: string, values: string[], join: string, oppositeNegation = false) {
-    let result: string[];
-
-    if (oppositeNegation !== true) {
-        result = values.map((val) => {
-            if (val.startsWith("!")) return `${name} != ${val.slice(1)}`;
-            return `${name} = ${val}`;
-        });
-    } else {
-        result = values.map((val) => {
-            if (val.startsWith("!")) return `${name} = ${val.slice(1)}`;
-            return `${name} != ${val}`;
-        });
-    }
+function formatFilterItems(name: string, values: string[], join: string) {
+    const result = values.map((val) => {
+        if (val.startsWith("!")) return `${name} != ${val.slice(1)}`;
+        return `${name} = ${val}`;
+    });
 
     return result.join(join);
 }
