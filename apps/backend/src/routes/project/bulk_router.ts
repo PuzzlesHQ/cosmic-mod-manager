@@ -1,6 +1,8 @@
 import { API_SCOPE } from "@app/utils/pats";
 import { decodeStringArray } from "@app/utils/string";
+import type { ProjectListItem } from "@app/utils/types/api";
 import { type Context, Hono } from "hono";
+import { GetMany_ProjectsVersions, type TManyVersions } from "~/db/version_item";
 import { AuthenticationMiddleware } from "~/middleware/auth";
 import { getReqRateLimiter, invalidAuthAttemptLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limiter";
 import { invalidRequestResponse } from "~/utils/http";
@@ -27,6 +29,28 @@ async function projects_get(ctx: Context) {
     }
 
     const res = await getManyProjects(userSession, idsArray);
+
+    const extraInfo = ctx.req.queries("include");
+    const includeVersionInfo = extraInfo?.includes("version-info");
+    const includeVersionList = extraInfo?.includes("version-list");
+
+    if (includeVersionInfo || includeVersionList) {
+        const versions = await GetMany_ProjectsVersions(res.data.map((p) => p.id));
+
+        for (const project of res.data) {
+            const version = versions.find((v) => v.id === project.id);
+            if (!version) continue;
+
+            const p = project as ProjectListItem & { versions?: string[] | TManyVersions[number]["versions"] };
+
+            if (includeVersionInfo) {
+                p.versions = version.versions;
+            } else if (includeVersionList) {
+                p.versions = version.versions.map((v) => v.slug);
+            }
+        }
+    }
+
     return respondJson(ctx, res);
 }
 
