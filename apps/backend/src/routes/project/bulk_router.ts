@@ -33,8 +33,14 @@ async function projects_get(ctx: Context) {
     const extraInfo = ctx.req.queries("include");
     const includeVersionInfo = extraInfo?.includes("version-info");
     const includeVersionList = extraInfo?.includes("version-list");
+    const includeVersionSlug = extraInfo?.includes("version-slug");
 
-    if (includeVersionInfo || includeVersionList) {
+    if (includeVersionInfo || includeVersionList || includeVersionSlug) {
+        let versionInfoLimit = Number.parseInt(ctx.req.query("version-info-limit") ?? "15", 10);
+        if (!versionInfoLimit || Number.isNaN(versionInfoLimit)) {
+            versionInfoLimit = 15;
+        }
+
         const versions = await GetMany_ProjectsVersions(res.data.map((p) => p.id));
 
         for (const project of res.data) {
@@ -44,8 +50,10 @@ async function projects_get(ctx: Context) {
             const p = project as ProjectListItem & { versions?: string[] | TManyVersions[number]["versions"] };
 
             if (includeVersionInfo) {
-                p.versions = version.versions;
+                p.versions = versionInfoLimit > 0 ? version.versions.slice(0, versionInfoLimit) : version.versions;
             } else if (includeVersionList) {
+                p.versions = version.versions.map((v) => v.versionNumber);
+            } else if (includeVersionSlug) {
                 p.versions = version.versions.map((v) => v.slug);
             }
         }
