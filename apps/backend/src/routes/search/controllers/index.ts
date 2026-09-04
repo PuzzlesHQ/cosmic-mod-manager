@@ -53,25 +53,21 @@ export async function searchProjects(props: Props) {
             break;
     }
 
-    let envFilter = "";
-    // If both client and server are selected, only include projects that require both environments
-    if (props.environments.includes("client") && props.environments.includes("server")) {
-        envFilter = `clientSide = ${EnvironmentSupport.REQUIRED} AND serverSide = ${EnvironmentSupport.REQUIRED}`;
+    const envFilter: string[] = [];
+    const envs = props.environments;
+    if (envs.includes("client") || envs.includes("!client")) {
+        envFilter.push(formatFilterItems("clientSide", [EnvironmentSupport.UNSUPPORTED], " AND "));
     }
-    // If only client is selected, include projects that require only client and optionally server
-    else if (props.environments.includes("client")) {
-        envFilter = `clientSide != ${EnvironmentSupport.UNSUPPORTED} AND serverSide != ${EnvironmentSupport.REQUIRED}`;
-    }
-    // If only server is selected, include projects that require only server and optionally client
-    else if (props.environments.includes("server")) {
-        envFilter = `serverSide != ${EnvironmentSupport.UNSUPPORTED} AND clientSide != ${EnvironmentSupport.REQUIRED}`;
+
+    if (envs.includes("server") || envs.includes("!server")) {
+        envFilter.push(formatFilterItems("serverSide", [EnvironmentSupport.UNSUPPORTED], " AND "));
     }
 
     const filters = [
         formatFilterItems("loaders", props.loaders, " AND "),
         formatFilterItems("gameVersions", props.gameVersions, " OR "),
         formatFilterItems("categories", props.categories, " AND "),
-        envFilter,
+        envFilter.join(" AND "),
     ];
 
     if (props.type) filters.push(formatFilterItems("type", [props.type], " OR "));
@@ -104,13 +100,22 @@ export async function searchProjects(props: Props) {
     } as const;
 }
 
-function formatFilterItems(name: string, values: string[], join: string) {
-    return values
-        .map((val) => {
+function formatFilterItems(name: string, values: string[], join: string, oppositeNegation = false) {
+    let result: string[];
+
+    if (oppositeNegation !== true) {
+        result = values.map((val) => {
             if (val.startsWith("!")) return `${name} != ${val.slice(1)}`;
             return `${name} = ${val}`;
-        })
-        .join(join);
+        });
+    } else {
+        result = values.map((val) => {
+            if (val.startsWith("!")) return `${name} = ${val.slice(1)}`;
+            return `${name} != ${val}`;
+        });
+    }
+
+    return result.join(join);
 }
 
 function isValidFilterStr(str: string) {

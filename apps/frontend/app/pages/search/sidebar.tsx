@@ -216,7 +216,7 @@ function SearchFilters({ type, sectionsDefaultOpen }: Props) {
                     filterToggledUrl={(env) => {
                         const params = new URLSearchParams(searchParams);
 
-                        return toggleSearchParam({
+                        return updateTernaryState_SearchParam({
                             key: environmentFilterParamNamespace,
                             value: env,
                             searchParams: params,
