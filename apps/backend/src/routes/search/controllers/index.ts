@@ -73,7 +73,7 @@ export async function searchProjects(props: Props) {
         formatFilterItems("gameVersions", props.gameVersions, " OR "),
         formatFilterItems("categories", props.categories, " AND "),
         envFilter.join(" AND "),
-    ];
+    ].filter(Boolean);
 
     if (props.type) filters.push(formatFilterItems("type", [props.type], " OR "));
     if (props.openSourceOnly) filters.push(formatFilterItems("openSource", [props.openSourceOnly], " AND "));
