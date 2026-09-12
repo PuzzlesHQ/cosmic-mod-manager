@@ -63,6 +63,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <meta name="color-scheme" content="dark light" />
                 <meta property="og:logo" content={Config.SITE_ICON} />
                 <meta name="google-site-verification" content="saVDIhLaNSit_2LnqK9Zz-yxY2hMGTEC_Vud5v7-Tug" />
+                <script
+                    defer
+                    src="https://dash.kabhinav.dev/script.js"
+                    data-website-id="71ee7b2d-85c7-43ca-a522-1d3ec8f04cfe"
+                ></script>
                 <Meta />
                 <Links />
             </head>
