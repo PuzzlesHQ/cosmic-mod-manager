@@ -410,7 +410,7 @@ interface DeveloperInformationProps {
 
 function DeveloperInformation(props: DeveloperInformationProps) {
     const { t } = useTranslation();
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
 
     if (!props.project.type.includes(ProjectType.MOD)) return null;
 
