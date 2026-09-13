@@ -18,7 +18,7 @@
   ],
   "tags": [
     {
-      "name": "CrMods API"
+      "name": "API"
     }
   ],
   "components": {
@@ -22357,7 +22357,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -22377,7 +22377,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -22397,7 +22397,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -22455,7 +22455,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -22493,7 +22493,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -22551,7 +22551,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "post": {
@@ -22621,7 +22621,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -22679,7 +22679,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "post": {
@@ -22745,7 +22745,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -22813,7 +22813,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "post": {
@@ -22871,7 +22871,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -22975,7 +22975,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23015,7 +23015,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23127,7 +23127,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -23200,7 +23200,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23253,7 +23253,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23346,7 +23346,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23417,7 +23417,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23466,7 +23466,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23496,7 +23496,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23535,7 +23535,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23565,7 +23565,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23595,7 +23595,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23625,7 +23625,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23655,7 +23655,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23694,7 +23694,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23715,7 +23715,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23738,7 +23738,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23759,7 +23759,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23779,7 +23779,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23802,7 +23802,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23832,7 +23832,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23853,7 +23853,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23916,7 +23916,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -23966,7 +23966,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "patch": {
@@ -24077,7 +24077,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -24207,7 +24207,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -24308,7 +24308,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -24368,7 +24368,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -24431,7 +24431,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -24494,7 +24494,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -24552,7 +24552,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -24605,7 +24605,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -24661,7 +24661,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -24729,7 +24729,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "put": {
@@ -24813,7 +24813,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -24879,7 +24879,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "patch": {
@@ -24935,7 +24935,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -24993,7 +24993,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -25061,7 +25061,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -25168,7 +25168,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "post": {
@@ -25274,7 +25274,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -25360,7 +25360,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -25490,7 +25490,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -25543,7 +25543,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "patch": {
@@ -25611,7 +25611,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -25669,7 +25669,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -25749,7 +25749,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "patch": {
@@ -25827,7 +25827,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -25895,7 +25895,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -25948,7 +25948,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "patch": {
@@ -26016,7 +26016,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -26074,7 +26074,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -26154,7 +26154,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "patch": {
@@ -26232,7 +26232,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -26300,7 +26300,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -26353,7 +26353,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "post": {
@@ -26458,7 +26458,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -26530,7 +26530,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -26668,7 +26668,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -26736,7 +26736,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -26806,7 +26806,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -26874,7 +26874,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -26994,7 +26994,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -27108,7 +27108,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -27301,7 +27301,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -27427,7 +27427,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -27584,7 +27584,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -27700,7 +27700,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -27816,7 +27816,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -27932,7 +27932,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -28048,7 +28048,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -28174,7 +28174,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -28270,7 +28270,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -28374,7 +28374,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -28425,7 +28425,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -28511,7 +28511,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -28579,7 +28579,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -28647,7 +28647,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -28707,7 +28707,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -28767,7 +28767,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -28848,7 +28848,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -28916,7 +28916,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -28949,7 +28949,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -28982,7 +28982,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -29025,7 +29025,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -29177,7 +29177,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -29334,7 +29334,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "patch": {
@@ -29420,7 +29420,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -29575,7 +29575,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -29716,7 +29716,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -29867,7 +29867,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -30016,7 +30016,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -30148,7 +30148,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -30201,7 +30201,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "post": {
@@ -30259,7 +30259,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -30319,7 +30319,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "patch": {
@@ -30397,7 +30397,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -30485,7 +30485,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -30548,7 +30548,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "post": {
@@ -30626,7 +30626,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -30716,7 +30716,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -30794,7 +30794,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -30882,7 +30882,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -30935,7 +30935,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "post": {
@@ -30993,7 +30993,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -31053,7 +31053,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "patch": {
@@ -31131,7 +31131,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -31219,7 +31219,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -31282,7 +31282,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "post": {
@@ -31360,7 +31360,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -31450,7 +31450,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -31528,7 +31528,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -31616,7 +31616,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -31684,7 +31684,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -31779,7 +31779,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "post": {
@@ -31872,7 +31872,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -31970,7 +31970,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -32035,7 +32035,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "get": {
@@ -32096,7 +32096,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -32156,7 +32156,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -32234,7 +32234,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -32304,7 +32304,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "patch": {
@@ -32372,7 +32372,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -32425,7 +32425,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "post": {
@@ -32495,7 +32495,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -32597,7 +32597,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -32716,7 +32716,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "patch": {
@@ -32865,7 +32865,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -32961,7 +32961,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -33024,7 +33024,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "patch": {
@@ -33102,7 +33102,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       },
       "delete": {
@@ -33180,7 +33180,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -33297,7 +33297,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -33354,7 +33354,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -33374,7 +33374,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -33424,7 +33424,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -33472,7 +33472,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -33520,7 +33520,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -33576,7 +33576,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -33624,7 +33624,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -33672,7 +33672,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -33720,7 +33720,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -33760,7 +33760,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -33820,7 +33820,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -33880,7 +33880,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -33995,7 +33995,7 @@
           }
         ],
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -34015,7 +34015,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     },
@@ -34035,7 +34035,7 @@
           }
         },
         "tags": [
-          "CrMods API"
+          "API"
         ]
       }
     }

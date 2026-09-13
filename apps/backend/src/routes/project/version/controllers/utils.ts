@@ -1,7 +1,7 @@
 import { gameVersionsList } from "@app/utils/constants/game-versions";
 import { sortVersionsWithReference } from "@app/utils/project";
 import type { DependencyType, VersionReleaseChannel } from "@app/utils/types";
-import type { VersionFile } from "@app/utils/types/api";
+import type { ProjectVersionData, VersionFile } from "@app/utils/types/api";
 import type { UnwrapArray } from "@app/utils/types/helpers";
 import type { File as DBFile } from "@prisma-client";
 import type { TVersions } from "~/db/version_item";
@@ -11,7 +11,11 @@ import { userFileUrl, versionFileUrl } from "~/utils/urls";
 type VersionProp = UnwrapArray<NonNullable<TVersions>["versions"]>;
 type VersionFilesMap = Map<string, DBFile>;
 
-export function formatVersionData(v: VersionProp, versionFilesMap: VersionFilesMap, authorRole?: string) {
+export function formatVersionData(
+    v: VersionProp,
+    versionFilesMap: VersionFilesMap,
+    authorRole?: string,
+): ProjectVersionData {
     let primaryFile: VersionFile | null = null;
     const files: VersionFile[] = [];
 

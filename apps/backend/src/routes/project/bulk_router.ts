@@ -1,14 +1,16 @@
 import { API_SCOPE } from "@app/utils/pats";
 import { decodeStringArray } from "@app/utils/string";
-import type { ProjectListItem } from "@app/utils/types/api";
+import type { ProjectListItem, ProjectVersionData } from "@app/utils/types/api";
 import { type Context, Hono } from "hono";
-import { GetMany_ProjectsVersions, type TManyVersions } from "~/db/version_item";
+import { GetMany_ProjectsVersions } from "~/db/version_item";
 import { AuthenticationMiddleware } from "~/middleware/auth";
 import { getReqRateLimiter, invalidAuthAttemptLimiter, strictGetReqRateLimiter } from "~/middleware/rate-limiter";
 import { invalidRequestResponse } from "~/utils/http";
 import { respondJson } from "~/utils/jsonRes";
 import { getSessionUser } from "~/utils/router";
 import { getHomePageCarouselProjects, getManyProjects, getRandomProjects } from "./controllers";
+import { getFilesFromId } from "./queries/file";
+import { formatVersionData } from "./version/controllers/utils";
 
 const bulkProjectsRouter = new Hono()
     .use(invalidAuthAttemptLimiter)
@@ -43,14 +45,36 @@ async function projects_get(ctx: Context) {
 
         const versions = await GetMany_ProjectsVersions(res.data.map((p) => p.id));
 
+        let files: Awaited<ReturnType<typeof getFilesFromId>> | undefined;
+
+        if (includeVersionInfo) {
+            const fileIds: string[] = [];
+            for (const item of versions) {
+                for (const version of item.versions) {
+                    for (const file of version.files) {
+                        fileIds.push(file.fileId);
+                    }
+                }
+            }
+
+            files = await getFilesFromId(fileIds);
+        }
+
         for (const project of res.data) {
             const version = versions.find((v) => v.id === project.id);
             if (!version) continue;
 
-            const p = project as ProjectListItem & { versions?: string[] | TManyVersions[number]["versions"] };
+            const p = project as ProjectListItem & { versions?: string[] | ProjectVersionData[] };
 
             if (includeVersionInfo) {
-                p.versions = versionInfoLimit > 0 ? version.versions.slice(0, versionInfoLimit) : version.versions;
+                if (!files) {
+                    throw new Error(`files is ${files}. Why`);
+                }
+
+                const list = versionInfoLimit > 0 ? version.versions.slice(0, versionInfoLimit) : version.versions;
+                const formattedList = list.map((v) => formatVersionData(v, files));
+
+                p.versions = formattedList;
             } else if (includeVersionList) {
                 p.versions = version.versions.map((v) => v.versionNumber);
             } else if (includeVersionSlug) {
