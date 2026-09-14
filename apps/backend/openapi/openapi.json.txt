@@ -201,185 +201,6 @@
           "message"
         ]
       },
-      "ProjectListItem": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "slug": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "summary": {
-            "type": "string"
-          },
-          "type": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "icon": {
-            "type": "string",
-            "nullable": true
-          },
-          "downloads": {
-            "type": "number"
-          },
-          "followers": {
-            "type": "number"
-          },
-          "dateUpdated": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "datePublished": {},
-          "status": {},
-          "visibility": {},
-          "clientSide": {},
-          "serverSide": {},
-          "featuredCategories": {},
-          "categories": {},
-          "gameVersions": {},
-          "loaders": {},
-          "featured_gallery": {
-            "type": "string",
-            "nullable": true
-          },
-          "color": {
-            "type": "string",
-            "nullable": true
-          },
-          "author": {
-            "type": "string",
-            "nullable": true
-          },
-          "isOrgOwned": {
-            "type": "boolean",
-            "nullable": true
-          }
-        },
-        "required": [
-          "id",
-          "slug",
-          "name",
-          "summary",
-          "type",
-          "icon",
-          "downloads",
-          "followers",
-          "dateUpdated",
-          "datePublished",
-          "status",
-          "visibility",
-          "clientSide",
-          "serverSide",
-          "featuredCategories",
-          "categories",
-          "gameVersions",
-          "loaders",
-          "featured_gallery",
-          "color",
-          "author",
-          "isOrgOwned"
-        ]
-      },
-      "PostApiProjectProjectIdFollowResponse200": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "enum": [
-              true
-            ]
-          }
-        },
-        "required": [
-          "success"
-        ]
-      },
-      "GetApiSearchResponse400Variant1": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "enum": [
-              false
-            ]
-          },
-          "message": {}
-        },
-        "required": [
-          "success",
-          "message"
-        ]
-      },
-      "PostApiOrganizationOrgIdProjectsResponse404Variant2": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "enum": [
-              false
-            ]
-          },
-          "message": {
-            "type": "string",
-            "enum": [
-              "Organization not found"
-            ]
-          }
-        },
-        "required": [
-          "success",
-          "message"
-        ]
-      },
-      "GetApiUserResponse404": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "enum": [
-              false
-            ]
-          },
-          "message": {
-            "type": "string",
-            "enum": [
-              "User not found"
-            ]
-          }
-        },
-        "required": [
-          "success",
-          "message"
-        ]
-      },
-      "GetApiCollectionsCollectionIdOwnerResponse404Variant1": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "enum": [
-              false
-            ]
-          },
-          "message": {
-            "type": "string",
-            "enum": [
-              "Collection not found!"
-            ]
-          }
-        },
-        "required": [
-          "success",
-          "message"
-        ]
-      },
       "ProjectVersionData": {
         "type": "object",
         "properties": {
@@ -539,6 +360,185 @@
           "projectId",
           "versionId",
           "dependencyType"
+        ]
+      },
+      "GetApiSearchResponse400Variant1": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "message": {}
+        },
+        "required": [
+          "success",
+          "message"
+        ]
+      },
+      "ProjectListItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "type": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "icon": {
+            "type": "string",
+            "nullable": true
+          },
+          "downloads": {
+            "type": "number"
+          },
+          "followers": {
+            "type": "number"
+          },
+          "dateUpdated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "datePublished": {},
+          "status": {},
+          "visibility": {},
+          "clientSide": {},
+          "serverSide": {},
+          "featuredCategories": {},
+          "categories": {},
+          "gameVersions": {},
+          "loaders": {},
+          "featured_gallery": {
+            "type": "string",
+            "nullable": true
+          },
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "author": {
+            "type": "string",
+            "nullable": true
+          },
+          "isOrgOwned": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "slug",
+          "name",
+          "summary",
+          "type",
+          "icon",
+          "downloads",
+          "followers",
+          "dateUpdated",
+          "datePublished",
+          "status",
+          "visibility",
+          "clientSide",
+          "serverSide",
+          "featuredCategories",
+          "categories",
+          "gameVersions",
+          "loaders",
+          "featured_gallery",
+          "color",
+          "author",
+          "isOrgOwned"
+        ]
+      },
+      "PostApiProjectProjectIdFollowResponse200": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          }
+        },
+        "required": [
+          "success"
+        ]
+      },
+      "PostApiOrganizationOrgIdProjectsResponse404Variant2": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "Organization not found"
+            ]
+          }
+        },
+        "required": [
+          "success",
+          "message"
+        ]
+      },
+      "GetApiUserResponse404": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "User not found"
+            ]
+          }
+        },
+        "required": [
+          "success",
+          "message"
+        ]
+      },
+      "GetApiCollectionsCollectionIdOwnerResponse404Variant1": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "Collection not found!"
+            ]
+          }
+        },
+        "required": [
+          "success",
+          "message"
         ]
       },
       "GetApiUserSlugCollectionsResponse404": {
@@ -4034,6 +4034,22 @@
           "name",
           "licenseId",
           "url"
+        ]
+      },
+      "PostApiAuthLinkAuthProviderResponse200": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          "message": {}
+        },
+        "required": [
+          "success",
+          "message"
         ]
       },
       "GetApiTagsLicensesResponse200Variant1Variant543": {
@@ -19269,22 +19285,6 @@
           "dateRead"
         ]
       },
-      "PostApiAuthLinkAuthProviderResponse200": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "enum": [
-              true
-            ]
-          },
-          "message": {}
-        },
-        "required": [
-          "success",
-          "message"
-        ]
-      },
       "PatchApiNotificationsResponse200": {
         "type": "object",
         "properties": {
@@ -20267,6 +20267,27 @@
           "message"
         ]
       },
+      "GetApiProjectProjectSlugVersionVersionIdResponse404Variant4": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "File not found!"
+            ]
+          }
+        },
+        "required": [
+          "success",
+          "message"
+        ]
+      },
       "GetApiVersionFileFileHashResponse400": {
         "oneOf": [
           {
@@ -20368,14 +20389,22 @@
           "message"
         ]
       },
-      "PostApiVersionFileFileHashUpdateResponse404": {
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/PatchApiProjectIdResponse404"
+      "GetApiProjectProjectSlugVersionVersionIdResponse200": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
           },
-          {
-            "$ref": "#/components/schemas/GetApiVersionFileFileHashResponse404Variant2"
+          "data": {
+            "$ref": "#/components/schemas/ProjectVersionData"
           }
+        },
+        "required": [
+          "success",
+          "data"
         ]
       },
       "TeamMember": {
@@ -20428,6 +20457,22 @@
           "organisationPermissions"
         ]
       },
+      "GetApiProjectProjectSlugVersionVersionIdResponse404": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/GetApiProjectSlugResponse404"
+          },
+          {
+            "$ref": "#/components/schemas/GetApiProjectProjectSlugVersionVersionIdResponse404Variant2"
+          },
+          {
+            "$ref": "#/components/schemas/GetApiSearchResponse400Variant1"
+          },
+          {
+            "$ref": "#/components/schemas/GetApiProjectProjectSlugVersionVersionIdResponse404Variant4"
+          }
+        ]
+      },
       "GetApiAuthSigninAuthProviderResponse200": {
         "type": "object",
         "properties": {
@@ -20466,6 +20511,27 @@
             "type": "string",
             "enum": [
               "Invalid or expired code"
+            ]
+          }
+        },
+        "required": [
+          "success",
+          "message"
+        ]
+      },
+      "GetApiProjectProjectSlugVersionVersionIdResponse404Variant2": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "No version found for your query!"
             ]
           }
         },
@@ -20577,6 +20643,27 @@
             "type": "string",
             "enum": [
               "You don't have the permission to delete organization icon"
+            ]
+          }
+        },
+        "required": [
+          "success",
+          "message"
+        ]
+      },
+      "GetApiProjectsResponse400Variant2": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "Maximum of 100 projects can be fetched at once"
             ]
           }
         },
@@ -21293,6 +21380,19 @@
           "message"
         ]
       },
+      "PostApiVersionFilesResponse400": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/GetApiVersionFileFileHashResponse400Variant2"
+          },
+          {
+            "$ref": "#/components/schemas/PostApiVersionFilesResponse400Variant2"
+          },
+          {
+            "$ref": "#/components/schemas/PostApiVersionFilesResponse400Variant3"
+          }
+        ]
+      },
       "DeleteApiOrganizationOrgIdResponse200": {
         "type": "object",
         "properties": {
@@ -21480,6 +21580,16 @@
         "required": [
           "success",
           "message"
+        ]
+      },
+      "GetApiProjectsResponse400": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/DeleteApiAuthLinkAuthProviderResponse400Variant1"
+          },
+          {
+            "$ref": "#/components/schemas/GetApiProjectsResponse400Variant2"
+          }
         ]
       },
       "GetApiReportReportIdResponse400": {
@@ -26577,25 +26687,25 @@
                               "downloads": {
                                 "type": "number"
                               },
-                              "projectId": {
-                                "type": "string"
-                              },
-                              "authorId": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "title": {
+                              "releaseChannel": {
                                 "type": "string"
                               },
                               "versionNumber": {
+                                "type": "string"
+                              },
+                              "title": {
                                 "type": "string"
                               },
                               "changelog": {
                                 "type": "string",
                                 "nullable": true
                               },
-                              "releaseChannel": {
+                              "projectId": {
                                 "type": "string"
+                              },
+                              "authorId": {
+                                "type": "string",
+                                "nullable": true
                               }
                             },
                             "required": [
@@ -26606,12 +26716,12 @@
                               "slug",
                               "datePublished",
                               "downloads",
-                              "projectId",
-                              "authorId",
-                              "title",
+                              "releaseChannel",
                               "versionNumber",
+                              "title",
                               "changelog",
-                              "releaseChannel"
+                              "projectId",
+                              "authorId"
                             ]
                           }
                         }
@@ -28378,6 +28488,532 @@
         ]
       }
     },
+    "/api/project/{projectSlug}/version": {
+      "get": {
+        "summary": "Get Project By Project Slug Version",
+        "responses": {
+          "200": {
+            "description": "Status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ProjectVersionData"
+                      }
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteApiAuthLinkAuthProviderResponse400Variant1"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiProjectSlugResponse404"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Status 429",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiAuthMeResponse429"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "API"
+        ]
+      },
+      "post": {
+        "summary": "Create Project By Project Slug Version",
+        "responses": {
+          "200": {
+            "description": "Status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "enum": [
+                        "Successfully created new version"
+                      ]
+                    },
+                    "slug": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "message",
+                    "slug"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostApiAuthSigninAuthProviderResponse400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Status 401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiAuthSessionsResponse401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiProjectSlugResponse404"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Status 429",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiAuthMeResponse429"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "API"
+        ]
+      }
+    },
+    "/api/project/{projectSlug}/version/{versionId}": {
+      "get": {
+        "summary": "Get Project By Project Slug Version By Version Id",
+        "responses": {
+          "200": {
+            "description": "Status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiProjectProjectSlugVersionVersionIdResponse200"
+                }
+              }
+            }
+          },
+          "302": {
+            "description": "Status 302",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteApiAuthLinkAuthProviderResponse400Variant1"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiProjectProjectSlugVersionVersionIdResponse404"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Status 429",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiAuthMeResponse429"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "versionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "API"
+        ]
+      },
+      "patch": {
+        "summary": "Update Project By Project Slug Version By Version Id",
+        "responses": {
+          "200": {
+            "description": "Status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "enum": [
+                        "Version updated successfully"
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "slug": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "slug"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "message",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostApiAuthSigninAuthProviderResponse400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Status 401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiAuthSessionsResponse401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiProjectSlugResponse404"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Status 429",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiAuthMeResponse429"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "versionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "API"
+        ]
+      },
+      "delete": {
+        "summary": "Delete Project By Project Slug Version By Version Id",
+        "responses": {
+          "200": {
+            "description": "Status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostApiAuthLinkAuthProviderResponse200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteApiAuthLinkAuthProviderResponse400Variant1"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Status 401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiAuthSessionsResponse401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiProjectSlugResponse404"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Status 429",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiAuthMeResponse429"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "versionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "API"
+        ]
+      }
+    },
+    "/api/project/{projectSlug}/version/{versionId}/primary-file": {
+      "get": {
+        "summary": "Get Project By Project Slug Version By Version Id Primary file",
+        "responses": {
+          "200": {
+            "description": "Status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiProjectProjectSlugVersionVersionIdResponse200"
+                }
+              }
+            }
+          },
+          "302": {
+            "description": "Status 302",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteApiAuthLinkAuthProviderResponse400Variant1"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiProjectProjectSlugVersionVersionIdResponse404"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Status 429",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiAuthMeResponse429"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "versionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "API"
+        ]
+      }
+    },
+    "/api/project/{projectSlug}/version/{versionId}/{fileName}": {
+      "get": {
+        "summary": "Get Project By Project Slug Version By Version Id By File Name",
+        "responses": {
+          "200": {
+            "description": "Status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiProjectProjectSlugVersionVersionIdResponse200"
+                }
+              }
+            }
+          },
+          "302": {
+            "description": "Status 302",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteApiAuthLinkAuthProviderResponse400Variant1"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiProjectProjectSlugVersionVersionIdResponse404"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Status 429",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiAuthMeResponse429"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "versionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "API"
+        ]
+      }
+    },
     "/api/version": {
       "get": {
         "summary": "Get Version",
@@ -28680,7 +29316,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostApiVersionFileFileHashUpdateResponse404"
+                  "$ref": "#/components/schemas/GetApiVersionFileFileHashResponse404Variant2"
                 }
               }
             }
@@ -28730,17 +29366,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/GetApiVersionFileFileHashResponse400Variant2"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PostApiVersionFilesResponse400Variant2"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PostApiVersionFilesResponse400Variant3"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/PostApiVersionFilesResponse400"
                 }
               }
             }
@@ -28750,7 +29376,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostApiVersionFileFileHashUpdateResponse404"
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/PatchApiProjectIdResponse404"
+                    },
+                    {
+                      "$ref": "#/components/schemas/GetApiVersionFileFileHashResponse404Variant2"
+                    }
+                  ]
                 }
               }
             }
@@ -28790,38 +29423,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/GetApiVersionFileFileHashResponse400Variant2"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PostApiVersionFilesResponse400Variant2"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PostApiVersionFilesResponse400Variant3"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "message": {
-                          "type": "string",
-                          "enum": [
-                            "Invalid game version"
-                          ]
-                        }
-                      },
-                      "required": [
-                        "success",
-                        "message"
-                      ]
-                    }
-                  ]
+                  "$ref": "#/components/schemas/PostApiVersionFilesResponse400"
                 }
               }
             }
@@ -28831,7 +29433,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostApiVersionFileFileHashUpdateResponse404"
+                  "$ref": "#/components/schemas/GetApiVersionFileFileHashResponse404Variant2"
                 }
               }
             }
@@ -28874,32 +29476,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DeleteApiAuthLinkAuthProviderResponse400Variant1"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "message": {
-                          "type": "string",
-                          "enum": [
-                            "Maximum of 100 projects can be fetched at once"
-                          ]
-                        }
-                      },
-                      "required": [
-                        "success",
-                        "message"
-                      ]
-                    }
-                  ]
+                  "$ref": "#/components/schemas/GetApiProjectsResponse400"
                 }
               }
             }
@@ -28966,6 +29543,52 @@
                   "items": {
                     "$ref": "#/components/schemas/ProjectListItem"
                   }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Status 429",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiAuthMeResponse429"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "API"
+        ]
+      }
+    },
+    "/api/projects/versions": {
+      "get": {
+        "summary": "Get Projects Versions",
+        "responses": {
+          "200": {
+            "description": "Status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ProjectVersionData"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiProjectsResponse400"
                 }
               }
             }
@@ -33551,14 +34174,6 @@
         },
         "parameters": [
           {
-            "name": "projectId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "versionId",
             "in": "path",
             "required": true,
@@ -33568,6 +34183,14 @@
           },
           {
             "name": "fileName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
             "in": "path",
             "required": true,
             "schema": {
@@ -33926,6 +34549,9 @@
                       "$ref": "#/components/schemas/GetApiProjectSlugResponse404"
                     },
                     {
+                      "$ref": "#/components/schemas/GetApiSearchResponse400Variant1"
+                    },
+                    {
                       "type": "object",
                       "properties": {
                         "success": {
@@ -33945,9 +34571,6 @@
                         "success",
                         "message"
                       ]
-                    },
-                    {
-                      "$ref": "#/components/schemas/GetApiSearchResponse400Variant1"
                     }
                   ]
                 }
