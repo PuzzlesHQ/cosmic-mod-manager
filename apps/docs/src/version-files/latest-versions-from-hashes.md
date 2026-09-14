@@ -70,9 +70,9 @@ REQUEST BODY: `application/json`
     key: `hashes` \
     type: `string[]`
 
-- **Game Versions** _(optional)_ \
-    key: `gameVersions` \
-    type: [`string[]`](/api/tags/game-versions)
+- **Game Version** _(optional)_ \
+    key: `gameVersion` \
+    type: [`string`](/api/tags/game-versions)
 
 - **Loader** _(optional)_ \
     key: `loader` \

@@ -61,8 +61,8 @@ REQUEST BODY: `application/json`
     default: `sha512`
 
 - **Game Versions** _(Optional)_ \
-    key: `gameVersions` \
-    type: [`string[]`](/api/tags/game-versions)
+    key: `gameVersion` \
+    type: [`string`](/api/tags/game-versions)
 
 - **Loader** _(Optional)_ \
     key: `loader` \

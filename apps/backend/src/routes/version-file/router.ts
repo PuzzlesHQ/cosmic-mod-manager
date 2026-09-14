@@ -5,7 +5,6 @@ import { HashAlgorithms } from "~/types";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { HTTP_STATUS, invalidRequestResponse, notFoundResponse } from "~/utils/http";
 import { respondJson } from "~/utils/jsonRes";
-import { GetReleaseChannelFilter } from "~/utils/project";
 import { getSessionUser } from "~/utils/router";
 import { versionFileUrl } from "~/utils/urls";
 import {
@@ -61,28 +60,21 @@ async function versionFromHashUpdate_get(ctx: Context) {
         hashAlgorithm = HashAlgorithms.SHA1;
     }
 
-    let gameVersions = body?.gameVersions;
-    if (!gameVersions || !Array.isArray(gameVersions)) {
-        gameVersions = undefined;
-    }
+    let gameVersion = body?.gameVersion;
+    if (!gameVersion || typeof gameVersion !== "string") gameVersion = undefined;
 
     let loader = body?.loader;
-    if (!loader?.length || typeof loader !== "string") {
-        loader = undefined;
-    }
+    if (!loader?.length || typeof loader !== "string") loader = undefined;
 
     let releaseChannel = body.releaseChannel;
-    if (!releaseChannel?.length || typeof releaseChannel !== "string") {
-        // unset it if it's wrong type
-        releaseChannel = undefined;
-    }
+    if (!releaseChannel?.length || typeof releaseChannel !== "string") releaseChannel = undefined;
 
     const sessionUser = getSessionUser(ctx);
     const res = await GetLatestProjectVersionFromHash(
         hash,
         hashAlgorithm,
         {
-            gameVersions: gameVersions,
+            gameVersion: gameVersion,
             loader: loader,
             releaseChannel: releaseChannel,
         },
@@ -127,30 +119,21 @@ async function versionUpdatesFromHashes_post(ctx: Context) {
         hashAlgorithm = HashAlgorithms.SHA1;
     }
 
-    let gameVersions = body?.gameVersions;
-    if (!gameVersions || !Array.isArray(gameVersions)) {
-        gameVersions = [];
-    }
-    for (const version of gameVersions) {
-        if (typeof version !== "string") return invalidRequestResponse(ctx, "Invalid game version");
-    }
+    let gameVersion = body?.gameVersion;
+    if (!gameVersion || typeof gameVersion !== "string") gameVersion = undefined;
 
     let loader = body?.loader;
-    if (!loader?.length || typeof loader !== "string") {
-        loader = undefined;
-    }
+    if (!loader?.length || typeof loader !== "string") loader = undefined;
 
     let releaseChannel = body.releaseChannel;
-    if (!releaseChannel?.length || typeof releaseChannel !== "string") {
-        releaseChannel = GetReleaseChannelFilter();
-    }
+    if (!releaseChannel?.length || typeof releaseChannel !== "string") releaseChannel = undefined;
 
     const sessionUser = getSessionUser(ctx);
     const res = await GetLatestProjectVersionsFromHashes(
         hashes,
         hashAlgorithm,
         {
-            gameVersions: gameVersions,
+            gameVersion: gameVersion,
             loader: loader,
             releaseChannel: releaseChannel,
         },

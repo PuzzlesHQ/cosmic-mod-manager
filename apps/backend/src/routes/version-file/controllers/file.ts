@@ -6,10 +6,10 @@ import { GetManyProjects_ListItem } from "~/db/project_item";
 import { GetMany_ProjectsVersions } from "~/db/version_item";
 import { getFilesFromId } from "~/routes/project/queries/file";
 import { DELETED_USER_AUTHOR_OBJ, isProjectAccessible } from "~/routes/project/utils";
+import { filterVersion, type ProjectVersionFilters } from "~/routes/project/version/controllers/utils";
 import prisma from "~/services/prisma";
 import { HashAlgorithms, type SessionUserData } from "~/types";
 import { HTTP_STATUS, invalidRequestResponseData, notFoundResponseData } from "~/utils/http";
-import { GetReleaseChannelFilter } from "~/utils/project";
 import { userFileUrl, versionFileUrl } from "~/utils/urls";
 
 export async function GetVersionFromFileHash(
@@ -172,16 +172,10 @@ export async function GetVersionsFromFileHashes(
     } as const;
 }
 
-interface VersionFilter {
-    gameVersions?: string[];
-    loader?: string;
-    releaseChannel?: string;
-}
-
 export async function GetLatestProjectVersionFromHash(
     hash: string,
     algorithm: HashAlgorithms,
-    filter: VersionFilter,
+    filter: ProjectVersionFilters,
     sessionUser: SessionUserData | null,
 ) {
     const res = await GetLatestProjectVersionsFromHashes([hash], algorithm, filter, sessionUser);
@@ -196,7 +190,7 @@ export async function GetLatestProjectVersionFromHash(
 export async function GetLatestProjectVersionsFromHashes(
     hashes: string[],
     algorithm: HashAlgorithms,
-    filter: VersionFilter,
+    filter: ProjectVersionFilters,
     sessionUser: SessionUserData | null,
 ) {
     const hashList = hashes.filter((hash) => !!hash.length && typeof hash === "string");
@@ -278,25 +272,7 @@ export async function GetLatestProjectVersionsFromHashes(
     const projects = await GetMany_ProjectsVersions(accessibleProjectIds);
     const filteredProjects = [];
     for (const project of projects) {
-        const versions = [];
-
-        for (const version of project.versions) {
-            if (!version) continue;
-
-            if (filter.gameVersions?.length && !version.gameVersions.some((gv) => filter.gameVersions?.includes(gv)))
-                continue;
-            if (filter.loader && !version.loaders.includes(filter.loader)) continue;
-            if (
-                filter.releaseChannel &&
-                !GetReleaseChannelFilter(filter.releaseChannel).includes(
-                    version.releaseChannel as VersionReleaseChannel,
-                )
-            ) {
-                continue;
-            }
-
-            versions.push(version);
-        }
+        const versions = project.versions.filter((v) => filterVersion(v, filter));
 
         if (versions.length) {
             filteredProjects.push({
