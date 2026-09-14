@@ -47,8 +47,25 @@ _*ids is not json encoded, it's just a comma separated list_
     - `version-slug`: Returns an extra `versions` field for each project that contains the list of `slug`s of project's versions
     - `version-info`: Returns an extra `versions` field for each project that contains list of version data (Type Reference: [ProjectVersionData](/packages/utils/src/types/api/index.ts#L124))
 
+<br />
+
+_The following query params are only applicable when `include` is set to any of `"version-*"` value_
+
 - **version-info-limit** \
     key: `version-info-limit` \
     type: `number` \
     default: `15` \
     _Limits the number of versions returned when `include=version-info`. This is done to prevent the response from getting gigantic_
+
+- **Release Channel** \
+    key: `releaseChannel` \
+    type: `ENUM { release | beta | alpha | dev }` \
+    default: `release`
+
+- **Game Version** \
+    key: `gameVersion` \
+    type: [`string`](/api/tags/game-versions)
+
+- **Loader** \
+    key: `loader` \
+    type: [`string`](/api/tags/loaders)
