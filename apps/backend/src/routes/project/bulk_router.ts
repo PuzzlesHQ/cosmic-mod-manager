@@ -37,49 +37,52 @@ async function projects_get(ctx: Context) {
     const includeVersionList = extraInfo?.includes("version-list");
     const includeVersionSlug = extraInfo?.includes("version-slug");
 
-    if (includeVersionInfo || includeVersionList || includeVersionSlug) {
-        let versionInfoLimit = Number.parseInt(ctx.req.query("version-info-limit") ?? "15", 10);
-        if (!versionInfoLimit || Number.isNaN(versionInfoLimit)) {
-            versionInfoLimit = 15;
+    if (!includeVersionInfo && !includeVersionList && !includeVersionSlug) {
+        return respondJson(ctx, res);
+    }
+
+    let versionInfoLimit = Number.parseInt(ctx.req.query("version-info-limit") ?? "15", 10);
+    if (!versionInfoLimit || Number.isNaN(versionInfoLimit)) {
+        versionInfoLimit = 15;
+    }
+
+    const projects = res.data;
+    const versions = await GetMany_ProjectsVersions(projects.map((p) => p.id));
+
+    let files: Awaited<ReturnType<typeof getFilesFromId>> | undefined;
+
+    if (includeVersionInfo) {
+        const fileIds: string[] = [];
+        for (const item of versions) {
+            for (const version of item.versions) {
+                for (const file of version.files) {
+                    fileIds.push(file.fileId);
+                }
+            }
         }
 
-        const versions = await GetMany_ProjectsVersions(res.data.map((p) => p.id));
+        files = await getFilesFromId(fileIds);
+    }
 
-        let files: Awaited<ReturnType<typeof getFilesFromId>> | undefined;
+    for (const project of projects) {
+        const version = versions.find((v) => v.id === project.id);
+        if (!version) continue;
+
+        const p = project as ProjectListItem & { versions?: string[] | ProjectVersionData[] };
 
         if (includeVersionInfo) {
-            const fileIds: string[] = [];
-            for (const item of versions) {
-                for (const version of item.versions) {
-                    for (const file of version.files) {
-                        fileIds.push(file.fileId);
-                    }
-                }
+            if (!files) {
+                throw new Error(`files is ${files}. Why`);
             }
 
-            files = await getFilesFromId(fileIds);
-        }
+            const list = versionInfoLimit > 0 ? version.versions.slice(0, versionInfoLimit) : version.versions;
+            const formattedList = list.map((v) => formatVersionData(v, files));
 
-        for (const project of res.data) {
-            const version = versions.find((v) => v.id === project.id);
-            if (!version) continue;
-
-            const p = project as ProjectListItem & { versions?: string[] | ProjectVersionData[] };
-
-            if (includeVersionInfo) {
-                if (!files) {
-                    throw new Error(`files is ${files}. Why`);
-                }
-
-                const list = versionInfoLimit > 0 ? version.versions.slice(0, versionInfoLimit) : version.versions;
-                const formattedList = list.map((v) => formatVersionData(v, files));
-
-                p.versions = formattedList;
-            } else if (includeVersionList) {
-                p.versions = version.versions.map((v) => v.versionNumber);
-            } else if (includeVersionSlug) {
-                p.versions = version.versions.map((v) => v.slug);
-            }
+            p.versions = formattedList;
+        } else if (includeVersionList) {
+            p.versions = version.versions.map((v) => v.versionNumber);
+        } else if (includeVersionSlug) {
+            p.versions = version.versions.map((v) => v.slug);
         }
     }
 

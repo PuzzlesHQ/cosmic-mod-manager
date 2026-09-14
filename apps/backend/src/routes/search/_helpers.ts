@@ -9,7 +9,7 @@ export function mapSearchProjectToListItem(project: ProjectSearchDocument): Proj
         name: project.name,
         summary: project.summary,
         type: project.type,
-        status: ProjectPublishingStatus.APPROVED, // Because only approved projects are indexed for search :)
+        status: ProjectPublishingStatus.APPROVED, // Because only approved projects are indexed for search :) TODO: need to properly fix this
         icon: project.iconUrl,
         downloads: project.downloads,
         followers: project.followers,

@@ -15,7 +15,8 @@ export type ApiSuccess<T> = {
 export type ApiResponse<T> = ApiError | ApiSuccess<T>;
 
 export function isSuccessResponse<T>(res: ApiResponse<T>): res is ApiSuccess<T> {
-    return res.data.success === true;
+    if ("success" in res.data && res.data.success === false) return false;
+    return true;
 }
 
 export const HTTP_STATUS = {

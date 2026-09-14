@@ -12,15 +12,14 @@ import type {
 } from "@app/utils/types";
 import type { ProjectDetailsData, ProjectListItem } from "@app/utils/types/api";
 import type { TeamMember as DBTeamMember } from "@prisma-client";
+import { GetData_FromCache, SetCache } from "~/db/_cache";
 import { GetManyProjects_ListItem, GetProject_Details, GetProject_ListItem } from "~/db/project_item";
 import { mapSearchProjectToListItem } from "~/routes/search/_helpers";
 import { MEILISEARCH_PROJECT_INDEX, type ProjectSearchDocument } from "~/routes/search/sync-utils";
 import meilisearch from "~/services/meilisearch";
 import prisma from "~/services/prisma";
-import valkey from "~/services/redis";
 import type { SessionUserData } from "~/types";
 import { HTTP_STATUS, notFoundResponseData } from "~/utils/http";
-import { parseJson } from "~/utils/str";
 import { orgIconUrl, projectGalleryFileUrl, projectIconUrl, userFileUrl } from "~/utils/urls";
 import { isProjectAccessible, isProjectListed } from "../utils";
 
@@ -234,26 +233,26 @@ export async function getRandomProjects(userSession: SessionUserData | null, cou
     return res;
 }
 
-function homePageProjects_CacheKey(count: number) {
-    return `homepage-carousel-projects:${count}`;
-}
+const HOME_PAGE_PROJECTS_CACHE_NAMESPACE = "homepage-carousel-projects";
 
 export async function getHomePageCarouselProjects(userSession: SessionUserData | null) {
     const projectsCount = 30;
 
-    const cache = await valkey.get(homePageProjects_CacheKey(projectsCount));
-    const cachedData = await parseJson<ProjectListItem[]>(cache);
+    const cachedData = await GetData_FromCache<ProjectListItem[]>(
+        HOME_PAGE_PROJECTS_CACHE_NAMESPACE,
+        projectsCount.toString(),
+    );
     if (cachedData) {
         return { data: cachedData, status: HTTP_STATUS.OK } as const;
     }
 
-    const trendingProjects_count = Math.floor(projectsCount / 3);
-    const randomProjects_count = projectsCount - trendingProjects_count;
+    const trendingProjectCount = Math.floor(projectsCount / 3);
+    const randomProjectsCount = projectsCount - trendingProjectCount;
 
     const index = meilisearch.index(MEILISEARCH_PROJECT_INDEX);
     const result = await index.search(undefined, {
         sort: ["recentDownloads:desc"],
-        limit: trendingProjects_count,
+        limit: trendingProjectCount,
     });
 
     const alreadyAddedIds = new Set<string>();
@@ -263,33 +262,29 @@ export async function getHomePageCarouselProjects(userSession: SessionUserData |
         alreadyAddedIds.add(project.id);
     }
 
-    // --- Taking more than randomProjects count so that we can have a few more
-    // --- in case of duplicates between trending and random projects
-    const randomProjects: { id: string }[] = await prisma.$queryRaw`
+    // Taking more than randomProjects count so that we can have a few more
+    // in case of duplicates between trending and random projects
+    const randomProjectsIds: { id: string }[] = await prisma.$queryRaw`
         SELECT id
         FROM "Project"
         TABLESAMPLE SYSTEM_ROWS(${projectsCount}) 
         WHERE "status" = 'approved' AND "visibility" = 'listed'
     `;
 
-    const randomProjects_IDs: string[] = [];
-    for (const p of randomProjects) {
+    const projectIds: string[] = [];
+    for (const p of randomProjectsIds) {
         if (alreadyAddedIds.has(p.id)) continue; // Skip if the project from trending is already added
-        randomProjects_IDs.push(p.id);
-        if (randomProjects_IDs.length >= randomProjects_count) break; // Limit to randomProjects_count
+        projectIds.push(p.id);
+        if (projectIds.length >= randomProjectsCount) break; // Limit to randomProjects_count
     }
 
-    const projectsList: ProjectListItem[] = [];
-
-    const randomProjects_details = await getManyProjects(userSession, randomProjects_IDs);
-    if (randomProjects_details.data.length > 0) {
-        projectsList.push(...randomProjects_details.data);
-    }
+    const randomProjects = await getManyProjects(userSession, projectIds);
+    const projectsList: ProjectListItem[] = randomProjects.data ?? [];
 
     if (formattedTrendingProjects.length > 0) {
         projectsList.push(...formattedTrendingProjects);
     }
 
-    await valkey.set(homePageProjects_CacheKey(projectsCount), JSON.stringify(projectsList), "EX", 600);
+    await SetCache(HOME_PAGE_PROJECTS_CACHE_NAMESPACE, projectsCount.toString(), JSON.stringify(projectsList), 600);
     return { data: projectsList, status: HTTP_STATUS.OK } as const;
 }
