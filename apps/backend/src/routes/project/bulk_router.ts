@@ -10,7 +10,7 @@ import { respondJson } from "~/utils/jsonRes";
 import { getSessionUser } from "~/utils/router";
 import { getHomePageCarouselProjects, getManyProjects, getRandomProjects } from "./controllers";
 import { getFilesFromId } from "./queries/file";
-import { formatVersionData } from "./version/controllers/utils";
+import { filterVersion, formatVersionData, type ProjectVersionFilters } from "./version/controllers/utils";
 
 const bulkProjectsRouter = new Hono()
     .use(invalidAuthAttemptLimiter)
@@ -41,6 +41,12 @@ async function projects_get(ctx: Context) {
         return respondJson(ctx, res);
     }
 
+    const filters: ProjectVersionFilters = {
+        loader: ctx.req.query("loader"),
+        releaseChannel: ctx.req.query("releaseChannel"),
+        gameVersion: ctx.req.query("gameVersion"),
+    };
+
     let versionInfoLimit = Number.parseInt(ctx.req.query("version-info-limit") ?? "15", 10);
     if (!versionInfoLimit || Number.isNaN(versionInfoLimit)) {
         versionInfoLimit = 15;
@@ -69,20 +75,25 @@ async function projects_get(ctx: Context) {
         if (!version) continue;
 
         const p = project as ProjectListItem & { versions?: string[] | ProjectVersionData[] };
+        let filteredVersions = Object.values(filters).every((v) => !v)
+            ? version.versions
+            : version.versions.filter((v) => filterVersion(v, filters));
 
         if (includeVersionInfo) {
             if (!files) {
                 throw new Error(`files is ${files}. Why`);
             }
+            if (versionInfoLimit > 0) {
+                filteredVersions = filteredVersions.slice(0, versionInfoLimit);
+            }
 
-            const list = versionInfoLimit > 0 ? version.versions.slice(0, versionInfoLimit) : version.versions;
-            const formattedList = list.map((v) => formatVersionData(v, files));
+            const formattedList = filteredVersions.map((v) => formatVersionData(v, files));
 
             p.versions = formattedList;
         } else if (includeVersionList) {
-            p.versions = version.versions.map((v) => v.versionNumber);
+            p.versions = filteredVersions.map((v) => v.versionNumber);
         } else if (includeVersionSlug) {
-            p.versions = version.versions.map((v) => v.slug);
+            p.versions = filteredVersions.map((v) => v.slug);
         }
     }
 

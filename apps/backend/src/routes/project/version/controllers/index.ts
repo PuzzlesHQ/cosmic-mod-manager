@@ -8,7 +8,7 @@ import { isProjectAccessible } from "~/routes/project/utils";
 import type { SessionUserData } from "~/types";
 import { HTTP_STATUS, isSuccessResponse, notFoundResponseData } from "~/utils/http";
 import { GetReleaseChannelFilter } from "~/utils/project";
-import { formatVersionData } from "./utils";
+import { filterVersion, formatVersionData, type ProjectVersionFilters } from "./utils";
 
 export async function getAllProjectVersions(slug: string, userSession: SessionUserData | null, featuredOnly = false) {
     const [project, _projectVersions] = await Promise.all([GetProject_Details(slug, slug), GetVersions(slug, slug)]);
@@ -72,16 +72,10 @@ export async function getProjectVersionData(
     } as const;
 }
 
-interface GetLatestVersionFilters {
-    releaseChannel?: string;
-    gameVersion?: string;
-    loader?: string;
-}
-
 export async function getLatestVersion(
     projectSlug: string,
     userSession: SessionUserData | null,
-    filters: GetLatestVersionFilters,
+    filters: ProjectVersionFilters,
 ) {
     const whereInput: Prisma.VersionWhereInput = {};
     if (filters.releaseChannel?.length)
@@ -89,27 +83,13 @@ export async function getLatestVersion(
     if (filters.gameVersion?.length) whereInput.gameVersions = { has: filters.gameVersion };
     if (filters.loader?.length) whereInput.loaders = { has: filters.loader };
 
-    function filter(version: ProjectVersionData) {
-        if (filters.releaseChannel?.length) {
-            const channels = GetReleaseChannelFilter(filters.releaseChannel);
-            if (!channels.includes(version.releaseChannel)) return false;
-        }
-        if (filters.gameVersion?.length) {
-            if (!version.gameVersions.includes(filters.gameVersion)) return false;
-        }
-        if (filters.loader?.length) {
-            if (!version.loaders.includes(filters.loader)) return false;
-        }
-        return true;
-    }
-
     const res = await getAllProjectVersions(projectSlug, userSession, false);
     if (!isSuccessResponse(res)) return res;
 
     const list = res.data.data;
     if (!list.length) return notFoundResponseData("No version found for your query!");
 
-    const latestVersion = list.find(filter);
+    const latestVersion = list.find((v) => filterVersion(v, filters));
     if (!latestVersion) return notFoundResponseData("No version found for your query!");
 
     return { data: { success: true, data: latestVersion }, status: res.status } as const;

@@ -6,6 +6,7 @@ import type { UnwrapArray } from "@app/utils/types/helpers";
 import type { File as DBFile } from "@prisma-client";
 import type { TVersions } from "~/db/version_item";
 import { DELETED_USER_AUTHOR_OBJ } from "~/routes/project/utils";
+import { GetReleaseChannelFilter } from "~/utils/project";
 import { userFileUrl, versionFileUrl } from "~/utils/urls";
 
 type VersionProp = UnwrapArray<NonNullable<TVersions>["versions"]>;
@@ -69,4 +70,27 @@ export function formatVersionData(
             dependencyType: dependency.dependencyType as DependencyType,
         })),
     };
+}
+
+export interface ProjectVersionFilters {
+    releaseChannel?: string;
+    gameVersion?: string;
+    loader?: string;
+}
+
+export function filterVersion<T extends { loaders: string[]; gameVersions: string[]; releaseChannel: string }>(
+    version: T,
+    filters: ProjectVersionFilters,
+) {
+    if (filters.releaseChannel?.length) {
+        const channels = GetReleaseChannelFilter(filters.releaseChannel);
+        if (!channels.includes(version.releaseChannel as VersionReleaseChannel)) return false;
+    }
+    if (filters.gameVersion?.length) {
+        if (!version.gameVersions.includes(filters.gameVersion)) return false;
+    }
+    if (filters.loader?.length) {
+        if (!version.loaders.includes(filters.loader)) return false;
+    }
+    return true;
 }
