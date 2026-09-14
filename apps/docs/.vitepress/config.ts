@@ -55,6 +55,7 @@ export default defineConfig({
                 text: "Version",
                 items: [
                     { text: "Get project versions", link: "/version/get-project-versions" },
+                    { text: "Get many projects versions", link: "/version/get-multiple-projects-versions" },
                     { text: "Upload a version", link: "/version/upload" },
                 ],
             },

@@ -40,6 +40,8 @@ import { getAllProjectVersions } from "./version/controllers";
 import versionRouter from "./version/router";
 
 const projectRouter = new Hono()
+    .route("/:projectSlug/version", versionRouter)
+
     .use(invalidAuthAttemptLimiter)
     .use(AuthenticationMiddleware)
 
@@ -66,9 +68,7 @@ const projectRouter = new Hono()
 
     .post("/:id/gallery", critModifyReqRateLimiter, LoginProtectedRoute, gallery_post)
     .patch("/:id/gallery/:galleryId", modifyReqRateLimiter, LoginProtectedRoute, galleryItem_patch)
-    .delete("/:id/gallery/:galleryId", critModifyReqRateLimiter, LoginProtectedRoute, galleryItem_delete)
-
-    .route("/:projectSlug/version", versionRouter);
+    .delete("/:id/gallery/:galleryId", critModifyReqRateLimiter, LoginProtectedRoute, galleryItem_delete);
 
 async function projects_get(ctx: Context) {
     const sessionUser = getSessionUser(ctx, API_SCOPE.PROJECT_READ);

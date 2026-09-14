@@ -2,8 +2,13 @@ import { API_SCOPE } from "@app/utils/pats";
 import { newVersionFormSchema, updateVersionFormSchema } from "@app/utils/schemas/project/version";
 import { zodParse } from "@app/utils/schemas/utils";
 import { type Context, Hono } from "hono";
-import { LoginProtectedRoute } from "~/middleware/auth";
-import { critModifyReqRateLimiter, getReqRateLimiter, modifyReqRateLimiter } from "~/middleware/rate-limiter";
+import { AuthenticationMiddleware, LoginProtectedRoute } from "~/middleware/auth";
+import {
+    critModifyReqRateLimiter,
+    getReqRateLimiter,
+    invalidAuthAttemptLimiter,
+    modifyReqRateLimiter,
+} from "~/middleware/rate-limiter";
 import { REQ_BODY_NAMESPACE } from "~/types/namespaces";
 import { invalidRequestResponse, isSuccessResponse, notFoundResponse, unauthenticatedReqResponse } from "~/utils/http";
 import { respondJson } from "~/utils/jsonRes";
@@ -12,21 +17,23 @@ import { getAllProjectVersions, getLatestVersion, getProjectVersionData } from "
 import { createNewVersion } from "./controllers/new-version";
 import { deleteProjectVersion, updateVersionData } from "./controllers/update";
 
-const versionRouter = new Hono();
+const versionRouter = new Hono()
+    .use(invalidAuthAttemptLimiter)
+    .use(AuthenticationMiddleware)
 
-versionRouter.get("/", getReqRateLimiter, versions_get);
+    .get("/", getReqRateLimiter, versions_get)
 
-// latest is a special version id, it accepts optional query params: releaseChannel, gameVersion and loader
-// It returns the latest version which matches all the provided filters
-// eg: /version/latest?releaseChannel=release&gameVersion=0.3.1&loader=quilt
-// Can be helpful to simplify the implementation of auto updating mods
-versionRouter.get("/:versionId", getReqRateLimiter, async (ctx) => version_get(ctx));
-versionRouter.get("/:versionId/primary-file", getReqRateLimiter, async (ctx) => version_get(ctx, true));
-versionRouter.get("/:versionId/:fileName", getReqRateLimiter, async (ctx) => version_get(ctx, true));
+    // latest is a special version id, it accepts optional query params: releaseChannel, gameVersion and loader
+    // It returns the latest version which matches all the provided filters
+    // eg: /version/latest?releaseChannel=release&gameVersion=0.3.1&loader=quilt
+    // Can be helpful to simplify the implementation of auto updating mods
+    .get("/:versionId", getReqRateLimiter, async (ctx) => version_get(ctx))
+    .get("/:versionId/primary-file", getReqRateLimiter, async (ctx) => version_get(ctx, true))
+    .get("/:versionId/:fileName", getReqRateLimiter, async (ctx) => version_get(ctx, true))
 
-versionRouter.post("/", critModifyReqRateLimiter, LoginProtectedRoute, version_post);
-versionRouter.patch("/:versionId", modifyReqRateLimiter, LoginProtectedRoute, version_patch);
-versionRouter.delete("/:versionId", critModifyReqRateLimiter, LoginProtectedRoute, version_delete);
+    .post("/", critModifyReqRateLimiter, LoginProtectedRoute, version_post)
+    .patch("/:versionId", modifyReqRateLimiter, LoginProtectedRoute, version_patch)
+    .delete("/:versionId", critModifyReqRateLimiter, LoginProtectedRoute, version_delete);
 
 async function versions_get(ctx: Context) {
     const sessionUser = getSessionUser(ctx, API_SCOPE.VERSION_READ);
