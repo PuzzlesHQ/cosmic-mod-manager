@@ -35,7 +35,7 @@ export async function getBulkProjectVersions(
         if (!version) continue;
 
         let filteredVersions = version.versions.filter((v) => filterVersion(v, filters));
-        if (filters.limit > 0) {
+        if (filters.limit > 0 && filters.limit < filteredVersions.length) {
             filteredVersions = filteredVersions.slice(0, filters.limit);
         }
 
