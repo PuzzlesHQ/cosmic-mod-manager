@@ -40,7 +40,6 @@ export async function getBulkProjectVersions(
         }
 
         const formattedVersions = filteredVersions.map((v) => formatVersionData(v, files));
-
         result[project.id] = formattedVersions;
     }
 
