@@ -1,3 +1,4 @@
+import type { ProjectVersionData } from "@app/utils/types/api";
 import { GetMany_ProjectsVersions } from "~/db/version_item";
 import type { SessionUserData } from "~/types";
 import { HTTP_STATUS } from "~/utils/http";
@@ -27,7 +28,7 @@ export async function getBulkProjectVersions(
     }
     const files = await getFilesFromId(fileIds);
 
-    const result = [];
+    const result: Record<string, ProjectVersionData[]> = {};
 
     for (const project of projects) {
         const version = versions.find((v) => v.id === project.id);
@@ -40,10 +41,7 @@ export async function getBulkProjectVersions(
 
         const formattedVersions = filteredVersions.map((v) => formatVersionData(v, files));
 
-        result.push({
-            id: project.id,
-            versions: formattedVersions,
-        });
+        result[project.id] = formattedVersions;
     }
 
     return {
