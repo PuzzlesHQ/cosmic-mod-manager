@@ -268,7 +268,12 @@ export async function GetLatestProjectVersionsFromHashes(
             }
         }
     }
-    if (!accessibleProjectIds.length) return notFoundResponseData();
+    if (!accessibleProjectIds.length) {
+        return {
+            data: {},
+            status: HTTP_STATUS.OK,
+        } as const;
+    }
 
     const projects = await GetMany_ProjectsVersions(accessibleProjectIds);
     const filteredProjects = [];
