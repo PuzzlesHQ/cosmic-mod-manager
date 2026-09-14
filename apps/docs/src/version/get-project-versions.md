@@ -130,18 +130,21 @@ _Returns the same response object as the above one_
 
 
 QUERY PARAMS:
-- **Release Channel** \
-    key: `releaseChannel` \
-    type: `ENUM { release | beta | alpha | dev }` \
-    default: `release`
 
-- **Game Version** \
+- **Game Version** _(Optional)_ \
     key: `gameVersion` \
     type: [`string`](/api/tags/game-versions)
 
-- **Loader** \
+- **Loader** _(Optional)_ \
     key: `loader` \
     type: [`string`](/api/tags/loaders)
+
+- **Release Channel** _(Optional)_ \
+    key: `releaseChannel` \
+    type: `ENUM { release | beta | alpha | dev }`
+    :::info
+    _The api returns all versions that match the selected `releaseChannel` or are more stable than that, which means `releaseChannel=beta` would return `beta` versions but also `release`. To get versions from just the selected channel, suffix the value with `-only`. eg `beta-only`._
+    :::
 
 
 ## Download version file directly from the api

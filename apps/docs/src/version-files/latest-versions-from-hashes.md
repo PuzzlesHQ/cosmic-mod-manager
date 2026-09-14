@@ -81,3 +81,6 @@ REQUEST BODY: `application/json`
 - **Release Channel** _(optional)_ \
     key: `releaseChannel` \
     type: [`string`](/packages/utils/src/types/index.ts#L91)
+    :::info
+    _The api returns all versions that match the selected `releaseChannel` or are more stable than that, which means `releaseChannel=beta` would return `beta` versions but also `release`. To get versions from just the selected channel, suffix the value with `-only`. eg `beta-only`._
+    :::

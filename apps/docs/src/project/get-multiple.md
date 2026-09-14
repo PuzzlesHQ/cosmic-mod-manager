@@ -40,32 +40,34 @@ _*ids is not json encoded, it's just a comma separated list_
     max: `100` \
     format: `ID1,ID2,ID3` _(comma separated list)_
 
-- **Include** \
+- **Include** _(Optional)_ \
     key: `include` \
     type: `string`
     - `version-list`: Returns an extra `versions` field for each project containing the list of versionNumber of project's versions
     - `version-slug`: Returns an extra `versions` field for each project that contains the list of `slug`s of project's versions
     - `version-info`: Returns an extra `versions` field for each project that contains list of version data (Type Reference: [ProjectVersionData](/packages/utils/src/types/api/index.ts#L124))
 
-<br />
+---
 
-_The following query params are only applicable when `include` is set to any of `"version-*"` value_
+_The following query params are only applicable when `include` is set._
 
-- **version-info-limit** \
+- **version-info-limit** _(Optional)_ \
     key: `version-info-limit` \
     type: `number` \
     default: `15` \
     _Limits the number of versions returned when `include=version-info`. This is done to prevent the response from getting gigantic_
 
-- **Release Channel** \
-    key: `releaseChannel` \
-    type: `ENUM { release | beta | alpha | dev }` \
-    default: `release`
-
-- **Game Version** \
+- **Game Version** _(Optional)_ \
     key: `gameVersion` \
     type: [`string`](/api/tags/game-versions)
 
-- **Loader** \
+- **Loader** _(Optional)_ \
     key: `loader` \
     type: [`string`](/api/tags/loaders)
+
+- **Release Channel** _(Optional)_ \
+    key: `releaseChannel` \
+    type: `ENUM { release | beta | alpha | dev }` \
+    :::info
+    _The api returns all versions that match the selected `releaseChannel` or are more stable than that, which means `releaseChannel=beta` would return `beta` versions but also `release`. To get versions from just the selected channel, suffix the value with `-only`. eg `beta-only`._
+    :::

@@ -9,8 +9,6 @@ import { VersionReleaseChannel } from "@app/utils/types";
  * `GetReleaseChannelFilter("beta-only")` => `"beta"`
  */
 export function GetReleaseChannelFilter(channel?: string) {
-    // eg: beta-only
-    // idk why someone would want that specifically but whatever
     let onlySpecifiedChannel = false;
     if (typeof channel === "string" && channel.endsWith("-only")) {
         onlySpecifiedChannel = true;
