@@ -1,5 +1,11 @@
 [
     {
+        "label": "0.6.2",
+        "value": "0.6.2",
+        "releaseType": "alpha",
+        "major": false
+    },
+    {
         "label": "0.6.1",
         "value": "0.6.1",
         "releaseType": "alpha",
